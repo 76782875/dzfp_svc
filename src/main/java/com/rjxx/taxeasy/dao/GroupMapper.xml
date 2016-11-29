@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rjxx.taxeasy.dao.GroupMapper">
+
+    <select id="findOneByParams" parameterType="group" resultType="group">
+        select * from t_group where yxbz = '1'
+        <if test="orderBy != null">
+            order by #{orderBy}
+        </if>
+        limit 1
+    </select>
+
+    <select id="findAllByParams" parameterType="group" resultType="group">
+        select * from t_group where yxbz = '1'
+        <if test="xfid != null and xfid != ''">
+            and xfid = #{xfid}
+        </if>
+        <if test="skpid != null and skpid != ''">
+            and skpid = #{skpid}
+        </if>
+    </select>
+
+    <select id="findByPage" parameterType="pagination" resultType="group">
+        select * from t_group where yxbz = '1'
+        <if test="params.orderBy != null">
+            order by #{params.orderBy}
+        </if>
+    </select>
+
+</mapper>
+

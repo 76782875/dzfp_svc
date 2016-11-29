@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rjxx.taxeasy.dao.MkglMapper">
+
+    <select id="findOneByParams" parameterType="map" resultType="mkgl">
+        select * from t_mkgl where yxbz = '1'
+        <if test="orderBy != null">
+            order by #{orderBy}
+        </if>
+        limit 1
+    </select>
+
+    <select id="findAllByParams" parameterType="map" resultType="mkgl">
+        select * from t_mkgl where yxbz = '1'
+        <if test="orderBy != null">
+            order by #{orderBy}
+        </if>
+    </select>
+
+    <select id="findByPage" parameterType="pagination" resultType="mkgl">
+        select * from t_mkgl where yxbz = '1'
+        <if test="params.orderBy != null">
+            order by #{params.orderBy}
+        </if>
+    </select>
+    
+    <select id="findAllConnect" parameterType="map" resultType="mkvo">
+        select a.id,a.pzid,a.mkmc,a.mkbl,b.url from t_mkgl a,t_mkpz b where a.pzid=b.id and b.yxbz='1' 
+         <if test="yhid != null"> 
+            and a.yhid = #{yhid}
+         </if>
+            <if test="yxbz !=null and yxbz !=''">
+               and a.yxbz = #{yxbz}
+            </if>
+        order by a.sort
+    </select>
+    <update id="update" parameterType="map">
+        update t_mkgl set mkmc = #{mkmc},pzid = #{pzid},mkbl = #{mkbl} where id=#{id}
+    </update>
+    
+    <update id="destory" parameterType="map">
+        update t_mkgl set yxbz='0' where id=#{id}
+    </update>
+    
+    <update id="updateSort" parameterType="map">
+        update t_mkgl set sort = #{i} where id=#{id}
+    </update>
+    
+     <!-- 新增时查询区块内容是否已经存在 -->
+    <select id="findQkExist" parameterType="map" resultType="Mkgl">
+        select * from t_mkgl where yxbz='1' and lrry = #{yhid} and pzid = #{pzid} 
+    </select>
+   <!--  修改时查询区块内容是否存在 -->
+   <select id="findQkExistUpdate" parameterType="map" resultType="Mkgl">
+        select * from t_mkgl where yxbz = '1' and lrry = #{yhid} and pzid = #{pzid} and id !=#{id}
+   </select>
+
+</mapper>
+

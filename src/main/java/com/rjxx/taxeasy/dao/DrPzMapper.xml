@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rjxx.taxeasy.dao.DrPzMapper">
+
+    <select id="findOneByParams" parameterType="drPz" resultType="drPz">
+        select * from t_dr_pz where 1=1
+        <if test="mbid != null and mbid != ''">
+            and mbid = #{mbid}
+        </if>
+        limit 1
+    </select>
+
+    <select id="findAllByParams" parameterType="drPz" resultType="drPz">
+        select * from t_dr_pz where 1 = 1
+        <if test="yhid != null">
+            and yhid = #{yhid}
+        </if>
+        <if test="mbid != null and mbid != ''">
+            and mbid = #{mbid}
+        </if>
+    </select>
+
+    <select id="findByPage" parameterType="pagination" resultType="drPz">
+        select * from t_dr_pz where yxbz = '1'
+    </select>
+
+</mapper>
+

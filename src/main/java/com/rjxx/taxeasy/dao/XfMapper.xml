@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rjxx.taxeasy.dao.XfMapper">
+
+    <select id="getXfListByYhId" parameterType="int" resultType="xf">
+        select * from t_xf where id in ( select xfid from t_group where yhid = #{yhId} and yxbz = '1') and yxbz = '1'
+    </select>
+	<select id="findOneByParams" parameterType="xf" resultType="xf">
+        select * from t_xf where yxbz = '1'
+        <if test="xfsh != null and xfsh != ''">
+            and xfsh = #{xfsh}
+        </if>
+        <if test="gsdm != null and gsdm != ''">
+            and gsdm = #{gsdm}
+        </if>
+        <if test="id != null and id != ''">
+            and id != #{id}
+        </if>
+        limit 1
+    </select>
+    
+	<select id="findAllByParams" parameterType="xf" resultType="xf">
+        select * from t_xf where yxbz = '1'
+        <if test="gsdm != null and gsdm != ''">
+            and gsdm = #{gsdm}
+        </if>
+    </select>
+    
+    <select id="findAllByMap" parameterType="map" resultType="xf">
+        select * from t_xf where yxbz = '1'
+        <if test="gsdm != null and gsdm != ''">
+            and gsdm = #{gsdm}
+        </if>
+        <if test="xfList != null">
+            <foreach collection="xfList" open=" and id in (" separator="," close=")" item="xf">
+                #{xf.id}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="findByPage" parameterType="pagination" resultType="xf">
+        select * from t_xf where yxbz = '1'
+        <if test="params.xfsh != null and params.xfsh != ''">
+            and xfsh like concat('%',#{params.xfsh},'%')
+        </if>
+        <if test="params.xfmc != null and params.xfmc != ''">
+            and xfmc like concat('%',#{params.xfmc},'%')
+        </if>
+        <if test="params.gsdm != null and params.gsdm != ''">
+            and gsdm = #{params.gsdm}
+        </if>
+        <if test="params.orderBy != null">
+            order by lrsj desc
+        </if>
+    </select>
+</mapper>

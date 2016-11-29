@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rjxx.taxeasy.dao.FpyjdyMapper">
+
+    <select id="findOneByParams" parameterType="map" resultType="fpyjdy">
+        select * from t_fpyjdy where yxbz = '1'
+        <if test="yhid !=null and yhid != ''">
+            and yhid = #{yhid}
+        </if>
+        <if test="gsdm !=null and gsdm != ''">
+            and gsdm = #{gsdm}
+        </if>
+        <if test="xfid !=null and xfid != ''">
+            and xfid = #{xfid}
+        </if>
+        <if test="skpid !=null and skpid != ''">
+            and skpid = #{skpid}
+        </if>
+    </select>
+
+    <select id="findAllByParams" parameterType="map" resultType="fpyjdy">
+        select * from t_fpyjdy where yxbz = '1'
+        <if test="orderBy != null">
+            order by #{orderBy}
+        </if>
+    </select>
+
+    <select id="findByPage" parameterType="pagination" resultType="fpyjdy">
+        select * from t_fpyjdy where yxbz = '1'
+        <if test="params.orderBy != null">
+            order by #{params.orderBy}
+        </if>
+    </select>
+   <!--  分页查询可订阅的发票 -->
+    <select id="findFpyjdyByPage" parameterType="pagination" resultType="fpyjdyvo">
+         select DISTINCT a.gsdm,a.xfid,a.skpid,b.xfmc,b.xfsh,c.skph,c.kpdmc,sum(a.fpkcl) kyl
+             from t_fpkc a,t_xf b,t_skp c
+             where a.xfid = b.id and a.skpid = c.id and a.yxbz='1'
+             <if test="params.gsdm !=null and params.gsdm !=''">
+                and a.gsdm = #{params.gsdm}
+             </if>
+             <if test="params.xfid !=null and params.xfid !=''">
+                and a.xfid=#{params.xfid}
+             </if>
+             <if test="params.skpid != null and params.skpid !=''">
+            and a.skpid in <foreach collection="params.skpid" item="item" index="index" 
+         open="(" separator="," close=")"> #{params.skpid[${index}]}</foreach>
+        </if>
+             group by a.gsdm,a.xfid,a.skpid,b.xfmc,b.xfsh,c.skph,c.kpdmc            
+    </select>
+    <!-- 查询发票订阅标志 -->
+    <select id="findDyxx" parameterType="map" resultType="fpyjdyvo">
+        select sfsy,sfemail,yjkcl from t_fpyjdy where yxbz='1'
+        <if test="yhid!=null and yhid !=''">
+           and yhid = #{yhid}
+        </if>       
+        <if test="gsdm!=null and gsdm !=''">
+           and gsdm = #{gsdm}
+        </if>
+        <if test="xfid!=null and xfid !=''">
+           and xfid = #{xfid}
+        </if>
+        <if test="skpid!=null and skpid !=''">
+           and skpid = #{skpid}
+        </if>
+    </select>
+    
+    <!-- 更新订阅信息 -->
+    <update id="updateDyxx" parameterType="map">
+        update t_fpyjdy set sfsy = #{sfsy},sfemail=#{sfemail},yjkcl = #{yjkcl} where id=#{id}
+    </update>
+    
+    <!-- 查询当前用户主页的订阅信息 -->
+    <select id="findYhZyDy" parameterType="pagination" resultType="fpyjdyvo">
+         select a.gsdm,a.xfid,a.skpid,a.yjkcl,b.xfmc,b.xfsh,c.skph,c.kpdmc 
+            from t_fpyjdy a,t_xf b,t_skp c
+            where a.sfsy = '1' and a.yxbz = '1' 
+            and a.xfid = b.id and a.skpid = c.id
+            <if test="params.yhid !=null and params.yhid !=''">
+            and a.yhid = #{params.yhid}
+            </if>
+    </select>
+    
+    <!-- 查询email订阅信息 -->
+    <select id="findEmailDy" resultType="fpyjdyvo">
+         select a.gsdm,a.xfid,a.skpid,a.yjkcl,b.xfmc,b.xfsh,c.skph,c.kpdmc,d.yhmc,d.yx 
+            from t_fpyjdy a,t_xf b,t_skp c,t_yh d
+            where a.sfemail = '1' and a.yxbz = '1' 
+            and a.xfid = b.id and a.skpid = c.id and a.yhid = d.id
+    </select>
+    
+</mapper>
+

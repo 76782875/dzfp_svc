@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rjxx.taxeasy.dao.KpspmxMapper">
+
+    <select id="findOneByParams" parameterType="map" resultType="kpspmx">
+        select * from t_kpspmx where yxbz = '1'
+        <if test="orderBy != null">
+            order by #{orderBy}
+        </if>
+        limit 1
+    </select>
+
+    <select id="findAllByParams" parameterType="map" resultType="kpspmxvo">
+        select *,(spje+spse) jshj from t_kpspmx where kplsh = #{id} and (khcje !=0 or khcje is null) order by spmxxh
+        
+    </select>
+
+    <select id="findByPage" parameterType="pagination" resultType="kpspmx">
+        select * from t_kpspmx where yxbz = '1'
+        <if test="params.orderBy != null">
+            order by #{params.orderBy}
+        </if>
+    </select>
+ <!--    根据kplsh及spmxxh查询开票商品明细 -->
+    <select id="findMxByParams" parameterType="map" resultType="kpspmxvo">
+       select *,(spje+spse) jshj from t_kpspmx where kplsh = #{kplsh} and spmxxh = #{xh}
+    </select>
+   <!--  更新发票的红冲金额 -->
+   <update id="update" parameterType="map">
+        update t_kpspmx set khcje = #{khcje},yhcje = #{yhcje} where kplsh = #{kplsh} and spmxxh=#{xh}
+   </update>
+   <!--    查询可红冲金额 -->
+   <select id="findKhcje" parameterType="map" resultType="kpspmxvo">
+        select sum(khcje) khcje from t_kpspmx where kplsh = #{kplsh}
+   </select>
+  <!--  根据kplsh查询明细 -->
+  <select id="findMxList" parameterType="map" resultType="kpspmx">
+       select * from t_kpspmx where kplsh = #{kplsh}
+  </select>
+</mapper>
+

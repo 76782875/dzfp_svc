@@ -1,0 +1,67 @@
+package com.rjxx.taxeasy.service;
+
+import com.rjxx.comm.mybatis.Pagination;
+import com.rjxx.taxeasy.dao.JyspmxJpaDao;
+import com.rjxx.taxeasy.dao.JyspmxMapper;
+import com.rjxx.taxeasy.domains.Jyspmx;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+/**
+ * 由GenJavaCode类自动生成
+ * <p>
+ * Mon Oct 10 13:25:11 CST 2016
+ *
+ * @ZhangBing
+ */
+@Service
+public class JyspmxService {
+
+    @Autowired
+    private JyspmxJpaDao jyspmxJpaDao;
+
+    @Autowired
+    private JyspmxMapper jyspmxMapper;
+
+    public Jyspmx findOne(int id) {
+        return jyspmxJpaDao.findOne(id);
+    }
+
+    public void save(Jyspmx jyspmx) {
+        jyspmxJpaDao.save(jyspmx);
+    }
+
+    public void save(List<Jyspmx> jyspmxList) {
+        jyspmxJpaDao.save(jyspmxList);
+    }
+
+    public Jyspmx findOneByParams(Jyspmx jyspmx) {
+        return jyspmxMapper.findOneByParams(jyspmx);
+    }
+
+    public List<Jyspmx> findAllByParams(Jyspmx jyspmx) {
+        return jyspmxMapper.findAllByParams(jyspmx);
+    }
+
+    public List<Jyspmx> findByPage(Pagination pagination) {
+        return jyspmxMapper.findByPage(pagination);
+    }
+
+    /**
+     * 根据单据号查找
+     *
+     * @param djhList
+     * @return
+     */
+    public List<Jyspmx> findByDjhList(List<Integer> djhList) {
+        return jyspmxMapper.findByDjhList(djhList);
+    }
+
+    public void delete(List<Jyspmx> jyspmxList) {
+        jyspmxJpaDao.delete(jyspmxList);
+    }
+
+}
+

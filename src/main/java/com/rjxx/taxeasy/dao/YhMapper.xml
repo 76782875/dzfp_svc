@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rjxx.taxeasy.dao.YhMapper">
+
+    <select id="findOneByParams" parameterType="yh" resultType="yh">
+        select * from t_yh where yxbz = '1'
+        <if test="dlyhid != null and dlyhid !=''">
+            and dlyhid = #{dlyhid}
+        </if>
+       <if test="gsdm != null and gsdm !=''">
+            and gsdm = #{gsdm}
+        </if>
+        limit 1
+    </select>
+
+    <select id="findAllByParams" parameterType="yh" resultType="yh">
+        select * from t_yh where yxbz = '1'
+    </select>
+
+    <select id="findByPage" parameterType="pagination" resultType="yh">
+        select * from t_yh where yxbz = '1'
+    </select>
+
+</mapper>

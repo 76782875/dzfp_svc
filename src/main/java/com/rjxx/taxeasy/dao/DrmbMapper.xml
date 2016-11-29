@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rjxx.taxeasy.dao.DrmbMapper">
+
+    <select id="findOneByParams" parameterType="drmb" resultType="drmb">
+        select * from t_drmb where yxbz = '1'
+        <if test="mbmc != null and mbmc != ''">
+            and mbmc = #{mbmc}
+        </if>
+        <if test="xfsh != null and xfsh != ''">
+            and xfsh = #{xfsh}
+        </if>
+        <if test="id != null">
+            and id != #{id}
+        </if>
+        limit 1
+    </select>
+
+    <select id="findMrByParams" parameterType="drmb" resultType="drmb">
+        select * from t_drmb where 1=1
+        <if test="xfsh != null and xfsh != ''">
+            and id = (select max(mbid) from t_xf_mb where xfsh = #{xfsh} and yxbz='1')
+        </if>
+        limit 1
+    </select>
+
+    <select id="findAllByParams" parameterType="map" resultType="drmb">
+        select * from t_drmb where 1=1
+        <if test="yhid != null">
+            and yhid = #{yhid}
+        </if>
+        <if test="xfsh != null">
+            and xfsh = #{xfsh}
+        </if>
+        <if test="xfs !=null">
+               <foreach collection="xfs" open=" or ((xfsh in (" separator="," close=")" item="item" index="index">
+                #{xfs[${index}].xfsh} 
+            </foreach>
+            ) and gxbz = '1')
+         </if>
+    </select>
+
+    <select id="findByPage" parameterType="pagination" resultType="drmbvo">
+        select * from t_drmb where 1=1
+        <if test="params.gsdm != null and params.gsdm != ''">
+            and gsdm = #{params.gsdm}
+        </if>
+        <if test="params.xfsh != null and params.xfsh != ''">
+            and xfsh = #{params.xfsh}
+        </if>
+        <if test="params.mbmc != null and params.mbmc != ''">
+            and mbmc like concat('%',#{params.mbmc},'%')
+        </if>
+        <if test="params.xfs !=null">
+               <foreach collection="params.xfs" open=" and xfsh in (" separator="," close=")" item="item" index="index">
+                #{params.xfs[${index}].xfsh} 
+            </foreach>
+            
+         </if>
+         order by id desc
+    </select>
+
+</mapper>
+

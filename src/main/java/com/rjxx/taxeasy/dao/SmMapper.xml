@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rjxx.taxeasy.dao.SmMapper">
+
+    <select id="findOneByParams" parameterType="sm" resultType="sm">
+        select * from t_sm where yxbz = '1'
+        limit 1
+    </select>
+
+    <select id="findAllByParams" parameterType="sm" resultType="sm">
+        select * from t_sm where yxbz = '1'
+    </select>
+
+    <select id="findByPage" parameterType="pagination" resultType="sm">
+        select * from t_sm where yxbz = '1'
+    </select>
+
+</mapper>
+

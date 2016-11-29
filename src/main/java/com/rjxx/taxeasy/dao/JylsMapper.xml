@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rjxx.taxeasy.dao.JylsMapper">
+
+    <select id="findOneByParams" parameterType="jyls" resultType="jyls">
+        select * from t_jyls where yxbz = '1'
+        <if test="gsdm != null">
+            and gsdm = #{gsdm}
+        </if>
+        <if test="tqm != null">
+            and tqm = #{tqm}
+        </if>
+        limit 1
+    </select>
+
+    <select id="findAllByParams" parameterType="jyls" resultType="jyls">
+        select * from t_jyls where yxbz = '1'
+    </select>
+
+    <select id="findByPage" parameterType="pagination" resultType="jyls">
+        select * from t_jyls where yxbz = '1'
+        <if test="params.clztdm != null">
+            and clztdm = #{params.clztdm}
+        </if>
+        <if test="params.fpzldm != null">
+            and fpzldm = #{params.fpzldm}
+        </if>
+        <if test="params.fpczlxdm != null">
+            and fpczlxdm = #{params.fpczlxdm}
+        </if>
+        <if test="params.gfmc != null and params.gfmc != ''">
+            and gfmc like concat('%',#{params.gfmc},'%')
+        </if>
+        <if test="params.ddh != null and params.ddh != ''">
+            and ddh like concat('%',#{params.ddh},'%')
+        </if>
+        <if test="params.jylsh != null and params.jylsh != ''">
+            and jylsh like concat('%',#{params.jylsh},'%')
+        </if>
+        <if test="params.rqq != null and params.rqq != '' and params.rqz != null and params.rqz != ''" >
+            and jylssj between #{params.rqq} and #{params.rqz}
+        </if>
+        <if test="params.gsdm != null and params.gsdm != ''" >
+            and gsdm = #{params.gsdm}
+        </if>
+        <if test="params.xfsh != null and params.xfsh != ''" >
+            and xfsh = #{params.xfsh}
+        </if>
+        <if test="params.xfs !=null">
+               <foreach collection="params.xfs" open=" and (xfid in (" separator="," close=")" item="item" index="index">
+                #{params.xfs[${index}].id} 
+            </foreach>
+            or xfid is null)
+         </if>
+         <if test="params.skps !=null">
+               <foreach collection="params.skps" open=" and (skpid in (" separator="," close=")" item="item" index="index">
+                #{params.skps[${index}].id} 
+                </foreach>
+                or skpid is null)
+         </if>        
+        <if test="params.orderBy != null">
+            order by ${params.orderBy}
+        </if>
+    </select>
+
+    <select id="findByMapParams" parameterType="map" resultType="jyls">
+        select * from t_jyls where yxbz = '1'
+        <if test="gsdm != null">
+            and gsdm = #{gsdm}
+        </if>
+        <if test="jylshList != null">
+            <foreach collection="jylshList" open=" and jylsh in (" separator="," close=")" item="jylsh">
+                #{jylsh}
+            </foreach>
+        </if>
+        <if test="tqmList != null">
+            <foreach collection="tqmList" open=" and tqm in (" separator="," close=")" item="tqm">
+                #{tqm}
+            </foreach>
+        </if>
+    </select>
+    
+    <select id="findJylsByDjh" parameterType="map" resultType="jyls">
+       select * from t_jyls where djh = #{djh}
+    </select>
+   <!--  更新处理状态 -->
+   <update id="updateClzt" parameterType="map">
+       update t_jyls set clztdm = #{clztdm},xgsj=#{xgsj} where djh = #{djh}
+   </update>
+   
+   <select id="fptqcx" parameterType="pagination" resultType="fptqvo">
+        select a.ddh,a.gfmc,a.jshj,b.tqsj,(case when locate('Windows', llqxx) > 0 THEN 'PC' when locate('Windows', llqxx) = 0 THEN '手机' end) as tqsb,
+            (case when jlly='1' then '提取' when jlly='2' then '发邮件' when jlly='3' then '保存发票夹' else null end) as jlly 
+             from t_jyls a,t_tqjl b where a.djh = b.djh and a.yxbz='1' 
+        <if test="params.gsdm !=null and params.gsdm !=''">
+            and a.gsdm = #{params.gsdm}
+        </if>
+        <if test="params.xfs !=null">
+               <foreach collection="params.xfs" open=" and (a.xfid in (" separator="," close=")" item="item" index="index">
+                #{params.xfs[${index}].id} 
+            </foreach>
+            or a.xfid is null)
+         </if>
+        <if test="params.skps !=null">
+               <foreach collection="params.skps" open=" and (a.skpid in (" separator="," close=")" item="item" index="index">
+                #{params.skps[${index}].id} 
+            </foreach>
+            or a.skpid is null)
+         </if>        
+        <if test="params.ddh !=null and params.ddh !=''">
+            and a.ddh = #{params.ddh}
+        </if>
+         <if test="params.gfmc !=null and params.gfmc !=''">
+               and a.gfmc like CONCAT('%',#{params.gfmc},'%') 
+         </if>
+         <if test="params.tqrqq !=null and params.tqrqq !='' and params.tqrqz !=null and params.tqrqz !=''">
+               and b.tqsj between #{params.tqrqq} and #{params.tqrqz}
+         </if>
+         <if test='params.tqsb =="1"'>
+               and locate('Windows', llqxx) > 0
+         </if>
+         <if test='params.tqsb =="2"'>
+               and locate('Windows', llqxx) = 0
+         </if>
+         <if test="params.jlly !=null and params.jlly !=''">
+              and b.jlly = #{params.jlly}
+         </if>
+         order by b.tqsj desc
+   </select>
+</mapper>
+

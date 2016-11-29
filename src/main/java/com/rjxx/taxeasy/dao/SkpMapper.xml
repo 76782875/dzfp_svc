@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rjxx.taxeasy.dao.SkpMapper">
+
+    <select id="findOneByParams" parameterType="map" resultType="skp">
+        select * from t_skp where yxbz = '1'
+        <if test="kpddm != null and kpddm != ''">
+            and kpddm = #{kpddm}
+        </if>
+        <if test="kpdmc != null and kpdmc != ''">
+            and kpdmc = #{kpdmc}
+        </if>
+        <if test="gsdm != null and gsdm != ''">
+            and gsdm = #{gsdm}
+        </if>
+        <if test="id != null and id != ''">
+            and id != #{id}
+        </if>
+        limit 1
+    </select>
+	<select id="getSkpListByYhId" parameterType="int" resultType="skp">
+		select * from t_skp where yxbz = '1' and id in ( select skpid from t_group where yhid
+		= #{yhId} and yxbz = '1')
+	</select>
+    <select id="findAllByParams" parameterType="skp" resultType="skp">
+        select * from t_skp where yxbz = '1'
+        <if test="gsdm != null and gsdm != ''">
+            and gsdm = #{gsdm}
+        </if>
+    </select>
+
+    <select id="findByPage" parameterType="pagination" resultType="skpvo">
+        select s.*,x.xfmc from t_skp s, t_xf x where s.xfid = x.id and s.yxbz = '1'
+        <if test="params.gsdm != null and params.gsdm != ''">
+            and s.gsdm = #{params.gsdm}
+        </if>
+        <if test="params.xfid != null and params.xfid != ''">
+            and s.xfid = #{params.xfid}
+        </if>
+        <if test="params.kpdmc != null and params.kpdmc != ''">
+            and s.kpdmc like concat('%',#{params.kpdmc},'%')
+        </if>
+        <if test="params.orderBy != null">
+            order by lrsj desc
+        </if>
+    </select>
+
+</mapper>
+

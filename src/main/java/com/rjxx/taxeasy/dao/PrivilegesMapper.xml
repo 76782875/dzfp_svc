@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rjxx.taxeasy.dao.PrivilegesMapper">
+
+    <select id="findByRoleIds" parameterType="map" resultType="privileges">
+        SELECT DISTINCT p.* FROM PRIVILEGES P INNER JOIN ROLEPRIVS RP ON RP.PRIVID = P.ID
+         WHERE p.yxbz = '1'
+         <if test="roleIds != null">
+             <foreach collection="roleIds" open=" and rp.roleid in (" close=")" separator="," item="id">
+                 #{id}
+             </foreach>
+         </if>
+          order by P.SORT ASC
+    </select>
+
+</mapper>

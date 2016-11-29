@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rjxx.taxeasy.dao.JyspmxMapper">
+
+    <select id="findOneByParams" parameterType="jyspmx" resultType="jyspmx">
+        select * from t_jyspmx where 1 = 1
+        limit 1
+    </select>
+
+    <select id="findAllByParams" parameterType="jyspmx" resultType="jyspmx">
+        select * from t_jyspmx where 1 = 1
+    </select>
+
+    <select id="findByPage" parameterType="pagination" resultType="jyspmx">
+        select * from t_jyspmx where 1 = 1
+        <if test="params.djh != null">
+            and djh = #{params.djh}
+        </if>
+        <if test="params.gsdm != null">
+            and gsdm = #{params.gsdm}
+        </if>
+    </select>
+
+    <select id="findByDjhList" parameterType="list" resultType="jyspmx">
+        select * from t_jyspmx where 1 = 1
+        <foreach collection="list" open=" and djh in (" close=")" separator="," item="djh">
+            #{djh}
+        </foreach>
+    </select>
+
+</mapper>
+

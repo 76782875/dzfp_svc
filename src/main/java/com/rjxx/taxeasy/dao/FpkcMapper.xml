@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rjxx.taxeasy.dao.FpkcMapper">
+
+    <select id="findOneByParams" parameterType="map" resultType="fpkc">
+        select * from t_fpkc where yxbz = '1'
+        <if test="orderBy != null">
+            order by #{orderBy}
+        </if>
+        limit 1
+    </select>
+    <!-- 查询发票号码止，发票号码始 -->
+    <select id="findFphmd" parameterType="map" resultType="fpkc">
+        select fphms,fphmz from t_fpkc where yxbz = '1'
+        <if test="skpid != null">
+            and skpid = #{skpid}
+        </if>
+        <if test="fpdm != ''">
+            and fpdm = #{fpdm}
+        </if>
+    </select>
+    <!-- 修改时查询发票号码段 -->
+    <select id="findFphmdxg" parameterType="map" resultType="fpkc">
+        select fphms,fphmz from t_fpkc where yxbz = '1'
+        <if test="skpid != null">
+            and skpid = #{skpid}
+        </if>
+        <if test="fpdm != ''">
+            and fpdm = #{fpdm}
+        </if>
+        and id !=#{id}
+    </select>
+
+    <select id="findAllByParams" parameterType="map" resultType="fpkcvo">
+        
+    </select>
+    
+    <select id="findKyl" parameterType="map" resultType="fpkcvo">
+         select count(fphm) kpl from t_kpls where 1=1
+         <if test="fpdm !=null">
+         and fpdm=#{fpdm}
+         </if>
+         <!-- <if test="fphms !=null && fphmz !=null"> -->
+         and fphm between #{fphms} and #{fphmz}
+         
+    </select>
+
+    <select id="findByPage" parameterType="pagination" resultType="fpkcvo">
+        select a.id,a.xfid,a.skpid,a.fpdm,a.fphms,a.fphmz,a.lrsj,b.xfsh,b.xfmc,c.kpdmc,d.yhmc,(convert(a.fphmz,SIGNED)-convert(a.fphms,SIGNED)+1) as fpkcl 
+        from t_fpkc a,t_xf b,t_skp c,t_yh d where a.xfid = b.id and a.skpid = c.id and a.lrry = d.id
+        and a.yxbz = '1'
+        <if test="params.gsdm != null and params.gsdm !=''">
+            and a.gsdm = #{params.gsdm}
+        </if>
+        <if test="params.xfid !=null and params.xfid !=''">
+               and a.xfid in <foreach collection="params.xfid" item="item" index="index" 
+         open="(" separator="," close=")"> #{params.xfid[${index}]}</foreach>
+         </if>
+        <if test="params.skpid != null and params.skpid !=''">
+            and a.skpid in <foreach collection="params.skpid" item="item" index="index" 
+         open="(" separator="," close=")"> #{params.skpid[${index}]}</foreach>
+        </if>
+        <if test="params.fpdm !=null and params.fpdm != ''">
+            and a.fpdm = #{params.fpdm}
+        </if>
+        order by a.lrsj desc
+    </select>
+    
+    <select id="findKpd" parameterType="map" resultType="fpkcvo">
+        select id skpid,kpdmc from t_skp where yxbz='1'
+        <if test="xfid != null and xfid !=''">
+            and xfid = #{xfid}
+        </if>
+        <if test="gsdm != null and gsdm !=''">
+            and gsdm = #{gsdm}
+        </if>
+        <if test="skpid !=null and skpid !=''"> 
+             and id in <foreach collection="skpid" item="item" index="index" 
+         open="(" separator="," close=")"> #{skpid[${index}]}</foreach>
+        </if>
+    </select>
+    
+    <update id="update" parameterType="map">
+         update t_fpkc set xfid = #{xfid},skpid = #{skpid},fpdm = #{fpdm},fphms = #{fphms},fphmz = #{fphmz},fpkcl = #{fpkcl} where id = #{id}
+    </update>
+    
+    <update id="destory" parameterType="map">
+         update t_fpkc set yxbz = '0' where id=#{id}
+    </update>
+    <!-- 定时任务查询库存发票量 -->
+    <select id="findKcfpl" resultType="fpkcvo">
+          SELECT
+	a.id,
+	a.fpdm,
+	a.fphms,
+	a.fphmz,
+    a.lrry,
+    b.kpdmc,
+    c.yhmc,
+    c.yx,
+	a.fpkcl
+    FROM
+	   t_fpkc a,t_skp b,t_yh c
+    where a.yxbz='1' and a.skpid= b.id and a.lrry = c.id and a.fpkcl>0
+    </select>
+    
+    <!-- 更新没有开票数 -->
+    <update id="updateFpkcl" parameterType="map">
+        update t_fpkc set fpkcl = #{fpkcl} where id=#{id}
+    </update>
+    
+    <!-- 根据用户订阅查询发票库余量 -->
+    <select id="findZyKyl" parameterType="map" resultType="fpkcvo">
+         select sum(fpkcl) kyl from t_fpkc where yxbz='1'
+         <if test="gsdm!=null and gsdm !=''">
+             and gsdm = #{gsdm}
+         </if>
+         <if test="xfid!=null and xfid !=''">
+             and xfid = #{xfid}
+         </if>
+         <if test="skpid!=null and skpid !=''">
+             and skpid = #{skpid}
+         </if>
+    </select>
+   
+</mapper>
+

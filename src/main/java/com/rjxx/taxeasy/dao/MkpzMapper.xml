@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rjxx.taxeasy.dao.MkpzMapper">
+    
+    <select id="findAll" resultType="mkpz">
+        select id,urlmc from t_mkpz where yxbz = '1'
+    </select>
+    
+    <select id="findOneByParams" parameterType="map" resultType="mkpz">
+        select * from t_mkpz where yxbz = '1'
+        <if test="orderBy != null">
+            order by #{orderBy}
+        </if>
+        limit 1
+    </select>
+
+    <select id="findAllByParams" parameterType="map" resultType="mkpz">
+        select * from t_mkpz where yxbz = '1' and defaultflag='1'
+    </select>
+
+    <select id="findByPage" parameterType="pagination" resultType="mkpz">
+        select * from t_mkpz where yxbz = '1'
+        <if test="params.orderBy != null">
+            order by #{params.orderBy}
+        </if>
+    </select>
+
+</mapper>
+

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rjxx.taxeasy.dao.SmtqMapper">
+
+    <select id="findOneByParams" parameterType="map" resultType="smtq">
+        select * from t_smtq where yxbz = '1'
+        <if test="orderBy != null">
+            order by #{orderBy}
+        </if>
+        limit 1
+    </select>
+
+    <select id="findAllByParams" parameterType="map" resultType="smtq">
+        select * from t_smtq where yxbz = '1'
+        <if test="orderBy != null">
+            order by #{orderBy}
+        </if>
+    </select>
+
+    <select id="findByPage" parameterType="pagination" resultType="smtq">
+        select a.* from t_smtq a,t_jyls b,t_kpls c where a.fpzt='07' 
+           and a.yxbz='1' and a.ddh = b.ddh and b.fpzldm='12' and b.fpczlxdm='11' and b.yxbz='1'
+           and b.djh = c.djh and c.fpzldm = '12' and c.fpczlxdm='11' and c.yxbz='1'
+        <if test="params.gsdm !=null and params.gsdm !=''">
+           and a.gsdm = #{params.gsdm}
+           and c.gsdm = #{params.gsdm}
+        </if>
+        <if test="params.xfs !=null">
+               <foreach collection="params.xfs" open=" and (c.xfid in (" separator="," close=")" item="item" index="index">
+                #{params.xfs[${index}].id} 
+            </foreach>
+            or c.xfid is null)
+         </if>
+        <if test="params.skps !=null">
+               <foreach collection="params.skps" open=" and (c.skpid in (" separator="," close=")" item="item" index="index">
+                #{params.skps[${index}].id} 
+            </foreach>
+            or c.skpid is null)
+         </if>        
+        <if test="params.ddh !=null and params.ddh !=''">
+           and a.ddh = #{params.ddh}
+        </if>
+        <if test="params.gfmc !=null and params.gfmc !=''">
+               and a.gfmc like CONCAT('%',#{params.gfmc},'%') 
+         </if>
+         <if test="params.tqrqq !=null and params.tqrqq !='' and params.tqrqz !=null and params.tqrqz !=''">
+               and a.jylssj between #{params.tqrqq} and #{params.tqrqz}
+         </if>
+        order by a.jylssj
+    </select>
+
+</mapper>
+

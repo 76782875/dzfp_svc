@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rjxx.taxeasy.dao.RabbitmqMapper">
+
+    <select id="findByXfid" parameterType="int" resultType="rabbitmq">
+      select a.* from t_rabbitmq a,t_xf_mq b where a.id = b.mqid and b.xfid = #{xfid}
+    </select>
+
+</mapper>
