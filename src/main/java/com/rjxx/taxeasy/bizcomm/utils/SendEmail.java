@@ -4,12 +4,20 @@ package com.rjxx.taxeasy.bizcomm.utils;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.springframework.stereotype.Service;
 
 import com.rjxx.taxeasy.domains.Gsxx;
+import com.rjxx.taxeasy.service.GsxxService;
+import com.rjxx.utils.ReadProperties;
 
-
+@Service
 public class SendEmail {
+	private static GsxxService gsxxService;
+	
     public static void main(String[] args) throws Exception {
         //t_jyls jyls = t_jyls.find(t_jyls.class, 151);
         sendMail("123456789", "1051752048@qq.com", new ArrayList<String>() {{
@@ -36,7 +44,9 @@ public class SendEmail {
         }
         sb.append("请及时下载您的发票。");
         sb.append("<br/><br/>");
-        Gsxx gsxx = Gsxx.find(Gsxx.class, gsdm);
+        Map<String, Object> params = new HashMap<>();
+        params.put("gsdm", gsdm);
+        Gsxx gsxx = gsxxService.findOneByParams(params);
         sb.append(gsxx.getGsmc());
         sb.append("<br/>");
         sb.append("<br/>");

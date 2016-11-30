@@ -128,5 +128,12 @@
          </if>
          order by b.tqsj desc
    </select>
+   
+   
+    
+    <select id="findAll" parameterType="map" resultType="jyls">
+       SELECT * FROM t_jyls t WHERE t.yxbz = '1' AND t.fpczlxdm LIKE '1%'  AND 
+       t.fpzldm = '12' AND t.jshj - IFNULL(t.ykpjshj,0) <> 0 and t.clztdm = '01' order by djh
+    </select>
 </mapper>
 

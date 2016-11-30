@@ -86,6 +86,10 @@ public class JylsService {
         params.setGsdm(gsdm);
         return findOneByParams(params);
     }
+    
+    public List<Jyls> findAll(Map params){
+    	return jylsMapper.findAll(params);
+    }
 
     /**
      * 删除交易流水，包括明细

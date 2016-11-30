@@ -5,8 +5,11 @@
 
     <select id="findOneByParams" parameterType="map" resultType="kppmxx">
         select * from t_kppmxx where yxbz = '1'
-        <if test="orderBy != null">
-            order by #{orderBy}
+        <if test="xfsh != null">
+            and xfsh = #{xfsh}
+        </if>
+        <if test="gsdm != null">
+            and gsdm = #{gsdm}
         </if>
         limit 1
     </select>

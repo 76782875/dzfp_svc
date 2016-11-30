@@ -32,6 +32,8 @@ public interface JylsMapper {
      */
     public List<Jyls> findByMapParams(Map params);
     
+    public List<Jyls> findAll(Map params);
+    
     //根据单据号查找
     public Jyls findJylsByDjh(Map params);
         

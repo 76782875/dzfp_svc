@@ -410,6 +410,9 @@ public class Kpls  implements Serializable {
 @Column(name="fpztdm")
 protected String fpztdm;
 
+@Column(name="errorReason")
+protected String errorReason;
+
 	public String getFpztdm() {
 	return fpztdm;
 }
@@ -936,6 +939,14 @@ public void setFpztdm(String fpztdm) {
 
 	public void setSkpid(Integer skpid){
 		this.skpid=skpid;
+	}
+
+	public String getErrorReason() {
+		return errorReason;
+	}
+
+	public void setErrorReason(String errorReason) {
+		this.errorReason = errorReason;
 	}
 
 }

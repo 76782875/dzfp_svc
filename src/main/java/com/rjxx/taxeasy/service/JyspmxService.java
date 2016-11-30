@@ -4,10 +4,13 @@ import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.dao.JyspmxJpaDao;
 import com.rjxx.taxeasy.dao.JyspmxMapper;
 import com.rjxx.taxeasy.domains.Jyspmx;
+import com.rjxx.taxeasy.vo.JyspmxDecimal;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 由GenJavaCode类自动生成
@@ -61,6 +64,10 @@ public class JyspmxService {
 
     public void delete(List<Jyspmx> jyspmxList) {
         jyspmxJpaDao.delete(jyspmxList);
+    }
+    
+    public List<JyspmxDecimal> getNeedToKP2(Map params){
+    	return jyspmxMapper.getNeedToKP2(params);
     }
 
 }

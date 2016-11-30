@@ -3,8 +3,10 @@ package com.rjxx.taxeasy.dao;
 import com.rjxx.comm.mybatis.MybatisRepository;
 import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.domains.Jyspmx;
+import com.rjxx.taxeasy.vo.JyspmxDecimal;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 由GenJavaCode类自动生成
@@ -29,6 +31,8 @@ public interface JyspmxMapper {
      * @return
      */
     public List<Jyspmx> findByDjhList(List<Integer> djhList);
+    
+    public List<JyspmxDecimal> getNeedToKP2(Map params);
 
 }
 

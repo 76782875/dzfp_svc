@@ -10,6 +10,9 @@
 
     <select id="findAllByParams" parameterType="jyspmx" resultType="jyspmx">
         select * from t_jyspmx where 1 = 1
+        <if test="djh != null">
+            and djh = #{params.djh}
+        </if>
     </select>
 
     <select id="findByPage" parameterType="pagination" resultType="jyspmx">
@@ -27,6 +30,10 @@
         <foreach collection="list" open=" and djh in (" close=")" separator="," item="djh">
             #{djh}
         </foreach>
+    </select>
+
+    <select id="getNeedToKP2" parameterType="map" resultType="jyspmxdecimal">
+        SELECT * FROM t_jyspmx t WHERE t.djh= #{djh} and t.jshj - IFNULL(t.ykphj,0) != 0 order by spmxxh
     </select>
 
 </mapper>

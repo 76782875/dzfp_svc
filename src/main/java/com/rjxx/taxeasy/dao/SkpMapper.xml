@@ -17,6 +17,9 @@
         <if test="id != null and id != ''">
             and id != #{id}
         </if>
+        <if test="xfid != null and xfid != ''">
+            and xfid != #{xfid}
+        </if>
         limit 1
     </select>
 	<select id="getSkpListByYhId" parameterType="int" resultType="skp">

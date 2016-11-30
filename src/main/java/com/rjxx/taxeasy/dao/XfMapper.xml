@@ -17,6 +17,9 @@
         <if test="id != null and id != ''">
             and id != #{id}
         </if>
+        <if test="xfmc != null and xfmc != ''">
+            and xfmc != #{xfmc}
+        </if>
         limit 1
     </select>
     

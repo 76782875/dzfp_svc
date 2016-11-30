@@ -3,6 +3,7 @@ package freemaker;
 import java.io.File;
 import java.io.IOException;
 
+import com.rjxx.utils.ResourceLoader;
 
 import freemarker.template.Configuration;
 
