@@ -2,6 +2,8 @@ package com.rjxx.taxeasy.domains;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.rjxx.comm.json.JsonDatetimeFormat;
+
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -143,6 +145,7 @@ public class Roles implements Serializable {
     }
 
     public String getXgry() {
+
         return xgry;
     }
 
