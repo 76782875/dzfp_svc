@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,13 +32,20 @@ import com.rjxx.taxeasy.vo.JyspmxDecimal;
  */
 @Service
 public class DataOperate {
-	
+
+	@Autowired
 	private static DzfplogService logService;
+	@Autowired
 	private static JylsService jylsService;
+	@Autowired
 	private static JyspmxService jyspmxService;
+	@Autowired
 	private static KpspmxService kpspmxSerivce;
+	@Autowired
 	private static KplsService kplsSerivce;
+	@Autowired
 	private static XfService xfSerivce;
+	@Autowired
 	private static SkpService skpService;
 
     /**
