@@ -144,5 +144,13 @@
        and a.gfemail is not null and a.gfemail != '' AND a.clztdm = '21' and 
        not exists (select 1 from t_kpls b where a.djh = b.djh and b.pdfurl is null)
     </select>
+    
+    <select id="findFpxx" parameterType="map" resultType="fpxxvo">
+       select b.pdfurl,b.fpdm,b.fphm,a.ddh,a.jshj,c.kprq,substr(b.jym,length(b.jym)-5,length(b.jym)) jym 
+       from t_jyls a,t_kpls b,t_kpspmx c
+       where a.djh = b.djh and a.djh = c.djh and c.spmxxh = 1
+       and a.ddh = #{ddh} and a.jshj = (#{jshj}+0)
+       and b.pdfurl is not null and b.pdfurl != ''
+    </select>
 </mapper>
 

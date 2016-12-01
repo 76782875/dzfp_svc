@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rjxx.taxeasy.dao.DzfplogvoMapper">
+
+    <select id="findOneByParams" parameterType="map" resultType="dzfplogvo">
+        select * from dzfplogvo where yxbz = '1'
+        <if test="orderBy != null">
+            order by #{orderBy}
+        </if>
+        limit 1
+    </select>
+
+    <select id="findAllByParams" parameterType="map" resultType="dzfplogvo">
+        select * from dzfplogvo where yxbz = '1'
+        <if test="orderBy != null">
+            order by #{orderBy}
+        </if>
+    </select>
+
+    <select id="findByPage" parameterType="pagination" resultType="dzfplogvo">
+        select * from dzfplogvo where yxbz = '1'
+        <if test="params.ddh !=null and params.ddh !=''">
+            and ddh = #{params.ddh}
+        </if>
+        <if test="params.jylsh !=null and params.jylsh !=''">
+            and jylsh = #{params.jylsh}
+        </if>
+        <if test="params.lrsjq !=null and params.lrsjq != ''">
+            and lrsj &gt;= ${params.lrsjq}
+         </if>
+        <if test="params.lrsjz !=null and params.lrsjz != ''">
+            and lrsj &lt; ${params.lrsjz}
+         </if>
+    </select>
+
+</mapper>
+

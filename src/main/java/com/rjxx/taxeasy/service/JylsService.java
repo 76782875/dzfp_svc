@@ -7,6 +7,7 @@ import com.rjxx.taxeasy.dao.JylsMapper;
 import com.rjxx.taxeasy.domains.Jyls;
 import com.rjxx.taxeasy.domains.Jyspmx;
 import com.rjxx.taxeasy.vo.Fptqvo;
+import com.rjxx.taxeasy.vo.FpxxVo;
 import com.rjxx.taxeasy.vo.YjfsxxVo;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -159,8 +160,13 @@ public class JylsService {
     public Jyls findJylsByDjh(Map params){
     	return jylsMapper.findJylsByDjh(params);
     }
+    
     public List<YjfsxxVo> findYjfs(Map params){
     	return jylsMapper.findYjfs(params);
+    }
+    
+    public List<FpxxVo> findFpxx(Map params){
+    	return jylsMapper.findFpxx(params);
     }
 
 }

@@ -110,5 +110,13 @@ public class KplsService {
     public List<Fpcxvo> findHkfpsqByPage(Pagination pagination){
     	return kplsMapper.findHkfpsqByPage(pagination);
     }
+    
+    public List<Kpls> findKplsByDjh(Map params){
+    	return kplsMapper.findKplsByDjh(params);
+    }
+    
+    public List<Kpls> findKplsByPms(Map params){
+    	return kplsMapper.findKplsByPms(params);
+    }
 }
 

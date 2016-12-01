@@ -20,8 +20,8 @@
 
     <select id="findByPage" parameterType="pagination" resultType="dzfplog">
         select * from t_dzfplog where yxbz = '1'
-        <if test="params.orderBy != null">
-            order by #{params.orderBy}
+        <if test="params.id !=null and params.id !=''">
+            and id = #{params.id}
         </if>
     </select>
 
