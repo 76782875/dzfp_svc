@@ -47,7 +47,9 @@ public class JyspmxService {
     public List<Jyspmx> findAllByParams(Jyspmx jyspmx) {
         return jyspmxMapper.findAllByParams(jyspmx);
     }
-
+    public List<JyspmxDecimal> findBySql(Jyspmx jyspmx) {
+        return jyspmxMapper.findBySql(jyspmx);
+    }
     public List<Jyspmx> findByPage(Pagination pagination) {
         return jyspmxMapper.findByPage(pagination);
     }

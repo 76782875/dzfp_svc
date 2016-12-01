@@ -31,7 +31,7 @@ public interface JyspmxMapper {
      * @return
      */
     public List<Jyspmx> findByDjhList(List<Integer> djhList);
-    
+    public List<JyspmxDecimal> findBySql(Jyspmx jyspmx);
     public List<JyspmxDecimal> getNeedToKP2(Map params);
 
 }

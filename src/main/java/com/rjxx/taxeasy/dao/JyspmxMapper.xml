@@ -14,7 +14,13 @@
             and djh = #{params.djh}
         </if>
     </select>
-
+  <select id="findBySql" parameterType="jyspmx" resultType="JyspmxDecimal">
+       SELECT * FROM t_jyspmx t WHERE  t.jshj - IFNULL(t.ykphj,0) != 0 
+        <if test="djh != null">
+            and t.djh = #{djh}
+        </if>
+        order by spmxxh
+    </select>
     <select id="findByPage" parameterType="pagination" resultType="jyspmx">
         select * from t_jyspmx where 1 = 1
         <if test="params.djh != null">

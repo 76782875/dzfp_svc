@@ -1,5 +1,6 @@
 package com.rjxx.taxeasy.service;
 
+import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.dao.JylsJpaDao;
 import com.rjxx.taxeasy.dao.JylsMapper;
@@ -61,7 +62,9 @@ public class JylsService {
     public List<Jyls> findByIdList(List<Integer> idList) {
         return (List<Jyls>) jylsJpaDao.findAll(idList);
     }
-
+    public List<Jyls> findBySql(){
+    	return jylsMapper.findBySql();
+    }
     public List<Jyls> findByMapParams(Map params) {
         return jylsMapper.findByMapParams(params);
     }

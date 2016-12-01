@@ -196,7 +196,10 @@ public class Kpspmx  implements Serializable {
  */ 
 @Column(name="gsdm")
 	protected String gsdm;
-
+@Column(name="khcje")
+protected Double khcje;
+@Column(name="yhcje")
+protected Double yhcje;
 /**
  * 主键
  */ 
@@ -243,6 +246,24 @@ public class Kpspmx  implements Serializable {
 
 	public void setSpdm(String spdm){
 		this.spdm=spdm;
+	}
+
+
+
+	public Double getKhcje() {
+		return khcje;
+	}
+
+	public void setKhcje(Double khcje) {
+		this.khcje = khcje;
+	}
+
+	public Double getYhcje() {
+		return yhcje;
+	}
+
+	public void setYhcje(Double yhcje) {
+		this.yhcje = yhcje;
 	}
 
 	public String getSpmc(){
