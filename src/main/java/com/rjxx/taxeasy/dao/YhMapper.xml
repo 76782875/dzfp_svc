@@ -11,6 +11,9 @@
        <if test="gsdm != null and gsdm !=''">
             and gsdm = #{gsdm}
         </if>
+       <if test="yhmm != null and yhmm !=''">
+            and yhmm = #{yhmm}
+        </if>
         limit 1
     </select>
 

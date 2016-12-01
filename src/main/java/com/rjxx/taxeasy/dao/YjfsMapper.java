@@ -19,7 +19,7 @@ public interface YjfsMapper {
 
     public Yjfs findOneByParams(Map params);
 
-    public List<Yjfs> findAllByParams(Map params);
+    public List<Yjfs> findAllByParams(Yjfs params);
 
     public List<Yjfs> findByPage(Pagination pagination);
 

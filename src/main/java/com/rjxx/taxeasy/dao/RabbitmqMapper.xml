@@ -6,5 +6,13 @@
     <select id="findByXfid" parameterType="int" resultType="rabbitmq">
       select a.* from t_rabbitmq a,t_xf_mq b where a.id = b.mqid and b.xfid = #{xfid}
     </select>
+    <select id="findAll" parameterType="map" resultType="shmqinfo">
+      select a.*,c.xfsh from t_rabbitmq a,t_xf_mq b,t_xf c where a.id = b.mqid 
+      and b.xfid = c.id and c.yxbz = '1'
+    </select>
+    <select id="findByParams" parameterType="map" resultType="shmqinfo">
+      select a.*,c.xfsh from t_rabbitmq a,t_xf_mq b,t_xf c where a.id = b.mqid 
+      and b.xfid = c.id and c.yxbz = '1' and c.xfsh = #{xfsh}
+    </select>
 
 </mapper>

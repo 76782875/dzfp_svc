@@ -42,7 +42,7 @@ public class YjfsService {
         return yjfsMapper.findOneByParams(params);
     }
 
-    public List<Yjfs> findAllByParams(Map params) {
+    public List<Yjfs> findAllByParams(Yjfs params) {
         return yjfsMapper.findAllByParams(params);
     }
 
