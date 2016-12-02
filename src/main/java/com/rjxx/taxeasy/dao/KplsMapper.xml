@@ -272,15 +272,22 @@
    
 </select>
 
-	<select id="findKplsByDjh" parameterType="map" resultMap="kpls">
-		select * from t_kpls a where djh=#{djh} and 
-		not exists(select 1 from t_kpls b where a.kplsh = b.kplsh 
-		and (b.pdfurl is null or b.pdfurl = '')) order by fphm
-	</select>
-	<select id="findKplsByPms" parameterType="map" resultMap="kpls">
-		select * from t_kpls where djh in (select djh from t_jyls where tqm=#{tqm} and gsdm =#{gsdm}) 
-		and a.fpzldm ='12' and a.fpczlxdm='11' and fphm is not null
-	</select>
+<!-- 	<select id="findKplsByDjh" parameterType="map" resultMap="kpls"> -->
+<!-- 		select * from t_kpls where pdfurl is not null and pdfurl != '' -->
+<!-- 		<if test="djh != null"> -->
+<!-- 			and djh=#{djh} -->
+<!-- 		</if> -->
+<!-- 		<if test="djh == null"> -->
+<!-- 			and djh is null -->
+<!-- 		</if> -->
+<!-- 		 order by fphm -->
+<!-- 	</select> -->
+<!-- 	<select id="findKplsByPms" parameterType="map" resultMap="kpls"> -->
+<!-- 		<if test="tqm != null and gsdm != null"> -->
+<!-- 			select * from t_kpls where djh in (select djh from t_jyls where tqm=#{tqm} and gsdm =#{gsdm})  -->
+<!-- 		and fpzldm ='12' and fpczlxdm='11' and fphm is not null -->
+<!-- 		</if> -->
+<!-- 	</select> -->
 
 </mapper>
 

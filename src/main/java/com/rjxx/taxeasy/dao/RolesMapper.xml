@@ -5,8 +5,14 @@
 
     <select id="findOneByParams" parameterType="map" resultType="roles">
         select * from roles where yxbz = '1'
-        <if test="orderBy != null">
-            order by #{orderBy}
+        <if test="name != null">
+           and name = #{name}
+        </if>
+        <if test="gsdm != null">
+           and lrry in (select id from t_yh where gsdm = #{gsdm})
+        </if>
+        <if test="id != null">
+           and id != #{id}
         </if>
         limit 1
     </select>

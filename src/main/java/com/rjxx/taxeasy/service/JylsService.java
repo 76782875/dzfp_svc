@@ -64,8 +64,8 @@ public class JylsService {
     public List<Jyls> findByIdList(List<Integer> idList) {
         return (List<Jyls>) jylsJpaDao.findAll(idList);
     }
-    public List<Jyls> findBySql(){
-    	return jylsMapper.findBySql();
+    public List<Jyls> findBySql(Map map){
+    	return jylsMapper.findBySql(map);
     }
     public List<Jyls> findByMapParams(Map params) {
         return jylsMapper.findByMapParams(params);

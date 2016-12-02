@@ -4,6 +4,8 @@ import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.dao.PrivilegeTypesJpaDao;
 import com.rjxx.taxeasy.dao.PrivilegeTypesMapper;
 import com.rjxx.taxeasy.domains.PrivilegeTypes;
+import com.rjxx.taxeasy.vo.PrivilegeTypesVo;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,7 +51,7 @@ public class PrivilegeTypesService {
     public List<PrivilegeTypes> findByPage(Pagination pagination) {
         return privilegeTypesMapper.findByPage(pagination);
     }
-    public List<PrivilegeTypes> findBySql(Map params) {
+    public List<PrivilegeTypesVo> findBySql(Map params) {
         return privilegeTypesMapper.findBySql(params);
     }
 }

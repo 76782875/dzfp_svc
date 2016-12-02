@@ -22,6 +22,8 @@ public interface SmtqMapper {
     public List<Smtq> findAllByParams(Map params);
 
     public List<Smtq> findByPage(Pagination pagination);
+    
+    public List<Smtq> findAll(Map params);
 
 }
 

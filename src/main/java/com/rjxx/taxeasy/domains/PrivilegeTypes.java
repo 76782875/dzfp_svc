@@ -51,7 +51,6 @@ public class PrivilegeTypes  implements Serializable {
 
 @Column(name="yxbz")
 	protected String yxbz;
-	protected List<Privileges> Privileges;
 
 	public Integer getId(){
 		return id;
@@ -87,16 +86,6 @@ public class PrivilegeTypes  implements Serializable {
 
 	public String getLrry(){
 		return lrry;
-	}
-
-
-
-	public List<Privileges> getPrivileges() {
-		return Privileges;
-	}
-
-	public void setPrivileges(List<Privileges> privileges) {
-		Privileges = privileges;
 	}
 
 	public void setLrry(String lrry){

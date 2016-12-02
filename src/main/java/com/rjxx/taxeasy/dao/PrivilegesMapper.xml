@@ -2,6 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rjxx.taxeasy.dao.PrivilegesMapper">
+<!-- 	<resultMap type="com.rjxx.taxeasy.domains.Privileges" id="PrivilegesResultMap">   -->
+<!--         <id column="id" property="id"/>   -->
+<!--         <result column="name" property="name"/> -->
+<!--         <result column="description" property="description"/>   -->
+<!--         <result column="sort" property="sort"/>   -->
+<!--         <result column="urls" property="urls"/>   -->
+<!--         <result column="ztbz" property="ztbz"/>   -->
+<!--         <result column="lrsj" property="lrsj"/>  -->
+<!--         <result column="lrry" property="lrry"/>  -->
+<!--         <result column="xgsj" property="xgsj"/>  -->
+<!--         <result column="xgry" property="xgry"/>  -->
+<!--         <result column="yxbz" property="yxbz"/>     -->
+<!--         <association property="privilege_types" javaType="com.rjxx.taxeasy.domains.PrivilegeTypes">   -->
+<!--             <id column="id" property="id"/>   -->
+<!--             <result column="name" property="name"/>   -->
+<!--         </association>   -->
+<!--     </resultMap> -->
 
     <select id="findByRoleIds" parameterType="map" resultType="privileges">
         SELECT DISTINCT p.* FROM PRIVILEGES P INNER JOIN ROLEPRIVS RP ON RP.PRIVID = P.ID

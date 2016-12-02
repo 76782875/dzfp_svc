@@ -18,6 +18,9 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 @Table(name="roleprivs")
 public class Roleprivs  implements Serializable {
 
+@Id
+@GeneratedValue(strategy=GenerationType.IDENTITY)
+	protected Integer id;
 /**
  * 角色id
  */ 
@@ -158,6 +161,14 @@ public class Roleprivs  implements Serializable {
 
 	public void setXgry(Integer xgry){
 		this.xgry=xgry;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 }

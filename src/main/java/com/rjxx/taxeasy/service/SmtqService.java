@@ -49,6 +49,10 @@ public class SmtqService {
     public List<Smtq> findByPage(Pagination pagination) {
         return smtqMapper.findByPage(pagination);
     }
+    
+    public List<Smtq> findAll(Map params){
+    	return smtqMapper.findAll(params);
+    }
 
 }
 

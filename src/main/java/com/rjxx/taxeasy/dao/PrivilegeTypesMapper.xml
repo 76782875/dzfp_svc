@@ -2,7 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rjxx.taxeasy.dao.PrivilegeTypesMapper">
-
+<!-- 	<resultMap type="com.rjxx.taxeasy.domains.PrivilegeTypes" id="PrivilegeTypesSultMap">   -->
+<!--         <id column="id" property="id"/>   -->
+<!--         <result column="name" property="name"/> -->
+<!--         <collection property="privileges" ofType="com.rjxx.taxeasy.domains.Privileges" column="privilegeTypeId">   -->
+<!--             <id column="id" property="id"/>   -->
+<!--        		<result column="name" property="name"/> -->
+<!-- 	        <result column="description" property="description"/>   -->
+<!-- 	        <result column="sort" property="sort"/>   -->
+<!-- 	        <result column="urls" property="urls"/>   -->
+<!-- 	        <result column="ztbz" property="ztbz"/>   -->
+<!-- 	        <result column="lrsj" property="lrsj"/>  -->
+<!-- 	        <result column="lrry" property="lrry"/>  -->
+<!-- 	        <result column="xgsj" property="xgsj"/>  -->
+<!-- 	        <result column="xgry" property="xgry"/>  -->
+<!-- 	        <result column="yxbz" property="yxbz"/>   -->
+<!--         </collection>   -->
+          
+<!--     </resultMap>  -->
     <select id="findOneByParams" parameterType="map" resultType="privilegeTypes">
         select * from privilege_types where yxbz = '1'
         <if test="orderBy != null">
@@ -24,7 +41,7 @@
             order by #{params.orderBy}
         </if>
     </select>
-	<select id="findBySql" parameterType="Map" resultType="privilegeTypes">
+	<select id="findBySql" parameterType="Map" resultType="privilegeTypesVo">
         select * from privilege_types where yxbz = '1' and ID IN(SELECT PRIVILEGETYPEID FROM PRIVILEGES WHERE ID IN (SELECT PRIVID FROM ROLEPRIVS WHERE 1 = 1  
         <foreach collection="idList" open=" and ROLEID in (" separator="," close=")" item="item">
                 #{item}

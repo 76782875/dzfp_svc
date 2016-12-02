@@ -12,20 +12,20 @@
     </select>
 
     <select id="findAllByParams" parameterType="map" resultType="kplsvo">
-        select * from kplsvo where yxbz = '1' and fpzldm = '12' and fphm is not null and fphm != ''
+        select * from kplsvo where  fpzldm = '12' and fphm is not null and fphm != ''
         <if test="gsdm !=null and gsdm !=''">
-            and a.gsdm = #{gsdm}
+            and gsdm = #{gsdm}
         </if>
         <if test="kprqq !=null and kprqq != ''">
             and kprq &gt;= ${kprqq}
          </if>
         <if test="kprqz !=null and kprqz != ''">
-            and kprq &lt; ${kprqz}
+            and kprq &lt; date_add(${kprqz}, interval 1 day)
          </if>
-        <if test="xxzs !=null and xxzs != ''">
-            and fpczlxdm = '11'
+        <if test="xxzs !=null and xxzs != '11'">
+            and fpczlxdm = #{xxzs}
          </if>
-        <if test="xxfs !=null and xxfs != ''">
+        <if test="xxfs !=null and xxfs != '12'">
             and (fpczlxdm = '12' or fpczlxdm = '13')
          </if>
         <if test="kprq !=null and kprq != ''">
@@ -37,9 +37,9 @@
     </select>
 
     <select id="findByPage" parameterType="pagination" resultType="kplsvo">
-        select * from kplsvo where yxbz = '1' and fpzldm = '12' AND fpczlxdm = #{params.fpczlxdm} and fphm is not null
+        select * from kplsvo where fpzldm = '12' AND fpczlxdm = #{params.fpczlxdm} and fphm is not null
         <if test="params.gsdm !=null and params.gsdm !=''">
-            and a.gsdm = #{params.gsdm}
+            and gsdm = #{params.gsdm}
         </if>
         <if test="params.xfs !=null">
                <foreach collection="params.xfs" open=" and (a.xfid in (" separator="," close=")" item="item" index="index">
@@ -66,13 +66,13 @@
             and kprq &gt;= ${params.kprqq}
          </if>
         <if test="params.kprqz !=null and params.kprqz != ''">
-            and kprq &lt; ${params.kprqz}
+            and kprq &lt; date_add(${params.kprqz}, interval 1 day)
          </if>
         <if test="params.jyrqq !=null and params.jyrqq != ''">
             and jylssj &gt;= ${params.jyrqq}
          </if>
         <if test="params.jyrqz !=null and params.jyrqz != ''">
-            and jylssj &lt; ${params.jyrqz}
+            and jylssj &lt; date_add(${params.jyrqz}, interval 1 day)
          </if>
          
          order by kprq desc

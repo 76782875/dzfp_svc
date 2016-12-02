@@ -49,6 +49,10 @@
          </if>
         order by a.jylssj
     </select>
+    
+    <select id="findAll" parameterType="map" resultType="smtq">
+    	 SELECT b.* from t_jyxx a,t_smtq  b WHERE a.gsdm = b.gsdm and a.order_no = b.ddh and a.price = b.zje and a.yxbz = '1' AND b.yxbz = '1' and b.fpzt = '07'
+    </select>
 
 </mapper>
 
