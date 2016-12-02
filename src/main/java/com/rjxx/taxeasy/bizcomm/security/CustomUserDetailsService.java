@@ -68,7 +68,7 @@ public class CustomUserDetailsService implements UserDetailsService, Serializabl
             Map params = new HashMap<>();
             params.put("roleIds", paramsList);
             List<Privileges> privilegesList = privilegesService.findByRoleIds(params);
-            List<PrivilegeTypes> privilegeTypesList = privilegeTypesService.findAll();
+            List<PrivilegeTypes> privilegeTypesList = privilegeTypesService.findAllByParams(null);
             List<PrivilegeTypes> list = new ArrayList<>();
             for (PrivilegeTypes privilegeTypes : privilegeTypesList) {
                 boolean flag = false;
