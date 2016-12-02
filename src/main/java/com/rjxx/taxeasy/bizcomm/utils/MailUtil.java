@@ -250,7 +250,7 @@ public class MailUtil {
 		sendmail.setHost("smtp.mxhichina.com");
 		sendmail.setUserName("invoice@datarj.com");
 		sendmail.setPassWord("Rjxx1234");
-		sendmail.setTo("179637014@qq.com");
+		sendmail.setTo("524684541@qq.com");
 		sendmail.setFrom("invoice@datarj.com");
 		sendmail.setSubject("电子发票");
 		sendmail.setContent("这是一封测试邮件！");

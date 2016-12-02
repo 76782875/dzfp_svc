@@ -410,7 +410,7 @@ public class Kpls  implements Serializable {
 @Column(name="fpztdm")
 protected String fpztdm;
 
-@Column(name="errorReason")
+@Column(name="errorreason")
 protected String errorReason;
 
 	public String getFpztdm() {

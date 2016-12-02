@@ -2,6 +2,7 @@ package com.rjxx.taxeasy.vo;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Date;
 
 public class Fpcxvo implements Serializable{
 	protected Integer kplsh;
@@ -22,7 +23,7 @@ public class Fpcxvo implements Serializable{
 	protected String hzyfphm;
 	protected String pdfurl;
 	protected String lrsj;
-	protected String kprq;
+	protected Date kprq;
 	protected String kpr;
 	protected Double jshj;
 	protected Double hjje;
@@ -268,21 +269,11 @@ public class Fpcxvo implements Serializable{
 	public void setNewgfmc(String newgfmc) {
 		this.newgfmc = newgfmc;
 	}
-	public String getKprq() {
-		if(kprq!=null){
-			return kprq.substring(0, 10);
-		}else{
-			return null;
-		}
-		
+	public Date getKprq() {;
+		return kprq;
 	}
-	public void setKprq(String kprq) {
-		if(kprq!=null){
-			this.kprq = kprq.substring(0, 10);
-		}else{
-			this.kprq = null;
-		}
-		
+	public void setKprq(Date kprq) {
+		this.kprq = kprq;
 	}
 	public String getFpztdm() {
 		return fpztdm;

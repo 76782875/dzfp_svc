@@ -4,21 +4,11 @@ package com.rjxx.taxeasy.bizcomm.utils;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-import com.rjxx.taxeasy.domains.Gsxx;
-import com.rjxx.taxeasy.service.GsxxService;
 import com.rjxx.utils.ReadProperties;
-
-@Service
 public class SendEmail {
-	@Autowired
-	private static GsxxService gsxxService;
 	
     public static void main(String[] args) throws Exception {
         //t_jyls jyls = t_jyls.find(t_jyls.class, 151);
@@ -34,7 +24,7 @@ public class SendEmail {
      * @return
      * @throws Exception
      */
-    private static String getAFMailContent(String ddh, List<String> pdfUrlList, String gsdm) throws Exception {
+    private static String getAFMailContent(String ddh, List<String> pdfUrlList, String gsmc) throws Exception {
         StringBuffer sb = new StringBuffer();
         //sb.append(null2Wz(iurb.get("BUYER_NAME")));
         sb.append(" 先生/小姐您好：<br/>");
@@ -45,11 +35,11 @@ public class SendEmail {
             sb.append("<a href='" + pdfUrl + "'>" + null2Wz(pdfUrl) + "</a><br>");
         }
         sb.append("请及时下载您的发票。");
-        sb.append("<br/><br/>");
-        Map<String, Object> params = new HashMap<>();
-        params.put("gsdm", gsdm);
-        Gsxx gsxx = gsxxService.findOneByParams(params);
-        sb.append(gsxx.getGsmc());
+//        sb.append("<br/><br/>");
+//        Map<String, Object> params = new HashMap<>();
+//        params.put("gsdm", gsdm);
+//        Gsxx gsxx = gsxxService.findOneByParams(params);
+        sb.append(gsmc);
         sb.append("<br/>");
         sb.append("<br/>");
         Date d = new Date();
@@ -71,7 +61,7 @@ public class SendEmail {
      * @param gsdm
      * @throws Exception
      */
-    public static void sendMail(String ddh, String email, List<String> pdfUrlList, String gsdm) throws Exception {
+    public static void sendMail(String ddh, String email, List<String> pdfUrlList, String gsmc) throws Exception {
         MailUtil sendmail = new MailUtil();
         sendmail.setHost(ReadProperties.read("emailHost"));
         sendmail.setUserName(ReadProperties.read("emailUserName"));
@@ -80,7 +70,7 @@ public class SendEmail {
 
         sendmail.setFrom(ReadProperties.read("emailForm"));
         sendmail.setSubject(ReadProperties.read("emailTitle"));
-        sendmail.setContent(getAFMailContent(ddh, pdfUrlList, gsdm));
+        sendmail.setContent(getAFMailContent(ddh, pdfUrlList, gsmc));
         //TODO 这里需要根据邮件摸板内容进行调整。
 
 //            XXX 先生/小姐您好：
