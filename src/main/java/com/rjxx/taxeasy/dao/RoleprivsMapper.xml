@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rjxx.taxeasy.dao.RoleprivsMapper">
+
+    <select id="findOneByParams" parameterType="map" resultType="roleprivs">
+        select * from roleprivs where yxbz = '1'
+        <if test="orderBy != null">
+            order by #{orderBy}
+        </if>
+        limit 1
+    </select>
+
+    <select id="findAllByParams" parameterType="map" resultType="roleprivs">
+        select * from roleprivs where yxbz = '1'
+        <if test="orderBy != null">
+            order by #{orderBy}
+        </if>
+    </select>
+
+    <select id="findByPage" parameterType="pagination" resultType="roleprivs">
+        select * from roleprivs where yxbz = '1'
+        <if test="params.orderBy != null">
+            order by #{params.orderBy}
+        </if>
+    </select>
+  	<select id="findBySql" parameterType="map" resultType="roleprivs">
+       SELECT privid from roleprivs WHERE  yxbz = '1'
+       <foreach collection="idList" open=" and roleid in (" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+    </select>
+     <select id="findBySql1" parameterType="map" resultType="roleprivs">
+     SELECT ROLEID,PRIVID,BUTTONPRIVS FROM ROLEPRIVS WHERE ROLEID = (SELECT MAX(ID) FROM ROLES WHERE id = #{id}) AND yxbz = '1'";
+    </select>
+</mapper>
+

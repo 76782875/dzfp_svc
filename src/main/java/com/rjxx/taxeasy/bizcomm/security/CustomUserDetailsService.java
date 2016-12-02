@@ -45,7 +45,9 @@ public class CustomUserDetailsService implements UserDetailsService, Serializabl
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         try {
-            Yh yh = yhService.findByDlyhid(s);
+        	Map nparams = new HashMap<>();
+        	nparams.put("dlyhid", s);
+            Yh yh = yhService.findOneByParams(nparams);
             if (yh == null) {
                 throw new UsernameNotFoundException(s + " not found");
             }

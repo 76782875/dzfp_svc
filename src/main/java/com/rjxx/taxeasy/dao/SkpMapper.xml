@@ -32,7 +32,12 @@
             and gsdm = #{gsdm}
         </if>
     </select>
-
+  <select id="findBySql" parameterType="skp" resultType="skp">
+        select * from t_skp where yxbz = '1'
+        <if test="xfid != null and xfid != ''">
+            and xfid = #{xfid}
+        </if>
+    </select>
     <select id="findByPage" parameterType="pagination" resultType="skpvo">
         select s.*,x.xfmc from t_skp s, t_xf x where s.xfid = x.id and s.yxbz = '1'
         <if test="params.gsdm != null and params.gsdm != ''">

@@ -13,5 +13,6 @@ import java.util.Map;
 public interface PrivilegesMapper {
 
     public List<Privileges> findByRoleIds(Map params);
+    public List<Privileges> findOneByParams(Map params);
 
 }

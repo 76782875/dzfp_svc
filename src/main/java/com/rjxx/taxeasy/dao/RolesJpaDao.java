@@ -1,16 +1,16 @@
 package com.rjxx.taxeasy.dao;
 
-import com.rjxx.taxeasy.domains.Yh;
+import com.rjxx.taxeasy.domains.Roles;
 import org.springframework.data.repository.CrudRepository;
 
 /**
  * 由GenJavaCode类自动生成
  * <p>
- * Thu Dec 01 12:47:48 CST 2016
+ * Thu Dec 01 11:15:59 CST 2016
  *
  * @ZhangBing
  */ 
-public interface YhJpaDao extends CrudRepository<Yh, Integer> {
+public interface RolesJpaDao extends CrudRepository<Roles, Integer> {
 
 }
 

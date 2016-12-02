@@ -3,26 +3,36 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rjxx.taxeasy.dao.YhMapper">
 
-    <select id="findOneByParams" parameterType="yh" resultType="yh">
+    <select id="findOneByParams" parameterType="map" resultType="yh">
         select * from t_yh where yxbz = '1'
         <if test="dlyhid != null and dlyhid !=''">
             and dlyhid = #{dlyhid}
         </if>
-       <if test="gsdm != null and gsdm !=''">
+        <if test="gsdm != null and gsdm !=''">
             and gsdm = #{gsdm}
-        </if>
-       <if test="yhmm != null and yhmm !=''">
-            and yhmm = #{yhmm}
         </if>
         limit 1
     </select>
 
-    <select id="findAllByParams" parameterType="yh" resultType="yh">
+    <select id="findAllByParams" parameterType="map" resultType="yh">
         select * from t_yh where yxbz = '1'
+        <if test="orderBy != null">
+            order by #{orderBy}
+        </if>
     </select>
 
     <select id="findByPage" parameterType="pagination" resultType="yh">
         select * from t_yh where yxbz = '1'
+         <if test="params.yhzh != null and params.yhzh != ''">
+            and yhzh = #{params.yhzh}
+        </if>
+ 		<if test="params.yhmc != null and params.yhmc != ''">
+            and yhmc = #{params.yhmc}
+        </if>
+        <if test="params.gsdm != null and params.gsdm != ''">
+            and gsdm = #{params.gsdm}
+        </if>
     </select>
 
 </mapper>
+

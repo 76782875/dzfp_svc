@@ -22,7 +22,7 @@ public interface SkpMapper {
     public Skp findOneByParams(Skp skp);
 
     public List<Skp> findAllByParams(Skp skp);
-
+    public List<Skp> findBySql(Skp skp);
     public List<SkpVo> findByPage(Pagination pagination);
     	
 	public List<Skp> getSkpListByYhId(Integer yhId);

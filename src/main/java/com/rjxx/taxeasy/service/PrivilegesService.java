@@ -26,5 +26,8 @@ public class PrivilegesService {
     public List<Privileges> findByRoleIds(Map params) {
         return privilegesMapper.findByRoleIds(params);
     }
-
+    public List<Privileges> findOneByParams(Map params) {
+        return privilegesMapper.findOneByParams(params);
+    }
+    
 }

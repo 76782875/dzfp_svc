@@ -69,7 +69,9 @@ public class SkpService {
     public List<Skp> findAllByParams(Skp skp) {
         return skpMapper.findAllByParams(skp);
     }
-
+    public List<Skp> findBySql(Skp skp) {
+        return skpMapper.findBySql(skp);
+    }
     public List<SkpVo> findByPage(Pagination pagination) {
         return skpMapper.findByPage(pagination);
     }

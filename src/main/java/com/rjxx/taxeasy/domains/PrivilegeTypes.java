@@ -1,128 +1,139 @@
 package com.rjxx.taxeasy.domains;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.rjxx.comm.json.JsonDatetimeFormat;
-import org.springframework.format.annotation.DateTimeFormat;
+import java.util.Date;
+import java.util.List;
 
 import javax.persistence.*;
+import org.hibernate.annotations.GenericGenerator;
+import com.rjxx.comm.json.JsonDateFormat;
+import com.rjxx.comm.json.JsonDatetimeFormat;
+import org.springframework.format.annotation.DateTimeFormat;
 import java.io.Serializable;
-import java.util.Date;
-
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 /**
  * privilege_types 实体类
  * 由GenEntityMysql类自动生成
- * Tue Oct 11 14:12:45 CST 2016
- *
+ * Thu Dec 01 15:40:45 CST 2016
  * @ZhangBing
- */
+ */ 
 @Entity
-@Table(name = "privilege_types")
-public class PrivilegeTypes implements Serializable {
+@Table(name="privilege_types")
+public class PrivilegeTypes  implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Integer id;
+@Id
+@GeneratedValue(strategy=GenerationType.IDENTITY)
+	protected Integer id;
 
-    @Column(name = "name")
-    protected String name;
+@Column(name="name")
+	protected String name;
 
-    @Column(name = "description")
-    protected String description;
+@Column(name="description")
+	protected String description;
 
-    @Column(name = "sort")
-    protected Integer sort;
+@Column(name="sort")
+	protected Integer sort;
 
-    @Column(name = "lrry")
-    protected String lrry;
+@Column(name="lrry")
+	protected String lrry;
 
-    @Column(name = "lrsj")
-    @JsonSerialize(using = JsonDatetimeFormat.class)
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    protected Date lrsj;
+@Column(name="lrsj")
+@JsonSerialize(using = JsonDatetimeFormat.class)
+@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	protected Date lrsj;
 
-    @Column(name = "xgry")
-    protected String xgry;
+@Column(name="xgry")
+	protected String xgry;
 
-    @Column(name = "xgsj")
-    @JsonSerialize(using = JsonDatetimeFormat.class)
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    protected Date xgsj;
+@Column(name="xgsj")
+@JsonSerialize(using = JsonDatetimeFormat.class)
+@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	protected Date xgsj;
 
-    @Column(name = "yxbz")
-    protected String yxbz;
+@Column(name="yxbz")
+	protected String yxbz;
+	protected List<Privileges> Privileges;
+
+	public Integer getId(){
+		return id;
+	}
+
+	public void setId(Integer id){
+		this.id=id;
+	}
+
+	public String getName(){
+		return name;
+	}
+
+	public void setName(String name){
+		this.name=name;
+	}
+
+	public String getDescription(){
+		return description;
+	}
+
+	public void setDescription(String description){
+		this.description=description;
+	}
+
+	public Integer getSort(){
+		return sort;
+	}
+
+	public void setSort(Integer sort){
+		this.sort=sort;
+	}
+
+	public String getLrry(){
+		return lrry;
+	}
 
 
-    public Integer getId() {
-        return id;
-    }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	public List<Privileges> getPrivileges() {
+		return Privileges;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public void setPrivileges(List<Privileges> privileges) {
+		Privileges = privileges;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setLrry(String lrry){
+		this.lrry=lrry;
+	}
 
-    public String getDescription() {
-        return description;
-    }
+	public Date getLrsj(){
+		return lrsj;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public void setLrsj(Date lrsj){
+		this.lrsj=lrsj;
+	}
 
-    public Integer getSort() {
-        return sort;
-    }
+	public String getXgry(){
+		return xgry;
+	}
 
-    public void setSort(Integer sort) {
-        this.sort = sort;
-    }
+	public void setXgry(String xgry){
+		this.xgry=xgry;
+	}
 
-    public String getLrry() {
-        return lrry;
-    }
+	public Date getXgsj(){
+		return xgsj;
+	}
 
-    public void setLrry(String lrry) {
-        this.lrry = lrry;
-    }
+	public void setXgsj(Date xgsj){
+		this.xgsj=xgsj;
+	}
 
-    public Date getLrsj() {
-        return lrsj;
-    }
+	public String getYxbz(){
+		return yxbz;
+	}
 
-    public void setLrsj(Date lrsj) {
-        this.lrsj = lrsj;
-    }
-
-    public String getXgry() {
-        return xgry;
-    }
-
-    public void setXgry(String xgry) {
-        this.xgry = xgry;
-    }
-
-    public Date getXgsj() {
-        return xgsj;
-    }
-
-    public void setXgsj(Date xgsj) {
-        this.xgsj = xgsj;
-    }
-
-    public String getYxbz() {
-        return yxbz;
-    }
-
-    public void setYxbz(String yxbz) {
-        this.yxbz = yxbz;
-    }
+	public void setYxbz(String yxbz){
+		this.yxbz=yxbz;
+	}
 
 }
 

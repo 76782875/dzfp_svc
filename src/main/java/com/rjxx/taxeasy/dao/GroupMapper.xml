@@ -19,6 +19,9 @@
         <if test="skpid != null and skpid != ''">
             and skpid = #{skpid}
         </if>
+        <if test="yhid != null and yhid != ''">
+            and yhid = #{yhid}
+        </if>
     </select>
 
     <select id="findByPage" parameterType="pagination" resultType="group">

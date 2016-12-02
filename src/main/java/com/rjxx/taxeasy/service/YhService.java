@@ -8,10 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
- * Created by Administrator on 2016/10/9.
- */
+ * 由GenJavaCode类自动生成
+ * <p>
+ * Thu Dec 01 12:47:48 CST 2016
+ *
+ * @ZhangBing
+ */ 
 @Service
 public class YhService {
 
@@ -33,28 +38,17 @@ public class YhService {
         yhJpaDao.save(yhList);
     }
 
-    public Yh findOneByParams(Yh yh) {
-        return yhMapper.findOneByParams(yh);
+    public Yh findOneByParams(Map params) {
+        return yhMapper.findOneByParams(params);
     }
 
-    public List<Yh> findAllByParams(Yh yh) {
-        return yhMapper.findAllByParams(yh);
+    public List<Yh> findAllByParams(Map params) {
+        return yhMapper.findAllByParams(params);
     }
 
     public List<Yh> findByPage(Pagination pagination) {
         return yhMapper.findByPage(pagination);
     }
 
-    /**
-     * 根据登录账号查找用户
-     *
-     * @param dlyhid
-     * @return
-     */
-    public Yh findByDlyhid(String dlyhid) {
-        Yh params = new Yh();
-        params.setDlyhid(dlyhid);
-        return findOneByParams(params);
-    }
-
 }
+
