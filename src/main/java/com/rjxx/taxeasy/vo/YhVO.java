@@ -1,10 +1,12 @@
-package com.rjxx.taxeasy.domains;
+package com.rjxx.taxeasy.vo;
 
 import java.util.Date;
 import javax.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 import com.rjxx.comm.json.JsonDateFormat;
 import com.rjxx.comm.json.JsonDatetimeFormat;
+import com.rjxx.taxeasy.domains.Yh;
+
 import org.springframework.format.annotation.DateTimeFormat;
 import java.io.Serializable;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -17,7 +19,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
  */ 
 @Entity
 @Table(name="t_yh")
-public class Yh  implements Serializable {
+public class YhVO  implements Serializable {
 
 /**
  * 用户ID
@@ -135,6 +137,9 @@ public class Yh  implements Serializable {
 @Column(name="admin")
 	protected String admin;
 
+	protected String lrrymc;
+
+	protected String jsmc;
 	public Integer getId(){
 		return id;
 	}
@@ -293,6 +298,46 @@ public class Yh  implements Serializable {
 
 	public void setAdmin(String admin){
 		this.admin=admin;
+	}
+
+	public String getLrrymc() {
+		return lrrymc;
+	}
+
+	public void setLrrymc(String lrrymc) {
+		this.lrrymc = lrrymc;
+	}
+
+	public String getJsmc() {
+		return jsmc;
+	}
+
+	public void setJsmc(String jsmc) {
+		this.jsmc = jsmc;
+	}
+
+	public YhVO(Yh yh) {
+		super();
+		this.id = yh.getId();
+		this.dlyhid = yh.getDlyhid();
+		this.yhmc = yh.getYhmc();
+		this.yhmm = yh.getYhmm();
+		this.yhjg = yh.getYhjg();
+		this.gsdm = yh.getGsdm();
+		this.xb = yh.getXb();
+		this.lrsj = yh.getLrsj();
+		this.lrry = yh.getLrry();
+		this.xgsj = yh.getXgsj();
+		this.xgry = yh.getXgry();
+		this.appkey = yh.getAppkey();
+		this.secret = yh.getSecret();
+		this.roleids = yh.getRoleids();
+		this.ztbz = yh.getZtbz();
+		this.sup = yh.getSup();
+		this.sjhm = yh.getSjhm();
+		this.yx = yh.getYx();
+		this.yxbz = yh.getYxbz();
+		this.admin = yh.getAdmin();
 	}
 	
 }

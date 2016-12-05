@@ -1,6 +1,6 @@
 package com.rjxx.comm.utils;
 
-import com.rjxx.web.JsonStatus;
+import com.rjxx.utils.JsonStatus;
 
 /**
  * Created by admin on 2016/4/26.
