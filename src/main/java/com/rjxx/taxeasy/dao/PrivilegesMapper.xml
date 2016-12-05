@@ -31,7 +31,7 @@
           order by P.SORT ASC
     </select>
    <select id="findOneByParams" parameterType="map" resultType="privileges">
-        select * from roleprivs where yxbz = '1'
+        select * from privileges where yxbz = '1'
         <if test="privilegeTypeId != null and privilegeTypeId !=''">
             and privilegeTypeId = #{privilegeTypeId}
         </if>

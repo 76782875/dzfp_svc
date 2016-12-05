@@ -31,7 +31,7 @@
             </foreach>
     </select>
      <select id="findBySql1" parameterType="map" resultType="roleprivs">
-     SELECT ROLEID,PRIVID,BUTTONPRIVS FROM ROLEPRIVS WHERE ROLEID = (SELECT MAX(ID) FROM ROLES WHERE id = #{id}) AND yxbz = '1'";
+     SELECT ROLEID,PRIVID,BUTTONPRIVS FROM ROLEPRIVS WHERE ROLEID = (SELECT MAX(ID) FROM ROLES WHERE id = #{id}) AND yxbz = '1'
     </select>
 </mapper>
 
