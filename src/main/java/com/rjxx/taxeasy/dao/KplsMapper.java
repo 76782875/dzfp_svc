@@ -60,6 +60,8 @@ public interface KplsMapper {
     /*发票换开申请数据查询*/
     public List<Fpcxvo> findHkfpsqByPage(Pagination pagination);
     
+    public List<Fpcxvo> fpgdcxdb(Map params); 
+    
     public List<Kpls> findKplsByDjh(Map params);
     
     public List<Kpls> findKplsByPms(Map params);

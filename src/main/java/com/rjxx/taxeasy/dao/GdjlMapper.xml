@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rjxx.taxeasy.dao.GdjlMapper">
+
+    <select id="findOneByParams" parameterType="map" resultType="gdjl">
+        select * from t_gdjl where yxbz = '1'
+        <if test="orderBy != null">
+            order by #{orderBy}
+        </if>
+        limit 1
+    </select>
+
+    <select id="findAllByParams" parameterType="map" resultType="gdjl">
+        select * from t_gdjl where yxbz = '1'
+        <if test="orderBy != null">
+            order by #{orderBy}
+        </if>
+    </select>
+
+    <select id="findByPage" parameterType="pagination" resultType="gdjlvo">
+        select a.*,b.xfmc,c.yhmc from t_gdjl a,t_xf b,t_yh c where a.xfid = b.id and a.lrry=c.id and a.yxbz='1' and b.yxbz='1'
+        <if test="params.gsdm != null and params.gsdm !=''">
+           and a.gsdm =  #{params.gsdm}
+        </if>
+        order by a.lrsj desc
+    </select>
+    <update id="updategdzt" parameterType="map">
+        update t_gdjl set zt='1',xzlj=#{xzlj},wjsl=#{wjsl} where id=#{id} 
+    </update>
+</mapper>
+
