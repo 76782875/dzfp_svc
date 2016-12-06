@@ -1,7 +1,7 @@
 package com.rjxx.taxeasy.vo;
 
 
-import pdf.AbstractDocumentVo;
+
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -10,7 +10,7 @@ import java.sql.Timestamp;
  * Created by lenovo on 2015/12/14.
  */
 
-public class JyspmxDecimal extends AbstractDocumentVo {
+public class JyspmxDecimal  {
     
     protected Integer djh;
     
@@ -238,8 +238,5 @@ public class JyspmxDecimal extends AbstractDocumentVo {
         this.fpnum = fpnum;
     }
 
-    @Override
-    public String findPrimaryKey() {
-        return null;
-    }
+
 }
