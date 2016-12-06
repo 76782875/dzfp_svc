@@ -358,7 +358,7 @@
 		</if>
 	</select>
 
-	<select id="findAllByParams" parameterType="map" resultType="kpls">
+	<select id="findAll" parameterType="map" resultType="kpls">
 		select * from t_kpls where yxbz = '1'
 		<if test="djh != null and djh != ''">
 			and djh = #{djh}
