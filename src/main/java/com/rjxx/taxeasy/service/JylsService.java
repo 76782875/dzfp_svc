@@ -177,6 +177,11 @@ public class JylsService {
     public Jyls findOne(Map params){
     	return jylsMapper.findOne(params);
     }
+    
+
+    public void updateJshj(Map params){
+    	jylsMapper.updateJshj(params);
+    }
 
 }
 

@@ -52,5 +52,7 @@ public interface JylsMapper {
     public  List<Kpls> findByTqm(Map params);
     
     public Jyls findOne(Map params);
+    
+    public void updateJshj(Map params);
 }
 
