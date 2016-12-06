@@ -68,5 +68,9 @@ public interface KplsMapper {
     public List<Kpls> findKplsByPms(Map params);
     
     public List<Kpls> findListByPagination(Pagination pagination);
+    
+    public List<Kpls> findByDjh(Kpls kpls);
+
+    public List<Kpls> findAll(Map params);
 }
 

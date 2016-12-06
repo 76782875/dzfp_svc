@@ -3,325 +3,406 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rjxx.taxeasy.dao.KplsMapper">
 
-    <select id="findOneByParams" parameterType="map" resultType="kpls">
-        select * from t_kpls where yxbz = '1'
-        <if test="kplsh !=null and kplsh !=''">
-             and kplsh = #{kplsh}
-        </if>
-        <if test="orderBy != null">
-            order by #{orderBy}
-        </if>
-        limit 1
-    </select>
-    <!-- 根据发票号码，发票代码查询这张发票是否存在 -->
-    <select id="findFpExist" parameterType="map" resultType="kpls">
-        select * from t_kpls where fpdm = #{fpdm} and fphm = #{fphm} and yxbz='1'
-    </select>
-    <select id="findAllByParams" parameterType="map" resultType="fpcxvo">
-        SELECT a.*, b.fpzlmc,c.fpczlxmc,e.ddh,
-        (case when a.printflag='1' then '已打印'
-             else '未打印' end) as sfdy,
-        f.fpztmc fpzt
-        FROM t_kpls a,t_fpzl b,t_fpczlx c,t_jyls e,t_fpzt f
-        WHERE a.fpzldm = b.fpzldm AND a.fpczlxdm = c.fpczlxdm
-        and a.fpztdm = f.fpztdm and a.djh = e.djh
-        <if test="gsdm !=null and gsdm !=''">
-            and a.gsdm = #{gsdm}
-        </if>
-        <if test="xfid !=null and xfid !=''">
-               and (a.xfid in <foreach collection="xfid" item="item" index="index" 
-         open="(" separator="," close=")"> #{xfid[${index}]}</foreach> or a.xfid is null)
-         </if>
-         <if test="skpid !=null and skpid !=''">
-               and (a.skpid in <foreach collection="skpid" item="item" index="index" 
-         open="(" separator="," close=")"> #{skpid[${index}]}</foreach> or a.skpid is null)
-         </if>
-        <if test="ddh != null and ddh !=''">
-            and e.ddh = #{ddh}
-        </if>
-        <if test="fphm != null and fphm !=''">
-            and a.fphm = #{fphm} 
-        </if>
-        <if test="kprqq != null and kprqq !='' and kprqz != null and kprqz !=''">
-            and a.kprq between #{kprqq} and date_add(str_to_date(#{kprqz},'%Y-%m-%d'),INTERVAL 1 day)
-        </if>
-        <if test="spmc != null and spmc != ''">
-             and EXISTS(select * from t_kpspmx d where a.kplsh = d.kplsh and d.spmc like CONCAT('%',#{spmc},'%'))
-        </if>
-        <if test="printflag != null and printflag != ''">
-            and a.printflag = #{printflag}
-        </if>
-        <if test="gfmc != null and gfmc != ''">
-        and a.gfmc like CONCAT('%',#{gfmc},'%')
-        </if>
-        <if test="fpdm != null and fpdm !=''">
-            and a.fpdm = #{fpdm} 
-        </if>
-        <if test="fpzt != null and fpzt !=''">
-            and a.fpzt = #{fpzt} 
-        </if>
-        order by a.djh asc,a.kplsh asc
-    </select>
+	<select id="findOneByParams" parameterType="map" resultType="kpls">
+		select * from t_kpls where yxbz = '1'
+		<if test="kplsh !=null and kplsh !=''">
+			and kplsh = #{kplsh}
+		</if>
+		<if test="orderBy != null">
+			order by #{orderBy}
+		</if>
+		limit 1
+	</select>
+	<!-- 根据发票号码，发票代码查询这张发票是否存在 -->
+	<select id="findFpExist" parameterType="map" resultType="kpls">
+		select *
+		from t_kpls where fpdm = #{fpdm} and fphm = #{fphm} and yxbz='1'
+	</select>
+	<select id="findAllByParams" parameterType="map" resultType="fpcxvo">
+		SELECT a.*, b.fpzlmc,c.fpczlxmc,e.ddh,
+		(case when a.printflag='1' then
+		'已打印'
+		else '未打印' end) as sfdy,
+		f.fpztmc fpzt
+		FROM t_kpls a,t_fpzl
+		b,t_fpczlx c,t_jyls e,t_fpzt f
+		WHERE a.fpzldm = b.fpzldm AND a.fpczlxdm
+		= c.fpczlxdm
+		and a.fpztdm = f.fpztdm and a.djh = e.djh
+		<if test="gsdm !=null and gsdm !=''">
+			and a.gsdm = #{gsdm}
+		</if>
+		<if test="xfid !=null and xfid !=''">
+			and (a.xfid in
+			<foreach collection="xfid" item="item" index="index" open="("
+				separator="," close=")"> #{xfid[${index}]}</foreach>
+			or a.xfid is null)
+		</if>
+		<if test="skpid !=null and skpid !=''">
+			and (a.skpid in
+			<foreach collection="skpid" item="item" index="index" open="("
+				separator="," close=")"> #{skpid[${index}]}</foreach>
+			or a.skpid is null)
+		</if>
+		<if test="ddh != null and ddh !=''">
+			and e.ddh = #{ddh}
+		</if>
+		<if test="fphm != null and fphm !=''">
+			and a.fphm = #{fphm}
+		</if>
+		<if test="kprqq != null and kprqq !='' and kprqz != null and kprqz !=''">
+			and a.kprq between #{kprqq} and
+			date_add(str_to_date(#{kprqz},'%Y-%m-%d'),INTERVAL 1 day)
+		</if>
+		<if test="spmc != null and spmc != ''">
+			and EXISTS(select * from t_kpspmx d where a.kplsh =
+			d.kplsh and d.spmc
+			like CONCAT('%',#{spmc},'%'))
+		</if>
+		<if test="printflag != null and printflag != ''">
+			and a.printflag = #{printflag}
+		</if>
+		<if test="gfmc != null and gfmc != ''">
+			and a.gfmc like CONCAT('%',#{gfmc},'%')
+		</if>
+		<if test="fpdm != null and fpdm !=''">
+			and a.fpdm = #{fpdm}
+		</if>
+		<if test="fpzt != null and fpzt !=''">
+			and a.fpzt = #{fpzt}
+		</if>
+		order by a.djh asc,a.kplsh asc
+	</select>
 
-    <select id="findByPage" parameterType="pagination" resultType="fpcxvo">
-        SELECT a.*, b.fpzlmc,c.fpczlxmc,e.ddh,
-        (case when a.printflag='1' then '已打印'
-             else '未打印' end) as sfdy,
-        f.fpztmc fpzt
-        FROM t_kpls a,t_fpzl b,t_fpczlx c,t_jyls e,t_fpzt f
-        WHERE a.fpzldm = b.fpzldm AND a.fpczlxdm = c.fpczlxdm
-        and a.fpztdm = f.fpztdm and a.djh = e.djh
-        <if test="params.gsdm !=null and params.gsdm !=''">
-            and a.gsdm = #{params.gsdm}
-        </if>
-        <if test="params.xfid !=null and params.xfid !=''">
-               and (a.xfid in <foreach collection="params.xfid" item="item" index="index" 
-         open="(" separator="," close=")"> #{params.xfid[${index}]}</foreach> or a.xfid is null)
-         </if>
-         <if test="params.skpid !=null and params.skpid !=''">
-               and (a.skpid in <foreach collection="params.skpid" item="item" index="index" 
-         open="(" separator="," close=")"> #{params.skpid[${index}]}</foreach> or a.skpid is null)
-         </if>
-        <if test="params.ddh != null and params.ddh !=''">
-            and e.ddh = #{params.ddh}
-        </if>
-        <if test="params.fphm != null and params.fphm !=''">
-            and a.fphm = #{params.fphm} 
-        </if>
-        <if test="params.kprqq != null and params.kprqq !='' and params.kprqz != null and params.kprqz !=''">
-            and a.kprq between #{params.kprqq} and date_add(str_to_date(#{params.kprqz},'%Y-%m-%d'),INTERVAL 1 day)
-        </if>
-        <if test="params.spmc != null and params.spmc != ''">
-            and EXISTS(select * from t_kpspmx d where a.kplsh = d.kplsh and d.spmc like CONCAT('%',#{params.spmc},'%'))    
-        </if>
-        <if test="params.printflag != null and params.printflag != ''">
-            and a.printflag = #{params.printflag}
-        </if>
-        <if test="params.gfmc != null and params.gfmc !=''">
-            and a.gfmc like CONCAT('%',#{params.gfmc},'%') 
-        </if>
-        <if test="params.fpdm != null and params.fpdm !=''">
-            and a.fpdm = #{params.fpdm} 
-        </if>
-        <if test="params.fpzt != null and params.fpzt !=''">
-            and a.fpztdm = #{params.fpzt} 
-        </if>
-        order by a.lrsj desc
-    </select>
-    <update id="update" parameterType="map">
-        update t_kpls set printflag = '1' where kplsh = #{id}
-    </update>
-    
-    <update id="updateHkbz" parameterType="map">
-        update t_kpls set hkbz = #{hkbz},fpztdm = #{fpztdm} where kplsh = #{kplsh}
-    </update>
-    <select id="printSingle" parameterType="map" resultType="kpls">
-       select * from t_kpls where kplsh = #{kplsh}
-    </select>
-<!--     批量打印sql -->
-    <select id="printmany" parameterType="map" resultType="fpcxvo">
-        select kplsh,pdfurl from t_kpls 
-         <where>
-         kplsh in <foreach collection="id" item="item" index="index" 
-         open="(" separator="," close=")">#{item}</foreach>
-         </where>
-    </select>
-    
-   <!--  红冲数据查询 -->
-   <select id="findKhcfpByPage" parameterType="pagination" resultType="fpcxvo">
-         select a.*,b.ddh from t_kpls a,t_jyls b
-         where a.djh = b.djh
-               and a.fpzldm = '12'
-               and a.fpczlxdm = '11'
-               and a.fpztdm in('00','01')
-               and b.fpczlxdm = '11'
-               and a.yxbz = '1'
-         <if test="params.gsdm !=null and params.gsdm !=''">
-               and a.gsdm = #{params.gsdm}
-         </if>
-         <if test="params.xfid !=null and params.xfid !=''">
-               and (a.xfid in <foreach collection="params.xfid" item="item" index="index" 
-         open="(" separator="," close=")"> #{params.xfid[${index}]}</foreach> or a.xfid is null)
-         </if>
-         <if test="params.skpid !=null and params.skpid !=''">
-               and (a.skpid in <foreach collection="params.skpid" item="item" index="index" 
-         open="(" separator="," close=")"> #{params.skpid[${index}]}</foreach> or a.skpid is null)
-         </if>
-         <if test="params.kprqq !=null and params.kprqq !='' and params.kprqz !=null and params.kprqz !=''">
-               and a.kprq between #{params.kprqq} and date_add(str_to_date(#{params.kprqz},'%Y-%m-%d'),INTERVAL 1 day)
-         </if>
-         <if test="params.fpdm !=null and params.fpdm !=''">
-               and a.fpdm = #{params.fpdm}
-         </if>
-         <if test="params.fphm !=null and params.fphm !=''">
-               and a.fphm = #{params.fphm}
-         </if>
-         <if test="params.gfmc !=null and params.gfmc !=''">
-               and a.gfmc like CONCAT('%',#{params.gfmc},'%') 
-         </if>
-         <if test="params.ddh !=null and params.ddh !=''">
-               and b.ddh = #{params.ddh}
-         </if>
-         order by a.lrsj desc
-   </select>
-   
-   <update id="updateFpczlx" parameterType="map">
-        update t_kpls set fpztdm = #{fpztdm} where kplsh = #{kplsh} 
-   </update>
-   
-   <select id="findAllByKpls" parameterType="kpls" resultType="kpls">
-        select * from t_kpls where 1=1
-        <if test="djh !=null and djh !=''">
-        and djh = #{djh}
-        </if>
-        <if test="gsdm !=null and gsdm !=''">
-        and gsdm = #{gsdm}
-        </if>
-   </select>
-   
-   <select id="findHjje" parameterType="map" resultType="kpls">
-       select sum(spje) hjje,sum(spse) hjse,sum(spje+spse) jshj from t_kpspmx where kplsh = #{kplsh}
-   </select>
-   
-   <update id="updateHjje" parameterType="map">
-       update t_kpls set hjje = #{hjje},hjse = #{hjse},jshj = #{jshj} where kplsh = #{kplsh}
-   </update>
-   <!-- 红冲查询相差月份 -->
-   <select id="selectMonth" parameterType="map" resultType="fpcxvo">
-       select djh,xfsh,TIMESTAMPDIFF(MONTH,kprq,now()) xcyf from t_kpls where kplsh = #{kplsh}
-   </select>
-  <!--  发票换开查询 -->
-  <select id="findFphkByPage" parameterType="pagination" resultType="fpcxvo">
-     SELECT DISTINCT a.*, b.fpzlmc,c.fpczlxmc,e.ddh
-        FROM t_kpls a,t_fpzl b,t_fpczlx c,t_jyls e
-        WHERE a.fpztdm='00' and a.fpzldm='12' and a.fpczlxdm='11' and a.fphm is not null and a.fpzldm = b.fpzldm AND a.fpczlxdm = c.fpczlxdm 
-        and a.djh = e.djh and e.yxbz='1' and a.yxbz='1' and e.fpczlxdm='11' and a.pdfurl is not null
-        <if test="params.gsdm !=null and params.gsdm !=''">
-            and a.gsdm = #{params.gsdm}
-        </if>
-        <if test="params.xfs !=null">
-               <foreach collection="params.xfs" open=" and (a.xfid in (" separator="," close=")" item="item" index="index">
-                #{params.xfs[${index}].id} 
-            </foreach>
-            or a.xfid is null)
-         </if>
-        <if test="params.skps !=null">
-               <foreach collection="params.skps" open=" and (a.skpid in (" separator="," close=")" item="item" index="index">
-                #{params.skps[${index}].id} 
-            </foreach>
-            or a.skpid is null)
-         </if>
-        
-        <if test="params.ddh !=null and params.ddh !=''">
-            and e.ddh = #{params.ddh}
-        </if>
-         <if test="params.gfmc !=null and params.gfmc !=''">
-               and a.gfmc like CONCAT('%',#{params.gfmc},'%') 
-         </if>
-          <if test="params.fpdm !=null and params.fpdm !=''">
-               and a.fpdm = #{params.fpdm}
-         </if>
-         <if test="params.fphm !=null and params.fphm !=''">
-               and a.fphm = #{params.fphm} 
-         </if>
-         <if test="params.kprqq !=null and params.kprqq !='' and params.kprqz !=null and params.kprqz !=''">
-               and a.kprq between #{params.kprqq} and date_add(str_to_date(#{params.kprqz},'%Y-%m-%d'),INTERVAL 1 day)
-         </if>
-         order by a.kplsh desc
-  </select>
-  
- <!--  发票重开申请查询 -->
- <select id="findFpcksqKpls" parameterType="map" resultType="fpcxvo">
-      select a.*,TIMESTAMPDIFF(MONTH,a.kprq,now()) xcyf,b.fpztmc fpzt from t_kpls a,t_fpzt b where a.fpztdm = b.fpztdm and a.djh = #{djh}
- </select>
- 
-<!--  发票换开申请查询 -->
-<select id="findHkfpsqByPage" parameterType="pagination" resultType="fpcxvo">
-       select a.*,b.sqsj,b.ckhkyy,b.id sqid,b.ztbz hkztbz,c.ddh from t_kpls a,t_ckhk b,t_jyls c
-          where b.ztbz in('3','4','5') and b.yxbz='1' and a.djh = b.djh
-          and a.fpzldm ='12' and a.fpczlxdm='11' and a.fpztdm='00'
-          and a.djh = c.djh and c.fpzldm='12' and c.fpczlxdm = '11'
-        <if test="params.gsdm !=null and params.gsdm !=''">
-            and a.gsdm = #{params.gsdm}
-        </if>
-        <if test="params.xfs !=null">
-               <foreach collection="params.xfs" open=" and (a.xfid in (" separator="," close=")" item="item" index="index">
-                #{params.xfs[${index}].id} 
-            </foreach>
-            or a.xfid is null)
-         </if>
-        <if test="params.skps !=null">
-               <foreach collection="params.skps" open=" and (a.skpid in (" separator="," close=")" item="item" index="index">
-                #{params.skps[${index}].id} 
-            </foreach>
-            or a.skpid is null)
-         </if>        
-        <if test="params.ddh !=null and params.ddh !=''">
-            and c.ddh = #{params.ddh}
-        </if>
-         <if test="params.gfmc !=null and params.gfmc !=''">
-               and a.gfmc like CONCAT('%',#{params.gfmc},'%') 
-         </if>
-          <if test="params.fpdm !=null and params.fpdm !=''">
-               and a.fpdm = #{params.fpdm}
-         </if>
-         <if test="params.fphm !=null and params.fphm !=''">
-               and a.fphm = #{params.fphm} 
-         </if>
-         order by b.sqsj
-   
-</select>
+	<select id="findByPage" parameterType="pagination" resultType="fpcxvo">
+		SELECT a.*, b.fpzlmc,c.fpczlxmc,e.ddh,
+		(case when a.printflag='1' then
+		'已打印'
+		else '未打印' end) as sfdy,
+		f.fpztmc fpzt
+		FROM t_kpls a,t_fpzl
+		b,t_fpczlx c,t_jyls e,t_fpzt f
+		WHERE a.fpzldm = b.fpzldm AND a.fpczlxdm
+		= c.fpczlxdm
+		and a.fpztdm = f.fpztdm and a.djh = e.djh
+		<if test="params.gsdm !=null and params.gsdm !=''">
+			and a.gsdm = #{params.gsdm}
+		</if>
+		<if test="params.xfid !=null and params.xfid !=''">
+			and (a.xfid in
+			<foreach collection="params.xfid" item="item" index="index"
+				open="(" separator="," close=")"> #{params.xfid[${index}]}</foreach>
+			or a.xfid is null)
+		</if>
+		<if test="params.skpid !=null and params.skpid !=''">
+			and (a.skpid in
+			<foreach collection="params.skpid" item="item" index="index"
+				open="(" separator="," close=")"> #{params.skpid[${index}]}</foreach>
+			or a.skpid is null)
+		</if>
+		<if test="params.ddh != null and params.ddh !=''">
+			and e.ddh = #{params.ddh}
+		</if>
+		<if test="params.fphm != null and params.fphm !=''">
+			and a.fphm = #{params.fphm}
+		</if>
+		<if
+			test="params.kprqq != null and params.kprqq !='' and params.kprqz != null and params.kprqz !=''">
+			and a.kprq between #{params.kprqq} and
+			date_add(str_to_date(#{params.kprqz},'%Y-%m-%d'),INTERVAL 1 day)
+		</if>
+		<if test="params.spmc != null and params.spmc != ''">
+			and EXISTS(select * from t_kpspmx d where a.kplsh =
+			d.kplsh and d.spmc
+			like CONCAT('%',#{params.spmc},'%'))
+		</if>
+		<if test="params.printflag != null and params.printflag != ''">
+			and a.printflag = #{params.printflag}
+		</if>
+		<if test="params.gfmc != null and params.gfmc !=''">
+			and a.gfmc like CONCAT('%',#{params.gfmc},'%')
+		</if>
+		<if test="params.fpdm != null and params.fpdm !=''">
+			and a.fpdm = #{params.fpdm}
+		</if>
+		<if test="params.fpzt != null and params.fpzt !=''">
+			and a.fpztdm = #{params.fpzt}
+		</if>
+		order by a.lrsj desc
+	</select>
+	<update id="update" parameterType="map">
+		update t_kpls set printflag =
+		'1' where kplsh = #{id}
+	</update>
 
-<select id="fpgdcxdb" parameterType="map" resultType="fpcxvo">
-    SELECT a.*, b.fpzlmc,c.fpczlxmc,e.ddh,f.fpztmc fpzt
-        FROM t_kpls a,t_fpzl b,t_fpczlx c,t_jyls e,t_fpzt f
-        WHERE a.fpzldm = b.fpzldm AND a.fpczlxdm = c.fpczlxdm
-        and a.djh = e.djh and a.fpztdm=f.fpztdm and a.pdfurl is not null
-        <if test="gsdm !=null and gsdm !=''">
-            and a.gsdm = #{gsdm}
-        </if>        
-         <if test="xfid !=null and xfid !=''">
-            and a.xfid=#{xfid}
-         </if>        
-         <if test="kprqq !=null and kprqq !='' and kprqz !=null and kprqz !=''">
-               and a.kprq between #{kprqq} and date_add(str_to_date(#{kprqz},'%Y-%m-%d'),INTERVAL 1 day)
-         </if>
-         order by a.kplsh desc
-</select>
+	<update id="updateHkbz" parameterType="map">
+		update t_kpls set hkbz =
+		#{hkbz},fpztdm = #{fpztdm} where kplsh = #{kplsh}
+	</update>
+	<select id="printSingle" parameterType="map" resultType="kpls">
+		select *
+		from t_kpls where kplsh = #{kplsh}
+	</select>
+	<!-- 批量打印sql -->
+	<select id="printmany" parameterType="map" resultType="fpcxvo">
+		select kplsh,pdfurl from t_kpls
+		<where>
+			kplsh in
+			<foreach collection="id" item="item" index="index" open="("
+				separator="," close=")">#{item}</foreach>
+		</where>
+	</select>
 
-<!-- 	<select id="findKplsByDjh" parameterType="map" resultMap="kpls"> -->
-<!-- 		select * from t_kpls where pdfurl is not null and pdfurl != '' -->
-<!-- 		<if test="djh != null"> -->
-<!-- 			and djh=#{djh} -->
-<!-- 		</if> -->
-<!-- 		<if test="djh == null"> -->
-<!-- 			and djh is null -->
-<!-- 		</if> -->
-<!-- 		 order by fphm -->
-<!-- 	</select> -->
-<!-- 	<select id="findKplsByPms" parameterType="map" resultMap="kpls"> -->
-<!-- 		<if test="tqm != null and gsdm != null"> -->
-<!-- 			select * from t_kpls where djh in (select djh from t_jyls where tqm=#{tqm} and gsdm =#{gsdm})  -->
-<!-- 		and fpzldm ='12' and fpczlxdm='11' and fphm is not null -->
-<!-- 		</if> -->
-<!-- 	</select> -->
-   <select id="findListByPagination" parameterType="pagination" resultType="kpls">
-        select b.pdfurl from t_jyls a,t_kpls b where a.djh = b.djh
-        <if test="params.jylsh != null">
-            and b.jylsh = #{params.jylsh}
-        </if>
-        <if test="params.ddh != null">
-            and a.ddh = #{params.ddh}
-        </if>
-        <if test="params.gfdh != null">
-            and b.gfdh = #{params.gfdh}
-        </if>
-        <if test="params.gfmc != null and params.gfmc != ''">
-            and b.gfmc like concat('%',#{params.gfmc},'%')
-        </if>
-        <if test="params.gsdm != null and params.gsdm != ''" >
-            and b.gsdm = #{params.gsdm}
-        </if>
-    </select>
+	<!-- 红冲数据查询 -->
+	<select id="findKhcfpByPage" parameterType="pagination"
+		resultType="fpcxvo">
+		select a.*,b.ddh from t_kpls a,t_jyls b
+		where a.djh = b.djh
+		and a.fpzldm
+		= '12'
+		and a.fpczlxdm = '11'
+		and a.fpztdm in('00','01')
+		and b.fpczlxdm =
+		'11'
+		and a.yxbz = '1'
+		<if test="params.gsdm !=null and params.gsdm !=''">
+			and a.gsdm = #{params.gsdm}
+		</if>
+		<if test="params.xfid !=null and params.xfid !=''">
+			and (a.xfid in
+			<foreach collection="params.xfid" item="item" index="index"
+				open="(" separator="," close=")"> #{params.xfid[${index}]}</foreach>
+			or a.xfid is null)
+		</if>
+		<if test="params.skpid !=null and params.skpid !=''">
+			and (a.skpid in
+			<foreach collection="params.skpid" item="item" index="index"
+				open="(" separator="," close=")"> #{params.skpid[${index}]}</foreach>
+			or a.skpid is null)
+		</if>
+		<if
+			test="params.kprqq !=null and params.kprqq !='' and params.kprqz !=null and params.kprqz !=''">
+			and a.kprq between #{params.kprqq} and
+			date_add(str_to_date(#{params.kprqz},'%Y-%m-%d'),INTERVAL 1 day)
+		</if>
+		<if test="params.fpdm !=null and params.fpdm !=''">
+			and a.fpdm = #{params.fpdm}
+		</if>
+		<if test="params.fphm !=null and params.fphm !=''">
+			and a.fphm = #{params.fphm}
+		</if>
+		<if test="params.gfmc !=null and params.gfmc !=''">
+			and a.gfmc like CONCAT('%',#{params.gfmc},'%')
+		</if>
+		<if test="params.ddh !=null and params.ddh !=''">
+			and b.ddh = #{params.ddh}
+		</if>
+		order by a.lrsj desc
+	</select>
+
+	<update id="updateFpczlx" parameterType="map">
+		update t_kpls set fpztdm
+		= #{fpztdm} where kplsh = #{kplsh}
+	</update>
+
+	<select id="findAllByKpls" parameterType="kpls" resultType="kpls">
+		select * from t_kpls where 1=1
+		<if test="djh !=null and djh !=''">
+			and djh = #{djh}
+		</if>
+		<if test="gsdm !=null and gsdm !=''">
+			and gsdm = #{gsdm}
+		</if>
+	</select>
+
+	<select id="findHjje" parameterType="map" resultType="kpls">
+		select
+		sum(spje) hjje,sum(spse) hjse,sum(spje+spse) jshj from t_kpspmx where
+		kplsh = #{kplsh}
+	</select>
+
+	<update id="updateHjje" parameterType="map">
+		update t_kpls set hjje =
+		#{hjje},hjse = #{hjse},jshj = #{jshj} where kplsh =
+		#{kplsh}
+	</update>
+	<!-- 红冲查询相差月份 -->
+	<select id="selectMonth" parameterType="map" resultType="fpcxvo">
+		select
+		djh,xfsh,TIMESTAMPDIFF(MONTH,kprq,now()) xcyf from t_kpls where kplsh
+		= #{kplsh}
+	</select>
+	<!-- 发票换开查询 -->
+	<select id="findFphkByPage" parameterType="pagination"
+		resultType="fpcxvo">
+		SELECT DISTINCT a.*, b.fpzlmc,c.fpczlxmc,e.ddh
+		FROM t_kpls a,t_fpzl
+		b,t_fpczlx c,t_jyls e
+		WHERE a.fpztdm='00' and a.fpzldm='12' and
+		a.fpczlxdm='11' and a.fphm is not
+		null and a.fpzldm = b.fpzldm AND
+		a.fpczlxdm = c.fpczlxdm
+		and a.djh = e.djh and e.yxbz='1' and a.yxbz='1'
+		and e.fpczlxdm='11' and
+		a.pdfurl is not null
+		<if test="params.gsdm !=null and params.gsdm !=''">
+			and a.gsdm = #{params.gsdm}
+		</if>
+		<if test="params.xfs !=null">
+			<foreach collection="params.xfs" open=" and (a.xfid in ("
+				separator="," close=")" item="item" index="index">
+				#{params.xfs[${index}].id}
+			</foreach>
+			or a.xfid is null)
+		</if>
+		<if test="params.skps !=null">
+			<foreach collection="params.skps" open=" and (a.skpid in ("
+				separator="," close=")" item="item" index="index">
+				#{params.skps[${index}].id}
+			</foreach>
+			or a.skpid is null)
+		</if>
+
+		<if test="params.ddh !=null and params.ddh !=''">
+			and e.ddh = #{params.ddh}
+		</if>
+		<if test="params.gfmc !=null and params.gfmc !=''">
+			and a.gfmc like CONCAT('%',#{params.gfmc},'%')
+		</if>
+		<if test="params.fpdm !=null and params.fpdm !=''">
+			and a.fpdm = #{params.fpdm}
+		</if>
+		<if test="params.fphm !=null and params.fphm !=''">
+			and a.fphm = #{params.fphm}
+		</if>
+		<if
+			test="params.kprqq !=null and params.kprqq !='' and params.kprqz !=null and params.kprqz !=''">
+			and a.kprq between #{params.kprqq} and
+			date_add(str_to_date(#{params.kprqz},'%Y-%m-%d'),INTERVAL 1 day)
+		</if>
+		order by a.kplsh desc
+	</select>
+
+	<!-- 发票重开申请查询 -->
+	<select id="findFpcksqKpls" parameterType="map" resultType="fpcxvo">
+		select a.*,TIMESTAMPDIFF(MONTH,a.kprq,now()) xcyf,b.fpztmc fpzt from
+		t_kpls a,t_fpzt b where a.fpztdm = b.fpztdm and a.djh = #{djh}
+	</select>
+
+	<!-- 发票换开申请查询 -->
+	<select id="findHkfpsqByPage" parameterType="pagination"
+		resultType="fpcxvo">
+		select a.*,b.sqsj,b.ckhkyy,b.id sqid,b.ztbz hkztbz,c.ddh from t_kpls
+		a,t_ckhk b,t_jyls c
+		where b.ztbz in('3','4','5') and b.yxbz='1' and
+		a.djh = b.djh
+		and a.fpzldm ='12' and a.fpczlxdm='11' and a.fpztdm='00'
+		and a.djh = c.djh and c.fpzldm='12' and c.fpczlxdm = '11'
+		<if test="params.gsdm !=null and params.gsdm !=''">
+			and a.gsdm = #{params.gsdm}
+		</if>
+		<if test="params.xfs !=null">
+			<foreach collection="params.xfs" open=" and (a.xfid in ("
+				separator="," close=")" item="item" index="index">
+				#{params.xfs[${index}].id}
+			</foreach>
+			or a.xfid is null)
+		</if>
+		<if test="params.skps !=null">
+			<foreach collection="params.skps" open=" and (a.skpid in ("
+				separator="," close=")" item="item" index="index">
+				#{params.skps[${index}].id}
+			</foreach>
+			or a.skpid is null)
+		</if>
+		<if test="params.ddh !=null and params.ddh !=''">
+			and c.ddh = #{params.ddh}
+		</if>
+		<if test="params.gfmc !=null and params.gfmc !=''">
+			and a.gfmc like CONCAT('%',#{params.gfmc},'%')
+		</if>
+		<if test="params.fpdm !=null and params.fpdm !=''">
+			and a.fpdm = #{params.fpdm}
+		</if>
+		<if test="params.fphm !=null and params.fphm !=''">
+			and a.fphm = #{params.fphm}
+		</if>
+		order by b.sqsj
+
+	</select>
+
+	<select id="fpgdcxdb" parameterType="map" resultType="fpcxvo">
+		SELECT a.*, b.fpzlmc,c.fpczlxmc,e.ddh,f.fpztmc fpzt
+		FROM t_kpls
+		a,t_fpzl b,t_fpczlx c,t_jyls e,t_fpzt f
+		WHERE a.fpzldm = b.fpzldm AND
+		a.fpczlxdm = c.fpczlxdm
+		and a.djh = e.djh and a.fpztdm=f.fpztdm and
+		a.pdfurl is not null
+		<if test="gsdm !=null and gsdm !=''">
+			and a.gsdm = #{gsdm}
+		</if>
+		<if test="xfid !=null and xfid !=''">
+			and a.xfid=#{xfid}
+		</if>
+		<if test="kprqq !=null and kprqq !='' and kprqz !=null and kprqz !=''">
+			and a.kprq between #{kprqq} and
+			date_add(str_to_date(#{kprqz},'%Y-%m-%d'),INTERVAL 1 day)
+		</if>
+		order by a.kplsh desc
+	</select>
+	<select id="findByDjh" parameterType="kpls" resultType="kpls">
+		select * from t_kpls where yxbz = '1'
+		<if test="djh != null and djh != ''">
+			and djh = #{djh}
+		</if>
+	</select>
+
+	<select id="findAllByParams" parameterType="map" resultType="kpls">
+		select * from t_kpls where yxbz = '1'
+		<if test="djh != null and djh != ''">
+			and djh = #{djh}
+		</if>
+		<if test="pdfurl != null and pdfurl != ''">
+			and pdfurl in #{pdfurl}
+		</if>
+	</select>
+
+	<!-- <select id="findKplsByDjh" parameterType="map" resultMap="kpls"> -->
+	<!-- select * from t_kpls where pdfurl is not null and pdfurl != '' -->
+	<!-- <if test="djh != null"> -->
+	<!-- and djh=#{djh} -->
+	<!-- </if> -->
+	<!-- <if test="djh == null"> -->
+	<!-- and djh is null -->
+	<!-- </if> -->
+	<!-- order by fphm -->
+	<!-- </select> -->
+	<!-- <select id="findKplsByPms" parameterType="map" resultMap="kpls"> -->
+	<!-- <if test="tqm != null and gsdm != null"> -->
+	<!-- select * from t_kpls where djh in (select djh from t_jyls where tqm=#{tqm} 
+		and gsdm =#{gsdm}) -->
+	<!-- and fpzldm ='12' and fpczlxdm='11' and fphm is not null -->
+	<!-- </if> -->
+	<!-- </select> -->
+	<select id="findListByPagination" parameterType="pagination"
+		resultType="kpls">
+		select b.pdfurl from t_jyls a,t_kpls b where a.djh = b.djh
+		<if test="params.jylsh != null">
+			and b.jylsh = #{params.jylsh}
+		</if>
+		<if test="params.ddh != null">
+			and a.ddh = #{params.ddh}
+		</if>
+		<if test="params.gfdh != null">
+			and b.gfdh = #{params.gfdh}
+		</if>
+		<if test="params.gfmc != null and params.gfmc != ''">
+			and b.gfmc like concat('%',#{params.gfmc},'%')
+		</if>
+		<if test="params.gsdm != null and params.gsdm != ''">
+			and b.gsdm = #{params.gsdm}
+		</if>
+	</select>
 </mapper>
 

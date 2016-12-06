@@ -62,7 +62,7 @@ public class SkpService {
 		}
     }
 
-    public Skp findOneByParams(Skp skp) {
+    public Skp findOneByParams(Map skp) {
         return skpMapper.findOneByParams(skp);
     }
 
@@ -78,6 +78,10 @@ public class SkpService {
     
     public List<Skp> getSkpListByYhId(Integer yhId) {
         return skpMapper.getSkpListByYhId(yhId);
+    }
+    
+    public List<Skp> getKpd(Map params){
+    	return skpMapper.getKpd(params);
     }
 }
 

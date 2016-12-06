@@ -126,5 +126,13 @@ public class KplsService {
     public List<Kpls> findListByPagination(Pagination pagination){
     	return kplsMapper.findListByPagination(pagination);
     }
+    
+    public List<Kpls> findByDjh(Kpls kpls){
+    	return kplsMapper.findByDjh(kpls);
+    }
+
+    public List<Kpls> findAll(Map params){
+    	return kplsMapper.findAll(params);
+    }
 }
 

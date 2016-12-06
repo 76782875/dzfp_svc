@@ -339,8 +339,8 @@ public class DataOperate {
         	Xf xf = new Xf();
         	xf.setXfmc(xfmc);
         	int id = xfSerivce.findOneByParams(xf).getId();
-        	Skp params = new Skp();
-        	params.setXfid(id);
+        	Map params = new HashMap<>();
+        	params.put("xfid", id);
         	skp = skpService.findOneByParams(params);
         } catch (Exception e) {
             e.printStackTrace();

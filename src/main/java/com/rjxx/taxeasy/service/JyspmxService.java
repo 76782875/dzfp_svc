@@ -72,5 +72,9 @@ public class JyspmxService {
     	return jyspmxMapper.getNeedToKP2(params);
     }
 
+    public List<Jyspmx> findAll(Map params) {
+        return jyspmxMapper.findAll(params);
+    }
+
 }
 
