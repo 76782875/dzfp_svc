@@ -1,5 +1,7 @@
 package com.rjxx.taxeasy.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -50,6 +52,39 @@ public class CszbService {
 
     public List<CsbVo> findByPage(Pagination pagination) {
         return cszbMapper.findByPage(pagination);
+    }
+    
+    //去商品编码版本号
+    public Cszb getSpbmbbh(String gsdm,Integer xfid,Integer kpdid,String csm){
+    	Map params = new HashMap<>();
+		params.put("gsdm", gsdm);
+		/*params.put("xfid", xfid);
+		params.put("kpdid", kpdid);*/
+		params.put("csm", csm);
+		List<Cszb> list = new ArrayList<>();
+		list =  cszbMapper.findAllByParams(params);
+		if (list.size()==1) {
+			return list.get(0);
+			}else if(list.size()>0){
+				for (Cszb cszb : list) {
+					if (null!=kpdid&&kpdid.equals(cszb.getKpdid())) {
+						return cszb;
+					}
+				}
+				for (Cszb cszb : list) {
+					if (null!=xfid&&xfid.equals(cszb.getXfid())&&null==cszb.getKpdid()) {
+						return cszb;
+					}
+				}
+				for (Cszb cszb : list) {
+					if (null!=xfid&&xfid.equals(cszb.getXfid())&&null==cszb.getKpdid()&&null==cszb.getXfid()) {
+						return cszb;
+					}
+				}
+				return list.get(0);
+			}else {
+				return new Cszb();
+			}
     }
 
 }
