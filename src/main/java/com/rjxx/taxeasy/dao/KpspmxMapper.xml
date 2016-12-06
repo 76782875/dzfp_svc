@@ -42,5 +42,9 @@
    <select id="findMxNewList" parameterType="map" resultType="kpspmx">
        select * from t_kpspmx where kplsh = #{kplsh}
    </select>
+   
+    <select id="findMxNewByParams" parameterType="map" resultType="kpspmx">
+       select t.kplsh,t.djh,t.spmxxh,t.fphxz,t.spdm,t.spmc,SUM(t.sps) sps,SUM(t.spje) spje,SUM(t.spse) spse,SUM(t.khcje) khcje,sum(t.yhcje) yhcje from t_kpspmx t where  t.kplsh=#{kplsh} GROUP BY t.spdm,spmc
+    </select>
 </mapper>
 

@@ -134,5 +134,10 @@ public class KplsService {
     public List<Kpls> findAll(Map params){
     	return kplsMapper.findAll(params);
     }
+    
+    //更新调用接口返回数据
+    public void updateReturnMes(Map params){
+    	kplsMapper.updateReturnMes(params);
+    }
 }
 

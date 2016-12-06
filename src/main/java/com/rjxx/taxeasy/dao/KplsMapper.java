@@ -72,5 +72,8 @@ public interface KplsMapper {
     public List<Kpls> findByDjh(Kpls kpls);
 
     public List<Kpls> findAll(Map params);
+    
+    //更新调用接口返回数据
+    public void updateReturnMes(Map params);
 }
 

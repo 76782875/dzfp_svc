@@ -74,5 +74,9 @@ public class KpspmxService {
     public List<Kpspmx> findMxNewList(Map params){
     	return kpspmxMapper.findMxNewList(params);
     }
+    
+    public List<Kpspmx> findMxNewByParams(Map params){
+    	return kpspmxMapper.findMxNewByParams(params);
+    }
 }
 
