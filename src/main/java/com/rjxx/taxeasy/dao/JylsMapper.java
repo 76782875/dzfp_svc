@@ -54,5 +54,7 @@ public interface JylsMapper {
     public Jyls findOne(Map params);
     
     public void updateJshj(Map params);
+    
+    public List<Jyls> findAllByJylsh(Map params);
 }
 

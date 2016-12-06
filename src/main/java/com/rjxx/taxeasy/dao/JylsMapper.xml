@@ -189,5 +189,9 @@
    <update id="updateJshj" parameterType="map">
        update t_jyls set jshj = #{jshj} where djh = #{djh}
    </update>
+   
+   <select id="findAllByJylsh" parameterType="map" resultType="jyls">
+        select * from t_jyls where yxbz = '1' where jylsh = #{jylsh}
+    </select>
 </mapper>
 

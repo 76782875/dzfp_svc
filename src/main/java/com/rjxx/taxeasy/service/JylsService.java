@@ -183,5 +183,9 @@ public class JylsService {
     	jylsMapper.updateJshj(params);
     }
 
+    
+    public List<Jyls> findAllByJylsh(Map map){
+    	return jylsMapper.findAllByJylsh(map);
+    }
 }
 
