@@ -41,6 +41,33 @@ public class Gsxx  implements Serializable {
 @Column(name="secret_key")
 	protected String secretKey;
 
+/**
+ * 身份认证
+ */ 
+@Column(name="appKey")
+	protected String appKey;
+
+/**
+ * 调用税控服务器的url
+ */ 
+@Column(name="ws_url")
+	protected String ws_url;
+
+	public String getAppKey() {
+	return appKey;
+}
+
+public void setAppKey(String appKey) {
+	this.appKey = appKey;
+}
+
+public String getWs_url() {
+	return ws_url;
+}
+
+public void setWs_url(String ws_url) {
+	this.ws_url = ws_url;
+}
 
 	public String getGsdm(){
 		return gsdm;

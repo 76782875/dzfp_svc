@@ -33,5 +33,7 @@ public interface KpspmxMapper {
     public Kpspmxvo findKhcje(Map params);
     
     public List<Kpspmx> findMxList(Map params);
+    
+    public List<Kpspmx> findMxNewList(Map params);
 }
 

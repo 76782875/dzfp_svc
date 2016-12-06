@@ -70,6 +70,9 @@ public class KpspmxService {
     public List<Kpspmx> findMxList(Map params){
     	return kpspmxMapper.findMxList(params);
     }
-
+ 
+    public List<Kpspmx> findMxNewList(Map params){
+    	return kpspmxMapper.findMxNewList(params);
+    }
 }
 

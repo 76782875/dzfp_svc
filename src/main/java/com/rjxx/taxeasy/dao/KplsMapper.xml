@@ -305,6 +305,23 @@
 <!-- 		and fpzldm ='12' and fpczlxdm='11' and fphm is not null -->
 <!-- 		</if> -->
 <!-- 	</select> -->
-
+   <select id="findListByPagination" parameterType="pagination" resultType="kpls">
+        select b.pdfurl from t_jyls a,t_kpls b where a.djh = b.djh
+        <if test="params.jylsh != null">
+            and b.jylsh = #{params.jylsh}
+        </if>
+        <if test="params.ddh != null">
+            and a.ddh = #{params.ddh}
+        </if>
+        <if test="params.gfdh != null">
+            and b.gfdh = #{params.gfdh}
+        </if>
+        <if test="params.gfmc != null and params.gfmc != ''">
+            and b.gfmc like concat('%',#{params.gfmc},'%')
+        </if>
+        <if test="params.gsdm != null and params.gsdm != ''" >
+            and b.gsdm = #{params.gsdm}
+        </if>
+    </select>
 </mapper>
 
