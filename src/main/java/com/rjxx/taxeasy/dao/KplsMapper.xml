@@ -404,5 +404,10 @@
 			and b.gsdm = #{params.gsdm}
 		</if>
 	</select>
+	
+	<update id="updateReturnMes" parameterType="map">
+		update t_kpls set fpdm =
+		#{fpdm},fphm = #{fphm},jym = #{jym},mwq = #{mwq} where kplsh = #{kplsh}
+	</update>
 </mapper>
 
