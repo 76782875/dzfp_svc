@@ -139,5 +139,10 @@ public class KplsService {
     public void updateReturnMes(Map params){
     	kplsMapper.updateReturnMes(params);
     }
+    
+    //查询需要生成pdf文件的记录
+    public List<Kpls> findKplsNoPdf(){
+    	return kplsMapper.findKplsNoPdf();
+    }
 }
 

@@ -75,5 +75,9 @@ public interface KplsMapper {
     
     //更新调用接口返回数据
     public void updateReturnMes(Map params);
+    
+    //查询需要生成pdf文件的记录
+    public List<Kpls> findKplsNoPdf();
+    
 }
 

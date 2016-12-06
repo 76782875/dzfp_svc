@@ -409,5 +409,9 @@
 		update t_kpls set fpdm =
 		#{fpdm},fphm = #{fphm},jym = #{jym},mwq = #{mwq} where kplsh = #{kplsh}
 	</update>
+	
+	<select id="findKplsNoPdf" resultType="kpls">
+	     select * from t_kpls where fpzldm='12' and fpztdm='00' and pdfurl is null
+	</select>
 </mapper>
 
