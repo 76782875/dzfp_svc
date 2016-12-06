@@ -42,5 +42,12 @@
         SELECT * FROM t_jyspmx t WHERE t.djh= #{djh} and t.jshj - IFNULL(t.ykphj,0) != 0 order by spmxxh
     </select>
 
+	<select id="findAll" parameterType="map" resultType="jyspmx">
+		select * from t_jyspmx where 1 = 1 
+		<if test="djh != null and djh != ''">
+			and djh = #{djh}
+		</if>
+	</select>
+
 </mapper>
 

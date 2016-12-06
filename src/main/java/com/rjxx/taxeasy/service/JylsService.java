@@ -6,6 +6,7 @@ import com.rjxx.taxeasy.dao.JylsJpaDao;
 import com.rjxx.taxeasy.dao.JylsMapper;
 import com.rjxx.taxeasy.domains.Jyls;
 import com.rjxx.taxeasy.domains.Jyspmx;
+import com.rjxx.taxeasy.domains.Kpls;
 import com.rjxx.taxeasy.vo.Fptqvo;
 import com.rjxx.taxeasy.vo.FpxxVo;
 import com.rjxx.taxeasy.vo.YjfsxxVo;
@@ -167,6 +168,14 @@ public class JylsService {
     
     public List<FpxxVo> findFpxx(Map params){
     	return jylsMapper.findFpxx(params);
+    }
+   
+    public List<Kpls> findByTqm(Map params){
+    	 return jylsMapper.findByTqm(params);
+    }
+    
+    public Jyls findOne(Map params){
+    	return jylsMapper.findOne(params);
     }
 
 }

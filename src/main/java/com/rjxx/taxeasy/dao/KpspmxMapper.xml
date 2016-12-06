@@ -38,5 +38,9 @@
   <select id="findMxList" parameterType="map" resultType="kpspmx">
        select * from t_kpspmx where kplsh = #{kplsh}
   </select>
+  
+   <select id="findMxNewList" parameterType="map" resultType="kpspmx">
+       select * from t_kpspmx where kplsh = #{kplsh}
+   </select>
 </mapper>
 

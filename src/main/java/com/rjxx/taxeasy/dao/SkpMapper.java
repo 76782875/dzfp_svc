@@ -19,12 +19,14 @@ import java.util.Map;
 @MybatisRepository
 public interface SkpMapper {
 
-    public Skp findOneByParams(Skp skp);
+    public Skp findOneByParams(Map skp);
 
     public List<Skp> findAllByParams(Skp skp);
     public List<Skp> findBySql(Skp skp);
     public List<SkpVo> findByPage(Pagination pagination);
     	
 	public List<Skp> getSkpListByYhId(Integer yhId);
+
+    public List<Skp> getKpd(Map params);
 }
 

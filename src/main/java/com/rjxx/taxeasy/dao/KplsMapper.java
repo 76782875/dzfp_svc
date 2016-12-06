@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.rjxx.comm.mybatis.MybatisRepository;
 import com.rjxx.comm.mybatis.Pagination;
+import com.rjxx.taxeasy.domains.Jyls;
 import com.rjxx.taxeasy.domains.Kpls;
 import com.rjxx.taxeasy.vo.Fpcxvo;
 
@@ -65,5 +66,11 @@ public interface KplsMapper {
     public List<Kpls> findKplsByDjh(Map params);
     
     public List<Kpls> findKplsByPms(Map params);
+    
+    public List<Kpls> findListByPagination(Pagination pagination);
+    
+    public List<Kpls> findByDjh(Kpls kpls);
+
+    public List<Kpls> findAll(Map params);
 }
 

@@ -3,6 +3,7 @@ package com.rjxx.taxeasy.dao;
 import com.rjxx.comm.mybatis.MybatisRepository;
 import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.domains.Jyls;
+import com.rjxx.taxeasy.domains.Kpls;
 import com.rjxx.taxeasy.vo.Fptqvo;
 import com.rjxx.taxeasy.vo.FpxxVo;
 import com.rjxx.taxeasy.vo.YjfsxxVo;
@@ -47,5 +48,9 @@ public interface JylsMapper {
     public List<YjfsxxVo> findYjfs(Map params);
     
     public List<FpxxVo> findFpxx(Map params);
+
+    public  List<Kpls> findByTqm(Map params);
+    
+    public Jyls findOne(Map params);
 }
 

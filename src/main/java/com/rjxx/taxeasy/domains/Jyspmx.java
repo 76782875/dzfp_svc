@@ -147,9 +147,36 @@ public class Jyspmx implements Serializable {
      */
     @Column(name = "gsdm")
     protected String gsdm;
+ 
+    /**
+     * 销方id
+     */
+    @Column(name = "xfid")
+    protected Integer xfid;
+    
+    /**
+     * 税控盘id
+     */
+    @Column(name = "skpid")
+    protected Integer skpid;
 
+    public Integer getXfid() {
+		return xfid;
+	}
 
-    public Integer getId() {
+	public void setXfid(Integer xfid) {
+		this.xfid = xfid;
+	}
+
+	public Integer getSkpid() {
+		return skpid;
+	}
+
+	public void setSkpid(Integer skpid) {
+		this.skpid = skpid;
+	}
+
+	public Integer getId() {
         return id;
     }
 

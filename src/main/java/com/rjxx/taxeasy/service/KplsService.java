@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.dao.KplsJpaDao;
 import com.rjxx.taxeasy.dao.KplsMapper;
+import com.rjxx.taxeasy.domains.Jyls;
 import com.rjxx.taxeasy.domains.Kpls;
 import com.rjxx.taxeasy.vo.Fpcxvo;
 
@@ -120,6 +121,18 @@ public class KplsService {
     
     public List<Kpls> findKplsByPms(Map params){
     	return kplsMapper.findKplsByPms(params);
+    }
+    
+    public List<Kpls> findListByPagination(Pagination pagination){
+    	return kplsMapper.findListByPagination(pagination);
+    }
+    
+    public List<Kpls> findByDjh(Kpls kpls){
+    	return kplsMapper.findByDjh(kpls);
+    }
+
+    public List<Kpls> findAll(Map params){
+    	return kplsMapper.findAll(params);
     }
 }
 
