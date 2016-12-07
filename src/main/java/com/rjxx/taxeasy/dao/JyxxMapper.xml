@@ -5,8 +5,14 @@
 
     <select id="findOneByParams" parameterType="map" resultType="jyxx">
         select * from t_jyxx where yxbz = '1'
-        <if test="orderBy != null">
-            order by #{orderBy}
+        <if test="gsdm != null">
+           and gsdm = #{gsdm}
+        </if>
+        <if test="tqm != null">
+           and order_no = #{tqm}
+        </if>
+        <if test="je != null">
+           and price = #{je}
         </if>
         limit 1
     </select>

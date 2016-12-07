@@ -165,7 +165,7 @@
 		'91' AND a.djh = b.djh AND b.fpztdm = '00' AND b.fpczlxdm = '11' AND
 		b.pdfurl IS NOT NULL AND b.pdfurl !=''
 		<if test="tqm != null and tqm != ''"> and a.tqm = #{tqm} </if>
-
+		<if test="je != null and je != ''"> and a.jshj = #{je} </if>
 		<if test="ddh != null and ddh != ''"> and a.ddh = #{ddh} </if>
 
 		<if test="gsdm != null and gsdm != ''"> and a.gsdm = #{gsdm} </if>
@@ -181,6 +181,9 @@
 		</if>
 		<if test="djh != null">
 			and djh = #{djh}
+		</if>
+		<if test="je != null">
+			and jshj = #{je}
 		</if>
 		limit 1
 	</select>
