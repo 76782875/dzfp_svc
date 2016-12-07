@@ -1,26 +1,26 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.rjxx.taxeasy</groupId>
-	<artifactId>dzfp-svc</artifactId>
-	<packaging>jar</packaging>
-	<version>1.0.0-SNAPSHOT</version>
-	<name>dzfp-svc</name>
-	<url>http://maven.apache.org</url>
- 	<parent> 
- 		<groupId>com.rjxx</groupId> 
- 		<artifactId>rjxx-parent</artifactId> 
- 		<version>1.0.0-SNAPSHOT</version>
- 	</parent> 
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.rjxx.taxeasy</groupId>
+    <artifactId>dzfp-svc</artifactId>
+    <packaging>jar</packaging>
+    <version>1.0.0-SNAPSHOT</version>
+    <name>dzfp-svc</name>
+    <url>http://maven.apache.org</url>
+    <parent>
+        <groupId>com.rjxx</groupId>
+        <artifactId>rjxx-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
     <properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
-	<dependencies>
-		<dependency>
-			<groupId>com.rjxx</groupId>
-			<artifactId>rjxx-comm</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>   
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>com.rjxx</groupId>
+            <artifactId>rjxx-comm</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
@@ -63,7 +63,7 @@
             <groupId>org.apache.abdera</groupId>
             <artifactId>abdera</artifactId>
             <type>pom</type>
-        </dependency>    
+        </dependency>
         <dependency>
             <groupId>org.xhtmlrenderer</groupId>
             <artifactId>flying-saucer-core</artifactId>
@@ -130,6 +130,21 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-	
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.properties</include>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+        </resources>
+        <finalName>dzfp-svc</finalName>
+    </build>
 
 </project>
