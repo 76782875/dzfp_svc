@@ -4,7 +4,7 @@
 <mapper namespace="com.rjxx.taxeasy.dao.KppmxxMapper">
 
     <select id="findOneByParams" parameterType="map" resultType="kppmxx">
-        select * from t_kppmxx where yxbz = '1'
+        select * from t_kppmxx where 1=1
         <if test="xfsh != null">
             and xfsh = #{xfsh}
         </if>
