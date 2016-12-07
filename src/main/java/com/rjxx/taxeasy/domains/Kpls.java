@@ -413,6 +413,9 @@ protected String fpztdm;
 @Column(name="errorreason")
 protected String errorReason;
 
+@Column(name="fp_ewm")
+protected String fp_ewm;
+
 	public String getFpztdm() {
 	return fpztdm;
 }
@@ -947,6 +950,14 @@ public void setFpztdm(String fpztdm) {
 
 	public void setErrorReason(String errorReason) {
 		this.errorReason = errorReason;
+	}
+
+	public String getFp_ewm() {
+		return fp_ewm;
+	}
+
+	public void setFp_ewm(String fp_ewm) {
+		this.fp_ewm = fp_ewm;
 	}
 
 }
