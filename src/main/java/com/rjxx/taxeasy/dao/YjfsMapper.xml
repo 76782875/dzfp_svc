@@ -4,7 +4,7 @@
 <mapper namespace="com.rjxx.taxeasy.dao.YjfsMapper">
 
     <select id="findOneByParams" parameterType="map" resultType="yjfs">
-        select * from t_yjfs where yxbz = '1'
+        select * from t_yjfs where 1=1
         <if test="orderBy != null">
             order by #{orderBy}
         </if>
@@ -12,14 +12,14 @@
     </select>
 
     <select id="findAllByParams" parameterType="yjfs" resultType="yjfs">
-        select * from t_yjfs where yxbz = '1'
+        select * from t_yjfs where 1=1
         <if test="djh != null">
             and djh = #{djh}
         </if>
     </select>
 
     <select id="findByPage" parameterType="pagination" resultType="yjfs">
-        select * from t_yjfs where yxbz = '1'
+        select * from t_yjfs where 1=1
         <if test="params.orderBy != null">
             order by #{params.orderBy}
         </if>
