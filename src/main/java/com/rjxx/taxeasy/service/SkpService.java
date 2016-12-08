@@ -83,5 +83,8 @@ public class SkpService {
     public List<Skp> getKpd(Map params){
     	return skpMapper.getKpd(params);
     }
+    public List<Skp> findCsz(Skp params){
+    	return skpMapper.findCsz(params);
+    }
 }
 

@@ -28,5 +28,6 @@ public interface SkpMapper {
 	public List<Skp> getSkpListByYhId(Integer yhId);
 
     public List<Skp> getKpd(Map params);
+    public List<Skp> findCsz(Skp skp);
 }
 

@@ -5,6 +5,8 @@ import com.rjxx.taxeasy.dao.JyxxJpaDao;
 import com.rjxx.taxeasy.dao.JyxxMapper;
 import com.rjxx.taxeasy.domains.Jyxx;
 import com.rjxx.taxeasy.domains.Smtq;
+import com.rjxx.taxeasy.domains.Tqmtq;
+import com.rjxx.taxeasy.vo.TqmtqVo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,7 +49,12 @@ public class JyxxService {
     public List<Smtq> findAllByParams(Map params) {
         return jyxxMapper.findAllByParams(params);
     }
-
+    public List<Smtq> findAllByParams1(Map params) {
+        return jyxxMapper.findAllByParams1(params);
+    }
+    public List<TqmtqVo> findAllByParams2(Map params) {
+        return jyxxMapper.findAllByParams2(params);
+    }
     public List<Jyxx> findByPage(Pagination pagination) {
         return jyxxMapper.findByPage(pagination);
     }

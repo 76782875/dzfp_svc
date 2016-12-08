@@ -3,69 +3,90 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rjxx.taxeasy.dao.SkpMapper">
 
-    <select id="findOneByParams" parameterType="map" resultType="skp">
-        select * from t_skp where yxbz = '1'
-        <if test="kpddm != null and kpddm != ''">
-            and kpddm = #{kpddm}
-        </if>
-        <if test="kpdmc != null and kpdmc != ''">
-            and kpdmc = #{kpdmc}
-        </if>
-        <if test="gsdm != null and gsdm != ''">
-            and gsdm = #{gsdm}
-        </if>
-        <if test="id != null and id != ''">
-            and id != #{id}
-        </if>
-        <if test="xfid != null and xfid != ''">
-            and xfid != #{xfid}
-        </if>
-        limit 1
-    </select>
+	<select id="findOneByParams" parameterType="map" resultType="skp">
+		select * from t_skp where yxbz = '1'
+		<if test="kpddm != null and kpddm != ''">
+			and kpddm = #{kpddm}
+		</if>
+		<if test="kpdmc != null and kpdmc != ''">
+			and kpdmc = #{kpdmc}
+		</if>
+		<if test="gsdm != null and gsdm != ''">
+			and gsdm = #{gsdm}
+		</if>
+		<if test="id != null and id != ''">
+			and id != #{id}
+		</if>
+		<if test="xfid != null and xfid != ''">
+			and xfid != #{xfid}
+		</if>
+		limit 1
+	</select>
 	<select id="getSkpListByYhId" parameterType="int" resultType="skp">
-		select * from t_skp where yxbz = '1' and id in ( select skpid from t_group where yhid
+		select * from t_skp where yxbz = '1' and id in ( select skpid from
+		t_group where yhid
 		= #{yhId} and yxbz = '1')
 	</select>
-    <select id="findAllByParams" parameterType="skp" resultType="skp">
-        select * from t_skp where yxbz = '1'
-        <if test="gsdm != null and gsdm != ''">
-            and gsdm = #{gsdm}
-        </if>
-    </select>
-  <select id="findBySql" parameterType="skp" resultType="skp">
-        select * from t_skp where yxbz = '1'
-        <if test="xfid != null and xfid != ''">
-            and xfid = #{xfid}
-        </if>
-    </select>
-    <select id="findByPage" parameterType="pagination" resultType="skpvo">
-        select s.*,x.xfmc from t_skp s, t_xf x where s.xfid = x.id and s.yxbz = '1'
-        <if test="params.gsdm != null and params.gsdm != ''">
-            and s.gsdm = #{params.gsdm}
-        </if>
-        <if test="params.xfid != null and params.xfid != ''">
-            and s.xfid = #{params.xfid}
-        </if>
-        <if test="params.kpdmc != null and params.kpdmc != ''">
-            and s.kpdmc like concat('%',#{params.kpdmc},'%')
-        </if>
-        <if test="params.orderBy != null">
-            order by lrsj desc
-        </if>
-    </select>
+	<select id="findAllByParams" parameterType="skp" resultType="skp">
+		select * from t_skp where yxbz = '1'
+		<if test="gsdm != null and gsdm != ''">
+			and gsdm = #{gsdm}
+		</if>
+	</select>
+	<select id="findBySql" parameterType="skp" resultType="skp">
+		select * from t_skp where yxbz = '1'
+		<if test="xfid != null and xfid != ''">
+			and xfid = #{xfid}
+		</if>
+	</select>
+	<select id="findByPage" parameterType="pagination" resultType="skpvo">
+		select s.*,x.xfmc from t_skp s, t_xf x where s.xfid = x.id and s.yxbz
+		= '1'
+		<if test="params.gsdm != null and params.gsdm != ''">
+			and s.gsdm = #{params.gsdm}
+		</if>
+		<if test="params.xfid != null and params.xfid != ''">
+			and s.xfid = #{params.xfid}
+		</if>
+		<if test="params.kpdmc != null and params.kpdmc != ''">
+			and s.kpdmc like concat('%',#{params.kpdmc},'%')
+		</if>
+		<if test="params.orderBy != null">
+			order by lrsj desc
+		</if>
+	</select>
 
-    <select id="getKpd" parameterType="map" resultType="skp">
-        select * from t_skp where yxbz = '1' 
-		and id in (select kpdid from t_cszb where yxbz='1' and csz='是' and
-		kpdid in (SELECT id FROM t_skp WHERE yxbz='1'
- 		<if test="xfid != null">
- 			and xfid = #{xfid}
- 		</if>
- 		<if test="xfsh != null">
- 			and xfid = (select min(id) from t_xf where xfsh=#{xfsh} and yxbz='1')
- 		</if>
- 		))
-    </select>  
-
+	<select id="getKpd" parameterType="map" resultType="skp">
+		select * from t_skp where yxbz = '1'
+		and id in (select kpdid from t_cszb where yxbz='1' and csz='是' and csid = (select id from t_csb where csm = 'sfzczt') and 
+		kpdid
+		in (SELECT id FROM t_skp WHERE yxbz='1'
+		<if test="xfid != null">
+			and xfid = #{xfid}
+		</if>
+		<if test="xfsh != null">
+			and xfid = (select min(id) from t_xf where xfsh=#{xfsh} and yxbz='1')
+		</if>
+		))
+	</select>
+	<select id="findCsz" parameterType="skp" resultType="skp">
+		SELECT
+		a.kpddm
+		FROM
+		t_skp a,
+		t_csb b,
+		t_cszb c
+		WHERE
+		a.yxbz = '1'
+		AND b.yxbz = '1'
+		AND c.yxbz = '1'
+		AND a.id = c.kpdid
+		AND b.id = c.csid
+		AND b.csm = 'sflxkp'
+		AND c.csz = '是'
+		<if test="gsdm != null and gsdm != ''">
+			and c.gsdm = #{gsdm}
+		</if>
+	</select>
 </mapper>
 
