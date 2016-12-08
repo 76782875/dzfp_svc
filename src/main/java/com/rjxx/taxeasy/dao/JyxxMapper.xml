@@ -31,7 +31,7 @@
         </if>
     </select>
 	<select id="findAllByParams2" parameterType="map" resultType="tqmtqVo">
-    SELECT a.kpddm,b.* from t_jyxx a,t_tqmtq  b WHERE a.gsdm = b.gsdm and a.order_no = b.ddh and a.price = b.zje and a.yxbz = '1' AND b.yxbz = '1' and b.fpzt = '0'  
+    SELECT a.store_no,b.* from t_jyxx a,t_tqmtq  b WHERE a.gsdm = b.gsdm and a.order_no = b.ddh and a.price = b.zje and a.yxbz = '1' AND b.yxbz = '1' and b.fpzt = '0'  
         <if test="orderBy != null">
             order by #{orderBy}
         </if>
