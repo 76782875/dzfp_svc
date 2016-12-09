@@ -4,6 +4,11 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.rjxx.comm.json.JsonDatetimeFormat;
+
 public class Fpcxvo implements Serializable{
 	protected Integer kplsh;
 	protected Integer djh;
@@ -23,7 +28,7 @@ public class Fpcxvo implements Serializable{
 	protected String hzyfphm;
 	protected String pdfurl;
 	protected String lrsj;
-	protected Date kprq;
+	protected String kprq;
 	protected String kpr;
 	protected Double jshj;
 	protected Double hjje;
@@ -269,11 +274,21 @@ public class Fpcxvo implements Serializable{
 	public void setNewgfmc(String newgfmc) {
 		this.newgfmc = newgfmc;
 	}
-	public Date getKprq() {;
-		return kprq;
+	public String getKprq() {
+		if(kprq!=null){
+			return kprq.substring(0, 10);
+		}else{
+			return null;
+		}
+		
 	}
-	public void setKprq(Date kprq) {
-		this.kprq = kprq;
+	public void setKprq(String kprq) {
+		if(kprq!=null){
+			this.kprq = kprq.substring(0, 10);
+		}else{
+			this.kprq = null;
+		}
+		
 	}
 	public String getFpztdm() {
 		return fpztdm;
