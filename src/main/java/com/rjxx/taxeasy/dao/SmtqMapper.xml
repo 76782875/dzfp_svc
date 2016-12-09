@@ -5,8 +5,11 @@
 
     <select id="findOneByParams" parameterType="map" resultType="smtq">
         select * from t_smtq where yxbz = '1'
-        <if test="orderBy != null">
-            order by #{orderBy}
+        <if test="ddh != null">
+            and ddh = #{ddh}
+        </if>
+        <if test="gsdm != null">
+            and gsdm = #{gsdm}
         </if>
         limit 1
     </select>
