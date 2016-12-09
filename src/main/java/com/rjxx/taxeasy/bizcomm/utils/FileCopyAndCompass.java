@@ -14,8 +14,8 @@ import java.util.UUID;
 import org.apache.commons.io.FileUtils;
 import com.rjxx.comm.utils.ApplicationContextUtils;
 import com.rjxx.taxeasy.service.GdjlService;
+import com.rjxx.taxeasy.service.GetPropertService;
 import com.rjxx.taxeasy.vo.Fpcxvo;
-import com.rjxx.utils.ReadProperties;
 
 
 public class FileCopyAndCompass implements Runnable{
@@ -27,11 +27,14 @@ public class FileCopyAndCompass implements Runnable{
 
 	private List<Fpcxvo> list;
 	
+	private GetPropertService gp;
+	
 	
     public FileCopyAndCompass(Integer id,List<Fpcxvo> list){
     	this.id = id;
     	this.list = list;
     	gdService = ApplicationContextUtils.getBean(GdjlService.class);
+    	gp = ApplicationContextUtils.getBean(GetPropertService.class);
     }
 	
 	public void run() {
@@ -59,8 +62,8 @@ public class FileCopyAndCompass implements Runnable{
      * 复制pdf文件
      * */
 	public void fileCopy(String copyPath,String pdfurl,String ddh,String gfmc,String fpdm,String fphm)throws Exception{
-		String pdfPath=ReadProperties.read("classpath").replaceAll("\\\\", "/");
-		String httpPath = ReadProperties.read("serverUrl");
+		String pdfPath=gp.getClasspath().replaceAll("\\\\", "/");
+		String httpPath = gp.getServerUrl();
 		if(pdfurl !=null && !"".equals(pdfurl)){
 			String filePath = pdfurl.replace(httpPath, pdfPath);
 			File file = new File(filePath);			
@@ -155,5 +158,6 @@ public class FileCopyAndCompass implements Runnable{
 	        }
 	        return result;
 	    }
+		
 
 }
