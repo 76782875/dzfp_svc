@@ -3,6 +3,12 @@ package com.rjxx.taxeasy.vo;
 
 
 import java.sql.Timestamp;
+import java.util.Date;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.rjxx.comm.json.JsonDatetimeFormat;
 
 
 public class KplsVO {
@@ -13,7 +19,9 @@ public class KplsVO {
 
     protected String gfmc;
 
-    protected Timestamp jylssj;
+	@JsonSerialize(using = JsonDatetimeFormat.class)
+	@DateTimeFormat(pattern="yyyy-MM-dd")
+    protected Date jylssj;
 
     protected String fpdm;
  
@@ -29,7 +37,9 @@ public class KplsVO {
 
     protected String sj;//购方电话
 
-    protected Timestamp kprq;
+	@JsonSerialize(using = JsonDatetimeFormat.class)
+	@DateTimeFormat(pattern="yyyy-MM-dd")
+    protected Date kprq;
  
     protected String pdfurl;
 
@@ -85,11 +95,11 @@ public class KplsVO {
         this.gfmc = gfmc;
     }
 
-    public Timestamp getJylssj() {
+    public Date getJylssj() {
         return jylssj;
     }
 
-    public void setJylssj(Timestamp jylssj) {
+    public void setJylssj(Date jylssj) {
         this.jylssj = jylssj;
     }
 
@@ -149,11 +159,11 @@ public class KplsVO {
         this.sj = sj;
     }
 
-    public Timestamp getKprq() {
+    public Date getKprq() {
         return kprq;
     }
 
-    public void setKprq(Timestamp kprq) {
+    public void setKprq(Date kprq) {
         this.kprq = kprq;
     }
 
