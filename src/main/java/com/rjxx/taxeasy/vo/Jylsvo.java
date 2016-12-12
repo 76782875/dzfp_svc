@@ -30,9 +30,7 @@ public class Jylsvo  implements Serializable {
 /**
  * 交易流水时间 业务系统或电商平台生成。
  */ 
-@JsonSerialize(using = JsonDatetimeFormat.class)
-@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-	protected Date jylssj;
+	protected String jylssj;
 
 /**
  * 订单号 业务系统或电商平台生成。
@@ -291,11 +289,14 @@ public class Jylsvo  implements Serializable {
 		this.jylsh=jylsh;
 	}
 
-	public Date getJylssj(){
+	public String getJylssj(){
+		if (jylssj != null && jylssj.length() > 10) {
+			jylssj = jylssj.substring(0, 10);
+		}
 		return jylssj;
 	}
 
-	public void setJylssj(Date jylssj){
+	public void setJylssj(String jylssj){
 		this.jylssj=jylssj;
 	}
 

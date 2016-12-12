@@ -19,9 +19,7 @@ public class KplsVO {
 
     protected String gfmc;
 
-	@JsonSerialize(using = JsonDatetimeFormat.class)
-	@DateTimeFormat(pattern="yyyy-MM-dd")
-    protected Date jylssj;
+    protected String jylssj;
 
     protected String fpdm;
  
@@ -37,9 +35,7 @@ public class KplsVO {
 
     protected String sj;//购方电话
 
-	@JsonSerialize(using = JsonDatetimeFormat.class)
-	@DateTimeFormat(pattern="yyyy-MM-dd")
-    protected Date kprq;
+    protected String kprq;
  
     protected String pdfurl;
 
@@ -95,11 +91,14 @@ public class KplsVO {
         this.gfmc = gfmc;
     }
 
-    public Date getJylssj() {
+    public String getJylssj() {
+    	if (jylssj != null && jylssj.length() > 10) {
+			jylssj = jylssj.substring(0, 10);
+		}
         return jylssj;
     }
 
-    public void setJylssj(Date jylssj) {
+    public void setJylssj(String jylssj) {
         this.jylssj = jylssj;
     }
 
@@ -159,11 +158,14 @@ public class KplsVO {
         this.sj = sj;
     }
 
-    public Date getKprq() {
+    public String getKprq() {
+    	if (kprq != null && kprq.length() > 10) {
+			kprq = kprq.substring(0, 10);
+		}
         return kprq;
     }
 
-    public void setKprq(Date kprq) {
+    public void setKprq(String kprq) {
         this.kprq = kprq;
     }
 
