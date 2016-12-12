@@ -6,10 +6,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class GetPropertService {
 	
-	@Value("${pdf.classpath}")
+	@Value("${pdf.classpath:''}")
 	private String classpath;
 	
-	@Value("${pdf.serverUrl}")
+	@Value("${pdf.serverUrl:''}")
 	private String serverUrl;
 
 	public String getClasspath() {
