@@ -222,6 +222,7 @@ public class DataOperte {
 		        jyls.setFpzldm("12");
 		        jyls.setClztdm("01");
 		        jyls.setFpczlxdm("12");
+		        jyls.setXfid(kpls.getXfid());
 		        jyls.setXfdh(kpls.getXfdh());
 		        jyls.setXfdz(kpls.getXfdz());
 		        jyls.setXflxr(kpls.getXflxr());
@@ -300,6 +301,7 @@ public class DataOperte {
 		        ls.setFpzldm("12");
 		        ls.setClztdm("01");
 		        ls.setFpczlxdm("11");
+		        ls.setXfid(kpls.getXfid());
 		        ls.setXfdh(kpls.getXfdh());
 		        ls.setXfdz(kpls.getXfdz());
 		        ls.setXflxr(kpls.getXflxr());
@@ -463,6 +465,7 @@ public class DataOperte {
         ls.setFpzldm("12");
         ls.setClztdm("01");
         ls.setFpczlxdm(kpls.getFpczlxdm());
+        ls.setXfid(kpls.getXfid());
         ls.setXfdh(kpls.getXfdh());
         ls.setXfdz(kpls.getXfdz());
         ls.setXflxr(kpls.getXflxr());
