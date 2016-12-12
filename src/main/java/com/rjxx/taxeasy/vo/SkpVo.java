@@ -64,6 +64,11 @@ public class SkpVo {
 	protected Integer xfid;
 
 	/**
+	 * 销方id
+	 */
+	protected Integer pid;
+
+	/**
 	 * 公司代码
 	 */
 	protected String gsdm;
@@ -307,5 +312,29 @@ public class SkpVo {
 
 	public void setKpddm(String kpddm) {
 		this.kpddm = kpddm;
+	}
+
+	public String getPpdm() {
+		return ppdm;
+	}
+
+	public void setPpdm(String ppdm) {
+		this.ppdm = ppdm;
+	}
+
+	public String getPpmc() {
+		return ppmc;
+	}
+
+	public void setPpmc(String ppmc) {
+		this.ppmc = ppmc;
+	}
+
+	public Integer getPid() {
+		return pid;
+	}
+
+	public void setPid(Integer pid) {
+		this.pid = pid;
 	}
 }

@@ -13,8 +13,8 @@
 
     <select id="findAllByParams" parameterType="map" resultType="pp">
         select * from t_pp where yxbz = '1'
-        <if test="orderBy != null">
-            order by #{orderBy}
+        <if test="gsdm != null">
+            and gsdm = #{gsdm}
         </if>
     </select>
 

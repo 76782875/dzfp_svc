@@ -74,6 +74,12 @@ public class Pp  implements Serializable {
 @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	protected Date xgsj;
 
+/**
+ * 公司代码
+ */ 
+@Column(name="gsdm")
+	protected String gsdm;
+
 
 	public Integer getId(){
 		return id;
