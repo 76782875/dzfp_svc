@@ -40,8 +40,8 @@
 		</if>
 	</select>
 	<select id="findByPage" parameterType="pagination" resultType="skpvo">
-		select s.*,x.xfmc from t_skp s, t_xf x where s.xfid = x.id and s.yxbz
-		= '1'
+		select s.*,x.xfmc, p.ppdm, p.ppmc from t_skp s, t_xf x, t_pp p where s.xfid = x.id 
+		and s.pid = p.id and p.yxbz='1' and s.yxbz = '1'
 		<if test="params.gsdm != null and params.gsdm != ''">
 			and s.gsdm = #{params.gsdm}
 		</if>
@@ -51,9 +51,7 @@
 		<if test="params.kpdmc != null and params.kpdmc != ''">
 			and s.kpdmc like concat('%',#{params.kpdmc},'%')
 		</if>
-		<if test="params.orderBy != null">
-			order by lrsj desc
-		</if>
+		order by lrsj desc
 	</select>
 
 	<select id="getKpd" parameterType="map" resultType="skp">

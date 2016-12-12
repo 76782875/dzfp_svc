@@ -80,6 +80,12 @@ public class Skp implements Serializable {
 	protected Integer xfid;
 
 	/**
+	 *品牌id
+	 */
+	@Column(name = "pid")
+	protected Integer pid;
+
+	/**
 	 * 公司代码
 	 */
 	@Column(name = "gsdm")
@@ -332,6 +338,14 @@ public class Skp implements Serializable {
 
 	public void setKpddm(String kpddm) {
 		this.kpddm = kpddm;
+	}
+
+	public Integer getPid() {
+		return pid;
+	}
+
+	public void setPid(Integer pid) {
+		this.pid = pid;
 	}
 
 }

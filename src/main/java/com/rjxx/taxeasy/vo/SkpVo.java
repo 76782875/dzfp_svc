@@ -34,6 +34,10 @@ public class SkpVo {
 	 * 发票库存预警阈值
 	 */
 	protected Integer fpyz;
+	
+	protected String ppdm;
+	
+	protected String ppmc;
 
 	/**
 	 * 备注
@@ -58,6 +62,11 @@ public class SkpVo {
 	 * 销方id
 	 */
 	protected Integer xfid;
+
+	/**
+	 * 销方id
+	 */
+	protected Integer pid;
 
 	/**
 	 * 公司代码
@@ -303,5 +312,29 @@ public class SkpVo {
 
 	public void setKpddm(String kpddm) {
 		this.kpddm = kpddm;
+	}
+
+	public String getPpdm() {
+		return ppdm;
+	}
+
+	public void setPpdm(String ppdm) {
+		this.ppdm = ppdm;
+	}
+
+	public String getPpmc() {
+		return ppmc;
+	}
+
+	public void setPpmc(String ppmc) {
+		this.ppmc = ppmc;
+	}
+
+	public Integer getPid() {
+		return pid;
+	}
+
+	public void setPid(Integer pid) {
+		this.pid = pid;
 	}
 }
