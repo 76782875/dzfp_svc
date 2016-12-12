@@ -318,6 +318,7 @@ public class DataOperte {
 		        ls.setGfyb(kpls.getGfyb());
 		        ls.setGfyh(ck.getGfyh());
 		        ls.setGfyhzh(ck.getGfyhzh());
+		        ls.setSffsyj(old.getSffsyj());
 		        ls.setSsyf(kpls.getSsyf());
 		        ls.setKpr(kpls.getKpr());
 		        ls.setFhr(kpls.getFhr());
@@ -478,6 +479,7 @@ public class DataOperte {
         ls.setGfdh(kpls.getGfdh());
         ls.setGfdz(kpls.getGfdz());
         ls.setGfemail(kpls.getGfemail());
+        ls.setSffsyj(old.getSffsyj());
         ls.setGfmc(kpls.getGfmc());
         ls.setGfsh(kpls.getGfsh());
         ls.setGfyb(kpls.getGfyb());
