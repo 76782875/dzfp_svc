@@ -72,6 +72,7 @@ public class DataOperte {
 	            jyls.setFpzldm("12");
 	            jyls.setClztdm("01");
 	            jyls.setFpczlxdm(fpczlxdm);
+	            jyls.setXfid(ts.getXfid());
 	            jyls.setXfdh(ts.getXfdh());
 	            jyls.setXfdz(ts.getXfdz());
 	            jyls.setXflxr(ts.getXflxr());
