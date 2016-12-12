@@ -52,6 +52,16 @@ public class Gsxx  implements Serializable {
  */ 
 @Column(name="ws_url")
 	protected String wsUrl;
+/**
+ * 微信appid
+ */ 
+@Column(name="wxappid")
+	protected String wxappid;
+/**
+ * 微信secret
+ */ 
+@Column(name="wxsecret")
+	protected String wxsecret;
 
 	public String getAppKey() {
 	return appKey;
@@ -101,6 +111,22 @@ public void setWsUrl(String wsUrl) {
 
 	public void setSecretKey(String secretKey){
 		this.secretKey=secretKey;
+	}
+
+	public String getWxappid() {
+		return wxappid;
+	}
+
+	public void setWxappid(String wxappid) {
+		this.wxappid = wxappid;
+	}
+
+	public String getWxsecret() {
+		return wxsecret;
+	}
+
+	public void setWxsecret(String wxsecret) {
+		this.wxsecret = wxsecret;
 	}
 
 }

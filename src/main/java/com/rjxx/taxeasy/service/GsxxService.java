@@ -49,6 +49,10 @@ public class GsxxService {
     public List<Gsxx> findByPage(Pagination pagination) {
         return gsxxMapper.findByPage(pagination);
     }
-
+    
+    public Gsxx findOneByDjh(Map params){
+    	return gsxxMapper.findOneByDjh(params);
+    }
+ 
 }
 

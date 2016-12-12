@@ -35,6 +35,11 @@
 			order by #{params.orderBy}
 		</if>
 	</select>
+	<select id="findOneByDjh" parameterType="map" resultType="gsxx">
+		select * from t_gsxx where 1=1 and gsdm = (select gsdm from t_jyls where djh=#{djh})
+		
+		limit 1
+	</select>
 
 </mapper>
 

@@ -22,6 +22,8 @@ public interface GsxxMapper {
     public List<Gsxx> findAllByParams(Map params);
 
     public List<Gsxx> findByPage(Pagination pagination);
+    
+    public Gsxx findOneByDjh(Map params);
 
 }
 
