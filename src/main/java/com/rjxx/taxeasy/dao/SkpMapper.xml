@@ -51,9 +51,7 @@
 		<if test="params.kpdmc != null and params.kpdmc != ''">
 			and s.kpdmc like concat('%',#{params.kpdmc},'%')
 		</if>
-		<if test="params.orderBy != null">
-			order by lrsj desc
-		</if>
+		order by lrsj desc
 	</select>
 
 	<select id="getKpd" parameterType="map" resultType="skp">
