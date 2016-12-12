@@ -34,6 +34,10 @@ public class SkpVo {
 	 * 发票库存预警阈值
 	 */
 	protected Integer fpyz;
+	
+	protected String ppdm;
+	
+	protected String ppmc;
 
 	/**
 	 * 备注
