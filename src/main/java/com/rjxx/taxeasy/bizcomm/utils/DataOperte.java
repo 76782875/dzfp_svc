@@ -223,7 +223,6 @@ public class DataOperte {
 		        jyls.setClztdm("01");
 		        jyls.setFpczlxdm("12");
 		        jyls.setXfid(kpls.getXfid());
-		        System.out.println("测试保存销方");
 		        jyls.setXfdh(kpls.getXfdh());
 		        jyls.setXfdz(kpls.getXfdz());
 		        jyls.setXflxr(kpls.getXflxr());
