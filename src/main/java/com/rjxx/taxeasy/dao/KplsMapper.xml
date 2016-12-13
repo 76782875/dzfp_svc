@@ -352,14 +352,14 @@
 		order by a.kplsh desc
 	</select>
 	<select id="findByDjh" parameterType="kpls" resultType="kpls">
-		select * from t_kpls where yxbz = '1'
+		select * from t_kpls where yxbz = '1' and pdfurl is not null
 		<if test="djh != null and djh != ''">
 			and djh = #{djh}
 		</if>
 	</select>
 
 	<select id="findAll" parameterType="map" resultType="kpls">
-		select * from t_kpls where yxbz = '1'
+		select * from t_kpls where yxbz = '1' and pdfurl is not null
 		<if test="djh != null and djh != ''">
 			and djh = #{djh}
 		</if>
