@@ -35,7 +35,7 @@ public class SendEmail {
             sb.append("<a href='" + pdfUrl + "'>" + null2Wz(pdfUrl) + "</a><br>");
         }
         sb.append("请及时下载您的发票。");
-//        sb.append("<br/><br/>");
+        sb.append("<br/><br/>");
 //        Map<String, Object> params = new HashMap<>();
 //        params.put("gsdm", gsdm);
 //        Gsxx gsxx = gsxxService.findOneByParams(params);
