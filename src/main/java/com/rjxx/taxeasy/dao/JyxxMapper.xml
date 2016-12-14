@@ -37,10 +37,20 @@
         </if>
     </select>
     <select id="findByPage" parameterType="pagination" resultType="jyxx">
-        select * from t_jyxx where yxbz = '1'
-        <if test="params.orderBy != null">
-            order by #{params.orderBy}
+        select * from t_jyxx a where a.yxbz = '1'
+        <if test="params.gsdm != null and params.gsdm !=''">
+           and a.gsdm = #{params.gsdm}
         </if>
+        <if test="params.ddh != null and params.ddh !=''">
+           and a.order_no = #{params.ddh}
+        </if>
+        <if test="params.kpddm != null and params.kpddm !=''">
+           and a.store_no = #{params.kpddm}
+        </if>
+        <if test="params.ddrqq != null and params.ddrqq !='' and params.ddrqz != null and params.ddrqz !=''">
+			and SUBSTR(a.order_time,1,8) &gt;= #{params.ddrqq} and SUBSTR(a.order_time,1,8) &lt;= #{params.ddrqz}
+		</if>
+        order by a.lrsj desc
     </select>
 
 </mapper>
