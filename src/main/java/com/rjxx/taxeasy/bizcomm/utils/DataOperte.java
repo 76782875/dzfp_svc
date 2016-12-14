@@ -96,7 +96,7 @@ public class DataOperte {
 	            jyls.setSkr(ts.getSkr());
 	            jyls.setBz(ts.getBz());
 	            jyls.setJshj(-ts.getJshj());
-	            jyls.setHsbz(old.getHsbz());
+	            jyls.setHsbz("0");
 	            jyls.setYfpdm(ts.getFpdm());
 	            jyls.setYfphm(ts.getFphm());
 	            jyls.setYkpjshj(0d);
@@ -247,7 +247,7 @@ public class DataOperte {
 		        jyls.setSkr(kpls.getSkr());
 		        jyls.setBz(kpls.getBz());
 		        jyls.setJshj(-kpls.getJshj());
-		        jyls.setHsbz(old.getHsbz());
+		        jyls.setHsbz("0");
 		        jyls.setYfpdm(kpls.getFpdm());
 		        jyls.setYfphm(kpls.getFphm());
 		        jyls.setYkpjshj(0d);
@@ -326,7 +326,7 @@ public class DataOperte {
 		        ls.setSkr(kpls.getSkr());
 		        ls.setBz(kpls.getBz());
 		        ls.setJshj(kpls.getJshj());
-		        ls.setHsbz(old.getHsbz());        
+		        ls.setHsbz("0");        
 		        ls.setYkpjshj(0d);
 		        ls.setYxbz("1");
 		        ls.setGsdm(kpls.getGsdm());
@@ -492,7 +492,7 @@ public class DataOperte {
         ls.setSkr(kpls.getSkr());
         ls.setBz(kpls.getBz());
         ls.setJshj(kpls.getJshj());
-        ls.setHsbz(old.getHsbz());        
+        ls.setHsbz("0");        
         ls.setYkpjshj(0d);
         ls.setYxbz("1");
         ls.setGsdm(kpls.getGsdm());
