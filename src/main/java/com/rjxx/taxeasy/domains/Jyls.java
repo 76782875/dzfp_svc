@@ -161,6 +161,12 @@ public class Jyls  implements Serializable {
 	protected String gfdh;
 
 /**
+ * 购方手机号
+ */ 
+@Column(name="gfsjh")
+	protected String gfsjh;
+
+/**
  * 购方邮编
  */ 
 @Column(name="gfyb")
@@ -680,6 +686,14 @@ public class Jyls  implements Serializable {
 
 	public void setSkpid(Integer skpid){
 		this.skpid=skpid;
+	}
+
+	public String getGfsjh() {
+		return gfsjh;
+	}
+
+	public void setGfsjh(String gfsjh) {
+		this.gfsjh = gfsjh;
 	}
 
 }

@@ -11,6 +11,9 @@
         <if test="xfsh != null and xfsh != ''">
             and xfsh = #{xfsh}
         </if>
+        <if test="gsdm != null and gsdm != ''">
+            and gsdm = #{gsdm}
+        </if>
         <if test="id != null">
             and id != #{id}
         </if>
