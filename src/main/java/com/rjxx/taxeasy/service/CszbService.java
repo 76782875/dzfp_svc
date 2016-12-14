@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.dao.CszbJpaDao;
 import com.rjxx.taxeasy.dao.CszbMapper;
+import com.rjxx.taxeasy.domains.Csb;
 import com.rjxx.taxeasy.domains.Cszb;
 import com.rjxx.taxeasy.vo.CsbVo;
 
@@ -29,7 +30,8 @@ public class CszbService {
 
     @Autowired
     private CszbMapper cszbMapper;
-
+    @Autowired
+    private CsbService csbService;
     public Cszb findOne(int id) {
         return cszbJpaDao.findOne(id);
     }
@@ -77,13 +79,16 @@ public class CszbService {
 					}
 				}
 				for (Cszb cszb : list) {
-					if (null!=xfid&&xfid.equals(cszb.getXfid())&&null==cszb.getKpdid()&&null==cszb.getXfid()) {
+					if (null!=gsdm&&gsdm.equals(cszb.getGsdm())&&null==cszb.getKpdid()&&null==cszb.getXfid()) {
 						return cszb;
 					}
 				}
 				return list.get(0);
 			}else {
-				return new Cszb();
+				Csb csb = csbService.findOneByParams(params);
+				Cszb cszb = new Cszb();
+				cszb.setCsz(csb.getMrz());
+				return cszb;
 			}
     }
 

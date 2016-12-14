@@ -71,6 +71,8 @@ public class Csb  implements Serializable {
 @Column(name="cszlx")
 	protected String cszlx;
 
+@Column(name="mrz")
+protected String mrz;
 
 	public Integer getId(){
 		return id;
@@ -158,6 +160,14 @@ public class Csb  implements Serializable {
 
 	public void setCszlx(String cszlx){
 		this.cszlx=cszlx;
+	}
+
+	public String getMrz() {
+		return mrz;
+	}
+
+	public void setMrz(String mrz) {
+		this.mrz = mrz;
 	}
 
 }
