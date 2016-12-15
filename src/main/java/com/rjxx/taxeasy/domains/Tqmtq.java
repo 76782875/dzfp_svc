@@ -97,6 +97,8 @@ public class Tqmtq  implements Serializable {
 @Column(name="gsdm")
 	protected String gsdm;
 
+@Column(name="gfemail")
+protected String gfemail;
 
 	public Integer getId(){
 		return id;
@@ -200,6 +202,14 @@ public class Tqmtq  implements Serializable {
 
 	public void setGsdm(String gsdm){
 		this.gsdm=gsdm;
+	}
+
+	public String getGfemail() {
+		return gfemail;
+	}
+
+	public void setGfemail(String gfemail) {
+		this.gfemail = gfemail;
 	}
 
 }
