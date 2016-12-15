@@ -93,6 +93,7 @@ public class TqmtqVo {
 	protected String gsdm;
 
 	protected String kpddm;
+	protected String gfemail;
 
 	public Integer getId() {
 		return id;
@@ -204,6 +205,14 @@ public class TqmtqVo {
 
 	public void setKpddm(String kpddm) {
 		this.kpddm = kpddm;
+	}
+
+	public String getGfemail() {
+		return gfemail;
+	}
+
+	public void setGfemail(String gfemail) {
+		this.gfemail = gfemail;
 	}
 
 }
