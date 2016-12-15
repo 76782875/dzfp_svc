@@ -5,9 +5,6 @@
 
     <select id="findOneByParams" parameterType="map" resultType="wxkb">
         select * from t_wxkb where 1 = 1
-        <if test="orderBy != null">
-            order by #{orderBy}
-        </if>
         limit 1
     </select>
 
