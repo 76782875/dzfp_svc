@@ -100,6 +100,9 @@ public class Tqmtq  implements Serializable {
 @Column(name="gfemail")
 protected String gfemail;
 
+@Column(name="openid")
+protected String openid;
+
 	public Integer getId(){
 		return id;
 	}
@@ -210,6 +213,14 @@ protected String gfemail;
 
 	public void setGfemail(String gfemail) {
 		this.gfemail = gfemail;
+	}
+
+	public String getOpenid() {
+		return openid;
+	}
+
+	public void setOpenid(String openid) {
+		this.openid = openid;
 	}
 
 }
