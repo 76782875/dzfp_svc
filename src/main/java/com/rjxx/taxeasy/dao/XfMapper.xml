@@ -15,10 +15,10 @@
             and gsdm = #{gsdm}
         </if>
         <if test="id != null and id != ''">
-            and id != #{id}
+            and id = #{id}
         </if>
         <if test="xfmc != null and xfmc != ''">
-            and xfmc != #{xfmc}
+            and xfmc = #{xfmc}
         </if>
         limit 1
     </select>
