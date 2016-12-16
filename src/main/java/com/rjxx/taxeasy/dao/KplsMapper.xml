@@ -370,7 +370,11 @@
 			and fpztdm = #{fpztdm}
 		</if>
 	</select>
-
+	
+	<select id="findAllNeedRegeneratePdfKpls" parameterType="map" resultType="kpls">
+		select * from t_kpls where yxbz = '1' and fpztdm = '99'
+	</select>
+	
 	<!-- <select id="findKplsByDjh" parameterType="map" resultMap="kpls"> -->
 	<!-- select * from t_kpls where pdfurl is not null and pdfurl != '' -->
 	<!-- <if test="djh != null"> -->

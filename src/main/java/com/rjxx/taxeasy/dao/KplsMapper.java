@@ -84,6 +84,8 @@ public interface KplsMapper {
     public List<Kpls> findKplsNoPdf();
     
     public Integer findCountByDjh(Kpls kpls);
-    
+
+    public List<Kpls> findAllNeedRegeneratePdfKpls(Map params);
+
 }
 
