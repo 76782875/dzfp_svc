@@ -13,6 +13,13 @@
         </if>
         limit 1
     </select>
+    
+    <select id="findAllByDjh" parameterType="map" resultType="fpj">
+        select * from t_fpj where yxbz = '1'
+        <if test="djh != null">
+            and djh = #{djh}
+        </if>
+    </select>
 
     <select id="findAllByParams" parameterType="map" resultType="fpj">
         select * from t_fpj where yxbz = '1'
