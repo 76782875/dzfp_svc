@@ -22,16 +22,19 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rjxx.comm.utils.ApplicationContextUtils;
+import com.rjxx.taxeasy.domains.Csb;
 import com.rjxx.taxeasy.domains.Wxkb;
+import com.rjxx.taxeasy.service.CsbService;
 import com.rjxx.taxeasy.service.WxkbService;
-import com.rjxx.utils.WeixinUtil;
-import com.rjxx.utils.XmlUtil;
 
 @Service
 public class WxUtil {
 
 	@Autowired
 	private WxkbService wxkbService;
+
+	@Autowired
+	private CsbService csbService;
 
 	public static final String APP_ID = "wx9abc729e2b4637ee";
 
@@ -104,8 +107,11 @@ public class WxUtil {
          ObjectMapper mapper = new ObjectMapper();
          Map<Object, Object> data = new HashMap<>();
          data.put("touser", openid);
+         Map<String, Object> params = new HashMap<>();
+         params.put("csm", "mbxxurl");
+         Csb cs = csbService.findOne(params);
          data.put("template_id", "Rdatmf7JV1J-AJhSD1sdBpV1OWuTpwQ5QLmjFVLCHIU");
-         data.put("url", "fpj.datarj.com/dzfp/rjxx/getFp?djh="+djh);
+         data.put("url", cs.getMrz()+"?djh="+djh);
          Map<Object, Object> data1 = new HashMap<>();
          Map<Object, Object> data2 = new HashMap<>();
          data2.put("value", "您收到一笔由“泰易电子发票平台”开具的电子发票。详细信息如下：");
