@@ -23,7 +23,8 @@ public class FpjVo implements Serializable {
 	protected String ckbtgyy;
 	
 	protected String gsdm;
-
+	protected String Logo;
+	protected String jshj1;
 	public Integer getDjh() {
 		return djh;
 	}
@@ -87,4 +88,25 @@ public class FpjVo implements Serializable {
 	public void setGsdm(String gsdm) {
 		this.gsdm = gsdm;
 	}
+
+	public String getLogo() {
+		return Logo;
+	}
+
+	public void setLogo(String logo) {
+		Logo = logo;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public String getJshj1() {
+		return jshj1;
+	}
+
+	public void setJshj1(String jshj1) {
+		this.jshj1 = jshj1;
+	}
+	
 }
