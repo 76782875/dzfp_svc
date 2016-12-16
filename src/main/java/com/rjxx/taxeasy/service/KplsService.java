@@ -12,6 +12,7 @@ import com.rjxx.taxeasy.dao.KplsMapper;
 import com.rjxx.taxeasy.domains.Jyls;
 import com.rjxx.taxeasy.domains.Kpls;
 import com.rjxx.taxeasy.vo.Fpcxvo;
+import com.rjxx.taxeasy.vo.KplsVO3;
 
 /**
  * 由GenJavaCode类自动生成
@@ -125,6 +126,10 @@ public class KplsService {
     
     public List<Kpls> findListByPagination(Pagination pagination){
     	return kplsMapper.findListByPagination(pagination);
+    }
+    
+    public List<KplsVO3> findList2ByPagination(Pagination pagination){
+    	return kplsMapper.findList2ByPagination(pagination);
     }
     
     public List<Kpls> findByDjh(Kpls kpls){

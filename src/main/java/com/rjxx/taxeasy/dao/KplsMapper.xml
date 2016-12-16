@@ -408,6 +408,29 @@
 		</if>
 	</select>
 	
+	<select id="findList2ByPagination" parameterType="pagination"
+		resultType="kplsvo3">
+		select a.jylsh,a.ddh,b.fpdm,b.fphm,b.pdfurl,b.kprq,b.hjje,b.hjse,a.tqm,(select c.fpztmc from t_fpzt c where c.fpztdm=b.fpztdm) fpztmc,b.errorReason from t_jyls a,t_kpls b where a.djh = b.djh
+		<if test="params.jylsh != null">
+			and b.jylsh = #{params.jylsh}
+		</if>
+		<if test="params.ddh != null">
+			and a.ddh = #{params.ddh}
+		</if>
+		<if test="params.gfdh != null">
+			and b.gfdh = #{params.gfdh}
+		</if>
+		<if test="params.gfmc != null and params.gfmc != ''">
+			and b.gfmc like concat('%',#{params.gfmc},'%')
+		</if>
+		<if test="params.gsdm != null and params.gsdm != ''">
+			and b.gsdm = #{params.gsdm}
+		</if>
+		<if test="params.tqm != null and params.tqm != ''">
+			and a.tqm = #{params.tqm}
+		</if>
+	</select>
+	
 	<update id="updateReturnMes" parameterType="map">
 		update t_kpls set fpdm =
 		#{fpdm},fphm = #{fphm},jym = #{jym},mwq = #{mwq} where kplsh = #{kplsh}

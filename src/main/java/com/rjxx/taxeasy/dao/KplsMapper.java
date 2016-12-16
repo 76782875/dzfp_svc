@@ -8,6 +8,7 @@ import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.domains.Jyls;
 import com.rjxx.taxeasy.domains.Kpls;
 import com.rjxx.taxeasy.vo.Fpcxvo;
+import com.rjxx.taxeasy.vo.KplsVO3;
 
 /**
  * 由GenJavaCode类自动生成
@@ -68,6 +69,9 @@ public interface KplsMapper {
     public List<Kpls> findKplsByPms(Map params);
     
     public List<Kpls> findListByPagination(Pagination pagination);
+    
+    public List<KplsVO3> findList2ByPagination(Pagination pagination);
+
     
     public List<Kpls> findByDjh(Kpls kpls);
 
