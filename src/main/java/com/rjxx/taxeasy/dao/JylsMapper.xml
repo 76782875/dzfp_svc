@@ -196,5 +196,13 @@
    <select id="findAllByJylsh" parameterType="map" resultType="jyls">
         select * from t_jyls where yxbz = '1' where jylsh = #{jylsh}
     </select>
+    
+    <select id="findJylsFsdx" resultType="jyls">
+        select * from t_jyls where yxbz = '1' and gfsjh is not null and gfsjh !='' and dxzt='0' and fpczlxdm in('11','23');
+    </select>
+    
+    <update id="updateDxbz" parameterType="map">
+        update t_jyls set dxzt = #{dxzt} where djh = #{djh}
+    </update>
 </mapper>
 

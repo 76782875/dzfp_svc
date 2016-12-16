@@ -187,5 +187,13 @@ public class JylsService {
     public List<Jyls> findAllByJylsh(Map map){
     	return jylsMapper.findAllByJylsh(map);
     }
+    
+    public List<Jyls> findJylsFsdx(){
+    	return jylsMapper.findJylsFsdx();
+    }
+    
+    public void updateDxbz(Map params){
+    	jylsMapper.updateDxbz(params);
+    }
 }
 
