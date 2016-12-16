@@ -149,5 +149,9 @@ public class KplsService {
     public List<Kpls> findKplsNoPdf(){
     	return kplsMapper.findKplsNoPdf();
     }
+    
+    public Integer findCountByDjh(Kpls kpls){
+    	return kplsMapper.findCountByDjh(kpls);
+    }
 }
 

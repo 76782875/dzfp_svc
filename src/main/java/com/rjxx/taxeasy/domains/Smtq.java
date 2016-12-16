@@ -58,6 +58,8 @@ public class Smtq  implements Serializable {
 	protected String sj;
 @Column(name="kpddm")
 protected String kpddm;
+@Column(name="openid")
+protected String openid;
 @Column(name="lrsj")
 @JsonSerialize(using = JsonDatetimeFormat.class)
 @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
@@ -210,6 +212,14 @@ protected String kpddm;
 
 	public void setKpddm(String kpddm) {
 		this.kpddm = kpddm;
+	}
+
+	public String getOpenid() {
+		return openid;
+	}
+
+	public void setOpenid(String openid) {
+		this.openid = openid;
 	}
 
 }

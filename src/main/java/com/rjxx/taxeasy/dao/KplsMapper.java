@@ -83,5 +83,7 @@ public interface KplsMapper {
     //查询需要生成pdf文件的记录
     public List<Kpls> findKplsNoPdf();
     
+    public Integer findCountByDjh(Kpls kpls);
+    
 }
 

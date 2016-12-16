@@ -108,7 +108,7 @@ public class WxUtil {
          data.put("url", "fpj.datarj.com/dzfp/rjxx/getFp?djh="+djh);
          Map<Object, Object> data1 = new HashMap<>();
          Map<Object, Object> data2 = new HashMap<>();
-         data2.put("value", "您收到一笔有由“泰易电子发票平台”开具的电子发。详细信息如下：");
+         data2.put("value", "您收到一笔由“泰易电子发票平台”开具的电子发票。详细信息如下：");
          data2.put("color", "#173177");
          data1.put("first", data2);
          data2 = new HashMap<>();
