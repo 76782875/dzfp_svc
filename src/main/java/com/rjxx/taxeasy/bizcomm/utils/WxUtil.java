@@ -57,6 +57,9 @@ public class WxUtil {
 		if (wxkb != null && sub < Long.valueOf(wxkb.getExpiresIn()) * 1000) {
 			return wxkb.getAccessToken();
 		} else {
+			if (wxkb == null) {
+				wxkb = new Wxkb();
+			}
 			String turl = GET_TOKEN_URL + "?grant_type=client_credential&appid=" + APP_ID + "&secret=" + SECRET;
 			HttpClient client = new DefaultHttpClient();
 			HttpGet get = new HttpGet(turl);
