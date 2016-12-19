@@ -195,5 +195,9 @@ public class JylsService {
     public void updateDxbz(Map params){
     	jylsMapper.updateDxbz(params);
     }
+    
+    public List<Jyls> findFsdxSqj(){
+    	return jylsMapper.findFsdxSqj();
+    }
 }
 

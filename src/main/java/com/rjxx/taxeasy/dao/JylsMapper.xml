@@ -204,5 +204,9 @@
     <update id="updateDxbz" parameterType="map">
         update t_jyls set dxzt = #{dxzt} where djh = #{djh}
     </update>
+    
+    <select id="findFsdxSqj" resultType="jyls">
+         select a.* from t_jyls a,t_kpls b where a.gsdm='sqj' and gfsjh is not null and gfsjh !='' and dxzt ='0' and a.djh=b.djh and b.fpztdm='00' and a.fpczlxdm='11'
+    </select>
 </mapper>
 
