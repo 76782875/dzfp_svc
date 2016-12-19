@@ -127,7 +127,7 @@ public class WxUtil {
 			gsxx.setWxsecret(SECRET);
 			gsxx.setGsdm("rjxx");
 		} else if (gsxx != null && (gsxx.getWxappid() == null || gsxx.getWxsecret() == null
-				|| gsxx.getWxappid().equals("") || gsxx.getWxsecret().equals(""))) {
+				|| "".equals(gsxx.getWxappid()) || "".equals(gsxx.getWxsecret()))) {
 			gsxx.setWxappid(APP_ID);
 			gsxx.setWxsecret(SECRET);
 			gsxx.setGsdm("rjxx");
