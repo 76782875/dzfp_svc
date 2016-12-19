@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rjxx.taxeasy.dao.XmlMapper">
 
-    <select id="findOneByParams" parameterType="map" resultType="xml">
+    <select id="findOneByParams" parameterType="map" resultType="xmlBean">
         select * from t_xml where yxbz = '1'
         <if test="orderBy != null">
             order by #{orderBy}
@@ -11,14 +11,14 @@
         limit 1
     </select>
 
-    <select id="findAllByParams" parameterType="map" resultType="xml">
+    <select id="findAllByParams" parameterType="map" resultType="xmlBean">
         select * from t_xml where yxbz = '1'
         <if test="orderBy != null">
             order by #{orderBy}
         </if>
     </select>
 
-    <select id="findByPage" parameterType="pagination" resultType="xml">
+    <select id="findByPage" parameterType="pagination" resultType="xmlBean">
         select * from t_xml where yxbz = '1'
         <if test="params.orderBy != null">
             order by #{params.orderBy}

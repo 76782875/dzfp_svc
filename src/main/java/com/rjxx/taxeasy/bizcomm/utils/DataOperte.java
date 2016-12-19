@@ -18,7 +18,7 @@ import com.rjxx.taxeasy.domains.Jyls;
 import com.rjxx.taxeasy.domains.Jyspmx;
 import com.rjxx.taxeasy.domains.Kpls;
 import com.rjxx.taxeasy.domains.Kpspmx;
-import com.rjxx.taxeasy.domains.Xml;
+import com.rjxx.taxeasy.domains.XmlBean;
 import com.rjxx.taxeasy.service.CkhkService;
 import com.rjxx.taxeasy.service.DzfplogService;
 import com.rjxx.taxeasy.service.JylsService;
@@ -544,7 +544,7 @@ public class DataOperte {
 	@Transactional
     public void saveXml(String sh, String jylsh, String xml) {
        
-        Xml tt = new Xml();
+        XmlBean tt = new XmlBean();
         tt.setXfsh(sh);
         tt.setJylsh(jylsh);//电子发票处理状态代码
         tt.setXmlFile(xml);//电子发票处理结果代码

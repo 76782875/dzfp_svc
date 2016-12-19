@@ -3,7 +3,7 @@ package com.rjxx.taxeasy.service;
 import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.dao.XmlJpaDao;
 import com.rjxx.taxeasy.dao.XmlMapper;
-import com.rjxx.taxeasy.domains.Xml;
+import com.rjxx.taxeasy.domains.XmlBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,27 +26,27 @@ public class XmlService {
     @Autowired
     private XmlMapper xmlMapper;
 
-    public Xml findOne(int id) {
+    public XmlBean findOne(int id) {
         return xmlJpaDao.findOne(id);
     }
 
-    public void save(Xml xml) {
+    public void save(XmlBean xml) {
         xmlJpaDao.save(xml);
     }
 
-    public void save(List<Xml> xmlList) {
+    public void save(List<XmlBean> xmlList) {
         xmlJpaDao.save(xmlList);
     }
 
-    public Xml findOneByParams(Map params) {
+    public XmlBean findOneByParams(Map params) {
         return xmlMapper.findOneByParams(params);
     }
 
-    public List<Xml> findAllByParams(Map params) {
+    public List<XmlBean> findAllByParams(Map params) {
         return xmlMapper.findAllByParams(params);
     }
 
-    public List<Xml> findByPage(Pagination pagination) {
+    public List<XmlBean> findByPage(Pagination pagination) {
         return xmlMapper.findByPage(pagination);
     }
 

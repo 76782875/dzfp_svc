@@ -1,6 +1,6 @@
 package com.rjxx.taxeasy.dao;
 
-import com.rjxx.taxeasy.domains.Xml;
+import com.rjxx.taxeasy.domains.XmlBean;
 import org.springframework.data.repository.CrudRepository;
 
 /**
@@ -10,7 +10,7 @@ import org.springframework.data.repository.CrudRepository;
  *
  * @ZhangBing
  */ 
-public interface XmlJpaDao extends CrudRepository<Xml, Integer> {
+public interface XmlJpaDao extends CrudRepository<XmlBean, Integer> {
 
 }
 
