@@ -33,6 +33,9 @@ public class Wxkb  implements Serializable {
 @Column(name="expires_in")
 	protected String expiresIn;
 
+@Column(name="gsdm")
+	protected String gsdm;
+
 
 	public Integer getId(){
 		return id;
@@ -64,6 +67,14 @@ public class Wxkb  implements Serializable {
 
 	public void setExpiresIn(String expiresIn){
 		this.expiresIn=expiresIn;
+	}
+
+	public String getGsdm() {
+		return gsdm;
+	}
+
+	public void setGsdm(String gsdm) {
+		this.gsdm = gsdm;
 	}
 
 }
