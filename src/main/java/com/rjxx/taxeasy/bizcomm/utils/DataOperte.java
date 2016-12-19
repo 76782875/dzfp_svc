@@ -18,12 +18,14 @@ import com.rjxx.taxeasy.domains.Jyls;
 import com.rjxx.taxeasy.domains.Jyspmx;
 import com.rjxx.taxeasy.domains.Kpls;
 import com.rjxx.taxeasy.domains.Kpspmx;
+import com.rjxx.taxeasy.domains.Xml;
 import com.rjxx.taxeasy.service.CkhkService;
 import com.rjxx.taxeasy.service.DzfplogService;
 import com.rjxx.taxeasy.service.JylsService;
 import com.rjxx.taxeasy.service.JyspmxService;
 import com.rjxx.taxeasy.service.KplsService;
 import com.rjxx.taxeasy.service.KpspmxService;
+import com.rjxx.taxeasy.service.XmlService;
 import com.rjxx.time.TimeUtil;
 
 
@@ -45,7 +47,8 @@ public class DataOperte {
 	private DzfplogService logService;
 	@Autowired
 	private CkhkService ckService;
-	
+	@Autowired
+	private XmlService xmlservice;
      
 	public void addJyls(List<Integer> kplshList, int djh, String fpczlxdm,int yhid) throws TransactionException {
 		Map params = new HashMap<>();
@@ -537,5 +540,15 @@ public class DataOperte {
 		param2.put("fpztdm", "06");  //06重新开具
 		kplsService.updateFpczlx(param2); 
 	}
-	
+    
+	@Transactional
+    public void saveXml(String sh, String jylsh, String xml) {
+       
+        Xml tt = new Xml();
+        tt.setXfsh(sh);
+        tt.setJylsh(jylsh);//电子发票处理状态代码
+        tt.setXmlFile(xml);//电子发票处理结果代码
+        tt.setLrsj(new Date());//录入时间 系统时间
+        xmlservice.save(tt);;
+    }
 }
