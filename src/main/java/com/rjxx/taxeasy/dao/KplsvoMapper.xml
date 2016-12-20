@@ -43,16 +43,16 @@
             and gsdm = #{params.gsdm}
         </if>
         <if test="params.xfs !=null">
-               <foreach collection="params.xfs" open=" and (a.xfid in (" separator="," close=")" item="item" index="index">
+               <foreach collection="params.xfs" open=" and (xfid in (" separator="," close=")" item="item" index="index">
                 #{params.xfs[${index}].id} 
             </foreach>
-            or a.xfid is null)
+            or xfid is null)
          </if>
         <if test="params.skps !=null">
-               <foreach collection="params.skps" open=" and (a.skpid in (" separator="," close=")" item="item" index="index">
+               <foreach collection="params.skps" open=" and (skpid in (" separator="," close=")" item="item" index="index">
                 #{params.skps[${index}].id} 
             </foreach>
-            or a.skpid is null)
+            or skpid is null)
          </if>
         <if test="params.ddh !=null">
             and ddh like concat('%',#{params.ddh},'%')
