@@ -102,6 +102,8 @@ protected String gfemail;
 
 @Column(name="openid")
 protected String openid;
+@Column(name="gfsjh")
+protected String gfsjh;
 
 	public Integer getId(){
 		return id;
@@ -221,6 +223,14 @@ protected String openid;
 
 	public void setOpenid(String openid) {
 		this.openid = openid;
+	}
+
+	public String getGfsjh() {
+		return gfsjh;
+	}
+
+	public void setGfsjh(String gfsjh) {
+		this.gfsjh = gfsjh;
 	}
 
 }
