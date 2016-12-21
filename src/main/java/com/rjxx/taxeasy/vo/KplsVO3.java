@@ -41,7 +41,7 @@ public class KplsVO3 {
 
     protected String sj;//购方电话
 
-    protected String kprq;
+    protected Date kprq;
  
     protected String pdfurl;
 
@@ -188,18 +188,15 @@ public class KplsVO3 {
         this.sj = sj;
     }
 
-    public String getKprq() {
-    	if (kprq != null && kprq.length() > 10) {
-			kprq = kprq.substring(0, 10);
-		}
-        return kprq;
-    }
+    public Date getKprq() {
+		return kprq;
+	}
 
-    public void setKprq(String kprq) {
-        this.kprq = kprq;
-    }
+	public void setKprq(Date kprq) {
+		this.kprq = kprq;
+	}
 
-    public String getPdfurl() {
+	public String getPdfurl() {
         return pdfurl;
     }
 

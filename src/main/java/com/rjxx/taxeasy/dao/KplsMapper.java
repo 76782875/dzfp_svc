@@ -70,7 +70,7 @@ public interface KplsMapper {
     
     public List<Kpls> findListByPagination(Pagination pagination);
     
-    public List<KplsVO3> findList2ByPagination(Pagination pagination);
+    public List<KplsVO3> findList2ByPagination(Map map);
 
     
     public List<Kpls> findByDjh(Kpls kpls);

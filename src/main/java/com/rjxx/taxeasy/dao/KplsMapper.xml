@@ -412,26 +412,26 @@
 		</if>
 	</select>
 	
-	<select id="findList2ByPagination" parameterType="pagination"
+	<select id="findList2ByPagination" parameterType="map"
 		resultType="kplsvo3">
 		select a.jylsh,a.ddh,b.fpdm,b.fphm,b.pdfurl,b.kprq,b.hjje,b.hjse,a.tqm,(select c.fpztmc from t_fpzt c where c.fpztdm=b.fpztdm) fpztmc,b.errorReason from t_jyls a,t_kpls b where a.djh = b.djh
-		<if test="params.jylsh != null">
-			and b.jylsh = #{params.jylsh}
+		<if test="jylsh != null and jylsh != ''">
+			and b.jylsh = #{jylsh}
 		</if>
-		<if test="params.ddh != null">
-			and a.ddh = #{params.ddh}
+		<if test="ddh != null and ddh != ''">
+			and a.ddh = #{ddh}
 		</if>
-		<if test="params.gfdh != null">
-			and b.gfdh = #{params.gfdh}
+		<if test="gfdh != null and gfdh != ''">
+			and b.gfdh = #{gfdh}
 		</if>
-		<if test="params.gfmc != null and params.gfmc != ''">
-			and b.gfmc like concat('%',#{params.gfmc},'%')
+		<if test="gfmc != null and gfmc != ''">
+			and b.gfmc like concat('%',#{gfmc},'%')
 		</if>
-		<if test="params.gsdm != null and params.gsdm != ''">
-			and b.gsdm = #{params.gsdm}
+		<if test="gsdm != null and gsdm != ''">
+			and b.gsdm = #{gsdm}
 		</if>
-		<if test="params.tqm != null and params.tqm != ''">
-			and a.tqm = #{params.tqm}
+		<if test="tqm != null and tqm != ''">
+			and a.tqm = #{tqm}
 		</if>
 	</select>
 	
