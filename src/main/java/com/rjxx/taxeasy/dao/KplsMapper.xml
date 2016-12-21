@@ -69,7 +69,7 @@
 			and a.fpdm = #{fpdm}
 		</if>
 		<if test="fpzt != null and fpzt !=''">
-			and a.fpzt = #{fpzt}
+			and a.fpztdm = #{fpzt}
 		</if>
 		order by a.djh asc,a.kplsh asc
 	</select>
