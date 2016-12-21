@@ -62,5 +62,7 @@ public interface JylsMapper {
     public void updateDxbz(Map params);
     
     public List<Jyls> findFsdxSqj();
+    
+    public List<Jyls> findAllJyls(Map params);
 }
 

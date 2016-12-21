@@ -208,5 +208,52 @@
     <select id="findFsdxSqj" resultType="jyls">
          select a.* from t_jyls a,t_kpls b where a.gsdm='sqj' and gfsjh is not null and gfsjh !='' and dxzt ='0' and a.djh=b.djh and b.fpztdm='00' and a.fpczlxdm='11'
     </select>
+    
+    
+     <select id="findAllJyls" parameterType="map" resultType="jyls">
+        select * from t_jyls where yxbz = '1'
+        <if test="clztdm != null">
+            and clztdm = #{clztdm}
+        </if>
+        <if test="fpzldm != null">
+            and fpzldm = #{fpzldm}
+        </if>
+        <if test="fpczlxdm != null">
+            and fpczlxdm = #{fpczlxdm}
+        </if>
+        <if test="gfmc != null and gfmc != ''">
+            and gfmc like concat('%',#{gfmc},'%')
+        </if>
+        <if test="ddh != null and ddh != ''">
+            and ddh like concat('%',#{ddh},'%')
+        </if>
+        <if test="jylsh != null and jylsh != ''">
+            and jylsh like concat('%',#{jylsh},'%')
+        </if>
+        <if test="rqq != null and rqq != '' and rqz != null and rqz != ''" >
+            and jylssj between #{rqq} and #{rqz}
+        </if>
+        <if test="gsdm != null and gsdm != ''" >
+            and gsdm = #{gsdm}
+        </if>
+        <if test="xfsh != null and xfsh != ''" >
+            and xfsh = #{xfsh}
+        </if>
+        <if test="xfs !=null">
+               <foreach collection="xfs" open=" and (xfid in (" separator="," close=")" item="item" index="index">
+                #{xfs[${index}].id} 
+            </foreach>
+            or xfid is null)
+         </if>
+         <if test="skps !=null">
+               <foreach collection="skps" open=" and (skpid in (" separator="," close=")" item="item" index="index">
+                #{skps[${index}].id} 
+                </foreach>
+                or skpid is null)
+         </if>        
+        <if test="orderBy != null">
+            order by ${orderBy}
+        </if>
+    </select>
 </mapper>
 
