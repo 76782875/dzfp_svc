@@ -35,6 +35,8 @@ public class SendEmail {
             sb.append("<a href='" + pdfUrl + "'>" + null2Wz(pdfUrl) + "</a><br>");
         }
         sb.append("请及时下载您的发票。");
+        sb.append("<br/>");
+        sb.append("备注：苹果浏览器无法显示发票章，只能下载PDF才能显示。");
         sb.append("<br/><br/>");
 //        Map<String, Object> params = new HashMap<>();
 //        params.put("gsdm", gsdm);
