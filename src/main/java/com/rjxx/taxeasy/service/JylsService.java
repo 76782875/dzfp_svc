@@ -157,6 +157,20 @@ public class JylsService {
         }
         save(jylsList);
     }
+
+    /**
+     * 更新交易流水状态
+     *
+     * @param djhList
+     * @param clztdm
+     */
+    public void doAllKp(List<Jyls> jylsList, String clztdm) {
+        for (Jyls jyls : jylsList) {
+            jyls.setClztdm(clztdm);
+            jyls.setXgsj(new Date());
+        }
+        save(jylsList);
+    }
     //根据单据号查询jyls
     public Jyls findJylsByDjh(Map params){
     	return jylsMapper.findJylsByDjh(params);
@@ -198,6 +212,10 @@ public class JylsService {
     
     public List<Jyls> findFsdxSqj(){
     	return jylsMapper.findFsdxSqj();
+    }
+    
+    public List<Jyls> findAllJyls(Map params){
+    	return jylsMapper.findAllJyls(params);
     }
 }
 
