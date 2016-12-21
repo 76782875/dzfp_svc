@@ -209,8 +209,8 @@ public class SeperateInvoiceUtils {
         List<JyspmxDecimal> splitKpspmxs = new ArrayList<JyspmxDecimal>();// 拆分发票后的list
         BigDecimal zje = new BigDecimal(0);// 汇总金额
         BigDecimal total = new BigDecimal(0);
-        for (JyspmxDecimal jyspmx : splitKpspmxs) {
-			total.add(jyspmx.getSpje());
+        for (JyspmxDecimal jyspmx : jyspmxs) {
+			total = total.add(jyspmx.getSpje());
 		}
         if (total.subtract(maxje).doubleValue() > 0) {
 			maxje = fpje;
