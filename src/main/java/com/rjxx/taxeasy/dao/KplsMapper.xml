@@ -71,6 +71,9 @@
 		<if test="fpzt != null and fpzt !=''">
 			and a.fpztdm = #{fpzt}
 		</if>
+		<if test="fpczlx != null and fpczlx !=''">
+			and a.fpczlxdm = #{fpczlx}
+		</if>
 		order by a.djh asc,a.kplsh asc
 	</select>
 
@@ -128,7 +131,10 @@
 		<if test="params.fpzt != null and params.fpzt !=''">
 			and a.fpztdm = #{params.fpzt}
 		</if>
-		order by a.lrsj desc
+		<if test="params.fpczlx != null and params.fpczlx !=''">
+			and a.fpczlxdm = #{params.fpczlx}
+		</if>
+		order by a.fphm desc,a.fpdm desc
 	</select>
 	<update id="update" parameterType="map">
 		update t_kpls set printflag =
