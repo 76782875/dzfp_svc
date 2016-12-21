@@ -29,7 +29,7 @@
 	</select>
 
 	<select id="findByPage" parameterType="pagination" resultType="fpjvo">
-		SELECT
+		SELECT distinct
 		a.djh,
 		a.skpid,
 		a.gfmc,
