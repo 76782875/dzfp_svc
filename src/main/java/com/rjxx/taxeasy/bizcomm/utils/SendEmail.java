@@ -1,21 +1,18 @@
 package com.rjxx.taxeasy.bizcomm.utils;
 
-
-
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-
+import com.rjxx.comm.utils.ApplicationContextUtils;
+import com.rjxx.taxeasy.service.GetPropertService;
 import com.rjxx.utils.ReadProperties;
 public class SendEmail {
-	
-    public static void main(String[] args) throws Exception {
-        //t_jyls jyls = t_jyls.find(t_jyls.class, 151);
+	private GetPropertService getPro = ApplicationContextUtils.getBean(GetPropertService.class);
+    /*public static void main(String[] args) throws Exception {
+        t_jyls jyls = t_jyls.find(t_jyls.class, 151);
         sendMail("123456789", "1051752048@qq.com", new ArrayList<String>() {{
             add("111");
         }}, "af");
-    }
+    }*/
 
     /**
      * A发送邮件的内容
@@ -63,15 +60,15 @@ public class SendEmail {
      * @param gsdm
      * @throws Exception
      */
-    public static void sendMail(String ddh, String email, List<String> pdfUrlList, String gsmc) throws Exception {
+    public void sendMail(String ddh, String email, List<String> pdfUrlList, String gsmc) throws Exception {
         MailUtil sendmail = new MailUtil();
-        sendmail.setHost(ReadProperties.read("emailHost"));
-        sendmail.setUserName(ReadProperties.read("emailUserName"));
-        sendmail.setPassWord(ReadProperties.read("emailPwd"));
+        sendmail.setHost(getPro.getEmailHost());
+        sendmail.setUserName(getPro.getEmailUserName());
+        sendmail.setPassWord(getPro.getEmailPwd());
         sendmail.setTo(email);
 
-        sendmail.setFrom(ReadProperties.read("emailForm"));
-        sendmail.setSubject(ReadProperties.read("emailTitle"));
+        sendmail.setFrom(getPro.getEmailForm());
+        sendmail.setSubject(getPro.getEmailTitle());
         sendmail.setContent(getAFMailContent(ddh, pdfUrlList, gsmc));
         //TODO 这里需要根据邮件摸板内容进行调整。
 
