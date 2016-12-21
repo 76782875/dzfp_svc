@@ -140,7 +140,9 @@ public class WxUtil {
 		Map<String, Object> params = new HashMap<>();
 		params.put("csm", "mbxxurl");
 		Csb cs = csbService.findOneByParams(params);
-		data.put("template_id", "Rdatmf7JV1J-AJhSD1sdBpV1OWuTpwQ5QLmjFVLCHIU");
+		params.put("csm", "mbxxmbid");
+		Csb csb = csbService.findOneByParams(params);
+		data.put("template_id", csb.getMrz());
 		data.put("url", cs.getMrz() + "?djh=" + djh);
 		Map<Object, Object> data1 = new HashMap<>();
 		Map<Object, Object> data2 = new HashMap<>();

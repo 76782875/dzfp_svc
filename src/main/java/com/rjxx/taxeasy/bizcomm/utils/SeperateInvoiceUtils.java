@@ -431,4 +431,22 @@ public class SeperateInvoiceUtils {
         }
         return dividend.divide(divisor, scale, BigDecimal.ROUND_HALF_UP);
     }
+    
+    public static void main(String[] args) throws Exception {
+		List<JyspmxDecimal> list = new ArrayList<>();
+		JyspmxDecimal jymx = new JyspmxDecimal();
+		jymx.setJshj(new BigDecimal(106));
+		jymx.setSpsl(new BigDecimal(0.06));
+		jymx.setSpje(new BigDecimal(100));
+		jymx.setSpse(new BigDecimal(6));
+		jymx.setDjh(1);
+		jymx.setSpmxxh(1);
+		list.add(jymx);
+		
+		List<JyspmxDecimal> res = splitInvoices(list, new BigDecimal(99.99), new BigDecimal(90), 1);
+		for (JyspmxDecimal jyspmx : res) {
+			System.out.println(jyspmx.getSpje() + "\t" + jyspmx.getSpse() + "\t" + jyspmx.getSpsl() + "\t" + jyspmx.getJshj());
+		}
+		
+	}
 }
