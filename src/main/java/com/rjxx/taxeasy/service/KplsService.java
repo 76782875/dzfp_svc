@@ -137,8 +137,8 @@ public class KplsService {
         return kplsMapper.findListByPagination(pagination);
     }
 
-    public List<KplsVO3> findList2ByPagination(Pagination pagination) {
-        return kplsMapper.findList2ByPagination(pagination);
+    public List<KplsVO3> findList2ByPagination(Map map) {
+        return kplsMapper.findList2ByPagination(map);
     }
 
     public List<Kpls> findByDjh(Kpls kpls) {
