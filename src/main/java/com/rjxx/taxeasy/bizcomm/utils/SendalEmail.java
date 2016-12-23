@@ -3,6 +3,7 @@ package com.rjxx.taxeasy.bizcomm.utils;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.IAcsClient;
@@ -15,10 +16,11 @@ import com.aliyuncs.profile.IClientProfile;
 import com.rjxx.taxeasy.domains.Yjjl;
 import com.rjxx.taxeasy.service.YjjlService;
 
+@Service
 public class SendalEmail {
-	static @Autowired YjjlService yjjlService;
+	 @Autowired YjjlService yjjlService;
 
-	public static boolean sendEmail(String djh, String gsdm, String sjryx, String type, String ref_Id, String yjnr,
+	public boolean sendEmail(String djh, String gsdm, String sjryx, String type, String ref_Id, String yjnr,
 			String yjbt) {
 		IClientProfile profile = DefaultProfile.getProfile("cn-hangzhou", "5T6XUKr6uxSfhNAu",
 				"a7cBFQR3avT4NSIR6dFtP8GLvzcL5G");
@@ -57,7 +59,8 @@ public class SendalEmail {
 	}
 
 	public static void main(String[] args) {
-		Boolean msg = SendalEmail.sendEmail("123456", "rjxx", "179637014@qq.com", "发票开具", "123456", "您的发票已开具成功",
+		SendalEmail se = new SendalEmail();
+		Boolean msg = se.sendEmail("123456", "rjxx", "179637014@qq.com", "发票开具", "123456", "您的发票已开具成功",
 				"电子发票");
 		System.out.println(msg);
 	}
