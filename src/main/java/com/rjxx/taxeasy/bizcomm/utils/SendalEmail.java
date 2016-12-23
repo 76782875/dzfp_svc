@@ -19,7 +19,17 @@ import com.rjxx.taxeasy.service.YjjlService;
 @Service
 public class SendalEmail {
 	 @Autowired YjjlService yjjlService;
-
+	 /**
+	  * 
+	  * @param djh 单据号,没有可以不填
+	  * @param gsdm 公司代码
+	  * @param sjryx 收件人邮箱
+	  * @param type 什么功能发送的邮件
+	  * @param ref_Id 关联id 现djh
+	  * @param yjnr 邮件内容
+	  * @param yjbt 邮件标题
+	  * @return
+	  */
 	public boolean sendEmail(String djh, String gsdm, String sjryx, String type, String ref_Id, String yjnr,
 			String yjbt) {
 		IClientProfile profile = DefaultProfile.getProfile("cn-hangzhou", "5T6XUKr6uxSfhNAu",
