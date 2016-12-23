@@ -446,7 +446,7 @@
 		<if test="tqm != null and tqm != ''">
 			and a.tqm = #{tqm}
 		</if>	
-		limit 100
+		ORDER BY b.kprq desc LIMIT 100 
 	</select>
 	
 	<update id="updateReturnMes" parameterType="map">
