@@ -48,12 +48,6 @@
             </foreach>
             or xfid is null)
          </if>
-        <if test="params.skps !=null">
-               <foreach collection="params.skps" open=" and (skpid in (" separator="," close=")" item="item" index="index">
-                #{params.skps[${index}].id} 
-            </foreach>
-            or skpid is null)
-         </if>
         <if test="params.ddh !=null">
             and ddh like concat('%',#{params.ddh},'%')
          </if>
