@@ -1,9 +1,12 @@
 package com.rjxx.taxeasy.bizcomm.utils;
 
 import java.util.Date;
+
+import com.rjxx.comm.utils.ApplicationContextUtils;
+import com.rjxx.taxeasy.service.GetPropertService;
 import com.rjxx.utils.ReadProperties;
 public class FpyjSendEmail {
-	
+	private GetPropertService getPro = ApplicationContextUtils.getBean(GetPropertService.class);
 	/**
      * A发送邮件的内容
      *
@@ -38,14 +41,14 @@ public class FpyjSendEmail {
      * @param gsdm
      * @throws Exception
      */
-    public static void sendMail(String email,String yhmc,String kpdmc,String skph,String limit) throws Exception {
+    public void sendMail(String email,String yhmc,String kpdmc,String skph,String limit) throws Exception {
         MailUtil sendmail = new MailUtil();
-        sendmail.setHost(ReadProperties.read("emailHost"));
-        sendmail.setUserName(ReadProperties.read("emailUserName"));
-        sendmail.setPassWord(ReadProperties.read("emailPwd"));
+        sendmail.setHost(getPro.getEmailHost());
+        sendmail.setUserName(getPro.getEmailUserName());
+        sendmail.setPassWord(getPro.getEmailPwd());
         sendmail.setTo(email);
-        sendmail.setFrom(ReadProperties.read("emailForm"));
-        sendmail.setSubject(ReadProperties.read("emailTitle"));
+        sendmail.setFrom(getPro.getEmailForm());
+        sendmail.setSubject(getPro.getEmailTitle());
         sendmail.setContent(getAFMailContent(yhmc,kpdmc,skph,limit));
         sendmail.sendMail();
         Thread.sleep(5000);
