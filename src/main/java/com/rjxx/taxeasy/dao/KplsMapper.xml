@@ -445,7 +445,8 @@
 		</if>
 		<if test="tqm != null and tqm != ''">
 			and a.tqm = #{tqm}
-		</if>
+		</if>	
+		limit 100
 	</select>
 	
 	<update id="updateReturnMes" parameterType="map">
