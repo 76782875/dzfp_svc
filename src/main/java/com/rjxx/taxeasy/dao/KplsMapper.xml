@@ -143,6 +143,12 @@
 		<if test="params.fpczlx != null and params.fpczlx !=''">
 			and a.fpczlxdm = #{params.fpczlx}
 		</if>
+		<if test="params.xfsh != null and params.xfsh !=''">
+			and a.xfsh = #{params.xfsh}
+		</if>
+		<if test="params.sk != null and params.sk !=''">
+			and a.skpid = #{params.sk}
+		</if>
 		order by a.fphm desc,a.fpdm desc
 	</select>
 	<update id="update" parameterType="map">
