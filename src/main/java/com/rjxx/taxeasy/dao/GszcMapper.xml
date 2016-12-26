@@ -4,9 +4,9 @@
 <mapper namespace="com.rjxx.taxeasy.dao.GszcMapper">
 
     <select id="findOneByParams" parameterType="map" resultType="gszc">
-        select * from t_gszc where yxbz = '1'
-        <if test="orderBy != null">
-            order by #{orderBy}
+        select * from t_gszc where 1 = 1
+        <if test="gsmc != null">
+           and gsmc = #{gsmc}
         </if>
         limit 1
     </select>
