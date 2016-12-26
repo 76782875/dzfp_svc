@@ -19,8 +19,42 @@ import java.util.Date;
 @Entity
 @Table(name = "t_jyspmx")
 public class Jyspmx implements Serializable {
+	
+	
 
-    @Id
+    public Jyspmx() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public Jyspmx(Integer spmxxh, String fphxz, String spdm, String spmc, String spggxh, String spdw, Double sps,
+			Double spdj, Double spje, Double spsl, Double spse, Double jshj, Double ykphj, Integer hzkpxh, Date lrsj,
+			Integer lrry, Date xgsj, Integer xgry, String gsdm, Integer xfid, Integer skpid) {
+		super();
+		this.spmxxh = spmxxh;
+		this.fphxz = fphxz;
+		this.spdm = spdm;
+		this.spmc = spmc;
+		this.spggxh = spggxh;
+		this.spdw = spdw;
+		this.sps = sps;
+		this.spdj = spdj;
+		this.spje = spje;
+		this.spsl = spsl;
+		this.spse = spse;
+		this.jshj = jshj;
+		this.ykphj = ykphj;
+		this.hzkpxh = hzkpxh;
+		this.lrsj = lrsj;
+		this.lrry = lrry;
+		this.xgsj = xgsj;
+		this.xgry = xgry;
+		this.gsdm = gsdm;
+		this.xfid = xfid;
+		this.skpid = skpid;
+	}
+
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Integer id;
 

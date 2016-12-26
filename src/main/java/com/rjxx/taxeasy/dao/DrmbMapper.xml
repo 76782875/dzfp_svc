@@ -36,6 +36,9 @@
         <if test="xfsh != null">
             and xfsh = #{xfsh}
         </if>
+        <if test="gsdm != null">
+            and gsdm = #{gsdm}
+        </if>
         <if test="xfs !=null">
                <foreach collection="xfs" open=" or ((xfsh in (" separator="," close=")" item="item" index="index">
                 #{xfs[${index}].xfsh} 
