@@ -66,6 +66,9 @@ public class FpjVo implements Serializable {
 	}
 
 	public String getKprq() {
+		if (kprq != null && kprq.length() > 10) {
+			kprq = kprq.substring(0, 11);
+		}
 		return kprq;
 	}
 

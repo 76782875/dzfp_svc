@@ -44,7 +44,7 @@ public class FpjService {
         return fpjMapper.findOneByParams(params);
     }
 
-    public List<Fpj> findAllByParams(Map params) {
+    public List<FpjVo> findAllByParams(Map params) {
         return fpjMapper.findAllByParams(params);
     }
 

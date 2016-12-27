@@ -20,7 +20,7 @@ public interface FpjMapper {
 
     public Fpj findOneByParams(Map params);
 
-    public List<Fpj> findAllByParams(Map params);
+    public List<FpjVo> findAllByParams(Map params);
     
     public List<FpjVo> findAllByParam(Map params);
 
