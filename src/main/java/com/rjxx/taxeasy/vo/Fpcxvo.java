@@ -49,6 +49,7 @@ public class Fpcxvo implements Serializable {
 	protected String hkztbz;
 	protected String newgfmc;
 	protected String fpztdm;
+	protected String kpddm;
 
 	/**
 	 * 交易流水时间 业务系统或电商平台生成。
@@ -874,5 +875,13 @@ public class Fpcxvo implements Serializable {
 		this.kpdmc = kpdmc;
 	}
 
+	public String getKpddm() {
+		return kpddm;
+	}
+
+	public void setKpddm(String kpddm) {
+		this.kpddm = kpddm;
+	}
+	
 
 }
