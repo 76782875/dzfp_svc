@@ -19,7 +19,7 @@
 		from t_kpls where fpdm = #{fpdm} and fphm = #{fphm} and yxbz='1'
 	</select>
 	<select id="findAllByParams" parameterType="map" resultType="fpcxvo">
-	 	SELECT a.fpdm,a.fphm,a.kprq,a.pdfurl,a.fpztdm, b.fpzlmc,c.fpczlxmc,e.*, 
+	 	SELECT  a.fpdm,a.fphm,a.kprq,a.pdfurl,a.fpztdm, b.fpzlmc,c.fpczlxmc,e.*, 
 		<!-- SELECT a.*, b.fpzlmc,c.fpczlxmc,e.yfphm,e.yfpdm,e.ykpjshj,e.tqm,e.gfsjh,e.ddh,e.ssyf, -->
 	<!-- SELECT a.*, b.fpzlmc,c.fpczlxmc,e.ddh, -->
 		(case when a.printflag='1' then
@@ -86,7 +86,7 @@
 	</select>
 
 	<select id="findByPage" parameterType="pagination" resultType="fpcxvo">
-	 	SELECT a.fpdm,a.fphm,a.kprq,a.pdfurl,a.fpztdm, b.fpzlmc,c.fpczlxmc,e.*, 
+	 	SELECT a.kplsh, a.fpdm,a.fphm,a.kprq,a.pdfurl,a.fpztdm, b.fpzlmc,c.fpczlxmc,e.*, 
 	<!-- 	SELECT a.*, b.fpzlmc,c.fpczlxmc,e.ddh, -->
 		(case when a.printflag='1' then
 		'已打印'
