@@ -24,9 +24,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rjxx.comm.utils.ApplicationContextUtils;
 import com.rjxx.taxeasy.domains.Csb;
 import com.rjxx.taxeasy.domains.Gsxx;
+import com.rjxx.taxeasy.domains.Wxfs;
 import com.rjxx.taxeasy.domains.Wxkb;
 import com.rjxx.taxeasy.service.CsbService;
 import com.rjxx.taxeasy.service.GsxxService;
+import com.rjxx.taxeasy.service.WxfsService;
 import com.rjxx.taxeasy.service.WxkbService;
 
 @Service
@@ -40,6 +42,9 @@ public class WxUtil {
 
 	@Autowired
 	private GsxxService gsxxService;
+
+	@Autowired
+	private WxfsService wxfsService;
 
 	public static final String APP_ID = "wx9abc729e2b4637ee";
 
@@ -120,6 +125,7 @@ public class WxUtil {
 		HttpClient client = new DefaultHttpClient();
 		Map<String, Object> prms = new HashMap<>();
 		prms.put("djh", djh);
+		String gsdm = null;
 		Gsxx gsxx = gsxxService.findOneByDjh(prms);
 		if (gsxx == null) {
 			gsxx = new Gsxx();
@@ -128,9 +134,12 @@ public class WxUtil {
 			gsxx.setGsdm("rjxx");
 		} else if (gsxx != null && (gsxx.getWxappid() == null || gsxx.getWxsecret() == null
 				|| "".equals(gsxx.getWxappid()) || "".equals(gsxx.getWxsecret()))) {
+			gsdm = gsxx.getGsdm();
 			gsxx.setWxappid(APP_ID);
 			gsxx.setWxsecret(SECRET);
 			gsxx.setGsdm("rjxx");
+		}else{
+			gsdm = gsxx.getGsdm();
 		}
 		Map map = new HashMap<>();
 		HttpPost httpPost = new HttpPost(SEND_URL + getToken(gsxx));
@@ -175,6 +184,7 @@ public class WxUtil {
 		data2.put("color", "#173177");
 		data1.put("remark", data2);
 		data.put("data", data1);
+		Wxfs wx = new Wxfs();
 		try {
 			String json = mapper.writeValueAsString(data);
 			httpPost.setEntity(new StringEntity(json, "UTF-8"));
@@ -188,11 +198,17 @@ public class WxUtil {
 			} else {
 				msg = "失败";
 			}
+			wx.setReturnmsg(String.valueOf(map.get("errmsg")));
 		} catch (Exception e) {
 			e.printStackTrace();
 			msg = "失败";
 		}
-
+		wx.setDjh(djh);
+		wx.setGsdm(gsdm);
+		wx.setIssuccess(msg);
+		wx.setOpenid(openid);
+		wx.setLrsj(new Date());
+		wxfsService.save(wx);
 		// ObjectMapper map = new ObjectMapper();
 		// try {
 		// Map res = XmlUtil.xml2Map(result);
