@@ -55,7 +55,7 @@
 			and f.kprq &lt; #{zzrq}
 		</if>
 		<if test="je != null">
-			a.jshj = #{je}
+			and a.jshj = #{je}
 		</if>
 		ORDER BY f.kprq DESC
 	</select>
