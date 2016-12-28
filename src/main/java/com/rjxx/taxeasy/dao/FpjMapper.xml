@@ -52,7 +52,7 @@
 			and f.kprq &gt;= #{qsrq}
 		</if>
 		<if test="zzrq != null">
-			and f.kprq &lt; #{zzrq}
+			and f.kprq &lt;= #{zzrq}
 		</if>
 		<if test="je != null">
 			and a.jshj = #{je}
