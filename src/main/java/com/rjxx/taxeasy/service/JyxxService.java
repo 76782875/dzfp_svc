@@ -59,5 +59,8 @@ public class JyxxService {
         return jyxxMapper.findByPage(pagination);
     }
 
+    public void update(Map params) {
+         jyxxMapper.update(params);
+    }
 }
 

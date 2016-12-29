@@ -26,6 +26,6 @@ public interface JyxxMapper {
     public List<Smtq> findAllByParams1(Map params);
     public List<TqmtqVo> findAllByParams2(Map params);
     public List<Jyxx> findByPage(Pagination pagination);
-
+    public void update(Map params);
 }
 

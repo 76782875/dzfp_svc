@@ -52,6 +52,12 @@
 		</if>
         order by a.lrsj desc
     </select>
-
+    <update id="update" parameterType="map">
+		update t_jyxx t  set t.store_no =
+		#{store_no},t.order_time =#{order_time},t.price=#{price},t.sign=#{sign},t.xgsj=#{xgsj}
+		    where 1=1
+		     and t.gsdm = #{gsdm}
+		     and t.order_no = #{order_no}
+	</update>
 </mapper>
 
