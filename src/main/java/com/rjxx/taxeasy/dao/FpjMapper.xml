@@ -22,37 +22,56 @@
 	</select>
 
 	<select id="findAllByParams" parameterType="map" resultType="fpjvo">
-		SELECT distinct
-		a.djh,
-		a.skpid,
-		a.gfmc,
-		a.jylssj,
-		a.gsdm,
-		a.jshj,
-		CASE isnull(e.ppdm)
+		SELECT
+			a.djh,
+			a.skpid,
+			a.gfmc,
+			a.jylssj,
+			a.gsdm,
+			a.jshj,
+			CASE isnull(e.ppdm)
 		WHEN 1 THEN
-		CONCAT('Logo_',a.gsdm)
+			CONCAT('Logo_', a.gsdm)
 		ELSE
-		CONCAT('Logo_',a.gsdm, '-', e.ppdm)
+			CONCAT('Logo_', a.gsdm, '-', e.ppdm)
 		END AS Logo,
-		c.ztbz,
-		c.ckbtgyy,
-		f.kprq
+		 c.ztbz,
+		 c.ckbtgyy,
+		 DATE_FORMAT(f.kprq, '%Y-%m-%d') kprq
 		FROM
-		t_jyls a
-		RIGHT JOIN t_fpj b ON a.djh = b.djh
+			t_jyls a
+		JOIN t_fpj b ON a.djh = b.djh
 		LEFT JOIN t_ckhk c ON a.djh = c.djh
 		JOIN t_skp d ON a.skpid = d.id
 		LEFT JOIN t_pp e ON d.pid = e.id
-		LEFT JOIN (SELECT DISTINCT djh, DATE_FORMAT(kprq,'%Y-%m-%d') kprq from t_kpls 
-		where djh in (SELECT djh from t_fpj where unionid=#{unionid}) 
-		and djh not in (SELECT djh from t_kpls where pdfurl is not null and fpztdm != '00')) f ON f.djh=a.djh
-		WHERE a.yxbz = '1' AND b.yxbz = '1' AND a.clztdm = '91'
+		LEFT JOIN (
+			SELECT
+				djh,
+				max(kprq) kprq
+			FROM
+				t_kpls
+			GROUP BY
+				djh
+			HAVING
+				sum(
+					CASE
+					WHEN pdfurl IS NOT NULL
+					AND fpztdm = '00' THEN
+						1
+					ELSE
+						0
+					END
+				) = count(1)
+		) f ON f.djh = a.djh
+		WHERE
+			a.yxbz = '1'
+		AND b.yxbz = '1'
+		AND a.clztdm = '91'
 		<if test="qsrq != null">
 			and f.kprq &gt;= #{qsrq}
 		</if>
 		<if test="zzrq != null">
-			and f.kprq &lt;= #{zzrq}
+			and f.kprq &lt; #{zzrq}
 		</if>
 		<if test="je != null">
 			and a.jshj = #{je}
