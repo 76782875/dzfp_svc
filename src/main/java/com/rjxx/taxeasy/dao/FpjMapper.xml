@@ -76,6 +76,9 @@
 		<if test="je != null">
 			and a.jshj = #{je}
 		</if>
+		<if test="unionid != null">
+			and b.unionid = #{unionid}
+		</if>
 		ORDER BY f.kprq DESC
 	</select>
 
