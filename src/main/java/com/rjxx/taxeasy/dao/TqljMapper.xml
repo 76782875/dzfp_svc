@@ -12,7 +12,7 @@
     </select>
 
     <select id="findAllByParams" parameterType="map" resultType="tqlj">
-        select * from t_tqlj where yxbz = '1'
+        select * from t_tqlj where yxbz = '1'  order by sort
         <if test="orderBy != null">
             order by #{orderBy}
         </if>
