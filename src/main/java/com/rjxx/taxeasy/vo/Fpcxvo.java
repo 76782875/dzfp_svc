@@ -1,6 +1,7 @@
 package com.rjxx.taxeasy.vo;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -32,8 +33,8 @@ public class Fpcxvo implements Serializable {
 	protected String kprq;
 	protected String kpr;
 	protected Double jshj;
-	protected Double hjje;
-	protected Double hjse;
+	protected String hjje;
+	protected String hjse;
 	protected String printflag;
 	protected String spmc;
 	protected String fpzt;
@@ -335,14 +336,6 @@ public class Fpcxvo implements Serializable {
 		return jshj;
 	}
 
-	public Double getHjje() {
-		return hjje;
-	}
-
-	public Double getHjse() {
-		return hjse;
-	}
-
 	public String getPrintflag() {
 		return printflag;
 	}
@@ -435,11 +428,28 @@ public class Fpcxvo implements Serializable {
 		this.jshj = jshj;
 	}
 
-	public void setHjje(Double hjje) {
+	public String getHjje() {
+
+		if (null != hjje) {
+			DecimalFormat dFormat = new DecimalFormat("##,##0.00");
+			return dFormat.format(Double.valueOf(hjje));
+		}
+		return hjje;
+	}
+
+	public void setHjje(String hjje) {
 		this.hjje = hjje;
 	}
 
-	public void setHjse(Double hjse) {
+	public String getHjse() {
+		if (null != hjse) {
+			DecimalFormat dFormat = new DecimalFormat("###,##0.00");
+			return dFormat.format(Double.valueOf(hjse));
+		}
+		return hjse;
+	}
+
+	public void setHjse(String hjse) {
 		this.hjse = hjse;
 	}
 
@@ -882,6 +892,5 @@ public class Fpcxvo implements Serializable {
 	public void setKpddm(String kpddm) {
 		this.kpddm = kpddm;
 	}
-	
 
 }
