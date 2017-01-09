@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rjxx.taxeasy.dao.JyxxsqMapper">
+
+    <select id="findOneByParams" parameterType="map" resultType="jyxxsq">
+        select * from t_jyxxsq where yxbz = '1'
+         <if test="ddh != null">
+            and ddh =  #{ddh}
+        </if>
+        <if test="gsdm != null">
+            and gsdm =  #{gsdm}
+        </if>
+        <if test="orderBy != null">
+            order by #{orderBy}
+        </if>
+        limit 1
+    </select>
+
+    <select id="findAllByTqms" parameterType="map" resultType="jyxxsq">
+        select * from t_jyxxsq where yxbz = '1'
+        <if test="tqmList != null">
+            <foreach collection="tqmList" open=" and tqm in (" separator="," close=")" item="tqm">
+                #{tqm}
+            </foreach>
+        </if>
+        <if test="gsdm != null">
+            and gsdm = #{gsdm}
+        </if>
+        <if test="orderBy != null">
+            order by #{orderBy}
+        </if>
+    </select>
+    
+      <select id="findAllByJylshs" parameterType="map" resultType="jyxxsq">
+        select * from t_jyxxsq where yxbz = '1'
+        <if test="jylshList != null">
+            <foreach collection="jylshList" open=" and jylsh in (" separator="," close=")" item="jylsh">
+                #{jylsh}
+            </foreach>
+        </if>
+        <if test="gsdm != null">
+            and gsdm = #{gsdm}
+        </if>
+        <if test="orderBy != null">
+            order by #{orderBy}
+        </if>
+    </select>
+    
+    <select id="findAllByDdhs" parameterType="map" resultType="jyxxsq">
+        select * from t_jyxxsq where yxbz = '1'
+        <if test="ddhList != null">
+            <foreach collection="ddhList" open=" and ddh in (" separator="," close=")" item="ddh">
+                #{ddh}
+            </foreach>
+        </if>
+        <if test="gsdm != null">
+            and gsdm = #{gsdm}
+        </if>
+        <if test="orderBy != null">
+            order by #{orderBy}
+        </if>
+    </select>
+    
+    <select id="findXfExistByKpd" parameterType="map" resultType="xf">
+       select t.* from t_xf t where t.yxbz='1' and t.id in 
+       (select a.xfid from t_skp a where a.kpddm =#{kpddm} and a.gsdm =#{gsdm})
+        LIMIT 1
+    </select>
+    <select id="findByPage" parameterType="pagination" resultType="jyxxsq">
+        select * from t_jyxxsq where yxbz = '1'
+        <if test="params.orderBy != null">
+            order by #{params.orderBy}
+        </if>
+    </select>
+
+</mapper>
+
