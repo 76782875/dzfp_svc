@@ -24,7 +24,7 @@ public class CheckOrderUtil {
 	@Autowired
 	private JymxsqService jymxsqService;
 
-	public String checkBuyer(List<Jyxxsq> jyxxsqList, String gsdm) {
+	public String checkBuyer(List<Jyxxsq> jyxxsqList, String gsdm,String Operation) {
 		String result = "";
 		String ddh = "";
 		Jyxxsq jyxxsq = new Jyxxsq();
@@ -198,7 +198,9 @@ public class CheckOrderUtil {
 		if (null != t3 && !t3.isEmpty()) {
 			for (int i = 0; i < t3.size(); i++) {
 				Jyxxsq jy3 = (Jyxxsq) t3.get(i);
-				if (null == jy3.getSfcp() || jy3.getSfcp().equals("")) {
+				if ((null == jy3.getSfcp() || jy3.getSfcp().equals("") )) {
+					result += "订单号" + jy3.getDdh() + "已存在;";
+				}else if(Operation.equals("01")){
 					result += "订单号" + jy3.getDdh() + "已存在;";
 				}
 			}
@@ -206,7 +208,7 @@ public class CheckOrderUtil {
 		return result;
 	}
 
-	public String checkAll(List<Jyxxsq> jyxxsqList, List<Jymxsq> jymxsqList, String gsdm) {
+	public String checkAll(List<Jyxxsq> jyxxsqList, List<Jymxsq> jymxsqList, String gsdm,String Operation) {
 		String result = "";
 		String ddh = "";
 		Jyxxsq jyxxsq = new Jyxxsq();
@@ -215,7 +217,7 @@ public class CheckOrderUtil {
 		List ddhList = new ArrayList();
 		Map ddhMap = new HashMap();
 		// 先校验购方
-		result += checkBuyer(jyxxsqList, gsdm);
+		result += checkBuyer(jyxxsqList, gsdm,Operation);
 
 		for (int i = 0; i < jyxxsqList.size(); i++) {
 			BigDecimal ajshj;
