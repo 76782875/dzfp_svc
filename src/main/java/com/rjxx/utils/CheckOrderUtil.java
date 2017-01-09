@@ -82,13 +82,14 @@ public class CheckOrderUtil {
 				result += ddh + ":开票人不能为空;";
 			}
 			// 购方名称
+			if(!Operation.equals("02")){
 			String buyerName = jyxxsq.getGfmc();
 			if (null == buyerName || buyerName.equals("")) {
 				result += ddh + ":购方名称不能为空;";
 			} else if (buyerName.length() > 100) {
 				result += ddh + ":购方名称太长;";
 			}
-
+			}
 			// 购方税号
 			String buyerIdentifier = (String) jyxxsq.getGfsh();
 			if (buyerIdentifier != null && !buyerIdentifier.equals("")) {
@@ -117,7 +118,7 @@ public class CheckOrderUtil {
 				result += ddh + ":购方银行账号超过50个字符;";
 			}
 			// 开具纸质专用发票时，购方所有信息必须有
-			if ("01".equals(fpzldm)) {
+			if ("01".equals(fpzldm) && !Operation.equals("02")) {
 				if (null == buyerIdentifier || buyerIdentifier.equals("")) {
 					result += ddh + ":发票种类为01时购方税号不能为空;";
 				}
@@ -143,7 +144,9 @@ public class CheckOrderUtil {
 			}
 			// 提取码校验
 			String tqm = jyxxsq.getTqm();
-			tqmList.add(tqm);
+			if(!tqm.equals("")){
+			   tqmList.add(tqm);
+			}
 			// 交易流水号校验
 			String jylsh = jyxxsq.getJylsh();
 			jylshList.add(jylsh);
@@ -172,6 +175,7 @@ public class CheckOrderUtil {
 			}
 		}
 		// 一次性校验提取码和交易流水号是否重复上传，每笔交易流水号必须唯一，提取码也唯一,订单号也必须唯一
+		if(null!=tqmList && !tqmList.isEmpty()){
 		tqmMap.put("tqmList", tqmList);
 		tqmMap.put("gsdm", gsdm);
 		List<Jyxxsq> t1 = jyxxsqService.findAllByTqms(tqmMap);
@@ -181,7 +185,7 @@ public class CheckOrderUtil {
 				result += "提取码" + jy1.getTqm() + "已存在;";
 			}
 		}
-
+		}
 		jylshMap.put("jylshList", jylshList);
 		jylshMap.put("gsdm", gsdm);
 		List<Jyxxsq> t2 = jyxxsqService.findAllByJylshs(jylshMap);
@@ -198,7 +202,7 @@ public class CheckOrderUtil {
 		if (null != t3 && !t3.isEmpty()) {
 			for (int i = 0; i < t3.size(); i++) {
 				Jyxxsq jy3 = (Jyxxsq) t3.get(i);
-				if ((null == jy3.getSfcp() || jy3.getSfcp().equals("") )) {
+				if ((null == jy3.getSfcp() || jy3.getSfcp().equals(""))) {
 					result += "订单号" + jy3.getDdh() + "已存在;";
 				}else if(Operation.equals("01")){
 					result += "订单号" + jy3.getDdh() + "已存在;";
@@ -316,7 +320,7 @@ public class CheckOrderUtil {
 		ddhMap.put("ddhList", ddhList);
 		ddhMap.put("gsdm", gsdm);
 		List<Jymxsq> t3 = jymxsqService.findAllByDdhs(ddhMap);
-		if (null != t3 && !t3.isEmpty() && jyxxsqList.get(0).getXfsh().equals("")) {
+		if (null != t3 && !t3.isEmpty()) {
 			for (int i = 0; i < t3.size(); i++) {
 				Jymxsq jy3 = (Jymxsq) t3.get(i);
 				result += "明细数据订单号" + jy3.getDdh() + "已存在;";
