@@ -38,7 +38,7 @@ public class SaveOrderData {
 				params.put("ddh", jyxxsq.getDdh());
 				params.put("gsdm", gsdm);
 				yjyxxsq = jyxxsqService.findOneByParams(params);
-				if (null != yjyxxsq && !yjyxxsq.equals("")) {
+				if (null != yjyxxsq && !yjyxxsq.equals("")  && (null !=yjyxxsq.getGfmc() && !yjyxxsq.getGfmc().equals("")) ) {
 					if (yjyxxsq.getDdh().equals(jyxxsq.getDdh())) {
 						yjyxxsq.setSfcp(jyxxsq.getSfcp());
 						yjyxxsq.setSfdyqd(jyxxsq.getSfdyqd());
@@ -52,7 +52,7 @@ public class SaveOrderData {
 
 				for (int j = 0; j < jymxsqList.size(); j++) {
 					jymxsq = jymxsqList.get(j);
-					if (null != yjyxxsq && !yjyxxsq.equals("")) {
+					if (null != yjyxxsq && !yjyxxsq.equals("") && (null !=yjyxxsq.getGfmc() && !yjyxxsq.getGfmc().equals(""))) {
 						if (jyxxsq.getDdh().equals(yjyxxsq.getDdh())) {
 							jymxsq.setSqlsh(yjyxxsq.getSqlsh());
 							// 保存明细数据
