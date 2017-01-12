@@ -313,7 +313,7 @@ public class CheckOrderUtil {
 				}
 			}
 			BigDecimal bd2 = new BigDecimal(jyxxsq.getJshj());
-			if (bd2.subtract(jshj.setScale(2, BigDecimal.ROUND_HALF_UP)).doubleValue() != 0.0) {
+			if (bd2.setScale(2, BigDecimal.ROUND_HALF_UP).subtract(jshj.setScale(2, BigDecimal.ROUND_HALF_UP)).doubleValue() != 0.0) {
 				result += "订单号为" + ddh + "的订单TotalAmount，Amount，TaxAmount计算校验不通过";
 			}
 		}
