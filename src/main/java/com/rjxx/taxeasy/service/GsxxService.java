@@ -39,7 +39,14 @@ public class GsxxService {
     }
 
     public Gsxx findOneByParams(Map params) {
-        return gsxxMapper.findOneByParams(params);
+    	Gsxx gsxx = gsxxMapper.findOneByParams(params);
+    	if (gsxx.getWxappid() == null || gsxx.getWxsecret() == null) {
+			params.put("gsdm", "rjxx");
+			Gsxx gsxx1 = gsxxMapper.findOneByParams(params);
+			gsxx.setWxappid(gsxx1.getWxappid());
+			gsxx.setWxsecret(gsxx1.getWxsecret());
+		}
+        return gsxx;
     }
 
     public List<Gsxx> findAllByParams(Map params) {
