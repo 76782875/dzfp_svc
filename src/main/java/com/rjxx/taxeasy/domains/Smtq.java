@@ -77,6 +77,8 @@ protected String openid;
 @Column(name="gsdm")
 	protected String gsdm;
 
+@Column(name="llqxx")
+protected String llqxx;
 
 	public Integer getId(){
 		return id;
@@ -220,6 +222,14 @@ protected String openid;
 
 	public void setOpenid(String openid) {
 		this.openid = openid;
+	}
+
+	public String getLlqxx() {
+		return llqxx;
+	}
+
+	public void setLlqxx(String llqxx) {
+		this.llqxx = llqxx;
 	}
 
 }

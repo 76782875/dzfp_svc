@@ -104,7 +104,8 @@ protected String gfemail;
 protected String openid;
 @Column(name="gfsjh")
 protected String gfsjh;
-
+@Column(name="llqxx")
+protected String llqxx;
 	public Integer getId(){
 		return id;
 	}
@@ -231,6 +232,14 @@ protected String gfsjh;
 
 	public void setGfsjh(String gfsjh) {
 		this.gfsjh = gfsjh;
+	}
+
+	public String getLlqxx() {
+		return llqxx;
+	}
+
+	public void setLlqxx(String llqxx) {
+		this.llqxx = llqxx;
 	}
 
 }
