@@ -60,7 +60,7 @@ public class CheckOrderUtil {
 			String TotalAmount = String.valueOf(jyxxsq.getJshj());
 			if (TotalAmount == null) {
 				result += ddh + ":价税合计为空;";
-			} else if (!TotalAmount.matches("^\\-?[1-9]{1}?[0-9]{0,15}+(.[0-9]{0,2})?$")) {
+			} else if (!TotalAmount.matches("^\\-?[0-9]{0,15}+(.[0-9]{0,2})?$")) {
 				result += ddh + ":价税合计格式不正确;";
 			}
 
@@ -269,7 +269,7 @@ public class CheckOrderUtil {
 					String Amount = String.valueOf(jymxsq.getSpje());
 					if (Amount == null) {
 						result += "订单号为" + ddh + "的订单商品Amount为空;";
-					} else if (!Amount.matches("^\\-?[1-9]{1}?[0-9]{0,15}+(.[0-9]{0,2})?$")) {
+					} else if (!Amount.matches("^\\-?[0-9]{0,15}+(.[0-9]{0,2})?$")) {
 						result += "订单号为" + ddh + "的订单Amount格式不正确！";
 					}
 					// 商品税率
@@ -284,7 +284,7 @@ public class CheckOrderUtil {
 					}
 					// 商品税额
 					String TaxAmount = String.valueOf(jymxsq.getSpse());
-					if (TaxAmount != null && TaxAmount.equals("^\\-?[1-9]{1}?[0-9]{0,15}+(.[0-9]{0,2})?$")) {
+					if (TaxAmount != null && TaxAmount.equals("^\\-?[0-9]{0,15}+(.[0-9]{0,2})?$")) {
 						result += "订单号为" + ddh + "的订单第" + i + "条商品TaxAmount格式不正确！";
 					}
 
