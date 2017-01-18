@@ -7,6 +7,7 @@ import com.rjxx.taxeasy.domains.Gsxx;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +17,7 @@ import java.util.Map;
  * Thu Nov 03 17:18:52 CST 2016
  *
  * @ZhangBing
- */ 
+ */
 @Service
 public class GsxxService {
 
@@ -39,13 +40,14 @@ public class GsxxService {
     }
 
     public Gsxx findOneByParams(Map params) {
-    	Gsxx gsxx = gsxxMapper.findOneByParams(params);
-    	if (gsxx.getWxappid() == null || gsxx.getWxsecret() == null) {
-			params.put("gsdm", "rjxx");
-			Gsxx gsxx1 = gsxxMapper.findOneByParams(params);
-			gsxx.setWxappid(gsxx1.getWxappid());
-			gsxx.setWxsecret(gsxx1.getWxsecret());
-		}
+        Gsxx gsxx = gsxxMapper.findOneByParams(params);
+        if (gsxx.getWxappid() == null || gsxx.getWxsecret() == null) {
+            Map paramMap = new HashMap();
+            paramMap.put("gsdm", "rjxx");
+            Gsxx gsxx1 = gsxxMapper.findOneByParams(paramMap);
+            gsxx.setWxappid(gsxx1.getWxappid());
+            gsxx.setWxsecret(gsxx1.getWxsecret());
+        }
         return gsxx;
     }
 
@@ -56,10 +58,10 @@ public class GsxxService {
     public List<Gsxx> findByPage(Pagination pagination) {
         return gsxxMapper.findByPage(pagination);
     }
-    
-    public Gsxx findOneByDjh(Map params){
-    	return gsxxMapper.findOneByDjh(params);
+
+    public Gsxx findOneByDjh(Map params) {
+        return gsxxMapper.findOneByDjh(params);
     }
- 
+
 }
 
