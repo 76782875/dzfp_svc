@@ -19,6 +19,8 @@ public interface YhMapper {
 
     public Yh findOneByParams(Map params);
 
+    public Yh findOneByParam(Map params);
+
     public List<Yh> findAllByParams(Map params);
 
     public List<Yh> findByPage(Pagination pagination);
