@@ -51,7 +51,7 @@ public class SaveOrderData {
 					}else if(jyxxsq.getFpzldm().equals("1")){
 						jyxxsq.setFpzldm("02");
 					}
-					jyxxsqService.save(jyxxsq);
+					jyxxsqService.saveJyxxsq(jyxxsq);;
 				}
 				// 保存jyxxsq数据
 
