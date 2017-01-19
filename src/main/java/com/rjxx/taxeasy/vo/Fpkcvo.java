@@ -19,6 +19,8 @@ public class Fpkcvo implements Serializable{
 	protected Integer kyl;
 	protected Integer kpl;
 	protected String yx;      //用户邮箱
+	protected String fpzldm;
+	protected String fpzlmc;
 	public Integer getId() {
 		return id;
 	}
@@ -114,6 +116,18 @@ public class Fpkcvo implements Serializable{
 	}
 	public void setYx(String yx) {
 		this.yx = yx;
+	}
+	public String getFpzldm() {
+		return fpzldm;
+	}
+	public void setFpzldm(String fpzldm) {
+		this.fpzldm = fpzldm;
+	}
+	public String getFpzlmc() {
+		return fpzlmc;
+	}
+	public void setFpzlmc(String fpzlmc) {
+		this.fpzlmc = fpzlmc;
 	}
 	
 

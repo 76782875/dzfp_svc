@@ -44,6 +44,9 @@ public interface FpkcMapper {
     
     //更具当前用户的订阅信息查询库余量
     public Fpkcvo findZyKyl(Map params);
+    
+    //发票库存监控查询
+    public List<Fpkcvo> findKcjkByPage(Pagination pagination);
 
 }
 

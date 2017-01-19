@@ -98,6 +98,9 @@ public class Fpkc  implements Serializable {
 @Column(name="fpkcl")
 	protected Integer fpkcl;
 
+@Column(name="fpzldm")
+protected String fpzldm;
+
 
 	public Integer getId(){
 		return id;
@@ -201,6 +204,14 @@ public class Fpkc  implements Serializable {
 
 	public void setFpkcl(Integer fpkcl){
 		this.fpkcl=fpkcl;
+	}
+
+	public String getFpzldm() {
+		return fpzldm;
+	}
+
+	public void setFpzldm(String fpzldm) {
+		this.fpzldm = fpzldm;
 	}
 
 }

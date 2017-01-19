@@ -47,9 +47,35 @@
     </select>
 
     <select id="findByPage" parameterType="pagination" resultType="fpkcvo">
-        select a.id,a.xfid,a.skpid,a.fpdm,a.fphms,a.fphmz,a.lrsj,b.xfsh,b.xfmc,c.kpdmc,d.yhmc,(convert(a.fphmz,SIGNED)-convert(a.fphms,SIGNED)+1) as fpkcl 
-        from t_fpkc a,t_xf b,t_skp c,t_yh d where a.xfid = b.id and a.skpid = c.id and a.lrry = d.id
-        and a.yxbz = '1'
+        SELECT
+	a.id,
+	a.xfid,
+	a.skpid,
+	a.fpzldm,
+	a.fpdm,
+	a.fphms,
+	a.fphmz,
+	a.lrsj,
+	b.xfsh,
+	b.xfmc,
+	c.kpdmc,
+	d.yhmc,
+  e.fpzlmc,
+	(
+		CONVERT (a.fphmz, SIGNED) - CONVERT (a.fphms, SIGNED) + 1
+	) AS fpkcl
+FROM
+	t_fpkc a,
+	t_xf b,
+	t_skp c,
+	t_yh d,
+  t_fpzl e
+WHERE
+	a.xfid = b.id
+AND a.skpid = c.id
+AND a.lrry = d.id
+AND a.fpzldm = e.fpzldm
+AND a.yxbz = '1'
         <if test="params.gsdm != null and params.gsdm !=''">
             and a.gsdm = #{params.gsdm}
         </if>
@@ -63,6 +89,9 @@
         </if>
         <if test="params.fpdm !=null and params.fpdm != ''">
             and a.fpdm = #{params.fpdm}
+        </if>
+        <if test="params.fplx !=null and params.fplx != ''">
+            and a.fpzldm = #{params.fplx}
         </if>
         order by a.lrsj desc
     </select>
@@ -122,6 +151,30 @@
          <if test="skpid!=null and skpid !=''">
              and skpid = #{skpid}
          </if>
+    </select>
+    
+    <select id="findKcjkByPage" parameterType="pagination" resultType="fpkcvo">
+          select b.xfmc,b.xfsh,c.kpdmc,d.fpzlmc,sum(a.fpkcl) as kyl 
+          from t_fpkc a,t_xf b,t_skp c,t_fpzl d
+                 where a.xfid=b.id and a.skpid=c.id and a.fpzldm=d.fpzldm 
+                 group by a.skpid,a.fpzldm
+                 <if test="params.gsdm !=null and params.gsdm !=''">
+			and a.gsdm = #{params.gsdm}
+		</if>
+		<if test="params.xfs !=null">
+			<foreach collection="params.xfs" open=" and (a.xfid in ("
+				separator="," close=")" item="item" index="index">
+				#{params.xfs[${index}].id}
+			</foreach>
+			or a.xfid is null)
+		</if>
+		<if test="params.skps !=null">
+			<foreach collection="params.skps" open=" and (a.skpid in ("
+				separator="," close=")" item="item" index="index">
+				#{params.skps[${index}].id}
+			</foreach>
+			or a.skpid is null)
+		</if>	
     </select>
    
 </mapper>

@@ -88,6 +88,11 @@ public class FpkcService {
     public Fpkcvo findZyKyl(Map params){
     	return fpkcMapper.findZyKyl(params);
     }
+    
+    //查询发票库存监控
+    public List<Fpkcvo> findKcjkByPage(Pagination pagination){
+    	return fpkcMapper.findKcjkByPage(pagination);
+    }
 
 }
 
