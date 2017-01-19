@@ -64,6 +64,9 @@ public class JyxxsqService {
         return jyxxsqMapper.findXfExistByKpd(params);
     }
 
+    public void saveJyxxsq(Jyxxsq jyxxsq){
+    	jyxxsqMapper.saveJyxxsq(jyxxsq);
+    }
 
 }
 

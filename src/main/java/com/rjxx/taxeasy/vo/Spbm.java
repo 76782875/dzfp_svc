@@ -29,6 +29,8 @@ public class Spbm  implements Serializable {
 
 	protected String zzstsgl;
 
+	protected String sjspbm;
+
 
 	public String getBbh(){
 		return bbh;
@@ -84,6 +86,14 @@ public class Spbm  implements Serializable {
 
 	public void setZzstsgl(String zzstsgl){
 		this.zzstsgl=zzstsgl;
+	}
+
+	public String getSjspbm() {
+		return sjspbm;
+	}
+
+	public void setSjspbm(String sjspbm) {
+		this.sjspbm = sjspbm;
 	}
 
 }

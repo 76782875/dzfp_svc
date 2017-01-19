@@ -3,18 +3,26 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rjxx.taxeasy.dao.SpbmMapper">
 
-    <select id="findOneByParams" parameterType="spbm" resultType="spbm">
-        select * from spbm where yxbz = '1' and (zzssl is not null and zzssl != '')
-        <if test="spbm != null">
-            and spbm = #{spbm}
+    <select id="findOneByParams" parameterType="map" resultType="spbm">
+        select * from spbm where yxbz = '1'
+        <if test="orderBy != null">
+            order by #{orderBy}
         </if>
         limit 1
     </select>
 
     <select id="findAllByParams" parameterType="map" resultType="spbm">
-        select * from spbm where yxbz = '1' and (zzssl is not null and zzssl != '')
-        <if test="orderBy != null">
-            order by #{orderBy}
+        select * from spbm where yxbz = '1'
+        <if test="spbms == null">
+            and sjspbm is null
+        </if>
+    </select>
+
+    <select id="findAllByParam" parameterType="map" resultType="spbm">
+        SELECT * from spbm where yxbz='1' and 
+        spbm not in (SELECT a.spbm from spbm a, spbm b where a.spbm=b.sjspbm)
+        <if test="spbm != null">
+            and spbm like concat('',#{spbm},'%')
         </if>
     </select>
 

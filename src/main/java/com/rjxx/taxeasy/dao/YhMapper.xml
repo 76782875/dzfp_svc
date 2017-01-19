@@ -17,8 +17,25 @@
         limit 1
     </select>
 
+    <select id="findOneByParam" parameterType="map" resultType="yh">
+        select dlyhid,zhlxmc zhlxdm from t_yh a, t_dm_zhlx b where a.zhlxdm=b.zhlxdm and a.yxbz = '1'
+        <if test="id != null and id !=''">
+            and id = #{id}
+        </if>
+        <if test="gsdm != null and gsdm !=''">
+            and gsdm = #{gsdm}
+        </if>
+        <if test="yhmm != null and yhmm !=''">
+            and yhmm = #{yhmm}
+        </if>
+        limit 1
+    </select>
+
     <select id="findAllByParams" parameterType="map" resultType="yh">
         select * from t_yh where yxbz = '1'
+        <if test="gsdm != null and gsdm !=''">
+            and gsdm = #{gsdm}
+        </if>
         <if test="orderBy != null">
             order by #{orderBy}
         </if>

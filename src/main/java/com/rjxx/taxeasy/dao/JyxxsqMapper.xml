@@ -73,6 +73,10 @@
             order by #{params.orderBy}
         </if>
     </select>
+    
+   <insert id="saveJyxxsq" parameterType="jyxxsq" useGeneratedKeys="true" keyProperty="sqlsh">
+         insert into t_jyxxsq (kpddm, jylsh, ddrq, ddh, fpzldm, fpczlxdm, xfid, xfsh, xfmc, xfyh, xfyhzh, xflxr, xfdz, xfdh, xfyb, gfid, gfsh, gfmc, gfyh, gfyhzh, gflxr, gfdz, gfdh, gfyb, gfemail, sffsyj, clztdm, bz, skr, kpr, fhr, sfcp, sfdyqd, zsfs, ssyf, hztzdh, yfpdm, yfphm, hsbz, jshj, ykpjshj, yxbz, lrsj, lrry, xgsj, xgry, gfsjr, gfsjrdz, gsdm, tqm, skpid, gfsjh, dxzt) VALUES (#{kpddm}, #{jylsh},  #{ddrq}, #{ddh}, #{fpzldm}, #{fpczlxdm}, #{xfid}, #{xfsh}, #{xfmc}, #{xfyh}, #{xfyhzh}, #{xflxr}, #{xfdz}, #{xfdh}, #{xfyb}, #{gfid}, #{gfsh}, #{gfmc}, #{gfyh}, #{gfyhzh},#{gflxr}, #{gfdz}, #{gfdh}, #{gfyb},  #{gfemail},  #{sffsyj}, #{clztdm},  #{bz}, #{skr},  #{kpr}, #{fhr}, #{sfcp}, #{sfdyqd}, #{zsfs}, #{ssyf}, #{hztzdh}, #{yfpdm}, #{yfphm}, #{hsbz}, #{jshj}, #{ykpjshj}, #{yxbz}, #{lrsj}, #{lrry}, #{xgsj}, #{xgry}, #{gfsjr}, #{gfsjrdz}, #{gsdm}, #{tqm}, #{skpid},#{gfsjh},#{dxzt})	
+    </insert>
 
 </mapper>
 

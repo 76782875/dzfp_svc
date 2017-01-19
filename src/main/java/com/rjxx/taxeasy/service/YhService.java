@@ -42,6 +42,10 @@ public class YhService {
         return yhMapper.findOneByParams(params);
     }
 
+    public Yh findOneByParam(Map params) {
+        return yhMapper.findOneByParam(params);
+    }
+
     public List<Yh> findAllByParams(Map params) {
         return yhMapper.findAllByParams(params);
     }
