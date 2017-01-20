@@ -157,34 +157,34 @@ public class Skp implements Serializable {
 	 */
 	@Column(name = "kpdip")
 	protected String kpdip;
-
-	@Column(name = "sbcs")
-	protected String sbcs;
-
-	@Column(name = "lxdz")
-	protected String lxdz;
-
-	@Column(name = "lxdh")
-	protected String lxdh;
-
-	@Column(name = "khyh")
-	protected String khyh;
-
-	@Column(name = "yhzh")
-	protected String yhzh;
-
-	@Column(name = "skr")
-	protected String skr;
-
-	@Column(name = "fhr")
-	protected String fhr;
-
-	@Column(name = "kpr")
-	protected String kpr;
-
-	@Column(name = "kplx")
-	protected String kplx;
-	
+//
+//	@Column(name = "sbcs")
+//	protected String sbcs;
+//
+//	@Column(name = "lxdz")
+//	protected String lxdz;
+//
+//	@Column(name = "lxdh")
+//	protected String lxdh;
+//
+//	@Column(name = "khyh")
+//	protected String khyh;
+//
+//	@Column(name = "yhzh")
+//	protected String yhzh;
+//
+//	@Column(name = "skr")
+//	protected String skr;
+//
+//	@Column(name = "fhr")
+//	protected String fhr;
+//
+//	@Column(name = "kpr")
+//	protected String kpr;
+//
+//	@Column(name = "kplx")
+//	protected String kplx;
+//	
 
 	public String getSkph() {
 		return skph;
@@ -378,76 +378,76 @@ public class Skp implements Serializable {
 		this.pid = pid;
 	}
 
-	public String getSbcs() {
-		return sbcs;
-	}
-
-	public void setSbcs(String sbcs) {
-		this.sbcs = sbcs;
-	}
-
-	public String getLxdz() {
-		return lxdz;
-	}
-
-	public void setLxdz(String lxdz) {
-		this.lxdz = lxdz;
-	}
-
-	public String getLxdh() {
-		return lxdh;
-	}
-
-	public void setLxdh(String lxdh) {
-		this.lxdh = lxdh;
-	}
-
-	public String getKhyh() {
-		return khyh;
-	}
-
-	public void setKhyh(String khyh) {
-		this.khyh = khyh;
-	}
-
-	public String getYhzh() {
-		return yhzh;
-	}
-
-	public void setYhzh(String yhzh) {
-		this.yhzh = yhzh;
-	}
-
-	public String getSkr() {
-		return skr;
-	}
-
-	public void setSkr(String skr) {
-		this.skr = skr;
-	}
-
-	public String getFhr() {
-		return fhr;
-	}
-
-	public void setFhr(String fhr) {
-		this.fhr = fhr;
-	}
-
-	public String getKpr() {
-		return kpr;
-	}
-
-	public void setKpr(String kpr) {
-		this.kpr = kpr;
-	}
-
-	public String getKplx() {
-		return kplx;
-	}
-
-	public void setKplx(String kplx) {
-		this.kplx = kplx;
-	}
+//	public String getSbcs() {
+//		return sbcs;
+//	}
+//
+//	public void setSbcs(String sbcs) {
+//		this.sbcs = sbcs;
+//	}
+//
+//	public String getLxdz() {
+//		return lxdz;
+//	}
+//
+//	public void setLxdz(String lxdz) {
+//		this.lxdz = lxdz;
+//	}
+//
+//	public String getLxdh() {
+//		return lxdh;
+//	}
+//
+//	public void setLxdh(String lxdh) {
+//		this.lxdh = lxdh;
+//	}
+//
+//	public String getKhyh() {
+//		return khyh;
+//	}
+//
+//	public void setKhyh(String khyh) {
+//		this.khyh = khyh;
+//	}
+//
+//	public String getYhzh() {
+//		return yhzh;
+//	}
+//
+//	public void setYhzh(String yhzh) {
+//		this.yhzh = yhzh;
+//	}
+//
+//	public String getSkr() {
+//		return skr;
+//	}
+//
+//	public void setSkr(String skr) {
+//		this.skr = skr;
+//	}
+//
+//	public String getFhr() {
+//		return fhr;
+//	}
+//
+//	public void setFhr(String fhr) {
+//		this.fhr = fhr;
+//	}
+//
+//	public String getKpr() {
+//		return kpr;
+//	}
+//
+//	public void setKpr(String kpr) {
+//		this.kpr = kpr;
+//	}
+//
+//	public String getKplx() {
+//		return kplx;
+//	}
+//
+//	public void setKplx(String kplx) {
+//		this.kplx = kplx;
+//	}
 
 }
