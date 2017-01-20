@@ -557,7 +557,7 @@ e.dxzt,
 	</update>
 	
 	<select id="findKplsNoPdf" resultType="kpls">
-	     select * from t_kpls where fpzldm='12' and fpztdm='00' and pdfurl is null and fphm is not null
+	     select * from t_kpls where fpzldm='12' and fpztdm='00' and pdfurl is null and fphm is not null and kprq &lt; DATE_SUB(kprq,INTERVAL 2 MINUTE)
 	</select>
 	
 	<select id="findCountByDjh" parameterType="kpls" resultType="Integer">
