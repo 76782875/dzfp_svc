@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rjxx.taxeasy.dao.SpzMapper">
+
+    <select id="findOneByParams" parameterType="map" resultType="spz">
+        select * from t_spz where yxbz = '1'
+        <if test="orderBy != null">
+            order by #{orderBy}
+        </if>
+        limit 1
+    </select>
+
+    <select id="findAllByParams" parameterType="map" resultType="spz">
+        select * from t_spz where yxbz = '1'
+        <if test="orderBy != null">
+            order by #{orderBy}
+        </if>
+    </select>
+
+    <select id="findByPage" parameterType="pagination" resultType="spz">
+        select * from t_spz where yxbz = '1'
+        <if test="params.gsdm != null">
+            and gsdm = #{params.gsdm}
+        </if>
+        <if test="params.spzmc != null">
+            and spzmc = #{params.spzmc}
+        </if>
+    </select>
+
+</mapper>
+

@@ -60,4 +60,21 @@
             order by lrsj desc
         </if>
     </select>
+    
+    
+    <select id="findByPages" parameterType="pagination" resultType="xfvo">
+        select a.*,b.xfmc sjxfmc from t_xf a left join t_xf b on a.sjjgbm=b.id where a.yxbz = '1'
+        <if test="params.xfsh != null and params.xfsh != ''">
+            and a.xfsh like concat('%',#{params.xfsh},'%')
+        </if>
+        <if test="params.xfmc != null and params.xfmc != ''">
+            and a.xfmc like concat('%',#{params.xfmc},'%')
+        </if>
+        <if test="params.gsdm != null and params.gsdm != ''">
+            and a.gsdm = #{params.gsdm}
+        </if>
+        <if test="params.orderBy != null">
+            order by a.lrsj desc
+        </if>
+    </select>
 </mapper>

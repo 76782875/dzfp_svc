@@ -3,6 +3,7 @@ package com.rjxx.taxeasy.dao;
 import com.rjxx.comm.mybatis.MybatisRepository;
 import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.domains.Xf;
+import com.rjxx.taxeasy.vo.XfVo;
 
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,9 @@ public interface XfMapper {
 	public List<Xf> findAllByMap(Map<String, Object> map);
 
     public List<Xf> findByPage(Pagination pagination);
+
+    public List<XfVo> findByPages(Pagination pagination);
+
 
     /**
      * 根据yhid查找该用户下的所有管理的销方

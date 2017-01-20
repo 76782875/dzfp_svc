@@ -6,6 +6,8 @@ import com.rjxx.taxeasy.dao.XfMapper;
 import com.rjxx.taxeasy.domains.Group;
 import com.rjxx.taxeasy.domains.Skp;
 import com.rjxx.taxeasy.domains.Xf;
+import com.rjxx.taxeasy.vo.XfVo;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -132,6 +134,10 @@ public class XfService {
 
     public List<Xf> findByPage(Pagination pagination) {
         return xfMapper.findByPage(pagination);
+    }
+
+    public List<XfVo> findByPages(Pagination pagination) {
+        return xfMapper.findByPages(pagination);
     }
 
 }
