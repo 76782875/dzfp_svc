@@ -53,7 +53,7 @@
 			and s.kpdmc like concat('%',#{params.kpdmc},'%')
 		</if>
 		<if test="params.kpddm != null and params.kpddm != ''">
-			and s.kpddm like concat('%',#{params.kpddm},'%')
+			and s.kpddm = #{params.kpddm}
 		</if>
 		order by lrsj desc
 	</select>
