@@ -38,7 +38,7 @@
     </select>
 
     <select id="findByPage" parameterType="pagination" resultType="kplsvo">
-        select * from kplsvo where fpzldm = '12' AND fpczlxdm = #{params.fpczlxdm} and fphm is not null
+        select a.*,b.fpzlmc from kplsvo a,t_fpzl b where a.fpzldm = b.fpzldm and fpczlxdm = #{params.fpczlxdm} and fphm is not null
         <if test="params.gsdm !=null and params.gsdm !=''">
             and gsdm = #{params.gsdm}
         </if>
@@ -69,8 +69,65 @@
         <if test="params.jyrqz !=null and params.jyrqz != ''">
             and jylssj &lt; date_add(str_to_date(#{params.jyrqz},'%Y-%m-%d'),INTERVAL 1 day)
          </if>
-         
+         <if test="params.fpzl!=null and params.fpzl !=''">
+            and a.fpzldm=#{params.fpzl}
+         </if>
          order by kprq desc
+    </select>
+    
+    <select id="Sltjcx" parameterType="map" resultType="slcxvo">
+            SELECT
+	    *
+     FROM
+	(
+		SELECT
+			fpzl,
+			sl * 100 sl,
+			CASE jzjtbz
+		WHEN 1 THEN
+			'即征即退'
+		ELSE
+			'普通'
+		END jzjtbz,
+		sum(zsje) zsje,
+		sum(fsje) fsje,
+		sum(hjje) hjje,
+		sum(zsse) zsse,
+		sum(fsse) fsse,
+		sum(hjse) hjse
+	FROM
+		V_FP_FSLMX
+	WHERE 1=1
+	<if test="gsdm !=null and gsdm !=''">
+	   and gsdm = #{gsdm}
+	</if>
+	<if test="kprqq !=null and kprqq != ''">
+            and kprq &gt;= #{kprqq}
+         </if>
+        <if test="kprqz !=null and kprqz != ''">
+            and kprq &lt; date_add(str_to_date(#{kprqz},'%Y-%m-%d'),INTERVAL 1 day)
+         </if>
+	GROUP BY
+		fpzl,
+		sl * 100,
+		CASE jzjtbz
+	WHEN 1 THEN
+		'即征即退'
+	ELSE
+		'普通'
+	END WITH ROLLUP
+	) t
+WHERE
+	(
+		t.jzjtbz ='普通'
+		OR t.jzjtbz = '即征即退'
+	)
+AND t.fpzl IS NOT NULL
+AND t.sl IS NOT NULL
+ORDER BY
+	1,
+	2,
+	3;
     </select>
 
 </mapper>

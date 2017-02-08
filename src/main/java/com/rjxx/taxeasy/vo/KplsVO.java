@@ -67,6 +67,9 @@ public class KplsVO {
     protected String kpr;
 
     protected String gfemail;
+    
+    protected String fpzlmc;
+    
     public int getKplsh() {
         return kplsh;
     }
@@ -288,4 +291,12 @@ public class KplsVO {
     public void setGfemail(String gfemail) {
         this.gfemail = gfemail;
     }
+
+	public String getFpzlmc() {
+		return fpzlmc;
+	}
+
+	public void setFpzlmc(String fpzlmc) {
+		this.fpzlmc = fpzlmc;
+	}
 }

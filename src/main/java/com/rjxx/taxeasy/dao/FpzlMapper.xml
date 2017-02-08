@@ -25,12 +25,96 @@
     
     <select id="findGfpsl" parameterType="map" resultType="fpnum">
          select count(*) as fpnum from t_kpls where jshj&gt;0 and fphm is not null
+         <if test="gsdm !=null and gsdm !=''">
+            and gsdm = #{gsdm}
+         </if>
+         <if test="xfid !=null and xfid !=''">
+            and xfid = #{xfid}
+         </if>
+         <if test="fpzl !=null and fpzl !=''">
+            and fpzldm = #{fpzl}
+         </if>
+         <if test="kprq !=null and kprq != ''">
+            and kprq like concat('%',#{kprq},'%')
+         </if>
                 union all select count(*) from t_kpls where jshj&lt;0 and fphm is not null 
+                <if test="gsdm !=null and gsdm !=''">
+            and gsdm = #{gsdm}
+         </if>
+         <if test="xfid !=null and xfid !=''">
+            and xfid = #{xfid}
+         </if>
+         <if test="fpzl !=null and fpzl !=''">
+            and fpzldm = #{fpzl}
+         </if>
+         <if test="kprq !=null and kprq != ''">
+            and kprq like concat('%',#{kprq},'%')
+         </if>
                 union all select count(*) from t_kpls where fpczlxdm='11' and fphm is not null
+                <if test="gsdm !=null and gsdm !=''">
+            and gsdm = #{gsdm}
+         </if>
+         <if test="xfid !=null and xfid !=''">
+            and xfid = #{xfid}
+         </if>
+         <if test="fpzl !=null and fpzl !=''">
+            and fpzldm = #{fpzl}
+         </if>
+         <if test="kprq !=null and kprq != ''">
+            and kprq like concat('%',#{kprq},'%')
+         </if>
                 union all select count(*) from t_kpls where fpczlxdm='12' and fpztdm ='00'
+                <if test="gsdm !=null and gsdm !=''">
+            and gsdm = #{gsdm}
+         </if>
+         <if test="xfid !=null and xfid !=''">
+            and xfid = #{xfid}
+         </if>
+         <if test="fpzl !=null and fpzl !=''">
+            and fpzldm = #{fpzl}
+         </if>
+         <if test="kprq !=null and kprq != ''">
+            and kprq like concat('%',#{kprq},'%')
+         </if>
                 union all select count(*) from t_kpls where fpczlxdm='13' and fpztdm='00'
+                <if test="gsdm !=null and gsdm !=''">
+            and gsdm = #{gsdm}
+         </if>
+         <if test="xfid !=null and xfid !=''">
+            and xfid = #{xfid}
+         </if>
+         <if test="fpzl !=null and fpzl !=''">
+            and fpzldm = #{fpzl}
+         </if>
+         <if test="kprq !=null and kprq != ''">
+            and kprq like concat('%',#{kprq},'%')
+         </if>
                 union all select count(*) from t_kpls where fpczlxdm='21' and fpztdm='00'
+                <if test="gsdm !=null and gsdm !=''">
+            and gsdm = #{gsdm}
+         </if>
+         <if test="xfid !=null and xfid !=''">
+            and xfid = #{xfid}
+         </if>
+         <if test="fpzl !=null and fpzl !=''">
+            and fpzldm = #{fpzl}
+         </if>
+         <if test="kprq !=null and kprq != ''">
+            and kprq like concat('%',#{kprq},'%')
+         </if>
                 union all select count(*) from t_kpls where fpczlxdm='23' and fpztdm='00' 
+                <if test="gsdm !=null and gsdm !=''">
+            and gsdm = #{gsdm}
+         </if>
+         <if test="xfid !=null and xfid !=''">
+            and xfid = #{xfid}
+         </if>
+         <if test="fpzl !=null and fpzl !=''">
+            and fpzldm = #{fpzl}
+         </if>
+         <if test="kprq !=null and kprq != ''">
+            and kprq like concat('%',#{kprq},'%')
+         </if>
                 union all select count(*) from t_kpls where fpczlxdm='24' and fpztdm='00'
          <if test="gsdm !=null and gsdm !=''">
             and gsdm = #{gsdm}

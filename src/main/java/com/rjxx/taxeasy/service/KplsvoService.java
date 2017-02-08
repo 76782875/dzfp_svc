@@ -1,14 +1,15 @@
 package com.rjxx.taxeasy.service;
 
-import com.rjxx.comm.mybatis.Pagination;
-import com.rjxx.taxeasy.dao.KplsvoMapper;
-import com.rjxx.taxeasy.vo.KplsVO;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
+import com.rjxx.comm.mybatis.Pagination;
+import com.rjxx.taxeasy.dao.KplsvoMapper;
+import com.rjxx.taxeasy.vo.KplsVO;
+import com.rjxx.taxeasy.vo.Slcxvo;
 
 /**
  * 由GenJavaCode类自动生成
@@ -34,6 +35,10 @@ public class KplsvoService {
 
     public List<KplsVO> findByPage(Pagination pagination) {
         return kplsvoMapper.findByPage(pagination);
+    }
+    
+    public List<Slcxvo> Sltjcx(Map params){
+    	return kplsvoMapper.Sltjcx(params);
     }
 
 }

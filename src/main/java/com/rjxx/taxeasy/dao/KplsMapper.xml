@@ -222,6 +222,10 @@ e.dxzt,
 			d.kplsh and d.spmc
 			like CONCAT('%',#{params.spmc},'%'))
 		</if>
+		<if test="params.jzjtzt != null and params.jzjtzt != ''">
+			and EXISTS(select * from t_kpspmx d,t_sp g where a.kplsh =
+			d.kplsh and d.spdm = g.spdm and g.jzjtbz = #{params.jzjtzt})
+		</if>
 		<if test="params.printflag != null and params.printflag != ''">
 			and a.printflag = #{params.printflag}
 		</if>
