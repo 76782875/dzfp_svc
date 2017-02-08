@@ -22,6 +22,9 @@
 
     <select id="findAllByParams" parameterType="sp" resultType="sp">
         select * from t_sp where yxbz = '1'
+        <if test="gsdm != null">
+            and gsdm =  #{gsdm}
+        </if>
     </select>
 
     <select id="findByPage" parameterType="pagination" resultType="sp">

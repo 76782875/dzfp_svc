@@ -13,8 +13,11 @@
 
     <select id="findAllByParams" parameterType="map" resultType="spzXf">
         select * from t_spz_xf where yxbz = '1'
-        <if test="orderBy != null">
-            order by #{orderBy}
+        <if test="gsdm != null">
+            and gsdm = #{gsdm}
+        </if>
+        <if test="spzid != null">
+            and spzid = #{spzid}
         </if>
     </select>
 
