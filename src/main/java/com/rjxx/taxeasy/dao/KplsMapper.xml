@@ -67,17 +67,15 @@ e.tqm,
 e.skpid,
 e.gfsjh,
 e.dxzt, 
-		<!-- SELECT a.*, b.fpzlmc,c.fpczlxmc,e.yfphm,e.yfpdm,e.ykpjshj,e.tqm,e.gfsjh,e.ddh,e.ssyf, -->
-	<!-- SELECT a.*, b.fpzlmc,c.fpczlxmc,e.ddh, -->
+d.spmc,
 		(case when a.printflag='1' then
 		'已打印'
 		else '未打印' end) as sfdy,
 		f.fpztmc fpzt
 		FROM t_kpls a,t_fpzl
-		b,t_fpczlx c,t_jyls e,t_fpzt f
-		WHERE a.fpzldm = b.fpzldm AND a.fpczlxdm
-		= c.fpczlxdm
-		and a.fpztdm = f.fpztdm and a.djh = e.djh
+		b,t_fpczlx c,t_jyls e,t_fpzt f,t_kpspmx d
+		WHERE a.fpzldm = b.fpzldm AND a.fpczlxdm = c.fpczlxdm
+		and a.fpztdm = f.fpztdm and a.djh = e.djh and a.kplsh = d.kplsh
 		<if test="gsdm !=null and gsdm !=''">
 			and a.gsdm = #{gsdm}
 		</if>
@@ -110,9 +108,11 @@ e.dxzt,
 			date_add(str_to_date(#{kprqz},'%Y-%m-%d'),INTERVAL 1 day)
 		</if>
 		<if test="spmc != null and spmc != ''">
-			and EXISTS(select * from t_kpspmx d where a.kplsh =
-			d.kplsh and d.spmc
-			like CONCAT('%',#{spmc},'%'))
+			 and d.spmc like CONCAT('%',#{spmc},'%')
+		</if>
+		<if test="jzjtzt != null and jzjtzt != ''">
+			and EXISTS(select * from t_kpspmx d,t_sp g where a.kplsh =
+			d.kplsh and d.spdm = g.spdm and g.jzjtbz = #{jzjtzt})
 		</if>
 		<if test="printflag != null and printflag != ''">
 			and a.printflag = #{printflag}
@@ -129,6 +129,7 @@ e.dxzt,
 		<if test="fpczlx != null and fpczlx !=''">
 			and a.fpczlxdm = #{fpczlx}
 		</if>
+		group by a.kplsh
 		order by a.djh asc,a.kplsh asc
 	</select>
 
@@ -180,17 +181,16 @@ e.gsdm,
 e.tqm,
 e.skpid,
 e.gfsjh,
-e.dxzt, 
-	<!-- 	SELECT a.*, b.fpzlmc,c.fpczlxmc,e.ddh, -->
+e.dxzt,
+d.spmc,
 		(case when a.printflag='1' then
 		'已打印'
 		else '未打印' end) as sfdy,
 		f.fpztmc fpzt
 		FROM t_kpls a,t_fpzl
-		b,t_fpczlx c,t_jyls e,t_fpzt f
-		WHERE a.fpzldm = b.fpzldm AND a.fpczlxdm
-		= c.fpczlxdm
-		and a.fpztdm = f.fpztdm and a.djh = e.djh
+		b,t_fpczlx c,t_jyls e,t_fpzt f,t_kpspmx d
+		WHERE a.fpzldm = b.fpzldm AND a.fpczlxdm = c.fpczlxdm
+		and a.fpztdm = f.fpztdm and a.djh = e.djh and a.kplsh = d.kplsh
 		<if test="params.gsdm !=null and params.gsdm !=''">
 			and a.gsdm = #{params.gsdm}
 		</if>
@@ -218,9 +218,7 @@ e.dxzt,
 			date_add(str_to_date(#{params.kprqz},'%Y-%m-%d'),INTERVAL 1 day)
 		</if>
 		<if test="params.spmc != null and params.spmc != ''">
-			and EXISTS(select * from t_kpspmx d where a.kplsh =
-			d.kplsh and d.spmc
-			like CONCAT('%',#{params.spmc},'%'))
+			 and d.spmc like CONCAT('%',#{params.spmc},'%')
 		</if>
 		<if test="params.jzjtzt != null and params.jzjtzt != ''">
 			and EXISTS(select * from t_kpspmx d,t_sp g where a.kplsh =
@@ -247,6 +245,7 @@ e.dxzt,
 		<if test="params.sk != null and params.sk !=''">
 			and a.skpid = #{params.sk}
 		</if>
+		group by a.kplsh
 		order by a.fphm desc,a.fpdm desc
 	</select>
 	<update id="update" parameterType="map">
