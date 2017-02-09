@@ -36,7 +36,7 @@
    </select>
   <!--  根据kplsh查询明细 -->
   <select id="findMxList" parameterType="map" resultType="kpspmx">
-       select * from t_kpspmx where kplsh = #{kplsh}
+       select * from t_kpspmx where kplsh = #{kplsh} order by spmxxh
   </select>
   
    <select id="findMxNewList" parameterType="map" resultType="kpspmx">
