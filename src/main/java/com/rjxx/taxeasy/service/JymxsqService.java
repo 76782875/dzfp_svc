@@ -4,6 +4,8 @@ import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.dao.JymxsqJpaDao;
 import com.rjxx.taxeasy.dao.JymxsqMapper;
 import com.rjxx.taxeasy.domains.Jymxsq;
+import com.rjxx.taxeasy.domains.Jyspmx;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,6 +55,21 @@ public class JymxsqService {
     public List<Jymxsq> findByPage(Pagination pagination) {
         return jymxsqMapper.findByPage(pagination);
     }
+    
+    /**
+     * 根据单据号查找
+     *
+     * @param djhList
+     * @return
+     */
+    public List<Jymxsq> findBySqlshList(List<Integer> sqlshList) {
+        return jymxsqMapper.findBySqlshList(sqlshList);
+    }
 
+    
+
+    public void delete(List<Jymxsq> jymxsqList) {
+    	jymxsqJpaDao.delete(jymxsqList);
+    }
 }
 

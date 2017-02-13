@@ -13,13 +13,20 @@
 
     <select id="findAllByParams" parameterType="map" resultType="jymxsq">
         select * from t_jymxsq where 1=1
-        <if test="sqlsh != null and sqlsh !=''">
-           and  sqlsh = #{sqlsh}
+        <if test="orderBy != null">
+            order by #{orderBy}
         </if>
     </select>
 
     <select id="findByPage" parameterType="pagination" resultType="jymxsq">
         select * from t_jymxsq where 1=1
+        
+        <if test="params.sqlsh != null">
+          and   sqlsh = #{params.sqlsh}
+        </if>
+        <if test="params.gsdm != null">
+          and gsdm = #{params.gsdm}
+        </if>
         <if test="params.orderBy != null">
             order by #{params.orderBy}
         </if>
@@ -40,5 +47,12 @@
         </if>
     </select>
     
+    
+    <select id="findBySqlshList" parameterType="list" resultType="jymxsq">
+        select * from t_jymxsq where 1 = 1
+        <foreach collection="list" open=" and sqlsh in (" close=")" separator="," item="sqlsh">
+            #{sqlsh}
+        </foreach>
+    </select>
 </mapper>
 

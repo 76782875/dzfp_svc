@@ -68,9 +68,41 @@
         LIMIT 1
     </select>
     <select id="findByPage" parameterType="pagination" resultType="jyxxsq">
-         select DISTINCT a.* from t_jyxxsq a , t_jymxsq b WHERE a.sqlsh=b.sqlsh and a.yxbz ='2'
-         <if test="params.gsdm !=null and params.gsdm !=''">
-            and a.gsdm = #{params.gsdm}
+        select * from t_jyxxsq where yxbz = '1'
+        <if test="params.orderBy != null">
+            order by #{params.orderBy}
+        </if>
+    </select>
+    
+    
+     <select id="findByPage1" parameterType="pagination" resultType="jyxxsq">
+        select * from t_jyxxsq where yxbz = '1'
+        <if test="params.clztdm != null">
+            and clztdm = #{params.clztdm}
+        </if>
+        <if test="params.fpzldm != null">
+            and fpzldm = #{params.fpzldm}
+        </if>
+        <if test="params.fpczlxdm != null">
+            and fpczlxdm = #{params.fpczlxdm}
+        </if>
+        <if test="params.gfmc != null and params.gfmc != ''">
+            and gfmc like concat('%',#{params.gfmc},'%')
+        </if>
+        <if test="params.ddh != null and params.ddh != ''">
+            and ddh like concat('%',#{params.ddh},'%')
+        </if>
+        <if test="params.jylsh != null and params.jylsh != ''">
+            and jylsh like concat('%',#{params.jylsh},'%')
+        </if>
+        <if test="params.rqq != null and params.rqq != '' and params.rqz != null and params.rqz != ''" >
+            and jylssj between #{params.rqq} and #{params.rqz}
+        </if>
+        <if test="params.gsdm != null and params.gsdm != ''" >
+            and gsdm = #{params.gsdm}
+        </if>
+        <if test="params.xfsh != null and params.xfsh != ''" >
+            and xfsh = #{params.xfsh}
         </if>
         <if test="params.xfs !=null">
                <foreach collection="params.xfs" open=" and (xfid in (" separator="," close=")" item="item" index="index">
@@ -78,28 +110,15 @@
             </foreach>
             or xfid is null)
          </if>
-        <if test="params.ddh !=null">
-            and a.ddh like concat('%',#{params.ddh},'%')
-         </if>
-        <if test="params.gfmc !=null">
-            and a.gfmc like concat('%',#{params.gfmc},'%')
-         </if>
-        <if test="params.kprqq !=null and params.kprqq != ''">
-            and a.ddrq &gt;= ${params.kprqq}
-         </if>
-        <if test="params.kprqz !=null and params.kprqz != ''">
-            and a.ddrq &lt; date_add(str_to_date(#{params.kprqz},'%Y-%m-%d'),INTERVAL 1 day)
-         </if>
-<!--         <if test="params.jyrqq !=null and params.jyrqq != ''">
-            and jylssj &gt;= ${params.jyrqq}
-         </if>
-        <if test="params.jyrqz !=null and params.jyrqz != ''">
-            and jylssj &lt; date_add(str_to_date(#{params.jyrqz},'%Y-%m-%d'),INTERVAL 1 day)
-         </if> -->
-         <if test="params.spmc != null and params.spmc != ''">
-			 and b.spmc like CONCAT('%',#{params.spmc},'%')
-		</if>
-         order by a.ddrq desc
+         <if test="params.skps !=null">
+               <foreach collection="params.skps" open=" and (skpid in (" separator="," close=")" item="item" index="index">
+                #{params.skps[${index}].id} 
+                </foreach>
+                or skpid is null)
+         </if>        
+        <if test="params.orderBy != null">
+            order by ${params.orderBy}
+        </if>
     </select>
     
    <insert id="saveJyxxsq" parameterType="jyxxsq" useGeneratedKeys="true" keyProperty="sqlsh">

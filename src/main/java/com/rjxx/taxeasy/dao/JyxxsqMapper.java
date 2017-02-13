@@ -28,6 +28,8 @@ public interface JyxxsqMapper {
     
     public List<Jyxxsq> findByPage(Pagination pagination);
     
+    public List<Jyxxsq> findByPage1(Pagination pagination);
+    
     public Xf findXfExistByKpd(Map params);
 
     public void saveJyxxsq(Jyxxsq jyxxsq);
