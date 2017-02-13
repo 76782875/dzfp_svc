@@ -13,8 +13,8 @@
 
     <select id="findAllByParams" parameterType="map" resultType="jymxsq">
         select * from t_jymxsq where 1=1
-        <if test="orderBy != null">
-            order by #{orderBy}
+        <if test="sqlsh != null and sqlsh !=''">
+           and  sqlsh = #{sqlsh}
         </if>
     </select>
 
