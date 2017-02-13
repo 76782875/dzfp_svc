@@ -92,6 +92,23 @@ public class JyxxsqService {
 		List<Jymxsq> jymxsqList = jymxsqservice.findBySqlshList(sqlshList);
 		jymxsqservice.delete(jymxsqList);
 	}
+	
+	
+	/**
+	 * 保存交易流水
+	 *
+	 * @param jyls
+	 * @param jyspmxList
+	 */
+	@Transactional
+	public void saveJyxxsq(Jyxxsq jyxxsq, List<Jymxsq> jymxsqList) {
+		save(jyxxsq);
+		int sqlsh = jyxxsq.getSqlsh();
+		for (Jymxsq Jymxsq : jymxsqList) {
+			Jymxsq.setSqlsh(sqlsh);
+		}
+		jymxsqservice.save(jymxsqList);
+	}
 
 }
 
