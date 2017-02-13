@@ -76,8 +76,8 @@ public class SkpService {
         return skpMapper.findByPage(pagination);
     }
     
-    public List<Skp> getSkpListByYhId(Integer yhId) {
-        return skpMapper.getSkpListByYhId(yhId);
+    public List<Skp> getSkpListByYhId(Map params) {
+        return skpMapper.getSkpListByYhId(params);
     }
     
     public List<Skp> getKpd(Map params){

@@ -100,6 +100,12 @@ public class Sp implements Serializable {
     @Column(name = "xgry")
     protected Integer xgry;
 
+    /**
+     * 商品编码
+     */
+    @Column(name = "spbm")
+    protected String spbm;
+
 
     public Integer getId() {
         return id;
@@ -212,6 +218,14 @@ public class Sp implements Serializable {
     public void setXgry(Integer xgry) {
         this.xgry = xgry;
     }
+
+	public String getSpbm() {
+		return spbm;
+	}
+
+	public void setSpbm(String spbm) {
+		this.spbm = spbm;
+	}
 
 }
 

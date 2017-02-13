@@ -25,7 +25,7 @@ public interface SkpMapper {
     public List<Skp> findBySql(Skp skp);
     public List<SkpVo> findByPage(Pagination pagination);
     	
-	public List<Skp> getSkpListByYhId(Integer yhId);
+	public List<Skp> getSkpListByYhId(Map params);
 
     public List<Skp> getKpd(Map params);
     public List<Skp> findCsz(Skp skp);

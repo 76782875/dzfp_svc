@@ -121,6 +121,21 @@ public class SkpVo {
 	protected String kpdip;
 	protected String kpddm;
 	protected String xfmc;
+	protected String sbcs;
+
+	protected String lxdz;
+
+	protected String lxdh;
+
+	protected String khyh;
+
+	protected String yhzh;
+
+	protected String skr;
+
+	protected String fhr;
+
+	protected String kpr;
 
 	public String getSkph() {
 		return skph;
@@ -336,5 +351,69 @@ public class SkpVo {
 
 	public void setPid(Integer pid) {
 		this.pid = pid;
+	}
+
+	public String getSbcs() {
+		return sbcs;
+	}
+
+	public void setSbcs(String sbcs) {
+		this.sbcs = sbcs;
+	}
+
+	public String getLxdz() {
+		return lxdz;
+	}
+
+	public void setLxdz(String lxdz) {
+		this.lxdz = lxdz;
+	}
+
+	public String getLxdh() {
+		return lxdh;
+	}
+
+	public void setLxdh(String lxdh) {
+		this.lxdh = lxdh;
+	}
+
+	public String getKhyh() {
+		return khyh;
+	}
+
+	public void setKhyh(String khyh) {
+		this.khyh = khyh;
+	}
+
+	public String getYhzh() {
+		return yhzh;
+	}
+
+	public void setYhzh(String yhzh) {
+		this.yhzh = yhzh;
+	}
+
+	public String getSkr() {
+		return skr;
+	}
+
+	public void setSkr(String skr) {
+		this.skr = skr;
+	}
+
+	public String getFhr() {
+		return fhr;
+	}
+
+	public void setFhr(String fhr) {
+		this.fhr = fhr;
+	}
+
+	public String getKpr() {
+		return kpr;
+	}
+
+	public void setKpr(String kpr) {
+		this.kpr = kpr;
 	}
 }

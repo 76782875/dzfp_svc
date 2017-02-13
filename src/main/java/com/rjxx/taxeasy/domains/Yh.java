@@ -135,6 +135,9 @@ public class Yh  implements Serializable {
 @Column(name="admin")
 	protected String admin;
 
+@Column(name="zhlxdm")
+	protected String zhlxdm;
+
 	public Integer getId(){
 		return id;
 	}
@@ -293,6 +296,14 @@ public class Yh  implements Serializable {
 
 	public void setAdmin(String admin){
 		this.admin=admin;
+	}
+
+	public String getZhlxdm() {
+		return zhlxdm;
+	}
+
+	public void setZhlxdm(String zhlxdm) {
+		this.zhlxdm = zhlxdm;
 	}
 	
 }

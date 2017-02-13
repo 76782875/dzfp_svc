@@ -22,10 +22,14 @@
 		</if>
 		limit 1
 	</select>
-	<select id="getSkpListByYhId" parameterType="int" resultType="skp">
-		select * from t_skp where yxbz = '1' and id in ( select skpid from
-		t_group where yhid
-		= #{yhId} and yxbz = '1')
+	<select id="getSkpListByYhId" parameterType="map" resultType="skp">
+		select * from t_skp where yxbz = '1' and 
+		( (xfid in
+			<foreach collection="xfs" item="item" index="index" open="("
+				separator="," close=")"> #{item}</foreach>
+			) or (id in
+			<foreach collection="skpid" item="item" index="index" open="("
+				separator="," close=")"> #{skps[${index}]}</foreach>))
 	</select>
 	<select id="findAllByParams" parameterType="skp" resultType="skp">
 		select * from t_skp where yxbz = '1'
