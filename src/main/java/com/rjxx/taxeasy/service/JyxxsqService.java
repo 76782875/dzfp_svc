@@ -8,11 +8,15 @@ import com.rjxx.taxeasy.domains.Jymxsq;
 import com.rjxx.taxeasy.domains.Jyspmx;
 import com.rjxx.taxeasy.domains.Jyxxsq;
 import com.rjxx.taxeasy.domains.Xf;
+import com.rjxx.taxeasy.vo.JymxsqVo;
+import com.rjxx.taxeasy.vo.JyspmxVo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -71,6 +75,10 @@ public class JyxxsqService {
         return jyxxsqMapper.findByPage1(pagination);
     } 
     
+    public List<Jyxxsq> findByMapParams(Map params) {
+        return jyxxsqMapper.findByMapParams(params);
+    } 
+    
     public Xf findXfExistByKpd(Map params) {
         return jyxxsqMapper.findXfExistByKpd(params);
     }
@@ -95,6 +103,21 @@ public class JyxxsqService {
 	
 	
 	/**
+	 * 更新jyxxsq状态
+	 *
+	 * @param sqlshList
+	 * @param clztdm
+	 */
+	public void updateJyxxsqZtzt(List<Integer> sqlshList, String ztbz) {
+		List<Jyxxsq> jylsIterable = (List<Jyxxsq>) jyxxsqJpaDao.findAll(sqlshList);
+		for (Jyxxsq jyxxsq : jylsIterable) {
+			jyxxsq.setZtbz(ztbz);
+			jyxxsq.setXgsj(new Date());
+		}
+		save(jylsIterable);
+	}
+	
+	/**
 	 * 保存交易流水
 	 *
 	 * @param jyls
@@ -108,6 +131,38 @@ public class JyxxsqService {
 			Jymxsq.setSqlsh(sqlsh);
 		}
 		jymxsqservice.save(jymxsqList);
+	}
+	
+	
+	/**
+	 * 交易流水与明细一对一
+	 *
+	 * @param jylsList
+	 * @param jyspmxList
+	 */
+	@Transactional
+	public void saveAll(List<Jyxxsq> jyxxsqList, List<JymxsqVo> jymxsqList) {
+		jyxxsqJpaDao.save(jyxxsqList);
+		List<Jymxsq> mxList = new ArrayList<>();
+		Jymxsq mx = null;
+		for (Jyxxsq jyxxsq : jyxxsqList) {
+			for (JymxsqVo vo : jymxsqList) {
+				if (jyxxsq.getDdh().equals(vo.getDdh())) {
+					mx = getMx(vo);
+					mx.setSqlsh(jyxxsq.getSqlsh());
+					mxList.add(mx);
+				}
+			}
+		}
+		jymxsqservice.save(mxList);
+	}
+	
+	
+	private Jymxsq getMx(JymxsqVo vo) {
+		Jymxsq mx = new Jymxsq(vo.getSpmxxh(), vo.getFphxz(), vo.getSpdm(), vo.getSpmc(), vo.getSpggxh(), vo.getSpdw(),
+				vo.getSps(), vo.getSpdj(), vo.getSpje(), vo.getSpsl(), vo.getSpse(), vo.getJshj(),vo.getHzkpxh(), vo.getLrsj(), vo.getLrry(), vo.getXgsj(), vo.getXgry(), vo.getGsdm(), vo.getXfid(),
+				vo.getSkpid(),vo.getYxbz());
+		return mx;
 	}
 
 }

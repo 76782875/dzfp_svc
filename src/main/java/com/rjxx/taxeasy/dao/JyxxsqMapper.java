@@ -33,5 +33,7 @@ public interface JyxxsqMapper {
     public Xf findXfExistByKpd(Map params);
 
     public void saveJyxxsq(Jyxxsq jyxxsq);
+    
+    public List<Jyxxsq> findByMapParams(Map params);
 }
 
