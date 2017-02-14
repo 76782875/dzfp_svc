@@ -31,6 +31,8 @@ public interface FpzlMapper {
     public List<Kpspmx> findSpsl(Map params);
     
     public Kpls findSpje(Map params);
+    
+    public List<Fpnum> findDbsx(Map params);
 
 }
 

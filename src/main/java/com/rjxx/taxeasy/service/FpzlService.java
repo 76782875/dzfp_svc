@@ -65,6 +65,10 @@ public class FpzlService {
     public Kpls findSpje(Map params){
     	return fpzlMapper.findSpje(params);
     }
+    
+    public List<Fpnum> findDbsx(Map params){
+    	return fpzlMapper.findDbsx(params);
+    }
 
 }
 

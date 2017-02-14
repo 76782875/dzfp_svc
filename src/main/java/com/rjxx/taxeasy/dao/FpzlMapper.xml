@@ -166,6 +166,16 @@
       </if>
       and a.fphm is not null
     </select>
+    
+     <select id="findDbsx" parameterType="map" resultType="fpnum">
+            select count(*) fpnum from t_jyxxsq where ztbz = '1' and yxbz='1' and gsdm= #{gsdm}
+union all select count(*) from t_jyls where clztdm='01' and yxbz='1' and fpczlxdm='11' and gsdm= #{gsdm}
+union all select count(*) from t_jyls where clztdm='01' and yxbz='1' and fpczlxdm='12' and gsdm= #{gsdm}
+union all select count(*) from t_jyls where clztdm='01' and yxbz='1' and fpczlxdm='13' and gsdm= #{gsdm}
+union all select count(*) from t_jyls where clztdm='01' and yxbz='1' and fpczlxdm='14' and gsdm= #{gsdm}
+union all select count(*) from t_jyls where clztdm='01' and yxbz='1' and fpczlxdm='23' and gsdm= #{gsdm}
+union all select count(*) from t_jyls where clztdm='01' and yxbz='1' and fpczlxdm='24' and gsdm= #{gsdm}
+     </select>
 
 </mapper>
 

@@ -129,6 +129,20 @@ ORDER BY
 	2,
 	3;
     </select>
+    
+    <select id="findFps" parameterType="map" resultType="Fpnum">
+        select sum(t.zsp) zspfs,sum(t.fsp) fspfs from
+(select case when fpczlxdm in ('11','21') then 1 else 0 end zsp,
+case when fpczlxdm in ('12','13') then 1 else 0 end fsp
+from t_kpls where gsdm=#{gsdm} 
+<if test="kprqq !=null and kprqq != ''">
+            and kprq &gt;= #{kprqq}
+         </if>
+        <if test="kprqz !=null and kprqz != ''">
+            and kprq &lt; date_add(str_to_date(#{kprqz},'%Y-%m-%d'),INTERVAL 1 day)
+         </if>
+and fphm is not null) t
+    </select>
 
 </mapper>
 
