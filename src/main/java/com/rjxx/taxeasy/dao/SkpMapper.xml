@@ -24,12 +24,18 @@
 	</select>
 	<select id="getSkpListByYhId" parameterType="map" resultType="skp">
 		select * from t_skp where yxbz = '1' and 
-		( (xfid in
-			<foreach collection="xfs" item="item" index="index" open="("
-				separator="," close=")"> #{item}</foreach>
-			) or (id in
-			<foreach collection="skpid" item="item" index="index" open="("
-				separator="," close=")"> #{skps[${index}]}</foreach>))
+		<if test="xfs != null or skps != null">
+			(
+					 
+					<foreach collection="xfs" item="item" index="index" open="xfid in ("
+						separator="," close=")"> #{xfs[${index}].id}</foreach> or
+					(
+					<foreach collection="skps" item="item" index="index" open="id in ("
+						separator="," close=")"> #{skps[${index}].id}</foreach>)
+					
+			)
+		</if>
+		
 	</select>
 	<select id="findAllByParams" parameterType="skp" resultType="skp">
 		select * from t_skp where yxbz = '1'
