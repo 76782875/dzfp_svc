@@ -26,14 +26,23 @@
 		select * from t_skp where yxbz = '1' and 
 		<if test="xfs != null or skps != null">
 			(
-					 
-					<foreach collection="xfs" item="item" index="index" open="xfid in ("
-						separator="," close=")"> #{xfs[${index}].id}</foreach> or
-					(
-					<foreach collection="skps" item="item" index="index" open="id in ("
-						separator="," close=")"> #{skps[${index}].id}</foreach>)
-					
+				<if test="xfs != null">
+					 xfid in
+					<foreach collection="xfs" item="item" index="index" open=" ("
+						separator="," close=")"> #{item.id}</foreach> or
+				</if>
+				<if test="skps != null">
+					(id in
+					<foreach collection="skps" item="item" index="index" open=" ("
+						separator="," close=")"> #{item.id}</foreach>)
+				</if>
+				<if test="skps == null">
+					id is null
+				</if>
 			)
+		</if>
+		<if test="xfs == null and skps == null">
+			and xfid is null
 		</if>
 		
 	</select>
