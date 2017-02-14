@@ -195,7 +195,8 @@ public class Jymxsq  implements Serializable {
 @Column(name="xfid")
 	protected Integer xfid;
 
-
+@Column(name="yxbz")
+protected String yxbz;
 	public Integer getId(){
 		return id;
 	}
@@ -436,6 +437,14 @@ public class Jymxsq  implements Serializable {
 
 	public void setXfid(Integer xfid){
 		this.xfid=xfid;
+	}
+
+	public String getYxbz() {
+		return yxbz;
+	}
+
+	public void setYxbz(String yxbz) {
+		this.yxbz = yxbz;
 	}
 
 }

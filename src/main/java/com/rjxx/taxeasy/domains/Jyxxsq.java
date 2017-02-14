@@ -344,6 +344,8 @@ public class Jyxxsq  implements Serializable {
 @Column(name="dxzt")
 	protected String dxzt;
 
+@Column(name="ztbz")
+protected String ztbz;
 
 
 
@@ -777,6 +779,14 @@ public void setSqlsh(Integer sqlsh) {
 
 	public void setDxzt(String dxzt){
 		this.dxzt=dxzt;
+	}
+
+	public String getZtbz() {
+		return ztbz;
+	}
+
+	public void setZtbz(String ztbz) {
+		this.ztbz = ztbz;
 	}
 
 }
