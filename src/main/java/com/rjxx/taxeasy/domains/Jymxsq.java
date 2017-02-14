@@ -19,9 +19,42 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 @Table(name="t_jymxsq")
 public class Jymxsq  implements Serializable {
 
+	
+	public Jymxsq(Integer spmxxh, String fphxz, String spdm, String spmc, String spggxh, String spdw, Double sps,
+			Double spdj, Double spje, Double spsl, Double spse, Double jshj, Integer hzkpxh, Date lrsj,
+			Integer lrry, Date xgsj, Integer xgry, String gsdm, Integer xfid, Integer skpid,String yxbz) {
+		super();
+		this.spmxxh = spmxxh;
+		this.fphxz = fphxz;
+		this.spdm = spdm;
+		this.spmc = spmc;
+		this.spggxh = spggxh;
+		this.spdw = spdw;
+		this.sps = sps;
+		this.spdj = spdj;
+		this.spje = spje;
+		this.spsl = spsl;
+		this.spse = spse;
+		this.jshj = jshj;
+		//this.ykphj = ykphj;
+		this.hzkpxh = hzkpxh;
+		this.lrsj = lrsj;
+		this.lrry = lrry;
+		this.xgsj = xgsj;
+		this.xgry = xgry;
+		this.gsdm = gsdm;
+		this.xfid = xfid;
+		this.skpid = skpid;
+		this.yxbz = yxbz;
+		
+	}
+public Jymxsq() {
+		// TODO Auto-generated constructor stub
+	}
 @Id
 @GeneratedValue(strategy=GenerationType.IDENTITY)
 	protected Integer id;
+
 
 /**
  * 单据号
