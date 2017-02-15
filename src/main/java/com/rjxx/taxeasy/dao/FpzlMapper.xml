@@ -143,28 +143,64 @@
            </if>
     </select>
     
-    <select id="findSpje" parameterType="map" resultType="kpls">
-         select sum(a.hjje) hjje,sum(a.hjse) hjse,sum(a.jshj) jshj from t_kpls a,t_kpspmx b
-      where a.kplsh = b.kplsh
-      <if test="gsdm !=null and gsdm !=''">
-          and a.gsdm = #{gsdm}
+    <select id="findSpje" parameterType="map" resultType="slcxvo">
+         SELECT
+	*
+FROM
+	(
+		SELECT
+      xfmc,
+			fpzl,
+			sl * 100 sl,
+			CASE jzjtbz
+		WHEN 1 THEN
+			'即征即退'
+		ELSE
+			'普通'
+		END jzjtbz,
+		sum(zsje) zsje,
+		sum(fsje) fsje,
+		sum(hjje) hjje,
+		sum(zsse) zsse,
+		sum(fsse) fsse,
+		sum(hjse) hjse
+	FROM
+		V_FSLMX
+	WHERE 1=1
+		<if test="gsdm !=null and gsdm !=''">
+          and gsdm = #{gsdm}
       </if>
       <if test="xfid !=null and xfid !=''">
-          and a.xfid = #{xfid}
+          and xfid = #{xfid}
       </if>
       <if test="fpzl !=null and fpzl !=''">
-          and a.fpzldm = #{fpzl}
-      </if>
-      <if test="fpczlxdm !=null and fpczlxdm !=''">
-          and a.fpczlxdm = #{fpczlxdm}
-      </if>
-      <if test="spsl !=null and spsl !=''">
-          and b.spsl = #{spsl}
+          and fpzldm = #{fpzl}
       </if>
       <if test="kprq !=null and kprq !=''">
-          and a.kprq like concat('%',#{kprq},'%')
+          and kprq like concat('%',#{kprq},'%')
       </if>
-      and a.fphm is not null
+	GROUP BY
+	    xfmc,
+		fpzl,
+		sl * 100,
+		CASE jzjtbz
+	WHEN 1 THEN
+		'即征即退'
+	ELSE
+		'普通'
+	END WITH ROLLUP
+	) t
+WHERE
+	(
+		t.jzjtbz = '普通'
+		OR t.jzjtbz = '即征即退'
+	)
+AND t.fpzl IS NOT NULL
+AND t.sl IS NOT NULL
+ORDER BY
+	1,
+	2,
+	3;
     </select>
     
      <select id="findDbsx" parameterType="map" resultType="fpnum">

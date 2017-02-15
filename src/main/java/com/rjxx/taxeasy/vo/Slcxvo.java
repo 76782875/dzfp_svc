@@ -1,6 +1,8 @@
 package com.rjxx.taxeasy.vo;
 
 public class Slcxvo {
+	protected String xfmc;
+	protected String fpzl;
 	protected Double sl;
 	protected String jzjtbz;
 	protected Double zsje;
@@ -56,6 +58,18 @@ public class Slcxvo {
 	}
 	public void setHjse(Double hjse) {
 		this.hjse = hjse;
+	}
+	public String getXfmc() {
+		return xfmc;
+	}
+	public void setXfmc(String xfmc) {
+		this.xfmc = xfmc;
+	}
+	public String getFpzl() {
+		return fpzl;
+	}
+	public void setFpzl(String fpzl) {
+		this.fpzl = fpzl;
 	}
 	
 
