@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.jdt.internal.compiler.ast.DoubleLiteral;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,9 +33,74 @@ public class FpclService {
  @Autowired private JyspmxService jymxService;
  @Autowired private GsxxService gsxxService;
  @Autowired private KpspmxService kpspmxService;
-	public Boolean kpcl(Integer sqlsh) {
+ @Autowired private DataOperte dc;
+	public Boolean kpcl(Integer djh,Integer yhid) throws Exception {
 		//规则处理
-		return true;
+		Jyls jyls1 = jylsService.findOne(djh);
+	
+		Jyspmx jyspmx = new Jyspmx();
+		jyspmx.setDjh(djh);
+		List<Jyspmx> list = jymxService.findAllByParams(jyspmx);
+		Double hjje=0d;
+		Double hjse= 0d;
+		Double jshj = 0d;
+		for (Jyspmx jyspmx2 : list) {
+			hjje+=jyspmx2.getSpje();
+			hjse+=jyspmx2.getSpse();
+		}
+		jshj=hjje+hjse;
+		Kpls kpls2 = new Kpls();
+		kpls2.setDjh(djh);
+		kpls2.setJylsh(jyls1.getJylsh());
+		kpls2.setJylssj(jyls1.getJylssj());
+		kpls2.setFpzldm(jyls1.getFpzldm());
+		kpls2.setFpczlxdm(jyls1.getFpczlxdm());
+		kpls2.setXfid(jyls1.getXfid());
+		kpls2.setXfsh(jyls1.getXfsh());
+		kpls2.setXfmc(jyls1.getXfmc());
+		kpls2.setXfyh(jyls1.getXfyh());
+		kpls2.setXfyhzh(jyls1.getXfyhzh());
+		kpls2.setXflxr(jyls1.getXflxr());
+		kpls2.setXfdh(jyls1.getXfdh());
+		kpls2.setXfdz(jyls1.getXfdz());
+		kpls2.setGfid(jyls1.getGfid());
+		kpls2.setGfsh(jyls1.getGfsh());
+		kpls2.setGfmc(jyls1.getGfmc());
+		kpls2.setGfyh(jyls1.getGfyh());
+		kpls2.setGfyhzh(jyls1.getGfyhzh());
+		kpls2.setGflxr(jyls1.getGflxr());
+		kpls2.setGfdh(jyls1.getGfdh());
+		kpls2.setGfdz(jyls1.getGfdz());
+		kpls2.setGfyb(jyls1.getGfyb());
+		kpls2.setGfemail(jyls1.getGfemail());
+		kpls2.setBz(jyls1.getBz());
+		kpls2.setSkr(jyls1.getSkr());
+		kpls2.setKpr(jyls1.getKpr());
+		kpls2.setFhr(jyls1.getFhr());
+		kpls2.setHztzdh(jyls1.getHztzdh());
+		kpls2.setHkFpdm(jyls1.getYfpdm());
+		kpls2.setHkFphm(jyls1.getYfphm());
+		kpls2.setJshj(jyls1.getJshj());
+		kpls2.setHjse(hjse);
+		kpls2.setHjje(hjje);
+		kpls2.setGsdm(jyls1.getGsdm());
+		kpls2.setYxbz("1");
+		kpls2.setLrsj(jyls1.getLrsj());
+		kpls2.setXgsj(jyls1.getXgsj());
+		kpls2.setSkpid(jyls1.getSkpid());
+		kpls2.setLrry(yhid);
+		kpls2.setXgry(yhid);
+		kpls2.setFpztdm("00");
+		jyls1.setClztdm("02");
+		jylsService.save(jyls1);
+		InvoiceResponse response = skService.callService(djh);
+		if ("0000".equals(response.getReturnCode())) {
+		
+			return true;
+		}else{
+			dc.saveLog(djh, "92", "1", "", "调用开票接口失败"+response.getReturnMessage(), 2, jyls1.getXfsh(), jyls1.getJylsh());
+			return false;
+		}
 	}
 	//红冲处理
 	public Boolean hccl(Integer kplsh,Integer yhid, String gsdm,String hcjeStr,String xhStr) throws Exception {
@@ -83,8 +149,9 @@ public class FpclService {
 			jylsh = "JY" + new SimpleDateFormat("yyyyMMddHHmmssSS").format(new Date());
 			jyls1.setJylsh(jylsh);
 			jyls1.setJylssj(TimeUtil.getNowDate());
-			jyls1.setFpzldm("12");
+			jyls1.setFpzldm(kpls.getFpzldm());
 			jyls1.setFpczlxdm("12");
+			jyls1.setClztdm("02");
 			jyls1.setXfid(kpls.getXfid());
 			jyls1.setXfsh(kpls.getXfsh());
 			jyls1.setXfmc(kpls.getXfmc());
@@ -325,6 +392,8 @@ public class FpclService {
 			if ("0000".equals(response.getReturnCode())) {
 				return true;
 			}else{
+				jyls1.setClztdm("02");
+				dc.saveLog(djh, "92", "1", "", "调用红冲接口失败"+response.getReturnMessage(), 2, jyls.getXfsh(), jyls.getJylsh());
 				return false;
 			}
 	}
@@ -353,6 +422,7 @@ public class FpclService {
 	    jyls.setYfphm(kpls.getFphm());
 	    jyls.setYfpdm(kpls.getFpdm());
 	    jyls.setLrsj(new Date());
+	    jyls.setClztdm("02");
 	    jyls.setXgsj(new Date());
 	    jyls.setXfsh(kpls.getXfsh());
 	    jyls.setXfmc(kpls.getXfmc());
@@ -373,6 +443,7 @@ public class FpclService {
 		if ("0000".equals(response.getReturnCode())) {
 			return true;
 		}else{
+			dc.saveLog(jyls.getDjh(), "92", "1", "", "调用作废接口失败"+response.getReturnMessage(), 2, jyls.getXfsh(), jyls.getJylsh());
 			return false;
 		}
 	}
