@@ -87,6 +87,12 @@ AND a.yxbz = '1'
             and a.skpid in <foreach collection="params.skpid" item="item" index="index" 
          open="(" separator="," close=")"> #{params.skpid[${index}]}</foreach>
         </if>
+        <if test="params.xfids !=null and params.xfids != ''">
+            and a.xfid = #{params.xfids}
+        </if>
+        <if test="params.skpids !=null and params.skpids != ''">
+            and a.skpid = #{params.skpids}
+        </if>
         <if test="params.fpdm !=null and params.fpdm != ''">
             and a.fpdm = #{params.fpdm}
         </if>
@@ -156,9 +162,8 @@ AND a.yxbz = '1'
     <select id="findKcjkByPage" parameterType="pagination" resultType="fpkcvo">
           select b.xfmc,b.xfsh,c.kpdmc,d.fpzlmc,sum(a.fpkcl) as kyl 
           from t_fpkc a,t_xf b,t_skp c,t_fpzl d
-                 where a.xfid=b.id and a.skpid=c.id and a.fpzldm=d.fpzldm 
-                 group by a.skpid,a.fpzldm
-                 <if test="params.gsdm !=null and params.gsdm !=''">
+                 where a.xfid=b.id and a.skpid=c.id and a.fpzldm=d.fpzldm                 
+        <if test="params.gsdm !=null and params.gsdm !=''">
 			and a.gsdm = #{params.gsdm}
 		</if>
 		<if test="params.xfs !=null">
@@ -174,7 +179,17 @@ AND a.yxbz = '1'
 				#{params.skps[${index}].id}
 			</foreach>
 			or a.skpid is null)
-		</if>	
+		</if>
+		<if test="params.xfid !=null and params.xfid !=''">
+		   and a.xfid = #{params.xfid}
+		</if>
+		<if test="params.skpid !=null and params.skpid !=''">
+		   and a.skpid = #{params.skpid}
+		</if>
+		<if test="params.fplx !=null and params.fplx !=''">
+		   and a.fpzldm = #{params.fplx}
+		</if>
+		group by a.xfid,a.skpid,a.fpzldm
     </select>
    
 </mapper>
