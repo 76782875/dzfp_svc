@@ -26,5 +26,9 @@
         order by xgsj desc
     </select>
 
+    <update id="deleteById" parameterType="map" >
+        update t_gfxx t set t.yxbz='0' where t.id = #{id}
+     </update>
+     
 </mapper>
 

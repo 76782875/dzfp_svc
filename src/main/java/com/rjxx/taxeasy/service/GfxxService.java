@@ -49,6 +49,10 @@ public class GfxxService {
     public List<Gfxx> findByPage(Pagination pagination) {
         return gfxxMapper.findByPage(pagination);
     }
+    
+    public void deleteById(Map params) {
+         gfxxMapper.deleteById(params);
+    }
 
 }
 

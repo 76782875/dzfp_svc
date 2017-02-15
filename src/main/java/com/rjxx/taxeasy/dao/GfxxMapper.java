@@ -22,6 +22,8 @@ public interface GfxxMapper {
     public List<Gfxx> findAllByParams(Map params);
 
     public List<Gfxx> findByPage(Pagination pagination);
+    
+    public void deleteById(Map params);
 
 }
 
