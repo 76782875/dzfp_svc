@@ -26,7 +26,7 @@
         order by a.lrsj desc
     </select>
     <update id="updategdzt" parameterType="map">
-        update t_gdjl set zt='1',xzlj=#{xzlj},wjsl=#{wjsl} where id=#{id} 
+        update t_gdjl set zt='1',xzlj=#{xzlj},wjsl=#{wjsl},xgsj=#{xgsj} where id=#{id} 
     </update>
 </mapper>
 
