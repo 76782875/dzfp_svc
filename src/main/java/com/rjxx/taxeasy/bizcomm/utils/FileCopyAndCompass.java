@@ -5,13 +5,16 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.UUID;
+
 import org.apache.commons.io.FileUtils;
+
 import com.rjxx.comm.utils.ApplicationContextUtils;
 import com.rjxx.taxeasy.service.GdjlService;
 import com.rjxx.taxeasy.service.GetPropertService;
@@ -140,6 +143,7 @@ public class FileCopyAndCompass implements Runnable{
 		params.put("id",id);
 		params.put("xzlj",requestPath);
 		params.put("wjsl", wjsl);
+		params.put("xgsj", new Date());
 		gdService.updategdzt(params);
 	}
 	
