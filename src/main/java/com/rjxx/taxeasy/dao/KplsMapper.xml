@@ -276,12 +276,106 @@ d.spmc,
 		resultType="fpcxvo">
 		select a.*,b.ddh from t_kpls a,t_jyls b
 		where a.djh = b.djh
-		and a.fpzldm
-		= '12'
+		<!-- and a.fpzldm
+		= '12' -->
 		and a.fpczlxdm = '11'
 		and a.fpztdm in('00','01')
 		and b.fpczlxdm =
 		'11'
+		and a.yxbz = '1'
+		<if test="params.gsdm !=null and params.gsdm !=''">
+			and a.gsdm = #{params.gsdm}
+		</if>
+		<if test="params.xfid !=null and params.xfid !=''">
+			and (a.xfid in
+			<foreach collection="params.xfid" item="item" index="index"
+				open="(" separator="," close=")"> #{params.xfid[${index}]}</foreach>
+			or a.xfid is null)
+		</if>
+		<if test="params.skpid !=null and params.skpid !=''">
+			and (a.skpid in
+			<foreach collection="params.skpid" item="item" index="index"
+				open="(" separator="," close=")"> #{params.skpid[${index}]}</foreach>
+			or a.skpid is null)
+		</if>
+		<if test="params.xfi !=null and params.xfi !=''">
+			and a.xfid = #{params.xfi}
+		</if>
+		<if
+			test="params.kprqq !=null and params.kprqq !='' and params.kprqz !=null and params.kprqz !=''">
+			and a.kprq between #{params.kprqq} and
+			date_add(str_to_date(#{params.kprqz},'%Y-%m-%d'),INTERVAL 1 day)
+		</if>
+		<if test="params.fpdm !=null and params.fpdm !=''">
+			and a.fpdm = #{params.fpdm}
+		</if>
+		<if test="params.fphm !=null and params.fphm !=''">
+			and a.fphm = #{params.fphm}
+		</if>
+		<if test="params.gfmc !=null and params.gfmc !=''">
+			and a.gfmc like CONCAT('%',#{params.gfmc},'%')
+		</if>
+		<if test="params.ddh !=null and params.ddh !=''">
+			and b.ddh = #{params.ddh}
+		</if>
+		order by a.lrsj desc
+	</select>
+
+		<!-- 已红冲数据查询 -->
+	<select id="findKhcfpByPage1" parameterType="pagination"
+		resultType="fpcxvo">
+		select a.*,b.ddh from t_kpls a,t_jyls b
+		where a.djh = b.djh
+		and a.fpztdm='00'
+		and a.fpczlxdm = '12'
+		and a.yxbz = '1'
+		<if test="params.gsdm !=null and params.gsdm !=''">
+			and a.gsdm = #{params.gsdm}
+		</if>
+		<if test="params.xfid !=null and params.xfid !=''">
+			and (a.xfid in
+			<foreach collection="params.xfid" item="item" index="index"
+				open="(" separator="," close=")"> #{params.xfid[${index}]}</foreach>
+			or a.xfid is null)
+		</if>
+		<if test="params.skpid !=null and params.skpid !=''">
+			and (a.skpid in
+			<foreach collection="params.skpid" item="item" index="index"
+				open="(" separator="," close=")"> #{params.skpid[${index}]}</foreach>
+			or a.skpid is null)
+		</if>
+		<if
+			test="params.kprqq !=null and params.kprqq !='' and params.kprqz !=null and params.kprqz !=''">
+			and a.kprq between #{params.kprqq} and
+			date_add(str_to_date(#{params.kprqz},'%Y-%m-%d'),INTERVAL 1 day)
+		</if>
+		<if test="params.fpdm !=null and params.fpdm !=''">
+			and a.fpdm = #{params.fpdm}
+		</if>
+		<if test="params.xfi !=null and params.xfi !=''">
+			and a.xfid = #{params.xfi}
+		</if>
+		<if test="params.fphm !=null and params.fphm !=''">
+			and a.fphm = #{params.fphm}
+		</if>
+		<if test="params.gfmc !=null and params.gfmc !=''">
+			and a.gfmc like CONCAT('%',#{params.gfmc},'%')
+		</if>
+		<if test="params.ddh !=null and params.ddh !=''">
+			and b.ddh = #{params.ddh}
+		</if>
+		order by a.lrsj desc
+	</select>
+
+	<!-- 作废数据查询 -->
+	<select id="findKzffpByPage" parameterType="pagination"
+		resultType="fpcxvo">
+		select a.*,b.ddh from t_kpls a,t_jyls b
+		where a.djh = b.djh
+		 and a.fpzldm in('01','02')
+		and a.fpczlxdm = '11'
+		and a.fpztdm = '00'
+	<!-- 	and  b.fpzldm in('01','02') -->
 		and a.yxbz = '1'
 		<if test="params.gsdm !=null and params.gsdm !=''">
 			and a.gsdm = #{params.gsdm}
@@ -309,6 +403,9 @@ d.spmc,
 		<if test="params.fphm !=null and params.fphm !=''">
 			and a.fphm = #{params.fphm}
 		</if>
+		<if test="params.xfi !=null and params.xfi !=''">
+			and a.xfid = #{params.xfi}
+		</if>
 		<if test="params.gfmc !=null and params.gfmc !=''">
 			and a.gfmc like CONCAT('%',#{params.gfmc},'%')
 		</if>
@@ -317,6 +414,54 @@ d.spmc,
 		</if>
 		order by a.lrsj desc
 	</select>
+
+
+	<!-- 已作废数据查询 -->
+	<select id="findKzffpByPage1" parameterType="pagination"
+		resultType="fpcxvo">
+		select a.*,b.ddh from t_kpls a,t_jyls b
+		where a.djh = b.djh
+		and a.fpztdm='00'
+		and a.fpczlxdm = '14'
+		and a.yxbz = '1'
+		<if test="params.gsdm !=null and params.gsdm !=''">
+			and a.gsdm = #{params.gsdm}
+		</if>
+		<if test="params.xfid !=null and params.xfid !=''">
+			and (a.xfid in
+			<foreach collection="params.xfid" item="item" index="index"
+				open="(" separator="," close=")"> #{params.xfid[${index}]}</foreach>
+			or a.xfid is null)
+		</if>
+		<if test="params.xfi !=null and params.xfi !=''">
+			and a.xfid = #{params.xfi}
+		</if>
+		<if test="params.skpid !=null and params.skpid !=''">
+			and (a.skpid in
+			<foreach collection="params.skpid" item="item" index="index"
+				open="(" separator="," close=")"> #{params.skpid[${index}]}</foreach>
+			or a.skpid is null)
+		</if>
+		<if
+			test="params.kprqq !=null and params.kprqq !='' and params.kprqz !=null and params.kprqz !=''">
+			and a.kprq between #{params.kprqq} and
+			date_add(str_to_date(#{params.kprqz},'%Y-%m-%d'),INTERVAL 1 day)
+		</if>
+		<if test="params.fpdm !=null and params.fpdm !=''">
+			and a.fpdm = #{params.fpdm}
+		</if>
+		<if test="params.fphm !=null and params.fphm !=''">
+			and a.fphm = #{params.fphm}
+		</if>
+		<if test="params.gfmc !=null and params.gfmc !=''">
+			and a.gfmc like CONCAT('%',#{params.gfmc},'%')
+		</if>
+		<if test="params.ddh !=null and params.ddh !=''">
+			and b.ddh = #{params.ddh}
+		</if>
+		order by a.lrsj desc
+	</select>
+
 
 	<update id="updateFpczlx" parameterType="map">
 		update t_kpls set fpztdm

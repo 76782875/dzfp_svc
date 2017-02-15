@@ -86,6 +86,9 @@ public interface KplsMapper {
     public Integer findCountByDjh(Kpls kpls);
 
     public List<Kpls> findAllNeedRegeneratePdfKpls(Map params);
+	public List<Fpcxvo> findKhcfpByPage1(Pagination pagination);
+	public List<Fpcxvo> findKzffpByPage(Pagination pagination);
+	public List<Fpcxvo> findKzffpByPage1(Pagination pagination);
 
 }
 

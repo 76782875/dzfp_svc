@@ -166,5 +166,20 @@ public class KplsService {
     public Integer findCountByDjh(Kpls kpls) {
         return kplsMapper.findCountByDjh(kpls);
     }
+
+	public List<Fpcxvo> findKhcfpByPage1(Pagination pagination) {
+		// TODO Auto-generated method stub
+		return kplsMapper.findKhcfpByPage1(pagination);
+	}
+
+	public List<Fpcxvo> findKzffpByPage(Pagination pagination) {
+		// TODO Auto-generated method stub
+		return kplsMapper.findKzffpByPage(pagination);
+	}
+
+	public List<Fpcxvo> findKzffpByPage1(Pagination pagination) {
+		// TODO Auto-generated method stub
+		return kplsMapper.findKzffpByPage1(pagination);
+	}
 }
 
