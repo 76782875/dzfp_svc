@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,31 +24,31 @@ import java.util.Map;
  * Fri Oct 14 08:55:04 GMT+08:00 2016
  *
  * @ZhangBing
- */ 
+ */
 @Service
 public class SkpService {
 
-    @Autowired
-    private SkpJpaDao skpJpaDao;
+	@Autowired
+	private SkpJpaDao skpJpaDao;
 
-    @Autowired
-    private SkpMapper skpMapper;
-    
-    @Autowired
-    private GroupService groupService;
+	@Autowired
+	private SkpMapper skpMapper;
 
-    public Skp findOne(int id) {
-        return skpJpaDao.findOne(id);
-    }
+	@Autowired
+	private GroupService groupService;
 
-    public void save(Skp skp) {
-        skpJpaDao.save(skp);
-    }
+	public Skp findOne(int id) {
+		return skpJpaDao.findOne(id);
+	}
 
-    @Transactional
-    public void save(List<Skp> skpList) {
-        skpJpaDao.save(skpList);
-        if (!skpList.isEmpty()) {
+	public void save(Skp skp) {
+		skpJpaDao.save(skp);
+	}
+
+	@Transactional
+	public void save(List<Skp> skpList) {
+		skpJpaDao.save(skpList);
+		if (!skpList.isEmpty()) {
 			for (Skp skp : skpList) {
 				Group group = new Group();
 				group.setYxbz("1");
@@ -60,31 +62,65 @@ public class SkpService {
 				groupService.save(group);
 			}
 		}
-    }
+	}
 
-    public Skp findOneByParams(Map skp) {
-        return skpMapper.findOneByParams(skp);
-    }
+	public Skp findOneByParams(Map skp) {
+		return skpMapper.findOneByParams(skp);
+	}
 
-    public List<Skp> findAllByParams(Skp skp) {
-        return skpMapper.findAllByParams(skp);
-    }
-    public List<Skp> findBySql(Skp skp) {
-        return skpMapper.findBySql(skp);
-    }
-    public List<SkpVo> findByPage(Pagination pagination) {
-        return skpMapper.findByPage(pagination);
-    }
-    
-    public List<Skp> getSkpListByYhId(Map params) {
-        return skpMapper.getSkpListByYhId(params);
-    }
-    
-    public List<Skp> getKpd(Map params){
-    	return skpMapper.getKpd(params);
-    }
-    public List<Skp> findCsz(Skp params){
-    	return skpMapper.findCsz(params);
-    }
+	public List<Skp> findAllByParams(Skp skp) {
+		return skpMapper.findAllByParams(skp);
+	}
+
+	public List<Skp> findBySql(Skp skp) {
+		return skpMapper.findBySql(skp);
+	}
+
+	public List<SkpVo> findByPage(Pagination pagination) {
+		return skpMapper.findByPage(pagination);
+	}
+
+	public List<Skp> getSkpListByYhId(int yhid) {
+		Map<String, Object> params = new HashMap<>();
+		Group g = new Group();
+		g.setYhid(yhid);
+		List<Group> groupList = groupService.findAllByParams(g);
+		List<Xf> xfs = new ArrayList<>();
+		List<Skp> skps = new ArrayList<>();
+		Xf xf = null;
+		Skp skp = null;
+		for (Group gp : groupList) {
+			boolean flag = false;
+			for (Group gr : groupList) {
+				if (gp.getXfid().equals(gr.getXfid()) && gr.getSkpid() != null) {
+					flag = true;
+					skp = new Skp();
+					skp.setId(gr.getSkpid());
+					skps.add(skp);
+					continue;
+				}
+			}
+			if (!flag) {
+				xf = new Xf();
+				xf.setId(gp.getXfid());
+				xfs.add(xf);
+			}
+
+		}
+		if (xfs.size() > 0) {
+			params.put("xfs", xfs);
+		}
+		if (skps.size() > 0) {
+			params.put("skps", skps);
+		}
+		return skpMapper.getSkpListByYhId(params);
+	}
+
+	public List<Skp> getKpd(Map params) {
+		return skpMapper.getKpd(params);
+	}
+
+	public List<Skp> findCsz(Skp params) {
+		return skpMapper.findCsz(params);
+	}
 }
-
