@@ -40,6 +40,7 @@ public class FpclService {
 		Jyspmx jyspmx = new Jyspmx();
 		jyspmx.setDjh(djh);
 		List<Jyspmx> list = jymxService.findAllByParams(jyspmx);
+
 		Double hjje=0d;
 		Double hjse= 0d;
 		Double jshj = 0d;
@@ -91,6 +92,34 @@ public class FpclService {
 		kpls2.setXgry(yhid);
 		kpls2.setFpztdm("00");
 		kplsService.save(kpls2);
+		for (Jyspmx jyspmx2 : list) {
+			Kpspmx kpspmx = new Kpspmx();
+			kpspmx.setKplsh(kpls2.getKplsh());
+			kpspmx.setDjh(jyspmx2.getDjh());
+			kpspmx.setSpmxxh(jyspmx2.getSpmxxh());
+			kpspmx.setFphxz(jyspmx2.getFphxz());
+			kpspmx.setSpdm(jyspmx2.getSpdm());
+			kpspmx.setSpmc(jyspmx2.getSpmc());
+			kpspmx.setSpggxh(jyspmx2.getSpggxh());
+			kpspmx.setSpdw(jyspmx2.getSpdw());
+		    if (jyspmx2.getSpdj() != null) {
+                kpspmx.setSpdj(jyspmx2.getSpdj().doubleValue());
+            }
+            kpspmx.setSpdw(jyspmx2.getSpdw());
+            if (jyspmx2.getSps() != null) {
+                kpspmx.setSps(jyspmx2.getSps().doubleValue());
+            }
+			kpspmx.setSpje(jyspmx2.getSpje().doubleValue());
+			kpspmx.setSpsl(jyspmx2.getSpsl().doubleValue());
+			kpspmx.setSpse(jyspmx2.getSpse().doubleValue());
+			kpspmx.setLrsj(new Date());
+			kpspmx.setLrry(yhid);
+			kpspmx.setXgsj(new Date());
+			kpspmx.setXgry(yhid);
+			kpspmx.setKhcje(jyspmx2.getJshj().doubleValue());
+			kpspmx.setYhcje(0d);
+			kpspmxService.save(kpspmx);
+		}
 		jyls1.setClztdm("02");
 		jylsService.save(jyls1);
 		InvoiceResponse response = skService.callService(kpls2.getKplsh());
