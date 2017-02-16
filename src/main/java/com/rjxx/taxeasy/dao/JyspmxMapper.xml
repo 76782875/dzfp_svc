@@ -11,7 +11,7 @@
     <select id="findAllByParams" parameterType="jyspmx" resultType="jyspmx">
         select * from t_jyspmx where 1 = 1
         <if test="djh != null">
-            and djh = #{params.djh}
+            and djh = #{djh}
         </if>
     </select>
   <select id="findBySql" parameterType="jyspmx" resultType="JyspmxDecimal">

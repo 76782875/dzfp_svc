@@ -33,8 +33,8 @@ public class Fpcxvo implements Serializable {
 	protected String kprq;
 	protected String kpr;
 	protected Double jshj;
-	protected String hjje;
-	protected String hjse;
+	protected Double hjje;
+	protected Double hjse;
 	protected String printflag;
 	protected String spmc;
 	protected String fpzt;
@@ -428,28 +428,21 @@ public class Fpcxvo implements Serializable {
 		this.jshj = jshj;
 	}
 
-	public String getHjje() {
+	public Double getHjje() {
 
-		if (null != hjje) {
-			DecimalFormat dFormat = new DecimalFormat("##,##0.00");
-			return dFormat.format(Double.valueOf(hjje));
-		}
 		return hjje;
 	}
 
-	public void setHjje(String hjje) {
+	public void setHjje(Double hjje) {
 		this.hjje = hjje;
 	}
 
-	public String getHjse() {
-		if (null != hjse) {
-			DecimalFormat dFormat = new DecimalFormat("###,##0.00");
-			return dFormat.format(Double.valueOf(hjse));
-		}
+	public Double getHjse() {
+
 		return hjse;
 	}
 
-	public void setHjse(String hjse) {
+	public void setHjse(Double hjse) {
 		this.hjse = hjse;
 	}
 
