@@ -1,40 +1,55 @@
 package com.rjxx.taxeasy.bizcomm.utils;
 
-import java.util.Date;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * 税控操作返回值
  * Created by zhangbing on 2017-02-13.
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "Response")
 public class InvoiceResponse {
 
     //开票流水号
-    private int kplsh;
+    @XmlElement(name = "SerialNumber")
+    private String lsh;
 
     //返回值
+    @XmlElement(name = "ReturnCode")
     private String returnCode;
 
     //返回信息
+    @XmlElement(name = "ReturnMessage")
     private String returnMessage;
 
     //发票代码
+    @XmlElement(name = "InvoiceCode")
     private String fpdm;
 
     //发票号码
+    @XmlElement(name = "InvoiceNo")
     private String fphm;
 
     //开票日期
-    private Date kprq;
+    @XmlElement(name = "InvoiceDate")
+    private String kprq;
 
     //打印标志，0-未打印，1-打印
+    @XmlElement(name = "PrintFlag")
     private int printFlag;
 
-    public int getKplsh() {
-        return kplsh;
+    @XmlElement(name = "InvoiceType")
+    private String fplxdm;
+
+    public String getLsh() {
+        return lsh;
     }
 
-    public void setKplsh(int kplsh) {
-        this.kplsh = kplsh;
+    public void setLsh(String lsh) {
+        this.lsh = lsh;
     }
 
     public String getReturnCode() {
@@ -69,11 +84,11 @@ public class InvoiceResponse {
         this.fphm = fphm;
     }
 
-    public Date getKprq() {
+    public String getKprq() {
         return kprq;
     }
 
-    public void setKprq(Date kprq) {
+    public void setKprq(String kprq) {
         this.kprq = kprq;
     }
 
@@ -83,5 +98,13 @@ public class InvoiceResponse {
 
     public void setPrintFlag(int printFlag) {
         this.printFlag = printFlag;
+    }
+
+    public String getFplxdm() {
+        return fplxdm;
+    }
+
+    public void setFplxdm(String fplxdm) {
+        this.fplxdm = fplxdm;
     }
 }
