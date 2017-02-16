@@ -90,9 +90,10 @@ public class FpclService {
 		kpls2.setLrry(yhid);
 		kpls2.setXgry(yhid);
 		kpls2.setFpztdm("00");
+		kplsService.save(kpls2);
 		jyls1.setClztdm("02");
 		jylsService.save(jyls1);
-		InvoiceResponse response = skService.callService(djh);
+		InvoiceResponse response = skService.callService(kpls2.getKplsh());
 		if ("0000".equals(response.getReturnCode())) {
 		
 			return true;
