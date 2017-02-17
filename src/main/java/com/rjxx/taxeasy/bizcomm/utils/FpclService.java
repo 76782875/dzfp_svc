@@ -33,7 +33,7 @@ public class FpclService {
  @Autowired private GsxxService gsxxService;
  @Autowired private KpspmxService kpspmxService;
  @Autowired private DataOperte dc;
-	public Boolean kpcl(Integer djh,Integer yhid) throws Exception {
+	public InvoiceResponse kpcl(Integer djh,Integer yhid) throws Exception {
 		//规则处理
 		Jyls jyls1 = jylsService.findOne(djh);
 	
@@ -125,14 +125,14 @@ public class FpclService {
 		InvoiceResponse response = skService.callService(kpls2.getKplsh());
 		if ("0000".equals(response.getReturnCode())) {
 		
-			return true;
+			return response;
 		}else{
 			dc.saveLog(djh, "92", "1", "", "调用开票接口失败"+response.getReturnMessage(), 2, jyls1.getXfsh(), jyls1.getJylsh());
-			return false;
+			return response;
 		}
 	}
 	//红冲处理
-	public Boolean hccl(Integer kplsh,Integer yhid, String gsdm,String hcjeStr,String xhStr) throws Exception {
+	public InvoiceResponse hccl(Integer kplsh,Integer yhid, String gsdm,String hcjeStr,String xhStr) throws Exception {
 	//	Kpls kpls = kplsService.findOne(kplsh);
 		DecimalFormat df = new DecimalFormat("#.00");
 		DecimalFormat df6 = new DecimalFormat("#.000000");
@@ -419,15 +419,15 @@ public class FpclService {
 			}
 			InvoiceResponse response = skService.callService(kplsh);
 			if ("0000".equals(response.getReturnCode())) {
-				return true;
+				return response;
 			}else{
 				jyls1.setClztdm("02");
 				dc.saveLog(djh, "92", "1", "", "调用红冲接口失败"+response.getReturnMessage(), 2, jyls.getXfsh(), jyls.getJylsh());
-				return false;
+				return response;
 			}
 	}
 	//作废处理
-	public Boolean zfcl(Integer kplsh,Integer yhid,String gsdm) throws Exception {
+	public InvoiceResponse zfcl(Integer kplsh,Integer yhid,String gsdm) throws Exception {
 		Kpls kpls = kplsService.findOne(kplsh);
 		Kpls kpls2 = new Kpls();
 		kpls2.setHkFphm(kpls.getFphm());
@@ -470,10 +470,10 @@ public class FpclService {
 		kplsService.save(kpls);
 		InvoiceResponse response = skService.callService(kplsh);
 		if ("0000".equals(response.getReturnCode())) {
-			return true;
+			return response;
 		}else{
 			dc.saveLog(jyls.getDjh(), "92", "1", "", "调用作废接口失败"+response.getReturnMessage(), 2, jyls.getXfsh(), jyls.getJylsh());
-			return false;
+			return response;
 		}
 	}
 
