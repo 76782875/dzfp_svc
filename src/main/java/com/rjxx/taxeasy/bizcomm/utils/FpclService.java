@@ -80,8 +80,10 @@ public class FpclService {
                  list2 = new ArrayList<>();
                  fpMap.put(fpnum, list2);
              }
-             list.add(jyspmx);
+             list2.add(jysmx);
          }
+  		jyls1.setClztdm("02");
+ 		jylsService.save(jyls1);
          Map<Integer, Integer> fpNumKplshMap = new HashMap<>();
          for (Map.Entry<Integer, List<JyspmxDecimal>> entry : fpMap.entrySet()) {
              int fpNum = entry.getKey();
@@ -89,8 +91,7 @@ public class FpclService {
              Kpls kpls = saveKpls(jyls1, fpJyspmxList);
              saveKpspmx(kpls, fpJyspmxList);
              fpNumKplshMap.put(fpNum, kpls.getKplsh());
-     		jyls1.setClztdm("02");
-    		jylsService.save(jyls1);
+
     		InvoiceResponse response = skService.callService(kpls.getKplsh());
     		if ("0000".equals(response.getReturnCode())) {
     		
