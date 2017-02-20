@@ -12,12 +12,14 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.rjxx.taxeasy.domains.Fpgz;
 import com.rjxx.taxeasy.domains.Gsxx;
 import com.rjxx.taxeasy.domains.Jyls;
 import com.rjxx.taxeasy.domains.Jyspmx;
 import com.rjxx.taxeasy.domains.Kpls;
 import com.rjxx.taxeasy.domains.Kpspmx;
 import com.rjxx.taxeasy.domains.Xf;
+import com.rjxx.taxeasy.service.FpgzService;
 import com.rjxx.taxeasy.service.GsxxService;
 import com.rjxx.taxeasy.service.JylsService;
 import com.rjxx.taxeasy.service.JyspmxService;
@@ -33,13 +35,14 @@ import com.rjxx.time.TimeUtil;
 public class FpclService {
  @Autowired private KplsService kplsService;
  @Autowired private JylsService jylsService;
+ @Autowired private FpgzService fpgzService;
  @Autowired private SkService skService;
  @Autowired private JyspmxService jymxService;
  @Autowired private GsxxService gsxxService;
  @Autowired private KpspmxService kpspmxService;
  @Autowired private DataOperte dc;
  @Autowired private XfService xfService;
-	public InvoiceResponse kpcl(Integer djh,Integer yhid) throws Exception {
+	public InvoiceResponse kpcl(Integer djh,Integer yhid,Double kpxe) throws Exception {
 		Jyls jyls1 = jylsService.findOne(djh);
 		Jyspmx jyspmx = new Jyspmx();
 		jyspmx.setDjh(djh);
@@ -60,16 +63,46 @@ public class FpclService {
          if (xfList == null) {
              throw new Exception("单据号" + jyls1.getDjh() + "的销方税号库内不存在");
          }
-         Xf xf = xfList;
          double fpje = Double.MAX_VALUE;
-         fpje = xf.getDzpfpje();
          double zdje = Double.MAX_VALUE;
-         zdje = xf.getDzpzdje();
+         Xf xf = xfList;
+         if ("01".equals(jyls1.getFpzldm())) {
+        	  fpje = xf.getZpfpje();
+              zdje = xf.getZpzdje();
+		}else if ("02".equals(jyls1.getFpzldm())) {
+			  fpje = xf.getPpfpje();
+		      zdje = xf.getPpzdje();
+		}else if ("11".equals(jyls1.getFpzldm())) {
+			  fpje = xf.getDzpfpje();
+		      zdje = xf.getDzpzdje();
+		}
+         int fphs1 = 100;
+         int fphs2 = 8;
+        //若有分票规则则取分票规则
+         List<Fpgz> listt = fpgzService.findAllByParams(new HashMap<>());
+         for (Fpgz fpgz : listt) {
+			if (fpgz.getXfids().contains(String.valueOf(xf.getId()))) {
+				if ("01".equals(jyls1.getFpzldm())) {
+					fpje=fpgz.getZpxe();
+					fphs2 = fpgz.getZphs();
+				}else if ("02".equals(jyls1.getFpzldm())) {
+					fpje=fpgz.getPpxe();
+					fphs2 = fpgz.getPphs();
+				}else if ("11".equals(jyls1.getFpzldm())) {
+					fpje=fpgz.getDzpxe();
+					fphs2 = fpgz.getDzphs();
+				}
+			}
+		}
+         //若页面传入金额不为空则去页面输入
+         if (null!=kpxe&&kpxe>0) {
+			fpje= kpxe;
+         }
 		 //分票
          if(jyls1.getFpzldm().equals("11")){
-        	 jyspmxs = SeperateInvoiceUtils.splitInvoices(jyspmxs,new BigDecimal(zdje),new BigDecimal(fpje), SeperateInvoiceUtils.detailsNumber);
+        	 jyspmxs = SeperateInvoiceUtils.splitInvoices(jyspmxs,new BigDecimal(zdje),new BigDecimal(fpje),fphs1);
          }else{
-			 jyspmxs = SeperateInvoiceUtils.splitInvoices(jyspmxs,new BigDecimal(zdje),new BigDecimal(fpje), 8);
+			 jyspmxs = SeperateInvoiceUtils.splitInvoices(jyspmxs,new BigDecimal(zdje),new BigDecimal(fpje), fphs2);
          }
          //写入开票流水
          Map<Integer, List<JyspmxDecimal>> fpMap = new HashMap<>();
