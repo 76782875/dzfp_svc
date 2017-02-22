@@ -34,6 +34,33 @@
     <update id="updateYxbz" parameterType="map">
          update t_yhdyk set yxbz='0' where id=#{id}
     </update>
+    
+    <select id="findYhdy" parameterType="map" resultType="dyfs">
+            select a.yhid,a.dyfs 
+            from t_yhdyk a,t_dyzl b 
+            where a.dybtid = b.id 
+            and a.yxbz='1' and b.yxbz='1'
+            <if test="dydm != null and dydm !=''">
+                 and b.dydm=#{dydm}
+            </if> 
+    </select>
+    
+    <select id="findTjsj" parameterType="map" resultType="fpnum">
+            select count(*) fpunm,sum(t.zsje+t.fsje) hjje,sum(t.zsse+t.fsse) hjse from
+(select lrry,lrsj,
+case when fpczlxdm in('11','14') then hjje else 0 end zsje,
+case when fpczlxdm in('12','13') then hjje else 0 end fsje,
+case when fpczlxdm in('11','14') then hjse else 0 end zsse,
+case when fpczlxdm in('12','13') then hjse else 0 end fsse
+from t_kpls where yxbz='1' and fphm is not NULL
+<if test="lrry !=null and lrry !=''">
+and lrry = #{lrry}
+</if>
+<if test="kprq !=null and kprq !=''">
+and kprq like CONCAT('%',#{kprq},'%')
+</if>
+) t
+    </select>
 
 </mapper>
 

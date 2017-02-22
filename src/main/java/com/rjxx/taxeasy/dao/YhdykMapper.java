@@ -6,6 +6,7 @@ import java.util.Map;
 import com.rjxx.comm.mybatis.MybatisRepository;
 import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.domains.Yhdyk;
+import com.rjxx.taxeasy.vo.Fpnum;
 import com.rjxx.taxeasy.vo.Yhdykvo;
 
 /**
@@ -27,6 +28,10 @@ public interface YhdykMapper {
     public Yhdyk findDyxx(Map params);
     
     public void updateYxbz(Map params);
+    
+    public List<Yhdyk> findYhdy(Map params);
+    
+    public Fpnum findTjsj(Map params);
 
 }
 

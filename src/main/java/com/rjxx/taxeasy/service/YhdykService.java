@@ -10,6 +10,7 @@ import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.dao.YhdykJpaDao;
 import com.rjxx.taxeasy.dao.YhdykMapper;
 import com.rjxx.taxeasy.domains.Yhdyk;
+import com.rjxx.taxeasy.vo.Fpnum;
 import com.rjxx.taxeasy.vo.Yhdykvo;
 
 /**
@@ -58,6 +59,14 @@ public class YhdykService {
     
     public void updateYxbz(Map params){
     	yhdykMapper.updateYxbz(params);
+    }
+    
+    public List<Yhdyk> findYhdy(Map params){
+    	return yhdykMapper.findYhdy(params);
+    }
+    
+    public Fpnum findTjsj(Map params){
+    	return yhdykMapper.findTjsj(params);
     }
 
 }

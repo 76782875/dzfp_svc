@@ -10,6 +10,8 @@ import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.dao.FpzlJpaDao;
 import com.rjxx.taxeasy.dao.FpzlMapper;
 import com.rjxx.taxeasy.domains.Fpzl;
+import com.rjxx.taxeasy.domains.Jyxxsq;
+import com.rjxx.taxeasy.domains.Kpls;
 import com.rjxx.taxeasy.domains.Kpspmx;
 import com.rjxx.taxeasy.vo.Fpnum;
 import com.rjxx.taxeasy.vo.Slcxvo;
@@ -66,8 +68,12 @@ public class FpzlService {
     	return fpzlMapper.findSpje(params);
     }
     
-    public List<Fpnum> findDbsx(Map params){
+    public List<Jyxxsq> findDbsx(Map params){
     	return fpzlMapper.findDbsx(params);
+    }
+    
+    public Kpls findDkpsj(Map params){
+    	return fpzlMapper.findDkpsj(params);
     }
 
 }
