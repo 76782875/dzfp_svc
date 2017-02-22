@@ -8,6 +8,9 @@
 		<if test="gsdm != null">
 			and gsdm = #{gsdm}
 		</if>
+		<if test="ddh != null">
+			and ddh = #{ddh}
+		</if>
 		<if test="tqm != null">
 			and tqm = #{tqm}
 		</if>
