@@ -62,6 +62,10 @@ public Jymxsq() {
 @Column(name="sqlsh")
 	protected Integer sqlsh;
 
+@Column(name="spid")
+protected Integer spid;
+
+
 /**
  * 订单号 业务系统或电商平台生成。
  */ 
@@ -479,6 +483,13 @@ protected String yxbz;
 	public void setYxbz(String yxbz) {
 		this.yxbz = yxbz;
 	}
+	public Integer getSpid() {
+		return spid;
+	}
+	public void setSpid(Integer spid) {
+		this.spid = spid;
+	}
+	
 
 }
 
