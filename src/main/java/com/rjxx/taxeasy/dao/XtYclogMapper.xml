@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rjxx.taxeasy.dao.XtYclogMapper">
+
+    <select id="findOneByParams" parameterType="map" resultType="xtYclog">
+        select * from t_xt_yclog t where to_days(t.lrsj) = to_days(now()) 
+        <if test="ycxx != null">
+            and  t.ycxx = #{ycxx}
+        </if>
+        <if test="ycff != null">
+            and  t.ycff = #{ycff}
+        </if>
+        <if test="yclm != null">
+            and  t.yclm = #{yclm}
+        </if>
+        limit 1
+    </select>
+
+    <select id="findAllByParams" parameterType="map" resultType="xtYclog">
+          select * from t_xt_yclog t where to_days(t.lrsj) = to_days(now()) and t.fsbz='0' and t.ycdj  &lt;&gt; 4 group by t.yclm
+    </select>
+
+    <select id="findByPage" parameterType="pagination" resultType="xtYclog">
+        select * from t_xt_yclog where yxbz = '1'
+        <if test="params.orderBy != null">
+            order by #{params.orderBy}
+        </if>
+    </select>
+   
+      <update id="updateById" parameterType="map" >
+        update t_xt_yclog t set t.fsbz='1' where t.id = #{id}
+     </update>
+    
+</mapper>
+
