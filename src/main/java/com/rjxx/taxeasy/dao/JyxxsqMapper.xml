@@ -8,6 +8,9 @@
 		<if test="gsdm != null">
 			and gsdm = #{gsdm}
 		</if>
+		<if test="ddh != null">
+			and ddh = #{ddh}
+		</if>
 		<if test="tqm != null">
 			and tqm = #{tqm}
 		</if>
@@ -119,7 +122,7 @@
 
 
 	<select id="findByPage1" parameterType="pagination" resultType="jyxxsq">
-		select * from t_jyxxsq where yxbz = '1' and ztbz ='0'
+		select * from t_jyxxsq where yxbz = '1' and ztbz in('0','2')
 		<if test="params.clztdm != null">
 			and clztdm = #{params.clztdm}
 		</if>

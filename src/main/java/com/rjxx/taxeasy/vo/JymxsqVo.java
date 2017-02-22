@@ -132,6 +132,8 @@ public class JymxsqVo {
      */
     protected Integer skpid;
     
+    protected Integer spid;
+    
     /**
      * 税控盘id
      */
@@ -331,6 +333,14 @@ public class JymxsqVo {
 
 	public void setDdh(String ddh) {
 		this.ddh = ddh;
+	}
+
+	public Integer getSpid() {
+		return spid;
+	}
+
+	public void setSpid(Integer spid) {
+		this.spid = spid;
 	}
     
     
