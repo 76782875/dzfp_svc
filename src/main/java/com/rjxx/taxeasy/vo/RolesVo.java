@@ -69,6 +69,7 @@ public class RolesVo  implements Serializable {
 	protected String xgry;
 
 protected String lrr;
+protected String xgr;
 	public Integer getId(){
 		return id;
 	}
@@ -157,8 +158,20 @@ protected String lrr;
 		this.lrr = lrr;
 	}
 
+	public String getXgr() {
+		return xgr;
+	}
+
+	public void setXgr(String xgr) {
+		this.xgr = xgr;
+	}
+
+	public RolesVo() {
+		super();
+	}
+
 	public RolesVo(Integer id, String name, String description, String privilegeids, Integer sort, String yxbz,
-			Date lrsj, String lrry, Date xgsj, String xgry, String lrr) {
+			Date lrsj, String lrry, Date xgsj, String xgry, String lrr, String xgr) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -171,6 +184,7 @@ protected String lrr;
 		this.xgsj = xgsj;
 		this.xgry = xgry;
 		this.lrr = lrr;
+		this.xgr = xgr;
 	}
 
 }
