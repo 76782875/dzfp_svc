@@ -14,6 +14,9 @@
         <if test="yhmm != null and yhmm !=''">
             and yhmm = #{yhmm}
         </if>
+        <if test="yhid !=null and yhid !=''">
+            and id = #{yhid}
+        </if>
         limit 1
     </select>
 

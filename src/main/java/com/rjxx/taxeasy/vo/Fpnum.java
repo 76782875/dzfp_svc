@@ -5,6 +5,8 @@ public class Fpnum {
 	private Integer fpnum;
 	private Integer zspfs;
 	private Integer fspfs;
+	private Double hjje;
+	private Double hjse;
 
 	public Integer getFpnum() {
 		return fpnum;
@@ -28,6 +30,22 @@ public class Fpnum {
 
 	public void setFspfs(Integer fspfs) {
 		this.fspfs = fspfs;
+	}
+
+	public Double getHjje() {
+		return hjje;
+	}
+
+	public void setHjje(Double hjje) {
+		this.hjje = hjje;
+	}
+
+	public Double getHjse() {
+		return hjse;
+	}
+
+	public void setHjse(Double hjse) {
+		this.hjse = hjse;
 	}
 
 }

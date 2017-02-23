@@ -6,6 +6,8 @@ import java.util.Map;
 import com.rjxx.comm.mybatis.MybatisRepository;
 import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.domains.Fpzl;
+import com.rjxx.taxeasy.domains.Jyxxsq;
+import com.rjxx.taxeasy.domains.Kpls;
 import com.rjxx.taxeasy.domains.Kpspmx;
 import com.rjxx.taxeasy.vo.Fpnum;
 import com.rjxx.taxeasy.vo.Slcxvo;
@@ -32,7 +34,9 @@ public interface FpzlMapper {
     
     public List<Slcxvo> findSpje(Map params);
     
-    public List<Fpnum> findDbsx(Map params);
+    public List<Jyxxsq> findDbsx(Map params);
+    
+    public Kpls findDkpsj(Map params);
 
 }
 

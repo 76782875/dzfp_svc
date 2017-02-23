@@ -2,15 +2,6 @@ package com.rjxx.taxeasy.vo;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
-import org.springframework.format.annotation.DateTimeFormat;
-
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.rjxx.comm.json.JsonDatetimeFormat;
 
 public class SkpVo {
 	/**
@@ -136,6 +127,10 @@ public class SkpVo {
 	protected String fhr;
 
 	protected String kpr;
+
+	protected String kplx;
+
+	protected String fpzl;
 
 	public String getSkph() {
 		return skph;
@@ -415,5 +410,34 @@ public class SkpVo {
 
 	public void setKpr(String kpr) {
 		this.kpr = kpr;
+	}
+
+	public String getKplx() {
+		return kplx;
+	}
+
+	public void setKplx(String kplx) {
+		this.kplx = kplx;
+	}
+
+	public String getFpzl() {
+		String str = "";
+		if (kplx != null) {
+			for (String s : kplx.split(",")) {
+				if (s.equals("01")) {
+					str += "专用发票,";
+				}else if (s.equals("02")){
+					str += "普通发票,";
+				}else{
+					str += "电子发票,";
+				}
+			}
+			return str.substring(0, str.length()-1);
+		}
+		return fpzl;
+	}
+
+	public void setFpzl(String fpzl) {
+		this.fpzl = fpzl;
 	}
 }

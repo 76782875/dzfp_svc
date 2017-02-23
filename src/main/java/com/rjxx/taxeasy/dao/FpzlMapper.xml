@@ -203,15 +203,47 @@ ORDER BY
 	3;
     </select>
     
-     <select id="findDbsx" parameterType="map" resultType="fpnum">
-            select count(*) fpnum from t_jyxxsq where ztbz = '1' and yxbz='1' and gsdm= #{gsdm}
-union all select count(*) from t_jyls where clztdm='01' and yxbz='1' and fpczlxdm='11' and gsdm= #{gsdm}
-union all select count(*) from t_jyls where clztdm='01' and yxbz='1' and fpczlxdm='12' and gsdm= #{gsdm}
-union all select count(*) from t_jyls where clztdm='01' and yxbz='1' and fpczlxdm='13' and gsdm= #{gsdm}
-union all select count(*) from t_jyls where clztdm='01' and yxbz='1' and fpczlxdm='14' and gsdm= #{gsdm}
-union all select count(*) from t_jyls where clztdm='01' and yxbz='1' and fpczlxdm='23' and gsdm= #{gsdm}
-union all select count(*) from t_jyls where clztdm='01' and yxbz='1' and fpczlxdm='24' and gsdm= #{gsdm}
+     <select id="findDbsx" parameterType="map" resultType="jyxxsq">
+            select * from t_jyxxsq where yxbz='1' and gsdm= #{gsdm}
+         <if test="ztbz !=null and ztbz !=''">
+              and ztbz = #{ztbz}
+         </if>  
+         <if test="xfs !=null">
+			<foreach collection="xfs" open=" and (xfid in ("
+				separator="," close=")" item="item" index="index">
+				#{xfs[${index}].id}
+			</foreach>
+			or xfid is null)
+		</if>
+		<if test="skps !=null">
+			<foreach collection="skps" open=" and (skpid in ("
+				separator="," close=")" item="item" index="index">
+				#{skps[${index}].id}
+			</foreach>
+			or skpid is null)
+		</if>
+		limit 1
      </select>
+     
+     <select id="findDkpsj" parameterType="map" resultType="kpls">
+            select * from t_jyls where yxbz = '1' and clztdm='00' and gsdm = #{gsdm}
+         <if test="xfs !=null">
+			<foreach collection="xfs" open=" and (xfid in ("
+				separator="," close=")" item="item" index="index">
+				#{xfs[${index}].id}
+			</foreach>
+			or xfid is null)
+		</if>
+		<if test="skps !=null">
+			<foreach collection="skps" open=" and (skpid in ("
+				separator="," close=")" item="item" index="index">
+				#{skps[${index}].id}
+			</foreach>
+			or skpid is null)
+		</if>
+		limit 1
+             
+     </select> 
 
 </mapper>
 

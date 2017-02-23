@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rjxx.taxeasy.dao.FpgzMapper">
+
+    <select id="findOneByParams" parameterType="map" resultType="fpgz">
+        select * from t_fpgz where yxbz = '1'
+        <if test="orderBy != null">
+            order by #{orderBy}
+        </if>
+        limit 1
+    </select>
+
+    <select id="findAllByParams" parameterType="map" resultType="fpgz">
+        select * from t_fpgz where yxbz = '1'
+        <if test="orderBy != null">
+            order by #{orderBy}
+        </if>
+    </select>
+
+    <select id="findByPage" parameterType="pagination" resultType="fpgzVo">
+        select * from t_fpgz a where yxbz = '1'
+        <if test="params.gsdm != null ">
+           and a.gsdm = #{params.gsdm}
+        </if>
+    </select>
+
+</mapper>
+
