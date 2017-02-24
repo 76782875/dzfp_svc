@@ -16,6 +16,7 @@ public class Fpyjdyvo implements Serializable{
 	protected String gsdm;
 	protected String yhmc;
 	protected String yx;
+	protected String fpzlmc;
 	public Integer getXfid() {
 		return xfid;
 	}
@@ -93,6 +94,12 @@ public class Fpyjdyvo implements Serializable{
 	}
 	public void setYx(String yx) {
 		this.yx = yx;
+	}
+	public String getFpzlmc() {
+		return fpzlmc;
+	}
+	public void setFpzlmc(String fpzlmc) {
+		this.fpzlmc = fpzlmc;
 	}
 	
 

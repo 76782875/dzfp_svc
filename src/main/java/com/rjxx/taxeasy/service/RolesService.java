@@ -4,6 +4,8 @@ import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.dao.RolesJpaDao;
 import com.rjxx.taxeasy.dao.RolesMapper;
 import com.rjxx.taxeasy.domains.Roles;
+import com.rjxx.taxeasy.vo.RolesVo;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,7 +48,7 @@ public class RolesService {
         return rolesMapper.findAllByParams(params);
     }
 
-    public List<Roles> findByPage(Pagination pagination) {
+    public List<RolesVo> findByPage(Pagination pagination) {
         return rolesMapper.findByPage(pagination);
     }
     public List<Roles> findBySql(Map params) {

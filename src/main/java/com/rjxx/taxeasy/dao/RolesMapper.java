@@ -3,6 +3,7 @@ package com.rjxx.taxeasy.dao;
 import com.rjxx.comm.mybatis.MybatisRepository;
 import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.domains.Roles;
+import com.rjxx.taxeasy.vo.RolesVo;
 
 import java.util.List;
 import java.util.Map;
@@ -21,7 +22,7 @@ public interface RolesMapper {
 
     public List<Roles> findAllByParams(Map params);
 
-    public List<Roles> findByPage(Pagination pagination);
+    public List<RolesVo> findByPage(Pagination pagination);
     public List<Roles> findBySql(Map params);
 
 }

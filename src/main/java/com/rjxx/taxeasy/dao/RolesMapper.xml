@@ -27,10 +27,10 @@
         </if>
     </select>
 
-    <select id="findByPage" parameterType="pagination" resultType="roles">
-        select * from roles where yxbz = '1' and lrry in (select id from t_yh where gsdm = #{params.gsdm})
+    <select id="findByPage" parameterType="pagination" resultType="rolesvo">
+        select a.*,b.yhmc lrr,c.yhmc xgr from roles a,t_yh b, t_yh c where a.lrry=b.id and a.xgry=c.id and a.yxbz = '1' and b.gsdm = #{params.gsdm}
         <if test="params.roleName != null and params.roleName !=''">
-           and roleName like concat ('%',#{params.roleName},'%')
+           and a.roleName like concat ('%',#{params.roleName},'%')
         </if>
 
     </select>

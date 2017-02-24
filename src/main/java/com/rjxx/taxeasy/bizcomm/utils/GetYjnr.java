@@ -43,6 +43,19 @@ public class GetYjnr {
         return sb.toString();	
 	}
 	
+	public String getYhdyEmail(String yhmc,Integer fpsl,Double hjje,Double hjse){
+		StringBuffer sb = new StringBuffer();
+        sb.append(yhmc);
+        sb.append(" 先生/小姐您好：<br/>");
+        sb.append("<br/>");
+        sb.append("您昨天已开： ");
+        sb.append(fpsl+"张发票,").append("所开票的合计金额为"+hjje+"，合计税额为"+hjse+",(单位：元)<br>");
+        sb.append("<br/>");
+        Date d = new Date();
+        sb.append(1900 + d.getYear()).append("年").append(d.getMonth() + 1).append("月").append(d.getDate()).append("日");
+        return sb.toString();
+	}
+	
 	//判空
     private static Object null2Wz(Object s) {
         return s == null || "".equals(s) ? "未知" : s;
