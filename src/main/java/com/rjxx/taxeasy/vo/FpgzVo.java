@@ -67,6 +67,8 @@ public class FpgzVo {
 @Column(name="yxbz")
 	protected String yxbz;
 
+@Column(name="mrbz")
+protected String mrbz;
 
 @Column(name="lrry")
 protected Integer lrry;
@@ -216,6 +218,14 @@ public String getYhmc() {
 
 public void setYhmc(String yhmc) {
 	this.yhmc = yhmc;
+}
+
+public String getMrbz() {
+	return mrbz;
+}
+
+public void setMrbz(String mrbz) {
+	this.mrbz = mrbz;
 }
 
 

@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,12 +44,20 @@ public class FpclService {
  @Autowired private KpspmxService kpspmxService;
  @Autowired private DataOperte dc;
  @Autowired private XfService xfService;
-	public InvoiceResponse kpcl(Integer djh,Integer yhid,Double kpxe) throws Exception {
+ 	@Transactional
+	public InvoiceResponse kpcl(Integer djh) throws Exception {
 		Jyls jyls1 = jylsService.findOne(djh);
 		Jyspmx jyspmx = new Jyspmx();
 		jyspmx.setDjh(djh);
 		List<Jyspmx> list = jymxService.findAllByParams(jyspmx);
-		//转换明细
+		Kpls kpls = saveKpls(jyls1, list);
+		saveKpspmx(kpls, list);
+		//保存开票流水
+		
+		
+		
+		
+	/*	//转换明细
 		Map<String, Object> params1 = new HashMap<>();
     	params1.put("djh",jyls1.getDjh());
 		List<JyspmxDecimal> jyspmxs = jymxService.getNeedToKP2(params1);
@@ -80,7 +90,7 @@ public class FpclService {
          int fphs2 = 8;
         //若有分票规则则取分票规则
          List<Fpgz> listt = fpgzService.findAllByParams(new HashMap<>());
-         for (Fpgz fpgz : listt) {
+         for (Fpgz fpgz : listt)y {
 			if (fpgz.getXfids().contains(String.valueOf(xf.getId()))) {
 				if ("01".equals(jyls1.getFpzldm())) {
 					fpje=fpgz.getZpxe();
@@ -114,10 +124,10 @@ public class FpclService {
                  fpMap.put(fpnum, list2);
              }
              list2.add(jysmx);
-         }
+         }*/
   		jyls1.setClztdm("02");
  		jylsService.save(jyls1);
-         Map<Integer, Integer> fpNumKplshMap = new HashMap<>();
+    /*     Map<Integer, Integer> fpNumKplshMap = new HashMap<>();
          for (Map.Entry<Integer, List<JyspmxDecimal>> entry : fpMap.entrySet()) {
              int fpNum = entry.getKey();
              List<JyspmxDecimal> fpJyspmxList = entry.getValue();
@@ -133,8 +143,13 @@ public class FpclService {
     			dc.saveLog(djh, "92", "1", "", "调用开票接口失败"+response.getReturnMessage(), 2, jyls1.getXfsh(), jyls1.getJylsh());
     			return response;
     		}
-         }
-         InvoiceResponse response= new InvoiceResponse();
+         }*/
+ 		InvoiceResponse response = skService.callService(kpls.getKplsh());
+		if ("0000".equals(response.getReturnCode())) {
+		}else{
+			dc.saveLog(djh, "92", "1", "", "调用开票接口失败"+response.getReturnMessage(), 2, jyls1.getXfsh(), jyls1.getJylsh());
+			return response;
+		}
          response.setReturnCode("0000");
 		return response;
 	}
@@ -489,7 +504,7 @@ public class FpclService {
      * @param jyls
      * @return
      */
-    private Kpls saveKpls(Jyls jyls, List<JyspmxDecimal> jyspmxList) throws Exception {
+	public Kpls saveKpls(Jyls jyls, List<Jyspmx> jyspmx1) throws Exception {
         Kpls kpls = new Kpls();
         kpls.setDjh(jyls.getDjh());
         kpls.setJylsh(jyls.getJylsh());
@@ -535,7 +550,7 @@ public class FpclService {
         }
         double hjje = 0;
         double hjse = 0;
-        for (JyspmxDecimal jyspmx : jyspmxList) {
+        for (Jyspmx jyspmx : jyspmx1) {
             hjje += jyspmx.getSpje().doubleValue();
             hjse += jyspmx.getSpse().doubleValue();
         }
@@ -558,9 +573,9 @@ public class FpclService {
      * @param fpJyspmxList
      * @return
      */
-    private void saveKpspmx(Kpls kpls, List<JyspmxDecimal> fpJyspmxList) throws Exception {
+    public void saveKpspmx(Kpls kpls, List<Jyspmx> jyspmx1) throws Exception {
         int kplsh = kpls.getKplsh();
-        for (JyspmxDecimal jyspmx : fpJyspmxList) {
+        for (Jyspmx jyspmx : jyspmx1) {
             Kpspmx kpspmx = new Kpspmx();
             kpspmx.setKplsh(kplsh);
             kpspmx.setDjh(jyspmx.getDjh());

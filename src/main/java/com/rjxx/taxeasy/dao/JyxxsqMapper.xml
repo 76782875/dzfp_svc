@@ -77,7 +77,7 @@
 		LIMIT 1
 	</select>
 
-	<select id="findByPage" parameterType="pagination" resultType="jyxxsq">
+	<select id="findByPage" parameterType="pagination" resultType="jyxxsqVO">
 		select DISTINCT a.* from t_jyxxsq a , t_jymxsq b WHERE a.sqlsh=b.sqlsh
 		and a.yxbz ='1' and a.ztbz = '1'
 		<if test="params.gsdm !=null and params.gsdm !=''">

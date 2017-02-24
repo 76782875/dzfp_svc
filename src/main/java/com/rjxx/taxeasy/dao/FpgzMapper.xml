@@ -5,16 +5,19 @@
 
     <select id="findOneByParams" parameterType="map" resultType="fpgz">
         select * from t_fpgz where yxbz = '1'
-        <if test="orderBy != null">
-            order by #{orderBy}
+        <if test="mrbz != null">
+            and mrbz = #{mrbz}
         </if>
         limit 1
     </select>
 
     <select id="findAllByParams" parameterType="map" resultType="fpgz">
         select * from t_fpgz where yxbz = '1'
-        <if test="orderBy != null">
-            order by #{orderBy}
+        <if test="gsdm != null">
+            and gsdm = #{gsdm}
+        </if>
+        <if test="mrbz != null">
+            and mrbz = #{mrbz}
         </if>
     </select>
 
