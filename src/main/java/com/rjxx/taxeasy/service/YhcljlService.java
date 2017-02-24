@@ -1,5 +1,6 @@
 package com.rjxx.taxeasy.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -55,6 +56,20 @@ public class YhcljlService {
     public List<Yhcljlvo> findYhcljl(Map params){
     	return yhcljlMapper.findYhcljl(params);
     }
+    
+    /**
+	 * ylmc:用例名称
+	 * 
+	 * */
+	public void saveYhcljl(Integer yhid,String ylmc){
+		Yhcljl item = new Yhcljl();
+		item.setClrq(new Date());
+		item.setYhid(yhid);
+		item.setYlmc(ylmc);
+		item.setLrsj(new Date());
+		item.setLrry(yhid);
+		save(item);
+	}
 
 }
 
