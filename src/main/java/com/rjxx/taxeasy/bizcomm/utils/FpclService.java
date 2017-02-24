@@ -95,7 +95,7 @@ public class FpclService {
 			}
 		}
          //若页面传入金额不为空则去页面输入
-         if (null!=kpxe&&kpxe>0) {
+         if (null!=kpxe&&kpxe>0&&kpxe<fpje) {
 			fpje= kpxe;
          }
 		 //分票
