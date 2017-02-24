@@ -19,13 +19,13 @@
     </select>
 
     <select id="findByPage" parameterType="pagination" resultType="yhdykvo">
-       select a.dybt,b.id,b.dyfs from t_dyzl a,t_yhdyk b
+       select a.dybt,b.id,b.dyfs,b.sjhm,b.email,b.openid from t_dyzl a,t_yhdyk b
            where a.id=b.dybtid and b.yxbz='1' and a.yxbz='1'
            and b.yhid=#{params.yhid}
     </select>
     
     <select id="findDyxx" parameterType="map" resultType="yhdyk">
-        select * from t_yhdyk where yhid=#{yhid} and dybtid=#{dybtid}
+        select * from t_yhdyk where yhid=#{yhid} and dybtid=#{dybtid} and yxbz='1'
         <if test="id !=null and id !=''">
         and id !=#{id}
         </if>
@@ -36,7 +36,7 @@
     </update>
     
     <select id="findYhdy" parameterType="map" resultType="dyfs">
-            select a.yhid,a.dyfs 
+            select a.id,a.yhid,a.dyfs,a.sjhm,a.email,a.openid 
             from t_yhdyk a,t_dyzl b 
             where a.dybtid = b.id 
             and a.yxbz='1' and b.yxbz='1'

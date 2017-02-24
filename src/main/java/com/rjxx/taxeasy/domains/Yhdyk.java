@@ -11,7 +11,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 /**
  * t_yhdyk 实体类
  * 由GenEntityMysql类自动生成
- * Wed Jan 18 09:35:56 CST 2017
+ * Fri Feb 24 16:07:00 CST 2017
  * @ZhangBing
  */ 
 @Entity
@@ -52,6 +52,15 @@ public class Yhdyk  implements Serializable {
 
 @Column(name="dyfs")
 	protected String dyfs;
+
+@Column(name="sjhm")
+	protected String sjhm;
+
+@Column(name="email")
+	protected String email;
+
+@Column(name="openid")
+	protected String openid;
 
 
 	public Integer getId(){
@@ -124,6 +133,30 @@ public class Yhdyk  implements Serializable {
 
 	public void setDyfs(String dyfs){
 		this.dyfs=dyfs;
+	}
+
+	public String getSjhm(){
+		return sjhm;
+	}
+
+	public void setSjhm(String sjhm){
+		this.sjhm=sjhm;
+	}
+
+	public String getEmail(){
+		return email;
+	}
+
+	public void setEmail(String email){
+		this.email=email;
+	}
+
+	public String getOpenid(){
+		return openid;
+	}
+
+	public void setOpenid(String openid){
+		this.openid=openid;
 	}
 
 }
