@@ -47,10 +47,10 @@
     <select id="findByPage" parameterType="pagination" resultType="yh">
         select * from t_yh where yxbz = '1'
          <if test="params.yhzh != null and params.yhzh != ''">
-            and yhzh = #{params.yhzh}
+            and dlyhid like concat('%',#{params.yhzh},'%')
         </if>
  		<if test="params.yhmc != null and params.yhmc != ''">
-            and yhmc = #{params.yhmc}
+            and yhmc like concat('%',#{params.yhmc},'%')
         </if>
         <if test="params.gsdm != null and params.gsdm != ''">
             and gsdm = #{params.gsdm}

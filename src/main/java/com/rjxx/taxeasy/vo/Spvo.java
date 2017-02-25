@@ -105,6 +105,11 @@ public class Spvo implements Serializable {
      */
     protected String spbm;
 
+    /**
+     * 商品编码
+     */
+    protected String spbm1;
+
     public Integer getId() {
 		return id;
 	}
@@ -247,6 +252,14 @@ public class Spvo implements Serializable {
 
 	public void setSpbm(String spbm) {
 		this.spbm = spbm;
+	}
+
+	public String getSpbm1() {
+		return spbm1;
+	}
+
+	public void setSpbm1(String spbm1) {
+		this.spbm1 = spbm1;
 	}
 
 }
