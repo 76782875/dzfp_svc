@@ -35,7 +35,7 @@
          update t_yhdyk set yxbz='0' where id=#{id}
     </update>
     
-    <select id="findYhdy" parameterType="map" resultType="dyfs">
+    <select id="findYhdy" parameterType="map" resultType="yhdyk">
             select a.id,a.yhid,a.dyfs,a.sjhm,a.email,a.openid 
             from t_yhdyk a,t_dyzl b 
             where a.dybtid = b.id 
