@@ -25,6 +25,9 @@
 		<if test="csm != null and csm != ''">
 			and b.csm = #{csm}
 		</if>
+		<if test="csid != null and csid != ''">
+			and a.csid = #{csid}
+		</if>
 	</select>
 	<select id="findByPage" parameterType="pagination" resultType="csbVo">
 		select a.* from t_cszb a,t_csb b where a.csid=b.id and a.yxbz = '1'

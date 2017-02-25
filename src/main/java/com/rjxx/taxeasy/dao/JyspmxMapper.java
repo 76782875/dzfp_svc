@@ -4,6 +4,7 @@ import com.rjxx.comm.mybatis.MybatisRepository;
 import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.domains.Jyspmx;
 import com.rjxx.taxeasy.vo.JyspmxDecimal;
+import com.rjxx.taxeasy.vo.JyspmxDecimal2;
 
 import java.util.List;
 import java.util.Map;
@@ -33,6 +34,7 @@ public interface JyspmxMapper {
     public List<Jyspmx> findByDjhList(List<Integer> djhList);
     public List<JyspmxDecimal> findBySql(Jyspmx jyspmx);
     public List<JyspmxDecimal> getNeedToKP2(Map params);
+    public List<JyspmxDecimal2> getNeedToKP3(Map params);
 
     public List<Jyspmx> findAll(Map params);
 

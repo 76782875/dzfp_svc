@@ -41,6 +41,10 @@
     <select id="getNeedToKP2" parameterType="map" resultType="jyspmxdecimal">
         SELECT * FROM t_jyspmx t WHERE t.djh= #{djh} and t.jshj - IFNULL(t.ykphj,0) != 0 order by spmxxh
     </select>
+    
+     <select id="getNeedToKP3" parameterType="map" resultType="jyspmxdecimal2">
+        SELECT * FROM t_jymxsq t WHERE t.sqlsh= #{sqlsh} and t.jshj order by spmxxh
+    </select>
 
 	<select id="findAll" parameterType="map" resultType="jyspmx">
 		select * from t_jyspmx where 1 = 1 

@@ -4,6 +4,7 @@ import com.rjxx.comm.mybatis.MybatisRepository;
 import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.domains.Jyxxsq;
 import com.rjxx.taxeasy.domains.Xf;
+import com.rjxx.taxeasy.vo.JyxxsqVO;
 
 import java.util.List;
 import java.util.Map;
@@ -26,7 +27,7 @@ public interface JyxxsqMapper {
     
     public List<Jyxxsq> findAllByDdhs(Map params);
     
-    public List<Jyxxsq> findByPage(Pagination pagination);
+    public List<JyxxsqVO> findByPage(Pagination pagination);
     
     public List<Jyxxsq> findByPage1(Pagination pagination);
     

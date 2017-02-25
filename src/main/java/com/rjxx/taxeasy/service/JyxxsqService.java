@@ -10,6 +10,7 @@ import com.rjxx.taxeasy.domains.Jyxxsq;
 import com.rjxx.taxeasy.domains.Xf;
 import com.rjxx.taxeasy.vo.JymxsqVo;
 import com.rjxx.taxeasy.vo.JyspmxVo;
+import com.rjxx.taxeasy.vo.JyxxsqVO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -67,7 +68,7 @@ public class JyxxsqService {
         return jyxxsqMapper.findAllByDdhs(params);
     } 
     
-    public List<Jyxxsq> findByPage(Pagination pagination) {
+    public List<JyxxsqVO> findByPage(Pagination pagination) {
         return jyxxsqMapper.findByPage(pagination);
     }
     

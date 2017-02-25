@@ -5,6 +5,7 @@ import com.rjxx.taxeasy.dao.JyspmxJpaDao;
 import com.rjxx.taxeasy.dao.JyspmxMapper;
 import com.rjxx.taxeasy.domains.Jyspmx;
 import com.rjxx.taxeasy.vo.JyspmxDecimal;
+import com.rjxx.taxeasy.vo.JyspmxDecimal2;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -70,6 +71,10 @@ public class JyspmxService {
     
     public List<JyspmxDecimal> getNeedToKP2(Map params){
     	return jyspmxMapper.getNeedToKP2(params);
+    }
+    
+    public List<JyspmxDecimal2> getNeedToKP3(Map params){
+    	return jyspmxMapper.getNeedToKP3(params);
     }
 
     public List<Jyspmx> findAll(Map params) {

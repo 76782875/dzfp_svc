@@ -92,6 +92,8 @@ protected Integer xgry;
 @Column(name="gsdm")
 protected String gsdm;
 
+@Column(name="mrbz")
+protected String mrbz;
 
 
 
@@ -221,5 +223,14 @@ protected Date xgsj;
 		this.yxbz=yxbz;
 	}
 
+	public String getMrbz() {
+		return mrbz;
+	}
+
+	public void setMrbz(String mrbz) {
+		this.mrbz = mrbz;
+	}
+
+	
 }
 

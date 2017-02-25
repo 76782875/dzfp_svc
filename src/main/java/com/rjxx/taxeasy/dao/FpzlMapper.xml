@@ -28,6 +28,13 @@
          <if test="gsdm !=null and gsdm !=''">
             and gsdm = #{gsdm}
          </if>
+         <if test="xfs !=null">
+			<foreach collection="xfs" open=" and (xfid in ("
+				separator="," close=")" item="item" index="index">
+				#{xfs[${index}].id}
+			</foreach>
+			or xfid is null)
+		</if>
          <if test="xfid !=null and xfid !=''">
             and xfid = #{xfid}
          </if>
@@ -41,6 +48,13 @@
                 <if test="gsdm !=null and gsdm !=''">
             and gsdm = #{gsdm}
          </if>
+         <if test="xfs !=null">
+			<foreach collection="xfs" open=" and (xfid in ("
+				separator="," close=")" item="item" index="index">
+				#{xfs[${index}].id}
+			</foreach>
+			or xfid is null)
+		</if>
          <if test="xfid !=null and xfid !=''">
             and xfid = #{xfid}
          </if>
@@ -54,6 +68,13 @@
                 <if test="gsdm !=null and gsdm !=''">
             and gsdm = #{gsdm}
          </if>
+         <if test="xfs !=null">
+			<foreach collection="xfs" open=" and (xfid in ("
+				separator="," close=")" item="item" index="index">
+				#{xfs[${index}].id}
+			</foreach>
+			or xfid is null)
+		</if>
          <if test="xfid !=null and xfid !=''">
             and xfid = #{xfid}
          </if>
@@ -67,6 +88,13 @@
                 <if test="gsdm !=null and gsdm !=''">
             and gsdm = #{gsdm}
          </if>
+         <if test="xfs !=null">
+			<foreach collection="xfs" open=" and (xfid in ("
+				separator="," close=")" item="item" index="index">
+				#{xfs[${index}].id}
+			</foreach>
+			or xfid is null)
+		</if>
          <if test="xfid !=null and xfid !=''">
             and xfid = #{xfid}
          </if>
@@ -80,6 +108,13 @@
                 <if test="gsdm !=null and gsdm !=''">
             and gsdm = #{gsdm}
          </if>
+         <if test="xfs !=null">
+			<foreach collection="xfs" open=" and (xfid in ("
+				separator="," close=")" item="item" index="index">
+				#{xfs[${index}].id}
+			</foreach>
+			or xfid is null)
+		</if>
          <if test="xfid !=null and xfid !=''">
             and xfid = #{xfid}
          </if>
@@ -93,6 +128,13 @@
                 <if test="gsdm !=null and gsdm !=''">
             and gsdm = #{gsdm}
          </if>
+         <if test="xfs !=null">
+			<foreach collection="xfs" open=" and (xfid in ("
+				separator="," close=")" item="item" index="index">
+				#{xfs[${index}].id}
+			</foreach>
+			or xfid is null)
+		</if>
          <if test="xfid !=null and xfid !=''">
             and xfid = #{xfid}
          </if>
@@ -106,6 +148,13 @@
                 <if test="gsdm !=null and gsdm !=''">
             and gsdm = #{gsdm}
          </if>
+         <if test="xfs !=null">
+			<foreach collection="xfs" open=" and (xfid in ("
+				separator="," close=")" item="item" index="index">
+				#{xfs[${index}].id}
+			</foreach>
+			or xfid is null)
+		</if>
          <if test="xfid !=null and xfid !=''">
             and xfid = #{xfid}
          </if>
@@ -119,6 +168,13 @@
          <if test="gsdm !=null and gsdm !=''">
             and gsdm = #{gsdm}
          </if>
+         <if test="xfs !=null">
+			<foreach collection="xfs" open=" and (xfid in ("
+				separator="," close=")" item="item" index="index">
+				#{xfs[${index}].id}
+			</foreach>
+			or xfid is null)
+		</if>
          <if test="xfid !=null and xfid !=''">
             and xfid = #{xfid}
          </if>
@@ -170,6 +226,13 @@ FROM
 		<if test="gsdm !=null and gsdm !=''">
           and gsdm = #{gsdm}
       </if>
+      <if test="xfs !=null">
+			<foreach collection="xfs" open=" and (xfid in ("
+				separator="," close=")" item="item" index="index">
+				#{xfs[${index}].id}
+			</foreach>
+			or xfid is null)
+		</if>
       <if test="xfid !=null and xfid !=''">
           and xfid = #{xfid}
       </if>
