@@ -46,9 +46,13 @@
         <if test="params.jylsh != null and params.jylsh != ''">
             and jylsh like concat('%',#{params.jylsh},'%')
         </if>
-        <if test="params.rqq != null and params.rqq != '' and params.rqz != null and params.rqz != ''" >
-            and jylssj between #{params.rqq} and #{params.rqz}
-        </if>
+        <if test="params.rqq !=null and params.rqq != ''">
+			and jylssj &gt;= #{params.rqq}
+		</if>
+		<if test="params.rqz !=null and params.rqz != ''">
+			and jylssj &lt;
+			date_add(str_to_date(#{params.rqz},'%Y-%m-%d'),INTERVAL 1 day)
+		</if>
         <if test="params.gsdm != null and params.gsdm != ''" >
             and gsdm = #{params.gsdm}
         </if>
