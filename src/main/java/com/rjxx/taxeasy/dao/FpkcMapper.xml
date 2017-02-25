@@ -38,6 +38,12 @@
     
     <select id="findKyl" parameterType="map" resultType="fpkcvo">
          select count(fphm) kpl from t_kpls where 1=1
+         <if test="gsdm !=null">
+            and gsdm = #{gsdm}
+         </if>
+         <if test="fpzldm !=null and fpzldm !=''">
+             and fpzldm = #{fpzldm}
+         </if>
          <if test="fpdm !=null">
          and fpdm=#{fpdm}
          </if>
@@ -127,6 +133,7 @@ AND a.yxbz = '1'
     <select id="findKcfpl" resultType="fpkcvo">
           SELECT
 	a.id,
+	a.fpzldm,
 	a.fpdm,
 	a.fphms,
 	a.fphmz,
@@ -134,6 +141,7 @@ AND a.yxbz = '1'
     b.kpdmc,
     c.yhmc,
     c.yx,
+    c.gsdm,
 	a.fpkcl
     FROM
 	   t_fpkc a,t_skp b,t_yh c
