@@ -132,10 +132,10 @@
 		<if test="params.clztdm != null">
 			and clztdm = #{params.clztdm}
 		</if>
-		<if test="params.fpzldm != null">
+		<if test="params.fpzldm != null and params.fpzldm != ''">
 			and fpzldm = #{params.fpzldm}
 		</if>
-		<if test="params.fpczlxdm != null">
+		<if test="params.fpczlxdm != null and params.fpczlxdm != ''">
 			and fpczlxdm = #{params.fpczlxdm}
 		</if>
 		<if test="params.gfmc != null and params.gfmc != ''">
