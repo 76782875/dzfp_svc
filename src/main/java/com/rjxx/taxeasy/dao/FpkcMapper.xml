@@ -197,6 +197,9 @@ AND a.yxbz = '1'
 		<if test="params.fplx !=null and params.fplx !=''">
 		   and a.fpzldm = #{params.fplx}
 		</if>
+		<if test="params.xfsh !=null and params.xfsh !=''">
+		    and b.xfsh like CONCAT('%',#{params.xfsh},'%')
+		</if>
 		group by a.xfid,a.skpid,a.fpzldm
     </select>
    

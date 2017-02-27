@@ -22,6 +22,9 @@
        select a.dybt,b.id,b.dyfs,b.sjhm,b.email,b.openid from t_dyzl a,t_yhdyk b
            where a.id=b.dybtid and b.yxbz='1' and a.yxbz='1'
            and b.yhid=#{params.yhid}
+           <if test="params.btmc !=null and params.btmc !=''">
+               and a.dybt like CONCAT('%',#{params.btmc},'%')
+           </if>
     </select>
     
     <select id="findDyxx" parameterType="map" resultType="yhdyk">
