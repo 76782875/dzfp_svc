@@ -5,15 +5,21 @@
 
     <select id="findOneByParams" parameterType="map" resultType="jyxxsq">
         select * from t_jyxxsq where yxbz = '1'
-         <if test="ddh != null">
-            and ddh =  #{ddh}
-        </if>
-        <if test="gsdm != null">
-            and gsdm =  #{gsdm}
-        </if>
-        <if test="orderBy != null">
-            order by #{orderBy}
-        </if>
+                <if test="gsdm != null">
+			and gsdm = #{gsdm}
+		</if>
+		<if test="ddh != null">
+			and ddh = #{ddh}
+		</if>
+		<if test="tqm != null">
+			and tqm = #{tqm}
+		</if>
+		<if test="jylsh != null">
+			and jylsh = #{jylsh}
+		</if>
+		<if test="sqlsh != null">
+			and sqlsh = #{sqlsh}
+		</if>
         limit 1
     </select>
 
