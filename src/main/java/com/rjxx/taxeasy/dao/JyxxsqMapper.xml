@@ -83,6 +83,9 @@
 		<if test="params.gsdm !=null and params.gsdm !=''">
 			and a.gsdm = #{params.gsdm}
 		</if>
+		<if test="params.ztbz !=null and params.ztbz !=''">
+			and a.ztbz = #{params.ztbz}
+		</if>
 		<if test="params.xfs !=null">
 			<foreach collection="params.xfs" open=" and (a.xfid in ("
 				separator="," close=")" item="item" index="index">
