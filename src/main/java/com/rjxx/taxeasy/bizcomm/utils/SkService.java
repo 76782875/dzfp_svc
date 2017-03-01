@@ -69,7 +69,7 @@ public class SkService {
         }
         String params = "kpdid=" + kpdid + "&fplxdm=" + fplxdm;
         String encryptStr = encryptSkServerParameter(params);
-        HttpPost httpPost = new HttpPost(skServerUrl + "/invoice/invoice");
+        HttpPost httpPost = new HttpPost(skServerUrl + "/invoice/getCodeAndNo");
         NameValuePair pair = new BasicNameValuePair("p", encryptStr);
         List<NameValuePair> nameValuePairList = new ArrayList<>();
         nameValuePairList.add(pair);
