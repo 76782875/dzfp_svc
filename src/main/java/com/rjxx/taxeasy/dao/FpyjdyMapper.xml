@@ -53,6 +53,9 @@
         <if test="params.fpzl !=null and params.fpzl !=''">
                 and a.fpzldm=#{params.fpzl}
         </if>
+        <if test="params.xfsh !=null and params.xfsh !=''">
+               and b.xfsh like CONCAT('%',#{params.xfsh},'%')
+        </if>
              group by a.gsdm,a.xfid,a.skpid,a.fpzldm           
     </select>
     <!-- 查询发票订阅标志 -->

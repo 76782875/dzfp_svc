@@ -7,7 +7,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import org.eclipse.jdt.internal.compiler.ast.DoubleLiteral;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -349,6 +348,7 @@ protected String sjly;
 
 
 protected Double fpje;
+protected Double zdje;
 
 
 public Integer getSqlsh() {
@@ -918,6 +918,16 @@ public Double getFpje() {
 
 public void setFpje(Double fpje) {
 	this.fpje = fpje;
+}
+
+
+public Double getZdje() {
+	return zdje;
+}
+
+
+public void setZdje(Double zdje) {
+	this.zdje = zdje;
 }
 
 

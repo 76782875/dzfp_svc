@@ -48,13 +48,16 @@
             </foreach>
             or xfid is null)
          </if>
-        <if test="params.ddh !=null">
-            and ddh like concat('%',#{params.ddh},'%')
+        <if test="params.ddh !=null and params.ddh !=''">
+            and ddh =#{params.ddh}
          </if>
-        <if test="params.fphm !=null">
-            and fphm like concat('%',#{params.fphm},'%')
+         <if test="params.skpid !=null and params.skpid !=''">
+            and skpid =#{params.skpid}
          </if>
-        <if test="params.gfmc !=null">
+         <if test="params.xfid !=null and params.xfid !=''">
+            and xfid =#{params.xfid}
+         </if>
+        <if test="params.gfmc !=null and params.gfmc !=''">
             and gfmc like concat('%',#{params.gfmc},'%')
          </if>
         <if test="params.kprqq !=null and params.kprqq != ''">

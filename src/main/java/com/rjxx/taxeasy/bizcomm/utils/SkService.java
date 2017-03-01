@@ -57,6 +57,33 @@ public class SkService {
     }
 
     /**
+     * 获取发票代码发票号码
+     *
+     * @param kpdid
+     * @param fplxdm
+     * @return
+     */
+    public InvoiceResponse getCodeAndNo(int kpdid, String fplxdm) throws Exception {
+        if (StringUtils.isBlank(skServerUrl)) {
+            return InvoiceResponseUtils.responseError("skServerUrl为空");
+        }
+        String params = "kpdid=" + kpdid + "&fplxdm=" + fplxdm;
+        String encryptStr = encryptSkServerParameter(params);
+        HttpPost httpPost = new HttpPost(skServerUrl + "/invoice/getCodeAndNo");
+        NameValuePair pair = new BasicNameValuePair("p", encryptStr);
+        List<NameValuePair> nameValuePairList = new ArrayList<>();
+        nameValuePairList.add(pair);
+        HttpEntity httpEntity = new UrlEncodedFormEntity(nameValuePairList);
+        httpPost.setEntity(httpEntity);
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        CloseableHttpResponse httpResponse = httpClient.execute(httpPost);
+        InputStream is = httpResponse.getEntity().getContent();
+        String result = IOUtils.toString(is, "UTF-8");
+        InvoiceResponse response = XmlJaxbUtils.convertXmlStrToObject(InvoiceResponse.class, result);
+        return response;
+    }
+
+    /**
      * 加密税控服务参数
      *
      * @param params
