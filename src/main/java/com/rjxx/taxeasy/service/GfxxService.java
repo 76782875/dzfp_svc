@@ -4,8 +4,12 @@ import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.dao.GfxxJpaDao;
 import com.rjxx.taxeasy.dao.GfxxMapper;
 import com.rjxx.taxeasy.domains.Gfxx;
+import com.rjxx.taxeasy.domains.Jymxsq;
+import com.rjxx.taxeasy.domains.Jyxxsq;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -53,6 +57,17 @@ public class GfxxService {
     public void deleteById(Map params) {
          gfxxMapper.deleteById(params);
     }
+    
+    /**
+	 * 删除购方信息，包括明细
+	 *
+	 * @param idList
+	 */
+	@Transactional
+	public void delByIdList(List<Integer> idList) {
+		Iterable<Gfxx> gfxxIterable = gfxxJpaDao.findAll(idList);
+		gfxxJpaDao.delete(gfxxIterable);
+	}
 
 }
 

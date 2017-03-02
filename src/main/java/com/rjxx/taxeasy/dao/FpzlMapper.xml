@@ -267,29 +267,30 @@ ORDER BY
     </select>
     
      <select id="findDbsx" parameterType="map" resultType="jyxxsq">
-            select * from t_jyxxsq where yxbz='1' and gsdm= #{gsdm}
+           select DISTINCT a.* from t_jyxxsq a , t_jymxsq b WHERE a.sqlsh=b.sqlsh
+		and a.yxbz ='1' and a.gsdm= #{gsdm}
          <if test="ztbz !=null and ztbz !=''">
-              and ztbz = #{ztbz}
+              and a.ztbz = #{ztbz}
          </if>  
          <if test="xfs !=null">
-			<foreach collection="xfs" open=" and (xfid in ("
+			<foreach collection="xfs" open=" and (a.xfid in ("
 				separator="," close=")" item="item" index="index">
 				#{xfs[${index}].id}
 			</foreach>
-			or xfid is null)
+			or a.xfid is null)
 		</if>
 		<if test="skps !=null">
-			<foreach collection="skps" open=" and (skpid in ("
+			<foreach collection="skps" open=" and (a.skpid in ("
 				separator="," close=")" item="item" index="index">
 				#{skps[${index}].id}
 			</foreach>
-			or skpid is null)
+			or a.skpid is null)
 		</if>
 		limit 1
      </select>
      
      <select id="findDkpsj" parameterType="map" resultType="kpls">
-            select * from t_jyls where yxbz = '1' and clztdm='00' and gsdm = #{gsdm}
+            select * from t_jyls where yxbz = '1' and clztdm='00' and fpczlxdm='11' and gsdm = #{gsdm}
          <if test="xfs !=null">
 			<foreach collection="xfs" open=" and (xfid in ("
 				separator="," close=")" item="item" index="index">

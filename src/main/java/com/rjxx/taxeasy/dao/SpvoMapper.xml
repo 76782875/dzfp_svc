@@ -23,6 +23,12 @@
         <if test="params.spmc != null and params.spmc != ''">
             and spmc like concat('%',#{params.spmc},'%')
         </if>
+        <if test="params.slid != null and params.slid != ''">
+            and smid = #{params.slid}
+        </if>
+        <if test="params.sl != null and params.sl != ''">
+            and smid in (select id from t_sm where sl = #{params.sl})
+        </if>
         <if test="params.gsdm != null and params.gsdm != ''">
             and gsdm = #{params.gsdm}
         </if>

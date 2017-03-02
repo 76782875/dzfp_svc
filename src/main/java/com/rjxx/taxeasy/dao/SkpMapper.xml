@@ -48,6 +48,9 @@
 	</select>
 	<select id="findAllByParams" parameterType="skp" resultType="skp">
 		select * from t_skp where yxbz = '1'
+		<if test="xfid != null and xfid != ''">
+			and xfid = #{xfid}
+		</if>
 		<if test="gsdm != null and gsdm != ''">
 			and gsdm = #{gsdm}
 		</if>
@@ -73,6 +76,18 @@
 		</if>
 		<if test="params.kpddm != null and params.kpddm != ''">
 			and s.kpddm = #{params.kpddm}
+		</if>
+		<if test="params.kpr != null and params.kpr != ''">
+			and s.kpr like concat('%',#{params.kpr},'%') 
+		</if>
+		<if test="params.sbcs != null and params.sbcs != ''">
+			and s.sbcs = #{params.sbcs}
+		</if>
+		<if test="params.kplx != null and params.kplx != ''">
+			and s.kplx like concat('%',#{params.kplx},'%') 
+		</if>
+		<if test="params.xfmc != null and params.xfmc != ''">
+			and s.xfid in (select id from t_xf where xfmc like concat('%',#{params.xfmc},'%')) 
 		</if>
 		order by lrsj desc
 	</select>

@@ -13,21 +13,27 @@
     <!-- 查询发票号码止，发票号码始 -->
     <select id="findFphmd" parameterType="map" resultType="fpkc">
         select fphms,fphmz from t_fpkc where yxbz = '1'
-        <if test="skpid != null">
+        <if test="skpid != null and skpid !=''">
             and skpid = #{skpid}
         </if>
-        <if test="fpdm != ''">
+        <if test="fpdm !=null and fpdm != ''">
             and fpdm = #{fpdm}
+        </if>
+        <if test="fpzldm !=null and fpzldm != ''">
+            and fpzldm = #{fpzldm}
         </if>
     </select>
     <!-- 修改时查询发票号码段 -->
     <select id="findFphmdxg" parameterType="map" resultType="fpkc">
         select fphms,fphmz from t_fpkc where yxbz = '1'
-        <if test="skpid != null">
+        <if test="skpid != null and skpid !=''">
             and skpid = #{skpid}
         </if>
-        <if test="fpdm != ''">
+        <if test="fpdm != null and fpdm !=''">
             and fpdm = #{fpdm}
+        </if>
+        <if test="fpzldm != null and fpzldm !=''">
+            and fpzldm = #{fpzldm}
         </if>
         and id !=#{id}
     </select>
@@ -123,7 +129,7 @@ AND a.yxbz = '1'
     </select>
     
     <update id="update" parameterType="map">
-         update t_fpkc set xfid = #{xfid},skpid = #{skpid},fpdm = #{fpdm},fphms = #{fphms},fphmz = #{fphmz},fpkcl = #{fpkcl} where id = #{id}
+         update t_fpkc set xfid = #{xfid},skpid = #{skpid},fpdm = #{fpdm},fphms = #{fphms},fphmz = #{fphmz},fpkcl = #{fpkcl},fpzldm=#{fpzldm} where id = #{id}
     </update>
     
     <update id="destory" parameterType="map">

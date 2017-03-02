@@ -29,7 +29,7 @@ public interface YhdykMapper {
     
     public void updateYxbz(Map params);
     
-    public List<Yhdyk> findYhdy(Map params);
+    public List<Yhdykvo> findYhdy(Map params);
     
     public Fpnum findTjsj(Map params);
 
