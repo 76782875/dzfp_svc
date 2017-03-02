@@ -61,7 +61,7 @@ public class YhdykService {
     	yhdykMapper.updateYxbz(params);
     }
     
-    public List<Yhdyk> findYhdy(Map params){
+    public List<Yhdykvo> findYhdy(Map params){
     	return yhdykMapper.findYhdy(params);
     }
     
