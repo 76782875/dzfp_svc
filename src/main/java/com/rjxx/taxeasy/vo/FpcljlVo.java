@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 
 public class FpcljlVo {
       private Integer djh;
+      private Integer sjts;
       private Integer spmxxh;
       private String spdm;
       private String spmc;
@@ -238,6 +239,13 @@ public class FpcljlVo {
 	public void setGsdm(String gsdm) {
 		this.gsdm = gsdm;
 	}
+	
+	public Integer getSjts() {
+		return sjts;
+	}
+	public void setSjts(Integer sjts) {
+		this.sjts = sjts;
+	}
 	public FpcljlVo(Integer djh, Integer spmxxh, String spdm, String spmc, String spggxh, String spdw, Double sps,
 			Double spdj, Double spje, Double spsl, Double spse, Double jshj, Double ykphj, Integer hzkpxh,
 			Timestamp lrsj, Integer lrry, Timestamp xgsj, Integer xgry, Integer fpnum, Long kpsqh, String fphxz,
@@ -278,6 +286,7 @@ public class FpcljlVo {
 		this.sphbbz = sphbbz;
 		this.gsdm = gsdm;
 	}
+	
 	public FpcljlVo(Integer djh, Integer spmxxh, String spdm, String spmc, String spggxh, String spdw, Double sps,
 			Double spdj, Double spje, Double spsl, Double spse, Double jshj, Double ykphj, Integer hzkpxh,
 			Timestamp lrsj, Integer lrry, Timestamp xgsj, Integer xgry, Integer fpnum, Long kpsqh, String fphxz,
