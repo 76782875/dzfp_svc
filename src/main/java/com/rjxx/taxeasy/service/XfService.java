@@ -43,22 +43,23 @@ public class XfService {
         //保存销方
         xfJpaDao.save(xf);
         //保存默认税控盘
-        Skp skp = new Skp();
-        skp.setGsdm(xf.getGsdm());
-        skp.setXfid(xf.getId());
-        skp.setBz("系统自动生成");
-        skp.setKpdmc("默认");
-        skp.setSkph("默认");
-        skp.setLrry(xf.getLrry());
-        skp.setLrsj(new Date());
-        skp.setXgry(xf.getLrry());
-        skp.setXgsj(new Date());
-        skp.setYxbz("1");
-        skpService.save(skp);
+//        Skp skp = new Skp();
+//        skp.setGsdm(xf.getGsdm());
+//        skp.setXfid(xf.getId());
+//        skp.setBz("系统自动生成");
+//        skp.setKpdmc("默认");
+//        skp.setSkph("默认");
+//        skp.setLrry(xf.getLrry());
+//        skp.setLrsj(new Date());
+//        skp.setXgry(xf.getLrry());
+//        skp.setXgsj(new Date());
+//        skp.setYxbz("1");
+//        skp.setKplx("01,02,12");
+//        skpService.save(skp);
         Group g = new Group();
         g.setYhid(xf.getLrry());
         g.setXfid(xf.getId());
-        g.setSkpid(skp.getId());
+//        g.setSkpid(skp.getId());
         g.setYxbz("1");
         g.setLrry(xf.getLrry());
         g.setXgry(xf.getLrry());
