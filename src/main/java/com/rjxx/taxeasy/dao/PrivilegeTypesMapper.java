@@ -23,6 +23,7 @@ public interface PrivilegeTypesMapper {
     public List<PrivilegeTypes> findAllByParams(Map params);
     public List<PrivilegeTypesVo> findBySql(Map params);
     public List<PrivilegeTypes> findByPage(Pagination pagination);
+    public PrivilegeTypes findPriviName(Map params);
 
 }
 

@@ -54,5 +54,9 @@ public class PrivilegeTypesService {
     public List<PrivilegeTypesVo> findBySql(Map params) {
         return privilegeTypesMapper.findBySql(params);
     }
+    
+    public PrivilegeTypes findPriviName(Map params){
+    	return privilegeTypesMapper.findPriviName(params);
+    }
 }
 

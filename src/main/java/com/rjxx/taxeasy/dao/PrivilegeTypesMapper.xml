@@ -48,5 +48,14 @@
             </foreach>) 
             and yxbz ='1' and privilege_types.name != '基础数据'  and privilege_types.name != '系统管理')
     </select>
+    
+    <select id="findPriviName" parameterType="map" resultType="privilegeTypes">
+            select a.* from privilege_types a,privileges b 
+        where a.id = b.privilegeTypeId and b.yxbz='1' 
+        <if test="url !=null and url !=''">
+         and b.urls = #{url}
+        </if>
+        limit 1
+    </select>
 </mapper>
 
