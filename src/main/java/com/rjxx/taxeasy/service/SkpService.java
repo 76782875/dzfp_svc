@@ -95,7 +95,19 @@ public class SkpService {
 				if (gp.getXfid().equals(gr.getXfid()) && gr.getSkpid() != null) {
 					flag = true;
 					skp = new Skp();
+					boolean tag = false;
 					skp.setId(gr.getSkpid());
+					if (!skps.isEmpty()) {
+						for (Skp s : skps) {
+							if (s.getId().equals(skp.getId())) {
+								tag = true;
+								break;
+							}
+						}
+					}
+					if (tag) {
+						continue;
+					}
 					skps.add(skp);
 					continue;
 				}

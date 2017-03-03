@@ -56,9 +56,6 @@
         <if test="params.gsdm != null and params.gsdm != ''">
             and gsdm = #{params.gsdm}
         </if>
-        <if test="params.sjgj != null and params.sjgj != ''">
-            and sjjgbm = #{params.sjgj}
-        </if>
         <if test="params.orderBy != null">
             order by lrsj desc
         </if>
@@ -75,6 +72,15 @@
         </if>
         <if test="params.gsdm != null and params.gsdm != ''">
             and a.gsdm = #{params.gsdm}
+        </if>
+        <if test="params.kpr != null and params.kpr != ''">
+            and a.kpr like concat('%',#{params.kpr},'%') 
+        </if>
+        <if test="params.sjxfmc != null and params.sjxfmc != ''">
+            and b.xfmc like concat('%',#{params.sjxfmc},'%')
+        </if>
+        <if test="params.sjgj != null and params.sjgj != ''">
+            and a.sjjgbm = #{params.sjgj}
         </if>
         <if test="params.orderBy != null">
             order by a.lrsj desc
