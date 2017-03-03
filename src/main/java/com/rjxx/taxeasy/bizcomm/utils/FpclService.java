@@ -44,16 +44,14 @@ public class FpclService {
  @Autowired private KpspmxService kpspmxService;
  @Autowired private DataOperte dc;
  @Autowired private XfService xfService;
- 	@Transactional
 	public InvoiceResponse kpcl(Integer djh,String dybz) throws Exception {
 		Jyls jyls1 = jylsService.findOne(djh);
 		Jyspmx jyspmx = new Jyspmx();
 		jyspmx.setDjh(djh);
 		List<Jyspmx> list = jymxService.findAllByParams(jyspmx);
-		Kpls kpls = saveKpls(jyls1, list,dybz);
-		saveKpspmx(kpls, list);
+
 		//保存开票流水
-		
+		Kpls kpls = saveKp(jyls1, list, dybz);
 		
 		
 		
@@ -147,6 +145,13 @@ public class FpclService {
  		InvoiceResponse response = skService.callService(kpls.getKplsh());
 		if ("0000".equals(response.getReturnCode())) {
 		}else{
+			Map<String, Object> params = new HashMap<>();
+			params.put("kplsh", kpls.getKplsh());
+			List<Kpspmx> list2 = kpspmxService.findMxNewList(params);
+			kpspmxService.deleteAll(list2);
+			kplsService.delete(kpls);
+	  		jyls1.setClztdm("00");
+	 		jylsService.save(jyls1);
 			dc.saveLog(djh, "92", "1", "", "调用开票接口失败"+response.getReturnMessage(), 2, jyls1.getXfsh(), jyls1.getJylsh());
 			return response;
 		}
@@ -607,5 +612,11 @@ public class FpclService {
             kpspmx.setYhcje(0d);
             kpspmxService.save(kpspmx);
         }
+    }
+    @Transactional
+    public Kpls saveKp( Jyls jyls1 ,List<Jyspmx> list ,String dybz) throws Exception{
+		Kpls kpls = saveKpls(jyls1, list,dybz);
+		saveKpspmx(kpls, list);
+		return kpls;
     }
 }
