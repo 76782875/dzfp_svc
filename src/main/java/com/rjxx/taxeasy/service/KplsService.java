@@ -11,6 +11,7 @@ import com.rjxx.taxeasy.dao.KplsJpaDao;
 import com.rjxx.taxeasy.dao.KplsMapper;
 import com.rjxx.taxeasy.domains.Jyls;
 import com.rjxx.taxeasy.domains.Kpls;
+import com.rjxx.taxeasy.domains.Kpspmx;
 import com.rjxx.taxeasy.vo.Fpcxvo;
 import com.rjxx.taxeasy.vo.KplsVO3;
 
@@ -180,6 +181,15 @@ public class KplsService {
 	public List<Fpcxvo> findKzffpByPage1(Pagination pagination) {
 		// TODO Auto-generated method stub
 		return kplsMapper.findKzffpByPage1(pagination);
+	}
+	
+    
+    public void deleteAll(List<Kpls> list) {
+    	kplsJpaDao.deleteAll();
+	}
+   
+   public void delete(Kpls kpls) {
+	   kplsJpaDao.delete(kpls.getKplsh());
 	}
 }
 
