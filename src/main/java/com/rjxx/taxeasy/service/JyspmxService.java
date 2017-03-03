@@ -4,6 +4,7 @@ import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.dao.JyspmxJpaDao;
 import com.rjxx.taxeasy.dao.JyspmxMapper;
 import com.rjxx.taxeasy.domains.Jyspmx;
+import com.rjxx.taxeasy.domains.Kpspmx;
 import com.rjxx.taxeasy.vo.JyspmxDecimal;
 import com.rjxx.taxeasy.vo.JyspmxDecimal2;
 
@@ -54,6 +55,14 @@ public class JyspmxService {
     public List<Jyspmx> findByPage(Pagination pagination) {
         return jyspmxMapper.findByPage(pagination);
     }
+    
+    public void deleteAll(List<Jyspmx> list) {
+    	 jyspmxJpaDao.deleteAll();
+	}
+    
+    public void delete(Jyspmx jyspmx) {
+   	 jyspmxJpaDao.delete(jyspmx.getId());
+	}
 
     /**
      * 根据单据号查找

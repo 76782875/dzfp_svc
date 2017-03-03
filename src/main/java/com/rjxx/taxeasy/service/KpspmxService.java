@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.dao.KpspmxJpaDao;
 import com.rjxx.taxeasy.dao.KpspmxMapper;
+import com.rjxx.taxeasy.domains.Jyspmx;
 import com.rjxx.taxeasy.domains.Kpspmx;
 import com.rjxx.taxeasy.vo.Kpspmxvo;
 
@@ -78,5 +79,14 @@ public class KpspmxService {
     public List<Kpspmx> findMxNewByParams(Map params){
     	return kpspmxMapper.findMxNewByParams(params);
     }
+    
+    public void deleteAll(List<Kpspmx> list) {
+    	kpspmxJpaDao.deleteAll();
+	}
+   
+   public void delete(Kpspmx kpspmx) {
+	   kpspmxJpaDao.delete(kpspmx.getId());
+	}
+
 }
 
