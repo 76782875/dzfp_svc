@@ -174,7 +174,7 @@ AND a.yxbz = '1'
     </select>
     
     <select id="findKcjkByPage" parameterType="pagination" resultType="fpkcvo">
-          select b.xfmc,b.xfsh,c.kpdmc,d.fpzlmc,sum(a.fpkcl) as kyl 
+          select * from (select b.xfmc,b.xfsh,c.kpdmc,d.fpzlmc,sum(a.fpkcl) as kyl 
           from t_fpkc a,t_xf b,t_skp c,t_fpzl d
                  where a.xfid=b.id and a.skpid=c.id and a.fpzldm=d.fpzldm                 
         <if test="params.gsdm !=null and params.gsdm !=''">
@@ -206,7 +206,10 @@ AND a.yxbz = '1'
 		<if test="params.xfsh !=null and params.xfsh !=''">
 		    and b.xfsh like CONCAT('%',#{params.xfsh},'%')
 		</if>
-		group by a.xfid,a.skpid,a.fpzldm
+		group by a.xfid,a.skpid,a.fpzldm) t where 1=1
+		<if test="params.fpsl !=null and params.fpsl !=''">
+		    and t.kyl &lt;= #{params.fpsl}
+		</if>
     </select>
    
 </mapper>
