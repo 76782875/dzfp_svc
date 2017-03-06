@@ -23,9 +23,9 @@
 		limit 1
 	</select>
 	<select id="getSkpListByYhId" parameterType="map" resultType="skp">
-		select * from t_skp where yxbz = '1' and 
+		select * from t_skp where yxbz = '1' 
 		<if test="xfs != null or skps != null">
-			(
+			and (
 				<if test="xfs != null">
 					 xfid in
 					<foreach collection="xfs" item="item" index="index" open=" ("
