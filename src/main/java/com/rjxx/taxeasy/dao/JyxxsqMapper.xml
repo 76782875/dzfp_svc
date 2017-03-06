@@ -130,6 +130,55 @@
 	</select>
 
 
+   <select id="findYscByPage" parameterType="pagination" resultType="jyxxsqVO">
+		select DISTINCT a.* from t_jyxxsq a , t_jymxsq b WHERE a.sqlsh=b.sqlsh
+		and a.yxbz ='1' and a.ztbz not in ('0','2')
+		<if test="params.gsdm !=null and params.gsdm !=''">
+			and a.gsdm = #{params.gsdm}
+		</if>
+		<if test="params.xfs !=null">
+			<foreach collection="params.xfs" open=" and (a.xfid in ("
+				separator="," close=")" item="item" index="index">
+				#{params.xfs[${index}].id}
+			</foreach>
+			or a.xfid is null)
+		</if>
+		<if test="params.skps !=null">
+			<foreach collection="params.skps" open=" and (a.skpid in ("
+				separator="," close=")" item="item" index="index">
+				#{params.skps[${index}].id}
+			</foreach>
+			or a.skpid is null)
+		</if>
+		<if test="params.ddh !=null">
+			and a.ddh like concat('%',#{params.ddh},'%')
+		</if>
+		<if test="params.fpzldm !=null">
+			and a.fpzldm= #{params.fpzldm}
+		</if>
+		<if test="params.xfsh !=null">
+			and a.xfsh = #{params.xfsh}
+		</if>
+		<if test="params.gfmc !=null">
+			and a.gfmc like concat('%',#{params.gfmc},'%')
+		</if>
+		<if test="params.kprqq !=null and params.kprqq != ''">
+			and a.ddrq &gt;= #{params.kprqq}
+		</if>
+		<if test="params.kprqz !=null and params.kprqz != ''">
+			and a.ddrq &lt;
+			date_add(str_to_date(#{params.kprqz},'%Y-%m-%d'),INTERVAL 1 day)
+		</if>
+		<!-- <if test="params.jyrqq !=null and params.jyrqq != ''"> and jylssj 
+			&gt;= ${params.jyrqq} </if> <if test="params.jyrqz !=null and params.jyrqz 
+			!= ''"> and jylssj &lt; date_add(str_to_date(#{params.jyrqz},'%Y-%m-%d'),INTERVAL 
+			1 day) </if> -->
+		<if test="params.spmc != null and params.spmc != ''">
+			and b.spmc like CONCAT('%',#{params.spmc},'%')
+		</if>
+		order by a.ddrq desc
+	</select>
+
 	<select id="findByPage1" parameterType="pagination" resultType="jyxxsq">
 		select * from t_jyxxsq where yxbz = '1' and ztbz in('0','2')
 		<if test="params.clztdm != null">
