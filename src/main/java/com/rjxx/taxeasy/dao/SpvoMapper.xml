@@ -11,6 +11,9 @@
         <if test="spdm != null">
             and spdm = #{spdm}
         </if>
+        <if test="spbm != null">
+            and spbm = #{spbm}
+        </if>
         <if test="spmc != null">
             and spmc = #{spmc}
         </if>
