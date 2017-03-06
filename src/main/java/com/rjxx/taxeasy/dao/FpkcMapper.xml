@@ -72,10 +72,11 @@
 	b.xfmc,
 	c.kpdmc,
 	d.yhmc,
-  e.fpzlmc,
-	(
+    e.fpzlmc,
+    (
 		CONVERT (a.fphmz, SIGNED) - CONVERT (a.fphms, SIGNED) + 1
-	) AS fpkcl
+	) AS fpkcl,
+	a.fpkcl kyl
 FROM
 	t_fpkc a,
 	t_xf b,
