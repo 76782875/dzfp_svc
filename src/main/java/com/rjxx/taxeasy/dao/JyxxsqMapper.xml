@@ -125,7 +125,7 @@
 			1 day) </if> -->
 		<if test="params.spmc != null and params.spmc != ''">
 			and b.spmc like CONCAT('%',#{params.spmc},'%')
-		</if>
+		</if>		
 		order by a.ddrq desc
 	</select>
 
