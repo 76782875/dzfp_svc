@@ -105,6 +105,37 @@ public class FpclService {
          response.setReturnCode("0000");
 		return response;
 	}
+	
+	//全部开票
+	public InvoiceResponse kpcl(Integer djh,String dybz) throws Exception {
+		Jyls jyls1 = jylsService.findOne(djh);
+		Jyspmx jyspmx = new Jyspmx();
+		jyspmx.setDjh(djh);
+		List<Jyspmx> list = jymxService.findAllByParams(jyspmx);
+
+		//保存开票流水
+		Kpls kpls = saveKp(jyls1, list, dybz);
+		
+  		jyls1.setClztdm("02");
+ 		jylsService.save(jyls1);
+
+ 		InvoiceResponse response = skService.callService(kpls.getKplsh());
+		if ("0000".equals(response.getReturnCode())) {
+		}else{
+			Map<String, Object> params = new HashMap<>();
+			params.put("kplsh", kpls.getKplsh());
+			List<Kpspmx> list2 = kpspmxService.findMxNewList(params);
+			kpspmxService.deleteAll(list2);
+			kplsService.delete(kpls);
+	  		jyls1.setClztdm("00");
+	 		jylsService.save(jyls1);
+			dc.saveLog(djh, "92", "1", "", "调用开票接口失败"+response.getReturnMessage(), 2, jyls1.getXfsh(), jyls1.getJylsh());
+			return response;
+		}
+         response.setReturnCode("0000");
+		return response;
+	}
+	
 	//红冲处理
 	public InvoiceResponse hccl(Integer kplsh,Integer yhid, String gsdm,String hcjeStr,String xhStr) throws Exception {
 	//	Kpls kpls = kplsService.findOne(kplsh);
