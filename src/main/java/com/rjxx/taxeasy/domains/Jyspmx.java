@@ -129,6 +129,13 @@ public class Jyspmx implements Serializable {
      */
     @Column(name = "spse")
     protected Double spse;
+    
+    @Column(name = "ykpje")
+    protected Double ykpje;
+    
+    
+    @Column(name = "kkpje")
+    protected Double kkpje;
 
     /**
      * 价税合计
@@ -377,6 +384,22 @@ public class Jyspmx implements Serializable {
     public void setGsdm(String gsdm) {
         this.gsdm = gsdm;
     }
+
+	public Double getYkpje() {
+		return ykpje;
+	}
+
+	public void setYkpje(Double ykpje) {
+		this.ykpje = ykpje;
+	}
+
+	public Double getKkpje() {
+		return kkpje;
+	}
+
+	public void setKkpje(Double kkpje) {
+		this.kkpje = kkpje;
+	}
 
 }
 

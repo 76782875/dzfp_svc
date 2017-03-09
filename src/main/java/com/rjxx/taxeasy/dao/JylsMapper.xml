@@ -32,7 +32,7 @@
             and clztdm = #{params.clztdm}
         </if>
         <if test="params.fpzldm != null and params.fpzldm != ''">
-            and fpzldm = #{params.fpzldm}
+            and ( fpzldm = #{params.fpzldm} or fpzldm = #{params.fpzldm1} )
         </if>
         <if test="params.fpczlxdm != null">
             and fpczlxdm = #{params.fpczlxdm}

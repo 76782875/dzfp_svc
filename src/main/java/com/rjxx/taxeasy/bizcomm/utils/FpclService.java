@@ -44,104 +44,50 @@ public class FpclService {
  @Autowired private KpspmxService kpspmxService;
  @Autowired private DataOperte dc;
  @Autowired private XfService xfService;
-	public InvoiceResponse kpcl(Integer djh,String dybz) throws Exception {
+	public InvoiceResponse kpcl(Integer djh,String dybz,List<Double> listje) throws Exception {
 		Jyls jyls1 = jylsService.findOne(djh);
 		Jyspmx jyspmx = new Jyspmx();
 		jyspmx.setDjh(djh);
 		List<Jyspmx> list = jymxService.findAllByParams(jyspmx);
+		List<Jyspmx> listx = new ArrayList<>();
+		List<Jyspmx> listhg = new ArrayList<>();
+		listx.addAll(list);
+		listhg.addAll(list);
+		for (int i = 0; i < list.size(); i++) {
+			if (list.get(i).getSpdj()!=null&&list.get(i).getSpdj()>0) {
+				list.get(i).setSps((double) (Math.round(listje.get(i)/list.get(i).getSpdj()*100)/100));
+			}
+			list.get(i).setSpje((double) (Math.round(listje.get(i)/(1+list.get(i).getSpsl())*100)/100));
+			list.get(i).setSpse((double) (Math.round(listje.get(i)-listje.get(i)/(1+list.get(i).getSpsl())*100)/100));
+			list.get(i).setJshj((double) (Math.round(listje.get(i)*100)/100));
+		}
+		int i= 0;
+		double  kkje=0d;
+		for (Jyspmx jyspmx2 : listx) {
+			double kjje=listje.get(i);
+			if (null==jyspmx2.getYkpje()) {
+				jyspmx2.setYkpje(0d);
+			}
+			if (null==jyspmx2.getKkpje()) {
+				jyspmx2.setKkpje(0d);
+			}
+			jyspmx2.setYkpje(jyspmx2.getYkpje()+kjje);
+			jyspmx2.setKkpje(jyspmx2.getKkpje()-kjje);
+			kkje+=jyspmx2.getKkpje();
+			i++;
+		}
 
 		//保存开票流水
 		Kpls kpls = saveKp(jyls1, list, dybz);
-		
-		
-		
-	/*	//转换明细
-		Map<String, Object> params1 = new HashMap<>();
-    	params1.put("djh",jyls1.getDjh());
-		List<JyspmxDecimal> jyspmxs = jymxService.getNeedToKP2(params1);
-		//价税分离
-		 if ("1".equals(jyls1.getHsbz())) {
-             jyspmxs = SeperateInvoiceUtils.separatePrice(jyspmxs);
-         }
-		 //获取分票限额
-		 Xf x = new Xf();
-         x.setGsdm(jyls1.getGsdm());
-         x.setXfsh(jyls1.getXfsh());
-         Xf xfList = xfService.findOneByParams(x);
-         if (xfList == null) {
-             throw new Exception("单据号" + jyls1.getDjh() + "的销方税号库内不存在");
-         }
-         double fpje = Double.MAX_VALUE;
-         double zdje = Double.MAX_VALUE;
-         Xf xf = xfList;
-         if ("01".equals(jyls1.getFpzldm())) {
-        	  fpje = xf.getZpfpje();
-              zdje = xf.getZpzdje();
-		}else if ("02".equals(jyls1.getFpzldm())) {
-			  fpje = xf.getPpfpje();
-		      zdje = xf.getPpzdje();
-		}else if ("11".equals(jyls1.getFpzldm())) {
-			  fpje = xf.getDzpfpje();
-		      zdje = xf.getDzpzdje();
+  		//jyls1.setClztdm("02");
+		String clzt= jyls1.getClztdm();
+		if (kkje>0) {
+			jyls1.setClztdm("30");
+		}else{
+			jyls1.setClztdm("02");
 		}
-         int fphs1 = 100;
-         int fphs2 = 8;
-        //若有分票规则则取分票规则
-         List<Fpgz> listt = fpgzService.findAllByParams(new HashMap<>());
-         for (Fpgz fpgz : listt)y {
-			if (fpgz.getXfids().contains(String.valueOf(xf.getId()))) {
-				if ("01".equals(jyls1.getFpzldm())) {
-					fpje=fpgz.getZpxe();
-					fphs2 = fpgz.getZphs();
-				}else if ("02".equals(jyls1.getFpzldm())) {
-					fpje=fpgz.getPpxe();
-					fphs2 = fpgz.getPphs();
-				}else if ("11".equals(jyls1.getFpzldm())) {
-					fpje=fpgz.getDzpxe();
-					fphs2 = fpgz.getDzphs();
-				}
-			}
-		}
-         //若页面传入金额不为空则去页面输入
-         if (null!=kpxe&&kpxe>0&&kpxe<fpje) {
-			fpje= kpxe;
-         }
-		 //分票
-         if(jyls1.getFpzldm().equals("11")){
-        	 jyspmxs = SeperateInvoiceUtils.splitInvoices(jyspmxs,new BigDecimal(zdje),new BigDecimal(fpje),fphs1);
-         }else{
-			 jyspmxs = SeperateInvoiceUtils.splitInvoices(jyspmxs,new BigDecimal(zdje),new BigDecimal(fpje), fphs2);
-         }
-         //写入开票流水
-         Map<Integer, List<JyspmxDecimal>> fpMap = new HashMap<>();
-         for (JyspmxDecimal jysmx : jyspmxs) {
-             int fpnum = jysmx.getFpnum();
-             List<JyspmxDecimal> list2 = fpMap.get(fpnum);
-             if (list2 == null) {
-                 list2 = new ArrayList<>();
-                 fpMap.put(fpnum, list2);
-             }
-             list2.add(jysmx);
-         }*/
-  		jyls1.setClztdm("02");
  		jylsService.save(jyls1);
-    /*     Map<Integer, Integer> fpNumKplshMap = new HashMap<>();
-         for (Map.Entry<Integer, List<JyspmxDecimal>> entry : fpMap.entrySet()) {
-             int fpNum = entry.getKey();
-             List<JyspmxDecimal> fpJyspmxList = entry.getValue();
-             Kpls kpls = saveKpls(jyls1, fpJyspmxList);
-             saveKpspmx(kpls, fpJyspmxList);
-             fpNumKplshMap.put(fpNum, kpls.getKplsh());
-
-    		InvoiceResponse response = skService.callService(kpls.getKplsh());
-    		if ("0000".equals(response.getReturnCode())) {
-    		
-    		
-    		}else{
-    			dc.saveLog(djh, "92", "1", "", "调用开票接口失败"+response.getReturnMessage(), 2, jyls1.getXfsh(), jyls1.getJylsh());
-    			return response;
-    		}
-         }*/
+ 		jymxService.save(listx);
  		InvoiceResponse response = skService.callService(kpls.getKplsh());
 		if ("0000".equals(response.getReturnCode())) {
 		}else{
@@ -150,8 +96,9 @@ public class FpclService {
 			List<Kpspmx> list2 = kpspmxService.findMxNewList(params);
 			kpspmxService.deleteAll(list2);
 			kplsService.delete(kpls);
-	  		jyls1.setClztdm("00");
+	  		jyls1.setClztdm(clzt);
 	 		jylsService.save(jyls1);
+	 		jymxService.save(listhg);
 			dc.saveLog(djh, "92", "1", "", "调用开票接口失败"+response.getReturnMessage(), 2, jyls1.getXfsh(), jyls1.getJylsh());
 			return response;
 		}
