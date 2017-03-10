@@ -32,6 +32,7 @@
         <if test="params.gsdm != null">
             and gsdm = #{params.gsdm}
         </if>
+        order BY djh DESC ,spmxxh ASC
     </select>
 
     <select id="findByDjhList" parameterType="list" resultType="jyspmx">

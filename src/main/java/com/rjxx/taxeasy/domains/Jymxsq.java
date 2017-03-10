@@ -186,6 +186,12 @@ protected Integer spid;
 @Column(name="jshj")
 	protected Double jshj;
 
+@Column(name="ykjje")
+protected Double ykjje;
+
+@Column(name="kkjje")
+protected Double kkjje;
+
 /**
  * 汇总开票序号
  */ 
@@ -488,6 +494,18 @@ protected String yxbz;
 	}
 	public void setSpid(Integer spid) {
 		this.spid = spid;
+	}
+	public Double getYkjje() {
+		return ykjje;
+	}
+	public void setYkjje(Double ykjje) {
+		this.ykjje = ykjje;
+	}
+	public Double getKkjje() {
+		return kkjje;
+	}
+	public void setKkjje(Double kkjje) {
+		this.kkjje = kkjje;
 	}
 	
 

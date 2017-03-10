@@ -44,50 +44,17 @@ public class FpclService {
  @Autowired private KpspmxService kpspmxService;
  @Autowired private DataOperte dc;
  @Autowired private XfService xfService;
-	public InvoiceResponse kpcl(Integer djh,String dybz,List<Double> listje) throws Exception {
+	public InvoiceResponse kpcl1(Integer djh,String dybz) throws Exception {
 		Jyls jyls1 = jylsService.findOne(djh);
 		Jyspmx jyspmx = new Jyspmx();
 		jyspmx.setDjh(djh);
 		List<Jyspmx> list = jymxService.findAllByParams(jyspmx);
-		List<Jyspmx> listx = new ArrayList<>();
-		List<Jyspmx> listhg = new ArrayList<>();
-		listx.addAll(list);
-		listhg.addAll(list);
-		for (int i = 0; i < list.size(); i++) {
-			if (list.get(i).getSpdj()!=null&&list.get(i).getSpdj()>0) {
-				list.get(i).setSps((double) (Math.round(listje.get(i)/list.get(i).getSpdj()*100)/100));
-			}
-			list.get(i).setSpje((double) (Math.round(listje.get(i)/(1+list.get(i).getSpsl())*100)/100));
-			list.get(i).setSpse((double) (Math.round(listje.get(i)-listje.get(i)/(1+list.get(i).getSpsl())*100)/100));
-			list.get(i).setJshj((double) (Math.round(listje.get(i)*100)/100));
-		}
-		int i= 0;
-		double  kkje=0d;
-		for (Jyspmx jyspmx2 : listx) {
-			double kjje=listje.get(i);
-			if (null==jyspmx2.getYkpje()) {
-				jyspmx2.setYkpje(0d);
-			}
-			if (null==jyspmx2.getKkpje()) {
-				jyspmx2.setKkpje(0d);
-			}
-			jyspmx2.setYkpje(jyspmx2.getYkpje()+kjje);
-			jyspmx2.setKkpje(jyspmx2.getKkpje()-kjje);
-			kkje+=jyspmx2.getKkpje();
-			i++;
-		}
 
 		//保存开票流水
 		Kpls kpls = saveKp(jyls1, list, dybz);
   		//jyls1.setClztdm("02");
-		String clzt= jyls1.getClztdm();
-		if (kkje>0) {
-			jyls1.setClztdm("30");
-		}else{
-			jyls1.setClztdm("02");
-		}
+		jyls1.setClztdm("02");
  		jylsService.save(jyls1);
- 		jymxService.save(listx);
  		InvoiceResponse response = skService.callService(kpls.getKplsh());
 		if ("0000".equals(response.getReturnCode())) {
 		}else{
@@ -96,9 +63,8 @@ public class FpclService {
 			List<Kpspmx> list2 = kpspmxService.findMxNewList(params);
 			kpspmxService.deleteAll(list2);
 			kplsService.delete(kpls);
-	  		jyls1.setClztdm(clzt);
+			jyls1.setClztdm("00");
 	 		jylsService.save(jyls1);
-	 		jymxService.save(listhg);
 			dc.saveLog(djh, "92", "1", "", "调用开票接口失败"+response.getReturnMessage(), 2, jyls1.getXfsh(), jyls1.getJylsh());
 			return response;
 		}
