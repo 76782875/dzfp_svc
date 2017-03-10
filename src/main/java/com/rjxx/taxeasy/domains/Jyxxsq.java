@@ -350,6 +350,17 @@ protected String ztbz;
 @Column(name="sjly")
 protected String sjly;
 
+@Column(name="sfzlkp")
+protected String sfzlkp;
+
+	public String getSfzlkp() {
+	return sfzlkp;
+}
+
+public void setSfzlkp(String sfzlkp) {
+	this.sfzlkp = sfzlkp;
+}
+
 	public Integer getSqlsh() {
 	return sqlsh;
 }

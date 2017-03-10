@@ -129,6 +129,7 @@ public class Jyspmx implements Serializable {
      */
     @Column(name = "spse")
     protected Double spse;
+    
 
     /**
      * 价税合计

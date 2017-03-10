@@ -23,12 +23,16 @@
     </select>
     <select id="findByPage" parameterType="pagination" resultType="jyspmx">
         select * from t_jyspmx where 1 = 1
-        <if test="params.djh != null">
-            and djh = #{params.djh}
+        <if test="params.djh != null and params.djh!=''">
+            and djh in ( ${params.djh} )
+        </if>
+        <if test="params.djh==''">
+            and djh =0
         </if>
         <if test="params.gsdm != null">
             and gsdm = #{params.gsdm}
         </if>
+        order BY djh DESC ,spmxxh ASC
     </select>
 
     <select id="findByDjhList" parameterType="list" resultType="jyspmx">

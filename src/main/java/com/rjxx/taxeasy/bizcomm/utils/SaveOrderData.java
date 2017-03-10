@@ -5,6 +5,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.rjxx.taxeasy.domains.Jymxsq;
@@ -25,13 +28,14 @@ public class SaveOrderData {
 	 *
 	 * @author kk
 	 */
+	@Transactional
 	public String saveAllData(List<Jyxxsq> jyxxsqList, List<Jymxsq> jymxsqList) {
 		String result = "";
 		Jyxxsq jyxxsq = new Jyxxsq();
 		Jymxsq jymxsq = new Jymxsq();
 		String gsdm = jyxxsqList.get(0).getGsdm();
 		Jyxxsq yjyxxsq = new Jyxxsq();
-		try {
+		//try {
 			for (int i = 0; i < jyxxsqList.size(); i++) {
 				jyxxsq = jyxxsqList.get(i);
 				Map params = new HashMap();
@@ -72,11 +76,11 @@ public class SaveOrderData {
 					}
 				}
 			}
-		} catch (Exception e) {
+	/*	} catch (Exception e) {
 			e.printStackTrace();
 			result = "保存信息失败!";
 			return result;
-		}
+		}*/
 		return result;
 	}
 
