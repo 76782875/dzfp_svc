@@ -19,6 +19,8 @@ public class KplsVO {
 
     protected String gfmc;
 
+    protected String xfmc;
+
     protected String jylssj;
 
     protected String fpdm;
@@ -298,5 +300,13 @@ public class KplsVO {
 
 	public void setFpzlmc(String fpzlmc) {
 		this.fpzlmc = fpzlmc;
+	}
+
+	public String getXfmc() {
+		return xfmc;
+	}
+
+	public void setXfmc(String xfmc) {
+		this.xfmc = xfmc;
 	}
 }

@@ -49,7 +49,7 @@
             or xfid is null)
          </if>
         <if test="params.ddh !=null and params.ddh !=''">
-            and ddh =#{params.ddh}
+            and ddh like concat('%',#{params.ddh},'%')
          </if>
          <if test="params.skpid !=null and params.skpid !=''">
             and skpid =#{params.skpid}
@@ -57,20 +57,29 @@
          <if test="params.xfid !=null and params.xfid !=''">
             and xfid =#{params.xfid}
          </if>
+         <if test="params.xfmc !=null and params.xfmc !=''">
+            and xfmc like concat('%',#{params.xfmc},'%')
+         </if>
         <if test="params.gfmc !=null and params.gfmc !=''">
             and gfmc like concat('%',#{params.gfmc},'%')
          </if>
+        <if test="params.fpdm !=null and params.fpdm !=''">
+            and fpdm like concat('%',#{params.fpdm},'%')
+         </if>
+        <if test="params.fphm !=null and params.fphm !=''">
+            and fphm like concat('%',#{params.fphm},'%')
+         </if>
         <if test="params.kprqq !=null and params.kprqq != ''">
-            and kprq &gt;= ${params.kprqq}
+            and a.kprq &gt;= #{params.kprqq}
          </if>
         <if test="params.kprqz !=null and params.kprqz != ''">
-            and kprq &lt; date_add(str_to_date(#{params.kprqz},'%Y-%m-%d'),INTERVAL 1 day)
+            and a.kprq &lt; date_add(str_to_date(#{params.kprqz},'%Y-%m-%d'),INTERVAL 1 day)
          </if>
         <if test="params.jyrqq !=null and params.jyrqq != ''">
-            and jylssj &gt;= ${params.jyrqq}
+            and a.jylssj &gt;= #{params.jyrqq}
          </if>
         <if test="params.jyrqz !=null and params.jyrqz != ''">
-            and jylssj &lt; date_add(str_to_date(#{params.jyrqz},'%Y-%m-%d'),INTERVAL 1 day)
+            and a.jylssj &lt; date_add(str_to_date(#{params.jyrqz},'%Y-%m-%d'),INTERVAL 1 day)
          </if>
          <if test="params.fpzl!=null and params.fpzl !=''">
             and a.fpzldm=#{params.fpzl}
