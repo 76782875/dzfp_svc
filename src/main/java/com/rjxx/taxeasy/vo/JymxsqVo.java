@@ -86,9 +86,27 @@ public class JymxsqVo {
      */
     protected Double jshj;
 
+    protected Double kkjje;
+    
+    protected Double ykjje;
 
+    public Double getKkjje() {
+		return kkjje;
+	}
 
-    /**
+	public void setKkjje(Double kkjje) {
+		this.kkjje = kkjje;
+	}
+
+	public Double getYkjje() {
+		return ykjje;
+	}
+
+	public void setYkjje(Double ykjje) {
+		this.ykjje = ykjje;
+	}
+
+	/**
      * 汇总开票序号
      */
     protected Integer hzkpxh;
