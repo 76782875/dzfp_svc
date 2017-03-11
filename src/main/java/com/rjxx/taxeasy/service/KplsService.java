@@ -185,7 +185,7 @@ public class KplsService {
 	
     
     public void deleteAll(List<Kpls> list) {
-    	kplsJpaDao.deleteAll();
+    	kplsJpaDao.delete(list);
 	}
    
    public void delete(Kpls kpls) {
