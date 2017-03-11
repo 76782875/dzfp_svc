@@ -16,6 +16,7 @@
         <if test="sqlsh != null and sqlsh !=''">
            and  sqlsh = #{sqlsh}
         </if>
+        order by spmxxh asc
     </select>
 
     <select id="findByPage" parameterType="pagination" resultType="jymxsq">
