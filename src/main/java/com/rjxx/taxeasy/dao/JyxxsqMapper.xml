@@ -84,7 +84,7 @@
 			and a.gsdm = #{params.gsdm}
 		</if>
 		<if test="params.ztbz !=null and params.ztbz !=''">
-			and a.ztbz = #{params.ztbz}
+			and (a.ztbz = #{params.ztbz}  or a.ztbz = #{params.bfzt} )
 		</if>
 		<if test="params.xfs !=null">
 			<foreach collection="params.xfs" open=" and (a.xfid in ("
