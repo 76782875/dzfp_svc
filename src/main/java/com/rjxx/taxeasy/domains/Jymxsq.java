@@ -22,7 +22,7 @@ public class Jymxsq  implements Serializable {
 	
 	public Jymxsq(Integer spmxxh, String fphxz, String spdm, String spmc, String spggxh, String spdw, Double sps,
 			Double spdj, Double spje, Double spsl, Double spse, Double jshj, Integer hzkpxh, Date lrsj,
-			Integer lrry, Date xgsj, Integer xgry, String gsdm, Integer xfid, Integer skpid,String yxbz) {
+			Integer lrry, Date xgsj, Integer xgry, String gsdm, Integer xfid, Integer skpid,String yxbz,Double kkjje,Double ykjje) {
 		super();
 		this.spmxxh = spmxxh;
 		this.fphxz = fphxz;
@@ -46,6 +46,8 @@ public class Jymxsq  implements Serializable {
 		this.xfid = xfid;
 		this.skpid = skpid;
 		this.yxbz = yxbz;
+		this.kkjje = kkjje;
+		this.ykjje = ykjje;
 		
 	}
 public Jymxsq() {

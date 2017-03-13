@@ -1,23 +1,14 @@
 package com.rjxx.taxeasy.bizcomm.utils;
 
 import com.rjxx.utils.DesUtils;
+import com.rjxx.utils.HttpUtils;
 import com.rjxx.utils.XmlJaxbUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.http.HttpEntity;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.message.BasicNameValuePair;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 税控操作的service
@@ -42,16 +33,10 @@ public class SkService {
             return InvoiceResponseUtils.responseError("skServerUrl为空");
         }
         String encryptStr = encryptSkServerParameter(kplsh + "");
-        HttpPost httpPost = new HttpPost(skServerUrl + "/invoice/invoice");
-        NameValuePair pair = new BasicNameValuePair("p", encryptStr);
-        List<NameValuePair> nameValuePairList = new ArrayList<>();
-        nameValuePairList.add(pair);
-        HttpEntity httpEntity = new UrlEncodedFormEntity(nameValuePairList);
-        httpPost.setEntity(httpEntity);
-        CloseableHttpClient httpClient = HttpClients.createDefault();
-        CloseableHttpResponse httpResponse = httpClient.execute(httpPost);
-        InputStream is = httpResponse.getEntity().getContent();
-        String result = IOUtils.toString(is, "UTF-8");
+        String url = skServerUrl + "/invoice/invoice";
+        Map<String, String> map = new HashMap<>();
+        map.put("p", encryptStr);
+        String result = HttpUtils.doPost(url, map);
         InvoiceResponse response = XmlJaxbUtils.convertXmlStrToObject(InvoiceResponse.class, result);
         return response;
     }
@@ -69,16 +54,10 @@ public class SkService {
         }
         String params = "kpdid=" + kpdid + "&fplxdm=" + fplxdm;
         String encryptStr = encryptSkServerParameter(params);
-        HttpPost httpPost = new HttpPost(skServerUrl + "/invoice/getCodeAndNo");
-        NameValuePair pair = new BasicNameValuePair("p", encryptStr);
-        List<NameValuePair> nameValuePairList = new ArrayList<>();
-        nameValuePairList.add(pair);
-        HttpEntity httpEntity = new UrlEncodedFormEntity(nameValuePairList);
-        httpPost.setEntity(httpEntity);
-        CloseableHttpClient httpClient = HttpClients.createDefault();
-        CloseableHttpResponse httpResponse = httpClient.execute(httpPost);
-        InputStream is = httpResponse.getEntity().getContent();
-        String result = IOUtils.toString(is, "UTF-8");
+        String url = skServerUrl + "/invoice/getCodeAndNo";
+        Map<String, String> map = new HashMap<>();
+        map.put("p", encryptStr);
+        String result = HttpUtils.doPost(url, map);
         InvoiceResponse response = XmlJaxbUtils.convertXmlStrToObject(InvoiceResponse.class, result);
         return response;
     }

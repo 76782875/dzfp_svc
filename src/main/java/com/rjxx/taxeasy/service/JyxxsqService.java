@@ -166,7 +166,7 @@ public class JyxxsqService {
 	private Jymxsq getMx(JymxsqVo vo) {
 		Jymxsq mx = new Jymxsq(vo.getSpmxxh(), vo.getFphxz(), vo.getSpdm(), vo.getSpmc(), vo.getSpggxh(), vo.getSpdw(),
 				vo.getSps(), vo.getSpdj(), vo.getSpje(), vo.getSpsl(), vo.getSpse(), vo.getJshj(),vo.getHzkpxh(), vo.getLrsj(), vo.getLrry(), vo.getXgsj(), vo.getXgry(), vo.getGsdm(), vo.getXfid(),
-				vo.getSkpid(),vo.getYxbz());
+				vo.getSkpid(),vo.getYxbz(),vo.getKkjje(),vo.getYkjje());
 		return mx;
 	}
 
