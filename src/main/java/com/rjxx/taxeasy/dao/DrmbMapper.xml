@@ -55,6 +55,9 @@
         <if test="params.xfsh != null and params.xfsh != ''">
             and xfsh = #{params.xfsh}
         </if>
+        <if test="params.gxbz != null and params.gxbz != ''">
+            and gxbz = #{params.gxbz}
+        </if>
         <if test="params.mbmc != null and params.mbmc != ''">
             and mbmc like concat('%',#{params.mbmc},'%')
         </if>
