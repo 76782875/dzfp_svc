@@ -14,6 +14,11 @@
             and djh = #{djh}
         </if>
     </select>
+    
+      <!--  根据djh查询明细 -->
+  <select id="findMxList" parameterType="map" resultType="jyspmx">
+      select * from t_jyspmx where djh = #{djh} order by spmxxh
+  </select>
   <select id="findBySql" parameterType="jyspmx" resultType="JyspmxDecimal">
        SELECT * FROM t_jyspmx t WHERE  t.jshj - IFNULL(t.ykphj,0) != 0 
         <if test="djh != null">
