@@ -37,6 +37,8 @@ public interface JyspmxMapper {
     public List<JyspmxDecimal2> getNeedToKP3(Map params);
 
     public List<Jyspmx> findAll(Map params);
+    
+    public List<Jyspmx> findMxList(Map params);
 
 }
 

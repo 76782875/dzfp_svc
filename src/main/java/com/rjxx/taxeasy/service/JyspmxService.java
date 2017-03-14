@@ -89,6 +89,10 @@ public class JyspmxService {
     public List<Jyspmx> findAll(Map params) {
         return jyspmxMapper.findAll(params);
     }
+    
+    public List<Jyspmx> findMxList(Map params) {
+        return jyspmxMapper.findMxList(params);
+    }
 
 }
 
