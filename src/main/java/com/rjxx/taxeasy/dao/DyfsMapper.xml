@@ -21,6 +21,35 @@
             order by #{params.orderBy}
         </if>
     </select>
+    
+    <select id="findDyzl" parameterType="map" resultType="dyvo">
+        select dyzldm,dyzlmc from t_dy_dyzl where yxbz='1'
+        <if test="dylx !=null and dylx !=''">
+            and dylx = #{dylx}
+        </if>
+    </select>
+    
+    <select id="findDyfs" parameterType="map" resultType="dyvo">
+SELECT
+  a.dylx,
+	a.dyzlmc,
+  a.dyzldm,
+	c.dyfsdm,
+	c.dyfsmc
+FROM
+	t_dy_dyzl a,
+	t_dy_dyzl_dyfs b,
+	t_dy_dyfs c
+WHERE
+    a.yxbz='1'
+and b.yxbz='1'
+and c.yxbz='1'
+AND a.dyzldm = b.dyzldm
+AND b.dyfsdm = c.dyfsdm
+<if test="dylx !=null and dylx !=''">
+    and a.dylx = #{dylx}
+</if>
+    </select>
 
 </mapper>
 

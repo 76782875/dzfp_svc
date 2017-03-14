@@ -1,11 +1,12 @@
 package com.rjxx.taxeasy.dao;
 
+import java.util.List;
+import java.util.Map;
+
 import com.rjxx.comm.mybatis.MybatisRepository;
 import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.domains.Dyfs;
-
-import java.util.List;
-import java.util.Map;
+import com.rjxx.taxeasy.vo.Dyvo;
 
 /**
  * 由GenJavaCode类自动生成
@@ -22,6 +23,10 @@ public interface DyfsMapper {
     public List<Dyfs> findAllByParams(Map params);
 
     public List<Dyfs> findByPage(Pagination pagination);
+    
+    public List<Dyvo> findDyzl(Map params);
+    
+    public List<Dyvo> findDyfs(Map params);
 
 }
 
