@@ -70,6 +70,9 @@ public class FpgzVo {
 @Column(name="mrbz")
 protected String mrbz;
 
+@Column(name="hsbz")
+protected String hsbz;
+
 @Column(name="lrry")
 protected Integer lrry;
 
@@ -226,6 +229,14 @@ public String getMrbz() {
 
 public void setMrbz(String mrbz) {
 	this.mrbz = mrbz;
+}
+
+public String getHsbz() {
+	return hsbz;
+}
+
+public void setHsbz(String hsbz) {
+	this.hsbz = hsbz;
 }
 
 
