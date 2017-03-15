@@ -95,6 +95,9 @@ protected String gsdm;
 @Column(name="mrbz")
 protected String mrbz;
 
+@Column(name="hsbz")
+protected String hsbz;
+
 
 
 public String getGsdm() {
@@ -229,6 +232,14 @@ protected Date xgsj;
 
 	public void setMrbz(String mrbz) {
 		this.mrbz = mrbz;
+	}
+
+	public String getHsbz() {
+		return hsbz;
+	}
+
+	public void setHsbz(String hsbz) {
+		this.hsbz = hsbz;
 	}
 
 	

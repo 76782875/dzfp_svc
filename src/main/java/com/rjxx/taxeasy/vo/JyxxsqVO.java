@@ -350,6 +350,7 @@ protected String sjly;
 protected Double fpje;
 protected Double zdje;
 
+protected String fpjshsbz;
 
 public Integer getSqlsh() {
 	return sqlsh;
@@ -928,6 +929,16 @@ public Double getZdje() {
 
 public void setZdje(Double zdje) {
 	this.zdje = zdje;
+}
+
+
+public String getFpjshsbz() {
+	return fpjshsbz;
+}
+
+
+public void setFpjshsbz(String fpjshsbz) {
+	this.fpjshsbz = fpjshsbz;
 }
 
 
