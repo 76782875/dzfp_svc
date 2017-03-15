@@ -13,7 +13,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "Response")
 public class InvoiceResponse {
 
-    //开票流水号
+	
+	//开票点代码
+    @XmlElement(name = "ClientNo")
+    private String kpddm;
+    
+    //交易流水号
+    @XmlElement(name = "SwiftNumber")
+    private String jylsh;
+    
+    //开票流水号（单据号）
     @XmlElement(name = "SerialNumber")
     private String lsh;
 
@@ -107,4 +116,22 @@ public class InvoiceResponse {
     public void setFplxdm(String fplxdm) {
         this.fplxdm = fplxdm;
     }
+
+	public String getKpddm() {
+		return kpddm;
+	}
+
+	public void setKpddm(String kpddm) {
+		this.kpddm = kpddm;
+	}
+
+	public String getJylsh() {
+		return jylsh;
+	}
+
+	public void setJylsh(String jylsh) {
+		this.jylsh = jylsh;
+	}
+    
+    
 }
