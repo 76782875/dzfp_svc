@@ -89,12 +89,12 @@ public class SkService {
      * @param 
      * @return
      */
-    public InvoiceResponse repeatInvoice(int kplsh) throws Exception {
+    public InvoiceResponse reprintInvoice(int kplsh) throws Exception {
     	 if (StringUtils.isBlank(skServerUrl)) {
              return InvoiceResponseUtils.responseError("skServerUrl为空");
          }
          String encryptStr = encryptSkServerParameter(kplsh + "");
-         String url = skServerUrl + "/invoice/repeatInovice";
+         String url = skServerUrl + "/invoice/reprintInvoice";
          Map<String, String> map = new HashMap<>();
          map.put("p", encryptStr);
          String result = HttpUtils.doPost(url, map);
