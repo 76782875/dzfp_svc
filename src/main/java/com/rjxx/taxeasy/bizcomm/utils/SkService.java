@@ -23,7 +23,7 @@ public class SkService {
     private String skServerUrl;
 
     /**
-     * 调用税控服务
+     * 调用税控服务开票
      *
      * @param kplsh
      * @return
@@ -61,7 +61,47 @@ public class SkService {
         InvoiceResponse response = XmlJaxbUtils.convertXmlStrToObject(InvoiceResponse.class, result);
         return response;
     }
+    
+    /**
+     * 作废发票
+     *
+     * @param kplsh
+     * @param 
+     * @return
+     */
+    public InvoiceResponse voidInvoice(int kplsh) throws Exception {
+    	 if (StringUtils.isBlank(skServerUrl)) {
+             return InvoiceResponseUtils.responseError("skServerUrl为空");
+         }
+         String encryptStr = encryptSkServerParameter(kplsh + "");
+         String url = skServerUrl + "/invoice/voidInovice";
+         Map<String, String> map = new HashMap<>();
+         map.put("p", encryptStr);
+         String result = HttpUtils.doPost(url, map);
+         InvoiceResponse response = XmlJaxbUtils.convertXmlStrToObject(InvoiceResponse.class, result);
+         return response;
+    }
 
+    /**
+     * 发票重打
+     *
+     * @param kplsh
+     * @param 
+     * @return
+     */
+    public InvoiceResponse repeatInvoice(int kplsh) throws Exception {
+    	 if (StringUtils.isBlank(skServerUrl)) {
+             return InvoiceResponseUtils.responseError("skServerUrl为空");
+         }
+         String encryptStr = encryptSkServerParameter(kplsh + "");
+         String url = skServerUrl + "/invoice/repeatInovice";
+         Map<String, String> map = new HashMap<>();
+         map.put("p", encryptStr);
+         String result = HttpUtils.doPost(url, map);
+         InvoiceResponse response = XmlJaxbUtils.convertXmlStrToObject(InvoiceResponse.class, result);
+         return response;
+    }
+    
     /**
      * 加密税控服务参数
      *

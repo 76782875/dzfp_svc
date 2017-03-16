@@ -353,6 +353,9 @@ protected String sjly;
 @Column(name="sfzlkp")
 protected String sfzlkp;
 
+@Column(name="sfdy")
+protected String sfdy;
+
 	public String getSfzlkp() {
 	return sfzlkp;
 }
@@ -807,6 +810,14 @@ public void setSqlsh(Integer sqlsh) {
 
 	public void setSjly(String sjly) {
 		this.sjly = sjly;
+	}
+
+	public String getSfdy() {
+		return sfdy;
+	}
+
+	public void setSfdy(String sfdy) {
+		this.sfdy = sfdy;
 	}
 
 }
