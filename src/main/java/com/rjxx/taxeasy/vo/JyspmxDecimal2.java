@@ -40,6 +40,10 @@ public class JyspmxDecimal2  {
     
     protected BigDecimal ykphj;
     
+    protected BigDecimal kkjje;
+    
+    protected BigDecimal ykjje;
+    
     protected Integer hzkpxh;
     
     protected Timestamp lrsj;
@@ -237,6 +241,22 @@ public class JyspmxDecimal2  {
     public void setFpnum(int fpnum) {
         this.fpnum = fpnum;
     }
+
+	public BigDecimal getKkjje() {
+		return kkjje;
+	}
+
+	public void setKkjje(BigDecimal kkjje) {
+		this.kkjje = kkjje;
+	}
+
+	public BigDecimal getYkjje() {
+		return ykjje;
+	}
+
+	public void setYkjje(BigDecimal ykjje) {
+		this.ykjje = ykjje;
+	}
 
 
 }
