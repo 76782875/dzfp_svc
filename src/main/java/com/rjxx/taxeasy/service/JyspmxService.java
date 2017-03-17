@@ -57,7 +57,7 @@ public class JyspmxService {
     }
     
     public void deleteAll(List<Jyspmx> list) {
-    	 jyspmxJpaDao.deleteAll();
+    	 jyspmxJpaDao.delete(list);
 	}
     
     public void delete(Jyspmx jyspmx) {
