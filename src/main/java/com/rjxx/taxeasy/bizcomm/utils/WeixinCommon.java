@@ -1,6 +1,7 @@
 package com.rjxx.taxeasy.bizcomm.utils;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.http.HttpEntity;
@@ -21,7 +22,6 @@ import com.rjxx.comm.utils.ApplicationContextUtils;
 import com.rjxx.taxeasy.domains.Gsxx;
 import com.rjxx.taxeasy.service.GsxxService;
 import com.rjxx.utils.WeixinUtil;
-import net.sf.json.JSONObject;
 /*
  * 微信开发公共方法
  * **/
@@ -90,10 +90,16 @@ public class WeixinCommon {
 		String jsonStr = WeixinUtil.httpRequest(requestUrl, "POST", jsonMsg);
 		System.out.println(jsonStr);
 		if(jsonStr !=null){
-			JSONObject jsonObject = JSONObject.fromObject(jsonStr);
-			ticket = jsonObject.getString("ticket");
-			url = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=";
-			url = url+ticket;
+			ObjectMapper jsonparer = new ObjectMapper();// 初始化解析json格式的对象
+			try {
+				Map map = jsonparer.readValue(jsonStr, Map.class);
+				ticket = (String) map.get("ticket");
+				url = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=";
+				url = url+ticket;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
 		}
 		return url;
 	}
