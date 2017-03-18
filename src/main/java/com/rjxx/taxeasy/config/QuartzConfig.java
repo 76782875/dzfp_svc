@@ -20,10 +20,20 @@ public class QuartzConfig {
     public Scheduler scheduler() throws IOException, SchedulerException {
         SchedulerFactory schedulerFactory = new StdSchedulerFactory(quartzProperties());
         Scheduler scheduler = schedulerFactory.getScheduler();
-        scheduler.start();
+        //scheduler.start();
         return scheduler;
     }
 
+    @Value("${spring.datasource.driver-class-name}")
+    private String driver;
+    @Value("${spring.datasource.url}")
+    private String url;
+    @Value("${spring.datasource.username}")
+    private String user;
+    @Value("${spring.datasource.password}")
+    private String password;
+    
+    
     public Properties quartzProperties() throws IOException {
         Properties prop = new Properties();
         prop.put("quartz.scheduler.instanceName", "ServerScheduler");
@@ -39,10 +49,10 @@ public class QuartzConfig {
         prop.put("org.quartz.jobStore.clusterCheckinInterval", "20000");
         prop.put("org.quartz.threadPool.class", "org.quartz.simpl.SimpleThreadPool");
         prop.put("org.quartz.threadPool.threadCount", "5");
-        prop.put("org.quartz.dataSource.quartzDataSource.driver", "com.mysql.jdbc.Driver");
-        prop.put("org.quartz.dataSource.quartzDataSource.URL", "jdbc:mysql://120.26.7.42:3306/taxeasy2?useUnicode=true&characterEncoding=utf-8");
-        prop.put("org.quartz.dataSource.quartzDataSource.user", "root");
-        prop.put("org.quartz.dataSource.quartzDataSource.password", "Rjxx1234");
+        prop.put("org.quartz.dataSource.quartzDataSource.driver", driver);
+        prop.put("org.quartz.dataSource.quartzDataSource.URL", url);
+        prop.put("org.quartz.dataSource.quartzDataSource.user", user);
+        prop.put("org.quartz.dataSource.quartzDataSource.password", password);
         prop.put("org.quartz.dataSource.quartzDataSource.maxConnections", "10");
         return prop;
     }
