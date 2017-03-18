@@ -88,7 +88,6 @@ public class WeixinCommon {
 		String ticket = "";
 		String requestUrl = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token="+accessToken;
 		String jsonStr = WeixinUtil.httpRequest(requestUrl, "POST", jsonMsg);
-		System.out.println(jsonStr);
 		if(jsonStr !=null){
 			ObjectMapper jsonparer = new ObjectMapper();// 初始化解析json格式的对象
 			try {
