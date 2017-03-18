@@ -39,9 +39,9 @@ public class QuartzConfig {
         prop.put("org.quartz.threadPool.class", "org.quartz.simpl.SimpleThreadPool");
         prop.put("org.quartz.threadPool.threadCount", "5");
         prop.put("org.quartz.dataSource.quartzDataSource.driver", "com.mysql.jdbc.Driver");
-        prop.put("org.quartz.dataSource.quartzDataSource.URL", "jdbc:mysql://192.168.1.200:3306/dzfp-dev?useUnicode=true&characterEncoding=utf-8");
-        prop.put("org.quartz.dataSource.quartzDataSource.user", "dzfp-dev");
-        prop.put("org.quartz.dataSource.quartzDataSource.password", "dzfpdev1234");
+        prop.put("org.quartz.dataSource.quartzDataSource.URL", "jdbc:mysql://120.26.7.42:3306/taxeasy2?useUnicode=true&characterEncoding=utf-8");
+        prop.put("org.quartz.dataSource.quartzDataSource.user", "root");
+        prop.put("org.quartz.dataSource.quartzDataSource.password", "Rjxx1234");
         prop.put("org.quartz.dataSource.quartzDataSource.maxConnections", "10");
         return prop;
     }
