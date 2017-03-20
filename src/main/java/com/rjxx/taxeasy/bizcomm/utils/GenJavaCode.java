@@ -18,8 +18,8 @@ public class GenJavaCode {
     private String authorName = "ZhangBing";
     String baseOutputFiePath = javaFilePath + "/src/main/java/";
 
-    private String fullDomainClassName = "com.rjxx.taxeasy.domains.Wxfs";
-    private String tableName = "t_wxfs";
+    private String fullDomainClassName = "com.rjxx.taxeasy.domains.ClientVersion";
+    private String tableName = "t_client_version";
     private String simpleDomainClassName = null;
     private String domainParamsName = null;
     private String servicePackageName = "com.rjxx.taxeasy.service";
@@ -148,7 +148,7 @@ public class GenJavaCode {
         mapperXmlStringBuilder.append("    <select id=\"findOneByParams\" parameterType=\"map\" resultType=\"" + domainParamsName + "\">\r\n");
         mapperXmlStringBuilder.append("        select * from " + tableName + " where yxbz = '1'\r\n");
         mapperXmlStringBuilder.append("        <if test=\"orderBy != null\">\r\n");
-        mapperXmlStringBuilder.append("            order by #{orderBy}\r\n");
+        mapperXmlStringBuilder.append("            order by ${orderBy}\r\n");
         mapperXmlStringBuilder.append("        </if>\r\n");
         mapperXmlStringBuilder.append("        limit 1\r\n");
         mapperXmlStringBuilder.append("    </select>\r\n");
@@ -156,14 +156,14 @@ public class GenJavaCode {
         mapperXmlStringBuilder.append("    <select id=\"findAllByParams\" parameterType=\"map\" resultType=\"" + domainParamsName + "\">\r\n");
         mapperXmlStringBuilder.append("        select * from " + tableName + " where yxbz = '1'\r\n");
         mapperXmlStringBuilder.append("        <if test=\"orderBy != null\">\r\n");
-        mapperXmlStringBuilder.append("            order by #{orderBy}\r\n");
+        mapperXmlStringBuilder.append("            order by ${orderBy}\r\n");
         mapperXmlStringBuilder.append("        </if>\r\n");
         mapperXmlStringBuilder.append("    </select>\r\n");
         mapperXmlStringBuilder.append("\r\n");
         mapperXmlStringBuilder.append("    <select id=\"findByPage\" parameterType=\"pagination\" resultType=\"" + domainParamsName + "\">\r\n");
         mapperXmlStringBuilder.append("        select * from " + tableName + " where yxbz = '1'\r\n");
         mapperXmlStringBuilder.append("        <if test=\"params.orderBy != null\">\r\n");
-        mapperXmlStringBuilder.append("            order by #{params.orderBy}\r\n");
+        mapperXmlStringBuilder.append("            order by ${params.orderBy}\r\n");
         mapperXmlStringBuilder.append("        </if>\r\n");
         mapperXmlStringBuilder.append("    </select>\r\n");
         mapperXmlStringBuilder.append("\r\n");

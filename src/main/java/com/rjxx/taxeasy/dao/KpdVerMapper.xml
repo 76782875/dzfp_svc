@@ -5,6 +5,9 @@
 
     <select id="findOneByParams" parameterType="map" resultType="kpdVer">
         select * from t_kpd_ver where yxbz = '1'
+        <if test="macAddr != null and macAddr != ''">
+            and mac_addr = #{macAddr}
+        </if>
         <if test="orderBy != null">
             order by ${orderBy}
         </if>
