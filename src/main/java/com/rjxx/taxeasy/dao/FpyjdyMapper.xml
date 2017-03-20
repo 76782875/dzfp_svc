@@ -4,7 +4,7 @@
 <mapper namespace="com.rjxx.taxeasy.dao.FpyjdyMapper">
 
     <select id="findOneByParams" parameterType="map" resultType="fpyjdy">
-        select * from t_fpyjdy where yxbz = '1'
+        select * from t_fpkc_yzsz where yxbz = '1'
         <if test="yhid !=null and yhid != ''">
             and yhid = #{yhid}
         </if>
@@ -34,7 +34,7 @@
     </select>
    <!--  分页查询可订阅的发票 -->
     <select id="findFpyjdyByPage" parameterType="pagination" resultType="fpyjdyvo">
-         select DISTINCT a.gsdm,a.xfid,a.skpid,b.xfmc,b.xfsh,c.skph,c.kpdmc,sum(a.fpkcl) kyl,d.fpzlmc
+         select DISTINCT a.gsdm,a.xfid,a.skpid,a.fpzldm,b.xfmc,b.xfsh,c.skph,c.kpdmc,sum(a.fpkcl) kyl,d.fpzlmc
              from t_fpkc a,t_xf b,t_skp c,t_fpzl d
              where a.xfid = b.id and a.skpid = c.id and a.yxbz='1' and a.fpzldm = d.fpzldm
              <if test="params.gsdm !=null and params.gsdm !=''">
@@ -60,7 +60,7 @@
     </select>
     <!-- 查询发票订阅标志 -->
     <select id="findDyxx" parameterType="map" resultType="fpyjdyvo">
-        select sfsy,sfemail,yjkcl from t_fpyjdy where yxbz='1'
+        select yjyz yjkcl from t_fpkc_yzsz where yxbz='1'
         <if test="yhid!=null and yhid !=''">
            and yhid = #{yhid}
         </if>       
@@ -72,6 +72,9 @@
         </if>
         <if test="skpid!=null and skpid !=''">
            and skpid = #{skpid}
+        </if>
+        <if test="fpzldm!=null and fpzldm !=''">
+           and fpzldm = #{fpzldm}
         </if>
     </select>
     
