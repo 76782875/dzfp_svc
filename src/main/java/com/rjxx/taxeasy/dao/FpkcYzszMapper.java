@@ -22,6 +22,8 @@ public interface FpkcYzszMapper {
     public List<FpkcYzsz> findAllByParams(Map params);
 
     public List<FpkcYzsz> findByPage(Pagination pagination);
+    
+    public List<FpkcYzsz> findYhYzsz(Map params);
 
 }
 

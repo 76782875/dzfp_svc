@@ -39,6 +39,13 @@
             order by #{params.orderBy}
         </if>
     </select>
+    
+    <select id="findYhYzsz" parameterType="map" resultType="fpkcYzsz">
+        select * from t_fpkc_yzsz where yxbz = '1'
+        <if test="yhid !=null and yhid !=''">
+           and yhid = #{yhid}
+        </if>
+    </select>
 
 </mapper>
 

@@ -124,5 +124,12 @@
 			and c.gsdm = #{gsdm}
 		</if>
 	</select>
+	
+	<select id="findXfSkp" parameterType="map" resultType="skpVo">
+	   select a.kpdmc,b.xfmc from t_skp a,t_xf b where a.yxbz='1' and a.xfid = b.id
+	   <if test="skpid !=null and skpid !=''">
+	        and a.id = #{skpid}
+	   </if>
+	</select>
 </mapper>
 

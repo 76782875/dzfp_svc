@@ -135,4 +135,8 @@ public class SkpService {
 	public List<Skp> findCsz(Skp params) {
 		return skpMapper.findCsz(params);
 	}
+	
+	public SkpVo findXfSkp(Map params){
+		return skpMapper.findXfSkp(params);
+	}
 }

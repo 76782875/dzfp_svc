@@ -53,6 +53,10 @@ public class DyWddyService {
     public void updateYxbz(Map params){
     	dyWddyMapper.updateYxbz(params);
     }
+    
+    public List<DyWddy> findDyzlYh(Map params){
+    	return dyWddyMapper.findDyzlYh(params);
+    }
 
 }
 

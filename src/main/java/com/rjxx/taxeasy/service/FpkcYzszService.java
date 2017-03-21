@@ -49,6 +49,10 @@ public class FpkcYzszService {
     public List<FpkcYzsz> findByPage(Pagination pagination) {
         return fpkcYzszMapper.findByPage(pagination);
     }
+    
+    public List<FpkcYzsz> findYhyzsz(Map params){
+    	return fpkcYzszMapper.findYhYzsz(params);
+    }
 
 }
 
