@@ -727,5 +727,11 @@ WHERE
 AND fpczlxdm = '11'
 AND djh =#{djh}
 	</select>
+
+
+	<select id="findFpdbtjjgByKpdid" resultType="fptjvo" parameterType="int">
+		select fpzldm,fpczlxdm,count(1) cnt from t_kpls where skpid = #{kpdid} and yxbz = '1' and fpczlxdm in ('11','12','14') and fpztdm = '04' group by fpzldm,fpczlxdm
+	</select>
+
 </mapper>
 

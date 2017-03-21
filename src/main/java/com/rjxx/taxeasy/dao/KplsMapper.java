@@ -8,6 +8,7 @@ import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.domains.Jyls;
 import com.rjxx.taxeasy.domains.Kpls;
 import com.rjxx.taxeasy.vo.Fpcxvo;
+import com.rjxx.taxeasy.vo.FptjVo;
 import com.rjxx.taxeasy.vo.KplsVO3;
 
 /**
@@ -89,6 +90,14 @@ public interface KplsMapper {
 	public List<Fpcxvo> findKhcfpByPage1(Pagination pagination);
 	public List<Fpcxvo> findKzffpByPage(Pagination pagination);
 	public List<Fpcxvo> findKzffpByPage1(Pagination pagination);
+
+    /**
+     * 获取发票待办统计结果
+     *
+     * @param kpdid
+     * @return
+     */
+    public List<FptjVo> findFpdbtjjgByKpdid(int kpdid);
 
 }
 

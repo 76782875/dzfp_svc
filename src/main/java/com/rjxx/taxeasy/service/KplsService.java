@@ -1,19 +1,17 @@
 package com.rjxx.taxeasy.service;
 
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.dao.KplsJpaDao;
 import com.rjxx.taxeasy.dao.KplsMapper;
-import com.rjxx.taxeasy.domains.Jyls;
 import com.rjxx.taxeasy.domains.Kpls;
-import com.rjxx.taxeasy.domains.Kpspmx;
 import com.rjxx.taxeasy.vo.Fpcxvo;
+import com.rjxx.taxeasy.vo.FptjVo;
 import com.rjxx.taxeasy.vo.KplsVO3;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 由GenJavaCode类自动生成
@@ -168,28 +166,37 @@ public class KplsService {
         return kplsMapper.findCountByDjh(kpls);
     }
 
-	public List<Fpcxvo> findKhcfpByPage1(Pagination pagination) {
-		// TODO Auto-generated method stub
-		return kplsMapper.findKhcfpByPage1(pagination);
-	}
+    public List<Fpcxvo> findKhcfpByPage1(Pagination pagination) {
+        // TODO Auto-generated method stub
+        return kplsMapper.findKhcfpByPage1(pagination);
+    }
 
-	public List<Fpcxvo> findKzffpByPage(Pagination pagination) {
-		// TODO Auto-generated method stub
-		return kplsMapper.findKzffpByPage(pagination);
-	}
+    public List<Fpcxvo> findKzffpByPage(Pagination pagination) {
+        // TODO Auto-generated method stub
+        return kplsMapper.findKzffpByPage(pagination);
+    }
 
-	public List<Fpcxvo> findKzffpByPage1(Pagination pagination) {
-		// TODO Auto-generated method stub
-		return kplsMapper.findKzffpByPage1(pagination);
-	}
-	
-    
+    public List<Fpcxvo> findKzffpByPage1(Pagination pagination) {
+        // TODO Auto-generated method stub
+        return kplsMapper.findKzffpByPage1(pagination);
+    }
+
+    /**
+     * 获取发票待办统计结果
+     *
+     * @param kpdid
+     * @return
+     */
+    public List<FptjVo> findFpdbtjjgByKpdid(int kpdid) {
+        return kplsMapper.findFpdbtjjgByKpdid(kpdid);
+    }
+
     public void deleteAll(List<Kpls> list) {
-    	kplsJpaDao.delete(list);
-	}
-   
-   public void delete(Kpls kpls) {
-	   kplsJpaDao.delete(kpls.getKplsh());
-	}
+        kplsJpaDao.delete(list);
+    }
+
+    public void delete(Kpls kpls) {
+        kplsJpaDao.delete(kpls.getKplsh());
+    }
 }
 
