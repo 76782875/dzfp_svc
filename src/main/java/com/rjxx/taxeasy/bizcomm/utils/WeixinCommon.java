@@ -1,7 +1,7 @@
 package com.rjxx.taxeasy.bizcomm.utils;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
+
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.http.HttpEntity;
@@ -14,13 +14,12 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
-import org.dom4j.Document;
-import org.dom4j.Element;
-import org.dom4j.io.SAXReader;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rjxx.comm.utils.ApplicationContextUtils;
 import com.rjxx.taxeasy.domains.Gsxx;
+import com.rjxx.taxeasy.domains.Wxfs;
 import com.rjxx.taxeasy.service.GsxxService;
+import com.rjxx.taxeasy.service.WxfsService;
 import com.rjxx.utils.WeixinUtil;
 /*
  * 微信开发公共方法
@@ -34,6 +33,8 @@ public class WeixinCommon {
 	public static final String SEND_URL = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=";
 	
 	private GsxxService gsxxSercie = ApplicationContextUtils.getBean(GsxxService.class);
+	
+	private WxfsService wxfsService = ApplicationContextUtils.getBean(WxfsService.class);
 	/**
 	 * 获取accessToken
 	 * 
@@ -119,41 +120,6 @@ public class WeixinCommon {
     } 
 	
 	/**
-	 * 微信回调函数
-	 * @param string类型的xml格式
-	 * <xml>
-	 * <ToUserName><![CDATA[toUser]]></ToUserName>
-	 * <FromUserName><![CDATA[FromUser]]></FromUserName>
-	 * <CreateTime>123456789</CreateTime>
-	 * <MsgType><![CDATA[event]]></MsgType>
-	 * <Event><![CDATA[subscribe]]></Event>
-	 * <EventKey><![CDATA[qrscene_123123]]></EventKey>
-	 * <Ticket><![CDATA[TICKET]]></Ticket>
-	 * </xml>
-	 * */
-	public Map<String,Object> wxCallBack(String xml){
-		Map<String,Object> result = new HashMap<String,Object>();
-		SAXReader saxReader = new SAXReader();  
-        Document document;
-        try {
-			document = saxReader.read(new ByteArrayInputStream(xml.toString().getBytes("UTF-8")));
-			Element rootElt = document.getRootElement();  
-	        String openid = rootElt.elementText("FromUserName");
-	        String eventKey = rootElt.elementText("EventKey");
-	        if(eventKey !=null&&eventKey.indexOf("qrscene")<0){    //以前未关注，扫码后关注
-	        	result.put("openid", openid);
-	        	result.put("value", eventKey.replaceAll("qrscene_", ""));
-	        }else{                               //以前已经关注的
-	        	result.put("openid", openid);
-	        	result.put("value", eventKey);
-	        }      
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-        return result;
-	}
-	
-	/**
 	 * 订阅成功微信推送消息
 	 * @param template_id 微信模板id
 	 * @param url  模板跳转的url
@@ -197,5 +163,49 @@ public class WeixinCommon {
 		boolean flag = chageQr(str);
 		System.out.println(flag);
 	}*/
+	/**
+	 * 微信推送消息
+	 * @param template_id 微信申请的发送消息的模板
+	 * @param url 点击消息跳转的地址
+	 * @param data1 拼写的消息
+	 * */
+	public void sendMassage(Integer yhid,String gsdm,String openid,String template_id,String url,Map<Object, Object> data1){
+		HttpClient client = new DefaultHttpClient();
+		String token = getAccessToken();
+		HttpPost httpPost = new HttpPost(SEND_URL +token);
+		ObjectMapper mapper = new ObjectMapper();
+		Map<Object, Object> data = new HashMap<>();
+		data.put("touser", openid);
+		data.put("template_id", template_id);
+		data.put("url", url);
+		data.put("data", data1);
+		Wxfs wx = new Wxfs();
+		Map map = new HashMap<>();
+		String msg = "";
+		try {
+			String json = mapper.writeValueAsString(data);
+			httpPost.setEntity(new StringEntity(json, "UTF-8"));
+			HttpResponse response = client.execute(httpPost);
+			HttpEntity entity = response.getEntity();
+			String responseContent = EntityUtils.toString(entity, "UTF-8");
+			ObjectMapper jsonparer = new ObjectMapper();
+			map = jsonparer.readValue(responseContent, Map.class);
+			wx.setReturnmsg(String.valueOf(map.get("errmsg")));
+			if (map.get("errmsg").equals("ok")) {
+				msg = "成功";
+			} else {
+				msg = "失败";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			msg = "失败";
+		}
+		wx.setDjh(yhid);
+		wx.setGsdm(gsdm);
+		wx.setIssuccess(msg);
+		wx.setOpenid(openid);
+		wx.setLrsj(new Date());
+		wxfsService.save(wx);
+	}
 
 }

@@ -162,15 +162,23 @@ AND a.yxbz = '1'
     
     <!-- 根据用户订阅查询发票库余量 -->
     <select id="findZyKyl" parameterType="map" resultType="fpkcvo">
-         select sum(fpkcl) kyl from t_fpkc where yxbz='1'
+         select sum(a.fpkcl) kyl, b.xfmc,c.kpdmc,d.fpzlmc
+           from t_fpkc a,t_xf b,t_skp c,t_fpzl d
+           where a.yxbz='1' 
+           and a.xfid = b.id
+           and a.skpid = c.id
+           and a.fpzldm = d.fpzldm
          <if test="gsdm!=null and gsdm !=''">
-             and gsdm = #{gsdm}
+             and a.gsdm = #{gsdm}
          </if>
          <if test="xfid!=null and xfid !=''">
-             and xfid = #{xfid}
+             and a.xfid = #{xfid}
          </if>
          <if test="skpid!=null and skpid !=''">
-             and skpid = #{skpid}
+             and a.skpid = #{skpid}
+         </if>
+         <if test="fpzldm !=null and fpzldm !=''">
+            and a.fpzldm = #{fpzldm}
          </if>
     </select>
     

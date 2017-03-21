@@ -24,6 +24,8 @@ public interface DyWddyMapper {
     public List<DyWddy> findByPage(Pagination pagination);
     
     public void updateYxbz(Map params);
+    
+    public List<DyWddy> findDyzlYh(Map params);
 
 }
 

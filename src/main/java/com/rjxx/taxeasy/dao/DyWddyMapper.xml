@@ -16,6 +16,9 @@
         <if test="yhid !=null and yhid !=''">
             and yhid = #{yhid}
         </if>
+        <if test="dyzldm !=null and dyzldm !=''">
+           and dyzldm = #{dyzldm}
+        </if>
         <if test="orderBy != null">
             order by #{orderBy}
         </if>
@@ -34,6 +37,13 @@
            and yhid = #{yhid}
         </if>
     </update>
+    
+    <select id="findDyzlYh" parameterType="map" resultType="dyWddy">
+         select DISTINCT dyzldm,yhid from t_dy_wddy where yxbz='1'
+         <if test="dyzldm !=null and dyzldm !=''">
+            and dyzldm = #{dyzldm}
+         </if>
+    </select>
 
 </mapper>
 
