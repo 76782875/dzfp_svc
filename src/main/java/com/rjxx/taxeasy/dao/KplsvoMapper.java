@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.rjxx.comm.mybatis.MybatisRepository;
 import com.rjxx.comm.mybatis.Pagination;
+import com.rjxx.taxeasy.vo.Cxtjvo;
 import com.rjxx.taxeasy.vo.Fpnum;
 import com.rjxx.taxeasy.vo.KplsVO;
 import com.rjxx.taxeasy.vo.Slcxvo;
@@ -28,6 +29,10 @@ public interface KplsvoMapper {
     public List<Slcxvo> Sltjcx(Map params);
     
     public Fpnum findFps(Map params);
+    
+    public List<Cxtjvo> findYypl(Map params);
+    
+    public List<Cxtjvo> findYtql(Map params);
 
 }
 
