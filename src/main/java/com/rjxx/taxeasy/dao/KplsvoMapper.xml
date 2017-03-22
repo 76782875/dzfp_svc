@@ -170,10 +170,12 @@ and fphm is not null) t
        <if test="skpid !=null and skpid !=''">
           and skpid = #{skpid}
        </if>
-       <if test="kprqq !=null and kprqq !='' and kprqz !=null and kprqz !=''">
-            and kprq &gt;=#{kprqq} and kprq  &lt;= #{kprqz}
+       
+        ) t where 1=1
+        <if test="kprqq !=null and kprqq !='' and kprqz !=null and kprqz !=''">
+            and t.kpny &gt;=#{kprqq} and t.kpny  &lt;= #{kprqz}
          </if>
-        ) t group by t.kpny
+        group by t.kpny
     </select>
     
     <select id="findYtql" parameterType="map" resultType="cxtjvo">
