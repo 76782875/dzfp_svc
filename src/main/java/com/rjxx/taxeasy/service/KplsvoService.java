@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.dao.KplsvoMapper;
+import com.rjxx.taxeasy.vo.Cxtjvo;
 import com.rjxx.taxeasy.vo.Fpnum;
 import com.rjxx.taxeasy.vo.KplsVO;
 import com.rjxx.taxeasy.vo.Slcxvo;
@@ -44,6 +45,14 @@ public class KplsvoService {
     
     public Fpnum findFps(Map params){
     	return kplsvoMapper.findFps(params);
+    }
+    
+    public List<Cxtjvo> findYypl(Map params){
+    	return kplsvoMapper.findYypl(params);
+    }
+    
+    public List<Cxtjvo> findYtql(Map params){
+    	return kplsvoMapper.findYtql(params);
     }
 
 }

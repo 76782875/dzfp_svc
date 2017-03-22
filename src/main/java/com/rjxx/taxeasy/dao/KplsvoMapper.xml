@@ -155,6 +155,45 @@ from t_kpls where gsdm=#{gsdm}
          </if>
 and fphm is not null) t
     </select>
-
+    
+    <select id="findYypl" parameterType="map" resultType="cxtjvo">
+           select count(*) fpsl,t.kpny from 
+       (select substring(kprq,1,7) kpny,fpzldm from t_kpls
+       where yxbz='1' and fpztdm='00' and fphm is not null
+       and kprq is not null
+       <if test="gsdm !=null">
+          and gsdm = #{gsdm}
+       </if>
+       <if test="xfid !=null">
+          and xfid = #{xfid}
+       </if>
+       <if test="skpid !=null and skpid !=''">
+          and skpid = #{skpid}
+       </if>
+       <if test="kprqq !=null and kprqq !='' and kprqz !=null and kprqz !=''">
+            and kprq &gt;=#{kprqq} and kprq  &lt;= #{kprqz}
+         </if>
+        ) t group by t.kpny
+    </select>
+    
+    <select id="findYtql" parameterType="map" resultType="cxtjvo">
+        select count(*) tqsl,tqny from 
+(select DISTINCT substring(a.tqsj,1,7) tqny,a.djh,b.gsdm,b.xfid,b.fpzldm,b.skpid 
+from t_tqjl a,t_jyls b
+where a.djh= b.djh) t where 1=1
+<if test="gsdm !=null and gsdm !=''">
+    and t.gsdm = #{gsdm}
+</if>
+<if test="xfid !=null and xfid !=''">
+    and t.xfid = #{xfid}
+</if>
+<if test="skpid !=null and skpid !=''">
+   and t.skpid = #{skpid}
+</if>
+<if test="kprqq !=null and kprqq !='' and kprqz !=null and kprqz !=''">
+   and t.tqny &gt;=#{kprqq} and t.tqny  &lt;= #{kprqz}
+</if>
+group by t.tqny
+    </select>
 </mapper>
 
