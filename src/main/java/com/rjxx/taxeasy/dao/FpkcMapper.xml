@@ -67,11 +67,9 @@
 	a.fpdm,
 	a.fphms,
 	a.fphmz,
-	a.lrsj,
 	b.xfsh,
 	b.xfmc,
 	c.kpdmc,
-	d.yhmc,
     e.fpzlmc,
     (
 		CONVERT (a.fphmz, SIGNED) - CONVERT (a.fphms, SIGNED) + 1
@@ -81,12 +79,10 @@ FROM
 	t_fpkc a,
 	t_xf b,
 	t_skp c,
-	t_yh d,
   t_fpzl e
 WHERE
 	a.xfid = b.id
 AND a.skpid = c.id
-AND a.lrry = d.id
 AND a.fpzldm = e.fpzldm
 AND a.yxbz = '1'
         <if test="params.gsdm != null and params.gsdm !=''">
