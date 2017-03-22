@@ -73,6 +73,9 @@ protected String mrbz;
 @Column(name="hsbz")
 protected String hsbz;
 
+@Column(name="qdbz")
+protected String qdbz;
+
 @Column(name="lrry")
 protected Integer lrry;
 
@@ -237,6 +240,14 @@ public String getHsbz() {
 
 public void setHsbz(String hsbz) {
 	this.hsbz = hsbz;
+}
+
+public String getQdbz() {
+	return qdbz;
+}
+
+public void setQdbz(String qdbz) {
+	this.qdbz = qdbz;
 }
 
 

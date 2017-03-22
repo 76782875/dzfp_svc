@@ -100,6 +100,10 @@ public class Jyls  implements Serializable {
 @Column(name="xfdz")
 	protected String xfdz;
 
+
+@Column(name="sfdyqd")
+protected String sfdyqd;
+
 /**
  * 销方电话
  */ 
@@ -694,6 +698,14 @@ public class Jyls  implements Serializable {
 
 	public void setGfsjh(String gfsjh) {
 		this.gfsjh = gfsjh;
+	}
+
+	public String getSfdyqd() {
+		return sfdyqd;
+	}
+
+	public void setSfdyqd(String sfdyqd) {
+		this.sfdyqd = sfdyqd;
 	}
 
 }
