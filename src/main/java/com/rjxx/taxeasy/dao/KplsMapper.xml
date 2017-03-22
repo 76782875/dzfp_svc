@@ -8,8 +8,17 @@
 		<if test="kplsh !=null and kplsh !=''">
 			and kplsh = #{kplsh}
 		</if>
+		<if test="fplxdm != null and fplxdm != ''">
+			and fplxdm = #{fplxdm}
+		</if>
+		<if test="kpdid != null">
+			and skpid = #{kpdid}
+		</if>
+		<if test="fpztdm != null and fpztdm != ''">
+			and fpztdm = #{fpztdm}
+		</if>
 		<if test="orderBy != null">
-			order by #{orderBy}
+			order by ${orderBy}
 		</if>
 		limit 1
 	</select>
