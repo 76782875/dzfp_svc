@@ -8,8 +8,8 @@
 		<if test="kplsh !=null and kplsh !=''">
 			and kplsh = #{kplsh}
 		</if>
-		<if test="fplxdm != null and fplxdm != ''">
-			and fplxdm = #{fplxdm}
+		<if test="fpzldm != null and fpzldm != ''">
+			and fpzldm = #{fpzldm}
 		</if>
 		<if test="kpdid != null">
 			and skpid = #{kpdid}
