@@ -35,11 +35,13 @@ public class GetYjnr {
         sb.append(yhmc);
         sb.append(" 先生/小姐您好：<br/>");
         sb.append("<br/>");
-        sb.append("您订阅的销方名称为： "+xfmc+"，");
+        sb.append("您订阅的销方名称为："+xfmc+"，");
         sb.append("<br/>");
         sb.append("开票点名称为："+kpdmc+"，");
         sb.append("<br/>");
         sb.append("发票种类为："+fpzlmc+"的剩余库存为"+kyl+"张，已不足您设置的阈值"+limit+"张，请及时录入！");
+        sb.append("<br/>");
+        sb.append("<br/>");
         sb.append("<br/>");
         Date d = new Date();
         sb.append(1900 + d.getYear()).append("年").append(d.getMonth() + 1).append("月").append(d.getDate()).append("日");
