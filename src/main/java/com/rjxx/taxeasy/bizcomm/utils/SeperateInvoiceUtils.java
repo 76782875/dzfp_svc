@@ -613,14 +613,14 @@ public class SeperateInvoiceUtils {
     public static void main(String[] args) throws Exception {
 		List<JyspmxDecimal2> list = new ArrayList<>();
 		JyspmxDecimal2 jymx = new JyspmxDecimal2();
-		jymx.setJshj(new BigDecimal(106));
+		jymx.setJshj(new BigDecimal(16430));
 		jymx.setSpsl(new BigDecimal(0.06));
-		jymx.setSpje(new BigDecimal(100));
-		jymx.setSpse(new BigDecimal(6));
+		jymx.setSpje(new BigDecimal(15500));
+		jymx.setSpse(new BigDecimal(930));
 		jymx.setSqlsh(1);
 		jymx.setSpmxxh(1);
 		list.add(jymx);
-		jymx = new JyspmxDecimal2();
+/*		jymx = new JyspmxDecimal2();
 		jymx.setJshj(new BigDecimal(106));
 		jymx.setSpsl(new BigDecimal(0.06));
 		jymx.setSpje(new BigDecimal(100));
@@ -691,8 +691,9 @@ public class SeperateInvoiceUtils {
 		jymx.setSpse(new BigDecimal(120));
 		jymx.setSqlsh(1);
 		jymx.setSpmxxh(10);
-		list.add(jymx);
-		List<JyspmxDecimal2> res = splitInvoicesbhs(list, new BigDecimal(999.99), new BigDecimal(1200), 8);
+		list.add(jymx);*/
+		System.out.println("2312");
+		List<JyspmxDecimal2> res = splitInvoicesbhs(list, new BigDecimal(9999.99), new BigDecimal(10000), 8);
 		for (JyspmxDecimal2 jyspmx : res) {
 			System.out.println(jyspmx.getFpnum() + "\t" + jyspmx.getSpje() + "\t" + jyspmx.getSpse() + "\t" + jyspmx.getSpsl() + "\t" + jyspmx.getJshj());
 		}
@@ -735,7 +736,7 @@ public class SeperateInvoiceUtils {
                     fpnum++;
                     zje = BigDecimal.ZERO;
                     zje1 = BigDecimal.ZERO;
-                }else if(zje.compareTo(maxje) > 0){
+                }else if(fpje.divide(new BigDecimal(1).add(jyspmx.getSpsl()),30, BigDecimal.ROUND_HALF_UP).compareTo(maxje) > 0){
                     // Jyspmx ccjyspmx = new Jyspmx();//超出金额对象
                     JyspmxDecimal2 cfjyspmx = new JyspmxDecimal2();// 拆分金额对象
                     // ccjyspmx = jyspmx;//超出金额对象

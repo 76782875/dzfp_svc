@@ -18,8 +18,10 @@ import com.rjxx.taxeasy.domains.Fpgz;
 import com.rjxx.taxeasy.domains.Gsxx;
 import com.rjxx.taxeasy.domains.Jyls;
 import com.rjxx.taxeasy.domains.Jyspmx;
+import com.rjxx.taxeasy.domains.Jyxxsq;
 import com.rjxx.taxeasy.domains.Kpls;
 import com.rjxx.taxeasy.domains.Kpspmx;
+import com.rjxx.taxeasy.domains.Skp;
 import com.rjxx.taxeasy.domains.Xf;
 import com.rjxx.taxeasy.service.FpgzService;
 import com.rjxx.taxeasy.service.GsxxService;
@@ -27,9 +29,11 @@ import com.rjxx.taxeasy.service.JylsService;
 import com.rjxx.taxeasy.service.JyspmxService;
 import com.rjxx.taxeasy.service.KplsService;
 import com.rjxx.taxeasy.service.KpspmxService;
+import com.rjxx.taxeasy.service.SkpService;
 import com.rjxx.taxeasy.service.XfService;
 import com.rjxx.taxeasy.vo.Fpcxvo;
 import com.rjxx.taxeasy.vo.JyspmxDecimal;
+import com.rjxx.taxeasy.vo.JyspmxDecimal2;
 import com.rjxx.taxeasy.vo.Kpspmxvo;
 import com.rjxx.time.TimeUtil;
 
@@ -39,25 +43,26 @@ public class FpclService {
  @Autowired private JylsService jylsService;
  @Autowired private FpgzService fpgzService;
  @Autowired private SkService skService;
+ @Autowired private SkpService skpService;
  @Autowired private JyspmxService jymxService;
  @Autowired private GsxxService gsxxService;
  @Autowired private KpspmxService kpspmxService;
  @Autowired private DataOperte dc;
  @Autowired private XfService xfService;
-	public InvoiceResponse kpcl1(Integer djh,String dybz) throws Exception {
+	public Boolean kpcl1(Integer djh,String dybz) throws Exception {
 		Jyls jyls1 = jylsService.findOne(djh);
 		Jyspmx jyspmx = new Jyspmx();
 		jyspmx.setDjh(djh);
 		List<Jyspmx> list = jymxService.findAllByParams(jyspmx);
-
 		//保存开票流水
 		Kpls kpls = saveKp(jyls1, list, dybz);
   		//jyls1.setClztdm("02");
-		jyls1.setClztdm("02");
+		jyls1.setClztdm("40");
  		jylsService.save(jyls1);
- 		InvoiceResponse response = skService.callService(kpls.getKplsh());
+/* 		InvoiceResponse response = skService.callService(kpls.getKplsh());
 		if ("0000".equals(response.getReturnCode())) {
 		}else{
+			kpls.setFpztdm("04");
 			Map<String, Object> params = new HashMap<>();
 			params.put("kplsh", kpls.getKplsh());
 			List<Kpspmx> list2 = kpspmxService.findMxNewList(params);
@@ -68,8 +73,8 @@ public class FpclService {
 			dc.saveLog(djh, "92", "1", "", "调用开票接口失败"+response.getReturnMessage(), 2, jyls1.getXfsh(), jyls1.getJylsh());
 			return response;
 		}
-         response.setReturnCode("0000");
-		return response;
+         response.setReturnCode("0000");*/
+		return true;
 	}
 	
 	//全部开票
@@ -512,6 +517,7 @@ public class FpclService {
         kpls.setHjje(hjje);
         kpls.setHjse(hjse);
         kpls.setJshj(jshj);
+        kpls.setSfdyqd(jyls.getSfdyqd());
         kpls.setYxbz("1");
         kpls.setFpztdm("04");
         kpls.setSkpid(jyls.getSkpid());
@@ -563,4 +569,228 @@ public class FpclService {
 		saveKpspmx(kpls, list);
 		return kpls;
     }
+    
+    //直接开票
+    public Map<String, Object> zjkp(List<Jyxxsq> list) throws Exception{
+    	Map<String, Object> result = new HashMap<>();
+    	for (Jyxxsq jyxxsq : list) {
+    		// 转换明细
+    		Map<String, Object> params1 = new HashMap<>();
+			params1.put("sqlsh", jyxxsq.getSqlsh());
+    		List<JyspmxDecimal2> jyspmxs = jymxService.getNeedToKP3(params1);
+    		// 价税分离
+			if ("1".equals(jyxxsq.getHsbz())) {
+				jyspmxs = SeperateInvoiceUtils.separatePrice2(jyspmxs);
+			}
+			//取最大限额
+			double zdje=0d;
+			double fpje=0d;
+			int fphs1 = 8;
+			int fphs2 = 100;
+			String hsbz="0";
+			boolean flag = false;
+			Skp skp = skpService.findOne(jyxxsq.getSkpid());
+			if ("01".equals(jyxxsq.getFpzldm())) {
+				zdje=skp.getZpmax();
+			}else if ("02".equals(jyxxsq.getFpzldm())) {
+				zdje=skp.getPpmax();
+			}else if ("12".equals(jyxxsq.getFpzldm())) {
+				zdje=skp.getDpmax();
+			}
+			List<Fpgz> listt = fpgzService.findAllByParams(new HashMap<>());
+			Xf x = new Xf();
+			x.setGsdm(jyxxsq.getGsdm());
+			x.setXfsh(jyxxsq.getXfsh());
+			Xf xf = xfService.findOneByParams(x);
+			for (Fpgz fpgz : listt) {
+				if (fpgz.getXfids().contains(String.valueOf(xf.getId()))) {
+					if ("01".equals(jyxxsq.getFpzldm())) {
+						fphs1 = fpgz.getZphs();
+						fpje= fpgz.getZpxe();
+					} else if ("02".equals(jyxxsq.getFpzldm())) {
+						fphs1 = fpgz.getPphs();
+						fpje= fpgz.getPpxe();
+					} else if ("12".equals(jyxxsq.getFpzldm())) {
+						fphs2 = fpgz.getDzphs();
+						fpje= fpgz.getDzpxe();
+					}
+					flag = true;
+					hsbz=fpgz.getHsbz();
+				}
+			}
+			if (!flag) {
+				Map<String, Object> paramse = new HashMap<>();
+				paramse.put("mrbz", "1");
+				Fpgz fpgz2 = fpgzService.findOneByParams(paramse);
+				if (null != fpgz2) {
+					if ("01".equals(jyxxsq.getFpzldm())) {
+						fphs1 = fpgz2.getZphs();
+						fpje= fpgz2.getZpxe();
+					} else if ("02".equals(jyxxsq.getFpzldm())) {
+						fphs1 = fpgz2.getPphs();
+						fpje= fpgz2.getPpxe();
+					} else if ("12".equals(jyxxsq.getFpzldm())) {
+						fphs2 = fpgz2.getDzphs();
+						fpje= fpgz2.getDzpxe();
+					}
+					hsbz=fpgz2.getHsbz();
+				}
+			}
+			if (jyxxsq.getSfdyqd()!=null&&jyxxsq.getSfdyqd().equals("1")) {
+				fphs1=99999;
+				fphs2=99999;
+			}
+			if(hsbz.equals("1")){
+				// 分票
+				if (jyxxsq.getFpzldm().equals("12")) {
+						jyspmxs=SeperateInvoiceUtils.splitInvoicesbhs(jyspmxs, new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs2);
+				} else {
+						jyspmxs=SeperateInvoiceUtils.splitInvoicesbhs(jyspmxs, new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs1);
+				}
+			}else{
+				if (jyxxsq.getFpzldm().equals("12")) {
+					jyspmxs=SeperateInvoiceUtils.splitInvoices2(jyspmxs, new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs2);
+			} else {
+					jyspmxs=SeperateInvoiceUtils.splitInvoices2(jyspmxs, new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs1);
+			}	
+			}
+		
+			// 保存进交易流水
+		    Map<Integer, List<JyspmxDecimal2>> fpMap = new HashMap<>();
+            for (JyspmxDecimal2 jyspmx : jyspmxs) {
+                int fpnum = jyspmx.getFpnum();
+                List<JyspmxDecimal2> list2 = fpMap.get(fpnum);
+                if (list == null) {
+                    list = new ArrayList<>();
+                    fpMap.put(fpnum, list2);
+                }
+                list2.add(jyspmx);
+            }
+            //fpnum和kplsh对应关系
+            Map<Integer, Integer> fpNumKplshMap = new HashMap<>();
+            //保存开票信息
+            int i= 1;
+            for (Map.Entry<Integer, List<JyspmxDecimal2>> entry : fpMap.entrySet()) {
+                int fpNum = entry.getKey();
+                List<JyspmxDecimal2> fpJyspmxList = entry.getValue();
+                Jyls jyls = saveJyls(jyxxsq, fpJyspmxList);
+                List<Jyspmx> list2 = saveKpspmx(jyls, fpJyspmxList);
+                //保存开票流水
+                Kpls kpls = saveKpls(jyls, list2, jyxxsq.getSfdy());
+                saveKpspmx(kpls, list2);
+               InvoiceResponse response =  skService.callService(kpls.getKplsh());
+               if (response.getReturnCode().equals("0000")) {			
+			}else{
+				//回滚开票流水
+				Map<String, Object> params = new HashMap<>();
+				params.put("kplsh", kpls.getKplsh());
+				List<Kpspmx> list3 = kpspmxService.findMxNewList(params);
+				kpspmxService.deleteAll(list3);
+				kplsService.delete(kpls);
+				//回滚交易流水
+				Jyspmx jtJyspmx = new Jyspmx();
+				jtJyspmx.setDjh(jyls.getDjh());
+				List<Jyspmx> list4 = jymxService.findAllByParams(jtJyspmx); 
+				jymxService.deleteAll(list4);
+		 		//jylsService.doAllKp(jylsList, clztdm);
+				result.put("success", false);
+				result.put("msg", "申请流水号为"+jyxxsq.getSqlsh()+"的第"+i+"张票开具失败"+response.getReturnMessage());
+				return result;
+			}
+               i++;
+            }
+		}
+    	result.put("success", true);
+    	result.put("msg", "开票成功！");
+    	return result;
+    }
+    /**
+	 * 保存交易流水`
+	 *
+	 * @param jyls
+	 * @return
+	 */
+	public Jyls saveJyls(Jyxxsq jyxxsq, List<JyspmxDecimal2> jyspmxList) throws Exception {
+		Jyls jyls1 = new Jyls();
+		jyls1.setDdh(jyxxsq.getDdh());
+		jyls1.setJylsh(jyxxsq.getJylsh());
+		jyls1.setJylssj(TimeUtil.getNowDate());
+		jyls1.setFpzldm(jyxxsq.getFpzldm());
+		jyls1.setFpczlxdm("11");
+		jyls1.setXfid(jyxxsq.getXfid());
+		jyls1.setXfsh(jyxxsq.getXfsh());
+		jyls1.setXfmc(jyxxsq.getXfmc());
+		jyls1.setXfyh(jyxxsq.getXfyh());
+		jyls1.setTqm(jyxxsq.getTqm());
+		jyls1.setXfyhzh(jyxxsq.getXfyhzh());
+		jyls1.setXflxr(jyxxsq.getXflxr());
+		jyls1.setXfdh(jyxxsq.getXfdh());
+		jyls1.setXfdz(jyxxsq.getXfdz());
+		jyls1.setGfid(jyxxsq.getGfid());
+		jyls1.setGfsh(jyxxsq.getGfsh());
+		jyls1.setGfmc(jyxxsq.getGfmc());
+		jyls1.setGfyh(jyxxsq.getGfyh());
+		jyls1.setGfyhzh(jyxxsq.getGfyhzh());
+		jyls1.setGflxr(jyxxsq.getGflxr());
+		jyls1.setGfdh(jyxxsq.getGfdh());
+		jyls1.setGfdz(jyxxsq.getGfdz());
+		jyls1.setGfyb(jyxxsq.getGfyb());
+		jyls1.setGfemail(jyxxsq.getGfemail());
+		jyls1.setClztdm("00");
+		jyls1.setBz(jyxxsq.getBz());
+		jyls1.setSkr(jyxxsq.getSkr());
+		jyls1.setKpr(jyxxsq.getKpr());
+		jyls1.setFhr(jyxxsq.getFhr());
+		jyls1.setSsyf(jyxxsq.getSsyf());
+		jyls1.setYfpdm(null);
+		jyls1.setYfphm(null);
+		jyls1.setHsbz(jyxxsq.getHsbz());
+		double hjje = 0;
+		double hjse = 0;
+		for (JyspmxDecimal2 jyspmx : jyspmxList) {
+			hjje += jyspmx.getSpje().doubleValue();
+			hjse += jyspmx.getSpse().doubleValue();
+		}
+		jyls1.setJshj(hjje + hjse);
+		jyls1.setYkpjshj(0d);
+		jyls1.setYxbz("1");
+		jyls1.setGsdm(jyxxsq.getGsdm());
+		jyls1.setLrry(jyxxsq.getLrry());
+		jyls1.setLrsj(TimeUtil.getNowDate());
+		jyls1.setXgry(jyxxsq.getXgry());
+		jyls1.setXgsj(TimeUtil.getNowDate());
+		jyls1.setSkpid(jyxxsq.getSkpid());
+		jylsService.save(jyls1);
+		return jyls1;
+	}
+
+	public List<Jyspmx> saveKpspmx(Jyls jyls, List<JyspmxDecimal2> fpJyspmxList) throws Exception {
+		int djh = jyls.getDjh();
+		List<Jyspmx> list = new ArrayList<>();
+		for (JyspmxDecimal2 mxItem : fpJyspmxList) {
+			Jyspmx jymx = new Jyspmx();
+			jymx.setDjh(djh);
+			jymx.setSpmxxh(mxItem.getSpmxxh());
+			jymx.setSpdm(mxItem.getSpdm());
+			jymx.setSpmc(mxItem.getSpmc());
+			jymx.setSpggxh(mxItem.getSpggxh());
+			jymx.setSpdw(mxItem.getSpdw());
+			jymx.setSps(mxItem.getSps() == null ? null : mxItem.getSps().doubleValue());
+			jymx.setSpdj(mxItem.getSpdj() == null ? null : mxItem.getSpdj().doubleValue());
+			jymx.setSpje(mxItem.getSpje() == null ? null : mxItem.getSpje().doubleValue());
+			jymx.setSpsl(mxItem.getSpsl().doubleValue());
+			jymx.setSpse(mxItem.getSpse() == null ? null : mxItem.getSpse().doubleValue());
+			jymx.setJshj(mxItem.getJshj() == null ? null : mxItem.getJshj().doubleValue());
+			jymx.setYkphj(0d);
+			jymx.setGsdm(jyls.getGsdm());
+			jymx.setLrsj(TimeUtil.getNowDate());
+			jymx.setLrry(jyls.getLrry());
+			jymx.setXgsj(TimeUtil.getNowDate());
+			jymx.setXgry(jyls.getXgry());
+			jymx.setFphxz("0");
+			jymxService.save(jymx);
+			list.add(jymx);
+		}
+		return list;
+	}
 }

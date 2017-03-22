@@ -352,6 +352,8 @@ protected Double zdje;
 
 protected String fpjshsbz;
 
+protected String qdbz;
+
 public Integer getSqlsh() {
 	return sqlsh;
 }
@@ -939,6 +941,16 @@ public String getFpjshsbz() {
 
 public void setFpjshsbz(String fpjshsbz) {
 	this.fpjshsbz = fpjshsbz;
+}
+
+
+public String getQdbz() {
+	return qdbz;
+}
+
+
+public void setQdbz(String qdbz) {
+	this.qdbz = qdbz;
 }
 
 

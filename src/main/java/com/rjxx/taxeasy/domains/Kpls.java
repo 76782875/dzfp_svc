@@ -247,6 +247,9 @@ public class Kpls  implements Serializable {
 @Column(name="hkbz")
 	protected String hkbz;
 
+@Column(name="sfdyqd")
+protected String sfdyqd;
+
 /**
  * 换开发票代码
  */ 
@@ -958,6 +961,14 @@ public void setFpztdm(String fpztdm) {
 
 	public void setFpEwm(String fpEwm) {
 		this.fpEwm = fpEwm;
+	}
+
+	public String getSfdyqd() {
+		return sfdyqd;
+	}
+
+	public void setSfdyqd(String sfdyqd) {
+		this.sfdyqd = sfdyqd;
 	}
  
 
