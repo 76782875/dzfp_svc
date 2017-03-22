@@ -260,6 +260,9 @@ FROM
       <if test="xfid !=null and xfid !=''">
           and xfid = #{xfid}
       </if>
+      <if test="skpid !=null and skpid !=''">
+          and skpid = #{skpid}
+      </if>
       <if test="fpzl !=null and fpzl !=''">
           and fpzldm = #{fpzl}
       </if>
