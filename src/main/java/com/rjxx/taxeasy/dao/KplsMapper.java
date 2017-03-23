@@ -60,6 +60,14 @@ public interface KplsMapper {
     //发票重开数据查询
     public List<Fpcxvo> findFpcksqKpls(Map params);
     
+    //发票重打数据查询
+	public List<Fpcxvo> findKcdfpByPage(Pagination pagination);
+	
+	//发票重打数据查询1
+	public List<Fpcxvo> findKcdfpByPage1(Pagination pagination);
+
+
+    
     /*发票换开申请数据查询*/
     public List<Fpcxvo> findHkfpsqByPage(Pagination pagination);
     
@@ -98,6 +106,7 @@ public interface KplsMapper {
      * @return
      */
     public List<FptjVo> findFpdbtjjgByKpdid(int kpdid);
+    
 
 }
 

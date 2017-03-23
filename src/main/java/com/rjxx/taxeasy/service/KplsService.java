@@ -198,5 +198,15 @@ public class KplsService {
     public void delete(Kpls kpls) {
         kplsJpaDao.delete(kpls.getKplsh());
     }
+    //发票重打数据查询
+	public List<Fpcxvo> findKcdfpByPage(Pagination pagination) {
+		// TODO Auto-generated method stub
+		return kplsMapper.findKcdfpByPage(pagination);
+	}
+	//发票重打数据查询1
+	public List<Fpcxvo> findKcdfpByPage1(Pagination pagination) {
+		// TODO Auto-generated method stub
+		return kplsMapper.findKcdfpByPage1(pagination);
+	}
 }
 
