@@ -255,7 +255,7 @@ d.spmc,
 			and a.skpid = #{params.sk}
 		</if>
 		group by a.kplsh
-		order by a.fphm desc,a.fpdm desc
+		order by a.lrsj desc, a.fphm desc,a.fpdm desc
 	</select>
 	<update id="update" parameterType="map">
 		update t_kpls set printflag =
