@@ -17,11 +17,13 @@
         limit 1
     </select>
 
-    <select id="findAllByParams" parameterType="map" resultType="spz">
-        select * from t_spz where yxbz = '1'
-        <if test="orderBy != null">
-            order by #{orderBy}
-        </if>
+    <select id="findAllByParams" parameterType="map" resultType="spvo">
+      select * from spvo where  1 = 1
+        <if test="xfs != null">
+        and spdm in(select spdm from t_spz_sp  where spzid in ( select id from t_spz a where 1 =1 and a.yxbz = '1'
+           and a.id in(select spzid from t_spz_xf where xfid in <foreach collection="xfs" item="item" index="index" open="("
+				separator="," close=")"> #{xfs[${index}].id}</foreach>) 
+        </if>)) 
     </select>
 
     <select id="findByPage" parameterType="pagination" resultType="spz">

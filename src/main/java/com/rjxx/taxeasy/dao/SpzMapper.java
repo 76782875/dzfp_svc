@@ -2,7 +2,9 @@ package com.rjxx.taxeasy.dao;
 
 import com.rjxx.comm.mybatis.MybatisRepository;
 import com.rjxx.comm.mybatis.Pagination;
+import com.rjxx.taxeasy.domains.Sp;
 import com.rjxx.taxeasy.domains.Spz;
+import com.rjxx.taxeasy.vo.Spvo;
 
 import java.util.List;
 import java.util.Map;
@@ -19,7 +21,7 @@ public interface SpzMapper {
 
     public Spz findOneByParams(Map params);
 
-    public List<Spz> findAllByParams(Map params);
+    public List<Spvo> findAllByParams(Map params);
 
     public List<Spz> findByPage(Pagination pagination);
 

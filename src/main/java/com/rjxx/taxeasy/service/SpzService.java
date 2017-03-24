@@ -3,7 +3,10 @@ package com.rjxx.taxeasy.service;
 import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.dao.SpzJpaDao;
 import com.rjxx.taxeasy.dao.SpzMapper;
+import com.rjxx.taxeasy.domains.Sp;
 import com.rjxx.taxeasy.domains.Spz;
+import com.rjxx.taxeasy.vo.Spvo;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,7 +45,7 @@ public class SpzService {
         return spzMapper.findOneByParams(params);
     }
 
-    public List<Spz> findAllByParams(Map params) {
+    public List<Spvo> findAllByParams(Map params) {
         return spzMapper.findAllByParams(params);
     }
 
