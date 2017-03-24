@@ -71,5 +71,7 @@ public class JymxsqService {
     public void delete(List<Jymxsq> jymxsqList) {
     	jymxsqJpaDao.delete(jymxsqList);
     }
+
+	
 }
 

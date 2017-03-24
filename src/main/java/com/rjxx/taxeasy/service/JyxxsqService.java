@@ -8,6 +8,7 @@ import com.rjxx.taxeasy.domains.Jymxsq;
 import com.rjxx.taxeasy.domains.Jyspmx;
 import com.rjxx.taxeasy.domains.Jyxxsq;
 import com.rjxx.taxeasy.domains.Xf;
+import com.rjxx.taxeasy.vo.Jylsvo;
 import com.rjxx.taxeasy.vo.JymxsqVo;
 import com.rjxx.taxeasy.vo.JyspmxVo;
 import com.rjxx.taxeasy.vo.JyxxsqVO;
@@ -168,6 +169,11 @@ public class JyxxsqService {
 				vo.getSps(), vo.getSpdj(), vo.getSpje(), vo.getSpsl(), vo.getSpse(), vo.getJshj(),vo.getHzkpxh(), vo.getLrsj(), vo.getLrry(), vo.getXgsj(), vo.getXgry(), vo.getGsdm(), vo.getXfid(),
 				vo.getSkpid(),vo.getYxbz(),vo.getKkjje(),vo.getYkjje());
 		return mx;
+	}
+
+	public List<JyxxsqVO> findBykplscxPage(Pagination pagination) {
+		// TODO Auto-generated method stub
+		 return jyxxsqMapper.findBykplscxPage(pagination);
 	}
 
 }

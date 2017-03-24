@@ -76,7 +76,56 @@
 		(select a.xfid from t_skp a where a.kpddm =#{kpddm} and a.gsdm =#{gsdm})
 		LIMIT 1
 	</select>
-
+    <select id="findBykplscxPage" parameterType="pagination" resultType="jyxxsqVO">
+       select a.*,b.clztmc AS clztmc,c.fpczlxmc as fpczlxmc,d.fpzlmc as fpzlmc  from  (((`t_jyxxsq` `a` join `t_clzt` `b`) join `t_fpczlx` `c`) join `t_fpzl` `d`) where ((`a`.`clztdm` = `b`.`clztdm`) and (`a`.`fpczlxdm` = `c`.`fpczlxdm`) and (`a`.`fpzldm` = `d`.`fpzldm`))
+         and  a.yxbz='1' 
+         
+        <if test="params.gsdm !=null and params.gsdm !=''">
+			and a.gsdm = #{params.gsdm}
+		</if> 
+         <if test="params.xfsh != null and params.xfsh != ''" >
+            and xfsh = #{params.xfsh}
+        </if>
+        <if test="params.xfs !=null">
+			<foreach collection="params.xfs" open=" and (a.xfid in ("
+				separator="," close=")" item="item" index="index">
+				#{params.xfs[${index}].id}
+			</foreach>
+			or a.xfid is null)
+		</if>
+		<if test="params.skps !=null">
+			<foreach collection="params.skps" open=" and (a.skpid in ("
+				separator="," close=")" item="item" index="index">
+				#{params.skps[${index}].id}
+			</foreach>
+			or a.skpid is null)
+		</if>
+		<if test="params.ddh !=null and params.ddh !=''">
+			and a.ddh like concat('%',#{params.ddh},'%')
+		</if>
+        <if test="params.fpzldm !=null and params.fpzldm !=''" >
+			and a.fpzldm= #{params.fpzldm}
+		</if>
+		<if test="params.xfsh !=null and params.xfsh !=''" >
+			and a.xfsh = #{params.xfsh}
+		</if>
+		<if test="params.jylsh !=null and params.jylsh !=''">
+			and a.jylsh = #{params.jylsh}
+		</if>
+		
+		<if test="params.gfmc !=null and params.gfmc !=''">
+			and a.gfmc like concat('%',#{params.gfmc},'%')
+		</if>
+		<if test="params.rqq !=null and params.rqq != ''">
+			and a.ddrq &gt;= #{params.rqq}
+		</if>
+		<if test="params.rqz !=null and params.rqz != ''">
+			and a.ddrq &lt;
+			date_add(str_to_date(#{params.rqz},'%Y-%m-%d'),INTERVAL 1 day)
+		</if>
+		order by a.ddrq desc
+    </select>
+    
 	<select id="findByPage" parameterType="pagination" resultType="jyxxsqVO">
 		select DISTINCT a.* from t_jyxxsq a , t_jymxsq b WHERE a.sqlsh=b.sqlsh
 		and a.yxbz ='1'

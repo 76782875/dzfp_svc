@@ -346,6 +346,18 @@ protected String ztbz;
 @Column(name="sjly")
 protected String sjly;
 
+protected String clztmc;
+
+/**
+* 发票操作类型名称
+*/ 
+protected String fpczlxmc;
+
+/**
+* 发票种类名称
+*/ 
+protected String fpzlmc;
+
 
 protected Double fpje;
 protected Double zdje;
@@ -951,6 +963,36 @@ public String getQdbz() {
 
 public void setQdbz(String qdbz) {
 	this.qdbz = qdbz;
+}
+
+
+public String getClztmc() {
+	return clztmc;
+}
+
+
+public void setClztmc(String clztmc) {
+	this.clztmc = clztmc;
+}
+
+
+public String getFpczlxmc() {
+	return fpczlxmc;
+}
+
+
+public void setFpczlxmc(String fpczlxmc) {
+	this.fpczlxmc = fpczlxmc;
+}
+
+
+public String getFpzlmc() {
+	return fpzlmc;
+}
+
+
+public void setFpzlmc(String fpzlmc) {
+	this.fpzlmc = fpzlmc;
 }
 
 

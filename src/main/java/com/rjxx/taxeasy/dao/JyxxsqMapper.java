@@ -38,5 +38,7 @@ public interface JyxxsqMapper {
     public List<Jyxxsq> findByMapParams(Map params);
     
     public List<JyxxsqVO> findYscByPage(Pagination pagination);
+
+	public List<JyxxsqVO> findBykplscxPage(Pagination pagination);
 }
 
