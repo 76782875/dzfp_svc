@@ -306,11 +306,12 @@ public class FphkService {
 		kpls2.setKpr(jyls1.getKpr());
 		kpls2.setFhr(jyls1.getFhr());
 		kpls2.setHztzdh(jyls1.getHztzdh());
-		if(dybz.equals("0")){//打印标志
+		kpls2.setPrintflag(kpls.getPrintflag());
+		/*if(dybz.equals("0")){//打印标志
 			kpls2.setPrintflag("0");
 		}else if(dybz.equals("2")){
 			kpls2.setPrintflag("2");
-		}
+		}*/
 		kpls2.setHkFpdm(jyls1.getYfpdm());//原发票代码
 		kpls2.setHkFphm(jyls1.getYfphm());//原发票号码
 		kpls2.setJshj(jyls1.getJshj());

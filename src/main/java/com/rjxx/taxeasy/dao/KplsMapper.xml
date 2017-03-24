@@ -490,6 +490,7 @@ d.spmc,
 		where a.djh = b.djh
 		 and a.fpzldm in('01','02')
 		and a.fpczlxdm = '11'
+		and date_format(a.kprq,'%Y-%m')=date_format(now(),'%Y-%m')
 		and a.fpztdm = '00'
 	<!-- 	and  b.fpzldm in('01','02') -->
 		and a.yxbz = '1'
