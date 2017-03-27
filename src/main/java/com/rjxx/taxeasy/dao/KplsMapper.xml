@@ -537,7 +537,7 @@ d.spmc,
     b.pdfurl,b.kprq,b.hjje,b.hjse,a.tqm,case when b.pdfurl is null and b.fpztdm = '00' then
 	'正在开具' else c.fpztmc end fpztmc, b.errorreason from t_jyls a
 	join t_kpls b on a.djh = b.djh
-	join t_fpzt c on c.fpztdm = b.fpztdm	
+	join t_fpzt c on c.fpztdm = b.fpztdm where 1=1	
 		<if test="jylsh != null and jylsh != ''">
 			and b.jylsh = #{jylsh}
 		</if>
