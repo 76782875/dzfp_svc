@@ -49,17 +49,26 @@ public class FpclService {
  @Autowired private KpspmxService kpspmxService;
  @Autowired private DataOperte dc;
  @Autowired private XfService xfService;
-	public Boolean kpcl1(Integer djh,String dybz) throws Exception {
+	public InvoiceResponse kpcl1(Integer djh,String dybz,int csz) throws Exception {
 		Jyls jyls1 = jylsService.findOne(djh);
 		Jyspmx jyspmx = new Jyspmx();
 		jyspmx.setDjh(djh);
 		List<Jyspmx> list = jymxService.findAllByParams(jyspmx);
 		//保存开票流水
-		Kpls kpls = saveKp(jyls1, list, dybz);
   		//jyls1.setClztdm("02");
-		jyls1.setClztdm("40");
- 		jylsService.save(jyls1);
-/* 		InvoiceResponse response = skService.callService(kpls.getKplsh());
+ 		if (csz==1) {
+ 			Kpls kpls = saveKp(jyls1, list, dybz,"14");
+ 			jyls1.setClztdm("40");
+ 	 		jylsService.save(jyls1);
+ 			InvoiceResponse response = skService.callService(kpls.getKplsh());
+ 			return response;
+		}else{
+			Kpls kpls = saveKp(jyls1, list, dybz,"04");
+ 			jyls1.setClztdm("40");
+ 	 		jylsService.save(jyls1);
+		}
+ 		return new InvoiceResponse();
+/* 		
 		if ("0000".equals(response.getReturnCode())) {
 		}else{
 			kpls.setFpztdm("04");
@@ -74,7 +83,6 @@ public class FpclService {
 			return response;
 		}
          response.setReturnCode("0000");*/
-		return true;
 	}
 	
 	//全部开票
@@ -85,7 +93,7 @@ public class FpclService {
 		List<Jyspmx> list = jymxService.findAllByParams(jyspmx);
 
 		//保存开票流水
-		Kpls kpls = saveKp(jyls1, list, dybz);
+		Kpls kpls = saveKp(jyls1, list, dybz,"04");
 		
   		jyls1.setClztdm("02");
  		jylsService.save(jyls1);
@@ -458,7 +466,7 @@ public class FpclService {
      * @param jyls
      * @return
      */
-	public Kpls saveKpls(Jyls jyls, List<Jyspmx> jyspmx1,String dybz) throws Exception {
+	public Kpls saveKpls(Jyls jyls, List<Jyspmx> jyspmx1,String dybz,String fpztdm) throws Exception {
         Kpls kpls = new Kpls();
         kpls.setDjh(jyls.getDjh());
         kpls.setJylsh(jyls.getJylsh());
@@ -519,7 +527,7 @@ public class FpclService {
         kpls.setJshj(jshj);
         kpls.setSfdyqd(jyls.getSfdyqd());
         kpls.setYxbz("1");
-        kpls.setFpztdm("04");
+        kpls.setFpztdm(fpztdm);
         kpls.setSkpid(jyls.getSkpid());
         kplsService.save(kpls);
         return kpls;
@@ -564,8 +572,8 @@ public class FpclService {
         }
     }
     @Transactional
-    public Kpls saveKp( Jyls jyls1 ,List<Jyspmx> list ,String dybz) throws Exception{
-		Kpls kpls = saveKpls(jyls1, list,dybz);
+    public Kpls saveKp( Jyls jyls1 ,List<Jyspmx> list ,String dybz,String fpztdm) throws Exception{
+		Kpls kpls = saveKpls(jyls1, list,dybz,fpztdm);
 		saveKpspmx(kpls, list);
 		return kpls;
     }
@@ -676,7 +684,7 @@ public class FpclService {
                 Jyls jyls = saveJyls(jyxxsq, fpJyspmxList);
                 List<Jyspmx> list2 = saveKpspmx(jyls, fpJyspmxList);
                 //保存开票流水
-                Kpls kpls = saveKpls(jyls, list2, jyxxsq.getSfdy());
+                Kpls kpls = saveKpls(jyls, list2, jyxxsq.getSfdy(),"14");
                 saveKpspmx(kpls, list2);
                InvoiceResponse response =  skService.callService(kpls.getKplsh());
                if (response.getReturnCode().equals("0000")) {			
