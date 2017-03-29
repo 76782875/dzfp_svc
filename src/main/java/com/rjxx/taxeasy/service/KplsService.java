@@ -143,6 +143,11 @@ public class KplsService {
     public List<Kpls> findByDjh(Kpls kpls) {
         return kplsMapper.findByDjh(kpls);
     }
+    //根据原发票号码查询原开票流水号
+    public Kpls findByyfphm(Kpls kpls) {
+        return kplsMapper.findByyfphm(kpls);
+    }
+    
 
     public List<Kpls> findAll(Map params) {
         return kplsMapper.findAll(params);

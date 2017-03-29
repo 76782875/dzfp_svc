@@ -10,11 +10,13 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.rjxx.taxeasy.domains.Cszb;
 import com.rjxx.taxeasy.domains.Gsxx;
 import com.rjxx.taxeasy.domains.Jyls;
 import com.rjxx.taxeasy.domains.Jyspmx;
 import com.rjxx.taxeasy.domains.Kpls;
 import com.rjxx.taxeasy.domains.Kpspmx;
+import com.rjxx.taxeasy.service.CszbService;
 import com.rjxx.taxeasy.service.FpgzService;
 import com.rjxx.taxeasy.service.GsxxService;
 import com.rjxx.taxeasy.service.JylsService;
@@ -36,23 +38,19 @@ public class FphcService {
 	 @Autowired private KpspmxService kpspmxService;
 	 @Autowired private DataOperte dc;
 	 @Autowired private XfService xfService;
+	 @Autowired private CszbService cszbService;
+		
 	 
 	    //红冲处理
 		public InvoiceResponse hccl(Integer kplsh,Integer yhid, String gsdm,String hcjeStr,String xhStr,String hztzdh) throws Exception {
-		//	Kpls kpls = kplsService.findOne(kplsh);
+
+			InvoiceResponse response=new InvoiceResponse();
+			
+			
 			DecimalFormat df = new DecimalFormat("#.00");
 			DecimalFormat df6 = new DecimalFormat("#.000000");
 			Map map = new HashMap<>();
 			map.put("kplsh", kplsh);
-		/*	Fpcxvo cxvo = kplsService.selectMonth(map);
-			//日期校验
-			if (cxvo != null) {
-				if (cxvo.getXcyf() != null && cxvo.getXcyf() > 6) {
-					result.put("success", false);
-					result.put("msg", "超过开票日期6个月，不能红冲！");
-					return false;
-				}
-			}*/
 			//kzx 20161212 如果走税控服务器红冲则设置clztdm为03
 			Map paramsTmp = new HashMap();
 			paramsTmp.put("gsdm", gsdm);
@@ -197,7 +195,7 @@ public class FphcService {
 						param1.put("kplsh", kplsh);
 						param1.put("xh", xh[i]);
 						
-						//kpspmxService.update(param1);
+						kpspmxService.update(param1);
 						
 						// 交易保存明细
 						if (Double.valueOf(hcje[i]) != 0) {
@@ -274,7 +272,7 @@ public class FphcService {
 						param1.put("kplsh", kplsh);
 						param1.put("xh", xh[i]);
 						
-						//kpspmxService.update(param1);
+						kpspmxService.update(param1);
 						
 						// 交易保存明细
 						if (Double.valueOf(hcje[i]) != 0) {
@@ -314,14 +312,29 @@ public class FphcService {
 				
 				Map param2 = new HashMap<>();
 				param2.put("kplsh", kplsh);
+				
 				// 部分红冲后修改kpls表的三个金额
 				/*
 				 * Kpls ls = kplsService.findHjje(param2);
 				 * param2.put("hjje",ls.getHjje()); param2.put("hjse",ls.getHjse());
 				 * param2.put("jshj",ls.getJshj()); kplsService.updateHjje(param2);
 				 */
-				
-				InvoiceResponse response = skService.callService(kpls2.getKplsh());
+				/*Cszb cszb=new Cszb();
+				cszb.setGsdm(gsdm);
+				cszb.setXfid(kpls.getXfid());
+				cszb.setKpdid(kpls.getSkpid());
+				cszb.setCsid(15);
+				Cszb cszb2 =(Cszb) cszbService.findsfzlkpByParams(cszb);
+				if(cszb2.getCsz().equals("否")){*/
+					kpls2.setFpztdm("04"); //正在开具
+					kplsService.save(kpls2);
+					//kpls.setFpztdm("09");//待红冲
+					//kplsService.save(kpls);
+					response.setReturnCode("0000");
+					response.setReturnMessage("待红冲提交成功！请在客户端开具纸质发票");
+				/*	
+				}else if(cszb2.getCsz().equals("是")){
+				 response = skService.callService(kpls2.getKplsh());
 				if ("0000".equals(response.getReturnCode())) {
 					for (int i = 0; i < xh.length; i++) {
 						Map params = new HashMap<>();
@@ -365,12 +378,7 @@ public class FphcService {
 								param1.put("xh", xh[i]);
 								kpspmxService.update(param1);
 							}
-						
 					}
-					
-					
-					
-					
 					// 全部红冲后修改
 					Kpspmxvo mxvo = kpspmxService.findKhcje(param2);
 					if (mxvo.getKhcje() == 0) {
@@ -380,12 +388,13 @@ public class FphcService {
 						param2.put("fpztdm", "01");
 						kplsService.updateFpczlx(param2);
 					}
-					return response;
+					//return response;
 				}else{
 					jyls1.setClztdm("02");
 					dc.saveLog(djh, "92", "1", "", "调用红冲接口失败"+response.getReturnMessage(), 2, jyls.getXfsh(), jyls.getJylsh());
-					return response;
+					//return response;
 				}
+			}*/
+				return response;
 		}
-
 }

@@ -24,5 +24,7 @@ public interface CszbMapper {
 
     public List<CsbVo> findByPage(Pagination pagination);
 
+	public Cszb findsfzlkpByParams(Cszb cszb);
+
 }
 

@@ -92,5 +92,10 @@ public class CszbService {
 			}
     }
 
+	public Cszb findsfzlkpByParams(Cszb cszb) {
+		// TODO Auto-generated method stub
+		return cszbMapper.findsfzlkpByParams(cszb);
+	}
+
 }
 

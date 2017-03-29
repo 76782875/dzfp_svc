@@ -12,10 +12,12 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.rjxx.taxeasy.domains.Cszb;
 import com.rjxx.taxeasy.domains.Jyls;
 import com.rjxx.taxeasy.domains.Jyspmx;
 import com.rjxx.taxeasy.domains.Kpls;
 import com.rjxx.taxeasy.domains.Kpspmx;
+import com.rjxx.taxeasy.service.CszbService;
 import com.rjxx.taxeasy.service.FpgzService;
 import com.rjxx.taxeasy.service.GsxxService;
 import com.rjxx.taxeasy.service.JylsService;
@@ -38,7 +40,7 @@ public class FphkService {
 	 @Autowired private KpspmxService kpspmxService;
 	 @Autowired private DataOperte dc;
 	 @Autowired private XfService xfService;
-	 
+	 @Autowired private CszbService cszbService;
 	 /**
 	  * 发票换开红冲处理
 	  * @param kplshList
@@ -51,74 +53,103 @@ public class FphkService {
 	 public Map addhcjyls(Map map, List<Integer> kplshList, int yhid, String gsdm,int djh) throws Exception{
 		 
 			Map params = new HashMap<>();
-			InvoiceResponse response=null;
+			InvoiceResponse response=new InvoiceResponse();
 			DecimalFormat df = new DecimalFormat("#.00");
 			DecimalFormat df6 = new DecimalFormat("#.000000");
 			Map  result=new HashMap();
 			for(Integer kplsh:kplshList){
-				
 				Map map1=this.saveJyls(kplsh,yhid,map,"1");
 				Kpls kpls2=(Kpls)map1.get("kpls2");
 				Jyls jyls1=(Jyls)map1.get("jyls1");
-				Map param2 = new HashMap<>();
-				param2.put("kplsh", kpls2.getKplsh());
-				param2.put("fpztdm", "00");
-				kplsService.updateFpczlx(param2);
-				
-			     response = skService.callService(kpls2.getKplsh());
-				if ("0000".equals(response.getReturnCode())) {
-					result.put("hcbz", "0");
-				}else{
-
-					dc.saveLog(djh, "92", "1", "", "调用红冲接口失败"+response.getReturnMessage(), 2, jyls1.getXfsh(), jyls1.getJylsh());
-					 result.put("hcbz", "1");
-					 result.put("hcMessage", response.getReturnMessage());
-
-				}
-				
-
-			}
+				 Kpls kpls = kplsService.findOne(kplsh);
+				  /*  Cszb cszb=new Cszb();
+					cszb.setGsdm(gsdm);
+					cszb.setXfid(kpls.getXfid());
+					cszb.setKpdid(kpls.getSkpid());
+					cszb.setCsid(15);
+					Cszb cszb2 =(Cszb) cszbService.findsfzlkpByParams(cszb);
+					if(cszb2.getCsz().equals("否")){*/
+						kpls2.setFpztdm("04"); //正在开具
+						kplsService.save(kpls2);
+						//kpls.setFpztdm("09");//待红冲
+						//kplsService.save(kpls);
+						result.put("dhcbz", "1");//待红冲标志  1 待红冲 0直连红冲
+						result.put("kplsh", kpls2.getKplsh());
+				/*	}else if(cszb2.getCsz().equals("是")){
+					     response = skService.callService(kpls2.getKplsh());
+					     result.put("dhcbz", "0");//待红冲标志
+						if ("0000".equals(response.getReturnCode())) {
+							
+							Map param2 = new HashMap<>();
+							param2.put("kplsh", kpls2.getKplsh());
+							param2.put("fpztdm", "02");
+							
+							kplsService.updateFpczlx(param2);
+							
+							result.put("hcbz", "0");
+						}else{
+							 dc.saveLog(djh, "92", "1", "", "调用红冲接口失败"+response.getReturnMessage(), 2, jyls1.getXfsh(), jyls1.getJylsh());
+							 result.put("hcbz", "1");
+							 result.put("hcMessage", response.getReturnMessage());
+						}
+			   }*/
+		   }
 			return result;
-		}
+	}
+	/**
+	 * 发票换开操作
+	 * @param map
+	 * @param kplshList
+	 * @param djh
+	 * @param yhid
+	 * @param gsdm
+	 * @return
+	 * @throws Exception
+	 */
     public Map fphk(Map map,List<Integer> kplshList,int djh, int yhid,String gsdm) throws Exception{
     	
       Map resultMap=new HashMap();
       
       Map hcmap= this.addhcjyls( map,kplshList,yhid,gsdm, djh);//发票红冲操作
-      String hcbz=hcmap.get("hcbz").toString();
+     
+      String dhcbz=hcmap.get("dhcbz").toString(); //待红冲标志
+      
+      if(dhcbz.equals("1")){//待红冲标志为1时表示是待红冲数据 当红冲数据发票号码发票代码不为空时，表示红冲成功
+    	  String kplsh=hcmap.get("kplsh").toString(); //待红冲标志
+		  Kpls kpls = kplsService.findOne(Integer.valueOf(kplsh));
+		  // if(null!=kpls.getFpdm()&&null!=kpls.getFphm()){
+			  this.addfphkls(map, kplshList, yhid, gsdm, djh);
+			  resultMap.put("dhkcz", "0");//待换开操作 成功
+		  //}else{
+			//  resultMap.put("dhkcz", "1");//待 换开操作 失败
+		 /// }
 
-     if(hcbz.equals("0")){
+      }else{
+    	  resultMap.put("dhkcz", "1");
     	  
-          Map hkmap= this.addfphkls( map,kplshList,  yhid,gsdm, djh);//发票换开操作
-          
-          String hkbz=hkmap.get("hkbz").toString();
-          
-          
-          if(hkbz.equals("0")){
-        	  resultMap.put("hkcz", "0");//换开成功
-          }else{
-        	  resultMap.put("hkcz", "1");//换开成功
-
-              String hkMessage=hkmap.get("hkMessage").toString();
-        	  resultMap.put("hkMessage", hkMessage);
-
-          }
-     }else if(hcbz.equals("1")){
-    	  String hcMessage=hcmap.get("hcMessage").toString();
-   	      resultMap.put("hkcz", "1");//换开失败 换开中红冲步骤失败
-    	  resultMap.put("hkMessage", hcMessage);
-
       }
       
-      
- 
-
-      
+      /*else if(dhcbz.equals("0")){
+      String hcbz=hcmap.get("hcbz").toString();   //红冲标志
+      if(hcbz.equals("0")){
+    	  this.addfphkls(map, kplshList, yhid, gsdm, djh);
+       
+		     }else if(hcbz.equals("1")){
+		    	  String hcMessage=hcmap.get("hcMessage").toString();
+		   	      resultMap.put("hkcz", "1");//换开失败 换开中红冲步骤失败
+		    	  resultMap.put("hkMessage", hcMessage);
+		      }
+      }*/
       return resultMap;
-      
-    	
-    }
-
+}
+   /**
+    * 保存流水
+    * @param kplsh
+    * @param yhid
+    * @param map
+    * @param czbz
+    * @return
+    */
    @Transactional
    public Map saveJyls(Integer kplsh,int yhid,Map map,String czbz){
 	    DecimalFormat df = new DecimalFormat("#.00");
@@ -179,7 +210,8 @@ public class FphkService {
 		}else if(czbz.equals("1")){ //红冲
 			jyls1.setFpzldm(kpls.getFpzldm());//换开发票种类
 			jyls1.setFpczlxdm("13");//发票操作类型//13 换开
-			jyls1.setClztdm("02");//处理状态代码
+			jyls1.setClztdm("00");//处理状态代码
+			
 			jyls1.setJshj(-Double.valueOf(kpls.getJshj()));
 
 		}
@@ -250,7 +282,6 @@ public class FphkService {
 
 		}
 		
-		jyls1.setClztdm("01");
 		if(gfbz!=null&&!"".equals(gfbz)){
 			jyls1.setBz(gfbz);  //备注
 
@@ -277,6 +308,7 @@ public class FphkService {
 		
 		//保存开票流水
 		Kpls kpls2 = new Kpls();
+		if(czbz.equals("1")){
 	    djh = kpls.getDjh();
 		kpls2.setDjh(djh);
 		kpls2.setJylsh(jylsh);
@@ -342,7 +374,7 @@ public class FphkService {
 		}
 		
 		kplsService.save(kpls2);
-		
+		}
 		Map paramsMx = new HashMap<>();
 		paramsMx.put("id", kplsh);
 		List<Kpspmxvo> kpspmxList = kpspmxService.findAllByParams(paramsMx);//查询原开票流水对应的商品明细列表
@@ -379,6 +411,7 @@ public class FphkService {
 				jymx.setXgry(yhid);
 				jymx.setFphxz("0");
 				jymxService.save(jymx);
+				if(czbz.equals("1")){
 				Kpspmx kpspmx = new Kpspmx();
 				kpspmx.setKplsh(kpls2.getKplsh());
 				kpspmx.setDjh(jymx.getDjh());
@@ -411,6 +444,7 @@ public class FphkService {
 				}
 				
 				kpspmxService.save(kpspmx);
+				}
 			}
 			
 			
@@ -421,7 +455,16 @@ public class FphkService {
 		return map1;
    }
     
-    
+    /**
+     * 保存开票流水处理
+     * @param map
+     * @param kplshList
+     * @param yhid
+     * @param gsdm
+     * @param djh
+     * @return
+     * @throws Exception
+     */
 	public Map addfphkls(Map map, List<Integer> kplshList, int yhid, String gsdm,int djh) throws Exception{
 		
 		InvoiceResponse response=null;
@@ -429,15 +472,10 @@ public class FphkService {
 		DecimalFormat df6 = new DecimalFormat("#.000000");
 		Map result=new HashMap();
 		for(Integer kplsh:kplshList){
-			
-		
 			Map map1=this.saveJyls(kplsh,yhid,map,"2");
 			Kpls kpls2=(Kpls)map1.get("kpls2");
 			Jyls jyls1=(Jyls)map1.get("jyls1");
-			
-			
-			
-		     response = skService.callService(kpls2.getKplsh());
+		   /*  response = skService.callService(kpls2.getKplsh());
 			if ("0000".equals(response.getReturnCode())) {
 				result.put("hkbz", "0");
 				Map param2 = new HashMap<>();
@@ -449,11 +487,9 @@ public class FphkService {
 				dc.saveLog(djh, "92", "1", "", "调用换开接口失败"+response.getReturnMessage(), 2, jyls1.getXfsh(), jyls1.getJylsh());
 				result.put("hkbz", "1");
 				result.put("hkMessage", response.getReturnMessage());
-
-			}
+			}*/
+			result.put("bcbz", "0");//保存标志
 		}
          return result; 
-		
 	}
-
 }
