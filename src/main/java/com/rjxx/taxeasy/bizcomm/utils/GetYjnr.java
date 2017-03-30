@@ -39,7 +39,7 @@ public class GetYjnr {
         sb.append("<br/>");
         sb.append("开票点名称为："+kpdmc+"，");
         sb.append("<br/>");
-        sb.append("发票种类为："+fpzlmc+"的剩余库存为"+kyl+"张，已不足您设置的阈值"+limit+"张，请及时录入！");
+        sb.append("发票种类为："+fpzlmc+"的剩余库存为"+kyl+"张，已不足您设置的阈值"+limit+"张，请及时购买发票！");
         sb.append("<br/>");
         sb.append("<br/>");
         sb.append("<br/>");
