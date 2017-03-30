@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -61,47 +62,58 @@ public class SkService {
         InvoiceResponse response = XmlJaxbUtils.convertXmlStrToObject(InvoiceResponse.class, result);
         return response;
     }
-    
+
     /**
      * 作废发票
      *
      * @param kplsh
-     * @param 
+     * @param
      * @return
      */
     public InvoiceResponse voidInvoice(int kplsh) throws Exception {
-    	 if (StringUtils.isBlank(skServerUrl)) {
-             return InvoiceResponseUtils.responseError("skServerUrl为空");
-         }
-         String encryptStr = encryptSkServerParameter(kplsh + "");
-         String url = skServerUrl + "/invoice/voidInovice";
-         Map<String, String> map = new HashMap<>();
-         map.put("p", encryptStr);
-         String result = HttpUtils.doPost(url, map);
-         InvoiceResponse response = XmlJaxbUtils.convertXmlStrToObject(InvoiceResponse.class, result);
-         return response;
+        if (StringUtils.isBlank(skServerUrl)) {
+            return InvoiceResponseUtils.responseError("skServerUrl为空");
+        }
+        String encryptStr = encryptSkServerParameter(kplsh + "");
+        String url = skServerUrl + "/invoice/voidInovice";
+        Map<String, String> map = new HashMap<>();
+        map.put("p", encryptStr);
+        String result = HttpUtils.doPost(url, map);
+        InvoiceResponse response = XmlJaxbUtils.convertXmlStrToObject(InvoiceResponse.class, result);
+        return response;
     }
 
     /**
      * 发票重打
      *
      * @param kplsh
-     * @param 
+     * @param
      * @return
      */
     public InvoiceResponse reprintInvoice(int kplsh) throws Exception {
-    	 if (StringUtils.isBlank(skServerUrl)) {
-             return InvoiceResponseUtils.responseError("skServerUrl为空");
-         }
-         String encryptStr = encryptSkServerParameter(kplsh + "");
-         String url = skServerUrl + "/invoice/reprintInvoice";
-         Map<String, String> map = new HashMap<>();
-         map.put("p", encryptStr);
-         String result = HttpUtils.doPost(url, map);
-         InvoiceResponse response = XmlJaxbUtils.convertXmlStrToObject(InvoiceResponse.class, result);
-         return response;
+        if (StringUtils.isBlank(skServerUrl)) {
+            return InvoiceResponseUtils.responseError("skServerUrl为空");
+        }
+        String encryptStr = encryptSkServerParameter(kplsh + "");
+        String url = skServerUrl + "/invoice/reprintInvoice";
+        Map<String, String> map = new HashMap<>();
+        map.put("p", encryptStr);
+        String result = HttpUtils.doPost(url, map);
+        InvoiceResponse response = XmlJaxbUtils.convertXmlStrToObject(InvoiceResponse.class, result);
+        return response;
     }
-    
+
+    /**
+     * 获取库存
+     *
+     * @param kpdid
+     * @return
+     */
+    public List<Map<String, Object>> getKc(int kpdid) {
+        //fpzldm,fpdm,fphms,fphmz,kyl
+        return null;
+    }
+
     /**
      * 加密税控服务参数
      *
