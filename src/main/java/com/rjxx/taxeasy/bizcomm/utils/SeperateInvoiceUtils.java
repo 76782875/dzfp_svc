@@ -613,89 +613,20 @@ public class SeperateInvoiceUtils {
     public static void main(String[] args) throws Exception {
 		List<JyspmxDecimal2> list = new ArrayList<>();
 		JyspmxDecimal2 jymx = new JyspmxDecimal2();
-		jymx.setJshj(new BigDecimal(16430));
-		jymx.setSpsl(new BigDecimal(0.06));
-		jymx.setSpje(new BigDecimal(15500));
-		jymx.setSpse(new BigDecimal(930));
+		jymx.setJshj(new BigDecimal(23456));
+		jymx.setSpsl(new BigDecimal(0.03));
+		jymx.setSpje(new BigDecimal(22772.82));
+		jymx.setSpse(new BigDecimal(683.18));
 		jymx.setSqlsh(1);
 		jymx.setSpmxxh(1);
-		list.add(jymx);
-/*		jymx = new JyspmxDecimal2();
-		jymx.setJshj(new BigDecimal(106));
-		jymx.setSpsl(new BigDecimal(0.06));
-		jymx.setSpje(new BigDecimal(100));
-		jymx.setSpse(new BigDecimal(6));
-		jymx.setSqlsh(1);
-		jymx.setSpmxxh(2);
-		list.add(jymx);
-		jymx = new JyspmxDecimal2();
-		jymx.setJshj(new BigDecimal(106));
-		jymx.setSpsl(new BigDecimal(0.06));
-		jymx.setSpje(new BigDecimal(100));
-		jymx.setSpse(new BigDecimal(6));
-		jymx.setSqlsh(1);
-		jymx.setSpmxxh(3);
-		list.add(jymx);
-		jymx = new JyspmxDecimal2();
-		jymx.setJshj(new BigDecimal(106));
-		jymx.setSpsl(new BigDecimal(0.06));
-		jymx.setSpje(new BigDecimal(100));
-		jymx.setSpse(new BigDecimal(6));
-		jymx.setSqlsh(1);
-		jymx.setSpmxxh(4);
-		list.add(jymx);
-		jymx = new JyspmxDecimal2();
-		jymx.setJshj(new BigDecimal(106));
-		jymx.setSpsl(new BigDecimal(0.06));
-		jymx.setSpje(new BigDecimal(100));
-		jymx.setSpse(new BigDecimal(6));
-		jymx.setSqlsh(1);
-		jymx.setSpmxxh(5);
-		list.add(jymx);
-		jymx = new JyspmxDecimal2();
-		jymx.setJshj(new BigDecimal(106));
-		jymx.setSpsl(new BigDecimal(0.06));
-		jymx.setSpje(new BigDecimal(100));
-		jymx.setSpse(new BigDecimal(6));
-		jymx.setSqlsh(1);
-		jymx.setSpmxxh(6);
-		list.add(jymx);
-		jymx = new JyspmxDecimal2();
-		jymx.setJshj(new BigDecimal(106));
-		jymx.setSpsl(new BigDecimal(0.06));
-		jymx.setSpje(new BigDecimal(100));
-		jymx.setSpse(new BigDecimal(6));
-		jymx.setSqlsh(1);
-		jymx.setSpmxxh(7);
-		list.add(jymx);
-		jymx = new JyspmxDecimal2();
-		jymx.setJshj(new BigDecimal(106));
-		jymx.setSpsl(new BigDecimal(0.06));
-		jymx.setSpje(new BigDecimal(100));
-		jymx.setSpse(new BigDecimal(6));
-		jymx.setSqlsh(1);
-		jymx.setSpmxxh(8);
-		list.add(jymx);
-		jymx = new JyspmxDecimal2();
-		jymx.setJshj(new BigDecimal(106));
-		jymx.setSpsl(new BigDecimal(0.06));
-		jymx.setSpje(new BigDecimal(100));
-		jymx.setSpse(new BigDecimal(6));
-		jymx.setSqlsh(1);
-		jymx.setSpmxxh(9);
-		list.add(jymx);
-		jymx = new JyspmxDecimal2();
-		jymx.setJshj(new BigDecimal(2120));
-		jymx.setSpsl(new BigDecimal(0.06));
-		jymx.setSpje(new BigDecimal(2000));
-		jymx.setSpse(new BigDecimal(120));
-		jymx.setSqlsh(1);
-		jymx.setSpmxxh(10);
-		list.add(jymx);*/
+		for (int i = 0; i < 10; i++) {
+			list.add(jymx);
+			jymx.setSpmxxh(i+2);
+		}
 		System.out.println("2312");
 		List<JyspmxDecimal2> res = splitInvoicesbhs(list, new BigDecimal(9999.99), new BigDecimal(10000), 8);
 		for (JyspmxDecimal2 jyspmx : res) {
-			System.out.println(jyspmx.getFpnum() + "\t" + jyspmx.getSpje() + "\t" + jyspmx.getSpse() + "\t" + jyspmx.getSpsl() + "\t" + jyspmx.getJshj());
+			System.out.println( jyspmx.getJshj()+ "\t" + jyspmx.getFpnum() + "\t" + jyspmx.getSpje() + "\t" + jyspmx.getSpse() + "\t" + jyspmx.getSpsl() + "\t" );
 		}
 		
 	}
@@ -779,7 +710,8 @@ public class SeperateInvoiceUtils {
                     cfjyspmx.setSpdm(spdm);
                     cfjyspmx.setGsdm(jyspmx.getGsdm());
                     splitKpspmxs.add(cfjyspmx);
-                    if(fpje.compareTo(add(mul(maxje, jyspmx.getSpsl()),maxje))<0){
+                    if(fpje.divide(new BigDecimal(1).add(jyspmx.getSpsl()),30, BigDecimal.ROUND_HALF_UP).compareTo(maxje) > 0){
+                        // Jyspmx ccjyspmx = new Jyspmx();//超出金额对象){
                     	   int n = (int) Math.floor(div(ccje, maxje).doubleValue());
                            BigDecimal cfsm1 = new BigDecimal(0.00);
                            BigDecimal cfse1 = new BigDecimal(0.00);
@@ -940,7 +872,7 @@ public class SeperateInvoiceUtils {
                     cfjyspmx.setSpdm(spdm);
                     cfjyspmx.setGsdm(jyspmx.getGsdm());
                     splitKpspmxs.add(cfjyspmx);
-                    if(fpje.compareTo(add(mul(maxje, jyspmx.getSpsl()),maxje))<0){
+                    if(fpje.divide(new BigDecimal(1).add(jyspmx.getSpsl()),30, BigDecimal.ROUND_HALF_UP).compareTo(maxje) > 0){
                  	   int n = (int) Math.floor(div(ccje, maxje).doubleValue());
                         BigDecimal cfsm1 = new BigDecimal(0.00);
                         BigDecimal cfse1 = new BigDecimal(0.00);

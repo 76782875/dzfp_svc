@@ -5,6 +5,24 @@
 
     <select id="findOneByParams" parameterType="map" resultType="fpkc">
         select * from t_fpkc where yxbz = '1'
+        <if test="gsdm !=null and gsdm !=''">
+           and gsdm = #{gsdm}
+        </if>
+        <if test="xfid !=null and xfid !=''">
+           and xfid = #{xfid}
+        </if>
+        <if test="skpid !=null and skpid !=''">
+           and skpid = #{skpid}
+        </if>
+        <if test="fpzldm !=null and fpzldm !=''">
+           and fpzldm = #{fpzldm}
+        </if>
+        <if test="fpdm !=null and fpdm !=''">
+           and fpdm = #{fpdm}
+        </if>
+        <if test="fphms !=null and fphms !=''">
+           and fphms = #{fphms}
+        </if>
         <if test="orderBy != null">
             order by #{orderBy}
         </if>
