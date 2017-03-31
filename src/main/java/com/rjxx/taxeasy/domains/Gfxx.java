@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
  * t_gfxx 实体类
  * 购方信息表
  * 由GenEntityMysql类自动生成
- * Thu Feb 09 14:46:20 CST 2017
+ * Fri Mar 31 15:38:08 CST 2017
  * @ZhangBing
  */ 
 @Entity
@@ -98,6 +98,42 @@ public class Gfxx  implements Serializable {
 @JsonSerialize(using = JsonDatetimeFormat.class)
 @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	protected Date xgsj;
+
+/**
+ * 公司代码
+ */ 
+@Column(name="gsdm")
+	protected String gsdm;
+
+/**
+ * 销方id
+ */ 
+@Column(name="xfid")
+	protected Integer xfid;
+
+/**
+ * 企业名片库id
+ */ 
+@Column(name="qympkid")
+	protected Integer qympkid;
+
+/**
+ * 联系人
+ */ 
+@Column(name="lxr")
+	protected String lxr;
+
+/**
+ * 联系电话
+ */ 
+@Column(name="lxdh")
+	protected String lxdh;
+
+/**
+ * 邮寄地址
+ */ 
+@Column(name="yjdz")
+	protected String yjdz;
 
 
 	public Integer getId(){
@@ -202,6 +238,54 @@ public class Gfxx  implements Serializable {
 
 	public void setXgsj(Date xgsj){
 		this.xgsj=xgsj;
+	}
+
+	public String getGsdm(){
+		return gsdm;
+	}
+
+	public void setGsdm(String gsdm){
+		this.gsdm=gsdm;
+	}
+
+	public Integer getXfid(){
+		return xfid;
+	}
+
+	public void setXfid(Integer xfid){
+		this.xfid=xfid;
+	}
+
+	public Integer getQympkid(){
+		return qympkid;
+	}
+
+	public void setQympkid(Integer qympkid){
+		this.qympkid=qympkid;
+	}
+
+	public String getLxr(){
+		return lxr;
+	}
+
+	public void setLxr(String lxr){
+		this.lxr=lxr;
+	}
+
+	public String getLxdh(){
+		return lxdh;
+	}
+
+	public void setLxdh(String lxdh){
+		this.lxdh=lxdh;
+	}
+
+	public String getYjdz(){
+		return yjdz;
+	}
+
+	public void setYjdz(String yjdz){
+		this.yjdz=yjdz;
 	}
 
 }

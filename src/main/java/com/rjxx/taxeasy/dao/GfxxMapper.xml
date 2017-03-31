@@ -22,8 +22,19 @@
     </select>
 
     <select id="findByPage" parameterType="pagination" resultType="gfxx">
-        select * from t_gfxx where yxbz = '1'
-        order by xgsj desc
+        select * from t_gfxx where yxbz = '1' 
+        
+        <if test="params.gsdm !=null and params.gsdm !=''">
+			and gsdm = #{params.gsdm}
+		</if>
+		<if test="params.gfmc !=null and params.gfmc !=''">
+			and gfmc = #{params.gfmc}
+		</if>
+		<if test="params.nsrsbh !=null and params.nsrsbh !=''">
+			and gfsh = #{params.nsrsbh}
+		</if>
+		
+		order by xgsj desc
     </select>
 
     <update id="deleteById" parameterType="map" >
