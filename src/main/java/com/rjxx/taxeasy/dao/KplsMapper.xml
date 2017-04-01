@@ -225,6 +225,9 @@ d.spmc,
 		<if test="params.ddh != null and params.ddh !=''">
 			and e.ddh = #{params.ddh}
 		</if>
+		<if test="params.fpzldm != null and params.fpzldm !=''">
+			and e.fpzldm = #{params.fpzldm}
+		</if>
 		<if test="params.fphm != null and params.fphm !=''">
 			and a.fphm = #{params.fphm}
 		</if>
