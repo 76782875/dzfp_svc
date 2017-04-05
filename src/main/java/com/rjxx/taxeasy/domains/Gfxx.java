@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
  * t_gfxx 实体类
  * 购方信息表
  * 由GenEntityMysql类自动生成
- * Fri Mar 31 15:38:08 CST 2017
+ * Wed Apr 05 11:41:24 CST 2017
  * @ZhangBing
  */ 
 @Entity
@@ -134,6 +134,12 @@ public class Gfxx  implements Serializable {
  */ 
 @Column(name="yjdz")
 	protected String yjdz;
+
+/**
+ * email地址
+ */ 
+@Column(name="email")
+	protected String email;
 
 
 	public Integer getId(){
@@ -286,6 +292,14 @@ public class Gfxx  implements Serializable {
 
 	public void setYjdz(String yjdz){
 		this.yjdz=yjdz;
+	}
+
+	public String getEmail(){
+		return email;
+	}
+
+	public void setEmail(String email){
+		this.email=email;
 	}
 
 }

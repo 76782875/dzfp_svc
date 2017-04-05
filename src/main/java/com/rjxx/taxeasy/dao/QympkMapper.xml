@@ -19,7 +19,7 @@
 			and gsdm = #{gsdm}
 		</if>
 		<if test="gfmc !=null and gfmc !=''">
-			and dwmc = #{dwmc}
+			and dwmc like CONCAT('%',#{dwmc},'%')
 		</if>
 		<if test="nsrsbh !=null and nsrsbh !=''">
 			and nsrsbh = #{nsrsbh}
@@ -33,13 +33,13 @@
     <select id="findByPage" parameterType="pagination" resultType="qympk">
         select * from t_qympk where yxbz = '1'
         <if test="params.text !=null and params.text !=''">
-			and dwmc = #{params.text} or  nsrsbh = #{params.text}
+			and dwmc like CONCAT('%',#{params.text},'%') or  nsrsbh = #{params.text}
 		</if>
 		 <if test="params.gsdm !=null and params.gsdm !=''">
 			and gsdm = #{params.gsdm}
 		</if>
 		<if test="params.gfmc !=null and params.gfmc !=''">
-			and dwmc = #{params.gfmc}
+			and dwmc  like CONCAT('%',#{params.gfmc},'%')
 		</if>
 		<if test="params.nsrsbh !=null and params.nsrsbh !=''">
 			and nsrsbh = #{params.nsrsbh}
