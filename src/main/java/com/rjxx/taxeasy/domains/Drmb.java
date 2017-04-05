@@ -50,6 +50,13 @@ public class Drmb  implements Serializable {
 @Column(name="gsdm")
 	protected String gsdm;
 
+@Column(name="tybz")
+protected String tybz;
+
+
+@Column(name="xzlj")
+protected String xzlj;
+
 /**
  * 共享标志
  */ 
@@ -163,6 +170,22 @@ public class Drmb  implements Serializable {
 
 	public void setXgsj(Date xgsj) {
 		this.xgsj = xgsj;
+	}
+
+	public String getTybz() {
+		return tybz;
+	}
+
+	public void setTybz(String tybz) {
+		this.tybz = tybz;
+	}
+
+	public String getXzlj() {
+		return xzlj;
+	}
+
+	public void setXzlj(String xzlj) {
+		this.xzlj = xzlj;
 	}
 
 }

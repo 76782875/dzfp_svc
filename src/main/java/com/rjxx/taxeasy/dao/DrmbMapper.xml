@@ -48,7 +48,7 @@
     </select>
 
     <select id="findByPage" parameterType="pagination" resultType="drmbvo">
-        select * from t_drmb where 1=1
+        select * from t_drmb where tybz = '1' or ( 1=1 
         <if test="params.gsdm != null and params.gsdm != ''">
             and gsdm = #{params.gsdm}
         </if>
@@ -67,7 +67,7 @@
             </foreach>
             
          </if>
-         order by id desc
+         ) order by id desc
     </select>
 
 </mapper>

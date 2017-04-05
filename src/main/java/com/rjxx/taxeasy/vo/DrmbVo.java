@@ -26,6 +26,9 @@ public class DrmbVo {
  * 共享标志
  */ 
 	protected String gxbz;
+	
+	protected String tybz;
+	protected String xzlj;
 
 /**
  * 销方名称
@@ -79,4 +82,21 @@ public String getXfmc() {
 public void setXfmc(String xfmc) {
 	this.xfmc = xfmc;
 }
+
+public String getTybz() {
+	return tybz;
+}
+
+public void setTybz(String tybz) {
+	this.tybz = tybz;
+}
+
+public String getXzlj() {
+	return xzlj;
+}
+
+public void setXzlj(String xzlj) {
+	this.xzlj = xzlj;
+}
+
 }
