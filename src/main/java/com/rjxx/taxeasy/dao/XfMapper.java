@@ -32,4 +32,8 @@ public interface XfMapper {
      */
     public List<Xf> getXfListByYhId(int yhId);
 
+	public Object findByPages(Map map);
+
+	public XfVo findAllByXfxx(Map map);
+
 }

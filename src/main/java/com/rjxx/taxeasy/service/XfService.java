@@ -141,4 +141,8 @@ public class XfService {
         return xfMapper.findByPages(pagination);
     }
 
+	public XfVo findAllByXfxx(Map map) {
+		return xfMapper.findAllByXfxx(map);
+	}
+
 }

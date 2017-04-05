@@ -4,6 +4,8 @@ import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.dao.YhJpaDao;
 import com.rjxx.taxeasy.dao.YhMapper;
 import com.rjxx.taxeasy.domains.Yh;
+import com.rjxx.taxeasy.vo.YhVO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,6 +55,16 @@ public class YhService {
     public List<Yh> findByPage(Pagination pagination) {
         return yhMapper.findByPage(pagination);
     }
+
+	public YhVO findOneByYhVo(Map map) {
+		// TODO Auto-generated method stub
+		  return yhMapper.findOneByYhVo(map);
+	}
+
+	public YhVO findAllByYHCount(Map map) {
+		// TODO Auto-generated method stub
+		return yhMapper.findAllByYHCount(map);
+	}
 
 }
 

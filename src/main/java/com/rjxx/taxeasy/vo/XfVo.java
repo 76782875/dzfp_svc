@@ -92,6 +92,9 @@ public class XfVo {
  * 状态标识 0：待复核；1：已生效；2：已失效
  */ 
 	protected String yxbz;
+	
+	
+	protected String count;
 
 @JsonSerialize(using = JsonDatetimeFormat.class)
 @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
@@ -391,6 +394,14 @@ public class XfVo {
 
 	public void setSjxfmc(String sjxfmc) {
 		this.sjxfmc = sjxfmc;
+	}
+
+	public String getCount() {
+		return count;
+	}
+
+	public void setCount(String count) {
+		this.count = count;
 	}
 	
 	

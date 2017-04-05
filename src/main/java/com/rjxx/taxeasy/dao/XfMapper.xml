@@ -44,6 +44,14 @@
             </foreach>
         </if>
     </select>
+    
+    <select id="findAllByXfxx" parameterType="map" resultType="xfvo">
+        select  count( DISTINCT t.xfsh)  as count from t_xf t where yxbz = '1'
+        <if test="gsdm != null and gsdm != ''">
+            and gsdm = #{gsdm}
+        </if>
+    </select>
+    
 
     <select id="findByPage" parameterType="pagination" resultType="xf">
         select * from t_xf where yxbz = '1'

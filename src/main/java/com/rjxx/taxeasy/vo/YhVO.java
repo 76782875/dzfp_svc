@@ -140,6 +140,11 @@ public class YhVO  implements Serializable {
 	protected String lrrymc;
 
 	protected String jsmc;
+	
+	protected String zhlxmc;
+	
+	protected String yhcount;
+	
 	public Integer getId(){
 		return id;
 	}
@@ -315,6 +320,57 @@ public class YhVO  implements Serializable {
 	public void setJsmc(String jsmc) {
 		this.jsmc = jsmc;
 	}
+    
+	public String getZhlxmc() {
+		return zhlxmc;
+	}
+
+	public void setZhlxmc(String zhlxmc) {
+		this.zhlxmc = zhlxmc;
+	}
+    
+	public String getYhcount() {
+		return yhcount;
+	}
+
+	public void setYhcount(String yhcount) {
+		this.yhcount = yhcount;
+	}
+
+	public YhVO() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+    
+	public YhVO(Integer id, String dlyhid, String yhmc, String yhmm, Integer yhjg, String gsdm, String xb, Date lrsj,
+			Integer lrry, Date xgsj, Integer xgry, String appkey, String secret, String roleids, String ztbz,
+			String sup, String sjhm, String yx, String yxbz, String admin, String lrrymc, String jsmc, String zhlxmc,String yhcount) {
+		super();
+		this.id = id;
+		this.dlyhid = dlyhid;
+		this.yhmc = yhmc;
+		this.yhmm = yhmm;
+		this.yhjg = yhjg;
+		this.gsdm = gsdm;
+		this.xb = xb;
+		this.lrsj = lrsj;
+		this.lrry = lrry;
+		this.xgsj = xgsj;
+		this.xgry = xgry;
+		this.appkey = appkey;
+		this.secret = secret;
+		this.roleids = roleids;
+		this.ztbz = ztbz;
+		this.sup = sup;
+		this.sjhm = sjhm;
+		this.yx = yx;
+		this.yxbz = yxbz;
+		this.admin = admin;
+		this.lrrymc = lrrymc;
+		this.jsmc = jsmc;
+		this.zhlxmc = zhlxmc;
+		this.yhcount=yhcount;
+	}
 
 	public YhVO(Yh yh) {
 		super();
@@ -338,6 +394,7 @@ public class YhVO  implements Serializable {
 		this.yx = yh.getYx();
 		this.yxbz = yh.getYxbz();
 		this.admin = yh.getAdmin();
+		this.zhlxmc = yh.getZhlxmc();
 	}
 	
 }

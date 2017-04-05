@@ -139,4 +139,9 @@ public class SkpService {
 	public SkpVo findXfSkp(Map params){
 		return skpMapper.findXfSkp(params);
 	}
+
+	public SkpVo findXfSkpNum(Map map) {
+		// TODO Auto-generated method stub
+		return skpMapper.findXfSkpNum(map);
+	}
 }

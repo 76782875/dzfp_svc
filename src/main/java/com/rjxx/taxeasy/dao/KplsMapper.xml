@@ -770,6 +770,12 @@ d.spmc,
 	<select id="findAllNeedRegeneratePdfKpls" parameterType="map" resultType="kpls">
 		select * from t_kpls where yxbz = '1' and fpztdm = '99'
 	</select>
+	<select id="findykpCount" parameterType="map" resultType="fpcxvo">
+	select count( DISTINCT a.kplsh) as kpcount from t_kpls a where a.yxbz='1'
+	    <if test="gsdm !=null and gsdm !=''">
+			and a.gsdm = #{gsdm}
+		</if>
+	</select>
 	
 	<!-- <select id="findKplsByDjh" parameterType="map" resultMap="kpls"> -->
 	<!-- select * from t_kpls where pdfurl is not null and pdfurl != '' -->

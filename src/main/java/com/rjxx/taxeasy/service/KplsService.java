@@ -213,6 +213,11 @@ public class KplsService {
 		// TODO Auto-generated method stub
 		return kplsMapper.findKcdfpByPage1(pagination);
 	}
+
+	public Fpcxvo findykpCount(Map map) {
+		return kplsMapper.findykpCount(map);
+		
+	}
      
 	
 }

@@ -31,5 +31,7 @@ public interface SkpMapper {
     public List<Skp> findCsz(Skp skp);
     
     public SkpVo findXfSkp(Map params);
+
+	public SkpVo findXfSkpNum(Map map);
 }
 

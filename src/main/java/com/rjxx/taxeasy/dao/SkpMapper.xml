@@ -131,5 +131,12 @@
 	        and a.id = #{skpid}
 	   </if>
 	</select>
+	
+	<select id="findXfSkpNum" parameterType="map" resultType="skpVo">
+	   select count( DISTINCT a.skph) as skpcount from t_skp a where a.yxbz='1'
+	   <if test="gsdm !=null and gsdm !=''">
+	        and a.gsdm = #{gsdm}
+	   </if>
+	</select>
 </mapper>
 

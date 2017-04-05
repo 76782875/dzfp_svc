@@ -107,6 +107,7 @@ public interface KplsMapper {
      */
     public List<FptjVo> findFpdbtjjgByKpdid(int kpdid);
 	public Kpls findByyfphm(Kpls kpls);
+	public Fpcxvo findykpCount(Map map);
     
 
     
