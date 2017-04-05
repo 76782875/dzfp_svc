@@ -14,8 +14,8 @@
 		<if test="gsdm != null and gsdm != ''">
 			and gsdm = #{gsdm}
 		</if>
-		<if test="id != null and id != ''">
-			and id != #{id}
+		<if test="notid != null and notid != ''">
+			and id != #{notid}
 		</if>
 		<if test="xfid != null and xfid != ''">
 			and xfid != #{xfid}
