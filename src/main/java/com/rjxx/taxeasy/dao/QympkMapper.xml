@@ -24,10 +24,7 @@
 		<if test="nsrsbh !=null and nsrsbh !=''">
 			and nsrsbh = #{nsrsbh}
 		</if>
-        
-        <if test="orderBy != null">
-            order by ${orderBy}
-        </if>
+        order by id
     </select>
     
     
@@ -35,9 +32,20 @@
 
     <select id="findByPage" parameterType="pagination" resultType="qympk">
         select * from t_qympk where yxbz = '1'
-        <if test="params.orderBy != null">
-            order by ${params.orderBy}
-        </if>
+        <if test="params.text !=null and params.text !=''">
+			and dwmc = #{params.text} or  nsrsbh = #{params.text}
+		</if>
+		 <if test="params.gsdm !=null and params.gsdm !=''">
+			and gsdm = #{params.gsdm}
+		</if>
+		<if test="params.gfmc !=null and params.gfmc !=''">
+			and dwmc = #{params.gfmc}
+		</if>
+		<if test="params.nsrsbh !=null and params.nsrsbh !=''">
+			and nsrsbh = #{params.nsrsbh}
+		</if>
+		
+        order by nsrsbh
     </select>
 
 </mapper>
