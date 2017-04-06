@@ -175,7 +175,7 @@
 		<if test="params.spmc != null and params.spmc != ''">
 			and b.spmc like CONCAT('%',#{params.spmc},'%')
 		</if>		
-		order by a.ddrq desc
+		order by a.sqlsh
 	</select>
 
 

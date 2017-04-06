@@ -72,7 +72,7 @@
                 or skpid is null)
          </if>        
         <if test="params.orderBy != null">
-            order by ${params.orderBy}
+            order by djh
         </if>
     </select>
 
