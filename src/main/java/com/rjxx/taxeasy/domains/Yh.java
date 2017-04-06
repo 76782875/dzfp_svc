@@ -138,7 +138,6 @@ public class Yh  implements Serializable {
 @Column(name="zhlxdm")
 	protected String zhlxdm;
 
-    protected String zhlxmc;
 
 	public Integer getId(){
 		return id;
@@ -308,13 +307,7 @@ public class Yh  implements Serializable {
 		this.zhlxdm = zhlxdm;
 	}
 
-	public String getZhlxmc() {
-		return zhlxmc;
-	}
 
-	public void setZhlxmc(String zhlxmc) {
-		this.zhlxmc = zhlxmc;
-	}
 	
 }
 
