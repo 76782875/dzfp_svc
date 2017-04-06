@@ -394,7 +394,6 @@ public class YhVO  implements Serializable {
 		this.yx = yh.getYx();
 		this.yxbz = yh.getYxbz();
 		this.admin = yh.getAdmin();
-		this.zhlxmc = yh.getZhlxmc();
 	}
 	
 }
