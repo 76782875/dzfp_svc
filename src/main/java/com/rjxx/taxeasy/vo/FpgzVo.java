@@ -55,6 +55,9 @@ public class FpgzVo {
 @Column(name="ggmc")
 	protected String ggmc;
 
+@Column(name="sfqzfp")
+protected String sfqzfp;
+
 /**
  * 使用的xfid
  */ 
@@ -248,6 +251,14 @@ public String getQdbz() {
 
 public void setQdbz(String qdbz) {
 	this.qdbz = qdbz;
+}
+
+public String getSfqzfp() {
+	return sfqzfp;
+}
+
+public void setSfqzfp(String sfqzfp) {
+	this.sfqzfp = sfqzfp;
 }
 
 

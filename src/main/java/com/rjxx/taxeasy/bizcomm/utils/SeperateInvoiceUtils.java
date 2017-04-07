@@ -374,7 +374,7 @@ public class SeperateInvoiceUtils {
     }
     
     
-    public static List<JyspmxDecimal2> splitInvoices2(List<JyspmxDecimal2> jyspmxs, BigDecimal maxje, BigDecimal fpje, int mxsl) throws Exception {
+    public static List<JyspmxDecimal2> splitInvoices2(List<JyspmxDecimal2> jyspmxs, BigDecimal maxje, BigDecimal fpje, int mxsl,boolean qzfp) throws Exception {
         int mxnum = detailsNumber;
         if (mxsl != 0 && mxsl <= detailsNumber) {
             mxnum = mxsl;
@@ -382,16 +382,18 @@ public class SeperateInvoiceUtils {
         List<JyspmxDecimal2> tempJyspmxs = new ArrayList<JyspmxDecimal2>();// 缓存商品明细表
         List<JyspmxDecimal2> splitKpspmxs = new ArrayList<JyspmxDecimal2>();// 拆分发票后的list
         BigDecimal zje = new BigDecimal(0);// 汇总金额
-/*        BigDecimal total = new BigDecimal(0);
+        BigDecimal total = new BigDecimal(0);
         for (JyspmxDecimal2 jyspmx : jyspmxs) {
 			total = total.add(jyspmx.getSpje());
 		}
-        if (total.subtract(maxje).doubleValue() > 0) {
-			maxje = fpje;
-		}*/
-       
-        if (maxje.compareTo(fpje)>0) {
-        	 maxje = fpje;
+        if (qzfp) {
+        	if (maxje.compareTo(fpje)>0) {
+        		maxje = fpje;
+        	}
+		}else{
+			if (total.compareTo(maxje)>0) {
+				maxje = fpje;
+			}
 		}
         int fpnum = 1;
         int sqlsh;
@@ -624,7 +626,7 @@ public class SeperateInvoiceUtils {
 			jymx.setSpmxxh(i+2);
 		}
 		System.out.println("2312");
-		List<JyspmxDecimal2> res = splitInvoicesbhs(list, new BigDecimal(9999.99), new BigDecimal(10000), 8);
+		List<JyspmxDecimal2> res = splitInvoicesbhs(list, new BigDecimal(9999.99), new BigDecimal(10000), 8,false);
 		for (JyspmxDecimal2 jyspmx : res) {
 			System.out.println( jyspmx.getJshj()+ "\t" + jyspmx.getFpnum() + "\t" + jyspmx.getSpje() + "\t" + jyspmx.getSpse() + "\t" + jyspmx.getSpsl() + "\t" );
 		}
@@ -634,16 +636,25 @@ public class SeperateInvoiceUtils {
     
     //不含税拆分方法
     
-    public static List<JyspmxDecimal2> splitInvoicesbhs(List<JyspmxDecimal2> jyspmxs, BigDecimal maxje, BigDecimal fpje, int mxsl) throws Exception {
+    public static List<JyspmxDecimal2> splitInvoicesbhs(List<JyspmxDecimal2> jyspmxs, BigDecimal maxje, BigDecimal fpje, int mxsl,boolean qzfp) throws Exception {
         int mxnum = detailsNumber;
         if (mxsl != 0 && mxsl <= detailsNumber) {
             mxnum = mxsl;
         }
+        boolean fp = false;
         List<JyspmxDecimal2> tempJyspmxs = new ArrayList<JyspmxDecimal2>();// 缓存商品明细表
         List<JyspmxDecimal2> splitKpspmxs = new ArrayList<JyspmxDecimal2>();// 拆分发票后的list
         BigDecimal zje = new BigDecimal(0);// 汇总金额不含税
         BigDecimal zje1 = new BigDecimal(0);// 汇总金额含税
         BigDecimal total = new BigDecimal(0);
+        for (JyspmxDecimal2 jyspmx : jyspmxs) {
+			total = total.add(jyspmx.getSpje());
+		}
+        if (qzfp) {
+        	if (maxje.compareTo(total)>0) {
+  		      fp=true;
+  			}
+		}
         int fpnum = 1;
         int sqlsh;
         int spmxxh;
@@ -658,7 +669,7 @@ public class SeperateInvoiceUtils {
             zje = zje.add(jyspmx.getSpje());
             zje1 = zje1.add(jyspmx.getJshj());
             spdm = jyspmx.getSpdm();
-            if (zje.compareTo(maxje) >= 0||zje1.compareTo(fpje)>=0 || tempJyspmxs.size() == mxnum) {
+            if (zje.compareTo(maxje) >= 0 || tempJyspmxs.size() == mxnum||(zje1.compareTo(fpje)>=0&&qzfp)) {
                 if (tempJyspmxs.size() == mxnum && zje.compareTo(maxje) <= 0 && zje1.compareTo(fpje) <=0) {
                     //达到每张发票开具最大条数，并且总金额未超出上限。
                     jyspmx.setFpnum(fpnum);
@@ -821,7 +832,7 @@ public class SeperateInvoiceUtils {
                           fpnum++;
                           ccjyspmx2.setFpnum(fpnum);
                           tempJyspmxs.clear();
-                          if (ccje.doubleValue() != 0) {
+                          if (ccjshj.doubleValue() != 0) {
                               splitKpspmxs.add(ccjyspmx2);
                               tempJyspmxs.add(ccjyspmx2);
                           }
@@ -829,167 +840,269 @@ public class SeperateInvoiceUtils {
                           zje1 = ccjshj;
                     }
                 } else {
-                    // Jyspmx ccjyspmx = new Jyspmx();//超出金额对象
-                    JyspmxDecimal2 cfjyspmx = new JyspmxDecimal2();// 拆分金额对象
-                    // ccjyspmx = jyspmx;//超出金额对象
-                    // cfjyspmx = jyspmx;//拆分金额对象
-                    // 商品名称
-                    String spmc = jyspmx.getSpmc();
-                    // 规格型号
-                    String spggxh = jyspmx.getSpggxh();
-                    // 单位
-                    String spdw = jyspmx.getSpdw();
-                    // 单价
-                    BigDecimal spdj = jyspmx.getSpdj();
-                    // 税率
-                    BigDecimal spsl = jyspmx.getSpsl();
-                    BigDecimal spje = jyspmx.getSpje();// 原商品金额
-                    BigDecimal yjshj = jyspmx.getJshj();// 原商品金额
-                    BigDecimal spsm = jyspmx.getSps();// 原商品数量
-                    BigDecimal spse = jyspmx.getSpse();// 原商品税额
-                    BigDecimal ccjshj = sub(zje1, fpje);// 超出价税合计
-                    BigDecimal cfjshj = sub(yjshj, ccjshj);// 拆分价税合计
-                
-                   // BigDecimal cfje = sub(spje, ccje);// 拆分金额
-                    BigDecimal cfsm = div(spsm, div(yjshj, cfjshj));// 拆分数量
-                    BigDecimal cfse = div(spse, div(yjshj, cfjshj)).setScale(2, BigDecimal.ROUND_HALF_UP);// 拆分税额
-                    BigDecimal cfje = sub(cfjshj, cfse);
-                    BigDecimal ccje = sub(spje, cfje);// 超出金额
-                    cfjyspmx.setFphxz(fphxz);
-                    cfjyspmx.setSqlsh(sqlsh);
-                    cfjyspmx.setSpmxxh(spmxxh);
-                    cfjyspmx.setSpje(cfje);
-                    cfjyspmx.setSps(cfsm);
-                    cfjyspmx.setSpse(cfse);
-                    cfjyspmx.setFpnum(fpnum);
-                    cfjyspmx.setSpmc(spmc);
-                    cfjyspmx.setSpggxh(spggxh);
-                    cfjyspmx.setSpdw(spdw);
-                    cfjyspmx.setSpdj(spdj);
-                    cfjyspmx.setSpsl(spsl);
-                    cfjyspmx.setJshj(cfjshj);
-                    cfjyspmx.setYkphj(new BigDecimal(0));
-                    cfjyspmx.setSpdm(spdm);
-                    cfjyspmx.setGsdm(jyspmx.getGsdm());
-                    splitKpspmxs.add(cfjyspmx);
-                    if(fpje.divide(new BigDecimal(1).add(jyspmx.getSpsl()),30, BigDecimal.ROUND_HALF_UP).compareTo(maxje) > 0){
-                 	   int n = (int) Math.floor(div(ccje, maxje).doubleValue());
-                        BigDecimal cfsm1 = new BigDecimal(0.00);
-                        BigDecimal cfse1 = new BigDecimal(0.00);
-                        if (n > 0) {
-                            cfsm1 = div(spsm, div(spje, maxje));// 拆分数量
-                            cfse1 = div(spse, div(spje, maxje)).setScale(2, BigDecimal.ROUND_HALF_UP);// 拆分税额
+                	if(!qzfp){
+                        // Jyspmx ccjyspmx = new Jyspmx();//超出金额对象
+                        JyspmxDecimal2 cfjyspmx = new JyspmxDecimal2();// 拆分金额对象
+                        // ccjyspmx = jyspmx;//超出金额对象
+                        // cfjyspmx = jyspmx;//拆分金额对象
+                        // 商品名称
+                        String spmc = jyspmx.getSpmc();
+                        // 规格型号
+                        String spggxh = jyspmx.getSpggxh();
+                        // 单位
+                        String spdw = jyspmx.getSpdw();
+                        // 单价
+                        BigDecimal spdj = jyspmx.getSpdj();
+                        // 税率
+                        BigDecimal spsl = jyspmx.getSpsl();
+                        BigDecimal spje = jyspmx.getSpje();// 原商品金额
+                        BigDecimal yjshj = jyspmx.getJshj();// 原商品金额
+                        BigDecimal spsm = jyspmx.getSps();// 原商品数量
+                        BigDecimal spse = jyspmx.getSpse();// 原商品税额
+                        BigDecimal ccje = sub(zje, maxje);// 超出金额
+                       
+                        BigDecimal cfje = sub(spje, ccje);// 拆分金额
+                        BigDecimal cfsm = div(spsm, div(spje, cfje));// 拆分数量
+                        BigDecimal cfse = div(spse, div(spje, cfje)).setScale(2, BigDecimal.ROUND_HALF_UP);// 拆分税额
+                        BigDecimal jshj = add(cfje, cfse);
+                        BigDecimal ccjshj =sub(jyspmx.getJshj(), jshj);// 超出价税合计
+                        cfjyspmx.setFphxz(fphxz);
+                        cfjyspmx.setSqlsh(sqlsh);
+                        cfjyspmx.setSpmxxh(spmxxh);
+                        cfjyspmx.setSpje(cfje);
+                        cfjyspmx.setSps(cfsm);
+                        cfjyspmx.setSpse(cfse);
+                        cfjyspmx.setFpnum(fpnum);
+                        cfjyspmx.setSpmc(spmc);
+                        cfjyspmx.setSpggxh(spggxh);
+                        cfjyspmx.setSpdw(spdw);
+                        cfjyspmx.setSpdj(spdj);
+                        cfjyspmx.setSpsl(spsl);
+                        cfjyspmx.setJshj(jshj);
+                        cfjyspmx.setYkphj(new BigDecimal(0));
+                        cfjyspmx.setSpdm(spdm);
+                        cfjyspmx.setGsdm(jyspmx.getGsdm());
+                        splitKpspmxs.add(cfjyspmx);   
+                            // Jyspmx ccjyspmx = new Jyspmx();//超出金额对象){
+                        	   int n = (int) Math.floor(div(ccje, maxje).doubleValue());
+                               BigDecimal cfsm1 = new BigDecimal(0.00);
+                               BigDecimal cfse1 = new BigDecimal(0.00);
+                               if (n > 0) {
+                                   cfsm1 = div(spsm, div(spje, maxje));// 拆分数量
+                                   cfse1 = div(spse, div(spje, maxje)).setScale(2, BigDecimal.ROUND_HALF_UP);// 拆分税额
 
-                            for (int j = 0; j < n; j++) {
-                                JyspmxDecimal2 ccjyspmx1 = new JyspmxDecimal2();
-                                // ccjyspmx1 = ccjyspmx;
-                                fpnum++;
-                                BigDecimal jshj1 = add(maxje, cfse1);
-                                ccjyspmx1.setFphxz(fphxz);
-                                ccjyspmx1.setSqlsh(sqlsh);
-                                ccjyspmx1.setSpmxxh(spmxxh);
-                                ccjyspmx1.setSpje(maxje);
-                                ccjyspmx1.setSps(cfsm1);
-                                ccjyspmx1.setSpse(cfse1);
-                                ccjyspmx1.setFpnum(fpnum);
-                                ccjyspmx1.setSpmc(spmc);
-                                ccjyspmx1.setSpggxh(spggxh);
-                                ccjyspmx1.setSpdw(spdw);
-                                ccjyspmx1.setSpdj(spdj);
-                                ccjyspmx1.setSpsl(spsl);
-                                ccjyspmx1.setJshj(jshj1);
-                                ccjyspmx1.setYkphj(new BigDecimal(0));
-                                ccjyspmx1.setSpdm(spdm);
-                                ccjyspmx1.setGsdm(jyspmx.getGsdm());
-                                splitKpspmxs.add(ccjyspmx1);
-                            }
-                        }
-                        ccje = sub(ccje, mul(new BigDecimal(n), maxje));
-                        JyspmxDecimal2 ccjyspmx2 = new JyspmxDecimal2();
-                        ccjyspmx2.setFphxz(fphxz);
-                        ccjyspmx2.setSqlsh(sqlsh);
-                        ccjyspmx2.setSpmxxh(spmxxh);
-                        ccjyspmx2.setSpje(ccje);
-                        ccjyspmx2.setSpmc(spmc);
-                        ccjyspmx2.setSpggxh(spggxh);
-                        ccjyspmx2.setSpdj(spdj);
-                        ccjyspmx2.setSpsl(spsl);
-                        ccjyspmx2.setSpdw(spdw);
-                        ccjyspmx2.setSps(sub(sub(spsm, cfsm), mul(new BigDecimal(n), cfsm1)));
-                        ccjyspmx2.setSpse(sub(sub(spse, cfse), mul(new BigDecimal(n), cfse1)));
-                        ccjyspmx2.setJshj(add(ccjyspmx2.getSpje(), ccjyspmx2.getSpse()));
-                        ccjyspmx2.setYkphj(new BigDecimal(0));
-                        ccjyspmx2.setSpdm(spdm);
-                        ccjyspmx2.setGsdm(jyspmx.getGsdm());
-                        fpnum++;
-                        ccjyspmx2.setFpnum(fpnum);
-                        tempJyspmxs.clear();
-                        if (ccje.doubleValue() != 0) {
-                            splitKpspmxs.add(ccjyspmx2);
-                            tempJyspmxs.add(ccjyspmx2);
-                        }
-                        zje = ccje;
-                        zje1 = ccjyspmx2.getJshj();
-                 }else{
-                 	//按照含税金额拆分
-                 	  int n = (int) Math.floor(div(ccjshj, fpje).doubleValue());
-                       BigDecimal cfsm1 = new BigDecimal(0.00);
-                       BigDecimal cfse1 = new BigDecimal(0.00);
-                       if (n > 0) {
-                           cfsm1 = div(spsm, div(yjshj, fpje));// 拆分数量
-                           cfse1 = div(spse, div(yjshj, fpje)).setScale(2, BigDecimal.ROUND_HALF_UP);// 拆分税额
-                           for (int j = 0; j < n; j++) {
-                               JyspmxDecimal2 ccjyspmx1 = new JyspmxDecimal2();
-                               // ccjyspmx1 = ccjyspmx;
+                                   for (int j = 0; j < n; j++) {
+                                       JyspmxDecimal2 ccjyspmx1 = new JyspmxDecimal2();
+                                       // ccjyspmx1 = ccjyspmx;
+                                       fpnum++;
+                                       BigDecimal jshj1 = add(maxje, cfse1);
+                                       ccjyspmx1.setFphxz(fphxz);
+                                       ccjyspmx1.setSqlsh(sqlsh);
+                                       ccjyspmx1.setSpmxxh(spmxxh);
+                                       ccjyspmx1.setSpje(maxje);
+                                       ccjyspmx1.setSps(cfsm1);
+                                       ccjyspmx1.setSpse(cfse1);
+                                       ccjyspmx1.setFpnum(fpnum);
+                                       ccjyspmx1.setSpmc(spmc);
+                                       ccjyspmx1.setSpggxh(spggxh);
+                                       ccjyspmx1.setSpdw(spdw);
+                                       ccjyspmx1.setSpdj(spdj);
+                                       ccjyspmx1.setSpsl(spsl);
+                                       ccjyspmx1.setJshj(jshj1);
+                                       ccjyspmx1.setYkphj(new BigDecimal(0));
+                                       ccjyspmx1.setSpdm(spdm);
+                                       ccjyspmx1.setGsdm(jyspmx.getGsdm());
+                                       splitKpspmxs.add(ccjyspmx1);
+                                   }
+                               }
+                               ccje = sub(ccje, mul(new BigDecimal(n), maxje));
+                               JyspmxDecimal2 ccjyspmx2 = new JyspmxDecimal2();
+                               ccjyspmx2.setFphxz(fphxz);
+                               ccjyspmx2.setSqlsh(sqlsh);
+                               ccjyspmx2.setSpmxxh(spmxxh);
+                               ccjyspmx2.setSpje(ccje);
+                               ccjyspmx2.setSpmc(spmc);
+                               ccjyspmx2.setSpggxh(spggxh);
+                               ccjyspmx2.setSpdj(spdj);
+                               ccjyspmx2.setSpsl(spsl);
+                               ccjyspmx2.setSpdw(spdw);
+                               ccjyspmx2.setSps(sub(sub(spsm, cfsm), mul(new BigDecimal(n), cfsm1)));
+                               ccjyspmx2.setSpse(sub(sub(spse, cfse), mul(new BigDecimal(n), cfse1)));
+                               ccjyspmx2.setJshj(add(ccjyspmx2.getSpje(), ccjyspmx2.getSpse()));
+                               ccjyspmx2.setYkphj(new BigDecimal(0));
+                               ccjyspmx2.setSpdm(spdm);
+                               ccjyspmx2.setGsdm(jyspmx.getGsdm());
                                fpnum++;
-                               BigDecimal jshj1 = fpje;
-                               ccjyspmx1.setFphxz(fphxz);
-                               ccjyspmx1.setSqlsh(sqlsh);
-                               ccjyspmx1.setSpmxxh(spmxxh);
-                               ccjyspmx1.setSpje(sub(fpje, cfse));
-                               ccjyspmx1.setSps(cfsm1);
-                               ccjyspmx1.setSpse(cfse1);
-                               ccjyspmx1.setFpnum(fpnum);
-                               ccjyspmx1.setSpmc(spmc);
-                               ccjyspmx1.setSpggxh(spggxh);
-                               ccjyspmx1.setSpdw(spdw);
-                               ccjyspmx1.setSpdj(spdj);
-                               ccjyspmx1.setSpsl(spsl);
-                               ccjyspmx1.setJshj(jshj1);
-                               ccjyspmx1.setYkphj(new BigDecimal(0));
-                               ccjyspmx1.setSpdm(spdm);
-                               ccjyspmx1.setGsdm(jyspmx.getGsdm());
-                               splitKpspmxs.add(ccjyspmx1);
-                           }
-                       }
-                       ccjshj = sub(ccjshj, mul(new BigDecimal(n), fpje));
-                       JyspmxDecimal2 ccjyspmx2 = new JyspmxDecimal2();
-                       ccjyspmx2.setFphxz(fphxz);
-                       ccjyspmx2.setSqlsh(sqlsh);
-                       ccjyspmx2.setSpmxxh(spmxxh); 
-                       ccjyspmx2.setSpmc(spmc);
-                       ccjyspmx2.setSpggxh(spggxh);
-                       ccjyspmx2.setSpdj(spdj);
-                       ccjyspmx2.setSpsl(spsl);
-                       ccjyspmx2.setSpdw(spdw);
-                       ccjyspmx2.setSps(sub(sub(spsm, cfsm), mul(new BigDecimal(n), cfsm1)));
-                       ccjyspmx2.setSpse(sub(sub(spse, cfse), mul(new BigDecimal(n), cfse1)));
-                       ccjyspmx2.setSpje(sub(ccjshj, ccjyspmx2.getSpse()));
-                       ccjyspmx2.setJshj(ccjshj);
-                       ccjyspmx2.setYkphj(new BigDecimal(0));
-                       ccjyspmx2.setSpdm(spdm);
-                       ccjyspmx2.setGsdm(jyspmx.getGsdm());
-                       fpnum++;
-                       ccjyspmx2.setFpnum(fpnum);
-                       tempJyspmxs.clear();
-                       if (ccje.doubleValue() != 0) {
-                           splitKpspmxs.add(ccjyspmx2);
-                           tempJyspmxs.add(ccjyspmx2);
-                       }
-                       zje = ccjyspmx2.getSpje();
-                       zje1 = ccjshj;
-                 }
+                               ccjyspmx2.setFpnum(fpnum);
+                               tempJyspmxs.clear();
+                               if (ccje.doubleValue() != 0) {
+                                   splitKpspmxs.add(ccjyspmx2);
+                                   tempJyspmxs.add(ccjyspmx2);
+                               }
+                               zje = ccje;
+                               zje1 = ccjyspmx2.getJshj();
+                	}else{
+                        // Jyspmx ccjyspmx = new Jyspmx();//超出金额对象
+                        JyspmxDecimal2 cfjyspmx = new JyspmxDecimal2();// 拆分金额对象
+                        // ccjyspmx = jyspmx;//超出金额对象
+                        // cfjyspmx = jyspmx;//拆分金额对象
+                        // 商品名称
+                        String spmc = jyspmx.getSpmc();
+                        // 规格型号
+                        String spggxh = jyspmx.getSpggxh();
+                        // 单位
+                        String spdw = jyspmx.getSpdw();
+                        // 单价
+                        BigDecimal spdj = jyspmx.getSpdj();
+                        // 税率
+                        BigDecimal spsl = jyspmx.getSpsl();
+                        BigDecimal spje = jyspmx.getSpje();// 原商品金额
+                        BigDecimal yjshj = jyspmx.getJshj();// 原商品金额
+                        BigDecimal spsm = jyspmx.getSps();// 原商品数量
+                        BigDecimal spse = jyspmx.getSpse();// 原商品税额
+                        BigDecimal ccjshj = sub(zje1, fpje);// 超出价税合计
+                        BigDecimal cfjshj = sub(yjshj, ccjshj);// 拆分价税合计
+                    
+                       // BigDecimal cfje = sub(spje, ccje);// 拆分金额
+                        BigDecimal cfsm = div(spsm, div(yjshj, cfjshj));// 拆分数量
+                        BigDecimal cfse = div(spse, div(yjshj, cfjshj)).setScale(2, BigDecimal.ROUND_HALF_UP);// 拆分税额
+                        BigDecimal cfje = sub(cfjshj, cfse);
+                        BigDecimal ccje = sub(spje, cfje);// 超出金额
+                        cfjyspmx.setFphxz(fphxz);
+                        cfjyspmx.setSqlsh(sqlsh);
+                        cfjyspmx.setSpmxxh(spmxxh);
+                        cfjyspmx.setSpje(cfje);
+                        cfjyspmx.setSps(cfsm);
+                        cfjyspmx.setSpse(cfse);
+                        cfjyspmx.setFpnum(fpnum);
+                        cfjyspmx.setSpmc(spmc);
+                        cfjyspmx.setSpggxh(spggxh);
+                        cfjyspmx.setSpdw(spdw);
+                        cfjyspmx.setSpdj(spdj);
+                        cfjyspmx.setSpsl(spsl);
+                        cfjyspmx.setJshj(cfjshj);
+                        cfjyspmx.setYkphj(new BigDecimal(0));
+                        cfjyspmx.setSpdm(spdm);
+                        cfjyspmx.setGsdm(jyspmx.getGsdm());
+                        splitKpspmxs.add(cfjyspmx);
+                        if(fpje.divide(new BigDecimal(1).add(jyspmx.getSpsl()),30, BigDecimal.ROUND_HALF_UP).compareTo(maxje) > 0){
+                     	   int n = (int) Math.floor(div(ccje, maxje).doubleValue());
+                            BigDecimal cfsm1 = new BigDecimal(0.00);
+                            BigDecimal cfse1 = new BigDecimal(0.00);
+                            if (n > 0) {
+                                cfsm1 = div(spsm, div(spje, maxje));// 拆分数量
+                                cfse1 = div(spse, div(spje, maxje)).setScale(2, BigDecimal.ROUND_HALF_UP);// 拆分税额
 
+                                for (int j = 0; j < n; j++) {
+                                    JyspmxDecimal2 ccjyspmx1 = new JyspmxDecimal2();
+                                    // ccjyspmx1 = ccjyspmx;
+                                    fpnum++;
+                                    BigDecimal jshj1 = add(maxje, cfse1);
+                                    ccjyspmx1.setFphxz(fphxz);
+                                    ccjyspmx1.setSqlsh(sqlsh);
+                                    ccjyspmx1.setSpmxxh(spmxxh);
+                                    ccjyspmx1.setSpje(maxje);
+                                    ccjyspmx1.setSps(cfsm1);
+                                    ccjyspmx1.setSpse(cfse1);
+                                    ccjyspmx1.setFpnum(fpnum);
+                                    ccjyspmx1.setSpmc(spmc);
+                                    ccjyspmx1.setSpggxh(spggxh);
+                                    ccjyspmx1.setSpdw(spdw);
+                                    ccjyspmx1.setSpdj(spdj);
+                                    ccjyspmx1.setSpsl(spsl);
+                                    ccjyspmx1.setJshj(jshj1);
+                                    ccjyspmx1.setYkphj(new BigDecimal(0));
+                                    ccjyspmx1.setSpdm(spdm);
+                                    ccjyspmx1.setGsdm(jyspmx.getGsdm());
+                                    splitKpspmxs.add(ccjyspmx1);
+                                }
+                            }
+                            ccje = sub(ccje, mul(new BigDecimal(n), maxje));
+                            JyspmxDecimal2 ccjyspmx2 = new JyspmxDecimal2();
+                            ccjyspmx2.setFphxz(fphxz);
+                            ccjyspmx2.setSqlsh(sqlsh);
+                            ccjyspmx2.setSpmxxh(spmxxh);
+                            ccjyspmx2.setSpje(ccje);
+                            ccjyspmx2.setSpmc(spmc);
+                            ccjyspmx2.setSpggxh(spggxh);
+                            ccjyspmx2.setSpdj(spdj);
+                            ccjyspmx2.setSpsl(spsl);
+                            ccjyspmx2.setSpdw(spdw);
+                            ccjyspmx2.setSps(sub(sub(spsm, cfsm), mul(new BigDecimal(n), cfsm1)));
+                            ccjyspmx2.setSpse(sub(sub(spse, cfse), mul(new BigDecimal(n), cfse1)));
+                            ccjyspmx2.setJshj(add(ccjyspmx2.getSpje(), ccjyspmx2.getSpse()));
+                            ccjyspmx2.setYkphj(new BigDecimal(0));
+                            ccjyspmx2.setSpdm(spdm);
+                            ccjyspmx2.setGsdm(jyspmx.getGsdm());
+                            fpnum++;
+                            ccjyspmx2.setFpnum(fpnum);
+                            tempJyspmxs.clear();
+                            if (ccje.doubleValue() != 0) {
+                                splitKpspmxs.add(ccjyspmx2);
+                                tempJyspmxs.add(ccjyspmx2);
+                            }
+                            zje = ccje;
+                            zje1 = ccjyspmx2.getJshj();
+                     }else{
+                     	//按照含税金额拆分
+                     	  int n = (int) Math.floor(div(ccjshj, fpje).doubleValue());
+                           BigDecimal cfsm1 = new BigDecimal(0.00);
+                           BigDecimal cfse1 = new BigDecimal(0.00);
+                           if (n > 0) {
+                               cfsm1 = div(spsm, div(yjshj, fpje));// 拆分数量
+                               cfse1 = div(spse, div(yjshj, fpje)).setScale(2, BigDecimal.ROUND_HALF_UP);// 拆分税额
+                               for (int j = 0; j < n; j++) {
+                                   JyspmxDecimal2 ccjyspmx1 = new JyspmxDecimal2();
+                                   // ccjyspmx1 = ccjyspmx;
+                                   fpnum++;
+                                   BigDecimal jshj1 = fpje;
+                                   ccjyspmx1.setFphxz(fphxz);
+                                   ccjyspmx1.setSqlsh(sqlsh);
+                                   ccjyspmx1.setSpmxxh(spmxxh);
+                                   ccjyspmx1.setSpje(sub(fpje, cfse));
+                                   ccjyspmx1.setSps(cfsm1);
+                                   ccjyspmx1.setSpse(cfse1);
+                                   ccjyspmx1.setFpnum(fpnum);
+                                   ccjyspmx1.setSpmc(spmc);
+                                   ccjyspmx1.setSpggxh(spggxh);
+                                   ccjyspmx1.setSpdw(spdw);
+                                   ccjyspmx1.setSpdj(spdj);
+                                   ccjyspmx1.setSpsl(spsl);
+                                   ccjyspmx1.setJshj(jshj1);
+                                   ccjyspmx1.setYkphj(new BigDecimal(0));
+                                   ccjyspmx1.setSpdm(spdm);
+                                   ccjyspmx1.setGsdm(jyspmx.getGsdm());
+                                   splitKpspmxs.add(ccjyspmx1);
+                               }
+                           }
+                           ccjshj = sub(ccjshj, mul(new BigDecimal(n), fpje));
+                           JyspmxDecimal2 ccjyspmx2 = new JyspmxDecimal2();
+                           ccjyspmx2.setFphxz(fphxz);
+                           ccjyspmx2.setSqlsh(sqlsh);
+                           ccjyspmx2.setSpmxxh(spmxxh); 
+                           ccjyspmx2.setSpmc(spmc);
+                           ccjyspmx2.setSpggxh(spggxh);
+                           ccjyspmx2.setSpdj(spdj);
+                           ccjyspmx2.setSpsl(spsl);
+                           ccjyspmx2.setSpdw(spdw);
+                           ccjyspmx2.setSps(sub(sub(spsm, cfsm), mul(new BigDecimal(n), cfsm1)));
+                           ccjyspmx2.setSpse(sub(sub(spse, cfse), mul(new BigDecimal(n), cfse1)));
+                           ccjyspmx2.setSpje(sub(ccjshj, ccjyspmx2.getSpse()));
+                           ccjyspmx2.setJshj(ccjshj);
+                           ccjyspmx2.setYkphj(new BigDecimal(0));
+                           ccjyspmx2.setSpdm(spdm);
+                           ccjyspmx2.setGsdm(jyspmx.getGsdm());
+                           fpnum++;
+                           ccjyspmx2.setFpnum(fpnum);
+                           tempJyspmxs.clear();
+                           if (ccjshj.doubleValue() != 0) {
+                               splitKpspmxs.add(ccjyspmx2);
+                               tempJyspmxs.add(ccjyspmx2);
+                           }
+                           zje = ccjyspmx2.getSpje();
+                           zje1 = ccjshj;
+                     }
+                	}
                 }
             } else {
                 jyspmx.setFpnum(fpnum);

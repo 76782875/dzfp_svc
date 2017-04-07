@@ -661,15 +661,15 @@ public class FpclService {
 			if(hsbz.equals("1")){
 				// 分票
 				if (jyxxsq.getFpzldm().equals("12")) {
-						jyspmxs=SeperateInvoiceUtils.splitInvoicesbhs(jyspmxs, new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs2);
+						jyspmxs=SeperateInvoiceUtils.splitInvoicesbhs(jyspmxs, new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs2,false);
 				} else {
-						jyspmxs=SeperateInvoiceUtils.splitInvoicesbhs(jyspmxs, new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs1);
+						jyspmxs=SeperateInvoiceUtils.splitInvoicesbhs(jyspmxs, new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs1,false);
 				}
 			}else{
 				if (jyxxsq.getFpzldm().equals("12")) {
-					jyspmxs=SeperateInvoiceUtils.splitInvoices2(jyspmxs, new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs2);
+					jyspmxs=SeperateInvoiceUtils.splitInvoices2(jyspmxs, new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs2,false);
 			} else {
-					jyspmxs=SeperateInvoiceUtils.splitInvoices2(jyspmxs, new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs1);
+					jyspmxs=SeperateInvoiceUtils.splitInvoices2(jyspmxs, new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs1,false);
 			}	
 			}
 		

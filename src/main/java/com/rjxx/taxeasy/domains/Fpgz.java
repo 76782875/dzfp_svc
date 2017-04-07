@@ -71,6 +71,9 @@ public class Fpgz  implements Serializable {
 @Column(name="xfids")
 	protected String xfids;
 
+@Column(name="sfqzfp")
+protected String sfqzfp;
+
 /**
  * 有效标志
  */ 
@@ -250,6 +253,14 @@ protected Date xgsj;
 
 	public void setQdbz(String qdbz) {
 		this.qdbz = qdbz;
+	}
+
+	public String getSfqzfp() {
+		return sfqzfp;
+	}
+
+	public void setSfqzfp(String sfqzfp) {
+		this.sfqzfp = sfqzfp;
 	}
 
 	
