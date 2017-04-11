@@ -592,8 +592,8 @@ public class FpclService {
     /*
      * 
      */
-    public List<InvoiceResponse> zjkp(List<Jyxxsq> list,String kpfs) throws Exception{
-    	List<InvoiceResponse> result = new ArrayList<>();
+    public List<Object> zjkp(List<Jyxxsq> list,String kpfs) throws Exception{
+    	List<Object> result = new ArrayList<>();
     	boolean sfqzfp = true;
     	for (Jyxxsq jyxxsq : list) {
     		// 转换明细
@@ -614,10 +614,13 @@ public class FpclService {
 			Skp skp = skpService.findOne(jyxxsq.getSkpid());
 			if ("01".equals(jyxxsq.getFpzldm())) {
 				zdje=skp.getZpmax();
+				fpje = skp.getZpfz();
 			}else if ("02".equals(jyxxsq.getFpzldm())) {
 				zdje=skp.getPpmax();
+				fpje = skp.getPpfz();
 			}else if ("12".equals(jyxxsq.getFpzldm())) {
 				zdje=skp.getDpmax();
+				fpje = skp.getFpfz();
 			}
 			List<Fpgz> listt = fpgzService.findAllByParams(new HashMap<>());
 			Xf x = new Xf();
@@ -669,6 +672,9 @@ public class FpclService {
 				fphs1=99999;
 				fphs2=99999;
 			}
+			if (0==fpje) {
+				fpje=zdje;
+			}
 			if(hsbz.equals("1")){
 				// 分票
 				if (jyxxsq.getFpzldm().equals("12")) {
@@ -711,7 +717,7 @@ public class FpclService {
                 	  InvoiceResponse response =  skService.callService(kpls.getKplsh());
                 	  result.add(response);
 				}else{
-					 result.add(new InvoiceResponse());
+					 result.add(kpls);
 				}
                i++;
             }
