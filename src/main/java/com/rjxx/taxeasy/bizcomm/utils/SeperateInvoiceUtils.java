@@ -455,6 +455,10 @@ public class SeperateInvoiceUtils {
                     cfjyspmx.setYkphj(new BigDecimal(0));
                     cfjyspmx.setSpdm(spdm);
                     cfjyspmx.setGsdm(jyspmx.getGsdm());
+                    cfjyspmx.setYhzcbs(jyspmx.getYhzcbs());
+                    cfjyspmx.setYhzcmc(jyspmx.getYhzcmc());
+                    cfjyspmx.setKce(jyspmx.getKce());
+                    cfjyspmx.setLslbz(jyspmx.getLslbz());
                     splitKpspmxs.add(cfjyspmx);
 
                     int n = (int) Math.floor(div(ccje, maxje).doubleValue());
@@ -482,6 +486,10 @@ public class SeperateInvoiceUtils {
                             ccjyspmx1.setSpdj(spdj);
                             ccjyspmx1.setSpsl(spsl);
                             ccjyspmx1.setJshj(jshj1);
+                            ccjyspmx1.setYhzcbs(jyspmx.getYhzcbs());
+                            ccjyspmx1.setYhzcmc(jyspmx.getYhzcmc());
+                            ccjyspmx1.setKce(jyspmx.getKce());
+                            ccjyspmx1.setLslbz(jyspmx.getLslbz());
                             ccjyspmx1.setYkphj(new BigDecimal(0));
                             ccjyspmx1.setSpdm(spdm);
                             ccjyspmx1.setGsdm(jyspmx.getGsdm());
@@ -499,6 +507,10 @@ public class SeperateInvoiceUtils {
                     ccjyspmx2.setSpdj(spdj);
                     ccjyspmx2.setSpsl(spsl);
                     ccjyspmx2.setSpdw(spdw);
+                    ccjyspmx2.setYhzcbs(jyspmx.getYhzcbs());
+                    ccjyspmx2.setYhzcmc(jyspmx.getYhzcmc());
+                    ccjyspmx2.setKce(jyspmx.getKce());
+                    ccjyspmx2.setLslbz(jyspmx.getLslbz());
                     ccjyspmx2.setSps(sub(sub(spsm, cfsm), mul(new BigDecimal(n), cfsm1)));
                     ccjyspmx2.setSpse(sub(sub(spse, cfse), mul(new BigDecimal(n), cfse1)));
                     ccjyspmx2.setJshj(add(ccjyspmx2.getSpje(), ccjyspmx2.getSpse()));
@@ -712,6 +724,10 @@ public class SeperateInvoiceUtils {
                     cfjyspmx.setSpse(cfse);
                     cfjyspmx.setFpnum(fpnum);
                     cfjyspmx.setSpmc(spmc);
+                    cfjyspmx.setYhzcbs(jyspmx.getYhzcbs());
+                    cfjyspmx.setYhzcmc(jyspmx.getYhzcmc());
+                    cfjyspmx.setKce(jyspmx.getKce());
+                    cfjyspmx.setLslbz(jyspmx.getLslbz());
                     cfjyspmx.setSpggxh(spggxh);
                     cfjyspmx.setSpdw(spdw);
                     cfjyspmx.setSpdj(spdj);
@@ -742,6 +758,10 @@ public class SeperateInvoiceUtils {
                                    ccjyspmx1.setSps(cfsm1);
                                    ccjyspmx1.setSpse(cfse1);
                                    ccjyspmx1.setFpnum(fpnum);
+                                   ccjyspmx1.setYhzcbs(jyspmx.getYhzcbs());
+                                   ccjyspmx1.setYhzcmc(jyspmx.getYhzcmc());
+                                   ccjyspmx1.setKce(jyspmx.getKce());
+                                   ccjyspmx1.setLslbz(jyspmx.getLslbz());
                                    ccjyspmx1.setSpmc(spmc);
                                    ccjyspmx1.setSpggxh(spggxh);
                                    ccjyspmx1.setSpdw(spdw);
@@ -763,6 +783,10 @@ public class SeperateInvoiceUtils {
                            ccjyspmx2.setSpmc(spmc);
                            ccjyspmx2.setSpggxh(spggxh);
                            ccjyspmx2.setSpdj(spdj);
+                           ccjyspmx2.setYhzcbs(jyspmx.getYhzcbs());
+                           ccjyspmx2.setYhzcmc(jyspmx.getYhzcmc());
+                           ccjyspmx2.setKce(jyspmx.getKce());
+                           ccjyspmx2.setLslbz(jyspmx.getLslbz());
                            ccjyspmx2.setSpsl(spsl);
                            ccjyspmx2.setSpdw(spdw);
                            ccjyspmx2.setSps(sub(sub(spsm, cfsm), mul(new BigDecimal(n), cfsm1)));
@@ -803,6 +827,10 @@ public class SeperateInvoiceUtils {
                                   ccjyspmx1.setSpmc(spmc);
                                   ccjyspmx1.setSpggxh(spggxh);
                                   ccjyspmx1.setSpdw(spdw);
+                                  ccjyspmx1.setYhzcbs(jyspmx.getYhzcbs());
+                                  ccjyspmx1.setYhzcmc(jyspmx.getYhzcmc());
+                                  ccjyspmx1.setKce(jyspmx.getKce());
+                                  ccjyspmx1.setLslbz(jyspmx.getLslbz());
                                   ccjyspmx1.setSpdj(spdj);
                                   ccjyspmx1.setSpsl(spsl);
                                   ccjyspmx1.setJshj(jshj1);
@@ -821,6 +849,10 @@ public class SeperateInvoiceUtils {
                           ccjyspmx2.setSpggxh(spggxh);
                           ccjyspmx2.setSpdj(spdj);
                           ccjyspmx2.setSpsl(spsl);
+                          ccjyspmx2.setYhzcbs(jyspmx.getYhzcbs());
+                          ccjyspmx2.setYhzcmc(jyspmx.getYhzcmc());
+                          ccjyspmx2.setKce(jyspmx.getKce());
+                          ccjyspmx2.setLslbz(jyspmx.getLslbz());
                           ccjyspmx2.setSpdw(spdw);
                           ccjyspmx2.setSps(sub(sub(spsm, cfsm), mul(new BigDecimal(n), cfsm1)));
                           ccjyspmx2.setSpse(sub(sub(spse, cfse), mul(new BigDecimal(n), cfse1)));
@@ -875,6 +907,10 @@ public class SeperateInvoiceUtils {
                         cfjyspmx.setFpnum(fpnum);
                         cfjyspmx.setSpmc(spmc);
                         cfjyspmx.setSpggxh(spggxh);
+                        cfjyspmx.setYhzcbs(jyspmx.getYhzcbs());
+                        cfjyspmx.setYhzcmc(jyspmx.getYhzcmc());
+                        cfjyspmx.setKce(jyspmx.getKce());
+                        cfjyspmx.setLslbz(jyspmx.getLslbz());
                         cfjyspmx.setSpdw(spdw);
                         cfjyspmx.setSpdj(spdj);
                         cfjyspmx.setSpsl(spsl);
@@ -906,6 +942,10 @@ public class SeperateInvoiceUtils {
                                        ccjyspmx1.setSpmc(spmc);
                                        ccjyspmx1.setSpggxh(spggxh);
                                        ccjyspmx1.setSpdw(spdw);
+                                       ccjyspmx1.setYhzcbs(jyspmx.getYhzcbs());
+                                       ccjyspmx1.setYhzcmc(jyspmx.getYhzcmc());
+                                       ccjyspmx1.setKce(jyspmx.getKce());
+                                       ccjyspmx1.setLslbz(jyspmx.getLslbz());
                                        ccjyspmx1.setSpdj(spdj);
                                        ccjyspmx1.setSpsl(spsl);
                                        ccjyspmx1.setJshj(jshj1);
@@ -925,6 +965,10 @@ public class SeperateInvoiceUtils {
                                ccjyspmx2.setSpggxh(spggxh);
                                ccjyspmx2.setSpdj(spdj);
                                ccjyspmx2.setSpsl(spsl);
+                               ccjyspmx2.setYhzcbs(jyspmx.getYhzcbs());
+                               ccjyspmx2.setYhzcmc(jyspmx.getYhzcmc());
+                               ccjyspmx2.setKce(jyspmx.getKce());
+                               ccjyspmx2.setLslbz(jyspmx.getLslbz());
                                ccjyspmx2.setSpdw(spdw);
                                ccjyspmx2.setSps(sub(sub(spsm, cfsm), mul(new BigDecimal(n), cfsm1)));
                                ccjyspmx2.setSpse(sub(sub(spse, cfse), mul(new BigDecimal(n), cfse1)));
@@ -980,6 +1024,10 @@ public class SeperateInvoiceUtils {
                         cfjyspmx.setSpdw(spdw);
                         cfjyspmx.setSpdj(spdj);
                         cfjyspmx.setSpsl(spsl);
+                        cfjyspmx.setYhzcbs(jyspmx.getYhzcbs());
+                        cfjyspmx.setYhzcmc(jyspmx.getYhzcmc());
+                        cfjyspmx.setKce(jyspmx.getKce());
+                        cfjyspmx.setLslbz(jyspmx.getLslbz());
                         cfjyspmx.setJshj(cfjshj);
                         cfjyspmx.setYkphj(new BigDecimal(0));
                         cfjyspmx.setSpdm(spdm);
@@ -1008,6 +1056,10 @@ public class SeperateInvoiceUtils {
                                     ccjyspmx1.setSpmc(spmc);
                                     ccjyspmx1.setSpggxh(spggxh);
                                     ccjyspmx1.setSpdw(spdw);
+                                    ccjyspmx1.setYhzcbs(jyspmx.getYhzcbs());
+                                    ccjyspmx1.setYhzcmc(jyspmx.getYhzcmc());
+                                    ccjyspmx1.setKce(jyspmx.getKce());
+                                    ccjyspmx1.setLslbz(jyspmx.getLslbz());
                                     ccjyspmx1.setSpdj(spdj);
                                     ccjyspmx1.setSpsl(spsl);
                                     ccjyspmx1.setJshj(jshj1);
@@ -1028,6 +1080,10 @@ public class SeperateInvoiceUtils {
                             ccjyspmx2.setSpdj(spdj);
                             ccjyspmx2.setSpsl(spsl);
                             ccjyspmx2.setSpdw(spdw);
+                            ccjyspmx2.setYhzcbs(jyspmx.getYhzcbs());
+                            ccjyspmx2.setYhzcmc(jyspmx.getYhzcmc());
+                            ccjyspmx2.setKce(jyspmx.getKce());
+                            ccjyspmx2.setLslbz(jyspmx.getLslbz());
                             ccjyspmx2.setSps(sub(sub(spsm, cfsm), mul(new BigDecimal(n), cfsm1)));
                             ccjyspmx2.setSpse(sub(sub(spse, cfse), mul(new BigDecimal(n), cfse1)));
                             ccjyspmx2.setJshj(add(ccjyspmx2.getSpje(), ccjyspmx2.getSpse()));
@@ -1066,6 +1122,10 @@ public class SeperateInvoiceUtils {
                                    ccjyspmx1.setSpmc(spmc);
                                    ccjyspmx1.setSpggxh(spggxh);
                                    ccjyspmx1.setSpdw(spdw);
+                                   ccjyspmx1.setYhzcbs(jyspmx.getYhzcbs());
+                                   ccjyspmx1.setYhzcmc(jyspmx.getYhzcmc());
+                                   ccjyspmx1.setKce(jyspmx.getKce());
+                                   ccjyspmx1.setLslbz(jyspmx.getLslbz());
                                    ccjyspmx1.setSpdj(spdj);
                                    ccjyspmx1.setSpsl(spsl);
                                    ccjyspmx1.setJshj(jshj1);
@@ -1085,6 +1145,10 @@ public class SeperateInvoiceUtils {
                            ccjyspmx2.setSpdj(spdj);
                            ccjyspmx2.setSpsl(spsl);
                            ccjyspmx2.setSpdw(spdw);
+                           ccjyspmx2.setYhzcbs(jyspmx.getYhzcbs());
+                           ccjyspmx2.setYhzcmc(jyspmx.getYhzcmc());
+                           ccjyspmx2.setKce(jyspmx.getKce());
+                           ccjyspmx2.setLslbz(jyspmx.getLslbz());
                            ccjyspmx2.setSps(sub(sub(spsm, cfsm), mul(new BigDecimal(n), cfsm1)));
                            ccjyspmx2.setSpse(sub(sub(spse, cfse), mul(new BigDecimal(n), cfse1)));
                            ccjyspmx2.setSpje(sub(ccjshj, ccjyspmx2.getSpse()));

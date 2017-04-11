@@ -577,6 +577,10 @@ public class FpclService {
             kpspmx.setLrsj(TimeUtil.getNowDate());
             kpspmx.setXgsj(TimeUtil.getNowDate());
             kpspmx.setKhcje(jyspmx.getJshj().doubleValue());
+            kpspmx.setKce(jyspmx.getKce().doubleValue());
+            kpspmx.setYhzcbs(jyspmx.getYhzcbs());
+            kpspmx.setYhzcmc(jyspmx.getYhzcmc());
+            kpspmx.setLslbz(jyspmx.getLslbz());
             kpspmx.setYhcje(0d);
             kpspmxService.save(kpspmx);
         }
@@ -809,6 +813,10 @@ public class FpclService {
 			jymx.setXgsj(TimeUtil.getNowDate());
 			jymx.setXgry(jyls.getXgry());
 			jymx.setFphxz("0");
+			jymx.setKce(mxItem.getKce().doubleValue());
+			jymx.setYhzcbs(mxItem.getYhzcbs());
+			jymx.setYhzcmc(mxItem.getYhzcmc());
+			jymx.setLslbz(mxItem.getLslbz());
 			jymxService.save(jymx);
 			list.add(jymx);
 		}
