@@ -8,6 +8,9 @@
         <if test="mrbz != null">
             and mrbz = #{mrbz}
         </if>
+        <if test="gsdm != null">
+            and gsdm = #{gsdm}
+        </if>
         limit 1
     </select>
 
