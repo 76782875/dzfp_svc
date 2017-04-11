@@ -589,8 +589,11 @@ public class FpclService {
     }
     
     //直接开票
-    public Map<String, Object> zjkp(List<Jyxxsq> list) throws Exception{
-    	Map<String, Object> result = new HashMap<>();
+    /*
+     * sfqzfp 是否强制分票 true or false
+     */
+    public List<InvoiceResponse> zjkp(List<Jyxxsq> list,String kpfs,boolean sfqzfp) throws Exception{
+    	List<InvoiceResponse> result = new ArrayList<>();
     	for (Jyxxsq jyxxsq : list) {
     		// 转换明细
     		Map<String, Object> params1 = new HashMap<>();
@@ -661,15 +664,15 @@ public class FpclService {
 			if(hsbz.equals("1")){
 				// 分票
 				if (jyxxsq.getFpzldm().equals("12")) {
-						jyspmxs=SeperateInvoiceUtils.splitInvoicesbhs(jyspmxs, new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs2,false);
+						jyspmxs=SeperateInvoiceUtils.splitInvoicesbhs(jyspmxs, new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs2,sfqzfp);
 				} else {
-						jyspmxs=SeperateInvoiceUtils.splitInvoicesbhs(jyspmxs, new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs1,false);
+						jyspmxs=SeperateInvoiceUtils.splitInvoicesbhs(jyspmxs, new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs1,sfqzfp);
 				}
 			}else{
 				if (jyxxsq.getFpzldm().equals("12")) {
-					jyspmxs=SeperateInvoiceUtils.splitInvoices2(jyspmxs, new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs2,false);
+					jyspmxs=SeperateInvoiceUtils.splitInvoices2(jyspmxs, new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs2,sfqzfp);
 			} else {
-					jyspmxs=SeperateInvoiceUtils.splitInvoices2(jyspmxs, new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs1,false);
+					jyspmxs=SeperateInvoiceUtils.splitInvoices2(jyspmxs, new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs1,sfqzfp);
 			}	
 			}
 		
@@ -696,30 +699,15 @@ public class FpclService {
                 //保存开票流水
                 Kpls kpls = saveKpls(jyls, list2, jyxxsq.getSfdy());
                 saveKpspmx(kpls, list2);
-               InvoiceResponse response =  skService.callService(kpls.getKplsh());
-               if (response.getReturnCode().equals("0000")) {			
-			}else{
-				//回滚开票流水
-				Map<String, Object> params = new HashMap<>();
-				params.put("kplsh", kpls.getKplsh());
-				List<Kpspmx> list3 = kpspmxService.findMxNewList(params);
-				kpspmxService.deleteAll(list3);
-				kplsService.delete(kpls);
-				//回滚交易流水
-				Jyspmx jtJyspmx = new Jyspmx();
-				jtJyspmx.setDjh(jyls.getDjh());
-				List<Jyspmx> list4 = jymxService.findAllByParams(jtJyspmx); 
-				jymxService.deleteAll(list4);
-		 		//jylsService.doAllKp(jylsList, clztdm);
-				result.put("success", false);
-				result.put("msg", "申请流水号为"+jyxxsq.getSqlsh()+"的第"+i+"张票开具失败"+response.getReturnMessage());
-				return result;
-			}
+                if (kpfs.equals("01")) {
+                	  InvoiceResponse response =  skService.callService(kpls.getKplsh());
+                	  result.add(response);
+				}else{
+					 result.add(new InvoiceResponse());
+				}
                i++;
             }
 		}
-    	result.put("success", true);
-    	result.put("msg", "开票成功！");
     	return result;
     }
     /**

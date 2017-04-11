@@ -174,8 +174,11 @@
 			1 day) </if> -->
 		<if test="params.spmc != null and params.spmc != ''">
 			and b.spmc like CONCAT('%',#{params.spmc},'%')
-		</if>		
-		order by a.sqlsh
+		</if>
+		<if test="params.order != null">		
+		order by ${params.order}
+		</if>
+		${params.ord}
 	</select>
 
 

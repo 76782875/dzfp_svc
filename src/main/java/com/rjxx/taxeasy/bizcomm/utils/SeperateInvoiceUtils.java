@@ -650,7 +650,7 @@ public class SeperateInvoiceUtils {
         for (JyspmxDecimal2 jyspmx : jyspmxs) {
 			total = total.add(jyspmx.getSpje());
 		}
-        if (qzfp) {
+        if (!qzfp) {
         	if (maxje.compareTo(total)>0) {
   		      fp=true;
   			}
@@ -840,7 +840,7 @@ public class SeperateInvoiceUtils {
                           zje1 = ccjshj;
                     }
                 } else {
-                	if(!qzfp){
+                	if(fp){
                         // Jyspmx ccjyspmx = new Jyspmx();//超出金额对象
                         JyspmxDecimal2 cfjyspmx = new JyspmxDecimal2();// 拆分金额对象
                         // ccjyspmx = jyspmx;//超出金额对象
