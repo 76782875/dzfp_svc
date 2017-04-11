@@ -590,10 +590,11 @@ public class FpclService {
     
     //直接开票
     /*
-     * sfqzfp 是否强制分票 true or false
+     * 
      */
-    public List<InvoiceResponse> zjkp(List<Jyxxsq> list,String kpfs,boolean sfqzfp) throws Exception{
+    public List<InvoiceResponse> zjkp(List<Jyxxsq> list,String kpfs) throws Exception{
     	List<InvoiceResponse> result = new ArrayList<>();
+    	boolean sfqzfp = true;
     	for (Jyxxsq jyxxsq : list) {
     		// 转换明细
     		Map<String, Object> params1 = new HashMap<>();
@@ -637,6 +638,9 @@ public class FpclService {
 					}
 					flag = true;
 					hsbz=fpgz.getHsbz();
+					if (fpgz.getSfqzfp().equals("0")) {
+						sfqzfp=false;
+					}
 				}
 			}
 			if (!flag) {
@@ -655,6 +659,9 @@ public class FpclService {
 						fpje= fpgz2.getDzpxe();
 					}
 					hsbz=fpgz2.getHsbz();
+					if (fpgz2.getSfqzfp().equals("0")) {
+						sfqzfp=false;
+					}
 				}
 			}
 			if (jyxxsq.getSfdyqd()!=null&&jyxxsq.getSfdyqd().equals("1")) {
