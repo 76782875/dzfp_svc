@@ -232,7 +232,7 @@ public class JylsService {
 		Jyspmx mx = new Jyspmx(vo.getSpmxxh(), vo.getFphxz(), vo.getSpdm(), vo.getSpmc(), vo.getSpggxh(), vo.getSpdw(),
 				vo.getSps(), vo.getSpdj(), vo.getSpje(), vo.getSpsl(), vo.getSpse(), vo.getJshj(), vo.getYkphj(),
 				vo.getHzkpxh(), vo.getLrsj(), vo.getLrry(), vo.getXgsj(), vo.getXgry(), vo.getGsdm(), vo.getXfid(),
-				vo.getSkpid());
+				vo.getSkpid(),vo.getKce(),vo.getYhzcbs(),vo.getYhzcmc(),vo.getLslbz());
 		return mx;
 	}
 }
