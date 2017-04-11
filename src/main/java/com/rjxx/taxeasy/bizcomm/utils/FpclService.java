@@ -717,7 +717,7 @@ public class FpclService {
                 	  InvoiceResponse response =  skService.callService(kpls.getKplsh());
                 	  result.add(response);
 				}else{
-					kpls.setSfdyqd(jyxxsq.getSfdyqd());
+					kpls.setSfdyqd(jyxxsq.getSfdyqd()+"-"+jyxxsq.getSqlsh());
 					 result.add(kpls);
 				}
                i++;
