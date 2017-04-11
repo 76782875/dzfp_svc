@@ -122,12 +122,6 @@ public class CheckOrderUtil {
 				if (null == buyerIdentifier || buyerIdentifier.equals("")) {
 					result += ddh + ":发票种类为01时购方税号不能为空;";
 				}
-				if (null == buyerAddress || buyerAddress.equals("")) {
-					result += ddh + ":发票种类为01时购方地址不能为空;";
-				}
-				if (null == buyerTelephoneNo || buyerTelephoneNo.equals("")) {
-					result += ddh + ":发票种类为01时购方电话不能为空;";
-				}
 				if (null == buyerBank || buyerBank.equals("")) {
 					result += ddh + ":发票种类为01时购方银行不能为空;";
 				}

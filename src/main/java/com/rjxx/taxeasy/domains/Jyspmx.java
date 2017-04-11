@@ -29,7 +29,7 @@ public class Jyspmx implements Serializable {
 
 	public Jyspmx(Integer spmxxh, String fphxz, String spdm, String spmc, String spggxh, String spdw, Double sps,
 			Double spdj, Double spje, Double spsl, Double spse, Double jshj, Double ykphj, Integer hzkpxh, Date lrsj,
-			Integer lrry, Date xgsj, Integer xgry, String gsdm, Integer xfid, Integer skpid) {
+			Integer lrry, Date xgsj, Integer xgry, String gsdm, Integer xfid, Integer skpid,Double kce,String yhzcbs,String yhzcmc,String lslbz) {
 		super();
 		this.spmxxh = spmxxh;
 		this.fphxz = fphxz;
@@ -52,6 +52,10 @@ public class Jyspmx implements Serializable {
 		this.gsdm = gsdm;
 		this.xfid = xfid;
 		this.skpid = skpid;
+		this.kce = kce;
+		this.yhzcbs = yhzcbs;
+		this.yhzcmc = yhzcmc;
+		this.lslbz = lslbz;
 	}
 
 	@Id
@@ -194,8 +198,64 @@ public class Jyspmx implements Serializable {
      */
     @Column(name = "skpid")
     protected Integer skpid;
+    
+    /**
+     * 扣除额
+     */
+    @Column(name = "kce")
+    protected Double kce;
+    
+    /**
+     * 优惠政策标识
+     */
+    @Column(name = "yhzcbs")
+    protected String yhzcbs;
+    
+    /**
+     * 优惠政策名称
+     */
+    @Column(name = "yhzcmc")
+    protected String yhzcmc;
+    
+    /**
+     * 零税率标志
+     */
+    @Column(name = "lslbz")
+    protected String lslbz;
+    
+    public Double getKce() {
+		return kce;
+	}
 
-    public Integer getXfid() {
+	public void setKce(Double kce) {
+		this.kce = kce;
+	}
+
+	public String getYhzcbs() {
+		return yhzcbs;
+	}
+
+	public void setYhzcbs(String yhzcbs) {
+		this.yhzcbs = yhzcbs;
+	}
+
+	public String getYhzcmc() {
+		return yhzcmc;
+	}
+
+	public void setYhzcmc(String yhzcmc) {
+		this.yhzcmc = yhzcmc;
+	}
+
+	public String getLslbz() {
+		return lslbz;
+	}
+
+	public void setLslbz(String lslbz) {
+		this.lslbz = lslbz;
+	}
+
+	public Integer getXfid() {
 		return xfid;
 	}
 

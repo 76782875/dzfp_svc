@@ -207,6 +207,61 @@ protected Double yhcje;
 @GeneratedValue(strategy=GenerationType.IDENTITY)
 	protected Integer id;
 
+/**
+ * 扣除额
+ */
+@Column(name = "kce")
+protected Double kce;
+
+/**
+ * 优惠政策标识
+ */
+@Column(name = "yhzcbs")
+protected String yhzcbs;
+
+/**
+ * 优惠政策名称
+ */
+@Column(name = "yhzcmc")
+protected String yhzcmc;
+
+/**
+ * 零税率标志
+ */
+@Column(name = "lslbz")
+protected String lslbz;
+
+	public Double getKce() {
+	return kce;
+}
+
+public void setKce(Double kce) {
+	this.kce = kce;
+}
+
+public String getYhzcbs() {
+	return yhzcbs;
+}
+
+public void setYhzcbs(String yhzcbs) {
+	this.yhzcbs = yhzcbs;
+}
+
+public String getYhzcmc() {
+	return yhzcmc;
+}
+
+public void setYhzcmc(String yhzcmc) {
+	this.yhzcmc = yhzcmc;
+}
+
+public String getLslbz() {
+	return lslbz;
+}
+
+public void setLslbz(String lslbz) {
+	this.lslbz = lslbz;
+}
 
 	public Integer getKplsh(){
 		return kplsh;
