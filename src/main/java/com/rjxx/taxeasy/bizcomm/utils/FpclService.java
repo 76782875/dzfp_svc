@@ -34,6 +34,7 @@ import com.rjxx.taxeasy.service.XfService;
 import com.rjxx.taxeasy.vo.Fpcxvo;
 import com.rjxx.taxeasy.vo.JyspmxDecimal;
 import com.rjxx.taxeasy.vo.JyspmxDecimal2;
+import com.rjxx.taxeasy.vo.KplsVO4;
 import com.rjxx.taxeasy.vo.Kpspmxvo;
 import com.rjxx.time.TimeUtil;
 
@@ -721,8 +722,8 @@ public class FpclService {
                 	  InvoiceResponse response =  skService.callService(kpls.getKplsh());
                 	  result.add(response);
 				}else{
-					kpls.setSfdyqd(jyxxsq.getSfdyqd()+"-"+jyxxsq.getSqlsh());
-					 result.add(kpls);
+					KplsVO4 kplsVO4 = new KplsVO4(kpls, jyxxsq);
+					 result.add(kplsVO4);
 				}
                i++;
             }
