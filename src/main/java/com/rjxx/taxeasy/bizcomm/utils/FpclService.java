@@ -699,8 +699,8 @@ public class FpclService {
             for (JyspmxDecimal2 jyspmx : jyspmxs) {
                 int fpnum = jyspmx.getFpnum();
                 List<JyspmxDecimal2> list2 = fpMap.get(fpnum);
-                if (list == null) {
-                    list = new ArrayList<>();
+                if (list2 == null) {
+                    list2 = new ArrayList<>();
                     fpMap.put(fpnum, list2);
                 }
                 list2.add(jyspmx);
