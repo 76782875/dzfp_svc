@@ -53,6 +53,9 @@ public class InvoiceResponse {
     @XmlElement(name = "InvoiceType")
     private String fplxdm;
 
+    @XmlElement(name = "BulkImportResultFlag")
+    private boolean bulkImportResultFlag;
+
     public String getLsh() {
         return lsh;
     }
@@ -132,6 +135,12 @@ public class InvoiceResponse {
 	public void setJylsh(String jylsh) {
 		this.jylsh = jylsh;
 	}
-    
-    
+
+    public boolean isBulkImportResultFlag() {
+        return bulkImportResultFlag;
+    }
+
+    public void setBulkImportResultFlag(boolean bulkImportResultFlag) {
+        this.bulkImportResultFlag = bulkImportResultFlag;
+    }
 }
