@@ -54,7 +54,7 @@ public class InvoiceResponse {
     private String fplxdm;
 
     @XmlElement(name = "BulkImportResultFlag")
-    private boolean bulkImportResultFlag;
+    private boolean bulkImportResultFlag = true;
 
     public String getLsh() {
         return lsh;
