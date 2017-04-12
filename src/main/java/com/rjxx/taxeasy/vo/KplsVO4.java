@@ -493,7 +493,7 @@ public KplsVO4(Kpls kpls,Jyxxsq jyxxsq) {
 	this.kpry = kpls.getKpry();
 	this.zfry = kpls.getZfry();
 	this.hcry = kpls.getHcry();
-	this.kpddm = kpls.getKpddm();
+	this.kpddm = jyxxsq.getKpddm();
 	this.skph = kpls.getSkph();
 	this.jshj = kpls.getJshj();
 	this.hjje = kpls.getHjje();
