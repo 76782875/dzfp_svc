@@ -430,6 +430,9 @@ public Integer getSqlsh() {
 	return sqlsh;
 }
 
+public KplsVO4() {
+	super();
+}
 public KplsVO4(Kpls kpls,Jyxxsq jyxxsq) {
 	super();
 	this.kplsh = kpls.getKplsh();
