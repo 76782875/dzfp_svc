@@ -578,7 +578,11 @@ public class FpclService {
             kpspmx.setLrsj(TimeUtil.getNowDate());
             kpspmx.setXgsj(TimeUtil.getNowDate());
             kpspmx.setKhcje(jyspmx.getJshj().doubleValue());
-            kpspmx.setKce(jyspmx.getKce().doubleValue());
+            if (null==jyspmx.getKce()) {
+            kpspmx.setKce(0d);
+			}else{
+				 kpspmx.setKce(jyspmx.getKce().doubleValue());
+			}
             kpspmx.setYhzcbs(jyspmx.getYhzcbs());
             kpspmx.setYhzcmc(jyspmx.getYhzcmc());
             kpspmx.setLslbz(jyspmx.getLslbz());
@@ -814,7 +818,11 @@ public class FpclService {
 			jymx.setXgsj(TimeUtil.getNowDate());
 			jymx.setXgry(jyls.getXgry());
 			jymx.setFphxz("0");
-			jymx.setKce(mxItem.getKce().doubleValue());
+			if (null==mxItem.getKce()) {
+				jymx.setKce(0d);
+			}else{
+				jymx.setKce(mxItem.getKce().doubleValue());
+			}
 			jymx.setYhzcbs(mxItem.getYhzcbs());
 			jymx.setYhzcmc(mxItem.getYhzcmc());
 			jymx.setLslbz(mxItem.getLslbz());
