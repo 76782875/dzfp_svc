@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rjxx.taxeasy.dao.IsvCorpSuiteJsapiTicketMapper">
+
+    <select id="findOneByParams" parameterType="map" resultType="isvCorpSuiteJsapiTicket">
+        select * from isv_corp_suite_jsapi_ticket where 1=1
+        <if test="suiteKey !=null and suiteKey !=''">
+            and suite_key = #{suiteKey}
+        </if>
+        <if test="corpId !=null and corpId !=''">
+            and corp_id = #{corpId}
+        </if>
+        limit 1
+    </select>
+
+    <select id="findAllByParams" parameterType="map" resultType="isvCorpSuiteJsapiTicket">
+        select * from isv_corp_suite_jsapi_ticket where 1=1
+        <if test="orderBy != null">
+            order by ${orderBy}
+        </if>
+    </select>
+
+    <select id="findByPage" parameterType="pagination" resultType="isvCorpSuiteJsapiTicket">
+        select * from isv_corp_suite_jsapi_ticket where 1=1
+        <if test="params.orderBy != null">
+            order by ${params.orderBy}
+        </if>
+    </select>
+
+</mapper>
+
