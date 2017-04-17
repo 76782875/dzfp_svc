@@ -5,8 +5,8 @@
 
     <select id="findOneByParams" parameterType="map" resultType="isvCorpApp">
         select * from isv_corp_app where 1=1
-        <if test="orderBy != null">
-            order by ${orderBy}
+        <if test="corpId !=null and corpId !=''">
+            and corp_id = #{corpId}
         </if>
         limit 1
     </select>
