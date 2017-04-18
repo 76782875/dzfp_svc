@@ -218,7 +218,15 @@ public class KplsService {
 		return kplsMapper.findykpCount(map);
 		
 	}
-     
-	
+
+    /**
+     * 根据map参数返回List<Kpls>
+     * @param map
+     * @return
+     */
+    public List<Kpls> findAllByMapParams(Map map){
+        return kplsMapper.findAllByMapParams(map);
+    }
+
 }
 

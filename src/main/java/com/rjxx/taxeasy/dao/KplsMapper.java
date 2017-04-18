@@ -109,7 +109,7 @@ public interface KplsMapper {
 	public Kpls findByyfphm(Kpls kpls);
 	public Fpcxvo findykpCount(Map map);
     
-
+    public List<Kpls> findAllByMapParams(Map map);
     
 
 }

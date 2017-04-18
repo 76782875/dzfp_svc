@@ -872,5 +872,15 @@ AND djh =#{djh}
 		select fpzldm,fpczlxdm,count(1) cnt from t_kpls where skpid = #{kpdid} and yxbz = '1' and fpczlxdm in ('11','12','14') and fpztdm = '04' group by fpzldm,fpczlxdm
 	</select>
 
+	<select id="findAllByMapParams" resultType="kpls" parameterType="map">
+		select * from t_kpls where yxbz = '1'
+		<if test="fpztdm != null and fpztdm != ''">
+			and fpztdm = #{fpztdm}
+		</if>
+		<if test="skpid != null and skpid != ''">
+			and skpid = #{skpid}
+		</if>
+	</select>
+
 </mapper>
 
