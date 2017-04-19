@@ -56,12 +56,14 @@ public class SuiteManageService {
         	Map params=new HashMap();
     		params.put("suiteKey", suiteKey);
     		IsvSuite suiteBO = isvsuiteservice.getIsvSuite(params);
+    		IsvSuiteToken  IsvSuiteToken=  isvsuitetokenservice.findOneByParams(params);
             IsvSuiteTicket suiteTicketDO = isvsuiteticketservice.findOneByParams(params);
             //调用钉钉接口
             ServiceFactory serviceFactory = ServiceFactory.getInstance();
     		IsvService isvService = serviceFactory.getOpenService(IsvService.class);
 			SuiteToken suiteToken = isvService.getSuiteToken(suiteBO.getSuiteKey(), suiteBO.getSuiteSecret(), suiteTicketDO.getTicket());
 			IsvSuiteToken suiteTokenDO=new IsvSuiteToken();
+			    suiteTokenDO.setId(IsvSuiteToken.getId());
 	            suiteTokenDO.setGmtCreate(new Date());
 	            suiteTokenDO.setGmtModified(new Date());
 	            Calendar calendar = Calendar.getInstance();
