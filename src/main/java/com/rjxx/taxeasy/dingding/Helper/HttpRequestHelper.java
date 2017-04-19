@@ -1,7 +1,7 @@
 package com.rjxx.taxeasy.dingding.Helper;
 
 import com.alibaba.fastjson.JSON;
-
+import com.alibaba.fastjson.JSONObject;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
@@ -143,7 +143,53 @@ public class HttpRequestHelper {
         }
         return null;
     }
+    public static JSONObject httpGet(String url) throws Exception{
+        HttpGet httpGet = new HttpGet(url);
+        CloseableHttpResponse response = null;
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        RequestConfig requestConfig = RequestConfig.custom().
+        		setSocketTimeout(2000).setConnectTimeout(2000).build();
+        httpGet.setConfig(requestConfig);
 
+        try {
+            response = httpClient.execute(httpGet, new BasicHttpContext());
+
+            if (response.getStatusLine().getStatusCode() != 200) {
+
+                System.out.println("request url failed, http code=" + response.getStatusLine().getStatusCode()
+                                   + ", url=" + url);
+                return null;
+            }
+            HttpEntity entity = response.getEntity();
+            if (entity != null) {
+                String resultStr = EntityUtils.toString(entity, "utf-8");
+
+                JSONObject result = JSON.parseObject(resultStr);
+                if (result.getInteger("errcode") == 0) {
+//                	result.remove("errcode");
+//                	result.remove("errmsg");
+                    return result;
+                } else {
+                    System.out.println("request url=" + url + ",return value=");
+                    System.out.println(resultStr);
+                    int errCode = result.getInteger("errcode");
+                    String errMsg = result.getString("errmsg");
+                    //throw new Exception(errCode, errMsg);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("request url=" + url + ", exception, msg=" + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            if (response != null) try {
+                response.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return null;
+    }
 
     public static void main(String []args){
         Map<String,Object> map = new HashMap<String, Object>();

@@ -19,7 +19,7 @@ import java.util.*;
 /**
  * 开放平台企业通讯录接口封装
  * 包括部门人员
- * Created by lifeng.zlf on 2016/1/21.
+ * Created by xlm on 2017/4/19.
  */
 @ConfigurationProperties("oapiDomain")
 @Configuration
