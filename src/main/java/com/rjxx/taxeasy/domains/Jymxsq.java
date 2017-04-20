@@ -12,61 +12,22 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
  * t_jymxsq 实体类
  * 交易信息明细申请表
  * 由GenEntityMysql类自动生成
- * Thu Jan 05 11:03:51 CST 2017
+ * Thu Apr 20 21:03:07 CST 2017
  * @ZhangBing
  */ 
 @Entity
 @Table(name="t_jymxsq")
 public class Jymxsq  implements Serializable {
 
-	
-	public Jymxsq(Integer spmxxh, String fphxz, String spdm, String spmc, String spggxh, String spdw, Double sps,
-			Double spdj, Double spje, Double spsl, Double spse, Double jshj, Integer hzkpxh, Date lrsj,
-			Integer lrry, Date xgsj, Integer xgry, String gsdm, Integer xfid, Integer skpid,String yxbz,Double kkjje,Double ykjje) {
-		super();
-		this.spmxxh = spmxxh;
-		this.fphxz = fphxz;
-		this.spdm = spdm;
-		this.spmc = spmc;
-		this.spggxh = spggxh;
-		this.spdw = spdw;
-		this.sps = sps;
-		this.spdj = spdj;
-		this.spje = spje;
-		this.spsl = spsl;
-		this.spse = spse;
-		this.jshj = jshj;
-		//this.ykphj = ykphj;
-		this.hzkpxh = hzkpxh;
-		this.lrsj = lrsj;
-		this.lrry = lrry;
-		this.xgsj = xgsj;
-		this.xgry = xgry;
-		this.gsdm = gsdm;
-		this.xfid = xfid;
-		this.skpid = skpid;
-		this.yxbz = yxbz;
-		this.kkjje = kkjje;
-		this.ykjje = ykjje;
-		
-	}
-public Jymxsq() {
-		// TODO Auto-generated constructor stub
-	}
 @Id
 @GeneratedValue(strategy=GenerationType.IDENTITY)
 	protected Integer id;
-
 
 /**
  * 单据号
  */ 
 @Column(name="sqlsh")
 	protected Integer sqlsh;
-
-@Column(name="spid")
-protected Integer spid;
-
 
 /**
  * 订单号 业务系统或电商平台生成。
@@ -188,12 +149,6 @@ protected Integer spid;
 @Column(name="jshj")
 	protected Double jshj;
 
-@Column(name="ykjje")
-protected Double ykjje;
-
-@Column(name="kkjje")
-protected Double kkjje;
-
 /**
  * 汇总开票序号
  */ 
@@ -240,8 +195,34 @@ protected Double kkjje;
 @Column(name="xfid")
 	protected Integer xfid;
 
+/**
+ * 有效标志 1 有效 0 无效
+ */ 
 @Column(name="yxbz")
-protected String yxbz;
+	protected String yxbz;
+
+/**
+ * 商品id
+ */ 
+@Column(name="spid")
+	protected Integer spid;
+
+@Column(name="ykjje")
+	protected Double ykjje;
+
+@Column(name="kkjje")
+	protected Double kkjje;
+
+@Column(name="bzsp")
+	protected String bzsp;
+
+/**
+ * 商品备注说明
+ */ 
+@Column(name="spbz")
+	protected String spbz;
+
+
 	public Integer getId(){
 		return id;
 	}
@@ -250,14 +231,12 @@ protected String yxbz;
 		this.id=id;
 	}
 
-
-
-	public Integer getSqlsh() {
+	public Integer getSqlsh(){
 		return sqlsh;
 	}
 
-	public void setSqlsh(Integer sqlsh) {
-		this.sqlsh = sqlsh;
+	public void setSqlsh(Integer sqlsh){
+		this.sqlsh=sqlsh;
 	}
 
 	public String getDdh(){
@@ -484,32 +463,53 @@ protected String yxbz;
 		this.xfid=xfid;
 	}
 
-	public String getYxbz() {
+	public String getYxbz(){
 		return yxbz;
 	}
 
-	public void setYxbz(String yxbz) {
-		this.yxbz = yxbz;
+	public void setYxbz(String yxbz){
+		this.yxbz=yxbz;
 	}
-	public Integer getSpid() {
+
+	public Integer getSpid(){
 		return spid;
 	}
-	public void setSpid(Integer spid) {
-		this.spid = spid;
+
+	public void setSpid(Integer spid){
+		this.spid=spid;
 	}
-	public Double getYkjje() {
+
+	public Double getYkjje(){
 		return ykjje;
 	}
-	public void setYkjje(Double ykjje) {
-		this.ykjje = ykjje;
+
+	public void setYkjje(Double ykjje){
+		this.ykjje=ykjje;
 	}
-	public Double getKkjje() {
+
+	public Double getKkjje(){
 		return kkjje;
 	}
-	public void setKkjje(Double kkjje) {
-		this.kkjje = kkjje;
+
+	public void setKkjje(Double kkjje){
+		this.kkjje=kkjje;
 	}
-	
+
+	public String getBzsp(){
+		return bzsp;
+	}
+
+	public void setBzsp(String bzsp){
+		this.bzsp=bzsp;
+	}
+
+	public String getSpbz(){
+		return spbz;
+	}
+
+	public void setSpbz(String spbz){
+		this.spbz=spbz;
+	}
 
 }
 

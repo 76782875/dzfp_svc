@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
  * t_jyxxsq 实体类
  * 交易信息申请 该表用于记录全部交易申请信息。
  * 由GenEntityMysql类自动生成
- * Thu Jan 05 10:34:10 CST 2017
+ * Thu Apr 20 19:08:56 CST 2017
  * @ZhangBing
  */ 
 @Entity
@@ -22,8 +22,8 @@ public class Jyxxsq  implements Serializable {
 /**
  * 请求单据号 TaxEasy系统自动生成，每次请求唯一。
  */ 
-@Id	
-@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id    
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Integer sqlsh;
 
 /**
@@ -344,33 +344,50 @@ public class Jyxxsq  implements Serializable {
 @Column(name="dxzt")
 	protected String dxzt;
 
-@Column(name="ztbz")
-protected String ztbz;
-
+/**
+ * 数据来源（0平台录入，1接口接入，2平台导入）
+ */ 
 @Column(name="sjly")
-protected String sjly;
+	protected String sjly;
 
+/**
+ * 状态标识 0 待提交,1已申请,2退回,3已处理,4删除,5部分处理,6待处理
+ */ 
+@Column(name="ztbz")
+	protected String ztbz;
+
+/**
+ * 是否直连开票：1是，0否
+ */ 
 @Column(name="sfzlkp")
-protected String sfzlkp;
+	protected String sfzlkp;
 
+/**
+ * 是否打印，1打印，0不打印
+ */ 
 @Column(name="sfdy")
-protected String sfdy;
+	protected String sfdy;
 
-	public String getSfzlkp() {
-	return sfzlkp;
-}
+/**
+ * 钉钉企业id
+ */ 
+@Column(name="dingcorpid")
+	protected String dingcorpid;
 
-public void setSfzlkp(String sfzlkp) {
-	this.sfzlkp = sfzlkp;
-}
+/**
+ * 钉钉用户id
+ */ 
+@Column(name="dinguserid")
+	protected String dinguserid;
 
-	public Integer getSqlsh() {
-	return sqlsh;
-}
 
-public void setSqlsh(Integer sqlsh) {
-	this.sqlsh = sqlsh;
-}
+	public Integer getSqlsh(){
+		return sqlsh;
+	}
+
+	public void setSqlsh(Integer sqlsh){
+		this.sqlsh=sqlsh;
+	}
 
 	public String getKpddm(){
 		return kpddm;
@@ -796,28 +813,52 @@ public void setSqlsh(Integer sqlsh) {
 		this.dxzt=dxzt;
 	}
 
-	public String getZtbz() {
-		return ztbz;
-	}
-
-	public void setZtbz(String ztbz) {
-		this.ztbz = ztbz;
-	}
-
-	public String getSjly() {
+	public String getSjly(){
 		return sjly;
 	}
 
-	public void setSjly(String sjly) {
-		this.sjly = sjly;
+	public void setSjly(String sjly){
+		this.sjly=sjly;
 	}
 
-	public String getSfdy() {
+	public String getZtbz(){
+		return ztbz;
+	}
+
+	public void setZtbz(String ztbz){
+		this.ztbz=ztbz;
+	}
+
+	public String getSfzlkp(){
+		return sfzlkp;
+	}
+
+	public void setSfzlkp(String sfzlkp){
+		this.sfzlkp=sfzlkp;
+	}
+
+	public String getSfdy(){
 		return sfdy;
 	}
 
-	public void setSfdy(String sfdy) {
-		this.sfdy = sfdy;
+	public void setSfdy(String sfdy){
+		this.sfdy=sfdy;
+	}
+
+	public String getDingcorpid(){
+		return dingcorpid;
+	}
+
+	public void setDingcorpid(String dingcorpid){
+		this.dingcorpid=dingcorpid;
+	}
+
+	public String getDinguserid(){
+		return dinguserid;
+	}
+
+	public void setDinguserid(String dinguserid){
+		this.dinguserid=dinguserid;
 	}
 
 }
