@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
 import com.dingtalk.open.client.ServiceFactory;
+import com.dingtalk.open.client.api.model.corp.JsapiTicket;
 import com.dingtalk.open.client.api.model.isv.SuiteToken;
+import com.dingtalk.open.client.api.service.corp.JsapiService;
 import com.dingtalk.open.client.api.service.isv.IsvService;
 import com.rjxx.taxeasy.dingding.Helper.AuthHelper;
 import com.rjxx.taxeasy.dingding.Helper.ConfOapiRequestHelper;
@@ -96,16 +98,29 @@ public class SuiteManageService {
 		    		IsvSuite suiteBO = isvsuiteservice.getIsvSuite(params);//获取套件
 		    		IsvSuiteToken  IsvSuiteToken=  isvsuitetokenservice.findOneByParams(params);//获取套件token
 		        	String corptoken=AuthHelper.getCorpAccessToken(corpId,IsvSuiteToken.getSuiteToken(),permanentCode);
-		            IsvCorpSuiteJsapiTicket jsAPITicketSr = confOapiRequestHelper.getJSTicket(suiteKey, corpId, corptoken);
-		        	logger.info("jsapiticket:{}"+JSON.toJSONString(jsAPITicketSr));
+		        	
+		        	System.out.println(corptoken);
+		        	
+		            ServiceFactory serviceFactory = ServiceFactory.getInstance();
+
+		        	JsapiService jsapiService = serviceFactory.getOpenService(JsapiService.class);
+
+					JsapiTicket JsapiTicket = jsapiService.getJsapiTicket(corptoken, "jsapi");
+					String jsTicket = JsapiTicket.getTicket();
+		        	/* IsvCorpSuiteJsapiTicket jsAPITicketSr = confOapiRequestHelper.getJSTicket(suiteKey, corpId, corptoken);
+		        	logger.info("jsapiticket:{}"+JSON.toJSONString(jsAPITicketSr));*/
 		        	corpJSTicketDO.setCorpId(corpId);
 		        	corpJSTicketDO.setCorpaccesstoken(corptoken);
-		        	corpJSTicketDO.setCorpJsapiTicket(jsAPITicketSr.getCorpJsapiTicket());
-		        	//corpJSTicketDO.setId(jsAPITicketSr.getId());
-		        	corpJSTicketDO.setExpiredTime(jsAPITicketSr.getExpiredTime());
+		        	corpJSTicketDO.setCorpJsapiTicket(jsTicket);
+		        	
+		        	Calendar ca=Calendar.getInstance();
+		        	ca.setTime(new Date());
+		        	ca.add(Calendar.HOUR_OF_DAY, 2);
+		        	corpJSTicketDO.setExpiredTime(ca.getTime());
+		        	
 		        	corpJSTicketDO.setSuiteKey(suiteKey);
-		        	corpJSTicketDO.setGmtCreate(jsAPITicketSr.getGmtCreate());
-		        	corpJSTicketDO.setGmtModified(jsAPITicketSr.getGmtModified());
+		        	corpJSTicketDO.setGmtCreate(new Date());
+		        	corpJSTicketDO.setGmtModified(new Date());
 		        }
 		        isvcorpsuitejsapiticketservice.save(corpJSTicketDO);
 				return true;
