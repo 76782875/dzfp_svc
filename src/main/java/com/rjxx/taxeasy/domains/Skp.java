@@ -184,7 +184,9 @@ public class Skp implements Serializable {
 
 	@Column(name = "kplx")
 	protected String kplx;
-	
+
+	@Column(name = "jkfs")
+	protected String jkfs;
 
 	public String getSkph() {
 		return skph;
@@ -450,4 +452,11 @@ public class Skp implements Serializable {
 		this.kplx = kplx;
 	}
 
+	public String getJkfs() {
+		return jkfs;
+	}
+
+	public void setJkfs(String jkfs) {
+		this.jkfs = jkfs;
+	}
 }
