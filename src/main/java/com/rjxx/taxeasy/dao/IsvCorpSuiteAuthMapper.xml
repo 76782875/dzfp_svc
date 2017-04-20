@@ -16,8 +16,11 @@
 
     <select id="findAllByParams" parameterType="map" resultType="isvCorpSuiteAuth">
         select * from isv_corp_suite_auth where 1=1
-        <if test="orderBy != null">
-            order by ${orderBy}
+        <if test="suiteKey !=null and suiteKey !=''">
+            and suite_key = #{suiteKey}
+        </if>
+        <if test="corpId !=null and corpId !=''">
+            and corp_id = #{corpId}
         </if>
     </select>
 

@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
  * isv_corp_suite_jsapi_ticket 实体类
  * 企业使用jsapi的js ticket表
  * 由GenEntityMysql类自动生成
- * Thu Apr 13 17:41:24 CST 2017
+ * Thu Apr 20 13:05:21 CST 2017
  * @ZhangBing
  */ 
 @Entity
@@ -53,6 +53,12 @@ public class IsvCorpSuiteJsapiTicket  implements Serializable {
  */ 
 @Column(name="corp_id")
 	protected String corpId;
+
+/**
+ * 套件accesstoken
+ */ 
+@Column(name="corpaccesstoken")
+	protected String corpaccesstoken;
 
 /**
  * 企业js_ticket
@@ -107,6 +113,14 @@ public class IsvCorpSuiteJsapiTicket  implements Serializable {
 
 	public void setCorpId(String corpId){
 		this.corpId=corpId;
+	}
+
+	public String getCorpaccesstoken(){
+		return corpaccesstoken;
+	}
+
+	public void setCorpaccesstoken(String corpaccesstoken){
+		this.corpaccesstoken=corpaccesstoken;
 	}
 
 	public String getCorpJsapiTicket(){

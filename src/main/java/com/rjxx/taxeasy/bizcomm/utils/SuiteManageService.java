@@ -14,6 +14,7 @@ import com.alibaba.fastjson.JSON;
 import com.dingtalk.open.client.ServiceFactory;
 import com.dingtalk.open.client.api.model.isv.SuiteToken;
 import com.dingtalk.open.client.api.service.isv.IsvService;
+import com.rjxx.taxeasy.dingding.Helper.AuthHelper;
 import com.rjxx.taxeasy.dingding.Helper.ConfOapiRequestHelper;
 import com.rjxx.taxeasy.domains.IsvCorpSuiteJsapiTicket;
 import com.rjxx.taxeasy.domains.IsvCorpToken;
@@ -81,7 +82,7 @@ public class SuiteManageService {
 		}
 	}
 
-	public boolean getCorpJSAPITicket(String suiteKey, String corpId) {
+	public boolean getCorpJSAPITicket(String suiteKey, String corpId, String permanentCode) {
 		// TODO Auto-generated method stub
 		try{
 				Map params=new HashMap<>();
@@ -92,13 +93,15 @@ public class SuiteManageService {
 		        calendar.setTime(new Date());
 		        calendar.add(Calendar.MINUTE, 10);//为了防止误差,提前10分钟更新jsticket
 		        if (null == corpJSTicketDO || calendar.getTime().compareTo(corpJSTicketDO.getExpiredTime()) != -1) {
-		            IsvCorpToken corpTokenVoSr = isvcorptokenservice.findOneByParams(params);
-		            IsvCorpSuiteJsapiTicket jsAPITicketSr = confOapiRequestHelper.getJSTicket(suiteKey, corpId, corpTokenVoSr.getCorpToken());
+		    		IsvSuite suiteBO = isvsuiteservice.getIsvSuite(params);//获取套件
+		    		IsvSuiteToken  IsvSuiteToken=  isvsuitetokenservice.findOneByParams(params);//获取套件token
+		        	String corptoken=AuthHelper.getCorpAccessToken(corpId,IsvSuiteToken.getSuiteToken(),permanentCode);
+		            IsvCorpSuiteJsapiTicket jsAPITicketSr = confOapiRequestHelper.getJSTicket(suiteKey, corpId, corptoken);
 		        	logger.info("jsapiticket:{}"+JSON.toJSONString(jsAPITicketSr));
-		        	//corpJSTicketDO=jsAPITicketSr;
 		        	corpJSTicketDO.setCorpId(corpId);
+		        	corpJSTicketDO.setCorpaccesstoken(corptoken);
 		        	corpJSTicketDO.setCorpJsapiTicket(jsAPITicketSr.getCorpJsapiTicket());
-		        	corpJSTicketDO.setId(jsAPITicketSr.getId());
+		        	//corpJSTicketDO.setId(jsAPITicketSr.getId());
 		        	corpJSTicketDO.setExpiredTime(jsAPITicketSr.getExpiredTime());
 		        	corpJSTicketDO.setSuiteKey(suiteKey);
 		        	corpJSTicketDO.setGmtCreate(jsAPITicketSr.getGmtCreate());

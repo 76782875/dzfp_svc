@@ -96,11 +96,17 @@ public class IsvCorpSuiteAuthService {
         IsvSuiteToken IsvSuiteToken=isvsuitetokenservice.findOneByParams(map);
         
         String suiteToken = IsvSuiteToken.getSuiteToken();
-        
+       
         IsvCorpSuiteAuth isvcorpsuiteauth = confOapiRequestHelper.getPermanentCode(suiteKey,tmpAuthCode,suiteToken);
-        isvcorpsuiteauth.setGmtCreate(new Date());
-        isvcorpsuiteauth.setGmtModified(new Date());
-        this.save(isvcorpsuiteauth);
+        IsvCorpSuiteAuth IsvCorpSuiteAuthsave=new IsvCorpSuiteAuth();
+        IsvCorpSuiteAuthsave.setChPermanentCode(isvcorpsuiteauth.getChPermanentCode());
+        IsvCorpSuiteAuthsave.setCorpId(isvcorpsuiteauth.getCorpId());
+        IsvCorpSuiteAuthsave.setId(isvcorpsuiteauth.getId());
+        IsvCorpSuiteAuthsave.setPermanentCode(isvcorpsuiteauth.getPermanentCode());
+        IsvCorpSuiteAuthsave.setSuiteKey(isvcorpsuiteauth.getSuiteKey());
+        IsvCorpSuiteAuthsave.setGmtCreate(isvcorpsuiteauth.getGmtCreate());
+        IsvCorpSuiteAuthsave.setGmtModified(new Date());
+        this.save(IsvCorpSuiteAuthsave);
         
 		    return true;
 		}catch(Exception e){
