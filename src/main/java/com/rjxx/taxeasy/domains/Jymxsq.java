@@ -213,8 +213,6 @@ public class Jymxsq  implements Serializable {
 @Column(name="kkjje")
 	protected Double kkjje;
 
-@Column(name="bzsp")
-	protected String bzsp;
 
 /**
  * 商品备注说明
@@ -223,49 +221,7 @@ public class Jymxsq  implements Serializable {
 	protected String spbz;
 
     
-	public Jymxsq(Integer id, Integer sqlsh, String ddh, String kpddm, String hsbz, Integer spmxxh, String fphxz,
-		String spdm, String spmc, String spggxh, String spzxbm, String yhzcbs, String yhzcmc, String lslbz, String spdw,
-		Double sps, Double spdj, Double spje, Double spsl, Double spse, Double kce, Double jshj, Integer hzkpxh,
-		Date lrsj, Integer lrry, Date xgsj, Integer xgry, String gsdm, Integer skpid, Integer xfid, String yxbz,
-		Integer spid, Double ykjje, Double kkjje, String bzsp, String spbz) {
-	super();
-	this.id = id;
-	this.sqlsh = sqlsh;
-	this.ddh = ddh;
-	this.kpddm = kpddm;
-	this.hsbz = hsbz;
-	this.spmxxh = spmxxh;
-	this.fphxz = fphxz;
-	this.spdm = spdm;
-	this.spmc = spmc;
-	this.spggxh = spggxh;
-	this.spzxbm = spzxbm;
-	this.yhzcbs = yhzcbs;
-	this.yhzcmc = yhzcmc;
-	this.lslbz = lslbz;
-	this.spdw = spdw;
-	this.sps = sps;
-	this.spdj = spdj;
-	this.spje = spje;
-	this.spsl = spsl;
-	this.spse = spse;
-	this.kce = kce;
-	this.jshj = jshj;
-	this.hzkpxh = hzkpxh;
-	this.lrsj = lrsj;
-	this.lrry = lrry;
-	this.xgsj = xgsj;
-	this.xgry = xgry;
-	this.gsdm = gsdm;
-	this.skpid = skpid;
-	this.xfid = xfid;
-	this.yxbz = yxbz;
-	this.spid = spid;
-	this.ykjje = ykjje;
-	this.kkjje = kkjje;
-	this.bzsp = bzsp;
-	this.spbz = spbz;
-}
+
     public Jymxsq(Integer spmxxh, String fphxz, String spdm, String spmc, String spggxh, String spdw, Double sps,
             Double spdj, Double spje, Double spsl, Double spse, Double jshj, Integer hzkpxh, Date lrsj,
             Integer lrry, Date xgsj, Integer xgry, String gsdm, Integer xfid, Integer skpid,String yxbz,Double kkjje,Double ykjje) {
@@ -577,13 +533,7 @@ public Jymxsq() {
 		this.kkjje=kkjje;
 	}
 
-	public String getBzsp(){
-		return bzsp;
-	}
-
-	public void setBzsp(String bzsp){
-		this.bzsp=bzsp;
-	}
+	
 
 	public String getSpbz(){
 		return spbz;
