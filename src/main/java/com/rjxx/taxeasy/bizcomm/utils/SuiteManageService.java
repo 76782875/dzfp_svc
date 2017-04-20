@@ -95,7 +95,14 @@ public class SuiteManageService {
 		            IsvCorpToken corpTokenVoSr = isvcorptokenservice.findOneByParams(params);
 		            IsvCorpSuiteJsapiTicket jsAPITicketSr = confOapiRequestHelper.getJSTicket(suiteKey, corpId, corpTokenVoSr.getCorpToken());
 		        	logger.info("jsapiticket:{}"+JSON.toJSONString(jsAPITicketSr));
-		        	corpJSTicketDO=jsAPITicketSr;
+		        	//corpJSTicketDO=jsAPITicketSr;
+		        	corpJSTicketDO.setCorpId(corpId);
+		        	corpJSTicketDO.setCorpJsapiTicket(jsAPITicketSr.getCorpJsapiTicket());
+		        	corpJSTicketDO.setId(jsAPITicketSr.getId());
+		        	corpJSTicketDO.setExpiredTime(jsAPITicketSr.getExpiredTime());
+		        	corpJSTicketDO.setSuiteKey(suiteKey);
+		        	corpJSTicketDO.setGmtCreate(jsAPITicketSr.getGmtCreate());
+		        	corpJSTicketDO.setGmtModified(jsAPITicketSr.getGmtModified());
 		        }
 		        isvcorpsuitejsapiticketservice.save(corpJSTicketDO);
 				return true;
