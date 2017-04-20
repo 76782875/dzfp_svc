@@ -90,6 +90,8 @@ public class JymxsqVo {
     
     protected Double ykjje;
 
+    protected String spbz;
+    
     public Double getKkjje() {
 		return kkjje;
 	}
@@ -359,6 +361,14 @@ public class JymxsqVo {
 
 	public void setSpid(Integer spid) {
 		this.spid = spid;
+	}
+
+	public String getSpbz() {
+		return spbz;
+	}
+
+	public void setSpbz(String spbz) {
+		this.spbz = spbz;
 	}
     
     
