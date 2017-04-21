@@ -1,16 +1,25 @@
 package com.rjxx.taxeasy.service;
 
 import com.alibaba.fastjson.JSON;
+import com.dingtalk.open.client.api.model.isv.CorpAgent;
+import com.dingtalk.open.client.api.model.isv.CorpAuthInfo;
+import com.dingtalk.open.client.api.model.isv.CorpAuthInfo.Agent;
+import com.dingtalk.open.client.api.model.isv.CorpAuthInfo.AuthCorpInfo;
+import com.dingtalk.open.client.api.model.isv.CorpAuthInfo.AuthInfo;
 import com.google.common.eventbus.EventBus;
 import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.dao.IsvCorpSuiteAuthJpaDao;
 import com.rjxx.taxeasy.dao.IsvCorpSuiteAuthMapper;
 import com.rjxx.taxeasy.dingding.Helper.ConfOapiRequestHelper;
+import com.rjxx.taxeasy.dingding.Helper.ServiceHelper;
 import com.rjxx.taxeasy.dingding.Model.event.AuthChangeEvent;
 import com.rjxx.taxeasy.domains.IsvApp;
+import com.rjxx.taxeasy.domains.IsvCorp;
+import com.rjxx.taxeasy.domains.IsvCorpApp;
 import com.rjxx.taxeasy.domains.IsvCorpSuiteAuth;
 import com.rjxx.taxeasy.domains.IsvSuite;
 import com.rjxx.taxeasy.domains.IsvSuiteToken;
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +55,8 @@ public class IsvCorpSuiteAuthService {
     private IsvSuiteService isvSuiteService;
     @Autowired
     private IsvAppService isvappservice;
+    @Autowired
+    private IsvCorpService isvcorpservice;
     @Autowired
     private IsvCorpAppService IsvCorpAppService;
     @Autowired
@@ -129,27 +140,72 @@ public class IsvCorpSuiteAuthService {
         try {
         	
         	 Map map=new HashMap();
+        	 
              map.put("suiteKey",suiteKey);
+             
              map.put("corpId", corpId);
+             
              //获取套件access_token
              IsvSuiteToken IsvSuiteToken=isvsuitetokenservice.findOneByParams(map);
+             
              IsvCorpSuiteAuth isvcorpsuiteauth=this.findOneByParams(map);
              if(isvcorpsuiteauth==null){
             	 logger.info("授权关系不存在或者已经解除,  suiteKey:{},corpId:{}",suiteKey,corpId);
                  return false;
              }
              suiteToken=IsvSuiteToken.getSuiteToken();
+             
              permanentCode=isvcorpsuiteauth.getPermanentCode();
+             
+             CorpAuthInfo corpauthinfo=ServiceHelper.getAuthInfo(suiteToken,suiteKey,corpId,permanentCode);
+             
+             System.out.println(JSON.toJSON(corpauthinfo));
+             
+             AuthCorpInfo authcorpinfo= corpauthinfo.getAuth_corp_info();//获取授权微应用信息
+             
+             System.out.println(JSON.toJSON(authcorpinfo));
+             
+             IsvCorp isvcorp= isvcorpservice.findOneByParams(map);
+             isvcorp.setId(isvcorp.getId());
+             isvcorp.setCorpLogoUrl(authcorpinfo.getCorp_logo_url());
+             isvcorp.setCorpName(authcorpinfo.getCorp_name());
+             isvcorp.setGmtCreate(new Date());
+             isvcorp.setGmtModified(new Date());
+             isvcorp.setIndustry(authcorpinfo.getIndustry());
+             isvcorp.setInviteCode(authcorpinfo.getInvite_code());
+             isvcorp.setInviteUrl(authcorpinfo.getInvite_url());
+             isvcorpservice.save(isvcorp);
+             
+             AuthInfo  authinfo= corpauthinfo.getAuth_info();
+             
+             System.out.println(JSON.toJSON(authinfo));
+
+             List<Agent> agentlist=authinfo.getAgent();
+             
+             System.out.println(JSON.toJSON(agentlist));
+             
+             for(Agent agent : agentlist){
+            	CorpAgent CorpAgent= ServiceHelper.getAgent(suiteToken, suiteKey, corpId, permanentCode, agent.getAgentid().toString());
+            	
+            	IsvCorpApp IsvCorpApp=IsvCorpAppService.findOneByParams(map);
+            	
+            	IsvCorpApp.setAgentId(CorpAgent.getAgentid());
+            	
+            	IsvCorpApp.setAgentName(CorpAgent.getName());
+            	
+            	IsvCorpApp.setAppId(agent.getAppid());
+            	
+            	IsvCorpApp.setLogoUrl(CorpAgent.getLogo_url());
+            	
+            	
+            	IsvCorpAppService.save(IsvCorpApp);
+             }
+             
         }catch(Exception e){
+        	e.printStackTrace();
         	return false;
         }
-      //异步逻辑
-        AuthChangeEvent authChangeEvent = new AuthChangeEvent();
-        authChangeEvent.setSuiteKey(suiteKey);
-        authChangeEvent.setSuiteToken(suiteToken);
-        authChangeEvent.setCorpId(corpId);
-        authChangeEvent.setPermanentCode(permanentCode);
-        //corpAuthSuiteEventBus.post(authChangeEvent);
+      
 		return true;
 	}
 	 /**
