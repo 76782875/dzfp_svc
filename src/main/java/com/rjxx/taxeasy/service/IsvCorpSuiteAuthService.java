@@ -193,6 +193,12 @@ public class IsvCorpSuiteAuthService {
        	
        	IsvCorpApp.setLogoUrl(CorpAgent.getLogo_url());
        	
+        IsvCorpApp.setCorpId(corpId);
+        
+        IsvCorpApp.setGmtCreate(new Date());
+        
+        IsvCorpApp.setGmtModified(new Date());
+
        	
        	IsvCorpAppService.save(IsvCorpApp);
         }
