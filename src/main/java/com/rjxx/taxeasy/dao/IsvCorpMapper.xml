@@ -4,22 +4,22 @@
 <mapper namespace="com.rjxx.taxeasy.dao.IsvCorpMapper">
 
     <select id="findOneByParams" parameterType="map" resultType="isvCorp">
-        select * from isv_corp where yxbz = '1'
-        <if test="orderBy != null">
-            order by ${orderBy}
+        select * from isv_corp where 1=1
+         <if test="corpId !=null and corpId !=''">
+            and corp_id = #{corpId}
         </if>
         limit 1
     </select>
 
     <select id="findAllByParams" parameterType="map" resultType="isvCorp">
-        select * from isv_corp where yxbz = '1'
-        <if test="orderBy != null">
-            order by ${orderBy}
+        select * from isv_corp where 1=1
+        <if test="corpId !=null and corpId !=''">
+            and corp_id = #{corpId}
         </if>
     </select>
 
     <select id="findByPage" parameterType="pagination" resultType="isvCorp">
-        select * from isv_corp where yxbz = '1'
+        select * from isv_corp where 1=1
         <if test="params.orderBy != null">
             order by ${params.orderBy}
         </if>

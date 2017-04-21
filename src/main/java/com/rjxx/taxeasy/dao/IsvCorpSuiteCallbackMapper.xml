@@ -4,7 +4,7 @@
 <mapper namespace="com.rjxx.taxeasy.dao.IsvCorpSuiteCallbackMapper">
 
     <select id="findOneByParams" parameterType="map" resultType="isvCorpSuiteCallback">
-        select * from isv_corp_suite_callback where yxbz = '1'
+        select * from isv_corp_suite_callback where 1=1
         <if test="orderBy != null">
             order by ${orderBy}
         </if>
@@ -12,14 +12,14 @@
     </select>
 
     <select id="findAllByParams" parameterType="map" resultType="isvCorpSuiteCallback">
-        select * from isv_corp_suite_callback where yxbz = '1'
+        select * from isv_corp_suite_callback where 1=1
         <if test="orderBy != null">
             order by ${orderBy}
         </if>
     </select>
 
     <select id="findByPage" parameterType="pagination" resultType="isvCorpSuiteCallback">
-        select * from isv_corp_suite_callback where yxbz = '1'
+        select * from isv_corp_suite_callback where 1=1
         <if test="params.orderBy != null">
             order by ${params.orderBy}
         </if>
