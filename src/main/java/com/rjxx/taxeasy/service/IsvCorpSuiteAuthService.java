@@ -6,11 +6,13 @@ import com.dingtalk.open.client.api.model.isv.CorpAuthInfo;
 import com.dingtalk.open.client.api.model.isv.CorpAuthInfo.Agent;
 import com.dingtalk.open.client.api.model.isv.CorpAuthInfo.AuthCorpInfo;
 import com.dingtalk.open.client.api.model.isv.CorpAuthInfo.AuthInfo;
+import com.dingtalk.open.client.api.model.isv.CorpAuthSuiteCode;
 import com.google.common.eventbus.EventBus;
 import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.dao.IsvCorpSuiteAuthJpaDao;
 import com.rjxx.taxeasy.dao.IsvCorpSuiteAuthMapper;
 import com.rjxx.taxeasy.dingding.Helper.ConfOapiRequestHelper;
+import com.rjxx.taxeasy.dingding.Helper.Env;
 import com.rjxx.taxeasy.dingding.Helper.ServiceHelper;
 import com.rjxx.taxeasy.dingding.Model.event.AuthChangeEvent;
 import com.rjxx.taxeasy.domains.IsvApp;
@@ -108,15 +110,29 @@ public class IsvCorpSuiteAuthService {
         
         String suiteToken = IsvSuiteToken.getSuiteToken();
        
-        IsvCorpSuiteAuth isvcorpsuiteauth = confOapiRequestHelper.getPermanentCode(suiteKey,tmpAuthCode,suiteToken);
+      
+        CorpAuthSuiteCode corpAuthSuiteCode = ServiceHelper.getPermanentCode(tmpAuthCode, suiteToken);
+        
+        String corpId = corpAuthSuiteCode.getAuth_corp_info().getCorpid();
+        
+		String permanent_code = corpAuthSuiteCode.getPermanent_code();
+        
+		/*
+		 * 对企业授权的套件发起激活，
+		 */
+		ServiceHelper.getActivateSuite(suiteToken, suiteKey, corpId, permanent_code);
+		/*
+		 * 将corpId（企业id）和permanent_code（永久授权码）做持久化存储
+		 * 之后在获取企业的access_token时需要使用
+		 */
         IsvCorpSuiteAuth IsvCorpSuiteAuthsave=new IsvCorpSuiteAuth();
-        IsvCorpSuiteAuthsave.setChPermanentCode(isvcorpsuiteauth.getChPermanentCode());
-        IsvCorpSuiteAuthsave.setCorpId(isvcorpsuiteauth.getCorpId());
-        IsvCorpSuiteAuthsave.setId(isvcorpsuiteauth.getId());
-        IsvCorpSuiteAuthsave.setPermanentCode(isvcorpsuiteauth.getPermanentCode());
-        IsvCorpSuiteAuthsave.setSuiteKey(isvcorpsuiteauth.getSuiteKey());
-        IsvCorpSuiteAuthsave.setGmtCreate(isvcorpsuiteauth.getGmtCreate());
+        IsvCorpSuiteAuthsave.setChPermanentCode("");
+        IsvCorpSuiteAuthsave.setCorpId(corpId);
+        IsvCorpSuiteAuthsave.setPermanentCode(permanent_code);
+        IsvCorpSuiteAuthsave.setSuiteKey(suiteKey);
+        IsvCorpSuiteAuthsave.setGmtCreate(new Date());
         IsvCorpSuiteAuthsave.setGmtModified(new Date());
+        
         this.save(IsvCorpSuiteAuthsave);
         
 		    return true;
@@ -166,6 +182,7 @@ public class IsvCorpSuiteAuthService {
              System.out.println(JSON.toJSON(authcorpinfo));
              
              IsvCorp isvcorp= isvcorpservice.findOneByParams(map);
+             
              isvcorp.setId(isvcorp.getId());
              isvcorp.setCorpLogoUrl(authcorpinfo.getCorp_logo_url());
              isvcorp.setCorpName(authcorpinfo.getCorp_name());
