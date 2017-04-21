@@ -152,7 +152,7 @@ public class IsvCorpSuiteAuthService {
         
         this.save(IsvCorpSuiteAuthsave);
         
-        CorpAuthInfo corpauthinfo=ServiceHelper.getAuthInfo(suiteToken,suiteKey,tmpAuthCode,permanent_code);
+        CorpAuthInfo corpauthinfo=ServiceHelper.getAuthInfo(suiteToken,suiteKey,corpId,permanent_code);
         
         System.out.println(JSON.toJSON(corpauthinfo));
         
