@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -143,7 +144,10 @@ public class IsvCorpSuiteAuthService {
         isvcorptoken.setGmtCreate(new Date());
         isvcorptoken.setGmtModified(new Date());
         isvcorptoken.setCorpToken(corptoken);
-        
+        Calendar ca=Calendar.getInstance();
+    	ca.setTime(new Date());
+    	ca.add(Calendar.HOUR_OF_DAY, 2);
+        isvcorptoken.setExpiredTime(ca.getTime());
         IsvCorpTokenService.save(isvcorptoken);
         
         this.save(IsvCorpSuiteAuthsave);
