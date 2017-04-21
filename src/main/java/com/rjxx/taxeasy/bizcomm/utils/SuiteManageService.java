@@ -121,7 +121,15 @@ public class SuiteManageService {
 		        	corpJSTicketDO.setSuiteKey(suiteKey);
 		        	corpJSTicketDO.setGmtCreate(new Date());
 		        	corpJSTicketDO.setGmtModified(new Date());
+		        	
+		        	 
+		        	
+		        	IsvCorpToken  isvcorptoken=isvcorptokenservice.findOneByParams(params);
+		        	isvcorptoken.setCorpToken(corptoken);
+		        	isvcorptoken.setExpiredTime(ca.getTime());
+		        	isvcorptokenservice.save(isvcorptoken);
 		        }
+		        
 		        isvcorpsuitejsapiticketservice.save(corpJSTicketDO);
 				return true;
 

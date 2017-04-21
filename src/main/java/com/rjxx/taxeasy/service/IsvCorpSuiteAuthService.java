@@ -19,6 +19,7 @@ import com.rjxx.taxeasy.domains.IsvApp;
 import com.rjxx.taxeasy.domains.IsvCorp;
 import com.rjxx.taxeasy.domains.IsvCorpApp;
 import com.rjxx.taxeasy.domains.IsvCorpSuiteAuth;
+import com.rjxx.taxeasy.domains.IsvCorpToken;
 import com.rjxx.taxeasy.domains.IsvSuite;
 import com.rjxx.taxeasy.domains.IsvSuiteToken;
 
@@ -133,8 +134,59 @@ public class IsvCorpSuiteAuthService {
         IsvCorpSuiteAuthsave.setGmtCreate(new Date());
         IsvCorpSuiteAuthsave.setGmtModified(new Date());
         
+        IsvCorpToken  isvcorptoken=new IsvCorpToken();
+        isvcorptoken.setCorpId(corpId);
+        isvcorptoken.setSuiteKey(suiteKey);
+        isvcorptoken.setGmtCreate(new Date());
+        isvcorptoken.setGmtModified(new Date());
+        IsvCorpTokenService.save(isvcorptoken);
+        
         this.save(IsvCorpSuiteAuthsave);
         
+        CorpAuthInfo corpauthinfo=ServiceHelper.getAuthInfo(suiteToken,suiteKey,corpId,permanent_code);
+        
+        System.out.println(JSON.toJSON(corpauthinfo));
+        
+        AuthCorpInfo authcorpinfo= corpauthinfo.getAuth_corp_info();//获取授权微应用信息
+        
+        System.out.println(JSON.toJSON(authcorpinfo));
+        
+        IsvCorp isvcorp= isvcorpservice.findOneByParams(map);
+        
+        
+        isvcorp.setCorpLogoUrl(authcorpinfo.getCorp_logo_url());
+        isvcorp.setCorpName(authcorpinfo.getCorp_name());
+        isvcorp.setGmtCreate(new Date());
+        isvcorp.setGmtModified(new Date());
+        isvcorp.setIndustry(authcorpinfo.getIndustry());
+        isvcorp.setInviteCode(authcorpinfo.getInvite_code());
+        isvcorp.setInviteUrl(authcorpinfo.getInvite_url());
+        isvcorpservice.save(isvcorp);
+        
+        AuthInfo  authinfo= corpauthinfo.getAuth_info();
+        
+        System.out.println(JSON.toJSON(authinfo));
+
+        List<Agent> agentlist=authinfo.getAgent();
+        
+        System.out.println(JSON.toJSON(agentlist));
+        
+        for(Agent agent : agentlist){
+       	CorpAgent CorpAgent= ServiceHelper.getAgent(suiteToken, suiteKey, corpId, permanent_code, agent.getAgentid().toString());
+       	
+       	IsvCorpApp IsvCorpApp=IsvCorpAppService.findOneByParams(map);
+       	
+       	IsvCorpApp.setAgentId(CorpAgent.getAgentid());
+       	
+       	IsvCorpApp.setAgentName(CorpAgent.getName());
+       	
+       	IsvCorpApp.setAppId(agent.getAppid());
+       	
+       	IsvCorpApp.setLogoUrl(CorpAgent.getLogo_url());
+       	
+       	
+       	IsvCorpAppService.save(IsvCorpApp);
+        }
 		    return true;
 		}catch(Exception e){
 			return false;
