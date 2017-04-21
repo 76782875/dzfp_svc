@@ -11,6 +11,7 @@ import com.google.common.eventbus.EventBus;
 import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.dao.IsvCorpSuiteAuthJpaDao;
 import com.rjxx.taxeasy.dao.IsvCorpSuiteAuthMapper;
+import com.rjxx.taxeasy.dingding.Helper.AuthHelper;
 import com.rjxx.taxeasy.dingding.Helper.ConfOapiRequestHelper;
 import com.rjxx.taxeasy.dingding.Helper.Env;
 import com.rjxx.taxeasy.dingding.Helper.ServiceHelper;
@@ -134,11 +135,15 @@ public class IsvCorpSuiteAuthService {
         IsvCorpSuiteAuthsave.setGmtCreate(new Date());
         IsvCorpSuiteAuthsave.setGmtModified(new Date());
         
+    	String corptoken=AuthHelper.getCorpAccessToken(corpId,IsvSuiteToken.getSuiteToken(),permanent_code);
+
         IsvCorpToken  isvcorptoken=new IsvCorpToken();
         isvcorptoken.setCorpId(corpId);
         isvcorptoken.setSuiteKey(suiteKey);
         isvcorptoken.setGmtCreate(new Date());
         isvcorptoken.setGmtModified(new Date());
+        isvcorptoken.setCorpToken(corptoken);
+        
         IsvCorpTokenService.save(isvcorptoken);
         
         this.save(IsvCorpSuiteAuthsave);
