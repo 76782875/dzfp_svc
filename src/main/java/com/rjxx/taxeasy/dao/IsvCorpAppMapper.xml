@@ -26,9 +26,6 @@
     </select>
     <select id="deleteCorpApp" parameterType="map" resultType="isvCorpApp">
         delete from isv_corp_app where 1=1
-        <if test="appId !=null and appId !=''">
-            and app_id = #{appId}
-        </if>
         <if test="corpId !=null and corpId !=''">
             and corp_id = #{corpId}
         </if>

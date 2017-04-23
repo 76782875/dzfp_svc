@@ -23,5 +23,7 @@ public interface IsvCorpMapper {
 
     public List<IsvCorp> findByPage(Pagination pagination);
 
+	public void deleteCorp(String receiveCorpId);
+
 }
 

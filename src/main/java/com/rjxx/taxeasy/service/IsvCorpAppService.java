@@ -59,5 +59,12 @@ public class IsvCorpAppService {
 		 isvCorpAppMapper.deleteCorpApp(map);
 	}
 
+	public void deleteCorpApp(String receiveCorpId) {
+		// TODO Auto-generated method stub
+		Map map=new HashMap();
+		map.put("corpId", receiveCorpId);
+		 isvCorpAppMapper.deleteCorpApp(map);
+	}
+
 }
 

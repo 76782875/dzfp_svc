@@ -24,6 +24,11 @@
             order by ${params.orderBy}
         </if>
     </select>
-
+    <select id="deleteCorpApp" parameterType="map" resultType="isvCorpApp">
+        delete from isv_corp where 1=1
+        <if test="corpId !=null and corpId !=''">
+            and corp_id = #{corpId}
+        </if>
+    </select>
 </mapper>
 

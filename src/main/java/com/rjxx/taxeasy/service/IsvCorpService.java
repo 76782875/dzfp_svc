@@ -50,5 +50,10 @@ public class IsvCorpService {
         return isvCorpMapper.findByPage(pagination);
     }
 
+	public void deleteCorp(String receiveCorpId) {
+		// TODO Auto-generated method stub
+		isvCorpMapper.deleteCorp(receiveCorpId);
+	}
+
 }
 

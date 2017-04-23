@@ -308,9 +308,11 @@ public class IsvCorpSuiteAuthService {
 		  //2.删除掉企业使用的微应用
 		Map params=new HashMap<>();
 		params.put("suiteKey", suiteKey);
-        List<IsvApp> isvapplist = isvappservice.findAllByParams(params);
-        for (IsvApp isvapp : isvapplist) {
-        	IsvCorpAppService.deleteCorpApp(receiveCorpId, isvapp.getAppId());
+		params.put("corpId", receiveCorpId);
+        List<IsvCorp> isvcorplist = isvcorpservice.findAllByParams(params);
+        for (IsvCorp isvcorp : isvcorplist) {
+        	isvcorpservice.deleteCorp(receiveCorpId);
+        	IsvCorpAppService.deleteCorpApp(receiveCorpId);
         }
       //4.删除企业token.这个必须删除,一旦出现解除授权立即授权的情况,之前的token是不可用的
         IsvCorpTokenService.deleteCorpToken(suiteKey, receiveCorpId);
