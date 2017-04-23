@@ -160,7 +160,7 @@ public class IsvCorpSuiteAuthService {
         
         System.out.println(JSON.toJSON(authcorpinfo));
         map.put("corpId", corpId);
-        IsvCorp isvcorp= isvcorpservice.findOneByParams(map);
+        IsvCorp isvcorp= new IsvCorp();
         isvcorp.setCorpLogoUrl(authcorpinfo.getCorp_logo_url());
         isvcorp.setCorpName(authcorpinfo.getCorp_name());
         isvcorp.setGmtCreate(new Date());
@@ -182,7 +182,7 @@ public class IsvCorpSuiteAuthService {
         for(Agent agent : agentlist){
        	CorpAgent CorpAgent= ServiceHelper.getAgent(suiteToken, suiteKey, corpId, permanent_code, agent.getAgentid().toString());
        	
-       	IsvCorpApp IsvCorpApp=IsvCorpAppService.findOneByParams(map);
+       	IsvCorpApp IsvCorpApp=new IsvCorpApp();
        	
        	IsvCorpApp.setAgentId(CorpAgent.getAgentid());
        	
