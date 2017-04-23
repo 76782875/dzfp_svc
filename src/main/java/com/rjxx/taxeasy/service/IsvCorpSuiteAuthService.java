@@ -159,10 +159,8 @@ public class IsvCorpSuiteAuthService {
         AuthCorpInfo authcorpinfo= corpauthinfo.getAuth_corp_info();//获取授权微应用信息
         
         System.out.println(JSON.toJSON(authcorpinfo));
-        
+        map.put("corpId", corpId);
         IsvCorp isvcorp= isvcorpservice.findOneByParams(map);
-        
-        
         isvcorp.setCorpLogoUrl(authcorpinfo.getCorp_logo_url());
         isvcorp.setCorpName(authcorpinfo.getCorp_name());
         isvcorp.setGmtCreate(new Date());
@@ -170,6 +168,7 @@ public class IsvCorpSuiteAuthService {
         isvcorp.setIndustry(authcorpinfo.getIndustry());
         isvcorp.setInviteCode(authcorpinfo.getInvite_code());
         isvcorp.setInviteUrl(authcorpinfo.getInvite_url());
+        isvcorp.setCorpId(corpId);
         isvcorpservice.save(isvcorp);
         
         AuthInfo  authinfo= corpauthinfo.getAuth_info();
