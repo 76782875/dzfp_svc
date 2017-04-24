@@ -154,7 +154,9 @@ public class JyxxsqService {
 		for (Jyxxsq jyxxsq : jyxxsqList) {
 			for (JymxsqVo vo : jymxsqList) {
 				if (jyxxsq.getDdh().equals(vo.getDdh())) {
+					System.out.println(vo.getFphxz());
 					mx = getMx(vo);
+					System.out.println(mx.getFphxz());
 					mx.setSqlsh(jyxxsq.getSqlsh());
 					mxList.add(mx);
 				}
@@ -167,7 +169,7 @@ public class JyxxsqService {
 	private Jymxsq getMx(JymxsqVo vo) {
 		Jymxsq mx = new Jymxsq(vo.getSpmxxh(), vo.getFphxz(), vo.getSpdm(), vo.getSpmc(), vo.getSpggxh(), vo.getSpdw(),
 				vo.getSps(), vo.getSpdj(), vo.getSpje(), vo.getSpsl(), vo.getSpse(), vo.getJshj(),vo.getHzkpxh(), vo.getLrsj(), vo.getLrry(), vo.getXgsj(), vo.getXgry(), vo.getGsdm(), vo.getXfid(),
-				vo.getSkpid(),vo.getYxbz(),vo.getKkjje(),vo.getYkjje(),vo.getSpbz());
+				vo.getSkpid(),vo.getYxbz(),vo.getKkjje(),vo.getYkjje());
 		return mx;
 	}
 

@@ -221,46 +221,40 @@ public class Jymxsq  implements Serializable {
 	protected String spbz;
 
     
-
-    public Jymxsq(Integer spmxxh, String fphxz, String spdm, String spmc, String spggxh, String spdw, Double sps,
-            Double spdj, Double spje, Double spsl, Double spse, Double jshj, Integer hzkpxh, Date lrsj,
-            Integer lrry, Date xgsj, Integer xgry, String gsdm, Integer xfid, Integer skpid,String yxbz,Double kkjje,Double ykjje) {
-        super();
-        this.spmxxh = spmxxh;
-        this.fphxz = fphxz;
-        this.spdm = spdm;
-        this.spmc = spmc;
-        this.spggxh = spggxh;
-        this.spdw = spdw;
-        this.sps = sps;
-        this.spdj = spdj;
-        this.spje = spje;
-        this.spsl = spsl;
-        this.spse = spse;
-        this.jshj = jshj;
-        //this.ykphj = ykphj;
-        this.hzkpxh = hzkpxh;
-        this.lrsj = lrsj;
-        this.lrry = lrry;
-        this.xgsj = xgsj;
-        this.xgry = xgry;
-        this.gsdm = gsdm;
-        this.xfid = xfid;
-        this.skpid = skpid;
-        this.yxbz = yxbz;
-        this.kkjje = kkjje;
-        this.ykjje = ykjje;
-        
-    }
 public Jymxsq() {
-        // TODO Auto-generated constructor stub
-    }
+    // TODO Auto-generated constructor stub
+}
 
-	public Jymxsq(Integer integer, String string, String string2, String string3, String string4, String string5, Double double1, Double double2, Double double3, Double double4, Double double5, Double double6, Integer integer2, Date date, Integer integer3, Date date2, Integer integer4, String string6, Integer integer5, Integer integer6, String string7, Double double7, Double double8, String string8) {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
+public Jymxsq(Integer spmxxh, String fphxz, String spdm, String spmc, String spggxh, String spdw, Double sps,
+		Double spdj, Double spje, Double spsl, Double spse, Double jshj, Integer hzkpxh, Date lrsj,
+		Integer lrry, Date xgsj, Integer xgry, String gsdm, Integer xfid, Integer skpid,String yxbz,Double kkjje,Double ykjje) {
+	super();
+	this.spmxxh = spmxxh;
+	this.fphxz = fphxz;
+	this.spdm = spdm;
+	this.spmc = spmc;
+	this.spggxh = spggxh;
+	this.spdw = spdw;
+	this.sps = sps;
+	this.spdj = spdj;
+	this.spje = spje;
+	this.spsl = spsl;
+	this.spse = spse;
+	this.jshj = jshj;
+	//this.ykphj = ykphj;
+	this.hzkpxh = hzkpxh;
+	this.lrsj = lrsj;
+	this.lrry = lrry;
+	this.xgsj = xgsj;
+	this.xgry = xgry;
+	this.gsdm = gsdm;
+	this.xfid = xfid;
+	this.skpid = skpid;
+	this.yxbz = yxbz;
+	this.kkjje = kkjje;
+	this.ykjje = ykjje;
+	
+}
 	public Integer getId(){
 		return id;
 	}
