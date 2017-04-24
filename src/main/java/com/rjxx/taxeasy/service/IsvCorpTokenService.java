@@ -59,5 +59,8 @@ public class IsvCorpTokenService {
 		isvCorpTokenMapper.deleteCorpToken(map);
 	}
 
+    public void deleteCorpToken(IsvCorpToken isvCorpToken) {
+        isvCorpTokenJpaDao.delete(isvCorpToken);
+    }
 }
 

@@ -66,5 +66,8 @@ public class IsvCorpAppService {
 		 isvCorpAppMapper.deleteCorpApp(map);
 	}
 
+    public void deleteCorpApp(IsvCorpApp isvCorpApp) {
+        isvCorpAppJpaDao.delete(isvCorpApp);
+    }
 }
 

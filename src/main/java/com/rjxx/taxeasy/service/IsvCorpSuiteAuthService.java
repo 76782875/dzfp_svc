@@ -295,7 +295,7 @@ public class IsvCorpSuiteAuthService {
      * 处理解除授权事件
      *
      * @param suiteKey
-     * @param corpId
+     * @param
      * @return
      */
 	public boolean handleRelieveAuth(String suiteKey, String receiveCorpId) {
@@ -310,11 +310,15 @@ public class IsvCorpSuiteAuthService {
 		params.put("corpId", receiveCorpId);
         List<IsvCorp> isvcorplist = isvcorpservice.findAllByParams(params);
         for (IsvCorp isvcorp : isvcorplist) {
-        	isvcorpservice.deleteCorp(receiveCorpId);
-        	IsvCorpAppService.deleteCorpApp(receiveCorpId);
+        	isvcorpservice.deleteCorp(isvcorp);
         }
-      //4.删除企业token.这个必须删除,一旦出现解除授权立即授权的情况,之前的token是不可用的
-        IsvCorpTokenService.deleteCorpToken(suiteKey, receiveCorpId);
+        IsvCorpApp isvCorpApp=IsvCorpAppService.findOneByParams(params);
+        IsvCorpAppService.deleteCorpApp(isvCorpApp);
+
+            //4.删除企业token.这个必须删除,一旦出现解除授权立即授权的情况,之前的token是不可用的
+        IsvCorpToken isvCorpToken= IsvCorpTokenService.findOneByParams(params);
+
+        IsvCorpTokenService.deleteCorpToken(isvCorpToken);
 		    return true;
 		}catch(Exception e){
 			return false;
@@ -333,7 +337,7 @@ public class IsvCorpSuiteAuthService {
         map.put("corpId", receiveCorpId);
         IsvCorpSuiteAuth isvcorpsuiteauth=this.findOneByParams(map);
 
-        //获取套件access_token
+        //删除套件授权码
 		isvCorpSuiteAuthJpaDao.delete(isvcorpsuiteauth);
 	}
 

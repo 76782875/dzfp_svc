@@ -23,7 +23,7 @@ public interface IsvCorpAppMapper {
 
     public List<IsvCorpApp> findByPage(Pagination pagination);
 
-	public Object deleteCorpApp( Map map);
+	public void deleteCorpApp( Map map);
 
 }
 
