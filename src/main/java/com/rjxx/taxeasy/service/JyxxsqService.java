@@ -154,9 +154,7 @@ public class JyxxsqService {
 		for (Jyxxsq jyxxsq : jyxxsqList) {
 			for (JymxsqVo vo : jymxsqList) {
 				if (jyxxsq.getDdh().equals(vo.getDdh())) {
-					System.out.println(vo.getFphxz());
 					mx = getMx(vo);
-					System.out.println(mx.getFphxz());
 					mx.setSqlsh(jyxxsq.getSqlsh());
 					mxList.add(mx);
 				}
