@@ -31,6 +31,9 @@
         <if test="xfsh != null and xfsh != ''">
             and xfsh = #{xfsh}
         </if>
+        <if test="id != null and id != ''">
+            and id = #{id}
+        </if>
     </select>
     
     <select id="findAllByMap" parameterType="map" resultType="xf">
