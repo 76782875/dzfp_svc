@@ -59,7 +59,7 @@ public class AuthHelper {
 	 * 因为access_token和jsapi_ticket的过期时间都是7200秒
 	 * 所以在获取access_token的同时也去获取了jsapi_ticket
 	 * 注：jsapi_ticket是在前端页面JSAPI做权限验证配置的时候需要使用的
-	 * 具体信息请查看开发者文档--权限验证配置
+	 *
 	 */
 	public static String getAccessToken(String corpId) throws Exception {
 		long curTime = System.currentTimeMillis();

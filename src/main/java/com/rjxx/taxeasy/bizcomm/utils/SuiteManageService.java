@@ -17,7 +17,7 @@ import com.dingtalk.open.client.api.model.isv.SuiteToken;
 import com.dingtalk.open.client.api.service.corp.JsapiService;
 import com.dingtalk.open.client.api.service.isv.IsvService;
 import com.rjxx.taxeasy.dingding.Helper.AuthHelper;
-import com.rjxx.taxeasy.dingding.Helper.ConfOapiRequestHelper;
+
 import com.rjxx.taxeasy.domains.IsvCorpSuiteJsapiTicket;
 import com.rjxx.taxeasy.domains.IsvCorpToken;
 import com.rjxx.taxeasy.domains.IsvSuite;
@@ -50,8 +50,7 @@ public class SuiteManageService {
 	private IsvCorpSuiteJsapiTicketService isvcorpsuitejsapiticketservice;
 	@Autowired
 	private IsvCorpTokenService isvcorptokenservice;
-	@Autowired
-    private ConfOapiRequestHelper confOapiRequestHelper;
+
 	
 	public boolean saveOrUpdateSuiteToken(String suiteKey) {
 		// TODO Auto-generated method stub

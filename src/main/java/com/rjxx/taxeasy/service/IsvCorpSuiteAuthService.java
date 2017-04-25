@@ -12,16 +12,13 @@ import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.dao.IsvCorpSuiteAuthJpaDao;
 import com.rjxx.taxeasy.dao.IsvCorpSuiteAuthMapper;
 import com.rjxx.taxeasy.dingding.Helper.AuthHelper;
-import com.rjxx.taxeasy.dingding.Helper.ConfOapiRequestHelper;
-import com.rjxx.taxeasy.dingding.Helper.Env;
+
 import com.rjxx.taxeasy.dingding.Helper.ServiceHelper;
-import com.rjxx.taxeasy.dingding.Model.event.AuthChangeEvent;
-import com.rjxx.taxeasy.domains.IsvApp;
 import com.rjxx.taxeasy.domains.IsvCorp;
 import com.rjxx.taxeasy.domains.IsvCorpApp;
 import com.rjxx.taxeasy.domains.IsvCorpSuiteAuth;
 import com.rjxx.taxeasy.domains.IsvCorpToken;
-import com.rjxx.taxeasy.domains.IsvSuite;
+
 import com.rjxx.taxeasy.domains.IsvSuiteToken;
 
 
@@ -50,10 +47,7 @@ public class IsvCorpSuiteAuthService {
 
     @Autowired
     private IsvCorpSuiteAuthJpaDao isvCorpSuiteAuthJpaDao;
-    /*@Autowired
-    private EventBus corpAuthSuiteEventBus;*/
-    @Autowired
-    private ConfOapiRequestHelper confOapiRequestHelper;
+
     @Autowired
     private IsvCorpSuiteAuthMapper isvCorpSuiteAuthMapper;
     @Autowired
