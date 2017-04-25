@@ -106,8 +106,6 @@ public class SuiteManageService {
 
 					JsapiTicket JsapiTicket = jsapiService.getJsapiTicket(corptoken, "jsapi");
 					String jsTicket = JsapiTicket.getTicket();
-		        	/* IsvCorpSuiteJsapiTicket jsAPITicketSr = confOapiRequestHelper.getJSTicket(suiteKey, corpId, corptoken);
-		        	logger.info("jsapiticket:{}"+JSON.toJSONString(jsAPITicketSr));*/
 		        	corpJSTicketDO.setCorpId(corpId);
 		        	corpJSTicketDO.setCorpaccesstoken(corptoken);
 		        	corpJSTicketDO.setCorpJsapiTicket(jsTicket);
