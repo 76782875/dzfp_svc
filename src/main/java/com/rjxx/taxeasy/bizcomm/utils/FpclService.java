@@ -27,6 +27,7 @@ import com.rjxx.taxeasy.service.FpgzService;
 import com.rjxx.taxeasy.service.GsxxService;
 import com.rjxx.taxeasy.service.JylsService;
 import com.rjxx.taxeasy.service.JyspmxService;
+import com.rjxx.taxeasy.service.JyxxsqService;
 import com.rjxx.taxeasy.service.KplsService;
 import com.rjxx.taxeasy.service.KpspmxService;
 import com.rjxx.taxeasy.service.SkpService;
@@ -50,6 +51,7 @@ public class FpclService {
  @Autowired private KpspmxService kpspmxService;
  @Autowired private DataOperte dc;
  @Autowired private XfService xfService;
+ @Autowired private JyxxsqService jyxxsqService;
 	public boolean kpcl1(Integer djh,String dybz) throws Exception {
 		Jyls jyls1 = jylsService.findOne(djh);
 		Jyspmx jyspmx = new Jyspmx();
@@ -718,6 +720,9 @@ public class FpclService {
                 int fpNum = entry.getKey();
                 List<JyspmxDecimal2> fpJyspmxList = entry.getValue();
                 Jyls jyls = saveJyls(jyxxsq, fpJyspmxList);
+                jyxxsq.setZtbz("3");
+                jyxxsq.setXgsj(new Date());
+                jyxxsqService.save(jyxxsq);
                 List<Jyspmx> list2 = saveKpspmx(jyls, fpJyspmxList);
                 //保存开票流水
                 Kpls kpls = saveKpls(jyls, list2, jyxxsq.getSfdy());
