@@ -93,7 +93,7 @@ public class SuiteManageService {
 		        Calendar calendar = Calendar.getInstance();
 		        calendar.setTime(new Date());
 		        calendar.add(Calendar.MINUTE, 10);//为了防止误差,提前10分钟更新jsticket
-		        if (null == corpJSTicketDO || calendar.getTime().compareTo(corpJSTicketDO.getExpiredTime()) != -1) {
+
 		    		IsvSuite suiteBO = isvsuiteservice.getIsvSuite(params);//获取套件
 		    		IsvSuiteToken  IsvSuiteToken=  isvsuitetokenservice.findOneByParams(params);//获取套件token
 		        	String corptoken=AuthHelper.getCorpAccessToken(corpId,IsvSuiteToken.getSuiteToken(),permanentCode);
@@ -125,7 +125,7 @@ public class SuiteManageService {
 		        	isvcorptoken.setCorpToken(corptoken);
 		        	isvcorptoken.setExpiredTime(ca.getTime());
 		        	isvcorptokenservice.save(isvcorptoken);
-		        }
+
 		        
 		        isvcorpsuitejsapiticketservice.save(corpJSTicketDO);
 				return true;
