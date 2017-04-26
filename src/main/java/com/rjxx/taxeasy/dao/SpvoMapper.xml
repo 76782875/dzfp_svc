@@ -17,6 +17,9 @@
         <if test="spmc != null">
             and spmc = #{spmc}
         </if>
+        <if test="sl != null">
+            and sl = #{sl}
+        </if>
     </select>
     <select id="findAllOnPage" parameterType="pagination" resultType="spvo">
         select * from spvo where yxbz = '1'
