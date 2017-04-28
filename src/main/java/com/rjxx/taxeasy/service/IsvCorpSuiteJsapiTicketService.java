@@ -50,5 +50,8 @@ public class IsvCorpSuiteJsapiTicketService {
         return isvCorpSuiteJsapiTicketMapper.findByPage(pagination);
     }
 
+    public void deleteisvCorpSuiteJsapiTicket(IsvCorpSuiteJsapiTicket isvCorpSuiteJsapiTicket) {
+        isvCorpSuiteJsapiTicketJpaDao.delete(isvCorpSuiteJsapiTicket);
+    }
 }
 

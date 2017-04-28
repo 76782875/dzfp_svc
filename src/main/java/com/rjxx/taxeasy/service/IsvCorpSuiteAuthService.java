@@ -14,12 +14,7 @@ import com.rjxx.taxeasy.dao.IsvCorpSuiteAuthMapper;
 import com.rjxx.taxeasy.dingding.Helper.AuthHelper;
 
 import com.rjxx.taxeasy.dingding.Helper.ServiceHelper;
-import com.rjxx.taxeasy.domains.IsvCorp;
-import com.rjxx.taxeasy.domains.IsvCorpApp;
-import com.rjxx.taxeasy.domains.IsvCorpSuiteAuth;
-import com.rjxx.taxeasy.domains.IsvCorpToken;
-
-import com.rjxx.taxeasy.domains.IsvSuiteToken;
+import com.rjxx.taxeasy.domains.*;
 
 
 import org.slf4j.Logger;
@@ -62,6 +57,8 @@ public class IsvCorpSuiteAuthService {
     private IsvSuiteTokenService isvsuitetokenservice;
     @Autowired
     private IsvCorpTokenService IsvCorpTokenService;
+    @Autowired
+    private IsvCorpSuiteJsapiTicketService isvCorpSuiteJsapiTicketService;
 
     public IsvCorpSuiteAuth findOne(int id) {
         return isvCorpSuiteAuthJpaDao.findOne(id);
@@ -311,7 +308,8 @@ public class IsvCorpSuiteAuthService {
 
             //4.删除企业token.这个必须删除,一旦出现解除授权立即授权的情况,之前的token是不可用的
         IsvCorpToken isvCorpToken= IsvCorpTokenService.findOneByParams(params);
-
+        IsvCorpSuiteJsapiTicket isvCorpSuiteJsapiTicket=isvCorpSuiteJsapiTicketService.findOneByParams(params);
+        isvCorpSuiteJsapiTicketService.deleteisvCorpSuiteJsapiTicket(isvCorpSuiteJsapiTicket);
         IsvCorpTokenService.deleteCorpToken(isvCorpToken);
 		    return true;
 		}catch(Exception e){
