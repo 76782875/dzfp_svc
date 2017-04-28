@@ -90,7 +90,6 @@ public class SuiteManageService {
 			Map params=new HashMap<>();
 				params.put("suiteKey", suiteKey);
 				params.put("corpId", corpId);
-		        IsvCorpSuiteJsapiTicket corpJSTicketDO = isvcorpsuitejsapiticketservice.findOneByParams(params);
 		        Calendar calendar = Calendar.getInstance();
 		        calendar.setTime(new Date());
 		        calendar.add(Calendar.MINUTE, 10);//为了防止误差,提前10分钟更新jsticket
