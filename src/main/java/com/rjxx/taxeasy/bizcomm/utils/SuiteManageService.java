@@ -107,28 +107,26 @@ public class SuiteManageService {
 
 					JsapiTicket JsapiTicket = jsapiService.getJsapiTicket(corptoken, "jsapi");
 					String jsTicket = JsapiTicket.getTicket();
-		        	corpJSTicketDO.setCorpId(corpId);
-		        	corpJSTicketDO.setCorpaccesstoken(corptoken);
-		        	corpJSTicketDO.setCorpJsapiTicket(jsTicket);
-		        	
-		        	Calendar ca=Calendar.getInstance();
-		        	ca.setTime(new Date());
-		        	ca.add(Calendar.HOUR_OF_DAY, 2);
-		        	corpJSTicketDO.setExpiredTime(ca.getTime());
-		        	
-		        	corpJSTicketDO.setSuiteKey(suiteKey);
-		        	corpJSTicketDO.setGmtCreate(new Date());
-		        	corpJSTicketDO.setGmtModified(new Date());
-		        	
-		        	 
-		        	
+			        IsvCorpSuiteJsapiTicket corpJSTicketDO = isvcorpsuitejsapiticketservice.findOneByParams(params);
+					Calendar ca=Calendar.getInstance();
+					ca.setTime(new Date());
+					ca.add(Calendar.HOUR_OF_DAY, 2);
+                    if(corpJSTicketDO==null){
+						 corpJSTicketDO=new IsvCorpSuiteJsapiTicket();
+
+					}
+					corpJSTicketDO.setCorpId(corpId);
+					corpJSTicketDO.setCorpaccesstoken(corptoken);
+					corpJSTicketDO.setCorpJsapiTicket(jsTicket);
+					corpJSTicketDO.setExpiredTime(ca.getTime());
+					corpJSTicketDO.setSuiteKey(suiteKey);
+					corpJSTicketDO.setGmtCreate(new Date());
+					corpJSTicketDO.setGmtModified(new Date());
 		        	IsvCorpToken  isvcorptoken=isvcorptokenservice.findOneByParams(params);
 		        	isvcorptoken.setCorpToken(corptoken);
 		        	isvcorptoken.setExpiredTime(ca.getTime());
 		        	isvcorptokenservice.save(isvcorptoken);
-
-		        
-		        isvcorpsuitejsapiticketservice.save(corpJSTicketDO);
+		            isvcorpsuitejsapiticketservice.save(corpJSTicketDO);
 				return true;
 
 		}catch(Exception e){
