@@ -113,7 +113,7 @@ public class SuiteManageService {
 					ca.add(Calendar.HOUR_OF_DAY, 2);
                     if(corpJSTicketDO==null){
 						 corpJSTicketDO=new IsvCorpSuiteJsapiTicket();
-
+						 System.out.println("jsapidomains========="+JSON.toJSON(corpJSTicketDO).toString());
 					}
 					corpJSTicketDO.setCorpId(corpId);
 					corpJSTicketDO.setCorpaccesstoken(corptoken);
