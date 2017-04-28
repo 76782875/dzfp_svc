@@ -86,7 +86,8 @@ public class SuiteManageService {
 	public boolean getCorpJSAPITicket(String suiteKey, String corpId, String permanentCode) {
 		// TODO Auto-generated method stub
 		try{
-				Map params=new HashMap<>();
+			logger.info("jsapiticket生成任务service日志,suiteKey:{},corpId:{}"+suiteKey,corpId);
+			Map params=new HashMap<>();
 				params.put("suiteKey", suiteKey);
 				params.put("corpId", corpId);
 		        IsvCorpSuiteJsapiTicket corpJSTicketDO = isvcorpsuitejsapiticketservice.findOneByParams(params);
