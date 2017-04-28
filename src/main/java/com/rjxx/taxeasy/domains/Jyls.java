@@ -314,7 +314,17 @@ protected String sfdyqd;
 
 @Column(name="skpid")
 	protected Integer skpid;
+	/**
+	 * 钉钉企业id
+	 */
+	@Column(name="dingcorpid")
+	protected String dingcorpid;
 
+	/**
+	 * 钉钉用户id
+	 */
+	@Column(name="dinguserid")
+	protected String dinguserid;
 
 	public Integer getDjh(){
 		return djh;
@@ -708,5 +718,20 @@ protected String sfdyqd;
 		this.sfdyqd = sfdyqd;
 	}
 
+	public String getDingcorpid(){
+		return dingcorpid;
+	}
+
+	public void setDingcorpid(String dingcorpid){
+		this.dingcorpid=dingcorpid;
+	}
+
+	public String getDinguserid(){
+		return dinguserid;
+	}
+
+	public void setDinguserid(String dinguserid){
+		this.dinguserid=dinguserid;
+	}
 }
 

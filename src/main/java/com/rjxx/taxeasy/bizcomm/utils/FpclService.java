@@ -542,6 +542,9 @@ public class FpclService {
         kpls.setYxbz("1");
         kpls.setFpztdm("04");
         kpls.setSkpid(jyls.getSkpid());
+		kpls.setDingcorpid(jyls.getDingcorpid());
+		kpls.setDinguserid(jyls.getDinguserid());
+		kpls.setDdtsbz("0");
         kplsService.save(kpls);
         return kpls;
     }

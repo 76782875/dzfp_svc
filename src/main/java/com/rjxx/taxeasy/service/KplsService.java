@@ -228,5 +228,8 @@ public class KplsService {
         return kplsMapper.findAllByMapParams(map);
     }
 
+    public  List<Kpls> findDingdingTsInfo(Map map) {
+        return kplsMapper.findDingdingTsInfo(map);
+    }
 }
 

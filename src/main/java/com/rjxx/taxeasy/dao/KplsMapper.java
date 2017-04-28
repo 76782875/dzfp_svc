@@ -110,7 +110,11 @@ public interface KplsMapper {
 	public Fpcxvo findykpCount(Map map);
     
     public List<Kpls> findAllByMapParams(Map map);
-    
 
+    /**
+     * 查询数据来源为钉钉，未推送过的开票信息
+     * @return
+     */
+    List<Kpls> findDingdingTsInfo(Map map);
 }
 
