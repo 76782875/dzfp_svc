@@ -16,6 +16,16 @@
 		</if>
 		limit 1
 	</select>
+	<select id="findOneByDingCorpid" parameterType="map" resultType="gsxx">
+		select * from t_gsxx where 1=1
+		<if test="gsdm != null and gsdm !=''">
+			and gsdm = #{gsdm}
+		</if>
+		<if test="corpId != null and corpId !=''">
+			and dingcorpid = #{corpId}
+		</if>
+		limit 1
+	</select>
 	
    <select id="findOneByAppkey" parameterType="map" resultType="gsxx">
 		select * from t_gsxx where 1=1

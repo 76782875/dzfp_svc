@@ -63,5 +63,8 @@ public class GsxxService {
         return gsxxMapper.findOneByDjh(params);
     }
 
+    public Gsxx findOneByDingCorpid(Map params) {
+        return gsxxMapper.findOneByDingCorpid(params);
+    }
 }
 

@@ -25,5 +25,6 @@ public interface GsxxMapper {
     
     public Gsxx findOneByDjh(Map params);
 
+    Gsxx findOneByDingCorpid(Map params);
 }
 
