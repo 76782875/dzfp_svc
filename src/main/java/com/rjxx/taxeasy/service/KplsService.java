@@ -143,11 +143,12 @@ public class KplsService {
     public List<Kpls> findByDjh(Kpls kpls) {
         return kplsMapper.findByDjh(kpls);
     }
+
     //根据原发票号码查询原开票流水号
     public Kpls findByyfphm(Kpls kpls) {
         return kplsMapper.findByyfphm(kpls);
     }
-    
+
 
     public List<Kpls> findAll(Map params) {
         return kplsMapper.findAll(params);
@@ -203,33 +204,47 @@ public class KplsService {
     public void delete(Kpls kpls) {
         kplsJpaDao.delete(kpls.getKplsh());
     }
-    //发票重打数据查询
-	public List<Fpcxvo> findKcdfpByPage(Pagination pagination) {
-		// TODO Auto-generated method stub
-		return kplsMapper.findKcdfpByPage(pagination);
-	}
-	//发票重打数据查询1
-	public List<Fpcxvo> findKcdfpByPage1(Pagination pagination) {
-		// TODO Auto-generated method stub
-		return kplsMapper.findKcdfpByPage1(pagination);
-	}
 
-	public Fpcxvo findykpCount(Map map) {
-		return kplsMapper.findykpCount(map);
-		
-	}
+    //发票重打数据查询
+    public List<Fpcxvo> findKcdfpByPage(Pagination pagination) {
+        // TODO Auto-generated method stub
+        return kplsMapper.findKcdfpByPage(pagination);
+    }
+
+    //发票重打数据查询1
+    public List<Fpcxvo> findKcdfpByPage1(Pagination pagination) {
+        // TODO Auto-generated method stub
+        return kplsMapper.findKcdfpByPage1(pagination);
+    }
+
+    public Fpcxvo findykpCount(Map map) {
+        return kplsMapper.findykpCount(map);
+
+    }
 
     /**
      * 根据map参数返回List<Kpls>
+     *
      * @param map
      * @return
      */
-    public List<Kpls> findAllByMapParams(Map map){
+    public List<Kpls> findAllByMapParams(Map map) {
         return kplsMapper.findAllByMapParams(map);
     }
 
-    public  List<Kpls> findDingdingTsInfo(Map map) {
+    public List<Kpls> findDingdingTsInfo(Map map) {
         return kplsMapper.findDingdingTsInfo(map);
     }
+
+    /**
+     * 根据销方id获取省份名称
+     *
+     * @param xfid
+     * @return
+     */
+    public String findSfmcByXfid(int xfid) {
+        return kplsMapper.findSfmcByXfid(xfid);
+    }
+
 }
 

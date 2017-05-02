@@ -888,5 +888,7 @@ AND djh =#{djh}
 		and t.fphm is not null and t.pdfurl is not null
 	</select>
 
+	<select resultType="string" parameterType="int" id="findSfmcByXfid"> SELECT a.sf_mc FROM sf_dmb a,t_xf b WHERE b.id = #{xfid} and f_get_sf(b.xfsh) = a.SF_DM </select>
+
 </mapper>
 
