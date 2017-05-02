@@ -17,6 +17,9 @@
         <if test="yhid !=null and yhid !=''">
             and id = #{yhid}
         </if>
+        <if test="userid !=null and userid !=''">
+            and dinguserid = #{userid}
+        </if>
         limit 1
     </select>
 

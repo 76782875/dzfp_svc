@@ -137,6 +137,11 @@ public class Yh  implements Serializable {
 
 @Column(name="zhlxdm")
 	protected String zhlxdm;
+	/**
+	 * 钉钉用户id
+	 */
+	@Column(name="dinguserid")
+	protected String dinguserid;
 
 
 	public Integer getId(){
@@ -307,7 +312,13 @@ public class Yh  implements Serializable {
 		this.zhlxdm = zhlxdm;
 	}
 
+	public String getDinguserid(){
+		return dinguserid;
+	}
 
+	public void setDinguserid(String dinguserid){
+		this.dinguserid=dinguserid;
+	}
 	
 }
 

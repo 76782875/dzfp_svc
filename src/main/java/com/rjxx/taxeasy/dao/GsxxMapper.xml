@@ -11,6 +11,9 @@
 		<if test="appkey != null and appkey !=''">
 			and appkey = #{appkey}
 		</if>
+		<if test="corpId != null and corpId !=''">
+			and dingcorpid = #{corpId}
+		</if>
 		limit 1
 	</select>
 	

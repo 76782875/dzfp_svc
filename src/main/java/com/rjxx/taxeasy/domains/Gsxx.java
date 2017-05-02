@@ -82,6 +82,12 @@ protected Integer kpnum;
 @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	protected Date yxjzrq;
 
+	/**
+	 * 钉钉企业id
+	 */
+	@Column(name="dingcorpid")
+	protected String dingcorpid;
+
 	public String getAppKey() {
 	return appKey;
 }
@@ -210,6 +216,14 @@ public void setWsUrl(String wsUrl) {
 
 	public void setYxjzrq(Date yxjzrq) {
 		this.yxjzrq = yxjzrq;
+	}
+
+	public String getDingcorpid(){
+		return dingcorpid;
+	}
+
+	public void setDingcorpid(String dingcorpid){
+		this.dingcorpid=dingcorpid;
 	}
 
 }
