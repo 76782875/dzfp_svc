@@ -87,5 +87,12 @@ public interface KplsMapper {
 
     public List<Kpls> findAllNeedRegeneratePdfKpls(Map params);
 
+    /**
+     * 根据销方id获取省份名称
+     *
+     * @param xfid
+     * @return
+     */
+    public String findSfmcByXfid(int xfid);
 }
 

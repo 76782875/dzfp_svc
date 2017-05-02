@@ -587,5 +587,16 @@ WHERE
 AND fpczlxdm = '11'
 AND djh =#{djh}
 	</select>
+
+	<select id="findSfmcByXfid" parameterType="int" resultType="string">
+		SELECT
+			a.sf_mc
+		FROM
+			sf_dmb a,t_xf b
+		WHERE
+			b.id = #{xfid}
+			and f_get_sf(b.xfsh) = a.SF_DM
+	</select>
+
 </mapper>
 

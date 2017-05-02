@@ -1,18 +1,16 @@
 package com.rjxx.taxeasy.service;
 
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.dao.KplsJpaDao;
 import com.rjxx.taxeasy.dao.KplsMapper;
-import com.rjxx.taxeasy.domains.Jyls;
 import com.rjxx.taxeasy.domains.Kpls;
 import com.rjxx.taxeasy.vo.Fpcxvo;
 import com.rjxx.taxeasy.vo.KplsVO3;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 由GenJavaCode类自动生成
@@ -166,5 +164,16 @@ public class KplsService {
     public Integer findCountByDjh(Kpls kpls) {
         return kplsMapper.findCountByDjh(kpls);
     }
+
+    /**
+     * 根据销方id获取省份名称
+     *
+     * @param xfid
+     * @return
+     */
+    public String findSfmcByXfid(int xfid) {
+        return kplsMapper.findSfmcByXfid(xfid);
+    }
+
 }
 
