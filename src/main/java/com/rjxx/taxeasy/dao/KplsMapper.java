@@ -9,6 +9,7 @@ import com.rjxx.taxeasy.domains.Jyls;
 import com.rjxx.taxeasy.domains.Kpls;
 import com.rjxx.taxeasy.vo.Fpcxvo;
 import com.rjxx.taxeasy.vo.KplsVO3;
+import com.rjxx.taxeasy.vo.KplsVo99;
 
 /**
  * 由GenJavaCode类自动生成
@@ -94,5 +95,8 @@ public interface KplsMapper {
      * @return
      */
     public String findSfmcByXfid(int xfid);
+    
+    public List<KplsVo99> findKplsForCk(Map params);
+    
 }
 

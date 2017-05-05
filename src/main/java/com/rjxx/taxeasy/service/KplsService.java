@@ -6,9 +6,13 @@ import com.rjxx.taxeasy.dao.KplsMapper;
 import com.rjxx.taxeasy.domains.Kpls;
 import com.rjxx.taxeasy.vo.Fpcxvo;
 import com.rjxx.taxeasy.vo.KplsVO3;
+import com.rjxx.taxeasy.vo.KplsVo99;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +31,9 @@ public class KplsService {
 
     @Autowired
     private KplsMapper kplsMapper;
+    
+    @Autowired
+	 private KpspmxService kpspmxService;
 
     public Kpls findOne(int id) {
         return kplsJpaDao.findOne(id);
@@ -175,5 +182,20 @@ public class KplsService {
         return kplsMapper.findSfmcByXfid(xfid);
     }
 
+    
+    public List<KplsVo99> findKplsForCk(Map params) {
+        return kplsMapper.findKplsForCk(params);
+    }
+    
+
+   @Transactional
+	public void delByKplshList(List<Integer> kplshList) {
+		Iterable kplsIterable = this.kplsJpaDao.findAll(kplshList);
+		this.kplsJpaDao.delete(kplsIterable);
+		Map params = new HashMap();
+		params.put("kplsh", kplshList.get(0));
+		List kpmxsqList = this.kpspmxService.findMxList(params);
+		this.kpspmxService.delete(kpmxsqList);
+	}
 }
 

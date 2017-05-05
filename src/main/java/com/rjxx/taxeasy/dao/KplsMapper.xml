@@ -598,5 +598,30 @@ AND djh =#{djh}
 			and f_get_sf(b.xfsh) = a.SF_DM
 	</select>
 
+
+<select id="findKplsForCk" parameterType="map" resultType="KplsVo99">
+			SELECT
+				a.kplsh,
+				a.djh,
+				a.xfsh,
+				a.jylsh,
+				CASE
+			WHEN b.ckcs IS NULL THEN
+				0
+			ELSE
+				b.ckcs
+			END ckcs
+			FROM
+				t_xf c,
+				t_kpls a
+			LEFT JOIN t_ckjl b ON b.djh = a.djh
+			WHERE
+				a.xfid = c.id
+			AND a.gsdm = #{gsdm}
+			AND a.fpztdm = #{fpztdm}
+			AND a.fphm IS NULL
+			and (b.ckcs is null or b.ckcs &lt;3)
+			AND a.lrsj &gt;= date '2017-05-04'
+	</select>
 </mapper>
 
