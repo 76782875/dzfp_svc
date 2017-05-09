@@ -368,17 +368,7 @@ public class Jyxxsq  implements Serializable {
 @Column(name="sfdy")
 	protected String sfdy;
 
-/**
- * 钉钉企业id
- */ 
-@Column(name="dingcorpid")
-	protected String dingcorpid;
 
-/**
- * 钉钉用户id
- */ 
-@Column(name="dinguserid")
-	protected String dinguserid;
 
 
 	public Integer getSqlsh(){
@@ -845,21 +835,7 @@ public class Jyxxsq  implements Serializable {
 		this.sfdy=sfdy;
 	}
 
-	public String getDingcorpid(){
-		return dingcorpid;
-	}
 
-	public void setDingcorpid(String dingcorpid){
-		this.dingcorpid=dingcorpid;
-	}
-
-	public String getDinguserid(){
-		return dinguserid;
-	}
-
-	public void setDinguserid(String dinguserid){
-		this.dinguserid=dinguserid;
-	}
 
 }
 

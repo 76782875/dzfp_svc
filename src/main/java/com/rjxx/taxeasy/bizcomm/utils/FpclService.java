@@ -542,9 +542,8 @@ public class FpclService {
         kpls.setYxbz("1");
         kpls.setFpztdm("04");
         kpls.setSkpid(jyls.getSkpid());
-		kpls.setDingcorpid(jyls.getDingcorpid());
-		kpls.setDinguserid(jyls.getDinguserid());
-		kpls.setDdtsbz("0");
+
+
         kplsService.save(kpls);
         return kpls;
     }
@@ -553,7 +552,7 @@ public class FpclService {
      * 保存开票商品明细
      *
      * @param kpls
-     * @param fpJyspmxList
+     * @param
      * @return
      */
     public void saveKpspmx(Kpls kpls, List<Jyspmx> jyspmx1) throws Exception {
@@ -692,15 +691,15 @@ public class FpclService {
 			if(hsbz.equals("1")){
 				// 分票
 				if (jyxxsq.getFpzldm().equals("12")) {
-						jyspmxs=SeperateInvoiceUtils.splitInvoicesbhs(jyspmxs, new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs2,sfqzfp);
+						jyspmxs=SeperateInvoiceUtils.splitInvoicesbhs(jyspmxs, new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs2,sfqzfp,false);
 				} else {
-						jyspmxs=SeperateInvoiceUtils.splitInvoicesbhs(jyspmxs, new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs1,sfqzfp);
+						jyspmxs=SeperateInvoiceUtils.splitInvoicesbhs(jyspmxs, new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs1,sfqzfp,false);
 				}
 			}else{
 				if (jyxxsq.getFpzldm().equals("12")) {
-					jyspmxs=SeperateInvoiceUtils.splitInvoices2(jyspmxs, new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs2,sfqzfp);
+					jyspmxs=SeperateInvoiceUtils.splitInvoices2(jyspmxs, new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs2,sfqzfp,false);
 			} else {
-					jyspmxs=SeperateInvoiceUtils.splitInvoices2(jyspmxs, new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs1,sfqzfp);
+					jyspmxs=SeperateInvoiceUtils.splitInvoices2(jyspmxs, new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs1,sfqzfp,false);
 			}	
 			}
 		
@@ -745,7 +744,7 @@ public class FpclService {
     /**
 	 * 保存交易流水`
 	 *
-	 * @param jyls
+	 * @param
 	 * @return
 	 */
 	public Jyls saveJyls(Jyxxsq jyxxsq, List<JyspmxDecimal2> jyspmxList) throws Exception {

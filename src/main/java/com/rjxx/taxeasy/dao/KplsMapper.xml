@@ -884,7 +884,7 @@ AND djh =#{djh}
 
 	<select id="findDingdingTsInfo" resultType="kpls" parameterType="map">
 		select * from t_kpls t where yxbz = '1' and t.ddtsbz='0'
-		and t.dingCorpid is not null and t.dingUserid is not null and t.fpdm is not null
+		 and t.fpdm is not null
 		and t.fphm is not null and t.pdfurl is not null
 	</select>
 

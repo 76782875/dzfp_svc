@@ -419,23 +419,9 @@ protected String errorReason;
 @Column(name="fp_ewm")
 protected String fpEwm;
 
-	/**
-	 * 钉钉企业id
-	 */
-	@Column(name="dingcorpid")
-	protected String dingcorpid;
 
-	/**
-	 * 钉钉用户id
-	 */
-	@Column(name="dinguserid")
-	protected String dinguserid;
 
-	/**
-	 * 钉钉开票信息推送标志
-	 */
-	@Column(name="ddtsbz")
-	protected String ddtsbz;
+
 
 	public String getFpztdm() {
 	return fpztdm;
@@ -989,28 +975,8 @@ public void setFpztdm(String fpztdm) {
 		this.sfdyqd = sfdyqd;
 	}
 
-	public String getDingcorpid(){
-		return dingcorpid;
-	}
 
-	public void setDingcorpid(String dingcorpid){
-		this.dingcorpid=dingcorpid;
-	}
 
-	public String getDinguserid(){
-		return dinguserid;
-	}
 
-	public void setDinguserid(String dinguserid){
-		this.dinguserid=dinguserid;
-	}
-
-	public String getDdtsbz() {
-		return ddtsbz;
-	}
-
-	public void setDdtsbz(String ddtsbz) {
-		this.ddtsbz = ddtsbz;
-	}
 }
 
