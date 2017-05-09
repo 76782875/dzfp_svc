@@ -389,7 +389,7 @@ public class SeperateInvoiceUtils {
     }
 
 
-    public static List<JyspmxDecimal2> splitInvoices2(List<JyspmxDecimal2> jyspmxs, BigDecimal maxje, BigDecimal fpje, int mxsl, boolean qzfp) throws Exception {
+    public static List<JyspmxDecimal2> splitInvoices2(List<JyspmxDecimal2> jyspmxs, BigDecimal maxje, BigDecimal fpje, int mxsl, boolean qzfp,boolean spzsfp) throws Exception {
         int mxnum = detailsNumber;
         if (mxsl != 0 && mxsl <= detailsNumber) {
             mxnum = mxsl;
@@ -449,11 +449,40 @@ public class SeperateInvoiceUtils {
                     BigDecimal spje = jyspmx.getSpje();// 原商品金额
                     BigDecimal spsm = jyspmx.getSps();// 原商品数量
                     BigDecimal spse = jyspmx.getSpse();// 原商品税额
+
                     BigDecimal ccje = sub(zje, maxje);// 超出金额
+
                     BigDecimal cfje = sub(spje, ccje);// 拆分金额
-                    BigDecimal cfsm = div(spsm, div(spje, cfje));// 拆分数量
-                    BigDecimal cfse = div(spse, div(spje, cfje)).setScale(2, BigDecimal.ROUND_HALF_UP);// 拆分税额
-                    BigDecimal jshj = add(cfje, cfse);
+                    /**
+                     * 按商品整数来分票
+                     */
+                    BigDecimal cfsm;
+                    BigDecimal cfse;
+                    BigDecimal jshj;
+                    if(spzsfp&&null!=spdj&&!"".equals(spdj)&&null!=spsm&&!"".equals(spsm)){
+
+                        cfsm = div(spsm, div(spje, cfje));// 拆分数量
+
+                        BigDecimal cfsm1=cfsm;//过度数据，计算下一次数据。
+
+                        cfsm=new BigDecimal(Math.floor(cfsm.doubleValue()));//向下取整
+
+                        BigDecimal cfje1=mul(spdj,sub(cfsm1,cfsm));//多出数量的金额(不含税)
+
+                        cfje=sub(cfje,cfje1);//去掉多余数量的金额
+
+                        cfse = div(spse, div(spje, cfje)).setScale(2, BigDecimal.ROUND_HALF_UP);// 拆分税额
+
+                        ccje=add(ccje,cfje1);
+
+                        jshj = add(cfje, cfse);
+
+                    }else{
+                         cfsm = div(spsm, div(spje, cfje));// 拆分数量
+                         cfse = div(spse, div(spje, cfje)).setScale(2, BigDecimal.ROUND_HALF_UP);// 拆分税额
+                         jshj = add(cfje, cfse);
+                    }
+
                     cfjyspmx.setFphxz(fphxz);
                     cfjyspmx.setSqlsh(sqlsh);
                     cfjyspmx.setSpmxxh(spmxxh);
@@ -480,8 +509,28 @@ public class SeperateInvoiceUtils {
                     BigDecimal cfsm1 = new BigDecimal(0.00);
                     BigDecimal cfse1 = new BigDecimal(0.00);
                     if (n > 0) {
-                        cfsm1 = div(spsm, div(spje, maxje));// 拆分数量
-                        cfse1 = div(spse, div(spje, maxje)).setScale(2, BigDecimal.ROUND_HALF_UP);// 拆分税额
+
+                        if(spzsfp&&null!=spdj&&!"".equals(spdj)&&null!=spsm&&!"".equals(spsm)){
+                            cfsm1 = div(spsm, div(spje, maxje));// 拆分数量
+
+                            BigDecimal cfsm2=cfsm1;//过度数据，计算下一次数据。
+
+                            cfsm1=new BigDecimal(Math.floor(cfsm1.doubleValue()));//向下取整
+
+                            BigDecimal cfjshj1=mul(spdj,sub(cfsm2,cfsm1));//多出数量的金额(不含税)
+
+                            maxje=sub(maxje,cfjshj1);
+
+                            cfse1 = div(spse, div(spje, maxje)).setScale(2, BigDecimal.ROUND_HALF_UP);// 拆分税额
+
+                            //ccje=add(ccje,cfjshj1);
+
+                        }else{
+                            cfsm1 = div(spsm, div(spje, maxje));// 拆分数量
+                            cfse1 = div(spse, div(spje, maxje)).setScale(2, BigDecimal.ROUND_HALF_UP);// 拆分税额
+                        }
+
+
 
                         for (int j = 0; j < n; j++) {
                             JyspmxDecimal2 ccjyspmx1 = new JyspmxDecimal2();
@@ -653,7 +702,7 @@ public class SeperateInvoiceUtils {
             jymx.setSpmxxh(i + 2);
         }
         System.out.println("2312");
-        List<JyspmxDecimal2> res = splitInvoicesbhs(list, new BigDecimal(9999.99), new BigDecimal(10000), 8, false);
+        List<JyspmxDecimal2> res = splitInvoicesbhs(list, new BigDecimal(9999.99), new BigDecimal(10000), 8, false,false);
         for (JyspmxDecimal2 jyspmx : res) {
             System.out.println(jyspmx.getJshj() + "\t" + jyspmx.getFpnum() + "\t" + jyspmx.getSpje() + "\t" + jyspmx.getSpse() + "\t" + jyspmx.getSpsl() + "\t");
         }
@@ -663,7 +712,7 @@ public class SeperateInvoiceUtils {
 
     //不含税拆分方法
 
-    public static List<JyspmxDecimal2> splitInvoicesbhs(List<JyspmxDecimal2> jyspmxs, BigDecimal maxje, BigDecimal fpje, int mxsl, boolean qzfp) throws Exception {
+    public static List<JyspmxDecimal2> splitInvoicesbhs(List<JyspmxDecimal2> jyspmxs, BigDecimal maxje, BigDecimal fpje, int mxsl, boolean qzfp,boolean spzsfp) throws Exception {
         int mxnum = detailsNumber;
         if (mxsl != 0 && mxsl <= detailsNumber) {
             mxnum = mxsl;
@@ -673,12 +722,12 @@ public class SeperateInvoiceUtils {
         List<JyspmxDecimal2> splitKpspmxs = new ArrayList<JyspmxDecimal2>();// 拆分发票后的list
         BigDecimal zje = new BigDecimal(0);// 汇总金额不含税
         BigDecimal zje1 = new BigDecimal(0);// 汇总金额含税
-        BigDecimal total = new BigDecimal(0);
+        BigDecimal total = new BigDecimal(0);//商品明细金额总和（不含税）
         for (JyspmxDecimal2 jyspmx : jyspmxs) {
             total = total.add(jyspmx.getSpje());
         }
-        if (!qzfp) {
-            if (maxje.compareTo(total) > 0) {
+        if (!qzfp) { //如果不是强制分票
+            if (maxje.compareTo(total) > 0) { //开票限额（不含税）是否大于商品明细总和（不含税）
                 fp = true;
             }
         }
@@ -693,8 +742,8 @@ public class SeperateInvoiceUtils {
             fphxz = jyspmx.getFphxz();
             spmxxh = jyspmx.getSpmxxh();
             tempJyspmxs.add(jyspmx);
-            zje = zje.add(jyspmx.getSpje());
-            zje1 = zje1.add(jyspmx.getJshj());
+            zje = zje.add(jyspmx.getSpje());//不含税商品总金额
+            zje1 = zje1.add(jyspmx.getJshj());//含税商品总金额
             spdm = jyspmx.getSpdm();
             if (zje.compareTo(maxje) >= 0 || tempJyspmxs.size() == mxnum || (zje1.compareTo(fpje) >= 0 && qzfp)) {
                 if (tempJyspmxs.size() == mxnum && zje.compareTo(maxje) <= 0 && zje1.compareTo(fpje) <= 0) {
@@ -706,6 +755,9 @@ public class SeperateInvoiceUtils {
                     zje = BigDecimal.ZERO;
                     zje1 = BigDecimal.ZERO;
                 } else if (fpje.divide(new BigDecimal(1).add(jyspmx.getSpsl()), 30, BigDecimal.ROUND_HALF_UP).compareTo(maxje) > 0) {
+                    /**
+                     * 当分票金额(不含税)大于开票限额时，按照开票限额来分票
+                     */
                     // Jyspmx ccjyspmx = new Jyspmx();//超出金额对象
                     JyspmxDecimal2 cfjyspmx = new JyspmxDecimal2();// 拆分金额对象
                     // ccjyspmx = jyspmx;//超出金额对象
@@ -727,10 +779,39 @@ public class SeperateInvoiceUtils {
                     BigDecimal ccje = sub(zje, maxje);// 超出金额
 
                     BigDecimal cfje = sub(spje, ccje);// 拆分金额
-                    BigDecimal cfsm = div(spsm, div(spje, cfje));// 拆分数量
-                    BigDecimal cfse = div(spse, div(spje, cfje)).setScale(2, BigDecimal.ROUND_HALF_UP);// 拆分税额
-                    BigDecimal jshj = add(cfje, cfse);
-                    BigDecimal ccjshj = sub(jyspmx.getJshj(), jshj);// 超出价税合计
+                    /**
+                     * 是否按商品整数分票
+                     */
+                    BigDecimal cfsm;
+                    BigDecimal cfse;
+                    BigDecimal jshj;
+                    BigDecimal ccjshj;
+                    if(spzsfp&&null!=spdj&&!"".equals(spdj)&&null!=spsm&&!"".equals(spsm)){
+                        cfsm = div(spsm, div(spje, cfje));// 拆分数量
+
+                        BigDecimal cfsm1=cfsm;//过度数据，计算下一次数据。
+
+                        cfsm=new BigDecimal(Math.floor(cfsm.doubleValue()));//向下取整
+
+                        BigDecimal cfje1=mul(spdj,sub(cfsm1,cfsm));//多出数量的金额(不含税)
+
+                        cfje=sub(cfje,cfje1);
+
+                        cfse = div(spse, div(spje, cfje)).setScale(2, BigDecimal.ROUND_HALF_UP);// 拆分税额
+
+                        jshj = add(cfje, cfse);
+
+                        ccjshj = sub(jyspmx.getJshj(), jshj);// 超出价税合计
+
+                        ccje=add(ccje,cfje1);
+
+                    }else{
+                         cfsm = div(spsm, div(spje, cfje));// 拆分数量
+                         cfse = div(spse, div(spje, cfje)).setScale(2, BigDecimal.ROUND_HALF_UP);// 拆分税额
+                         jshj = add(cfje, cfse);
+                         ccjshj = sub(jyspmx.getJshj(), jshj);// 超出价税合计
+                    }
+
                     cfjyspmx.setFphxz(fphxz);
                     cfjyspmx.setSqlsh(sqlsh);
                     cfjyspmx.setSpmxxh(spmxxh);
@@ -758,8 +839,28 @@ public class SeperateInvoiceUtils {
                         BigDecimal cfsm1 = new BigDecimal(0.00);
                         BigDecimal cfse1 = new BigDecimal(0.00);
                         if (n > 0) {
-                            cfsm1 = div(spsm, div(spje, maxje));// 拆分数量
-                            cfse1 = div(spse, div(spje, maxje)).setScale(2, BigDecimal.ROUND_HALF_UP);// 拆分税额
+
+                            /**
+                             * 按商品整数来分票
+                             */
+                            if(spzsfp&&null!=spdj&&!"".equals(spdj)&&null!=spsm&&!"".equals(spsm)){
+
+                                cfsm1 = div(spsm, div(spje, maxje));// 拆分数量
+
+                                BigDecimal cfsm2=cfsm1;//过度数据，计算下一次数据。
+
+                                cfsm1=new BigDecimal(Math.floor(cfsm1.doubleValue()));//向下取整
+
+                                BigDecimal cfje1=mul(spdj,sub(cfsm2,cfsm1));//多出数量的金额(不含税)
+
+                                maxje=sub(maxje,cfje1);
+
+                                cfse1 = div(spse, div(spje, maxje)).setScale(2, BigDecimal.ROUND_HALF_UP);// 拆分税额
+                            }else{
+                                cfsm1 = div(spsm, div(spje, maxje));// 拆分数量
+                                cfse1 = div(spse, div(spje, maxje)).setScale(2, BigDecimal.ROUND_HALF_UP);// 拆分税额
+                            }
+
 
                             for (int j = 0; j < n; j++) {
                                 JyspmxDecimal2 ccjyspmx1 = new JyspmxDecimal2();
@@ -825,8 +926,32 @@ public class SeperateInvoiceUtils {
                         BigDecimal cfsm1 = new BigDecimal(0.00);
                         BigDecimal cfse1 = new BigDecimal(0.00);
                         if (n > 0) {
-                            cfsm1 = div(spsm, div(yjshj, fpje));// 拆分数量
-                            cfse1 = div(spse, div(yjshj, fpje)).setScale(2, BigDecimal.ROUND_HALF_UP);// 拆分税额
+
+                            /**
+                             * 按商品整数来分票
+                             */
+                            if(spzsfp&&null!=spdj&&!"".equals(spdj)&&null!=spsm&&!"".equals(spsm)){
+
+                                cfsm1 = div(spsm, div(yjshj, fpje));// 拆分数量
+
+                                BigDecimal cfsm2=cfsm1;//过度数据，计算下一次数据。
+
+                                cfsm1=new BigDecimal(Math.floor(cfsm1.doubleValue()));//向下取整
+
+                                BigDecimal cfjshj1=mul(mul(spdj,new BigDecimal(1).add(jyspmx.getSpsl())),sub(cfsm2,cfsm1));//多出数量的价税合计
+
+                                fpje=sub(fpje,cfjshj1);
+
+                                cfse1 = div(spse, div(yjshj, fpje)).setScale(2, BigDecimal.ROUND_HALF_UP);// 拆分税额
+
+                               // ccjshj=add(ccjshj,cfjshj1);
+
+                            }else{
+                                cfsm1 = div(spsm, div(yjshj, fpje));// 拆分数量
+                                cfse1 = div(spse, div(yjshj, fpje)).setScale(2, BigDecimal.ROUND_HALF_UP);// 拆分税额
+                            }
+
+
                             for (int j = 0; j < n; j++) {
                                 JyspmxDecimal2 ccjyspmx1 = new JyspmxDecimal2();
                                 // ccjyspmx1 = ccjyspmx;
@@ -835,7 +960,7 @@ public class SeperateInvoiceUtils {
                                 ccjyspmx1.setFphxz(fphxz);
                                 ccjyspmx1.setSqlsh(sqlsh);
                                 ccjyspmx1.setSpmxxh(spmxxh);
-                                ccjyspmx1.setSpje(sub(fpje, cfse));
+                                ccjyspmx1.setSpje(sub(fpje, cfse1));
                                 ccjyspmx1.setSps(cfsm1);
                                 ccjyspmx1.setSpse(cfse1);
                                 ccjyspmx1.setFpnum(fpnum);
@@ -887,7 +1012,13 @@ public class SeperateInvoiceUtils {
                         zje1 = ccjshj;
                     }
                 } else {
+                    /**
+                     * 分票金额不大于开票限额
+                     */
                     if (fp) {
+                        /**
+                         * 开票限额大于商品明细金额（不含税）总和时，按照开票限额分票
+                         */
                         // Jyspmx ccjyspmx = new Jyspmx();//超出金额对象
                         JyspmxDecimal2 cfjyspmx = new JyspmxDecimal2();// 拆分金额对象
                         // ccjyspmx = jyspmx;//超出金额对象
@@ -906,13 +1037,36 @@ public class SeperateInvoiceUtils {
                         BigDecimal yjshj = jyspmx.getJshj();// 原商品金额
                         BigDecimal spsm = jyspmx.getSps();// 原商品数量
                         BigDecimal spse = jyspmx.getSpse();// 原商品税额
+
                         BigDecimal ccje = sub(zje, maxje);// 超出金额
 
                         BigDecimal cfje = sub(spje, ccje);// 拆分金额
-                        BigDecimal cfsm = div(spsm, div(spje, cfje));// 拆分数量
-                        BigDecimal cfse = div(spse, div(spje, cfje)).setScale(2, BigDecimal.ROUND_HALF_UP);// 拆分税额
-                        BigDecimal jshj = add(cfje, cfse);
-                        BigDecimal ccjshj = sub(jyspmx.getJshj(), jshj);// 超出价税合计
+                        /**
+                         * //是否按商品整数分票
+                         */
+                        BigDecimal cfsm;
+                        BigDecimal cfse;
+                        BigDecimal jshj;
+                        if(spzsfp&&null!=spdj&&!"".equals(spdj)&&null!=spsm&&!"".equals(spsm)){
+                            cfsm = div(spsm, div(spje, cfje));// 拆分数量
+                            BigDecimal cfsm1=cfsm;//过度数据，计算下一次数据。
+
+                            cfsm=new BigDecimal(Math.floor(cfsm.doubleValue()));//向下取整
+
+                            BigDecimal cfje1=mul(spdj,sub(cfsm1,cfsm));//多出数量的金额(不含税)
+                            cfje=sub(cfje,cfje1);
+                            cfse = div(spse, div(spje, cfje)).setScale(2, BigDecimal.ROUND_HALF_UP);// 拆分税额
+                            jshj = add(cfje, cfse);
+                            BigDecimal ccjshj = sub(jyspmx.getJshj(), jshj);// 超出价税合计
+                            ccje=add(ccje,cfje1);
+                        }else{
+                             cfsm = div(spsm, div(spje, cfje));// 拆分数量
+                             cfse = div(spse, div(spje, cfje)).setScale(2, BigDecimal.ROUND_HALF_UP);// 拆分税额
+                             jshj = add(cfje, cfse);
+                             BigDecimal ccjshj = sub(jyspmx.getJshj(), jshj);// 超出价税合计
+                        }
+
+
                         cfjyspmx.setFphxz(fphxz);
                         cfjyspmx.setSqlsh(sqlsh);
                         cfjyspmx.setSpmxxh(spmxxh);
@@ -939,9 +1093,28 @@ public class SeperateInvoiceUtils {
                         BigDecimal cfsm1 = new BigDecimal(0.00);
                         BigDecimal cfse1 = new BigDecimal(0.00);
                         if (n > 0) {
-                            cfsm1 = div(spsm, div(spje, maxje));// 拆分数量
-                            cfse1 = div(spse, div(spje, maxje)).setScale(2, BigDecimal.ROUND_HALF_UP);// 拆分税额
+                            /**
+                             * 是否按整数开票
+                             */
+                            if(spzsfp&&null!=spdj&&!"".equals(spdj)&&null!=spsm&&!"".equals(spsm)){
+                                cfsm1 = div(spsm, div(spje, maxje));// 拆分数量
 
+                                BigDecimal cfsm2=cfsm1;//过度数据，计算下一次数据。
+
+                                cfsm1=new BigDecimal(Math.floor(cfsm1.doubleValue()));//向下取整
+
+                                BigDecimal cfje1=mul(spdj,sub(cfsm2,cfsm1));//多出数量的金额(不含税)
+
+                                maxje=sub(maxje,cfje1);
+
+                                cfse1 = div(spse, div(spje, maxje)).setScale(2, BigDecimal.ROUND_HALF_UP);// 拆分税额
+
+                                //ccje=add(ccje,cfje1);
+
+                            }else{
+                                cfsm1 = div(spsm, div(spje, maxje));// 拆分数量
+                                cfse1 = div(spse, div(spje, maxje)).setScale(2, BigDecimal.ROUND_HALF_UP);// 拆分税额
+                            }
                             for (int j = 0; j < n; j++) {
                                 JyspmxDecimal2 ccjyspmx1 = new JyspmxDecimal2();
                                 // ccjyspmx1 = ccjyspmx;
@@ -1001,6 +1174,9 @@ public class SeperateInvoiceUtils {
                         zje = ccje;
                         zje1 = ccjyspmx2.getJshj();
                     } else {
+                        /**
+                         * 按照页面上填写的分票金额来分票
+                         */
                         // Jyspmx ccjyspmx = new Jyspmx();//超出金额对象
                         JyspmxDecimal2 cfjyspmx = new JyspmxDecimal2();// 拆分金额对象
                         // ccjyspmx = jyspmx;//超出金额对象
@@ -1016,17 +1192,43 @@ public class SeperateInvoiceUtils {
                         // 税率
                         BigDecimal spsl = jyspmx.getSpsl();
                         BigDecimal spje = jyspmx.getSpje();// 原商品金额
-                        BigDecimal yjshj = jyspmx.getJshj();// 原商品金额
+                        BigDecimal yjshj = jyspmx.getJshj();// 原商品价税合计
                         BigDecimal spsm = jyspmx.getSps();// 原商品数量
                         BigDecimal spse = jyspmx.getSpse();// 原商品税额
                         BigDecimal ccjshj = sub(zje1, fpje);// 超出价税合计
                         BigDecimal cfjshj = sub(yjshj, ccjshj);// 拆分价税合计
 
                         // BigDecimal cfje = sub(spje, ccje);// 拆分金额
-                        BigDecimal cfsm = div(spsm, div(yjshj, cfjshj));// 拆分数量
-                        BigDecimal cfse = div(spse, div(yjshj, cfjshj)).setScale(2, BigDecimal.ROUND_HALF_UP);// 拆分税额
-                        BigDecimal cfje = sub(cfjshj, cfse);
-                        BigDecimal ccje = sub(spje, cfje);// 超出金额
+                        BigDecimal cfsm;
+                        BigDecimal cfse;
+                        BigDecimal cfje;
+                        BigDecimal ccje;
+                        /**
+                         *  是否按商品整数分票
+                         */
+                        if(spzsfp&&null!=spdj&&!"".equals(spdj)&&null!=spsm&&!"".equals(spsm)){
+                             cfsm = div(spsm, div(yjshj, cfjshj));// 拆分数量
+                             BigDecimal cfsm1=cfsm;//过度数据，计算下一次数据。
+
+                             cfsm=new BigDecimal(Math.floor(cfsm.doubleValue()));//向下取整
+
+                             BigDecimal cfjshj1=mul(mul(spdj,new BigDecimal(1).add(jyspmx.getSpsl())),sub(cfsm1,cfsm));//多出数量的价税合计
+
+                             cfjshj=sub(cfjshj,cfjshj1);//把多余的价税合计去掉
+
+                             ccjshj=add(ccjshj,cfjshj1);
+
+                             cfse = div(spse, div(yjshj, cfjshj)).setScale(2, BigDecimal.ROUND_HALF_UP);// 拆分税额
+
+                             cfje = sub(cfjshj, cfse);
+                             ccje = sub(spje, cfje);// 超出金额
+                        }else{
+                             cfsm = div(spsm, div(yjshj, cfjshj));// 拆分数量
+                             cfse = div(spse, div(yjshj, cfjshj)).setScale(2, BigDecimal.ROUND_HALF_UP);// 拆分税额
+                             cfje = sub(cfjshj, cfse);
+                             ccje = sub(spje, cfje);// 超出金额
+                        }
+
                         cfjyspmx.setFphxz(fphxz);
                         cfjyspmx.setSqlsh(sqlsh);
                         cfjyspmx.setSpmxxh(spmxxh);
@@ -1053,9 +1255,21 @@ public class SeperateInvoiceUtils {
                             BigDecimal cfsm1 = new BigDecimal(0.00);
                             BigDecimal cfse1 = new BigDecimal(0.00);
                             if (n > 0) {
-                                cfsm1 = div(spsm, div(spje, maxje));// 拆分数量
-                                cfse1 = div(spse, div(spje, maxje)).setScale(2, BigDecimal.ROUND_HALF_UP);// 拆分税额
-
+                                /**
+                                 * //是否按商品整数分票
+                                 */
+                                if(spzsfp&&null!=spdj&&!"".equals(spdj)&&null!=spsm&&!"".equals(spsm)){
+                                    cfsm1 = div(spsm, div(spje, maxje));// 拆分数量
+                                    BigDecimal cfsm2=cfsm1;//过度数据，计算下一次数据。
+                                    cfsm1=new BigDecimal(Math.floor(cfsm1.doubleValue()));//向下取整
+                                    BigDecimal ccje2=mul(spdj,sub(cfsm2,cfsm1));//多出数量的金额(不含税)
+                                    //ccje=add(ccje,ccje2);//把多出数量的加到超出金额里面
+                                    maxje=sub(maxje,ccje2);//把最大金额减去多出数量的金额
+                                    cfse1 = div(spse, div(spje, maxje)).setScale(2, BigDecimal.ROUND_HALF_UP);// 拆分税额
+                                }else{
+                                    cfsm1 = div(spsm, div(spje, maxje));// 拆分数量
+                                    cfse1 = div(spse, div(spje, maxje)).setScale(2, BigDecimal.ROUND_HALF_UP);// 拆分税额
+                                }
                                 for (int j = 0; j < n; j++) {
                                     JyspmxDecimal2 ccjyspmx1 = new JyspmxDecimal2();
                                     // ccjyspmx1 = ccjyspmx;
@@ -1120,8 +1334,26 @@ public class SeperateInvoiceUtils {
                             BigDecimal cfsm1 = new BigDecimal(0.00);
                             BigDecimal cfse1 = new BigDecimal(0.00);
                             if (n > 0) {
-                                cfsm1 = div(spsm, div(yjshj, fpje));// 拆分数量
-                                cfse1 = div(spse, div(yjshj, fpje)).setScale(2, BigDecimal.ROUND_HALF_UP);// 拆分税额
+                                /**
+                                 * //是否按商品整数分票
+                                 */
+                                if(spzsfp&&null!=spdj&&!"".equals(spdj)&&null!=spsm&&!"".equals(spsm)){
+                                    cfsm1 = div(spsm, div(yjshj, fpje));// 拆分数量
+                                    BigDecimal cfsm2=cfsm1;//过度数据，计算下一次数据。
+                                    cfsm1=new BigDecimal(Math.floor(cfsm1.doubleValue()));//向下取整
+
+                                    BigDecimal fpje1=mul(mul(spdj,new BigDecimal(1).add(jyspmx.getSpsl())),sub(cfsm2,cfsm1));//多出数量的价税合计
+
+                                    fpje=sub(fpje,fpje1);//把多余的分票金额去掉
+
+                                    //ccjshj=add(ccjshj,fpje1);//把多余的分票金额加到超出的价税合计上面
+
+                                    cfse1 = div(spse, div(yjshj, fpje)).setScale(2, BigDecimal.ROUND_HALF_UP);// 拆分税额
+
+                                }else{
+                                    cfsm1 = div(spsm, div(yjshj, fpje));// 拆分数量
+                                    cfse1 = div(spse, div(yjshj, fpje)).setScale(2, BigDecimal.ROUND_HALF_UP);// 拆分税额
+                                }
                                 for (int j = 0; j < n; j++) {
                                     JyspmxDecimal2 ccjyspmx1 = new JyspmxDecimal2();
                                     // ccjyspmx1 = ccjyspmx;
@@ -1130,7 +1362,7 @@ public class SeperateInvoiceUtils {
                                     ccjyspmx1.setFphxz(fphxz);
                                     ccjyspmx1.setSqlsh(sqlsh);
                                     ccjyspmx1.setSpmxxh(spmxxh);
-                                    ccjyspmx1.setSpje(sub(fpje, cfse));
+                                    ccjyspmx1.setSpje(sub(fpje, cfse1));
                                     ccjyspmx1.setSps(cfsm1);
                                     ccjyspmx1.setSpse(cfse1);
                                     ccjyspmx1.setFpnum(fpnum);

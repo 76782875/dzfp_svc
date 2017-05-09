@@ -90,6 +90,9 @@ protected Date lrsj;
 @Column(name="xgry")
 protected Integer xgry;
 
+@Column(name="sfspzsfp")
+protected String sfspzsfp;
+
 public Integer getLrry() {
 	return lrry;
 }
@@ -261,5 +264,12 @@ public void setSfqzfp(String sfqzfp) {
 	this.sfqzfp = sfqzfp;
 }
 
+public String getSfspzsfp() {
+		return sfspzsfp;
+}
+
+public void setSfspzsfp(String sfspzsfp) {
+		this.sfspzsfp = sfspzsfp;
+}
 
 }

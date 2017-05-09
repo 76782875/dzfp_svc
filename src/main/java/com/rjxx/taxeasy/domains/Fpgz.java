@@ -104,6 +104,10 @@ protected String hsbz;
 @Column(name="qdbz")
 protected String qdbz;
 
+@Column(name="sfspzsfp")
+protected String sfspzsfp;
+
+
 
 public String getGsdm() {
 	return gsdm;
@@ -263,6 +267,12 @@ protected Date xgsj;
 		this.sfqzfp = sfqzfp;
 	}
 
-	
+	public String getSfspzsfp() {
+		return sfspzsfp;
+	}
+
+	public void setSfspzsfp(String sfspzsfp) {
+		this.sfspzsfp = sfspzsfp;
+	}
 }
 
