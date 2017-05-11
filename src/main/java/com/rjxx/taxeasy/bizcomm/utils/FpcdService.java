@@ -37,7 +37,6 @@ public class FpcdService {
 			
 			InvoiceResponse response = skService.reprintInvoice(kplsh);//发票重打接口
 			if ("0000".equals(response.getReturnCode())) {
-
 				return response;
 			}else{
 				dc.saveLog(jyls.getDjh(), "92", "1", "", "调用重打接口失败"+response.getReturnMessage(), 2, jyls.getXfsh(), jyls.getJylsh());
