@@ -131,6 +131,8 @@ public class SkpVo {
 	protected String kplx;
 
 	protected String fpzl;
+
+	protected String wrzs;
 	
 	protected String skpcount;
 
@@ -450,5 +452,12 @@ public class SkpVo {
 	public void setSkpcount(String skpcount) {
 		this.skpcount = skpcount;
 	}
-	
+
+	public String getWrzs() {
+		return wrzs;
+	}
+
+	public void setWrzs(String wrzs) {
+		this.wrzs = wrzs;
+	}
 }
