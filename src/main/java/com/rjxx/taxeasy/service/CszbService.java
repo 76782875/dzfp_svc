@@ -65,31 +65,30 @@ public class CszbService {
 		params.put("csm", csm);
 		List<Cszb> list = new ArrayList<>();
 		list =  cszbMapper.findAllByParams(params);
-		if (list.size()==1) {
+		if (list.size() == 1) {
 			return list.get(0);
-			}else if(list.size()>0){
-				for (Cszb cszb : list) {
-					if (null!=kpdid&&kpdid.equals(cszb.getKpdid())) {
-						return cszb;
-					}
+		}
+		if (list.size() > 0) {
+			for (Cszb cszb : list) {
+				if (null != kpdid && kpdid.equals(cszb.getKpdid())) {
+					return cszb;
 				}
-				for (Cszb cszb : list) {
-					if (null!=xfid&&xfid.equals(cszb.getXfid())&&null==cszb.getKpdid()) {
-						return cszb;
-					}
-				}
-				for (Cszb cszb : list) {
-					if (null!=gsdm&&gsdm.equals(cszb.getGsdm())&&null==cszb.getKpdid()&&null==cszb.getXfid()) {
-						return cszb;
-					}
-				}
-				return list.get(0);
-			}else {
-				Csb csb = csbService.findOneByParams(params);
-				Cszb cszb = new Cszb();
-				cszb.setCsz(csb.getMrz());
-				return cszb;
 			}
+			for (Cszb cszb : list) {
+				if (null != xfid && xfid.equals(cszb.getXfid()) && null == cszb.getKpdid()) {
+					return cszb;
+				}
+			}
+			for (Cszb cszb : list) {
+				if (null != gsdm && gsdm.equals(cszb.getGsdm()) && null == cszb.getKpdid() && null == cszb.getXfid()) {
+					return cszb;
+				}
+			}
+		}
+		Csb csb = csbService.findOneByParams(params);
+		Cszb cszb = new Cszb();
+		cszb.setCsz(csb.getMrz());
+		return cszb;
     }
 
 	public Cszb findsfzlkpByParams(Cszb cszb) {
