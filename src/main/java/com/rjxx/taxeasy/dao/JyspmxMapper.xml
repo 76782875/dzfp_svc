@@ -37,6 +37,11 @@
         <if test="params.gsdm != null">
             and gsdm = #{params.gsdm}
         </if>
+        <if test="params.djhlist !=null">
+            <foreach collection="params.djhlist" open=" and djh in ("  close=")" separator=","  item="item" index="index" >
+                #{params.djhlist[${index}]}
+            </foreach>
+        </if>
         order BY djh DESC ,spmxxh ASC
     </select>
 
