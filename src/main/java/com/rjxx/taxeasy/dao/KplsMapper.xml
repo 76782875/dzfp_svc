@@ -618,7 +618,7 @@ AND djh =#{djh}
 			WHERE
 				a.xfid = c.id
 			AND a.gsdm = #{gsdm}
-			AND a.fpztdm = #{fpztdm}
+			AND (a.fpztdm = '05' or (a.fpztdm = '04' and a.lrsj &lt; DATE_SUB(current_timestamp,INTERVAL 5 MINUTE)))
 			AND a.fphm IS NULL
 			and (b.ckcs is null or b.ckcs &lt;3)
 			AND a.lrsj &gt;= date '2017-05-04'
