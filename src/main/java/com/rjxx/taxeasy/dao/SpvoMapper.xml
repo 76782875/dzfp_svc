@@ -20,6 +20,9 @@
         <if test="sl != null">
             and sl = #{sl}
         </if>
+        <if test="id != null">
+            and id = #{id}
+        </if>
     </select>
     <select id="findAllOnPage" parameterType="pagination" resultType="spvo">
         select * from spvo where yxbz = '1'
