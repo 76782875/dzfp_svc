@@ -348,6 +348,7 @@ protected String sjly;
 
 protected String clztmc;
 
+protected Double ykjje;
 /**
 * 发票操作类型名称
 */ 
@@ -995,5 +996,11 @@ public void setFpzlmc(String fpzlmc) {
 	this.fpzlmc = fpzlmc;
 }
 
+	public Double getYkjje() {
+		return ykjje;
+	}
 
+	public void setYkjje(Double ykjje) {
+		this.ykjje = ykjje;
+	}
 }

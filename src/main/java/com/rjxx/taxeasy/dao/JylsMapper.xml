@@ -22,6 +22,9 @@
 
     <select id="findAllByParams" parameterType="jyls" resultType="jyls">
         select * from t_jyls where yxbz = '1'
+        <if test="sqlsh != null">
+            and sqlsh = #{sqlsh}
+        </if>
     </select>
 	<select id="findBySql" parameterType="map" resultType="jyls">
       SELECT * FROM t_jyls t WHERE t.yxbz = '1' AND t.fpczlxdm LIKE '1%'  AND t.fpzldm = '12' AND t.jshj - IFNULL(t.ykpjshj,0) != 0 and t.clztdm = '03' order by djh LIMIT 1000
