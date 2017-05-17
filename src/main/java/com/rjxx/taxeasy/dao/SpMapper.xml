@@ -17,6 +17,9 @@
         <if test="id != null">
             and id != #{id}
         </if>
+        <if test="smid != null and smid != 0">
+            and smid = #{smid}
+        </if>
         limit 1
     </select>
 
