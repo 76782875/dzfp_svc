@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
+
+import com.rjxx.taxeasy.domains.Skp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.rjxx.taxeasy.domains.Jymxsq;
@@ -156,15 +158,23 @@ public class CheckOrderUtil {
 			}
 
 			String kpddm = jyxxsq.getKpddm();
+			String xfsh = jyxxsq.getXfsh();
 			Map tt = new HashMap();
 			if (null == kpddm || kpddm.equals("")) {
 				result += ddh + ":开票点不能为空;";
 			} else {
 				tt.put("kpddm", kpddm);
+				tt.put("xfsh", xfsh);
 				tt.put("gsdm", gsdm);
-				Xf xf = jyxxsqService.findXfExistByKpd(tt);
+				Xf xf = jyxxsqService.findXfExistByXfsh(tt);
 				if (null == xf || xf.equals("")) {
-					result += kpddm + ":对应的销方不存在!;";
+					result +="该公司"+ gsdm +":对应的销方不存在!;";
+				}else{
+					tt.put("xfid",xf.getId());
+					Skp skp= jyxxsqService.findskpExistByXfid(tt);
+					if(null == skp || skp.equals("")){
+						result += "该销方"+xf.getXfsh()+":对应的"+kpddm+"不存在!;";
+					}
 				}
 			}
 		}

@@ -73,9 +73,20 @@
 
 	<select id="findXfExistByKpd" parameterType="map" resultType="xf">
 		select t.* from t_xf t where t.yxbz='1' and t.id in
-		(select a.xfid from t_skp a where a.kpddm =#{kpddm} and a.gsdm =#{gsdm})
+		(select a.xfid from t_skp a where a.kpddm =#{kpddm} and a.gsdm =#{gsdm} )
 		LIMIT 1
 	</select>
+
+	<select id="findXfExistByXfsh" parameterType="map" resultType="xf">
+		select t.* from t_xf t where t.yxbz='1' and t.xfsh =#{xfsh} and t.gsdm =#{gsdm}
+        LIMIT 1
+	</select>
+
+	<select id="findskpExistByXfid" parameterType="map" resultType="skp">
+		select t.* from t_skp t where t.yxbz='1' and t.xfid =#{xfid} and t.gsdm =#{gsdm}
+		LIMIT 1
+	</select>
+
     <select id="findBykplscxPage" parameterType="pagination" resultType="jyxxsqVO">
        select a.*,b.clztmc AS clztmc,c.fpczlxmc as fpczlxmc,d.fpzlmc as fpzlmc  from  (((`t_jyxxsq` `a` join `t_clzt` `b`) join `t_fpczlx` `c`) join `t_fpzl` `d`) where ((`a`.`clztdm` = `b`.`clztdm`) and (`a`.`fpczlxdm` = `c`.`fpczlxdm`) and (`a`.`fpzldm` = `d`.`fpzldm`))
          and  a.yxbz='1' 

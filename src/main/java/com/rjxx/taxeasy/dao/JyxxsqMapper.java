@@ -3,6 +3,7 @@ package com.rjxx.taxeasy.dao;
 import com.rjxx.comm.mybatis.MybatisRepository;
 import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.domains.Jyxxsq;
+import com.rjxx.taxeasy.domains.Skp;
 import com.rjxx.taxeasy.domains.Xf;
 import com.rjxx.taxeasy.vo.JyxxsqVO;
 
@@ -40,5 +41,9 @@ public interface JyxxsqMapper {
     public List<JyxxsqVO> findYscByPage(Pagination pagination);
 
 	public List<JyxxsqVO> findBykplscxPage(Pagination pagination);
+
+    Xf findXfExistByXfsh(Map params);
+
+    Skp findskpExistByXfid(Map tt);
 }
 

@@ -3,11 +3,7 @@ package com.rjxx.taxeasy.service;
 import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.dao.JyxxsqJpaDao;
 import com.rjxx.taxeasy.dao.JyxxsqMapper;
-import com.rjxx.taxeasy.domains.Jyls;
-import com.rjxx.taxeasy.domains.Jymxsq;
-import com.rjxx.taxeasy.domains.Jyspmx;
-import com.rjxx.taxeasy.domains.Jyxxsq;
-import com.rjxx.taxeasy.domains.Xf;
+import com.rjxx.taxeasy.domains.*;
 import com.rjxx.taxeasy.vo.Jylsvo;
 import com.rjxx.taxeasy.vo.JymxsqVo;
 import com.rjxx.taxeasy.vo.JyspmxVo;
@@ -84,6 +80,10 @@ public class JyxxsqService {
     public Xf findXfExistByKpd(Map params) {
         return jyxxsqMapper.findXfExistByKpd(params);
     }
+
+	public Xf findXfExistByXfsh(Map params) {
+		return jyxxsqMapper.findXfExistByXfsh(params);
+	}
 
     public void saveJyxxsq(Jyxxsq jyxxsq){
     	jyxxsqMapper.saveJyxxsq(jyxxsq);
@@ -176,5 +176,8 @@ public class JyxxsqService {
 		 return jyxxsqMapper.findBykplscxPage(pagination);
 	}
 
+	public Skp findskpExistByXfid(Map tt) {
+		return jyxxsqMapper.findskpExistByXfid(tt);
+	}
 }
 
