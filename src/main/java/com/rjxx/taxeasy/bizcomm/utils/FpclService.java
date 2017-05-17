@@ -605,7 +605,6 @@ public class FpclService {
     /**
      *  直接开票
      */
-    /*
     public List<Object> zjkp(List<Jyxxsq> list,String kpfs) throws Exception{
     	List<Object> result = new ArrayList<>();
     	boolean sfqzfp = true;
@@ -741,7 +740,7 @@ public class FpclService {
             }
 		}
     	return result;
-    }*/
+    }
     /**
 	 * 保存交易流水`
 	 *
