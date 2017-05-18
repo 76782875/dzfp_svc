@@ -32,7 +32,7 @@ public class CheckOrderUtil {
         Jyxxsq jyxxsq = new Jyxxsq();
         List tqmList = new ArrayList();
         List jylshList = new ArrayList();
-        List ddhList = new ArrayList();
+//        List ddhList = new ArrayList();
         Map tqmMap = new HashMap();
         Map jylshMap = new HashMap();
         Map ddhMap = new HashMap();
@@ -41,10 +41,10 @@ public class CheckOrderUtil {
             // 订单号
             ddh = jyxxsq.getDdh();
             if (ddh != null && !ddh.equals("")) {
-                if (ddh.length() > 20) {
+                if (ddh.length() > 100) {
                     result += "购方数据" + ddh + ":订单号太长;";
                 }
-                ddhList.add(ddh);
+//                ddhList.add(ddh);
             } else {
                 result += "购方数据订单号不能为空;";
             }
@@ -200,19 +200,19 @@ public class CheckOrderUtil {
             }
         }
 
-        ddhMap.put("ddhList", ddhList);
-        ddhMap.put("gsdm", gsdm);
-        List<Jyxxsq> t3 = jyxxsqService.findAllByDdhs(ddhMap);
-        if (null != t3 && !t3.isEmpty()) {
-            for (int i = 0; i < t3.size(); i++) {
-                Jyxxsq jy3 = (Jyxxsq) t3.get(i);
-                if ((null == jy3.getSfcp() || jy3.getSfcp().equals(""))) {
-                    result += "订单号" + jy3.getDdh() + "已存在;";
-                } else if (Operation.equals("01")) {
-                    result += "订单号" + jy3.getDdh() + "已存在;";
-                }
-            }
-        }
+//        ddhMap.put("ddhList", ddhList);
+//        ddhMap.put("gsdm", gsdm);
+//        List<Jyxxsq> t3 = jyxxsqService.findAllByDdhs(ddhMap);
+//        if (null != t3 && !t3.isEmpty()) {
+//            for (int i = 0; i < t3.size(); i++) {
+//                Jyxxsq jy3 = (Jyxxsq) t3.get(i);
+//                if ((null == jy3.getSfcp() || jy3.getSfcp().equals(""))) {
+//                    result += "订单号" + jy3.getDdh() + "已存在;";
+//                } else if (Operation.equals("01")) {
+//                    result += "订单号" + jy3.getDdh() + "已存在;";
+//                }
+//            }
+//        }
         return result;
     }
 
