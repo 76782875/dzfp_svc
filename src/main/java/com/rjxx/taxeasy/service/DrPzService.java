@@ -53,14 +53,14 @@ public class DrPzService {
     /**
      * 先删除后保存
      *
-     * @param yhid
+     * @param
      * @param drPzList
      */
     @Transactional
     public void deleteAndSave(int mbid, List<DrPz> drPzList) {
         //先查找
         DrPz params = new DrPz();
-        params.setMbid(mbid);;
+        params.setMbid(mbid);
         List<DrPz> deleteList = findAllByParams(params);
         if (!deleteList.isEmpty()) {
             //再删除

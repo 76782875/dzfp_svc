@@ -52,22 +52,13 @@
         <if test="params.gsdm != null and params.gsdm != ''">
             and gsdm = #{params.gsdm}
         </if>
-        <if test="params.xfsh != null and params.xfsh != ''">
-            and xfsh = #{params.xfsh}
-        </if>
         <if test="params.gxbz != null and params.gxbz != ''">
             and gxbz = #{params.gxbz}
         </if>
         <if test="params.mbmc != null and params.mbmc != ''">
             and mbmc like concat('%',#{params.mbmc},'%')
         </if>
-        <if test="params.xfs !=null">
-               <foreach collection="params.xfs" open=" and xfsh in (" separator="," close=")" item="item" index="index">
-                #{params.xfs[${index}].xfsh} 
-            </foreach>
-            
-         </if>
-         ) order by id desc
+        )order by id desc
     </select>
 
 </mapper>
