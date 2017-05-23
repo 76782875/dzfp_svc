@@ -5,6 +5,7 @@ import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.domains.Kpls;
 import com.rjxx.taxeasy.vo.Fpcxvo;
 import com.rjxx.taxeasy.vo.FptjVo;
+import com.rjxx.taxeasy.vo.KpcxjgVo;
 import com.rjxx.taxeasy.vo.KplsVO3;
 
 import java.util.List;
@@ -130,6 +131,14 @@ public interface KplsMapper {
      * @return
      */
     public String findSfmcByXfid(int xfid);
+
+    /**
+     * 查询开票结果
+     *
+     * @param params
+     * @return
+     */
+    public List<KpcxjgVo> findAllKpjgByMap(Map params);
 
 }
 

@@ -6,6 +6,7 @@ import com.rjxx.taxeasy.dao.KplsMapper;
 import com.rjxx.taxeasy.domains.Kpls;
 import com.rjxx.taxeasy.vo.Fpcxvo;
 import com.rjxx.taxeasy.vo.FptjVo;
+import com.rjxx.taxeasy.vo.KpcxjgVo;
 import com.rjxx.taxeasy.vo.KplsVO3;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -245,6 +246,17 @@ public class KplsService {
     public String findSfmcByXfid(int xfid) {
         return kplsMapper.findSfmcByXfid(xfid);
     }
+
+    /**
+     * 查询开票结果
+     *
+     * @param params
+     * @return
+     */
+    public List<KpcxjgVo> findAllKpjgByMap(Map params) {
+        return kplsMapper.findAllKpjgByMap(params);
+    }
+
 
 }
 
