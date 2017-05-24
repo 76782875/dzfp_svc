@@ -32,7 +32,15 @@
 		select *
 		from t_kpls where hk_fpdm = #{hkFpdm} and hk_fphm = #{hkFphm} and yxbz='1'
 	</select>
-
+    <!-- 根据原发票号码查询原开票流水号 -->
+    <select id="findByhzfphm" parameterType="kpls" resultType="kpls">
+        select *
+        from t_kpls where fpdm = #{hkFpdm} and fphm = #{hkFphm} and yxbz='1'
+    </select>
+    <!-- 根据发票号码查询开票流水号 -->
+    <select id="findByfphm" parameterType="kpls" resultType="kpls">
+        select * from t_kpls where fpdm = #{fpdm} and fphm = #{fphm} and yxbz='1'
+    </select>
 
     <select id="findAllByParams" parameterType="map" resultType="fpcxvo">
         SELECT a.jshj,a.hjje,a.hjse, a.kplsh, a.fpdm,a.fphm,a.kprq,a.pdfurl,a.fpztdm, b.fpzlmc,c.fpczlxmc,e.djh,

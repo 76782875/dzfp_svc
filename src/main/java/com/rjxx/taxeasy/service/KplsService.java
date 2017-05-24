@@ -258,5 +258,12 @@ public class KplsService {
     }
 
 
+    public Kpls findByfphm(Kpls parms) {
+        return kplsMapper.findByfphm(parms);
+    }
+
+    public Kpls findByhzfphm(Kpls kpls) {
+        return kplsMapper.findByhzfphm(kpls);
+    }
 }
 

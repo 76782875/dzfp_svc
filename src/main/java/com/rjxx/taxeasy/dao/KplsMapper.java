@@ -140,5 +140,8 @@ public interface KplsMapper {
      */
     public List<KpcxjgVo> findAllKpjgByMap(Map params);
 
+    Kpls findByfphm(Kpls parms);
+
+    Kpls findByhzfphm(Kpls kpls);
 }
 
