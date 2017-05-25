@@ -26,6 +26,7 @@ public class GetYjnr {
             }else{
                 String value=(String)entry.getValue();
                 content.replace(key,value);
+                content.replace("dqrq",dqrq);
             }
         }
         return null;
