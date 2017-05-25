@@ -22,13 +22,13 @@ public class GetYjnr {
                 for (String pdfUrl : pdfUrlList) {
                     pdf+= "<a href='" + pdfUrl + "'>" + null2Wz(pdfUrl) + "</a><br>";
                 }
-                content.replace(key,pdf);
+                content=content.replace(key,pdf);
             }else{
                 String value=(String)entry.getValue();
-                content.replace(key,value);
+                content=content.replace(key,value);
             }
         }
-        content.replace("dqrq",dqrq);
+        content=content.replace("dqrq",dqrq);
         return content;
 	}
 	
