@@ -44,11 +44,16 @@
     <!-- 根据原发票号码查询原开票流水号 -->
     <select id="findByhzfphm" parameterType="kpls" resultType="kpls">
         select *
-        from t_kpls where fpdm = #{hkFpdm} and fphm = #{hkFphm} and yxbz='1'
+        from t_kpls where fpdm = #{hkFpdm} and fphm = #{hkFphm} and gsdm=#{gsdm}
+        and yxbz='1'
+        <if test="jylsh !=null and jylsh !=''">
+            and jylsh = #{jylsh}
+        </if>
     </select>
     <!-- 根据发票号码查询开票流水号 -->
     <select id="findByfphm" parameterType="kpls" resultType="kpls">
         select * from t_kpls where fpdm = #{fpdm} and fphm = #{fphm} and yxbz='1'
+
     </select>
 
     <select id="findAllByParams" parameterType="map" resultType="fpcxvo">
