@@ -26,10 +26,10 @@ public class GetYjnr {
             }else{
                 String value=(String)entry.getValue();
                 content.replace(key,value);
-                content.replace("dqrq",dqrq);
             }
         }
-        return null;
+        content.replace("dqrq",dqrq);
+        return content;
 	}
 	
 	public String getFpyjEmail(String yhmc,String xfmc,String kpdmc,String fpzlmc,Integer kyl,Integer limit){

@@ -1,5 +1,6 @@
 package com.rjxx.taxeasy.bizcomm.utils;
 
+import com.rjxx.comm.utils.ApplicationContextUtils;
 import com.rjxx.taxeasy.bizcomm.utils.pdf.PdfDocumentGenerator;
 import com.rjxx.taxeasy.domains.*;
 import com.rjxx.taxeasy.service.*;
@@ -185,4 +186,8 @@ public class GeneratePdfService {
         }
     }
 
+    public static void main(String[] args) {
+        GeneratePdfService generatePdfService= ApplicationContextUtils.getBean(GeneratePdfService.class);
+        generatePdfService.generatePdf( 14688);
+    }
 }
