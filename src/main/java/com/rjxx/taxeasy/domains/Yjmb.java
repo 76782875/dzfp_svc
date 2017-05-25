@@ -19,7 +19,8 @@ public class Yjmb  implements Serializable {
 
 /**
  * 邮件模板代码
- */ 
+ */
+@Id
 @Column(name="yjmb_dm")
 	protected Integer yjmbDm;
 
