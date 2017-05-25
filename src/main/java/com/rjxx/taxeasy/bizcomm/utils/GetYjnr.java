@@ -2,32 +2,33 @@ package com.rjxx.taxeasy.bizcomm.utils;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 取得邮件内容
  * */
 public class GetYjnr {
 	
-	public String getFpkjYj(String ddh, List<String> pdfUrlList, String gsmc)throws Exception{
+	public String getFpkjYj(Map<String, Object> csmap, String content)throws Exception{
 		StringBuffer sb = new StringBuffer();
-        sb.append(" 先生/小姐您好：<br/>");
-        sb.append("<br/>");
-        sb.append("您的订单号码： ");
-        sb.append(ddh).append("的电子发票已开具成功，电子发票下载地址：<br>");
-        for (String pdfUrl : pdfUrlList) {
-            sb.append("<a href='" + pdfUrl + "'>" + null2Wz(pdfUrl) + "</a><br>");
-        }
-        sb.append("请及时下载您的发票。");
-        sb.append("<br/>");
-        sb.append("<br/>");
-        sb.append("备注：苹果浏览器无法显示发票章，只能下载PDF才能显示。");
-        sb.append("<br/><br/>");
-        sb.append(gsmc);
-        sb.append("<br/>");
-        sb.append("<br/>");
         Date d = new Date();
         sb.append(1900 + d.getYear()).append("年").append(d.getMonth() + 1).append("月").append(d.getDate()).append("日");
-        return sb.toString();
+        String dqrq=sb.toString();
+        String pdf="";
+        for (Map.Entry<String, Object> entry : csmap.entrySet()) {
+            String key=entry.getKey();
+            if(key.equals("pdfurls")){
+                List<String> pdfUrlList=(List<String>)entry.getValue();
+                for (String pdfUrl : pdfUrlList) {
+                    pdf+= "<a href='" + pdfUrl + "'>" + null2Wz(pdfUrl) + "</a><br>";
+                }
+                content.replace(key,pdf);
+            }else{
+                String value=(String)entry.getValue();
+                content.replace(key,value);
+            }
+        }
+        return null;
 	}
 	
 	public String getFpyjEmail(String yhmc,String xfmc,String kpdmc,String fpzlmc,Integer kyl,Integer limit){

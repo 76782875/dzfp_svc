@@ -45,5 +45,7 @@ public interface JyxxsqMapper {
     Xf findXfExistByXfsh(Map params);
 
     Skp findskpExistByXfid(Map tt);
+
+    Jyxxsq findOneByJylsh(Map jyxxsqMap);
 }
 

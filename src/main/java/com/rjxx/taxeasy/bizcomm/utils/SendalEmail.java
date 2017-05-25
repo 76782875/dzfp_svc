@@ -70,7 +70,7 @@ public class SendalEmail {
 
 	public static void main(String[] args) {
 		SendalEmail se = new SendalEmail();
-		Boolean msg = se.sendEmail("123456", "rjxx", "179637014@qq.com", "发票开具", "123456", "您的发票已开具成功",
+		Boolean msg = se.sendEmail("123456", "rjxx", "1084854604@qq.com", "发票开具", "123456", "您的发票已开具成功",
 				"电子发票");
 		System.out.println(msg);
 	}

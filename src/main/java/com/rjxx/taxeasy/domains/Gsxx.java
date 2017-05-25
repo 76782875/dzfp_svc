@@ -92,11 +92,12 @@ protected Integer kpnum;
 	return appKey;
 }
 
-public void setAppKey(String appKey) {
+    public void setAppKey(String appKey) {
 	this.appKey = appKey;
 }
 
-
+	@Column(name="yjmb_dm")
+	protected Integer yjmbDm;
 
 	public String getWsUrl() {
 	return wsUrl;
@@ -226,5 +227,12 @@ public void setWsUrl(String wsUrl) {
 		this.dingcorpid=dingcorpid;
 	}
 
+	public Integer getYjmbDm() {
+		return yjmbDm;
+	}
+
+	public void setYjmbDm(Integer yjmbDm) {
+		this.yjmbDm = yjmbDm;
+	}
 }
 

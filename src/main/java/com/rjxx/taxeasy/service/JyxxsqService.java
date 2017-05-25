@@ -179,5 +179,9 @@ public class JyxxsqService {
 	public Skp findskpExistByXfid(Map tt) {
 		return jyxxsqMapper.findskpExistByXfid(tt);
 	}
+
+	public Jyxxsq findOneByJylsh(Map jyxxsqMap) {
+		return jyxxsqMapper.findOneByJylsh(jyxxsqMap);
+	}
 }
 

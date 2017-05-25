@@ -54,7 +54,18 @@
 			order by #{orderBy}
 		</if>
 	</select>
-
+	<select id="findOneByJylsh" parameterType="map" resultType="jyxxsq">
+		select * from t_jyxxsq where yxbz = '1'
+		<if test="gsdm != null">
+			and gsdm = #{gsdm}
+		</if>
+		<if test="jylsh != null">
+			and jylsh = #{jylsh}
+		</if>
+		<if test="orderBy != null">
+			order by #{orderBy}
+		</if>
+	</select>
 	<select id="findAllByDdhs" parameterType="map" resultType="jyxxsq">
 		select * from t_jyxxsq where yxbz = '1'
 		<if test="ddhList != null">

@@ -19,7 +19,7 @@ public class GenEntityMysql {
 
     private String packageOutPath = "com.rjxx.taxeasy.domains";//指定实体生成所在包的路径
     private String authorName = "ZhangBing";//作者名字
-    private String tablename = "t_jymxsq";//表名
+    private String tablename = "t_yjmb";//表名
     private String tableComment = null;//表注释
     private String javaFilePath = "./";
     private String[] colnames; // 列名数组
@@ -90,7 +90,7 @@ public class GenEntityMysql {
                 String content = parse(colnames, colTypes, colSizes);
 
                 try {
-                    String outputPath = javaFilePath + "/src/main/java/" + this.packageOutPath.replace(".", "/") + "/" + generateClassName() + ".java";
+                    String outputPath =  "dzfp-svc/src/main/java/" + this.packageOutPath.replace(".", "/") + "/" + generateClassName() + ".java";
                     FileWriter fw = new FileWriter(outputPath);
                     PrintWriter pw = new PrintWriter(fw);
                     pw.println(content);

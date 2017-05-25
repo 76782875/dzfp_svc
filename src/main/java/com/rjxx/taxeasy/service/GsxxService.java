@@ -51,6 +51,11 @@ public class GsxxService {
         return gsxx;
     }
 
+    public Gsxx findOneByGsdm(Map params) {
+        return gsxxMapper.findOneByGsdm(params);
+    }
+
+
     public List<Gsxx> findAllByParams(Map params) {
         return gsxxMapper.findAllByParams(params);
     }

@@ -1,18 +1,15 @@
 package com.rjxx.taxeasy.bizcomm.utils;
 
 import com.rjxx.taxeasy.bizcomm.utils.pdf.PdfDocumentGenerator;
-import com.rjxx.taxeasy.domains.Cszb;
-import com.rjxx.taxeasy.domains.Jyls;
-import com.rjxx.taxeasy.domains.Kpls;
-import com.rjxx.taxeasy.service.CszbService;
-import com.rjxx.taxeasy.service.JylsService;
-import com.rjxx.taxeasy.service.KplsService;
+import com.rjxx.taxeasy.domains.*;
+import com.rjxx.taxeasy.service.*;
 import com.rjxx.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -48,6 +45,14 @@ public class GeneratePdfService {
     @Autowired
     private SaveMessage saveMsg;
 
+    @Autowired
+    private GsxxService gsxxService;
+
+    @Autowired
+    private YjmbService yjmbService;
+    @Autowired
+    private JyxxsqService jyxxsqService;
+
     /**
      * 销方省份名称
      */
@@ -62,6 +67,10 @@ public class GeneratePdfService {
         Kpls kpls = kplsService.findOne(kplsh);
         int djh = kpls.getDjh();
         Jyls jyls = jylsService.findOne(djh);
+        Map jyxxsqMap=new HashMap();
+        jyxxsqMap.put("gsdm",kpls.getGsdm());
+        jyxxsqMap.put("jylsh",jyls.getJylsh());
+        Jyxxsq jyxxsq=jyxxsqService.findOneByJylsh(jyxxsqMap);
         try {
             int xfid = jyls.getXfid();
             String sfmc = xfSfMap.get(xfid);
@@ -92,7 +101,19 @@ public class GeneratePdfService {
                         pdfUrlList.add(kpls1.getPdfurl());
                     }
                     GetYjnr getYjnr = new GetYjnr();
-                    String content = getYjnr.getFpkjYj(jyls.getDdh(), pdfUrlList, jyls.getXfmc());
+                    Map gsxxmap=new HashMap();
+                    gsxxmap.put("gsdm",kpls.getGsdm());
+                    Gsxx gsxx=gsxxService.findOneByGsdm(gsxxmap);
+                    Integer yjmbDm=gsxx.getYjmbDm();
+                    Yjmb yjmb=yjmbService.findOne(yjmbDm);
+                    String yjmbcontent=yjmb.getYjmbNr();
+                    Map csmap=new HashMap();
+                    csmap.put("ddh",jyls.getDdh());
+                    SimpleDateFormat sdf=new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
+                    csmap.put("ddrq",sdf.format(jyxxsq.getDdrq()));
+                    csmap.put("pdfurls",pdfUrlList);
+                    csmap.put("xfmc",jyls.getXfmc());
+                    String content = getYjnr.getFpkjYj(csmap,yjmbcontent);
                     try {
                         se.sendEmail(String.valueOf(kpls.getDjh()), kpls.getGsdm(), kpls.getGfemail(), "发票开具成功发送邮件", String.valueOf(kpls.getDjh()), content, "电子发票");
                     } catch (Exception e) {
