@@ -75,7 +75,7 @@ public class SkService {
             return InvoiceResponseUtils.responseError("skServerUrl为空");
         }
         String encryptStr = encryptSkServerParameter(kplsh + "");
-        String url = skServerUrl + "/invoice/voidInovice";
+        String url = skServerUrl + "/invoice/voidInvoice";
         Map<String, String> map = new HashMap<>();
         map.put("p", encryptStr);
         String result = HttpUtils.doPost(url, map);
