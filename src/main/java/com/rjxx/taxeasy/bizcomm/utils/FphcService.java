@@ -51,7 +51,7 @@ public class FphcService {
 			Gsxx gsxx = gsxxService.findOneByParams(paramsTmp);	
 			String jylsh = "";
 			Integer djh = 0;
-				double hjhcje = 0; 
+				double hjhcje = 0;
 				String[] hcje = hcjeStr.substring(0, hcjeStr.length() - 1).split(",");
 				for (int j = 0; j < hcje.length; j++) {
 					hjhcje += Double.valueOf(hcje[j]);
@@ -117,7 +117,7 @@ public class FphcService {
 				jylsService.save(jyls1);
 				//保存开票流水
 				Kpls kpls2 = new Kpls();
-				kpls2.setDjh(djh);
+				kpls2.setDjh(jyls1.getDjh());
 				kpls2.setJylsh(jylsh);
 				kpls2.setJylssj(jyls1.getJylssj());
 				kpls2.setFpzldm(jyls1.getFpzldm());
