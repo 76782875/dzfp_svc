@@ -6,11 +6,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.rjxx.taxeasy.domains.Cszb;
 import com.rjxx.taxeasy.domains.Gsxx;
 import com.rjxx.taxeasy.domains.Jyls;
 import com.rjxx.taxeasy.domains.Jyspmx;
@@ -45,13 +42,10 @@ public class FphcService {
 		public InvoiceResponse hccl(Integer kplsh,Integer yhid, String gsdm,String hcjeStr,String xhStr,String hztzdh) throws Exception {
 
 			InvoiceResponse response=new InvoiceResponse();
-			
-			
 			DecimalFormat df = new DecimalFormat("#.00");
 			DecimalFormat df6 = new DecimalFormat("#.000000");
 			Map map = new HashMap<>();
 			map.put("kplsh", kplsh);
-			//kzx 20161212 如果走税控服务器红冲则设置clztdm为03
 			Map paramsTmp = new HashMap();
 			paramsTmp.put("gsdm", gsdm);
 			Gsxx gsxx = gsxxService.findOneByParams(paramsTmp);	
@@ -75,7 +69,6 @@ public class FphcService {
 				Jyls jyls = jylsService.findJylsByDjh(param4);
 				String ddh = jyls.getDdh(); // 查询原交易流水得ddh
 				Map jylsParam = new HashMap<>();
-		
 				//保存交易流水
 				Jyls jyls1 = new Jyls();
 				jyls1.setDdh(ddh);
@@ -103,7 +96,6 @@ public class FphcService {
 				jyls1.setGfdz(kpls.getGfdz());
 				jyls1.setGfyb(kpls.getGfyb());
 				jyls1.setGfemail(kpls.getGfemail());
-				jyls1.setClztdm("01");
 				jyls1.setBz(kpls.getBz());
 				jyls1.setSkr(kpls.getSkr());
 				jyls1.setKpr(kpls.getKpr());
@@ -156,8 +148,6 @@ public class FphcService {
 				kpls2.setHkFpdm(jyls1.getYfpdm());
 				kpls2.setHkFphm(jyls1.getYfphm());
 				kpls2.setJshj(jyls1.getJshj());
-	/*			kpls2.setHjse(hjse);
-				kpls2.setHjje(hjje);*/
 				kpls2.setGsdm(jyls1.getGsdm());
 				kpls2.setYxbz("1");
 				kpls2.setLrsj(jyls1.getLrsj());
@@ -165,7 +155,7 @@ public class FphcService {
 				kpls2.setSkpid(jyls1.getSkpid());
 				kpls2.setLrry(yhid);
 				kpls2.setXgry(yhid);
-				kpls2.setFpztdm("00");
+				kpls2.setFpztdm("04");
 				kpls2.setHztzdh(hztzdh);
 				kplsService.save(kpls2);
 				djh = jyls1.getDjh();
@@ -271,7 +261,6 @@ public class FphcService {
 						param1.put("yhcje", yhcje);
 						param1.put("kplsh", kplsh);
 						param1.put("xh", xh[i]);
-						
 						kpspmxService.update(param1);
 						
 						// 交易保存明细
@@ -303,98 +292,14 @@ public class FphcService {
 							jymxService.save(jymx);
 						}
 					}
-					
 				}
-				kpls2.setHjje(hjje);
-				kpls2.setHjse(hjse);
-				kpls2.setJshj(jshj);
-				kplsService.save(kpls2);
-				
-				Map param2 = new HashMap<>();
-				param2.put("kplsh", kplsh);
-				
-				// 部分红冲后修改kpls表的三个金额
-				/*
-				 * Kpls ls = kplsService.findHjje(param2);
-				 * param2.put("hjje",ls.getHjje()); param2.put("hjse",ls.getHjse());
-				 * param2.put("jshj",ls.getJshj()); kplsService.updateHjje(param2);
-				 */
-				/*Cszb cszb=new Cszb();
-				cszb.setGsdm(gsdm);
-				cszb.setXfid(kpls.getXfid());
-				cszb.setKpdid(kpls.getSkpid());
-				cszb.setCsid(15);
-				Cszb cszb2 =(Cszb) cszbService.findsfzlkpByParams(cszb);
-				if(cszb2.getCsz().equals("否")){*/
+				    kpls2.setHjje(hjje);
+				    kpls2.setHjse(hjse);
+				    kpls2.setJshj(jshj);
 					kpls2.setFpztdm("04"); //正在开具
 					kplsService.save(kpls2);
-					//kpls.setFpztdm("09");//待红冲
-					//kplsService.save(kpls);
 					response.setReturnCode("0000");
-					response.setReturnMessage("待红冲提交成功！请在客户端开具纸质发票");
-				/*	
-				}else if(cszb2.getCsz().equals("是")){
-				 response = skService.callService(kpls2.getKplsh());
-				if ("0000".equals(response.getReturnCode())) {
-					for (int i = 0; i < xh.length; i++) {
-						Map params = new HashMap<>();
-						params.put("kplsh", kplsh);
-						params.put("xh", xh[i]);
-						Kpspmxvo mxItem = kpspmxService.findMxByParams(params);
-						if (mxItem.getKhcje() != null) {
-							String khcje = df.format(mxItem.getKhcje() - Double.valueOf(hcje[i]));
-							Map param1 = new HashMap<>();
-							param1.put("khcje", khcje);
-							String yhcje = df.format(mxItem.getYhcje() + Double.valueOf(hcje[i]));
-							String sps = null;
-							if (mxItem.getSps() != null) {
-								sps = df6.format(Double.valueOf(hcje[i]) / mxItem.getJshj() * mxItem.getSps()); // 没红冲部分的商品数量
-							}
-							param1.put("sps", sps);
-							Double spje = Double.valueOf(hcje[i]) / mxItem.getJshj() * mxItem.getSpje();
-							param1.put("spje", df6.format(spje));
-							Double spse = Double.valueOf(hcje[i]) - spje;
-							param1.put("spse", df6.format(spse));
-							param1.put("yhcje", yhcje);
-							param1.put("kplsh", kplsh);
-							param1.put("xh", xh[i]);
-							kpspmxService.update(param1);
-							}else{
-								String khcje = df.format(mxItem.getJshj() - Double.valueOf(hcje[i]));
-								Map param1 = new HashMap<>();
-								param1.put("khcje", khcje);
-								String yhcje = df.format(Double.valueOf(hcje[i]));
-								String sps = null;
-								if (mxItem.getSps() != null) {
-									sps = df6.format(Double.valueOf(khcje) / mxItem.getJshj() * mxItem.getSps()); // 没红冲部分的商品数量
-								}
-								param1.put("sps", sps);
-								Double spje = Double.valueOf(khcje) / mxItem.getJshj() * mxItem.getSpje();
-								param1.put("spje", df6.format(spje));
-								Double spse = Double.valueOf(khcje) - spje;
-								param1.put("spse", df6.format(spse));
-								param1.put("yhcje", yhcje);
-								param1.put("kplsh", kplsh);
-								param1.put("xh", xh[i]);
-								kpspmxService.update(param1);
-							}
-					}
-					// 全部红冲后修改
-					Kpspmxvo mxvo = kpspmxService.findKhcje(param2);
-					if (mxvo.getKhcje() == 0) {
-						param2.put("fpztdm", "02");
-						kplsService.updateFpczlx(param2);
-					} else {
-						param2.put("fpztdm", "01");
-						kplsService.updateFpczlx(param2);
-					}
-					//return response;
-				}else{
-					jyls1.setClztdm("02");
-					dc.saveLog(djh, "92", "1", "", "调用红冲接口失败"+response.getReturnMessage(), 2, jyls.getXfsh(), jyls.getJylsh());
-					//return response;
-				}
-			}*/
-				return response;
+					response.setReturnMessage("红冲请求已接受！");
+			        return response;
 		}
 }

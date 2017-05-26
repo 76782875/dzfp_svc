@@ -53,6 +53,9 @@ public class InvoiceResponse {
     @XmlElement(name = "InvoiceType")
     private String fplxdm;
 
+    @XmlElement(name = "CancelDate")
+    private String CancelDate;
+
     public String getLsh() {
         return lsh;
     }
@@ -132,4 +135,12 @@ public class InvoiceResponse {
 	public void setJylsh(String jylsh) {
 		this.jylsh = jylsh;
 	}
+
+    public String getCancelDate() {
+        return CancelDate;
+    }
+
+    public void setCancelDate(String cancelDate) {
+        CancelDate = cancelDate;
+    }
 }
