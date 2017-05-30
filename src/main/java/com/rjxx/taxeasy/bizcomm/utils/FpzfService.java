@@ -35,44 +35,13 @@ public class FpzfService {
 	 
 	//作废处理
 		public InvoiceResponse zfcl(Integer kplsh,Integer yhid,String gsdm) throws Exception {
-			
-			InvoiceResponse response=new InvoiceResponse();
-			
-			Kpls kpls = kplsService.findOne(kplsh);
-			Integer djh = kpls.getDjh();
-			Map param4 = new HashMap<>();
-			param4.put("djh", djh);
-			Jyls jyls = jylsService.findJylsByDjh(param4);
-			
-			/*Cszb cszb=new Cszb();
-			cszb.setGsdm(gsdm);
-			cszb.setXfid(kpls.getXfid());
-			cszb.setKpdid(kpls.getSkpid());
-			cszb.setCsid(15);
-			Cszb cszb2 =(Cszb) cszbService.findsfzlkpByParams(cszb);
-			
-			if(cszb2.getCsz().equals("否")){*/
-				kpls.setFpztdm("10");//待作废
+				InvoiceResponse response=new InvoiceResponse();
+				Kpls kpls = kplsService.findOne(kplsh);
+			    kpls.setFpczlxdm("14");//作废处理
+				kpls.setFpztdm("04");//作废走开票申请呢
 				kplsService.save(kpls);
 				response.setReturnCode("0000");
 				response.setReturnMessage("待作废提交成功！");
-			/*}else if(cszb2.getCsz().equals("是")){
-			
-			
-		    response = skService.voidInvoice(kplsh);//发票作废接口
-			if ("0000".equals(response.getReturnCode())) {
-				kpls.setFpczlxdm("14");
-				kpls.setFpztdm("08");
-				kplsService.save(kpls);
-			    jyls.setFpczlxdm("14");
-				jylsService.save(jyls);
-
-				//return response;
-			}else{
-				dc.saveLog(jyls.getDjh(), "92", "1", "", "调用作废接口失败"+response.getReturnMessage(), 2, jyls.getXfsh(), jyls.getJylsh());
-				//return response;
-			}
-		}*/
 			return response;
 	}
 
