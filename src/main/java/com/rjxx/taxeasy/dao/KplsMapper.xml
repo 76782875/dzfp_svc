@@ -593,7 +593,7 @@
             resultType="fpcxvo">
         select a.*,b.ddh,c.fpzlmc from t_kpls a,t_jyls b ,t_fpzl c
         where a.djh = b.djh and a.fpzldm=c.fpzldm
-        and a.fpztdm='00'
+        and a.fpztdm='08'
         and a.fpczlxdm = '14'
         and a.yxbz = '1'
         <if test="params.gsdm !=null and params.gsdm !=''">
