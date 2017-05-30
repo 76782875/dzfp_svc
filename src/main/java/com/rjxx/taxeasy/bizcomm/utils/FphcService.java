@@ -44,13 +44,14 @@ public class FphcService {
 			InvoiceResponse response=new InvoiceResponse();
 			DecimalFormat df = new DecimalFormat("#.00");
 			DecimalFormat df6 = new DecimalFormat("#.000000");
-			Map map = new HashMap<>();
-			map.put("kplsh", kplsh);
-			Map paramsTmp = new HashMap();
-			paramsTmp.put("gsdm", gsdm);
-			Gsxx gsxx = gsxxService.findOneByParams(paramsTmp);	
-			String jylsh = "";
-			Integer djh = 0;
+			try {
+				Map map = new HashMap<>();
+				map.put("kplsh", kplsh);
+				Map paramsTmp = new HashMap();
+				paramsTmp.put("gsdm", gsdm);
+				Gsxx gsxx = gsxxService.findOneByParams(paramsTmp);
+				String jylsh = "";
+				Integer djh = 0;
 				double hjhcje = 0;
 				String[] hcje = hcjeStr.substring(0, hcjeStr.length() - 1).split(",");
 				for (int j = 0; j < hcje.length; j++) {
@@ -148,7 +149,7 @@ public class FphcService {
 				kpls2.setHkFpdm(jyls1.getYfpdm());
 				kpls2.setHkFphm(jyls1.getYfphm());
 				kpls2.setHzyfpdm(jyls1.getYfpdm());
-			    kpls2.setHzyfphm(jyls1.getYfphm());
+				kpls2.setHzyfphm(jyls1.getYfphm());
 				kpls2.setJshj(jyls1.getJshj());
 				kpls2.setGsdm(jyls1.getGsdm());
 				kpls2.setYxbz("1");
@@ -157,13 +158,12 @@ public class FphcService {
 				kpls2.setSkpid(jyls1.getSkpid());
 				kpls2.setLrry(yhid);
 				kpls2.setXgry(yhid);
-				kpls2.setFpztdm("04");
 				kpls2.setHztzdh(hztzdh);
 				kplsService.save(kpls2);
 				djh = jyls1.getDjh();
-				double hjje=0; 
-				double hjse=0;
-				double jshj=0;
+				double hjje = 0;
+				double hjse = 0;
+				double jshj = 0;
 				for (int i = 0; i < xh.length; i++) {
 					Map params = new HashMap<>();
 					params.put("kplsh", kplsh);
@@ -186,9 +186,9 @@ public class FphcService {
 						param1.put("yhcje", yhcje);
 						param1.put("kplsh", kplsh);
 						param1.put("xh", xh[i]);
-						
+
 						kpspmxService.update(param1);
-						
+
 						// 交易保存明细
 						if (Double.valueOf(hcje[i]) != 0) {
 							Jyspmx jymx = new Jyspmx();
@@ -215,9 +215,9 @@ public class FphcService {
 							jymx.setXgsj(TimeUtil.getNowDate());
 							jymx.setXgry(yhid);
 							jymx.setFphxz("0");
-							hjje+=jymx.getSpje();
-							hjse+=jymx.getSpse();
-							jshj+=jymx.getJshj();
+							hjje += jymx.getSpje();
+							hjse += jymx.getSpse();
+							jshj += jymx.getJshj();
 							jymxService.save(jymx);
 							Kpspmx kpspmx = new Kpspmx();
 							kpspmx.setKplsh(kpls2.getKplsh());
@@ -228,13 +228,13 @@ public class FphcService {
 							kpspmx.setSpmc(jymx.getSpmc());
 							kpspmx.setSpggxh(jymx.getSpggxh());
 							kpspmx.setSpdw(jymx.getSpdw());
-						    if (jymx.getSpdj() != null) {
-				                kpspmx.setSpdj(jymx.getSpdj().doubleValue());
-				            }
-				            kpspmx.setSpdw(jymx.getSpdw());
-				            if (jymx.getSps() != null) {
-				                kpspmx.setSps(jymx.getSps().doubleValue());
-				            }
+							if (jymx.getSpdj() != null) {
+								kpspmx.setSpdj(jymx.getSpdj().doubleValue());
+							}
+							kpspmx.setSpdw(jymx.getSpdw());
+							if (jymx.getSps() != null) {
+								kpspmx.setSps(jymx.getSps().doubleValue());
+							}
 							kpspmx.setSpje(jymx.getSpje().doubleValue());
 							kpspmx.setSpsl(jymx.getSpsl().doubleValue());
 							kpspmx.setSpse(jymx.getSpse().doubleValue());
@@ -264,7 +264,7 @@ public class FphcService {
 						param1.put("kplsh", kplsh);
 						param1.put("xh", xh[i]);
 						kpspmxService.update(param1);
-						
+
 						// 交易保存明细
 						if (Double.valueOf(hcje[i]) != 0) {
 							Jyspmx jymx = new Jyspmx();
@@ -295,13 +295,19 @@ public class FphcService {
 						}
 					}
 				}
-				    kpls2.setHjje(hjje);
-				    kpls2.setHjse(hjse);
-				    kpls2.setJshj(jshj);
-					kpls2.setFpztdm("04"); //正在开具
-					kplsService.save(kpls2);
-					response.setReturnCode("0000");
-					response.setReturnMessage("红冲请求已接受！");
-			        return response;
+				kpls2.setHjje(hjje);
+				kpls2.setHjse(hjse);
+				kpls2.setJshj(jshj);
+				kpls2.setFpztdm("04"); //正在开具
+				kplsService.save(kpls2);
+				response.setReturnCode("0000");
+				response.setReturnMessage("红冲请求已接受！");
+				return response;
+			}catch (Exception e){
+				e.printStackTrace();
+				response.setReturnCode("9999");
+				response.setReturnMessage("红冲请求失败！");
+				return response;
+			}
 		}
 }
