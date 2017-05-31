@@ -71,6 +71,20 @@
 		<if test="params.xfid != null and params.xfid != ''">
 			and s.xfid = #{params.xfid}
 		</if>
+		<if test="params.xfi !=null and params.xfi !=''">
+			and (s.xfid in
+			<foreach collection="params.xfi" item="item" index="index"
+					 open="(" separator="," close=")">#{params.xfi[${index}]}
+			</foreach>
+			or s.xfid is null)
+		</if>
+		<if test="params.skpid !=null and params.skpid !=''">
+			and (s.id in
+			<foreach collection="params.skpid" item="item" index="index"
+					 open="(" separator="," close=")">#{params.skpid[${index}]}
+			</foreach>
+			or s.id is null)
+		</if>
 		<if test="params.kpdmc != null and params.kpdmc != ''">
 			and s.kpdmc like concat('%',#{params.kpdmc},'%')
 		</if>

@@ -75,6 +75,13 @@
     
     <select id="findByPages" parameterType="pagination" resultType="xfvo">
         select a.*,b.xfmc sjxfmc from t_xf a left join t_xf b on a.sjjgbm=b.id where a.yxbz = '1'
+        <if test="params.xfid !=null and params.xfid !=''">
+            and (a.id in
+            <foreach collection="params.xfid" item="item" index="index"
+                     open="(" separator="," close=")">#{params.xfid[${index}]}
+            </foreach>
+            or a.id is null)
+        </if>
         <if test="params.xfsh != null and params.xfsh != ''">
             and a.xfsh like concat('%',#{params.xfsh},'%')
         </if>
