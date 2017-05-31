@@ -280,11 +280,13 @@ public class CheckOrderUtil {
                     String TaxRate = String.valueOf(jymxsq.getSpsl());
                     if (TaxRate == null) {
                         result = "订单号为" + ddh + "的订单TaxRate为空;";
-                    }
-                    if (!(TaxRate.equals("0") || TaxRate.equals("0.03") || TaxRate.equals("0.04")
-                            || TaxRate.equals("0.06") || TaxRate.equals("0.11") || TaxRate.equals("0.13")
-                            || TaxRate.equals("0.17"))) {
-                        result += "订单号为" + ddh + "的订单TaxRate格式有误;";
+                    } else {
+                        double taxRate = Double.valueOf(TaxRate);
+                        if (!(taxRate == 0 || taxRate == 0.03 || taxRate == 0.04
+                                || taxRate == 0.06 || taxRate == 0.11 || taxRate == 0.13
+                                || taxRate == 0.17)) {
+                            result += "订单号为" + ddh + "的订单TaxRate格式有误;";
+                        }
                     }
                     // 商品税额
                     String TaxAmount = String.valueOf(jymxsq.getSpse());
