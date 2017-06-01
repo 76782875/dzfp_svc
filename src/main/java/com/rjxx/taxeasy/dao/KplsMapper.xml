@@ -14,6 +14,11 @@
         <if test="kpdid != null">
             and skpid = #{kpdid}
         </if>
+        <if test="fpzldmList != null">
+            <foreach collection="fpzldmList" open=" and fpzldm in (" close=")" separator="," item="fpzldm">
+                #{fpzldm}
+            </foreach>
+        </if>
         <if test="fpztdm != null and fpztdm != ''">
             and fpztdm = #{fpztdm}
         </if>
