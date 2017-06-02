@@ -7,7 +7,6 @@ import com.rjxx.taxeasy.domains.Gsxx;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,13 +40,6 @@ public class GsxxService {
 
     public Gsxx findOneByParams(Map params) {
         Gsxx gsxx = gsxxMapper.findOneByParams(params);
-        if (gsxx.getWxappid() == null || gsxx.getWxsecret() == null) {
-            Map paramMap = new HashMap();
-            paramMap.put("gsdm", "rjxx");
-            Gsxx gsxx1 = gsxxMapper.findOneByParams(paramMap);
-            gsxx.setWxappid(gsxx1.getWxappid());
-            gsxx.setWxsecret(gsxx1.getWxsecret());
-        }
         return gsxx;
     }
 
