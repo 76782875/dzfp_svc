@@ -130,13 +130,14 @@ public class JyxxsqService {
 	 * @param jyspmxList
 	 */
 	@Transactional
-	public void saveJyxxsq(Jyxxsq jyxxsq, List<Jymxsq> jymxsqList) {
+	public Integer saveJyxxsq(Jyxxsq jyxxsq, List<Jymxsq> jymxsqList) {
 		save(jyxxsq);
 		int sqlsh = jyxxsq.getSqlsh();
 		for (Jymxsq Jymxsq : jymxsqList) {
 			Jymxsq.setSqlsh(sqlsh);
 		}
 		jymxsqservice.save(jymxsqList);
+		return sqlsh;
 	}
 	
 	
