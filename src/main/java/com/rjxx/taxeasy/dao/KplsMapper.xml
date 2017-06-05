@@ -942,7 +942,7 @@ AND djh =#{djh}
             id="findSfmcByXfid"> SELECT a.sf_mc FROM sf_dmb a,t_xf b WHERE b.id = #{xfid} and f_get_sf(b.xfsh) = a.SF_DM </select>
 
     <select id="findAllKpjgByMap" parameterType="map" resultType="kpcxjgVo">
-        select a.jylsh,a.ddh,c.fpztxsmc fpztmc,b.errorReason,b.fpdm,b.fphm,b.kprq,b.hjje,b.hjse,b.pdfurl,a.tqm
+        select a.jylsh,a.ddh,b.fpztdm,c.fpztxsmc fpztmc,b.errorReason,b.fpdm,b.fphm,b.kprq,b.hjje,b.hjse,b.pdfurl,a.tqm
          from t_jyls a,t_kpls b,t_fpzt c,t_skp d
          where a.djh = b.djh
          and b.fpztdm = c.fpztdm

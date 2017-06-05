@@ -11,6 +11,8 @@ public class KpcxjgVo {
 
     private String ddh;
 
+    private String fpztdm;
+
     private String fpztmc;
 
     private String errorreason;
@@ -43,6 +45,14 @@ public class KpcxjgVo {
 
     public void setDdh(String ddh) {
         this.ddh = ddh;
+    }
+
+    public String getFpztdm() {
+        return fpztdm;
+    }
+
+    public void setFpztdm(String fpztdm) {
+        this.fpztdm = fpztdm;
     }
 
     public String getFpztmc() {
