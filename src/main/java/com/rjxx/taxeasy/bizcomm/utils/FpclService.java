@@ -1,16 +1,39 @@
 package com.rjxx.taxeasy.bizcomm.utils;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.rjxx.taxeasy.domains.*;
 import com.rjxx.taxeasy.service.*;
 import com.rjxx.taxeasy.vo.JyspmxDecimal2;
 import com.rjxx.taxeasy.vo.KplsVO4;
+import com.rjxx.taxeasy.vo.KplsVO5;
 import com.rjxx.taxeasy.vo.Kpspmxvo;
 import com.rjxx.time.TimeUtil;
+import com.rjxx.utils.TemplateUtils;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.util.EntityUtils;
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.net.URLDecoder;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -39,6 +62,13 @@ public class FpclService {
     private XfService xfService;
     @Autowired
     private JyxxsqService jyxxsqService;
+    @Autowired
+    private ServerSend serversendservice;
+
+    @Autowired
+    private DataOperate dataOperate;
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public boolean kpcl1(Integer djh, String dybz) throws Exception {
         Jyls jyls1 = jylsService.findOne(djh);
@@ -469,7 +499,7 @@ public class FpclService {
      * @param jyls
      * @return
      */
-    public Kpls saveKpls(Jyls jyls, List<Jyspmx> jyspmx1, String dybz) throws Exception {
+    public Kpls saveKpls(Jyls jyls, List<Jyspmx> jyspmx1, String dybz,String kpfs) throws Exception {
         Kpls kpls = new Kpls();
         kpls.setDjh(jyls.getDjh());
         kpls.setJylsh(jyls.getJylsh());
@@ -530,10 +560,12 @@ public class FpclService {
         kpls.setJshj(jshj);
         kpls.setSfdyqd(jyls.getSfdyqd());
         kpls.setYxbz("1");
-        kpls.setFpztdm("04");
+        if(kpfs.equals("03")){
+            kpls.setFpztdm("14");
+        }else{
+            kpls.setFpztdm("04");
+        }
         kpls.setSkpid(jyls.getSkpid());
-
-
         kplsService.save(kpls);
         return kpls;
     }
@@ -587,12 +619,178 @@ public class FpclService {
 
     @Transactional
     public Kpls saveKp(Jyls jyls1, List<Jyspmx> list, String dybz) throws Exception {
-        Kpls kpls = saveKpls(jyls1, list, dybz);
+        Kpls kpls = saveKpls(jyls1, list, dybz,"01");
         saveKpspmx(kpls, list);
         return kpls;
     }
 
+   public String Skzjkp(List jyxxsqList, String kpfs){
+       List fpclList = new ArrayList();
+       Map resultMap=null;
+       try {
+           fpclList = (List) this.zjkp(jyxxsqList, kpfs);//组件
+       } catch (Exception e1) {
+           // TODO Auto-generated catch block
+           e1.printStackTrace();
+       }
+       List resultList = new ArrayList();
+       if (null != fpclList) {
+           KplsVO5 zjKplsvo5 = new KplsVO5();
+           for (int i = 0; i < fpclList.size(); i++) {
+               double hjje = 0.00;
+               double hjse = 0.00;
+               List<Kpspmxvo> tmpList = new ArrayList<Kpspmxvo>();
+               zjKplsvo5 = (KplsVO5) fpclList.get(i);
+               //获取对应开票商品明细信息
+               Map params = new HashMap();
+               params.put("kplsh", zjKplsvo5.getKplsh());
+               tmpList = kpspmxService.findSkMxList(params);
+               Kpspmxvo kpspmxvo = new Kpspmxvo();
+               for (int j = 0; j < tmpList.size(); j++) {
+                   kpspmxvo = tmpList.get(j);
+                   kpspmxvo.setHsspje(kpspmxvo.getSpje()+kpspmxvo.getSpse());
+                   hjje = hjje + kpspmxvo.getSpje();
+                   hjse = hjse + kpspmxvo.getSpse();
+               }
+               String path = this.getClass().getClassLoader().getResource("SKFpkjModel.xml")
+                       .getPath();
+               try {
+                   Map params2 = new HashMap();
+                   String fpzldm = zjKplsvo5.getFpzldm();
+                   if (fpzldm.equals("01")) {
+                       zjKplsvo5.setFpzldm("004");
+                   } else if (fpzldm.equals("02")) {
+                       zjKplsvo5.setFpzldm("007");
+                   } else if(fpzldm.equals("12")){
+                       zjKplsvo5.setFpzldm("026");
+                   }else if(fpzldm.equals("03")){
+                       zjKplsvo5.setFpzldm("025");
+                   }
+                   params2.put("kplsvo5", zjKplsvo5);
+                   params2.put("tmpList", tmpList);
+                   params2.put("count", tmpList.size());
+                   params2.put("hjje", hjje);
+                   params2.put("hjse", hjse);
+                   //params2.put("jyxxsq", jyxxsq);
+                   path = URLDecoder.decode(path, "UTF-8");
+                   File templateFile = new File(path);
+                   String result2 = TemplateUtils.generateContent(templateFile, params2, "gbk");
+                   System.out.println(result2);
+                   logger.debug("封装传开票通的报文" + result2);
+                   String url = "http://116.228.37.198:10002/SKServer/SKDo";
+                   //ServerSend serversend = new ServerSend();
+                   resultMap =httpPost(result2, url, zjKplsvo5.getDjh()+"$"+zjKplsvo5.getKplsh(), zjKplsvo5.getXfsh(),
+                           zjKplsvo5.getJylsh());
+                   if(resultMap.get("returncode").equals("0000")){
+                         String fpdm=resultMap.get("fpdm").toString();
+                         String fphm=resultMap.get("fphm").toString();
+                         String kprq=resultMap.get("kprq").toString();
+                         String skm=resultMap.get("skm").toString();
+                         String jym=resultMap.get("jym").toString();
+                         String ewm=resultMap.get("ewm").toString();
+                   }
+                   logger.debug("封装传开票通的返回报文" + JSONObject.toJSONString(resultMap));
+               } catch (Exception e) {
+                   // TODO Auto-generated catch block
+                   e.printStackTrace();
+               }
+           }
+       }
+       return JSONObject.toJSONString(resultMap).toString();
+   }
+    public  Map httpPost(String sendMes, String url, String key, String xfsh, String jylsh) throws Exception {
+        HttpPost httpPost = new HttpPost(url);
+        CloseableHttpResponse response = null;
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        RequestConfig requestConfig = RequestConfig.custom().
+                setSocketTimeout(2000).setConnectTimeout(2000).build();
+        httpPost.setConfig(requestConfig);
+        httpPost.addHeader("Content-Type", "text/xml");
+        String strMessage = "";
+        BufferedReader reader = null;
+        StringBuffer buffer = new StringBuffer();
+        Map resultMap = null;
+        try {
+            StringEntity requestEntity = new StringEntity(sendMes, "GBK");
+            httpPost.setEntity(requestEntity);
+            response = httpClient.execute(httpPost, new BasicHttpContext());
+            if (response.getStatusLine().getStatusCode() != 200) {
+                System.out.println("request url failed, http code=" + response.getStatusLine().getStatusCode()
+                        + ", url=" + url);
+                return null;
+            }
+            HttpEntity entity = response.getEntity();
+            if (entity != null) {
+                reader = new BufferedReader(new InputStreamReader(entity.getContent(), "gbk"));
+                while ((strMessage = reader.readLine()) != null) {
+                    buffer.append(strMessage);
+                }
+            }
+            System.out.println("接收返回值:" + buffer.toString());
+            resultMap = handerReturnMes(buffer.toString(),key);
+            if (null != resultMap && !resultMap.isEmpty()) {
+                int pos = key.indexOf("$");
+                if (pos != -1) {
+                    key = key.substring(0, pos);
+                }
+                if (resultMap.get("returncode").equals("0000")) {
+                    dataOperate.saveLog(Integer.valueOf(key), "91", "1", "Send:send",
+                            "(服务端)发送服务器成功" + resultMap.get("returnmsg").toString(), 2, xfsh, jylsh);
+                } else {
+                    dataOperate.saveLog(Integer.valueOf(key), "92", "1", "Send:send",
+                            "(服务端)发送服务器失败" + resultMap.get("returnmsg").toString(), 2, xfsh, jylsh);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("request url=" + url + ", exception, msg=" + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            if (response != null) try {
+                response.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
+        return resultMap;
+    }
+    /**
+     * 接收返回报文并做后续处理
+     *
+     * @param returnMes
+     *
+     * @throws Exception
+     */
+    public  Map handerReturnMes(String returnMes, String key) throws Exception {
+
+        Document document = DocumentHelper.parseText(returnMes);
+        Element root = document.getRootElement();
+        List<Element> childElements = root.elements();
+        Map resultMap = new HashMap();
+        for (Element child : childElements) {
+            int pos = key.indexOf("$");
+            if (pos != -1) {
+                key = key.substring(pos+1);
+                System.out.println("传入开票流水号:" + key);
+            }
+            if (child.elementText("RETURNCODE").equals("0000")) {
+                resultMap.put("fpdm", child.elementText("fpdm"));// 返回结果，发票代码
+                resultMap.put("fphm", child.elementText("fphm"));// 发票号码
+                resultMap.put("jym", child.element("jym").getText());// 校验码
+                resultMap.put("ewm", child.element("ewm").getText());// 二维码
+                resultMap.put("skm", child.element("skm").getText());// 税控码
+                resultMap.put("kprq", child.element("kprq").getText());
+                resultMap.put("returncode", child.elementText("returncode"));
+                resultMap.put("returnmsg", child.elementText("returnmsg"));
+                resultMap.put("kplsh", key);
+            }else{
+                resultMap.put("returncode", child.elementText("returncode"));
+                resultMap.put("returnmsg", child.elementText("returnmsg"));
+                resultMap.put("kplsh", key);
+            }
+        }
+        return resultMap;
+    }
     /**
      * 直接开票
      */
@@ -613,6 +811,7 @@ public class FpclService {
             double fpje = 0d;
             int fphs1 = 8;
             int fphs2 = 100;
+            int fphs3 = 6;
             String hsbz = "0";
             boolean flag = false;
             Skp skp = skpService.findOne(jyxxsq.getSkpid());
@@ -623,6 +822,9 @@ public class FpclService {
                 zdje = skp.getPpmax();
                 fpje = skp.getPpfz();
             } else if ("12".equals(jyxxsq.getFpzldm())) {
+                zdje = skp.getDpmax();
+                fpje = skp.getFpfz();
+            }else if ("03".equals(jyxxsq.getFpzldm())) {//卷票
                 zdje = skp.getDpmax();
                 fpje = skp.getFpfz();
             }
@@ -641,6 +843,9 @@ public class FpclService {
                         fpje = fpgz.getPpxe();
                     } else if ("12".equals(jyxxsq.getFpzldm())) {
                         fphs2 = fpgz.getDzphs();
+                        fpje = fpgz.getDzpxe();
+                    } else if ("03".equals(jyxxsq.getFpzldm())) {//卷票
+                        fphs3 = fpgz.getDzphs();
                         fpje = fpgz.getDzpxe();
                     }
                     flag = true;
@@ -665,6 +870,9 @@ public class FpclService {
                     } else if ("12".equals(jyxxsq.getFpzldm())) {
                         fphs2 = fpgz2.getDzphs();
                         fpje = fpgz2.getDzpxe();
+                    } else if ("03".equals(jyxxsq.getFpzldm())) {//卷票
+                        fphs3 = fpgz2.getDzphs();
+                        fpje = fpgz2.getDzpxe();
                     }
                     hsbz = fpgz2.getHsbz();
                     if (fpgz2.getSfqzfp().equals("0")) {
@@ -683,12 +891,16 @@ public class FpclService {
                 // 分票
                 if (jyxxsq.getFpzldm().equals("12")) {
                     jyspmxs = SeperateInvoiceUtils.splitInvoicesbhs(jyspmxs, new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs2, sfqzfp, false);
+                }else if (jyxxsq.getFpzldm().equals("03")) {//卷票
+                    jyspmxs = SeperateInvoiceUtils.splitInvoicesbhs(jyspmxs, new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs3, sfqzfp, false);
                 } else {
                     jyspmxs = SeperateInvoiceUtils.splitInvoicesbhs(jyspmxs, new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs1, sfqzfp, false);
                 }
             } else {
                 if (jyxxsq.getFpzldm().equals("12")) {
                     jyspmxs = SeperateInvoiceUtils.splitInvoices2(jyspmxs, new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs2, sfqzfp, false);
+                }else if (jyxxsq.getFpzldm().equals("03")) {//卷票
+                    jyspmxs = SeperateInvoiceUtils.splitInvoicesbhs(jyspmxs, new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs3, sfqzfp, false);
                 } else {
                     jyspmxs = SeperateInvoiceUtils.splitInvoices2(jyspmxs, new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs1, sfqzfp, false);
                 }
@@ -717,15 +929,22 @@ public class FpclService {
                 jyxxsq.setXgsj(new Date());
                 jyxxsqService.save(jyxxsq);
                 List<Jyspmx> list2 = saveKpspmx(jyls, fpJyspmxList);
-                //保存开票流水
-                Kpls kpls = saveKpls(jyls, list2, jyxxsq.getSfdy());
-                saveKpspmx(kpls, list2);
                 if (kpfs.equals("01")) {
-                    //InvoiceResponse response =  skService.callService(kpls.getKplsh());
-                    //result.add(response);
-                } else {
+                    //保存开票流水
+                    Kpls kpls = saveKpls(jyls, list2, jyxxsq.getSfdy(),kpfs);
+                    saveKpspmx(kpls, list2);
+                } else if(kpfs.equals("02")){//组件
+                    //保存开票流水
+                    Kpls kpls = saveKpls(jyls, list2, jyxxsq.getSfdy(),kpfs);
+                    saveKpspmx(kpls, list2);
                     KplsVO4 kplsVO4 = new KplsVO4(kpls, jyxxsq);
                     result.add(kplsVO4);
+                }else if(kpfs.equals("03")){//税控服务器
+                    //保存开票流水
+                    Kpls kpls = saveKpls(jyls, list2, jyxxsq.getSfdy(),kpfs);
+                    saveKpspmx(kpls, list2);
+                    KplsVO5 kplsVO5 = new KplsVO5(kpls, jyxxsq);
+                    result.add(kplsVO5);
                 }
                 i++;
             }

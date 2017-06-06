@@ -11,6 +11,8 @@ public class Kpspmxvo implements Serializable{
 	protected String spdw;
 	protected Double spdj;
 	protected Double spje;
+	protected Double hsspdj;
+	protected Double hsspje;
 	protected Double spsl;
 	protected Double spse;
 	protected Double jshj;
@@ -130,4 +132,19 @@ public class Kpspmxvo implements Serializable{
 		this.spdm = spdm;
 	}
 
+	public Double getHsspdj() {
+		return hsspdj;
+	}
+
+	public void setHsspdj(Double hsspdj) {
+		this.hsspdj = hsspdj;
+	}
+
+	public Double getHsspje() {
+		return hsspje;
+	}
+
+	public void setHsspje(Double hsspje) {
+		this.hsspje = hsspje;
+	}
 }
