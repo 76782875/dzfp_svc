@@ -11,6 +11,10 @@ public class Kpspmxvo implements Serializable{
 	protected String spdw;
 	protected Double spdj;
 	protected Double spje;
+	protected String fphxz;
+	protected String yhzcbs;
+	protected String yhzcmc;
+	protected String lslbz;
 	protected Double hsspdj;
 	protected Double hsspje;
 	protected Double spsl;
@@ -146,5 +150,37 @@ public class Kpspmxvo implements Serializable{
 
 	public void setHsspje(Double hsspje) {
 		this.hsspje = hsspje;
+	}
+
+	public String getFphxz() {
+		return fphxz;
+	}
+
+	public void setFphxz(String fphxz) {
+		this.fphxz = fphxz;
+	}
+
+	public String getYhzcbs() {
+		return yhzcbs;
+	}
+
+	public void setYhzcbs(String yhzcbs) {
+		this.yhzcbs = yhzcbs;
+	}
+
+	public String getYhzcmc() {
+		return yhzcmc;
+	}
+
+	public void setYhzcmc(String yhzcmc) {
+		this.yhzcmc = yhzcmc;
+	}
+
+	public String getLslbz() {
+		return lslbz;
+	}
+
+	public void setLslbz(String lslbz) {
+		this.lslbz = lslbz;
 	}
 }

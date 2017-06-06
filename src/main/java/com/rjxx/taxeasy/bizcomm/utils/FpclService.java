@@ -649,6 +649,7 @@ public class FpclService {
                for (int j = 0; j < tmpList.size(); j++) {
                    kpspmxvo = tmpList.get(j);
                    kpspmxvo.setHsspje(kpspmxvo.getSpje()+kpspmxvo.getSpse());
+                   kpspmxvo.setHsspdj((kpspmxvo.getSpje()+kpspmxvo.getSpse())/kpspmxvo.getSps());
                    hjje = hjje + kpspmxvo.getSpje();
                    hjse = hjse + kpspmxvo.getSpse();
                }
@@ -678,7 +679,6 @@ public class FpclService {
                    System.out.println(result2);
                    logger.debug("封装传开票通的报文" + result2);
                    String url = "http://116.228.37.198:10002/SKServer/SKDo";
-                   //ServerSend serversend = new ServerSend();
                    resultMap =httpPost(result2, url, zjKplsvo5.getDjh()+"$"+zjKplsvo5.getKplsh(), zjKplsvo5.getXfsh(),
                            zjKplsvo5.getJylsh());
                    if(resultMap.get("returncode").equals("0000")){
@@ -773,7 +773,7 @@ public class FpclService {
                 key = key.substring(pos+1);
                 System.out.println("传入开票流水号:" + key);
             }
-            if (child.elementText("RETURNCODE").equals("0000")) {
+            if (child.elementText("returncode").equals("0000")) {
                 resultMap.put("fpdm", child.elementText("fpdm"));// 返回结果，发票代码
                 resultMap.put("fphm", child.elementText("fphm"));// 发票号码
                 resultMap.put("jym", child.element("jym").getText());// 校验码
