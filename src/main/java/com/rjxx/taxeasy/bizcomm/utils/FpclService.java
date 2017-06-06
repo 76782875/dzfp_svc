@@ -681,7 +681,7 @@ public class FpclService {
                    String url = "http://116.228.37.198:10002/SKServer/SKDo";
                    resultMap =httpPost(result2, url, zjKplsvo5.getDjh()+"$"+zjKplsvo5.getKplsh(), zjKplsvo5.getXfsh(),
                            zjKplsvo5.getJylsh());
-                   if(resultMap.get("returncode").equals("0000")){
+                   if(resultMap.get("returncode").equals("0")){
                          String fpdm=resultMap.get("fpdm").toString();
                          String fphm=resultMap.get("fphm").toString();
                          String kprq=resultMap.get("kprq").toString();
@@ -733,7 +733,7 @@ public class FpclService {
                 if (pos != -1) {
                     key = key.substring(0, pos);
                 }
-                if (resultMap.get("returncode").equals("0000")) {
+                if (resultMap.get("returncode").equals("0")) {
                     dataOperate.saveLog(Integer.valueOf(key), "91", "1", "Send:send",
                             "(服务端)发送服务器成功" + resultMap.get("returnmsg").toString(), 2, xfsh, jylsh);
                 } else {
@@ -773,17 +773,16 @@ public class FpclService {
                 key = key.substring(pos+1);
                 System.out.println("传入开票流水号:" + key);
             }
-            if (child.elementText("returncode").equals("0000")) {
-                resultMap.put("fpdm", child.elementText("fpdm"));// 返回结果，发票代码
-                resultMap.put("fphm", child.elementText("fphm"));// 发票号码
-                resultMap.put("jym", child.element("jym").getText());// 校验码
-                resultMap.put("ewm", child.element("ewm").getText());// 二维码
-                resultMap.put("skm", child.element("skm").getText());// 税控码
-                resultMap.put("kprq", child.element("kprq").getText());
+            if (child.elementText("returncode").equals("0")) {
                 resultMap.put("returncode", child.elementText("returncode"));
                 resultMap.put("returnmsg", child.elementText("returnmsg"));
                 resultMap.put("kplsh", key);
-            }else{
+                Element contactList = child.element("returndata");
+                List<Element> nodes=contactList.elements();
+                for (Element e:nodes){
+                    resultMap.put(e.getName(), e.getText());// 返回结果
+                 }
+            }else if(child.elementText("returncode").equals("99")){
                 resultMap.put("returncode", child.elementText("returncode"));
                 resultMap.put("returnmsg", child.elementText("returnmsg"));
                 resultMap.put("kplsh", key);
