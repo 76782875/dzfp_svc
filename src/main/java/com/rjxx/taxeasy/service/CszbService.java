@@ -65,9 +65,6 @@ public class CszbService {
 		params.put("csm", csm);
 		List<Cszb> list = new ArrayList<>();
 		list =  cszbMapper.findAllByParams(params);
-		if (list.size() == 1) {
-			return list.get(0);
-		}
 		if (list.size() > 0) {
 			for (Cszb cszb : list) {
 				if (null != kpdid && kpdid.equals(cszb.getKpdid())) {
