@@ -59,11 +59,9 @@ public class CheckOrderUtil {
                 }
             }
             // 价税合计
-            String TotalAmount = String.valueOf(jyxxsq.getJshj());
+            Double TotalAmount = jyxxsq.getJshj();
             if (TotalAmount == null) {
                 result += ddh + ":价税合计为空;";
-            } else if (!TotalAmount.matches("^\\-?[0-9]{0,15}+(.[0-9]{0,2})?$")) {
-                result += ddh + ":价税合计格式不正确;";
             }
 
             // 价税合计
