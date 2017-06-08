@@ -3,6 +3,7 @@ package com.rjxx.taxeasy.dao;
 import com.rjxx.comm.mybatis.MybatisRepository;
 import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.domains.Jyzfmx;
+import com.rjxx.taxeasy.vo.Jyzfmxvo;
 
 import java.util.List;
 import java.util.Map;
@@ -23,5 +24,6 @@ public interface JyzfmxMapper {
 
     public List<Jyzfmx> findByPage(Pagination pagination);
 
+    List<Jyzfmxvo> findAllByParamsVo(Map parms);
 }
 

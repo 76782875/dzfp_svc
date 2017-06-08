@@ -4,6 +4,7 @@ import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.dao.JyzfmxJpaDao;
 import com.rjxx.taxeasy.dao.JyzfmxMapper;
 import com.rjxx.taxeasy.domains.Jyzfmx;
+import com.rjxx.taxeasy.vo.Jyzfmxvo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,5 +51,8 @@ public class JyzfmxService {
         return jyzfmxMapper.findByPage(pagination);
     }
 
+    public List<Jyzfmxvo> findAllByParamsVo(Map parms) {
+        return jyzfmxMapper.findAllByParamsVo(parms);
+    }
 }
 

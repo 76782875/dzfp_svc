@@ -4,22 +4,40 @@
 <mapper namespace="com.rjxx.taxeasy.dao.JyzfmxMapper">
 
     <select id="findOneByParams" parameterType="map" resultType="jyzfmx">
-        select * from t_jyzfmx where yxbz = '1'
-        <if test="orderBy != null">
-            order by ${orderBy}
+        select * from t_jyzfmx where 1=1
+        <if test="gsdm != null">
+            and gsdm = #{gsdm}
+        </if>
+        <if test="ddh != null">
+            and ddh = #{ddh}
+        </if>
+        <if test="sqlsh != null">
+            and sqlsh = #{sqlsh}
         </if>
         limit 1
     </select>
+    <select id="findAllByParamsVo" parameterType="map" resultType="jyzfmxvo">
+        select t.id ,t.ddh,t.zffs_dm,(select a.zffs_mc from t_dm_zffs a where a.zffs_dm=t.zffs_dm) zfmc,t.gsdm,t.sqlsh,t.zfje from t_jyzfmx t where 1=1
+        <if test="gsdm != null">
+            and t.gsdm = #{gsdm}
+        </if>
+        <if test="ddh != null">
+            and t.ddh = #{ddh}
+        </if>
+        <if test="sqlsh != null">
+            and t.sqlsh = #{sqlsh}
+        </if>
 
+    </select>
     <select id="findAllByParams" parameterType="map" resultType="jyzfmx">
-        select * from t_jyzfmx where yxbz = '1'
+        select * from t_jyzfmx where 1 = 1
         <if test="orderBy != null">
             order by ${orderBy}
         </if>
     </select>
 
     <select id="findByPage" parameterType="pagination" resultType="jyzfmx">
-        select * from t_jyzfmx where yxbz = '1'
+        select * from t_jyzfmx where 1=1
         <if test="params.orderBy != null">
             order by ${params.orderBy}
         </if>
