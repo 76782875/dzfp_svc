@@ -265,5 +265,9 @@ public class KplsService {
     public Kpls findByhzfphm(Kpls kpls) {
         return kplsMapper.findByhzfphm(kpls);
     }
+
+    public List<Kpls> findKplsBySerialOrder(Map params) {
+        return kplsMapper.findKplsBySerialOrder(params);
+    }
 }
 

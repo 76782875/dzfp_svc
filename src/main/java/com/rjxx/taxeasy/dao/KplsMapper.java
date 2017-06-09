@@ -143,5 +143,7 @@ public interface KplsMapper {
     Kpls findByfphm(Kpls parms);
 
     Kpls findByhzfphm(Kpls kpls);
+
+    List<Kpls> findKplsBySerialOrder(Map params);
 }
 

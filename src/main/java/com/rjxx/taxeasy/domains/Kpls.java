@@ -419,6 +419,9 @@ protected String errorReason;
 @Column(name="fp_ewm")
 protected String fpEwm;
 
+@Column(name="serialorder")
+protected String serialorder;
+
 
 
 
@@ -975,8 +978,12 @@ public void setFpztdm(String fpztdm) {
 		this.sfdyqd = sfdyqd;
 	}
 
+	public String getSerialorder() {
+		return serialorder;
+	}
 
-
-
+	public void setSerialorder(String serialorder) {
+		this.serialorder = serialorder;
+	}
 }
 

@@ -20,6 +20,12 @@
 		<if test="sqlsh != null">
 			and sqlsh = #{sqlsh}
 		</if>
+		<if test="yfpdm != null">
+			and yfpdm = #{fpdm}
+		</if>
+		<if test="yfphm != null">
+			and yfphm = #{fphm}
+		</if>
 		limit 1
 	</select>
 
