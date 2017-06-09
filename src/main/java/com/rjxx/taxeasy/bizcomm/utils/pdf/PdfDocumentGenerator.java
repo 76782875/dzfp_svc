@@ -369,9 +369,10 @@ public class PdfDocumentGenerator {
         in_request.setJshjdx(ChinaNumber.getCHSNumber(total));// 中文大写表示
         in_request.setTotalString(total);
         in_request.setTotalAmountString(totalAmount);
-        in_request.setTotalTaxAmountString(totalTaxAmount);
 
         List<FpPdfMxInfo> pdfMxList = new ArrayList<>();
+        //免税标志
+        boolean freeDutyFlag = false;
         // 商品明细信息 已处理数据小于1的情况
         if (!"af".equals(gsdm)) {
             for (int i = 0; i < t_kpspmxes.size(); i++) {
@@ -400,6 +401,12 @@ public class PdfDocumentGenerator {
                         df.format(t_kpspmx.getSpse()),
                         s
                 );
+                //处理优惠政策:免费
+                if ("1".equals(t_kpspmx.getYhzcbs()) && "1".equals(t_kpspmx.getLslbz()) && "免税".equals(t_kpspmx.getYhzcmc())) {
+                    fpPdfMxInfo.setSl("免税");
+                    fpPdfMxInfo.setSe("***");
+                    freeDutyFlag = true;
+                }
                 //处理商品名称字体大小
                 fpPdfMxInfo.setSpmcSize(getSpmcFontSize(fpPdfMxInfo.getSpmc()));
                 //处理规格型号字体大小
@@ -439,6 +446,14 @@ public class PdfDocumentGenerator {
         } else {
             imgbase64string = qrcode;
         }
+        if (freeDutyFlag && "0.00".equals(totalTaxAmount)) {
+            //有免税并且合计税额为0的话
+            totalTaxAmount = "***";
+        } else {
+            totalTaxAmount = "￥" + totalTaxAmount;
+        }
+        in_request.setTotalTaxAmountString(totalTaxAmount);
+
         map.put("qrcode", imgbase64string);
 
         // String imgbase64string = Base64.encodeBase64String(output.toByteArray());
