@@ -311,15 +311,16 @@ public class PdfDocumentGenerator {
         in_request.setXfsh(xfsh);
         in_request.setYfpdm((String) map.get("FP_DM"));
         in_request.setYfphm((String) map.get("FP_HM"));
-        String bz = jyls.getBz() == null ? "" : jyls.getBz();
-        if ("12".equals(jyls.getFpczlxdm()) || "13".equals(jyls.getFpczlxdm())) {
-            if (StringUtils.isBlank(bz)) {
-                bz = "对应正数发票代码:" + jyls.getYfpdm() + "号码:" + jyls.getYfphm();
-            } else {
-                bz += "<br/>对应正数发票代码:" + jyls.getYfpdm() + "号码:" + jyls.getYfphm();
-            }
-
-        }
+        String bz = kpls.getBz() == null ? "" : kpls.getBz();
+        bz = bz.replaceAll("\\n", "<br/>");
+//        if ("12".equals(jyls.getFpczlxdm()) || "13".equals(jyls.getFpczlxdm())) {
+//            if (StringUtils.isBlank(bz)) {
+//                bz = "对应正数发票代码:" + jyls.getYfpdm() + "号码:" + jyls.getYfphm();
+//            } else {
+//                bz += "<br/>对应正数发票代码:" + jyls.getYfpdm() + "号码:" + jyls.getYfphm();
+//            }
+//
+//        }
         in_request.setBz(bz);
         Date kprq = kpls.getKprq();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
