@@ -20,10 +20,10 @@
 		<if test="sqlsh != null">
 			and sqlsh = #{sqlsh}
 		</if>
-		<if test="yfpdm != null">
+		<if test="fpdm != null">
 			and yfpdm = #{fpdm}
 		</if>
-		<if test="yfphm != null">
+		<if test="fphm != null">
 			and yfphm = #{fphm}
 		</if>
 		limit 1

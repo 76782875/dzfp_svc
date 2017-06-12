@@ -106,6 +106,8 @@ public class SeperateInvoiceUtils {
         int mxnum = detailsNumber;
         if (mxsl != 0 && mxsl <= detailsNumber) {
             mxnum = mxsl;
+        }else{
+
         }
         List<JyspmxDecimal> tempJyspmxs = new ArrayList<JyspmxDecimal>();// 缓存商品明细表
         List<JyspmxDecimal> splitKpspmxs = new ArrayList<JyspmxDecimal>();// 拆分发票后的list
@@ -394,6 +396,8 @@ public class SeperateInvoiceUtils {
     public static List<JyspmxDecimal2> splitInvoices2(List<JyspmxDecimal2> jyspmxs, BigDecimal maxje, BigDecimal fpje, int mxsl, boolean qzfp,boolean spzsfp) throws Exception {
         int mxnum = detailsNumber;
         if (mxsl != 0 && mxsl <= detailsNumber) {
+            mxnum = mxsl;
+        }else if(mxsl != 0 && mxsl > detailsNumber){
             mxnum = mxsl;
         }
         List<JyspmxDecimal2> tempJyspmxs = new ArrayList<JyspmxDecimal2>();// 缓存商品明细表
@@ -721,6 +725,8 @@ public class SeperateInvoiceUtils {
     public static List<JyspmxDecimal2> splitInvoicesbhs(List<JyspmxDecimal2> jyspmxs, BigDecimal maxje, BigDecimal fpje, int mxsl, boolean qzfp,boolean spzsfp) throws Exception {
         int mxnum = detailsNumber;
         if (mxsl != 0 && mxsl <= detailsNumber) {
+            mxnum = mxsl;
+        }else if(mxsl != 0 && mxsl > detailsNumber){
             mxnum = mxsl;
         }
         boolean fp = false;
