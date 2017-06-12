@@ -229,7 +229,7 @@ public class GeneratePdfService {
                 }else if(kpls2.getFpztdm().equals("05")){
                     invoiceItem.setReturnCode("9999");
                     invoiceItem.setInvoiceStatus("开具失败");
-                    invoiceItem.setReturnMessage(kpls.getErrorReason());
+                    invoiceItem.setReturnMessage(kpls2.getErrorReason());
                 }
                     invoiceItem.setInvoiceCode(kpls2.getFpdm());
                     invoiceItem.setInvoiceNumber(kpls2.getFphm());
@@ -245,9 +245,9 @@ public class GeneratePdfService {
             returnData.setOperationItem(operationItem);
             returnData.setInvoiceItems(invoiceItems);
             if(!f){
-                Message="";
-            }else{
                 Message=XmlJaxbUtils.toXml(returnData);
+            }else{
+                Message="";
             }
         }else if(kpls.getFpczlxdm().equals("12")){
             ReturnData returnData=new ReturnData();
