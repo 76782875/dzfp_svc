@@ -535,7 +535,7 @@ public class FpclService {
         kpls.setXfdh(jyls.getXfdh());
         kpls.setXfyh(jyls.getXfyh());
         kpls.setXfyhzh(jyls.getXfyhzh());
-        kpls.setSerialorder(jyls.getDdh()+jyls.getJylsh());
+        kpls.setSerialorder(jyls.getJylsh()+jyls.getDdh());
         String fpczlxdm = jyls.getFpczlxdm();
         if ("12".equals(fpczlxdm) || "13".equals(fpczlxdm) || "23".equals(fpczlxdm)) {
             //红冲或换开操作
