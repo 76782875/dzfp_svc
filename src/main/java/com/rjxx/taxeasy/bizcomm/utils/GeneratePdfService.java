@@ -244,7 +244,7 @@ public class GeneratePdfService {
             invoiceItems.setInvoiceItem(invoiceItemList);
             returnData.setOperationItem(operationItem);
             returnData.setInvoiceItems(invoiceItems);
-            if(!f){
+            if(f){
                 Message=XmlJaxbUtils.toXml(returnData);
             }else{
                 Message="";
