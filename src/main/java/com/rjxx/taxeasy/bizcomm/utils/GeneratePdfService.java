@@ -216,21 +216,17 @@ public class GeneratePdfService {
             boolean f=true;
             for(int i=0;i<kplsList.size();i++){
                 Kpls kpls2=kplsList.get(i);
-
-                if(!kpls2.getFpztdm().equals("00")||!kpls2.getFpztdm().equals("05")){
-                     f=false;
-                     break;
-                }
-                InvoiceItem invoiceItem=new InvoiceItem();
-                if(kpls2.getFpztdm().equals("00")){
-                    invoiceItem.setReturnCode("0000");
-                    invoiceItem.setInvoiceStatus("正常发票");
-                    invoiceItem.setReturnMessage("");
-                }else if(kpls2.getFpztdm().equals("05")){
-                    invoiceItem.setReturnCode("9999");
-                    invoiceItem.setInvoiceStatus("开具失败");
-                    invoiceItem.setReturnMessage(kpls2.getErrorReason());
-                }
+                if(kpls2.getFpztdm().equals("00")||kpls2.getFpztdm().equals("05")){
+                    InvoiceItem invoiceItem=new InvoiceItem();
+                    if(kpls2.getFpztdm().equals("00")){
+                        invoiceItem.setReturnCode("0000");
+                        invoiceItem.setInvoiceStatus("正常发票");
+                        invoiceItem.setReturnMessage("");
+                    }else if(kpls2.getFpztdm().equals("05")){
+                        invoiceItem.setReturnCode("9999");
+                        invoiceItem.setInvoiceStatus("开具失败");
+                        invoiceItem.setReturnMessage(kpls2.getErrorReason());
+                    }
                     invoiceItem.setInvoiceCode(kpls2.getFpdm());
                     invoiceItem.setInvoiceNumber(kpls2.getFphm());
                     SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMddHHmmss");
@@ -239,6 +235,10 @@ public class GeneratePdfService {
                     invoiceItem.setTaxAmount(kpls2.getHjse().toString());
                     invoiceItem.setPdfUrl(kpls2.getPdfurl());
                     invoiceItemList.add(invoiceItem);
+                }else{
+                    f=false;
+                    break;
+                }
             }
             invoiceItems.setCount(invoiceItemList.size());
             invoiceItems.setInvoiceItem(invoiceItemList);
