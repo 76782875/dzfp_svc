@@ -12,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -230,7 +227,11 @@ public class GeneratePdfService {
                     invoiceItem.setInvoiceCode(kpls2.getFpdm());
                     invoiceItem.setInvoiceNumber(kpls2.getFphm());
                     SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMddHHmmss");
-                    invoiceItem.setInvoiceDate(sdf.format(kpls2.getKprq()));
+                    if(kpls2.getKprq()==null){
+                        invoiceItem.setInvoiceDate(sdf.format(new Date()));
+                    }else{
+                        invoiceItem.setInvoiceDate(sdf.format(kpls2.getKprq()));
+                    }
                     invoiceItem.setAmount(kpls2.getHjje().toString());
                     invoiceItem.setTaxAmount(kpls2.getHjse().toString());
                     invoiceItem.setPdfUrl(kpls2.getPdfurl());
@@ -271,7 +272,11 @@ public class GeneratePdfService {
             invoiceItem.setInvoiceCode(kpls.getFpdm());
             invoiceItem.setInvoiceNumber(kpls.getFphm());
             SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMddHHmmss");
-            invoiceItem.setInvoiceDate(sdf.format(kpls.getKprq()));
+            if(kpls.getKprq()==null){
+                invoiceItem.setInvoiceDate(sdf.format(new Date()));
+            }else{
+                invoiceItem.setInvoiceDate(sdf.format(kpls.getKprq()));
+            }
             invoiceItem.setAmount(kpls.getHjje().toString());
             invoiceItem.setTaxAmount(kpls.getHjse().toString());
             invoiceItem.setPdfUrl(kpls.getPdfurl());
@@ -311,7 +316,12 @@ public class GeneratePdfService {
             invoiceItem.setInvoiceCode(kpls.getFpdm());
             invoiceItem.setInvoiceNumber(kpls.getFphm());
             SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMddHHmmss");
-            invoiceItem.setInvoiceDate(sdf.format(kpls.getZfrq()));
+
+            if(kpls.getZfrq()==null){
+                invoiceItem.setInvoiceDate(sdf.format(new Date()));
+            }else{
+                invoiceItem.setInvoiceDate(sdf.format(kpls.getZfrq()));
+            }
             invoiceItem.setAmount(kpls.getHjje().toString());
             invoiceItem.setTaxAmount(kpls.getHjse().toString());
             invoiceItem.setPdfUrl(kpls.getPdfurl());
