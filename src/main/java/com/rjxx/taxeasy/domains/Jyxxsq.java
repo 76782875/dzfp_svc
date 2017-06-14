@@ -131,6 +131,11 @@ public class Jyxxsq  implements Serializable {
 	protected String gfsh;
 
 /**
+ * 购方类型（0不报销，1报销）
+ */ 
+@Column(name="gflx")
+	protected String gflx;
+/**
  * 购方名称
  */ 
 @Column(name="gfmc")
@@ -513,6 +518,14 @@ public class Jyxxsq  implements Serializable {
 
 	public void setGfsh(String gfsh){
 		this.gfsh=gfsh;
+	}
+
+	public String getGflx() {
+		return gflx;
+	}
+
+	public void setGflx(String gflx) {
+		this.gflx = gflx;
 	}
 
 	public String getGfmc(){

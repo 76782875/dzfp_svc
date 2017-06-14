@@ -2,10 +2,14 @@ package com.rjxx.utils;
 
 import com.rjxx.taxeasy.domains.Jymxsq;
 import com.rjxx.taxeasy.domains.Jyxxsq;
+import com.rjxx.taxeasy.domains.Jyzfmx;
 import com.rjxx.taxeasy.domains.Skp;
 import com.rjxx.taxeasy.domains.Xf;
+import com.rjxx.taxeasy.domains.Zffs;
 import com.rjxx.taxeasy.service.JymxsqService;
 import com.rjxx.taxeasy.service.JyxxsqService;
+import com.rjxx.taxeasy.service.ZffsService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +29,9 @@ public class CheckOrderUtil {
 
     @Autowired
     private JymxsqService jymxsqService;
+    
+    @Autowired
+    private ZffsService zffsService;
 
     public String checkBuyer(List<Jyxxsq> jyxxsqList, String gsdm, String Operation) {
         String result = "";
@@ -59,10 +66,13 @@ public class CheckOrderUtil {
                 }
             }
             // 价税合计
-            Double TotalAmount = jyxxsq.getJshj();
+            //String TotalAmount = String.valueOf(jyxxsq.getJshj());
+            Double  TotalAmount = jyxxsq.getJshj();
             if (TotalAmount == null) {
                 result += ddh + ":价税合计为空;";
-            }
+            } /*else if (!TotalAmount.matches("^\\-?[0-9]{0,15}+(.[0-9]{0,2})?$")) {
+                result += ddh + ":价税合计格式不正确;";
+            }*/
 
             // 价税合计
             String TaxMark = String.valueOf(jyxxsq.getHsbz());
@@ -88,6 +98,15 @@ public class CheckOrderUtil {
                     result += ddh + ":购方名称不能为空;";
                 } else if (buyerName.length() > 100) {
                     result += ddh + ":购方名称太长;";
+                }
+            }
+            String CustomerType = (String) jyxxsq.getGflx();
+            if (CustomerType != null && !CustomerType.equals("")) {
+                if(CustomerType.equals("1")){
+                	String buyerIdentifier = (String) jyxxsq.getGfsh();
+                	if(null == buyerIdentifier || buyerIdentifier.equals("")){
+                		result += ddh + ":购方税号不能为空;";
+                	}
                 }
             }
             // 购方税号
@@ -133,7 +152,7 @@ public class CheckOrderUtil {
             // email
             String Email = (String) jyxxsq.getGfemail();
             if (Email != null && !Email.equals("") && !Email
-                    .matches("^(\\w)+(\\.\\w+)*@(\\w)+((\\.\\w+)+)$")) {
+                    .matches("^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$")) {
                 result += ddh + ":请求参数<Email>格式有误;";
             }
             // 提取码校验
@@ -214,12 +233,13 @@ public class CheckOrderUtil {
         return result;
     }
 
-    public String checkAll(List<Jyxxsq> jyxxsqList, List<Jymxsq> jymxsqList, String gsdm, String Operation) {
+    public String checkAll(List<Jyxxsq> jyxxsqList, List<Jymxsq> jymxsqList, List<Jyzfmx> jyzfmxList, String gsdm, String Operation) {
         String result = "";
         String ddh = "";
+        String ddh2 = "";
         Jyxxsq jyxxsq = new Jyxxsq();
         Jymxsq jymxsq = new Jymxsq();
-
+        Jyzfmx jyzfmx = new Jyzfmx();
 //        List ddhList = new ArrayList();
         Map ddhMap = new HashMap();
         // 先校验购方
@@ -228,6 +248,7 @@ public class CheckOrderUtil {
         for (int i = 0; i < jyxxsqList.size(); i++) {
             BigDecimal ajshj;
             BigDecimal jshj = new BigDecimal("0");
+            BigDecimal jshj2 = new BigDecimal("0");
             for (int j = 0; j < jymxsqList.size(); j++) {
                 jymxsq = (Jymxsq) jymxsqList.get(j);
                 ddh = jymxsq.getDdh();
@@ -323,6 +344,51 @@ public class CheckOrderUtil {
             if (bd2.setScale(2, BigDecimal.ROUND_HALF_UP).subtract(jshj.setScale(2, BigDecimal.ROUND_HALF_UP)).doubleValue() != 0.0) {
                 result += "订单号为" + ddh + "的订单TotalAmount，Amount，TaxAmount计算校验不通过";
             }
+            
+			if (null != jyzfmxList && !jyzfmxList.isEmpty()) {
+				List kpfsList = new ArrayList();
+				//kpfsList.add("02");
+				Map params = new HashMap();
+				params.put("gsdm", gsdm);
+				params.put("kpfsList", kpfsList);
+				List<Zffs> zffsList = zffsService.findAllByParams(params);
+				if(null == zffsList ||zffsList.isEmpty()){
+					result += "请去平台支付方式管理维护对应的支付方式;";
+				}
+				String flag ="0";
+				for (int j = 0; j < jyzfmxList.size(); j++) {
+					jyzfmx = (Jyzfmx) jyzfmxList.get(j);
+					if(null != zffsList && !zffsList.isEmpty()){
+						for(int k=0;k<zffsList.size();k++){
+							Zffs  zffs = zffsList.get(k);
+							if(jyzfmx.getZffsDm().equals(zffs.getZffsDm())){
+								flag = "1";
+							}
+						}
+						if(flag.equals("0")){
+							result += "订单号为" + ddh + "的订单,支付方式代码"+jyzfmx.getZffsDm()+"未在平台维护;";
+						}
+					}
+					ddh2 = jyzfmx.getDdh();
+					if (ddh.equals(ddh2)) {
+						BigDecimal zfje = new BigDecimal(jyzfmx.getZfje());
+						jshj2 = jshj2.add(zfje);
+					}
+					
+					// 支付方式代码
+					/*
+					 * String zffsdm = String.valueOf(jyzfmx.getZffsDm()); if
+					 * (zffsdm != null &&
+					 * zffsdm.equals("^\\-?[0-9]{0,15}+(.[0-9]{0,2})?$")) {
+					 * result += "订单号为" + ddh + "的订单第" + i +
+					 * "条商品TaxAmount格式不正确！"; }
+					 */
+				}
+				
+				if (jshj2.compareTo(bd2) !=0) {
+					result += "订单号为" + ddh + "的订单PayPrice合计与TotalAmount不等;";
+				}
+			}
         }
 //        ddhMap.put("ddhList", ddhList);
 //        ddhMap.put("gsdm", gsdm);
