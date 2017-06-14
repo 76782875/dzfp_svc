@@ -62,7 +62,38 @@ public class JyspmxDecimal2  {
     protected int fpnum;
     
     
-    /**
+	public JyspmxDecimal2(JyspmxDecimal2 jyspmx) {
+		//super();
+		this.sqlsh = jyspmx.getsqlsh();
+		this.spmxxh = jyspmx.getSpmxxh();
+		this.fphxz = jyspmx.getFphxz();
+		this.spdm = jyspmx.getSpdm();
+		this.spmc = jyspmx.getSpmc();
+		this.spggxh = jyspmx.getSpggxh();
+		this.spdw = jyspmx.getSpdw();
+		this.sps = jyspmx.getSps();
+		this.spdj = jyspmx.getSpdj();
+		this.spje = jyspmx.getSpje();
+		this.spsl = jyspmx.getSpsl();
+		this.spse = jyspmx.getSpse();
+		this.jshj = jyspmx.getJshj();
+		this.ykphj = jyspmx.getYkphj();
+		this.kkjje = jyspmx.getKkjje();
+		this.ykjje = jyspmx.getYkjje();
+		this.hzkpxh = jyspmx.getHzkpxh();
+		this.lrsj = jyspmx.getLrsj();
+		this.lrry = jyspmx.getLrry();
+		this.xgsj = jyspmx.getXgsj();
+		this.xgry = jyspmx.getXgry();
+		this.gsdm = jyspmx.getGsdm();
+		this.fpnum = jyspmx.getFpnum();
+		this.kce = jyspmx.getKce();
+		this.yhzcbs = jyspmx.getYhzcbs();
+		this.yhzcmc = jyspmx.getYhzcmc();
+		this.lslbz = jyspmx.getLslbz();
+	}
+
+	/**
      * 扣除额
      */
     @Column(name = "kce")
