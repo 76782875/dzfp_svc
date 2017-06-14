@@ -225,6 +225,47 @@ public Jymxsq() {
     // TODO Auto-generated constructor stub
 }
 
+public Jymxsq(Jymxsq jymxsq) {
+	super();
+	//this.id = id;
+	this.sqlsh = jymxsq.getSqlsh();
+	this.ddh = jymxsq.getDdh();
+	this.kpddm = jymxsq.getKpddm();
+	this.hsbz = jymxsq.getHsbz();
+	this.spmxxh = jymxsq.getSpmxxh();
+	this.fphxz = jymxsq.getFphxz();
+	this.spdm = jymxsq.getSpdm();
+	this.spmc = jymxsq.getSpmc();
+	this.spggxh = jymxsq.getSpggxh();
+	this.spzxbm = jymxsq.getSpzxbm();
+	this.yhzcbs = jymxsq.getYhzcbs();
+	this.yhzcmc = jymxsq.getYhzcmc();
+	this.lslbz = jymxsq.lslbz;
+	this.spdw = jymxsq.getSpdw();
+	this.sps = jymxsq.getSps();
+	this.spdj = jymxsq.getSpdj();
+	this.spje = jymxsq.getSpje();
+	this.spsl = jymxsq.getSpsl();
+	this.spse = jymxsq.getSpse();
+	this.kce = jymxsq.getKce();
+	this.jshj = jymxsq.getJshj();
+	this.hzkpxh = jymxsq.getHzkpxh();
+	this.lrsj = jymxsq.getLrsj();
+	this.lrry = jymxsq.getLrry();
+	this.xgsj = jymxsq.getXgsj();
+	this.xgry = jymxsq.getXgry();
+	this.gsdm = jymxsq.getGsdm();
+	this.skpid = jymxsq.getSkpid();
+	this.xfid = jymxsq.getXfid();
+	this.yxbz = jymxsq.getYxbz();
+	this.spid = jymxsq.getSpid();
+	this.ykjje = jymxsq.getYkjje();
+	this.kkjje = jymxsq.getKkjje();
+	this.spbz = jymxsq.getSpbz();
+}
+
+
+
 public Jymxsq(Integer spmxxh, String fphxz, String spdm, String spmc, String spggxh, String spdw, Double sps,
 		Double spdj, Double spje, Double spsl, Double spse, Double jshj, Integer hzkpxh, Date lrsj,
 		Integer lrry, Date xgsj, Integer xgry, String gsdm, Integer xfid, Integer skpid,String yxbz,Double kkjje,Double ykjje) {
