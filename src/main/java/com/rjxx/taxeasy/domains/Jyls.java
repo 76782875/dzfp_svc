@@ -318,6 +318,10 @@ protected String sfdyqd;
 	@Column(name="sqlsh")
 	protected Integer sqlsh;
 
+	@Column(name="khh")
+	protected String khh;
+
+
 
 	public Integer getDjh(){
 		return djh;
@@ -717,6 +721,14 @@ protected String sfdyqd;
 
 	public void setSqlsh(Integer sqlsh) {
 		this.sqlsh = sqlsh;
+	}
+
+	public String getKhh() {
+		return khh;
+	}
+
+	public void setKhh(String khh) {
+		this.khh = khh;
 	}
 }
 

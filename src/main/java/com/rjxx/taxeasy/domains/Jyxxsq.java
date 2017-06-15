@@ -373,6 +373,12 @@ public class Jyxxsq  implements Serializable {
 @Column(name="sfdy")
 	protected String sfdy;
 
+	/**
+	 * 客户号
+	 */
+	@Column(name="khh")
+	protected String khh;
+
 
 
 
@@ -848,7 +854,12 @@ public class Jyxxsq  implements Serializable {
 		this.sfdy=sfdy;
 	}
 
+	public String getKhh() {
+		return khh;
+	}
 
-
+	public void setKhh(String khh) {
+		this.khh = khh;
+	}
 }
 
