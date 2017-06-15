@@ -120,7 +120,7 @@ public class InvoiceSplitUtils {
 	private static Map<String, BigDecimal> cfsl_hsbyInt(BigDecimal spdj,BigDecimal jshj,BigDecimal spje,BigDecimal spse, BigDecimal ccjshj) {
 
 		Map<String, BigDecimal> resultMap = new HashMap<String, BigDecimal>();
-		BigDecimal cfsm = div(jshj, spdj);
+		BigDecimal cfsm = div(spje, spdj);
 		BigDecimal cfsm1 = cfsm;// 未取整的数量
 		BigDecimal cfjshj_int;// 取整后的价税合计
 		BigDecimal cfjshj;// 取整后多出的金额 cfjshj = cfjshj_int,cfjshj
@@ -227,8 +227,8 @@ public class InvoiceSplitUtils {
 					count_next = count + 1;
 				}
 			}
-			if (zje.compareTo(maxje) >= 0 || count_next > mxnum) {// 1.当前明细需要分票，是该发票最后一条明细。
-				if ((count_next > mxnum && zje.compareTo(maxje) < 0) || zje.compareTo(maxje) == 0) {
+			if (zje.compareTo(maxje.setScale(2, BigDecimal.ROUND_HALF_UP)) >= 0 || count_next > mxnum) {// 1.当前明细需要分票，是该发票最后一条明细。
+				if ((count_next > mxnum && zje.compareTo(maxje.setScale(2, BigDecimal.ROUND_HALF_UP)) < 0) || zje.compareTo(maxje.setScale(2, BigDecimal.ROUND_HALF_UP)) == 0) {
 					// 1.1需要分票，当前明细不需要拆分。
 					// 达到每张发票开具最大条数，并且总金额未超出上限。
 
@@ -600,8 +600,8 @@ public class InvoiceSplitUtils {
 				count_next = count + 1;
 			}
 		}
-		if (zje.compareTo(maxje) >= 0 || count_next > mxnum || (zje1.compareTo(fpje) >= 0 && qzfp)) {
-			if (count_next > mxnum && zje.compareTo(maxje) <= 0 && zje1.compareTo(fpje) <= 0) {
+		if (zje.compareTo(maxje.setScale(2, BigDecimal.ROUND_HALF_UP)) >= 0 || count_next > mxnum || (zje1.compareTo(fpje.setScale(2, BigDecimal.ROUND_HALF_UP)) >= 0 && qzfp)) {
+			if (count_next > mxnum && zje.compareTo(maxje.setScale(2, BigDecimal.ROUND_HALF_UP)) <= 0 && zje1.compareTo(fpje.setScale(2, BigDecimal.ROUND_HALF_UP)) <= 0) {
 				// 1.1需要分票，当前明细不需要拆分。
 				// 达到每张发票开具最大条数，并且总金额未超出上限。
 				if (jyspmx.getFphxz().equals("2")) {
