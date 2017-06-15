@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +31,11 @@ public class SaveOrderData {
     
     @Autowired
     private JymxsqClService jymxsqClService;
+
+    @Transactional
+    public String saveAllData(List<Jyxxsq> jyxxsqList, List<Jymxsq> jymxsqList) {
+         return saveAllData(jyxxsqList,jymxsqList,new ArrayList<Jyzfmx>(),new ArrayList<JymxsqCl>());
+    }
     /**
      * 校验并保存交易申请数据
      *
@@ -75,6 +81,7 @@ public class SaveOrderData {
                 }
                 
             }
+            if (null != jymxsqClList && jymxsqClList.size() > 0) {
             for(int m=0;m<jymxsqClList.size();m++){
             	jymxsqCl = jymxsqClList.get(m);
             	if (jyxxsq.getDdh().equals(jymxsqCl.getDdh())) {
@@ -82,6 +89,7 @@ public class SaveOrderData {
                     // 保存明细数据
             		jymxsqClService.save(jymxsqCl);
                 }
+             }
             }
 			if (null != jyzfmxList && jyzfmxList.size() > 0) {
 				for (int k = 0; k < jyzfmxList.size(); k++) {
