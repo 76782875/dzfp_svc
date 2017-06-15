@@ -1,6 +1,7 @@
 package com.rjxx.taxeasy.service;
 
 import com.rjxx.comm.mybatis.Pagination;
+import com.rjxx.taxeasy.config.RabbitmqUtils;
 import com.rjxx.taxeasy.dao.KplsJpaDao;
 import com.rjxx.taxeasy.dao.KplsMapper;
 import com.rjxx.taxeasy.domains.Kpls;
@@ -10,6 +11,7 @@ import com.rjxx.taxeasy.vo.KpcxjgVo;
 import com.rjxx.taxeasy.vo.KplsVO3;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -30,6 +32,9 @@ public class KplsService {
     @Autowired
     private KplsMapper kplsMapper;
 
+    @Autowired
+    private RabbitmqUtils rabbitmqSend;
+
     public Kpls findOne(int id) {
         return kplsJpaDao.findOne(id);
     }
@@ -38,12 +43,32 @@ public class KplsService {
         return kplsMapper.findFpExist(params);
     }
 
+    @Transactional
     public void save(Kpls kpls) {
         kplsJpaDao.save(kpls);
+        if ("04".equals(kpls.getFpztdm())) {
+            //如果状态是04，发送的mq中
+            try {
+                rabbitmqSend.sendMsg(kpls.getSkpid(), kpls.getFpzldm(), kpls.getKplsh() + "");
+            } catch (Exception e) {
+                throw new RuntimeException("发送队列失败，请联系管理员");
+            }
+        }
     }
 
+    @Transactional
     public void save(List<Kpls> kplsList) {
         kplsJpaDao.save(kplsList);
+        for (Kpls kpls : kplsList) {
+            if ("04".equals(kpls.getFpztdm())) {
+                //如果状态是04，发送的mq中
+                try {
+                    rabbitmqSend.sendMsg(kpls.getSkpid(), kpls.getFpzldm(), kpls.getKplsh() + "");
+                } catch (Exception e) {
+                    throw new RuntimeException("发送队列失败，请联系管理员");
+                }
+            }
+        }
     }
 
     public Kpls findOneByParams(Map params) {

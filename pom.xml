@@ -17,6 +17,10 @@
     </properties>
     <dependencies>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
         </dependency>
@@ -77,40 +81,40 @@
             <artifactId>aliyun-java-sdk-dm</artifactId>
         </dependency>
         <dependency>
-	      <groupId>com.alibaba</groupId>
-	      <artifactId>fastjson</artifactId>
-	    </dependency>
-	    <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>19.0</version>
         </dependency>
-         <dependency>
-      <groupId>com.dingtalk.open</groupId>
-      <artifactId>client-sdk.api</artifactId>
-      <version>1.0.2</version>
-    </dependency>
-    <dependency>
-      <groupId>com.dingtalk.open</groupId>
-      <artifactId>client-sdk.spring</artifactId>
-      <version>1.0.0</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.springframework</groupId>
-          <artifactId>spring-beans</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>com.dingtalk.open</groupId>
-      <artifactId>client-sdk.common</artifactId>
-      <version>1.0.0</version>
-    </dependency>
-    <dependency>
-      <groupId>com.dingtalk.open</groupId>
-      <artifactId>client-sdk.core</artifactId>
-      <version>1.0.0</version>
-    </dependency>
+        <dependency>
+            <groupId>com.dingtalk.open</groupId>
+            <artifactId>client-sdk.api</artifactId>
+            <version>1.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.dingtalk.open</groupId>
+            <artifactId>client-sdk.spring</artifactId>
+            <version>1.0.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-beans</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.dingtalk.open</groupId>
+            <artifactId>client-sdk.common</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.dingtalk.open</groupId>
+            <artifactId>client-sdk.core</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
 
     <build>
