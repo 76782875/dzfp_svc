@@ -17,7 +17,7 @@ public class RabbitmqUtils {
 
     public static String EXCHANGE_NAME = "INVOICE_EXCHANGE";
 
-    private Map<Integer, Boolean> hasInitMap = new ConcurrentHashMap<>();
+    private Map<String, Boolean> hasInitMap = new ConcurrentHashMap<>();
 
     @Autowired
     private ConnectionFactory connectionFactory;
@@ -34,29 +34,26 @@ public class RabbitmqUtils {
      * @throws Exception
      */
     public void sendMsg(int kpdid, String fpzldm, String message) throws Exception {
-        if (!hasInitMap.containsKey(kpdid)) {
-            initQueue(kpdid, fpzldm);
-        }
         String queueName = getQueueName(kpdid, fpzldm);
+        initQueue(queueName);
         rabbitTemplate.convertAndSend(EXCHANGE_NAME, queueName, message);
     }
 
     /**
      * 初始化队列
      *
-     * @param kpdid
+     * @param queueName
      * @throws Exception
      */
-    public boolean initQueue(int kpdid, String fpzldm) throws Exception {
-        if (hasInitMap.containsKey(kpdid)) {
+    public boolean initQueue(String queueName) throws Exception {
+        if (hasInitMap.containsKey(queueName)) {
             return true;
         }
         Channel channel = connectionFactory.createConnection().createChannel(false);
         channel.exchangeDeclare(EXCHANGE_NAME, "direct", true);
-        String queueName = getQueueName(kpdid, fpzldm);
         channel.queueDeclare(queueName, true, false, false, null);
         channel.queueBind(queueName, EXCHANGE_NAME, queueName);
-        hasInitMap.put(kpdid, true);
+        hasInitMap.put(queueName, true);
         return true;
     }
 
@@ -77,8 +74,9 @@ public class RabbitmqUtils {
      * @param kpdid
      * @return
      */
-    public Object receiveMsg(int kpdid, String fpzldm) {
+    public Object receiveMsg(int kpdid, String fpzldm) throws Exception {
         String queueName = getQueueName(kpdid, fpzldm);
+        initQueue(queueName);
         return rabbitTemplate.receiveAndConvert(queueName);
     }
 
