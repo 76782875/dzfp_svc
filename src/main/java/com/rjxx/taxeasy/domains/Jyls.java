@@ -310,6 +310,13 @@ public class Jyls  implements Serializable {
 
 @Column(name="skpid")
 	protected Integer skpid;
+	/**
+	 * 客户号
+	 */
+	@Column(name="khh")
+protected String  khh;
+
+
 
 
 	public Integer getDjh(){
@@ -696,5 +703,12 @@ public class Jyls  implements Serializable {
 		this.gfsjh = gfsjh;
 	}
 
+	public String getKhh() {
+		return khh;
+	}
+
+	public void setKhh(String khh) {
+		this.khh = khh;
+	}
 }
 

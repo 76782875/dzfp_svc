@@ -97,7 +97,17 @@ public class JylsService {
 		params.setGsdm(gsdm);
 		return findOneByParams(params);
 	}
+	/**
+	 * 根据khh查找
+	 *
+	 * @param
+	 * @param
+	 * @return
+	 */
+	public List<Kpls> findBykhh(Map params) {
 
+		return jylsMapper.findBykhh(params);
+	}
 	public List<Jyls> findAll(Map params) {
 		return jylsMapper.findAll(params);
 	}

@@ -171,6 +171,28 @@
 		<if test="gsdm != null and gsdm != ''"> and a.gsdm = #{gsdm} </if>
 
 	</select>
+    <select resultType="kpls" parameterType="map" id="findBykhh">
+        select b.* from t_jyls a, t_kpls b where a.yxbz = '1' AND a.clztdm =
+        '91' AND a.djh = b.djh AND b.fpztdm = '00' AND b.fpczlxdm = '11' AND
+        b.pdfurl IS NOT NULL AND b.pdfurl !=''
+        <if test="khh != null and khh != ''"> and a.khh = #{khh} </if>
+        <if test="je != null and je != ''"> and a.jshj = #{je} </if>
+        <if test="ddh != null and ddh != ''"> and a.ddh = #{ddh} </if>
+
+        <if test="gsdm != null and gsdm != ''"> and a.gsdm = #{gsdm} </if>
+        <if test="this != null and this != ''">
+           and  date_format(b.kprq,'%Y-%m')=date_format(now(),'%Y-%m')
+        </if>
+        <if test="previous != null and previous != ''">
+            and  date_format(b.kprq,'%Y-%m')=date_format(DATE_SUB(curdate(), INTERVAL 1 MONTH),'%Y-%m')
+        </if>
+        <if test="twobefore != null and twobefore != ''">
+            and b.kprq between date_sub(now(),interval 2 month) and now()
+        </if>
+        <if test="Decemberbefore != null and Decemberbefore != ''">
+            and b.kprq between date_sub(now(),interval 12 month) and now()
+        </if>
+    </select>
 	<select id="findOne" parameterType="map" resultType="jyls">
 		select * from t_jyls where yxbz = '1'
 		<if test="gsdm != null">
