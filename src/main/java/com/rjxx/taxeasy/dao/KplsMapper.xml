@@ -658,6 +658,9 @@
         <if test="gsdm !=null and gsdm !=''">
             and gsdm = #{gsdm}
         </if>
+        <if test="serialorder !=null and serialorder !=''">
+            and serialorder = #{serialorder}
+        </if>
     </select>
 
     <select id="findHjje" parameterType="map" resultType="kpls">

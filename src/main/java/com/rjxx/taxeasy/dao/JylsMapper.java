@@ -64,5 +64,7 @@ public interface JylsMapper {
     public List<Jyls> findFsdxSqj();
     
     public List<Jyls> findAllJyls(Map params);
+
+    List<Kpls> findBykhh(Map map);
 }
 

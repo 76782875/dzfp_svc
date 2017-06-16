@@ -235,4 +235,8 @@ public class JylsService {
 				vo.getSkpid(),vo.getKce(),vo.getYhzcbs(),vo.getYhzcmc(),vo.getLslbz());
 		return mx;
 	}
+
+	public List<Kpls> findBykhh(Map map) {
+		return jylsMapper.findBykhh(map);
+	}
 }
