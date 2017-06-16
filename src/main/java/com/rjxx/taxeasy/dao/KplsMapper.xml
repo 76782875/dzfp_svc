@@ -135,54 +135,54 @@ d.spmc,
 
 	<select id="findByPage" parameterType="pagination" resultType="fpcxvo">
 	 	SELECT a.jshj,a.hjje,a.hjse, a.kplsh, a.fpdm,a.fphm,a.kprq,a.pdfurl,a.fpztdm, b.fpzlmc,c.fpczlxmc,e.djh,
-e.jylsh,
-e.jylssj,
-e.ddh,
-e.fpzldm,
-e.fpczlxdm,
-e.xfid,
-e.xfsh,
-e.xfmc,
-e.xfyh,
-e.xfyhzh,
-e.xflxr,
-e.xfdz,
-e.xfdh,
-e.xfyb,
-e.gfid,
-e.gfsh,
-e.gfmc,
-e.gfyh,
-e.gfyhzh,
-e.gflxr,
-e.gfdz,
-e.gfdh,
-e.gfyb,
-e.gfemail,
-e.sffsyj,
-e.clztdm,
-e.bz,
-e.skr,
-e.kpr,
-e.fhr,
-e.ssyf,
-e.hztzdh,
-e.yfpdm,
-e.yfphm,
-e.hsbz,
-e.ykpjshj,
-e.yxbz,
-e.lrsj,
-e.lrry,
-e.xgsj,
-e.xgry,
-e.gfsjr,
-e.gsdm,
-e.tqm,
-e.skpid,
-e.gfsjh,
-e.dxzt,
-d.spmc,
+		e.jylsh,
+		e.jylssj,
+		e.ddh,
+		e.fpzldm,
+		e.fpczlxdm,
+		e.xfid,
+		e.xfsh,
+		e.xfmc,
+		e.xfyh,
+		e.xfyhzh,
+		e.xflxr,
+		e.xfdz,
+		e.xfdh,
+		e.xfyb,
+		e.gfid,
+		e.gfsh,
+		e.gfmc,
+		e.gfyh,
+		e.gfyhzh,
+		e.gflxr,
+		e.gfdz,
+		e.gfdh,
+		e.gfyb,
+		e.gfemail,
+		e.sffsyj,
+		e.clztdm,
+		e.bz,
+		e.skr,
+		e.kpr,
+		e.fhr,
+		e.ssyf,
+		e.hztzdh,
+		e.yfpdm,
+		e.yfphm,
+		e.hsbz,
+		e.ykpjshj,
+		e.yxbz,
+		e.lrsj,
+		e.lrry,
+		e.xgsj,
+		e.xgry,
+		e.gfsjr,
+		e.gsdm,
+		e.tqm,
+		e.skpid,
+		e.gfsjh,
+		e.dxzt,
+		d.spmc,
 		(case when a.printflag='1' then
 		'已打印'
 		else '未打印' end) as sfdy,
@@ -246,7 +246,7 @@ d.spmc,
 			and a.skpid = #{params.sk}
 		</if>
 		group by a.kplsh
-		order by a.fphm desc,a.fpdm desc
+		order by a.kplsh desc
 	</select>
 	<update id="update" parameterType="map">
 		update t_kpls set printflag =
@@ -315,7 +315,7 @@ d.spmc,
 		<if test="params.ddh !=null and params.ddh !=''">
 			and b.ddh = #{params.ddh}
 		</if>
-		order by a.lrsj desc
+		order by a.kplsh desc
 	</select>
 
 	<update id="updateFpczlx" parameterType="map">
@@ -353,7 +353,7 @@ d.spmc,
 	<!-- 发票换开查询 -->
 	<select id="findFphkByPage" parameterType="pagination"
 		resultType="fpcxvo">
-		SELECT DISTINCT a.*, b.fpzlmc,c.fpczlxmc,e.ddh
+		SELECT a.*, b.fpzlmc,c.fpczlxmc,e.ddh
 		FROM t_kpls a,t_fpzl
 		b,t_fpczlx c,t_jyls e
 		WHERE a.fpztdm='00' and a.fpzldm='12' and

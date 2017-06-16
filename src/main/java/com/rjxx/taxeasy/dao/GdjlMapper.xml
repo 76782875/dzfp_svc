@@ -23,7 +23,7 @@
         <if test="params.gsdm != null and params.gsdm !=''">
            and a.gsdm =  #{params.gsdm}
         </if>
-        order by a.lrsj desc
+        order by a.id desc
     </select>
     <update id="updategdzt" parameterType="map">
         update t_gdjl set zt='1',xzlj=#{xzlj},wjsl=#{wjsl},xgsj=#{xgsj} where id=#{id} 

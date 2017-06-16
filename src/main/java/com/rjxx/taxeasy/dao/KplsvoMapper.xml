@@ -72,7 +72,7 @@
          <if test="params.fpzl!=null and params.fpzl !=''">
             and a.fpzldm=#{params.fpzl}
          </if>
-         order by kprq desc
+         order by kplsh desc
     </select>
     
     <select id="Sltjcx" parameterType="map" resultType="slcxvo">
