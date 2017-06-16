@@ -93,7 +93,7 @@ AND a.yxbz = '1'
         <if test="params.fplx !=null and params.fplx != ''">
             and a.fpzldm = #{params.fplx}
         </if>
-        order by a.lrsj desc
+        order by a.id desc
     </select>
     
     <select id="findKpd" parameterType="map" resultType="fpkcvo">

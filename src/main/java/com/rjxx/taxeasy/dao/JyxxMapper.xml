@@ -50,7 +50,7 @@
         <if test="params.ddrqq != null and params.ddrqq !='' and params.ddrqz != null and params.ddrqz !=''">
 			and SUBSTR(a.order_time,1,8) &gt;= #{params.ddrqq} and SUBSTR(a.order_time,1,8) &lt;= #{params.ddrqz}
 		</if>
-        order by a.lrsj desc
+        order by id desc
     </select>
     <update id="update" parameterType="map">
 		update t_jyxx t  set t.store_no =
