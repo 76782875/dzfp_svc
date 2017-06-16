@@ -94,32 +94,41 @@ public class GeneratePdfService {
                 if ("1".equals(jyls.getSffsyj()) && jyls.getGfemail() != null && !"".equals(jyls.getGfemail())) {
                     Kpls ls = new Kpls();
                     ls.setDjh(djh);
-                    List<Kpls> lslist = kplsService.findAllByKpls(ls);
+                    List<Kpls> listkpls = kplsService.findAllByKpls(ls);
+                    Kpls kplsparms=new Kpls();
+                    kplsparms.setSerialorder(listkpls.get(0).getSerialorder());
+                    kplsparms.setGsdm(listkpls.get(0).getGsdm());
+                    List<Kpls> lslist=kplsService.findAllByKpls(kplsparms);
                     List<String> pdfUrlList = new ArrayList<>();
+                    boolean f=true;
                     for (Kpls kpls1 : lslist) {
+                        if(!kpls1.getFpztdm().equals("00")){
+                            f=false;
+                        }
                         pdfUrlList.add(kpls1.getPdfurl());
                     }
-                    GetYjnr getYjnr = new GetYjnr();
-                    Map gsxxmap=new HashMap();
-                    gsxxmap.put("gsdm",kpls.getGsdm());
-                    Gsxx gsxx=gsxxService.findOneByGsdm(gsxxmap);
-                    Integer yjmbDm=gsxx.getYjmbDm();
-                    Yjmb yjmb=yjmbService.findOne(yjmbDm);
-                    String yjmbcontent=yjmb.getYjmbNr();
-                    Map csmap=new HashMap();
-                    csmap.put("ddh",jyls.getDdh());
-                    SimpleDateFormat sdf=new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
-                    csmap.put("ddrq",sdf.format(jyxxsq.getDdrq()));
-                    csmap.put("pdfurls",pdfUrlList);
-                    csmap.put("xfmc",jyls.getXfmc());
-                    String content = getYjnr.getFpkjYj(csmap,yjmbcontent);
-                    try {
-                        se.sendEmail(String.valueOf(kpls.getDjh()), kpls.getGsdm(), kpls.getGfemail(), "发票开具成功发送邮件", String.valueOf(kpls.getDjh()), content, "电子发票");
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        System.out.println("邮件发送失败" + e.getMessage());
+                    if(f) {
+                        GetYjnr getYjnr = new GetYjnr();
+                        Map gsxxmap = new HashMap();
+                        gsxxmap.put("gsdm", kpls.getGsdm());
+                        Gsxx gsxx = gsxxService.findOneByGsdm(gsxxmap);
+                        Integer yjmbDm = gsxx.getYjmbDm();
+                        Yjmb yjmb = yjmbService.findOne(yjmbDm);
+                        String yjmbcontent = yjmb.getYjmbNr();
+                        Map csmap = new HashMap();
+                        csmap.put("ddh", jyls.getDdh());
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
+                        csmap.put("ddrq", sdf.format(jyxxsq.getDdrq()));
+                        csmap.put("pdfurls", pdfUrlList);
+                        csmap.put("xfmc", jyls.getXfmc());
+                        String content = getYjnr.getFpkjYj(csmap, yjmbcontent);
+                        try {
+                            se.sendEmail(String.valueOf(kpls.getDjh()), kpls.getGsdm(), kpls.getGfemail(), "发票开具成功发送邮件", String.valueOf(kpls.getDjh()), content, "电子发票");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            System.out.println("邮件发送失败" + e.getMessage());
+                        }
                     }
-
                     //发送手机短信
                     Boolean sffsdx = sffsdxMap.get(jyls.getSkpid());
                     if (sffsdx == null) {
