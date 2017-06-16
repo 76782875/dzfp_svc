@@ -487,6 +487,9 @@ d.spmc,
 		<if test="fpztdm != null">
 			and fpztdm = #{fpztdm}
 		</if>
+		<if test="serialorder != null">
+			and serialorder = #{serialorder}
+		</if>
 	</select>
 	
 	<select id="findAllNeedRegeneratePdfKpls" parameterType="map" resultType="kpls">
