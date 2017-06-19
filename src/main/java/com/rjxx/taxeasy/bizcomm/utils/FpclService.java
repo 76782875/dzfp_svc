@@ -803,7 +803,7 @@ public class FpclService {
             // 转换明细
             Map<String, Object> params1 = new HashMap<>();
             params1.put("sqlsh", jyxxsq.getSqlsh());
-            List<JyspmxDecimal2> jyspmxs = jymxService.getNeedToKP3(params1);
+            List<JyspmxDecimal2> jyspmxs = jymxService.getNeedToKP4(params1);
             // 价税分离
             if ("1".equals(jyxxsq.getHsbz())) {
                 jyspmxs = SeperateInvoiceUtils.separatePrice2(jyspmxs);
@@ -894,28 +894,38 @@ public class FpclService {
             } else {
                 hsbz = "1";
             }
+            List<JyspmxDecimal2> splitKpspmxs  = new ArrayList<JyspmxDecimal2>();
+            Map mapResult = new HashMap();
+            mapResult = InvoiceSplitUtils.dealDiscountLine(jyspmxs);
             if (hsbz.equals("1")) {
                 // 分票
                 if (jyxxsq.getFpzldm().equals("12")) {
-                    jyspmxs = SeperateInvoiceUtils.splitInvoicesbhs(jyspmxs, new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs2, sfqzfp, false);
+                    //jyspmxs = SeperateInvoiceUtils.splitInvoicesbhs(jyspmxs, new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs2, sfqzfp, false);
+                    InvoiceSplitUtils.splitInvoiceshs((List)mapResult.get("jymxsqs"), (Map)mapResult.get("zkAndbzk"), new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs2, sfqzfp, false, 0, splitKpspmxs);
                 } else if (jyxxsq.getFpzldm().equals("03")) {//卷票
-                    jyspmxs = SeperateInvoiceUtils.splitInvoicesbhs(jyspmxs, new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs3, sfqzfp, false);
+                    //jyspmxs = SeperateInvoiceUtils.splitInvoicesbhs(jyspmxs, new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs3, sfqzfp, false);
+                    InvoiceSplitUtils.splitInvoiceshs((List)mapResult.get("jymxsqs"), (Map)mapResult.get("zkAndbzk"), new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs3, sfqzfp, false, 0, splitKpspmxs);
                 } else {
-                    jyspmxs = SeperateInvoiceUtils.splitInvoicesbhs(jyspmxs, new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs1, sfqzfp, false);
+                    //jyspmxs = SeperateInvoiceUtils.splitInvoicesbhs(jyspmxs, new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs1, sfqzfp, false);
+                    InvoiceSplitUtils.splitInvoiceshs((List)mapResult.get("jymxsqs"), (Map)mapResult.get("zkAndbzk"), new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs1, sfqzfp, false, 0, splitKpspmxs);
                 }
             } else {
                 if (jyxxsq.getFpzldm().equals("12")) {
-                    jyspmxs = SeperateInvoiceUtils.splitInvoices2(jyspmxs, new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs2, sfqzfp, false);
+                    //jyspmxs = SeperateInvoiceUtils.splitInvoices2(jyspmxs, new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs2, sfqzfp, false);
+                    InvoiceSplitUtils.splitInvoices((List)mapResult.get("jymxsqs"), (Map)mapResult.get("zkAndbzk"), new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs2, sfqzfp, false, 0, splitKpspmxs);
                 } else if (jyxxsq.getFpzldm().equals("03")) {//卷票
-                    jyspmxs = SeperateInvoiceUtils.splitInvoicesbhs(jyspmxs, new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs3, sfqzfp, false);
+                    //jyspmxs = SeperateInvoiceUtils.splitInvoicesbhs(jyspmxs, new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs3, sfqzfp, false);
+                    InvoiceSplitUtils.splitInvoices((List)mapResult.get("jymxsqs"), (Map)mapResult.get("zkAndbzk"), new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs3, sfqzfp, false, 0, splitKpspmxs);
+
                 } else {
-                    jyspmxs = SeperateInvoiceUtils.splitInvoices2(jyspmxs, new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs1, sfqzfp, false);
+                    //jyspmxs = SeperateInvoiceUtils.splitInvoices2(jyspmxs, new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs1, sfqzfp, false);
+                    InvoiceSplitUtils.splitInvoices((List)mapResult.get("jymxsqs"), (Map)mapResult.get("zkAndbzk"), new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs1, sfqzfp, false, 0, splitKpspmxs);
                 }
             }
 
             // 保存进交易流水
             Map<Integer, List<JyspmxDecimal2>> fpMap = new HashMap<>();
-            for (JyspmxDecimal2 jyspmx : jyspmxs) {
+            for (JyspmxDecimal2 jyspmx : splitKpspmxs) {
                 int fpnum = jyspmx.getFpnum();
                 List<JyspmxDecimal2> list2 = fpMap.get(fpnum);
                 if (list2 == null) {

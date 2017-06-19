@@ -86,6 +86,9 @@ public class JyspmxService {
     	return jyspmxMapper.getNeedToKP3(params);
     }
 
+    public List<JyspmxDecimal2> getNeedToKP4(Map params){
+    	return jyspmxMapper.getNeedToKP4(params);
+    } 
     public List<Jyspmx> findAll(Map params) {
         return jyspmxMapper.findAll(params);
     }

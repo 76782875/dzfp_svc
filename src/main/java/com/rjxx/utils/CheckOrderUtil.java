@@ -157,7 +157,7 @@ public class CheckOrderUtil {
             }
             // 提取码校验
             String tqm = jyxxsq.getTqm();
-            if (!tqm.equals("")) {
+            if (null !=tqm && !tqm.equals("")) {
                 tqmList.add(tqm);
             }
             // 交易流水号校验
