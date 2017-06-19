@@ -210,10 +210,10 @@
             and  date_format(b.kprq,'%Y-%m')=date_format(DATE_SUB(curdate(), INTERVAL 1 MONTH),'%Y-%m')
         </if>
         <if test="twobefore != null and twobefore != ''">
-            and b.kprq between date_sub(now(),interval 2 month) and now()
+            and b.kprq &lt;date_add(curdate(),interval -2 MONTH)
         </if>
         <if test="Decemberbefore != null and Decemberbefore != ''">
-            and b.kprq between date_sub(now(),interval 12 month) and now()
+            and year(b.kprq)=year(date_sub(now(),interval 1 year))
         </if>
         order by b.fpdm,b.fphm
     </select>
