@@ -37,32 +37,14 @@
 		END AS Logo,
 		 c.ztbz,
 		 c.ckbtgyy,
-		 DATE_FORMAT(f.kprq, '%Y-%m-%d') kprq
+		DATE_FORMAT(max(f.kprq), '%Y-%m-%d') kprq
 		FROM
-			t_jyls a
+		t_jyls a
 		JOIN t_fpj b ON a.djh = b.djh
 		LEFT JOIN t_ckhk c ON a.djh = c.djh
 		JOIN t_skp d ON a.skpid = d.id
 		LEFT JOIN t_pp e ON d.pid = e.id
-		LEFT JOIN (
-			SELECT
-				djh,
-				max(kprq) kprq
-			FROM
-				t_kpls
-			GROUP BY
-				djh
-			HAVING
-				sum(
-					CASE
-					WHEN pdfurl IS NOT NULL
-					AND fpztdm = '00' THEN
-						1
-					ELSE
-						0
-					END
-				) = count(1)
-		) f ON f.djh = a.djh
+		LEFT JOIN t_kpls f ON f.djh = a.djh
 		WHERE
 			a.yxbz = '1'
 		AND b.yxbz = '1'
@@ -79,7 +61,33 @@
 		<if test="unionid != null">
 			and b.unionid = #{unionid}
 		</if>
-		ORDER BY f.kprq DESC
+		GROUP BY
+		a.djh,
+		a.skpid,
+		a.gfmc,
+		a.jylssj,
+		a.gsdm,
+		a.jshj,
+		CASE isnull(e.ppdm)
+		WHEN 1 THEN
+		CONCAT('Logo_', a.gsdm)
+		ELSE
+		CONCAT('Logo_', a.gsdm, '-', e.ppdm)
+		END,
+		c.ztbz,
+		c.ckbtgyy
+		HAVING
+		sum(
+		CASE
+		WHEN f.pdfurl IS NOT NULL
+		AND f.fpztdm = '00' THEN
+		1
+		ELSE
+		0
+		END
+		) = count(1)
+		ORDER BY
+		f.kprq DESC
 	</select>
 
 	<select id="findByPage" parameterType="pagination" resultType="fpjvo">
