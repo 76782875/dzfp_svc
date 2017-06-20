@@ -12,7 +12,7 @@ import javax.persistence.Column;
  * Created by lenovo on 2015/12/14.
  */
 
-public class JyspmxDecimal2  {
+public class  JyspmxDecimal2  {
     
     protected Integer sqlsh;
     

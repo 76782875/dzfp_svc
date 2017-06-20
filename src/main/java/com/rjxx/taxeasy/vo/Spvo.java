@@ -110,6 +110,22 @@ public class Spvo implements Serializable {
      */
     protected String spbm1;
 
+    /**
+     * 优惠政策标识
+     */
+    protected String yhzcbs;
+
+    /**
+     * 优惠政策名称
+     */
+    protected String yhzcmc;
+
+
+    /**
+     * 零税率标志
+     */
+    protected String lslbz;
+
     public Integer getId() {
 		return id;
 	}
@@ -262,5 +278,28 @@ public class Spvo implements Serializable {
 		this.spbm1 = spbm1;
 	}
 
+    public String getYhzcbs() {
+        return yhzcbs;
+    }
+
+    public void setYhzcbs(String yhzcbs) {
+        this.yhzcbs = yhzcbs;
+    }
+
+    public String getYhzcmc() {
+        return yhzcmc;
+    }
+
+    public void setYhzcmc(String yhzcmc) {
+        this.yhzcmc = yhzcmc;
+    }
+
+    public String getLslbz() {
+        return lslbz;
+    }
+
+    public void setLslbz(String lslbz) {
+        this.lslbz = lslbz;
+    }
 }
 
