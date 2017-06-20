@@ -289,6 +289,7 @@ public class GeneratePdfService {
             invoiceItem.setAmount(kpls.getHjje().toString());
             invoiceItem.setTaxAmount(kpls.getHjse().toString());
             invoiceItem.setPdfUrl(kpls.getPdfurl());
+            kpls.setJylsh("");
             Kpls ypkpls=kplsService.findByhzfphm(kpls);
             InvoiceItem ypinvoiceItem=new InvoiceItem();
             if(ypkpls.getFpztdm().equals("02")){
