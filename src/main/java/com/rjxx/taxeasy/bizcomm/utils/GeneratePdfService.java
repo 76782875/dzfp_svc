@@ -271,11 +271,11 @@ public class GeneratePdfService {
             InvoiceItem invoiceItem=new InvoiceItem();
             if(kpls.getFpztdm().equals("00")){
                 invoiceItem.setReturnCode("0000");
-                invoiceItem.setInvoiceStatus("红冲发票");
+                invoiceItem.setInvoiceStatus("正常发票");
                 invoiceItem.setReturnMessage("");
             }else if(kpls.getFpztdm().equals("05")){
                 invoiceItem.setReturnCode("9999");
-                invoiceItem.setInvoiceStatus("红冲失败");
+                invoiceItem.setInvoiceStatus("开具失败");
                 invoiceItem.setReturnMessage(kpls.getErrorReason());
             }
             invoiceItem.setInvoiceCode(kpls.getFpdm());
@@ -289,8 +289,29 @@ public class GeneratePdfService {
             invoiceItem.setAmount(kpls.getHjje().toString());
             invoiceItem.setTaxAmount(kpls.getHjse().toString());
             invoiceItem.setPdfUrl(kpls.getPdfurl());
+            Kpls ypkpls=kplsService.findByhzfphm(kpls);
+            InvoiceItem ypinvoiceItem=new InvoiceItem();
+            if(ypkpls.getFpztdm().equals("02")){
+                ypinvoiceItem.setReturnCode("0000");
+                ypinvoiceItem.setInvoiceStatus("已红冲");
+                ypinvoiceItem.setReturnMessage("");
+            }else if(ypkpls.getFpztdm().equals("00")){
+                ypinvoiceItem.setReturnCode("0000");
+                ypinvoiceItem.setInvoiceStatus("正常发票");
+                ypinvoiceItem.setReturnMessage("");
+            }
+            ypinvoiceItem.setInvoiceCode(ypkpls.getFpdm());
+            ypinvoiceItem.setInvoiceNumber(ypkpls.getFphm());
+            if(ypkpls.getKprq()==null){
+                ypinvoiceItem.setInvoiceDate(sdf.format(new Date()));
+            }else{
+                ypinvoiceItem.setInvoiceDate(sdf.format(ypkpls.getKprq()));
+            }
+            ypinvoiceItem.setAmount(ypkpls.getHjje().toString());
+            ypinvoiceItem.setTaxAmount(ypkpls.getHjse().toString());
+            ypinvoiceItem.setPdfUrl(ypkpls.getPdfurl());
             invoiceItemList.add(invoiceItem);
-
+            invoiceItemList.add(ypinvoiceItem);
             invoiceItems.setCount(invoiceItemList.size());
             invoiceItems.setInvoiceItem(invoiceItemList);
             returnData.setOperationItem(operationItem);
@@ -315,7 +336,7 @@ public class GeneratePdfService {
             InvoiceItem invoiceItem=new InvoiceItem();
             if(kpls.getFpztdm().equals("08")){
                 invoiceItem.setReturnCode("0000");
-                invoiceItem.setInvoiceStatus("作废发票");
+                invoiceItem.setInvoiceStatus("已作废");
                 invoiceItem.setReturnMessage("");
             }else {
                 invoiceItem.setReturnCode("9999");
