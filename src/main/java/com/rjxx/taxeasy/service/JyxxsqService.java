@@ -37,6 +37,12 @@ public class JyxxsqService {
     @Autowired
     private JymxsqService jymxsqservice;
     
+    @Autowired
+    private JymxsqClService jymxsqClService;
+    
+    @Autowired
+    private JyzfmxService jyzfmxService;
+    
     public Jyxxsq findOne(int id) {
         return jyxxsqJpaDao.findOne(id);
     }
@@ -124,10 +130,10 @@ public class JyxxsqService {
 	}
 	
 	/**
-	 * 保存交易流水
+	 * 保存交易信息申请
 	 *
-	 * @param jyls
-	 * @param jyspmxList
+	 * @param jyxxsq
+	 * @param jymxsqList
 	 */
 	@Transactional
 	public Integer saveJyxxsq(Jyxxsq jyxxsq, List<Jymxsq> jymxsqList) {
@@ -142,10 +148,39 @@ public class JyxxsqService {
 	
 	
 	/**
-	 * 交易流水与明细一对一
+	 * 保存交易信息申请
 	 *
-	 * @param jylsList
-	 * @param jyspmxList
+	 * @param jyxxsq
+	 * @param jymxsqList
+	 */
+	@Transactional
+	public Integer saveJyxxsq(Jyxxsq jyxxsq, List<Jymxsq> jymxsqList,List<JymxsqCl> jymxsqClList,List<Jyzfmx> jyzfmxList) {
+		save(jyxxsq);
+		int sqlsh = jyxxsq.getSqlsh();
+		for (Jymxsq Jymxsq : jymxsqList) {
+			Jymxsq.setSqlsh(sqlsh);
+		}
+		if(null != jymxsqClList && !jymxsqClList.isEmpty()){
+			for (JymxsqCl jymxsqCl : jymxsqClList) {
+				jymxsqCl.setSqlsh(sqlsh);
+			}
+			jymxsqClService.save(jymxsqClList);
+		}
+		if(null != jyzfmxList && !jyzfmxList.isEmpty()){
+			for (Jyzfmx jyzfmx : jyzfmxList) {
+				jyzfmx.setSqlsh(sqlsh);
+			}
+			jyzfmxService.save(jyzfmxList);
+		}
+		jymxsqservice.save(jymxsqList);
+		return sqlsh;
+	}
+	
+	/**
+	 * 交易信息申请与明细一对一
+	 *
+	 * @param jyxxsqList
+	 * @param jymxsqList
 	 */
 	@Transactional
 	public void saveAll(List<Jyxxsq> jyxxsqList, List<JymxsqVo> jymxsqList) {
@@ -164,6 +199,55 @@ public class JyxxsqService {
 		jymxsqservice.save(mxList);
 	}
 	
+	
+	/**
+	 * 交易信息申请与明细一对一
+	 *
+	 * @param jyxxsqList
+	 * @param jymxsqList
+	 * @param jymxsqClList
+	 * @param jyzfmxList
+	 */
+	@Transactional
+	public void saveAll(List<Jyxxsq> jyxxsqList, List<Jymxsq> jymxsqList,List<JymxsqCl> jymxsqClList,List<Jyzfmx> jyzfmxList) {
+		jyxxsqJpaDao.save(jyxxsqList);
+		List<Jymxsq> mxList = new ArrayList<>();
+		Jymxsq mx = null;
+		for (Jyxxsq jyxxsq : jyxxsqList) {
+			for (Jymxsq vo : jymxsqList) {
+				if (jyxxsq.getDdh().equals(vo.getDdh())) {
+					//mx = getMx(vo);
+					vo.setSqlsh(jyxxsq.getSqlsh());
+					//mxList.add(mx);
+				}
+			}
+			
+			if(null != jymxsqClList && !jymxsqClList.isEmpty()){
+				for (JymxsqCl vo : jymxsqClList) {
+					if (jyxxsq.getDdh().equals(vo.getDdh())) {
+						vo.setSqlsh(jyxxsq.getSqlsh());
+					}
+				}
+				
+			}
+			
+			if (null != jyzfmxList && !jyzfmxList.isEmpty()) {
+				for (Jyzfmx vo : jyzfmxList) {
+					if (jyxxsq.getDdh().equals(vo.getDdh())) {
+						vo.setSqlsh(jyxxsq.getSqlsh());
+					}
+				}
+			}
+		}
+		
+		jymxsqservice.save(jymxsqList);
+		if(null != jymxsqClList && !jymxsqClList.isEmpty()){
+			jymxsqClService.save(jymxsqClList);
+		}
+		if(null != jyzfmxList && !jyzfmxList.isEmpty()){
+			jyzfmxService.save(jyzfmxList);
+		}
+	}
 	
 	private Jymxsq getMx(JymxsqVo vo) {
 		Jymxsq mx = new Jymxsq(vo.getSpmxxh(), vo.getFphxz(), vo.getSpdm(), vo.getSpmc(), vo.getSpggxh(), vo.getSpdw(),
