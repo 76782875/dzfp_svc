@@ -341,7 +341,7 @@ public class GeneratePdfService {
                 invoiceItem.setReturnMessage("");
             }else {
                 invoiceItem.setReturnCode("9999");
-                invoiceItem.setInvoiceStatus("作废失败");
+                invoiceItem.setInvoiceStatus("开具失败");
                 invoiceItem.setReturnMessage(kpls.getErrorReason());
             }
             invoiceItem.setInvoiceCode(kpls.getFpdm());
