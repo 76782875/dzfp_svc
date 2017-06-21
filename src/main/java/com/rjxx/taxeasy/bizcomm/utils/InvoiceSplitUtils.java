@@ -20,7 +20,7 @@ public class InvoiceSplitUtils {
 	// 默认除法运算精度
 	private static final Integer DEF_DIV_SCALE = 30;
 
-	public static final int detailsNumber = 100;
+	public static final int detailsNumber = 9999999;
 
 	/**
 	 * 处理折扣行，将有折扣行的数据合并成一行，另外一个
