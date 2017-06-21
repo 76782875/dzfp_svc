@@ -11,4 +11,18 @@ public class InvoiceResponseUtils {
         invoiceResponse.setReturnMessage(errorMessage);
         return invoiceResponse;
     }
+
+    public static InvoiceResponse responseSuccess(String message){
+        InvoiceResponse invoiceResponse = new InvoiceResponse();
+        invoiceResponse.setReturnCode("0000");
+        invoiceResponse.setReturnMessage(message);
+        return invoiceResponse;
+    }
+
+    public static InvoiceResponse responseSuccess(){
+        InvoiceResponse invoiceResponse = new InvoiceResponse();
+        invoiceResponse.setReturnCode("9999");
+        invoiceResponse.setReturnMessage("成功");
+        return invoiceResponse;
+    }
 }

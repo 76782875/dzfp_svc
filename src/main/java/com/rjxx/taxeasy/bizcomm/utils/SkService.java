@@ -2,8 +2,8 @@ package com.rjxx.taxeasy.bizcomm.utils;
 
 import com.rjxx.utils.DesUtils;
 import com.rjxx.utils.HttpUtils;
+import com.rjxx.utils.StringUtils;
 import com.rjxx.utils.XmlJaxbUtils;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 

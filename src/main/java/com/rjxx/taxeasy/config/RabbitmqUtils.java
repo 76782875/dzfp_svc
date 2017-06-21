@@ -58,14 +58,25 @@ public class RabbitmqUtils {
     }
 
     /**
+     * 获取channel
+     *
+     * @return
+     */
+    public Channel getChannel() {
+        return connectionFactory.createConnection().createChannel(false);
+    }
+
+    /**
      * 获取队列名称
      *
      * @param kpdid
      * @param fpzldm
      * @return
      */
-    public String getQueueName(int kpdid, String fpzldm) {
-        return "queue_" + fpzldm + "_" + kpdid;
+    public String getQueueName(int kpdid, String fpzldm) throws Exception {
+        String queueName = "queue_" + fpzldm + "_" + kpdid;
+        initQueue(queueName);
+        return queueName;
     }
 
     /**
