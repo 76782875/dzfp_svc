@@ -88,6 +88,12 @@ protected Integer kpnum;
 	@Column(name="dingcorpid")
 	protected String dingcorpid;
 
+	/**
+	 * 回调接口地址
+	 */
+	@Column(name="callbackurl")
+	protected String callbackurl;
+
 	public String getAppKey() {
 	return appKey;
 }
@@ -233,6 +239,14 @@ public void setWsUrl(String wsUrl) {
 
 	public void setYjmbDm(Integer yjmbDm) {
 		this.yjmbDm = yjmbDm;
+	}
+
+	public String getCallbackurl() {
+		return callbackurl;
+	}
+
+	public void setCallbackurl(String callbackurl) {
+		this.callbackurl = callbackurl;
 	}
 }
 
