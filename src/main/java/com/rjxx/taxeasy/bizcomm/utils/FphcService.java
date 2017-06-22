@@ -299,8 +299,9 @@ public class FphcService {
 				kpls2.setHjje(hjje);
 				kpls2.setHjse(hjse);
 				kpls2.setJshj(jshj);
-				kpls2.setFpztdm("04"); //正在开具
+				kpls2.setFpztdm("14"); //正在开具
 				kplsService.save(kpls2);
+				skService.callService(kpls2.getKplsh());
 				response.setReturnCode("0000");
 				response.setReturnMessage("红冲请求已接受！");
 				return response;

@@ -24,6 +24,9 @@ public class FpzfService {
 
 	@Autowired
 	private JymxsqService jymxsqService;
+
+	@Autowired
+	private SkService skService;
 	 
 	//作废处理
 		public InvoiceResponse zfcl(Integer kplsh,Integer yhid,String gsdm) throws Exception {
@@ -33,8 +36,10 @@ public class FpzfService {
 				Kpls kpls = kplsService.findOne(kplsh);
 				savejyxxsq(kpls.getKplsh());
 				kpls.setFpczlxdm("14");//作废处理
-				kpls.setFpztdm("04");//作废走开票申请呢
+				kpls.setFpztdm("14");//作废走开票申请呢
+
 				kplsService.save(kpls);
+				skService.voidInvoice(kpls.getKplsh());
 				response.setReturnCode("0000");
 				response.setReturnMessage("待作废提交成功！");
 			}catch (Exception e){
