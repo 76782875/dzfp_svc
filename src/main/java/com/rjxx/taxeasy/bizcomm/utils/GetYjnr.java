@@ -73,5 +73,35 @@ public class GetYjnr {
     private static Object null2Wz(Object s) {
         return s == null || "".equals(s) ? "未知" : s;
     }
+    
+    /**
+     * 爱芙趣发送发票邮件模板
+     * @param ewm
+     * @param tqlj
+     * 
+     * */   
+    public String getAfEmail(String ewm,String tqlj){
+		StringBuilder sb = new StringBuilder();
+        sb.append("尊敬的客户您好：<br/>");
+        sb.append("<br/>");
+        sb.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从7月1日起，我们开始推行电子发票。您可以在到货后30天内扫描以下二维码，或者访问"
+        		+ "以下电子发票提取连接进行电子发票提取。 请您使用订单号码作为发票提取码，根据网站的指示"
+        		+ "提取电子发票。申请公司抬头的发票，请务必输入纳税人识别号。请注意，发票一经开出，恕不"
+        		+ "修改或重新开具，请在提交发票提取前核对您的信息。");
+        sb.append("<br/>");
+        sb.append("<br/>");
+        sb.append("<br/>");
+        sb.append("电子发票提取连接："+"<a href='"+tqlj+"'>"+tqlj+"</a><br>");
+        sb.append("<br/>");
+        sb.append("二维码：<br/>"+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img  width='100' height='100' src='"+ewm+"'/>");
+        sb.append("<br/>");
+        sb.append("<br/>");
+        sb.append("<br/>");
+        sb.append("谢谢！<br/>");
+        sb.append( "<p align='right'>爱芙趣商贸（上海）有限公司</p>");
+        //Date d = new Date();
+        //sb.append(1900 + d.getYear()).append("年").append(d.getMonth() + 1).append("月").append(d.getDate()).append("日");
+        return sb.toString();	
+	}
 
 }
