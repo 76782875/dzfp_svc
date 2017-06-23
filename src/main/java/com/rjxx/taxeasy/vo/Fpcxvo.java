@@ -37,6 +37,8 @@ public class Fpcxvo implements Serializable {
 	protected Double hjse;
 	protected String printflag;
 	protected String spmc;
+	protected Double spje;
+	protected Double spse;
 	protected String fpzt;
 	protected String ddh;
 	protected String sfdy;
@@ -893,5 +895,20 @@ public class Fpcxvo implements Serializable {
 	public void setKpcount(String kpcount) {
 		this.kpcount = kpcount;
 	}
-	
+
+	public Double getSpje() {
+		return spje;
+	}
+
+	public void setSpje(Double spje) {
+		this.spje = spje;
+	}
+
+	public Double getSpse() {
+		return spse;
+	}
+
+	public void setSpse(Double spse) {
+		this.spse = spse;
+	}
 }

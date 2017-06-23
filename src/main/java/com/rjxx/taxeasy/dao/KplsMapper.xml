@@ -116,6 +116,8 @@
         e.gfsjh,
         e.dxzt,
         d.spmc,
+        d.spje,
+        d.spse,
         (case when a.printflag='1' then
         '已打印'
         else '未打印' end) as sfdy,
