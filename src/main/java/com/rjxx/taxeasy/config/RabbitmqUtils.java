@@ -53,6 +53,7 @@ public class RabbitmqUtils {
         channel.exchangeDeclare(EXCHANGE_NAME, "direct", true);
         channel.queueDeclare(queueName, true, false, false, null);
         channel.queueBind(queueName, EXCHANGE_NAME, queueName);
+        channel.close();
         hasInitMap.put(queueName, true);
         return true;
     }
