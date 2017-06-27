@@ -22,6 +22,8 @@ public interface JyxxsqMapper {
 
     public Jyxxsq findOneByParams(Map params);
 
+    public Jyxxsq findOneByTqmAndJshj(Map params);
+
     public List<Jyxxsq> findAllByTqms(Map params);
 
     public List<Jyxxsq> findAllByJylshs(Map params);

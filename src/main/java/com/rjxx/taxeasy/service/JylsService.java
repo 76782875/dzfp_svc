@@ -199,10 +199,15 @@ public class JylsService {
 	public List<Kpls> findByTqm(Map params) {
 		return jylsMapper.findByTqm(params);
 	}
+	public List<Kpls> findBySq(Map  params){
+		return  jylsMapper.findBySq( params);
+	}
 
 	public Jyls findOne(Map params) {
 		return jylsMapper.findOne(params);
+
 	}
+
 
 	public void updateJshj(Map params) {
 		jylsMapper.updateJshj(params);

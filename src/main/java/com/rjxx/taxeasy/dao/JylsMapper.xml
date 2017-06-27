@@ -167,17 +167,29 @@
     </select>
 
 
-	<select resultType="kpls" parameterType="map" id="findByTqm">
-		select b.* from t_jyls a, t_kpls b where a.yxbz = '1' AND a.clztdm =
-		'91' AND a.djh = b.djh AND b.fpztdm = '00' AND b.fpczlxdm = '11' AND
-		b.pdfurl IS NOT NULL AND b.pdfurl !=''
-		<if test="tqm != null and tqm != ''"> and a.tqm = #{tqm} </if>
-		<if test="je != null and je != ''"> and a.jshj = #{je} </if>
-		<if test="ddh != null and ddh != ''"> and a.ddh = #{ddh} </if>
+    <select resultType="kpls" parameterType="map" id="findByTqm">
+        select b.* from t_jyls a, t_kpls b where a.yxbz = '1' AND a.clztdm =
+        '91' AND a.djh = b.djh AND b.fpztdm = '00' AND b.fpczlxdm = '11' AND
+        b.pdfurl IS NOT NULL AND b.pdfurl !=''
+        <if test="tqm != null and tqm != ''"> and a.tqm = #{tqm} </if>
+        <if test="je != null and je != ''"> and a.jshj = #{je} </if>
+        <if test="ddh != null and ddh != ''"> and a.ddh = #{ddh} </if>
 
-		<if test="gsdm != null and gsdm != ''"> and a.gsdm = #{gsdm} </if>
+        <if test="gsdm != null and gsdm != ''"> and a.gsdm = #{gsdm} </if>
 
-	</select>
+    </select>
+
+    <select resultType="kpls" parameterType="map" id="findBySq">
+        select b.* from t_jyls a, t_kpls b where a.yxbz = '1' AND a.clztdm =
+        '91' AND a.djh = b.djh AND b.fpztdm = '00' AND b.fpczlxdm = '11' AND
+        (b.pdfurl IS  NULL or b.pdfurl ='')
+        <if test="tqm != null and tqm != ''"> and a.tqm = #{tqm} </if>
+        <if test="je != null and je != ''"> and a.jshj = #{je} </if>
+        <if test="ddh != null and ddh != ''"> and a.ddh = #{ddh} </if>
+
+        <if test="gsdm != null and gsdm != ''"> and a.gsdm = #{gsdm} </if>
+
+    </select>
 	<select id="findOne" parameterType="map" resultType="jyls">
 		select * from t_jyls where yxbz = '1'
 		<if test="gsdm != null">

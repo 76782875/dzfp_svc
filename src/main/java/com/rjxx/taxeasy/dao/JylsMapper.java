@@ -26,6 +26,7 @@ public interface JylsMapper {
     public List<Jyls> findAllByParams(Jyls jyls);
     public List<Jyls> findBySql(Map map);
 
+    public List<Kpls> findBySq(Map map);
     public List<Jyls> findByPage(Pagination pagination);
 
     /**

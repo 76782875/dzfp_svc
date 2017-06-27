@@ -52,5 +52,8 @@ public class JymxsqClService {
         return jymxsqClMapper.findByPage(pagination);
     }
 
+    //
+    public List<JymxsqCl> findBySqlsh(Map  params){return  jymxsqClMapper.findBySqlsh(params);}
+
 }
 

@@ -59,7 +59,11 @@ public class JyxxsqService {
         return jyxxsqMapper.findOneByParams(params);
     }
 
-    public List<Jyxxsq> findAllByTqms(Map params) {
+	public Jyxxsq findOneByTqmAndJshj(Map params) {
+		return jyxxsqMapper.findOneByTqmAndJshj(params);
+	}
+
+	public List<Jyxxsq> findAllByTqms(Map params) {
         return jyxxsqMapper.findAllByTqms(params);
     }
     

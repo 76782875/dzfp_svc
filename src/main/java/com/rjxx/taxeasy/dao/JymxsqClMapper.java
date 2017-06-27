@@ -24,5 +24,7 @@ public interface JymxsqClMapper {
 
     public List<JymxsqCl> findByPage(Pagination pagination);
 
+    public List<JymxsqCl> findBySqlsh(Map params);
+
 }
 

@@ -29,6 +29,31 @@
 		limit 1
 	</select>
 
+
+	<select id="findOneByTqmAndJshj" parameterType="map" resultType="jyxxsq">
+		select  a.* from t_jyxxsq a ,t_jymxsq_cl b where a.sqlsh = b.sqlsh and a.yxbz='1'
+		<if test="gsdm != null">
+			and a.gsdm = #{gsdm}
+		</if>
+		<if test="ddh != null">
+			and a.ddh = #{ddh}
+		</if>
+		<if test="tqm != null">
+			and a.tqm = #{tqm}
+		</if>
+		<if test="jylsh != null">
+			and a.jylsh = #{jylsh}
+		</if>
+		<if test="sqlsh != null">
+			and a.sqlsh = #{sqlsh}
+		</if>
+		<if test="je != null">
+			and a.jshj = #{je}
+		</if>
+		limit 1
+	</select>
+
+
 	<select id="findAllByTqms" parameterType="map" resultType="jyxxsq">
 		select * from t_jyxxsq where yxbz = '1'
 		<if test="tqmList != null">

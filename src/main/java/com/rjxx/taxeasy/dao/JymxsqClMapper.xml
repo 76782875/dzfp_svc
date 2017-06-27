@@ -28,5 +28,12 @@
         </if>
     </select>
 
+    <select id="findBySqlsh" parameterType="map" resultType="JymxsqCl">
+        select * from t_jymxsq_cl where yxbz = '1'
+        <if test="sqlsh != null and sqlsh != ''">
+            and sqlsh = ${sqlsh}
+        </if>
+
+    </select>
 </mapper>
 
