@@ -810,23 +810,22 @@ public class FpclService {
             int fphs1 = 8;
             int fphs2 = 100;
             int fphs3 = 6;
-            String hsbz = "0";
+            String hsbz = "";
             boolean flag = false;
             boolean spzsfp = false;//是否按商品整数分票
 
             Skp skp = skpService.findOne(jyxxsq.getSkpid());
+            /**
+             * 取税控盘的开票限额
+             */
             if ("01".equals(jyxxsq.getFpzldm())) {
                 zdje = skp.getZpmax();
-                fpje = skp.getZpfz();
             } else if ("02".equals(jyxxsq.getFpzldm())) {
                 zdje = skp.getPpmax();
-                fpje = skp.getPpfz();
             } else if ("12".equals(jyxxsq.getFpzldm())) {
                 zdje = skp.getDpmax();
-                fpje = skp.getFpfz();
-            } else if ("03".equals(jyxxsq.getFpzldm())) {//卷票
+            }else if ("03".equals(jyxxsq.getFpzldm())) {
                 zdje = skp.getDpmax();
-                fpje = skp.getFpfz();
             }
             List<Fpgz> listt = fpgzService.findAllByParams(new HashMap<>());
             Xf x = new Xf();
@@ -864,40 +863,25 @@ public class FpclService {
                     }
                 }
             }
+            /**
+             * 如果取不到分票规则的分票金额，就取税控盘的分票金额
+             */
             if (!flag) {
-                Map<String, Object> paramse = new HashMap<>();
-                paramse.put("mrbz", "1");
-                paramse.put("gsdm", jyxxsq.getGsdm());
-                Fpgz fpgz2 = fpgzService.findOneByParams(paramse);
-                if (null != fpgz2) {
-                    if ("01".equals(jyxxsq.getFpzldm())) {
-                        if(!"".equals(fpgz2.getZphs())&&null!=fpgz2.getZphs()){
-                            fphs1 = fpgz2.getZphs();
-                        }
-                        fpje = fpgz2.getZpxe();
-                    } else if ("02".equals(jyxxsq.getFpzldm())) {
-                        if(!"".equals(fpgz2.getPphs())&&null!=fpgz2.getPphs()){
-                            fphs1 = fpgz2.getPphs();
-                        }
-                        fpje = fpgz2.getPpxe();
-                    } else if ("12".equals(jyxxsq.getFpzldm())) {
-                        if(!"".equals(fpgz2.getDzphs())&&null!=fpgz2.getDzphs()){
-                            fphs2 = fpgz2.getDzphs();
-                        }
-                        fpje = fpgz2.getDzpxe();
-                    } else if ("03".equals(jyxxsq.getFpzldm())) {//卷票
-                        fphs3 = fpgz2.getDzphs();
-                        fpje = fpgz2.getDzpxe();
-                    }
-                    hsbz = fpgz2.getHsbz();
-                    if (fpgz2.getSfqzfp().equals("0")) {
-                        sfqzfp = false;
-                    }
-                    if (fpgz2.getSfspzsfp().equals("1")) {
-                        spzsfp = true;
-                    }
+                sfqzfp = false;
+                spzsfp = false;
+                if ("01".equals(jyxxsq.getFpzldm())) {
+                    fpje = skp.getZpfz();//专票阈值，分票金额
+                } else if ("02".equals(jyxxsq.getFpzldm())) {
+                    fpje = skp.getPpfz();//普票阈值，分票金额
+                } else if ("12".equals(jyxxsq.getFpzldm())) {
+                    fpje = skp.getFpfz();//电票阈值，分票金额
+                } else if ("03".equals(jyxxsq.getFpzldm())) {//卷票
+                    fpje = skp.getFpfz();//卷票暂时没有
                 }
             }
+            /**
+             * 清单标志，行数无限大
+             */
             if (jyxxsq.getSfdyqd() != null && jyxxsq.getSfdyqd().equals("1")) {
                 fphs1 = 99999;
                 fphs2 = 99999;
@@ -905,10 +889,13 @@ public class FpclService {
             if (0 == fpje) {
                 fpje = zdje;
             }
-            if (hsbz == null && "".equals(hsbz)) {
-                hsbz = "0";
-            } else {
+            /**
+             * 分票规则中的含税标志为空为不含税
+             */
+            if (hsbz != null && !"".equals(hsbz)) {
                 hsbz = "1";
+            } else {
+                hsbz = "0";
             }
             List<JyspmxDecimal2> splitKpspmxs = new ArrayList<JyspmxDecimal2>();
             Map mapResult = new HashMap();
