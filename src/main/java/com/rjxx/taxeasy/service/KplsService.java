@@ -35,6 +35,9 @@ public class KplsService {
     @Autowired
     private RabbitmqUtils rabbitmqSend;
 
+    @Autowired
+    private SkpService skpService;
+
     public Kpls findOne(int id) {
         return kplsJpaDao.findOne(id);
     }
@@ -49,7 +52,8 @@ public class KplsService {
         if ("04".equals(kpls.getFpztdm())) {
             //如果状态是04，发送的mq中
             try {
-                rabbitmqSend.sendMsg(kpls.getSkpid(), kpls.getFpzldm(), kpls.getKplsh() + "");
+                String sksbh = skpService.findOne(kpls.getSkpid()).getSkph();
+                rabbitmqSend.sendMsg(sksbh, kpls.getFpzldm(), kpls.getKplsh() + "");
             } catch (Exception e) {
                 throw new RuntimeException("发送队列失败，请联系管理员");
             }
@@ -63,7 +67,8 @@ public class KplsService {
             if ("04".equals(kpls.getFpztdm())) {
                 //如果状态是04，发送的mq中
                 try {
-                    rabbitmqSend.sendMsg(kpls.getSkpid(), kpls.getFpzldm(), kpls.getKplsh() + "");
+                    String sksbh = skpService.findOne(kpls.getSkpid()).getSkph();
+                    rabbitmqSend.sendMsg(sksbh, kpls.getFpzldm(), kpls.getKplsh() + "");
                 } catch (Exception e) {
                     throw new RuntimeException("发送队列失败，请联系管理员");
                 }

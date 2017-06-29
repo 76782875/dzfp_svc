@@ -28,13 +28,13 @@ public class RabbitmqUtils {
     /**
      * 发送消息
      *
-     * @param kpdid
+     * @param sksbh   税控设备号
      * @param fpzldm
      * @param message
      * @throws Exception
      */
-    public void sendMsg(int kpdid, String fpzldm, String message) throws Exception {
-        String queueName = getQueueName(kpdid, fpzldm);
+    public void sendMsg(String sksbh, String fpzldm, String message) throws Exception {
+        String queueName = getQueueName(sksbh, fpzldm);
         initQueue(queueName);
         rabbitTemplate.convertAndSend(EXCHANGE_NAME, queueName, message);
     }
@@ -70,12 +70,12 @@ public class RabbitmqUtils {
     /**
      * 获取队列名称
      *
-     * @param kpdid
+     * @param sksbh
      * @param fpzldm
      * @return
      */
-    public String getQueueName(int kpdid, String fpzldm) throws Exception {
-        String queueName = "queue_" + fpzldm + "_" + kpdid;
+    public String getQueueName(String sksbh, String fpzldm) throws Exception {
+        String queueName = "queue_" + sksbh + "_" + fpzldm;
         initQueue(queueName);
         return queueName;
     }
@@ -83,11 +83,11 @@ public class RabbitmqUtils {
     /**
      * 接收消息
      *
-     * @param kpdid
+     * @param sksbh
      * @return
      */
-    public Object receiveMsg(int kpdid, String fpzldm) throws Exception {
-        String queueName = getQueueName(kpdid, fpzldm);
+    public Object receiveMsg(String sksbh, String fpzldm) throws Exception {
+        String queueName = getQueueName(sksbh, fpzldm);
         initQueue(queueName);
         return rabbitTemplate.receiveAndConvert(queueName);
     }
