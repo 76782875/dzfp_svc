@@ -207,6 +207,17 @@ public class AfFpclService {
             Map<String, Object> params1 = new HashMap<>();
             params1.put("sqlsh", jyxxsq.getSqlsh());
             List<JyspmxDecimal2> jyspmxs = jymxService.getNeedToKP4(params1);
+            double spje = 0d;
+            double spse = 0d;
+            double jshj = 0d;
+            for (JyspmxDecimal2 mxItem : jyspmxs) {
+                spje = spje + (mxItem.getSpje() == null ? null : mxItem.getSpje().doubleValue());
+                spse = spse + (mxItem.getSpse() == null ? null : mxItem.getSpse().doubleValue());
+                jshj = jshj + (mxItem.getJshj() == null ? null : mxItem.getJshj().doubleValue());
+            }
+            jyspmxs.get(0).setSpje(new BigDecimal(spje));
+            jyspmxs.get(0).setSpse(new BigDecimal(spse));
+            jyspmxs.get(0).setJshj(new BigDecimal(jshj));
             // 价税分离
             if ("1".equals(jyxxsq.getHsbz())) {
                 jyspmxs = SeperateInvoiceUtils.separatePrice2(jyspmxs);
@@ -428,14 +439,17 @@ public class AfFpclService {
     public List<Jyspmx> saveJyspmx(Jyls jyls, List<JyspmxDecimal2> fpJyspmxList) throws Exception {
         int djh = jyls.getDjh();
         List<Jyspmx> list = new ArrayList<>();
-        double spje = 0d;
+       /* double spje = 0d;
         double spse = 0d;
-        double jshj = 0d;
-        for (JyspmxDecimal2 mxItem : fpJyspmxList) {
+        double jshj = 0d;*/
+        double spje = Double.valueOf(String.valueOf(fpJyspmxList.get(0).getSpje()));
+        double spse = Double.valueOf(String.valueOf(fpJyspmxList.get(0).getSpse()));
+        double jshj = Double.valueOf(String.valueOf(fpJyspmxList.get(0).getJshj()));
+       /* for (JyspmxDecimal2 mxItem : fpJyspmxList) {
             spje = spje + (mxItem.getSpje() == null ? null : mxItem.getSpje().doubleValue());
             spse = spse + (mxItem.getSpse() == null ? null : mxItem.getSpse().doubleValue());
             jshj = jshj + (mxItem.getJshj() == null ? null : mxItem.getJshj().doubleValue());
-        }
+        }*/
         JyspmxDecimal2 mxItem = fpJyspmxList.get(0);
             Jyspmx jymx = new Jyspmx();
             jymx.setDjh(djh);
