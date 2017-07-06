@@ -53,7 +53,11 @@ public class KplsService {
             //如果状态是04，发送的mq中
             try {
                 String sksbh = skpService.findOne(kpls.getSkpid()).getSkph();
-                rabbitmqSend.sendMsg(sksbh, kpls.getFpzldm(), kpls.getKplsh() + "");
+                if(!"".equals(sksbh)&&null!=sksbh){
+                    rabbitmqSend.sendMsg(sksbh, kpls.getFpzldm(), kpls.getKplsh() + "");
+                }else{
+                    rabbitmqSend.sendMsg(skpService.findOne(kpls.getSkpid()).getId().toString(), kpls.getFpzldm(), kpls.getKplsh() + "");
+                }
             } catch (Exception e) {
                 throw new RuntimeException("发送队列失败，请联系管理员");
             }
