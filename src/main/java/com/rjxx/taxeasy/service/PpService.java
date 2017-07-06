@@ -4,9 +4,11 @@ import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.dao.PpJpaDao;
 import com.rjxx.taxeasy.dao.PpMapper;
 import com.rjxx.taxeasy.domains.Pp;
+import com.rjxx.taxeasy.domains.Skp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +18,7 @@ import java.util.Map;
  * Mon Dec 12 17:15:27 GMT+08:00 2016
  *
  * @ZhangBing
- */ 
+ */
 @Service
 public class PpService {
 
@@ -25,6 +27,9 @@ public class PpService {
 
     @Autowired
     private PpMapper ppMapper;
+
+    @Autowired
+    private SkpService skpService;
 
     public Pp findOne(int id) {
         return ppJpaDao.findOne(id);
@@ -48,6 +53,25 @@ public class PpService {
 
     public List<Pp> findByPage(Pagination pagination) {
         return ppMapper.findByPage(pagination);
+    }
+
+    /**
+     * @param skpid
+     * @param gsdm
+     * @return
+     */
+    public Pp findOnePpByGsdmSkpid(Integer skpid, String gsdm) {
+        Skp skp = skpService.findOne(skpid);
+        if (skp == null) {
+            return null;
+        }
+        Integer ppid = skp.getPid();
+        if (ppid != null && ppid != 0) {
+            return findOne(ppid);
+        }
+        Map params = new HashMap();
+        params.put("gsdm", gsdm);
+        return findOneByParams(params);
     }
 
 }
