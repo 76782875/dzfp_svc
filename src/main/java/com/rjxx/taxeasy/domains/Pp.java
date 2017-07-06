@@ -1,157 +1,186 @@
 package com.rjxx.taxeasy.domains;
 
-import java.util.Date;
-import javax.persistence.*;
-import org.hibernate.annotations.GenericGenerator;
-import com.rjxx.comm.json.JsonDateFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.rjxx.comm.json.JsonDatetimeFormat;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.persistence.*;
 import java.io.Serializable;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import java.util.Date;
+
 /**
  * t_pp 实体类
  * 由GenEntityMysql类自动生成
  * Mon Dec 12 17:15:03 GMT+08:00 2016
+ *
  * @ZhangBing
- */ 
+ */
 @Entity
-@Table(name="t_pp")
-public class Pp  implements Serializable {
+@Table(name = "t_pp")
+public class Pp implements Serializable {
 
-@Id
-@GeneratedValue(strategy=GenerationType.IDENTITY)
-	protected Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    protected Integer id;
 
-/**
- * 品牌代码
- */ 
-@Column(name="ppdm")
-	protected String ppdm;
+    /**
+     * 品牌代码
+     */
+    @Column(name = "ppdm")
+    protected String ppdm;
 
-/**
- * 品牌名称
- */ 
-@Column(name="ppmc")
-	protected String ppmc;
+    /**
+     * 品牌名称
+     */
+    @Column(name = "ppmc")
+    protected String ppmc;
 
-/**
- * 品牌url
- */ 
-@Column(name="ppurl")
-	protected String ppurl;
+    /**
+     * 品牌url
+     */
+    @Column(name = "ppurl")
+    protected String ppurl;
 
-/**
- * 有效标志：0，无效；1，有效
- */ 
-@Column(name="yxbz")
-	protected String yxbz;
+    /**
+     * 有效标志：0，无效；1，有效
+     */
+    @Column(name = "yxbz")
+    protected String yxbz;
 
-/**
- * 录入人员
- */ 
-@Column(name="lrry")
-	protected Integer lrry;
+    /**
+     * 录入人员
+     */
+    @Column(name = "lrry")
+    protected Integer lrry;
 
-/**
- * 录入时间
- */ 
-@Column(name="lrsj")
-@JsonSerialize(using = JsonDatetimeFormat.class)
-@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-	protected Date lrsj;
+    /**
+     * 录入时间
+     */
+    @Column(name = "lrsj")
+    @JsonSerialize(using = JsonDatetimeFormat.class)
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    protected Date lrsj;
 
-/**
- * 修改人员
- */ 
-@Column(name="xgry")
-	protected Integer xgry;
+    /**
+     * 修改人员
+     */
+    @Column(name = "xgry")
+    protected Integer xgry;
 
-/**
- * 修改时间
- */ 
-@Column(name="xgsj")
-@JsonSerialize(using = JsonDatetimeFormat.class)
-@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-	protected Date xgsj;
+    /**
+     * 修改时间
+     */
+    @Column(name = "xgsj")
+    @JsonSerialize(using = JsonDatetimeFormat.class)
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    protected Date xgsj;
 
-/**
- * 公司代码
- */ 
-@Column(name="gsdm")
-	protected String gsdm;
+    /**
+     * 公司代码
+     */
+    @Column(name = "gsdm")
+    protected String gsdm;
 
+    @Column(name = "ali_m_short_name")
+    protected String aliMShortName;
 
-	public Integer getId(){
-		return id;
-	}
+    @Column(name = "ali_sub_m_short_name")
+    protected String aliSubMShortName;
 
-	public void setId(Integer id){
-		this.id=id;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public String getPpdm(){
-		return ppdm;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setPpdm(String ppdm){
-		this.ppdm=ppdm;
-	}
+    public String getPpdm() {
+        return ppdm;
+    }
 
-	public String getPpmc(){
-		return ppmc;
-	}
+    public void setPpdm(String ppdm) {
+        this.ppdm = ppdm;
+    }
 
-	public void setPpmc(String ppmc){
-		this.ppmc=ppmc;
-	}
+    public String getPpmc() {
+        return ppmc;
+    }
 
-	public String getPpurl(){
-		return ppurl;
-	}
+    public void setPpmc(String ppmc) {
+        this.ppmc = ppmc;
+    }
 
-	public void setPpurl(String ppurl){
-		this.ppurl=ppurl;
-	}
+    public String getPpurl() {
+        return ppurl;
+    }
 
-	public String getYxbz(){
-		return yxbz;
-	}
+    public void setPpurl(String ppurl) {
+        this.ppurl = ppurl;
+    }
 
-	public void setYxbz(String yxbz){
-		this.yxbz=yxbz;
-	}
+    public String getYxbz() {
+        return yxbz;
+    }
 
-	public Integer getLrry(){
-		return lrry;
-	}
+    public void setYxbz(String yxbz) {
+        this.yxbz = yxbz;
+    }
 
-	public void setLrry(Integer lrry){
-		this.lrry=lrry;
-	}
+    public Integer getLrry() {
+        return lrry;
+    }
 
-	public Date getLrsj(){
-		return lrsj;
-	}
+    public void setLrry(Integer lrry) {
+        this.lrry = lrry;
+    }
 
-	public void setLrsj(Date lrsj){
-		this.lrsj=lrsj;
-	}
+    public Date getLrsj() {
+        return lrsj;
+    }
 
-	public Integer getXgry(){
-		return xgry;
-	}
+    public void setLrsj(Date lrsj) {
+        this.lrsj = lrsj;
+    }
 
-	public void setXgry(Integer xgry){
-		this.xgry=xgry;
-	}
+    public Integer getXgry() {
+        return xgry;
+    }
 
-	public Date getXgsj(){
-		return xgsj;
-	}
+    public void setXgry(Integer xgry) {
+        this.xgry = xgry;
+    }
 
-	public void setXgsj(Date xgsj){
-		this.xgsj=xgsj;
-	}
+    public Date getXgsj() {
+        return xgsj;
+    }
 
+    public void setXgsj(Date xgsj) {
+        this.xgsj = xgsj;
+    }
+
+    public String getGsdm() {
+        return gsdm;
+    }
+
+    public void setGsdm(String gsdm) {
+        this.gsdm = gsdm;
+    }
+
+    public String getAliMShortName() {
+        return aliMShortName;
+    }
+
+    public void setAliMShortName(String aliMShortName) {
+        this.aliMShortName = aliMShortName;
+    }
+
+    public String getAliSubMShortName() {
+        return aliSubMShortName;
+    }
+
+    public void setAliSubMShortName(String aliSubMShortName) {
+        this.aliSubMShortName = aliSubMShortName;
+    }
 }
 
