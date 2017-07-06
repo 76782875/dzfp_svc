@@ -186,19 +186,18 @@ public class Jyspmx implements Serializable {
      */
     @Column(name = "gsdm")
     protected String gsdm;
- 
+	/**
+	 * 税控盘id
+	 */
+	@Column(name = "skpid")
+	protected Integer skpid;
+
     /**
      * 销方id
      */
     @Column(name = "xfid")
     protected Integer xfid;
-    
-    /**
-     * 税控盘id
-     */
-    @Column(name = "skpid")
-    protected Integer skpid;
-    
+
     /**
      * 扣除额
      */

@@ -19,7 +19,7 @@ public class GenEntityMysql {
 
     private String packageOutPath = "com.rjxx.taxeasy.domains";//指定实体生成所在包的路径
     private String authorName = "ZhangBing";//作者名字
-    private String tablename = "t_fphxwsjl";//表名
+    private String tablename = "t_jyls";//表名
     private String tableComment = null;//表注释
     private String javaFilePath = "./";
     private String[] colnames; // 列名数组
@@ -32,9 +32,9 @@ public class GenEntityMysql {
     private boolean f_jpa = true; // 是否需要生成基于注解的JPA实体对象
 
     //数据库连接
-    private static final String URL = "jdbc:mysql://192.168.1.200:3306/dzfp-dev";
-    private static final String NAME = "dzfp-dev";
-    private static final String PASS = "dzfpdev1234";
+    private static final String URL = "jdbc:mysql://test.datarj.com:3306/taxeasy2";
+    private static final String NAME = "root";
+    private static final String PASS = "Rjxx1234";
     private static final String DRIVER = "com.mysql.jdbc.Driver";
 
     /*

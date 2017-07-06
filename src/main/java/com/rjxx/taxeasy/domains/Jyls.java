@@ -12,8 +12,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
  * t_jyls 实体类
  * 交易流水表 该表用于记录全部交易信息，包括不需要开票数据和各类开票、红冲、作废业务数据。
  * 由GenEntityMysql类自动生成
- * Thu Oct 27 14:34:01 CST 2016
- * @Wangyong
+ * Wed Jul 05 20:02:12 CST 2017
+ * @ZhangBing
  */ 
 @Entity
 @Table(name="t_jyls")
@@ -21,9 +21,9 @@ public class Jyls  implements Serializable {
 
 /**
  * 请求单据号 TaxEasy系统自动生成，每次请求唯一。
- */ 
+ */
 @Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
+@GeneratedValue(strategy=GenerationType.IDENTITY)
 	protected Integer djh;
 
 /**
@@ -100,10 +100,6 @@ public class Jyls  implements Serializable {
 @Column(name="xfdz")
 	protected String xfdz;
 
-
-@Column(name="sfdyqd")
-protected String sfdyqd;
-
 /**
  * 销方电话
  */ 
@@ -163,12 +159,6 @@ protected String sfdyqd;
  */ 
 @Column(name="gfdh")
 	protected String gfdh;
-
-/**
- * 购方手机号
- */ 
-@Column(name="gfsjh")
-	protected String gfsjh;
 
 /**
  * 购方邮编
@@ -315,12 +305,29 @@ protected String sfdyqd;
 @Column(name="skpid")
 	protected Integer skpid;
 
-	@Column(name="sqlsh")
+/**
+ * 购方手机号
+ */ 
+@Column(name="gfsjh")
+	protected String gfsjh;
+
+@Column(name="dxzt")
+	protected String dxzt;
+
+@Column(name="sfdyqd")
+	protected String sfdyqd;
+
+/**
+ * 关联交易申请表申请流水号（sqlsh）
+ */ 
+@Column(name="sqlsh")
 	protected Integer sqlsh;
 
-	@Column(name="khh")
+/**
+ * 发票提取客户号
+ */ 
+@Column(name="khh")
 	protected String khh;
-
 
 
 	public Integer getDjh(){
@@ -699,36 +706,45 @@ protected String sfdyqd;
 		this.skpid=skpid;
 	}
 
-	public String getGfsjh() {
+	public String getGfsjh(){
 		return gfsjh;
 	}
 
-	public void setGfsjh(String gfsjh) {
-		this.gfsjh = gfsjh;
+	public void setGfsjh(String gfsjh){
+		this.gfsjh=gfsjh;
 	}
 
-	public String getSfdyqd() {
+	public String getDxzt(){
+		return dxzt;
+	}
+
+	public void setDxzt(String dxzt){
+		this.dxzt=dxzt;
+	}
+
+	public String getSfdyqd(){
 		return sfdyqd;
 	}
 
-	public void setSfdyqd(String sfdyqd) {
-		this.sfdyqd = sfdyqd;
+	public void setSfdyqd(String sfdyqd){
+		this.sfdyqd=sfdyqd;
 	}
 
-	public Integer getSqlsh() {
+	public Integer getSqlsh(){
 		return sqlsh;
 	}
 
-	public void setSqlsh(Integer sqlsh) {
-		this.sqlsh = sqlsh;
+	public void setSqlsh(Integer sqlsh){
+		this.sqlsh=sqlsh;
 	}
 
-	public String getKhh() {
+	public String getKhh(){
 		return khh;
 	}
 
-	public void setKhh(String khh) {
-		this.khh = khh;
+	public void setKhh(String khh){
+		this.khh=khh;
 	}
+
 }
 

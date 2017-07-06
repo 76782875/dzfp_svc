@@ -12,8 +12,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
  * t_kpls 实体类
  * 开票流水表
  * 由GenEntityMysql类自动生成
- * Thu Oct 27 14:49:26 CST 2016
- * @Wangyong
+ * Wed Jul 05 19:29:58 CST 2017
+ * @ZhangBing
  */ 
 @Entity
 @Table(name="t_kpls")
@@ -21,9 +21,9 @@ public class Kpls  implements Serializable {
 
 /**
  * 开票流水号
- */ 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+ */
+@Id
+@GeneratedValue(strategy=GenerationType.IDENTITY)
 	protected Integer kplsh;
 
 /**
@@ -247,9 +247,6 @@ public class Kpls  implements Serializable {
 @Column(name="hkbz")
 	protected String hkbz;
 
-@Column(name="sfdyqd")
-protected String sfdyqd;
-
 /**
  * 换开发票代码
  */ 
@@ -279,6 +276,9 @@ protected String sfdyqd;
  */ 
 @Column(name="ewm")
 	protected String ewm;
+
+@Column(name="fp_ewm")
+	protected String fpEwm;
 
 /**
  * 校验码
@@ -411,28 +411,20 @@ protected String sfdyqd;
 	protected Integer skpid;
 
 @Column(name="fpztdm")
-protected String fpztdm;
+	protected String fpztdm;
 
 @Column(name="errorreason")
-protected String errorReason;
+	protected String errorReason;
 
-@Column(name="fp_ewm")
-protected String fpEwm;
+@Column(name="sfdyqd")
+	protected String sfdyqd;
 
+/**
+ * SerialNumber+OrderNumber
+ */ 
 @Column(name="serialorder")
-protected String serialorder;
+	protected String serialorder;
 
-
-
-
-
-	public String getFpztdm() {
-	return fpztdm;
-}
-
-public void setFpztdm(String fpztdm) {
-	this.fpztdm = fpztdm;
-}
 
 	public Integer getKplsh(){
 		return kplsh;
@@ -778,6 +770,14 @@ public void setFpztdm(String fpztdm) {
 		this.ewm=ewm;
 	}
 
+	public String getFpEwm(){
+		return fpEwm;
+	}
+
+	public void setFpEwm(String fpEwm){
+		this.fpEwm=fpEwm;
+	}
+
 	public String getJym(){
 		return jym;
 	}
@@ -954,6 +954,14 @@ public void setFpztdm(String fpztdm) {
 		this.skpid=skpid;
 	}
 
+	public String getFpztdm(){
+		return fpztdm;
+	}
+
+	public void setFpztdm(String fpztdm){
+		this.fpztdm=fpztdm;
+	}
+
 	public String getErrorReason() {
 		return errorReason;
 	}
@@ -962,28 +970,21 @@ public void setFpztdm(String fpztdm) {
 		this.errorReason = errorReason;
 	}
 
-	public String getFpEwm() {
-		return fpEwm;
-	}
-
-	public void setFpEwm(String fpEwm) {
-		this.fpEwm = fpEwm;
-	}
-
-	public String getSfdyqd() {
+	public String getSfdyqd(){
 		return sfdyqd;
 	}
 
-	public void setSfdyqd(String sfdyqd) {
-		this.sfdyqd = sfdyqd;
+	public void setSfdyqd(String sfdyqd){
+		this.sfdyqd=sfdyqd;
 	}
 
-	public String getSerialorder() {
+	public String getSerialorder(){
 		return serialorder;
 	}
 
-	public void setSerialorder(String serialorder) {
-		this.serialorder = serialorder;
+	public void setSerialorder(String serialorder){
+		this.serialorder=serialorder;
 	}
+
 }
 
