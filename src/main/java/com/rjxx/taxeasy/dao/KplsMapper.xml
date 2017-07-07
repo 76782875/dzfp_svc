@@ -181,6 +181,13 @@
         <if test="fpczlx != null and fpczlx !=''">
             and a.fpczlxdm = #{fpczlx}
         </if>
+        <if test="kplsh != null and kplsh !=''">
+            and (a.kplsh in
+            <foreach collection="kplsh" item="item" index="index" open="("
+                     separator="," close=")">#{kplsh[${index}]}
+            </foreach>
+            or a.kplsh is null)
+        </if>
         group by a.kplsh
         order by a.djh asc,a.kplsh asc
     </select>
