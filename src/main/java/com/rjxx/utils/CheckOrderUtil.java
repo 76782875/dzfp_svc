@@ -310,6 +310,28 @@ public class CheckOrderUtil {
                             result += "订单号为" + ddh + "的订单TaxRate格式有误;";
                         }
                     }
+                    if((jymxsq.getSpdj()==null&&jymxsq.getSps()!=null)||(jymxsq.getSps()==null&&jymxsq.getSpdj()!=null)){
+                        result += "订单号为" + ddh + "的订单第" + i+ "行商品单价，商品数量必须全部为空或者全部不为空！";
+                    }
+                    if (jymxsq.getSpdj() != null && jymxsq.getSps() != null && jymxsq.getSpje() != null) {
+                        double res = jymxsq.getSpdj() * jymxsq.getSps();
+                        BigDecimal big1 = new BigDecimal(res);
+                        big1 = big1.setScale(2, BigDecimal.ROUND_HALF_UP);
+                        BigDecimal big2 = new BigDecimal(jymxsq.getSpje());
+                        big2 = big2.setScale(2, BigDecimal.ROUND_HALF_UP);
+                        if (big1.compareTo(big2) != 0) {
+                            result += "订单号为" + ddh + "的订单第" + i+ "行商品单价，商品数量，商品金额之间的计算校验不通过，请检查！";
+                        }
+                    }
+                    if(jymxsq.getSpdj() != null && jymxsq.getSps() != null && jymxsq.getSpje() != null){
+                        double spdj = jymxsq.getSpdj();
+                        double sps = jymxsq.getSps();
+                        BigDecimal big1 = new BigDecimal(spdj);
+                        BigDecimal big2 = new BigDecimal(sps);
+                        if((big1.compareTo(new BigDecimal(0))==0)||(big2.compareTo(new BigDecimal(0))==0)){
+                            result += "订单号为" + ddh + "的订单第" + i+ "行商品单价或商品数量不能为零！";
+                        }
+                    }
                     // 商品税额
                     String TaxAmount = String.valueOf(jymxsq.getSpse());
                     if (TaxAmount != null && TaxAmount.equals("^\\-?[0-9]{0,15}+(.[0-9]{0,2})?$")) {
