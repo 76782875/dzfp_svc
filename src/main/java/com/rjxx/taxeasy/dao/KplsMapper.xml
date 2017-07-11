@@ -193,7 +193,7 @@
     </select>
 
     <select id="findByPage" parameterType="pagination" resultType="fpcxvo">
-        SELECT a.jshj,a.hjje,a.hjse, a.kplsh, a.fpdm,a.fphm,a.kprq,a.pdfurl,a.fpztdm, b.fpzlmc,c.fpczlxmc,e.djh,
+        SELECT a.jshj,a.hjje,a.hjse, a.kplsh, a.fpdm,a.fphm,a.kprq,a.pdfurl,a.fpztdm,a.errorReason, b.fpzlmc,c.fpczlxmc,e.djh,
         e.jylsh,
         e.jylssj,
         e.ddh,
