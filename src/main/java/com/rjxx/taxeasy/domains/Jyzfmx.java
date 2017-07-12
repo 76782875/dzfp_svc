@@ -82,6 +82,12 @@ public class Jyzfmx  implements Serializable {
 @Column(name="xgry")
 	protected Integer xgry;
 
+	/**
+	 * 支付序列号
+	 */
+@Column(name="paynumber")
+	protected String paynumber;
+
 
 	public Integer getId(){
 		return id;
@@ -164,5 +170,12 @@ public class Jyzfmx  implements Serializable {
 		this.xgry=xgry;
 	}
 
+	public String getPaynumber() {
+		return paynumber;
+	}
+
+	public void setPaynumber(String paynumber) {
+		this.paynumber = paynumber;
+	}
 }
 

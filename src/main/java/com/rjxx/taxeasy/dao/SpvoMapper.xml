@@ -24,6 +24,27 @@
             and id = #{id}
         </if>
     </select>
+    <select id="findOneSpvo" parameterType="map" resultType="spvo">
+        select * from spvo where yxbz = '1'
+        <if test="gsdm != null">
+            and gsdm = #{gsdm}
+        </if>
+        <if test="spdm != null">
+            and spdm = #{spdm}
+        </if>
+        <if test="spbm != null">
+            and spbm = #{spbm}
+        </if>
+        <if test="spmc != null">
+            and spmc = #{spmc}
+        </if>
+        <if test="sl != null">
+            and sl = #{sl}
+        </if>
+        <if test="id != null">
+            and id = #{id}
+        </if>
+    </select>
     <select id="findAllOnPage" parameterType="pagination" resultType="spvo">
         select * from spvo where yxbz = '1'
         <if test="params.spdm != null and params.spdm != ''">
