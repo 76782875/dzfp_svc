@@ -948,6 +948,7 @@ public class FpclService {
                     Kpls kpls = saveKpls(jyls, list2, jyxxsq.getSfdy(), kpfs);
                     saveKpspmx(kpls, list2);
                     skService.callService(kpls.getKplsh());
+                    result.add(kpls.getSerialorder());
                 } else if (kpfs.equals("02")) {//组件
                     //保存开票流水
                     Kpls kpls = saveKpls(jyls, list2, jyxxsq.getSfdy(), kpfs);
@@ -1065,5 +1066,80 @@ public class FpclService {
             list.add(jymx);
         }
         return list;
+    }
+
+    public List skdzfp(List jyxxsqList, String kpfs) {
+        List fpclList = new ArrayList();
+        Map resultMap = null;
+        try {
+            fpclList = (List) this.zjkp(jyxxsqList, kpfs);//组件
+        } catch (Exception e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+        List resultList = new ArrayList();
+        if (null != fpclList) {
+            KplsVO5 zjKplsvo5 = new KplsVO5();
+            for (int i = 0; i < fpclList.size(); i++) {
+                double hjje = 0.00;
+                double hjse = 0.00;
+                List<Kpspmxvo> tmpList = new ArrayList<Kpspmxvo>();
+                zjKplsvo5 = (KplsVO5) fpclList.get(i);
+                //获取对应开票商品明细信息
+                Map params = new HashMap();
+                params.put("kplsh", zjKplsvo5.getKplsh());
+                tmpList = kpspmxService.findSkMxList(params);
+                Kpspmxvo kpspmxvo = new Kpspmxvo();
+                for (int j = 0; j < tmpList.size(); j++) {
+                    kpspmxvo = tmpList.get(j);
+                    kpspmxvo.setHsspje(kpspmxvo.getSpje() + kpspmxvo.getSpse());
+                    kpspmxvo.setHsspdj((kpspmxvo.getSpje() + kpspmxvo.getSpse()) / kpspmxvo.getSps());
+                    hjje = hjje + kpspmxvo.getSpje();
+                    hjse = hjse + kpspmxvo.getSpse();
+                }
+                String path = this.getClass().getClassLoader().getResource("dzfp-xml.xml")
+                        .getPath();
+                try {
+                    Map params2 = new HashMap();
+                    String fpzldm = zjKplsvo5.getFpzldm();
+                    if (fpzldm.equals("01")) {
+                        zjKplsvo5.setFpzldm("004");
+                    } else if (fpzldm.equals("02")) {
+                        zjKplsvo5.setFpzldm("007");
+                    } else if (fpzldm.equals("12")) {
+                        zjKplsvo5.setFpzldm("026");
+                    } else if (fpzldm.equals("03")) {
+                        zjKplsvo5.setFpzldm("025");
+                    }
+                    params2.put("kpls", zjKplsvo5);
+                    params2.put("kpspmxList", tmpList);
+                    params2.put("mxCount", tmpList.size());
+                    params2.put("hjje", hjje);
+                    params2.put("hjse", hjse);
+                    //params2.put("jyxxsq", jyxxsq);
+                    path = URLDecoder.decode(path, "UTF-8");
+                    File templateFile = new File(path);
+                    String result2 = TemplateUtils.generateContent(templateFile, params2, "gbk");
+                    System.out.println(result2);
+                    logger.debug("封装传开票通的报文" + result2);
+                    String url = "http://116.228.37.198:10002/SKServer/SKDo";
+                    resultMap = httpPost(result2, url, zjKplsvo5.getDjh() + "$" + zjKplsvo5.getKplsh(), zjKplsvo5.getXfsh(),
+                            zjKplsvo5.getJylsh());
+                    if (resultMap.get("returncode").equals("0")) {
+                        String fpdm = resultMap.get("fpdm").toString();
+                        String fphm = resultMap.get("fphm").toString();
+                        String kprq = resultMap.get("kprq").toString();
+                        String skm = resultMap.get("skm").toString();
+                        String jym = resultMap.get("jym").toString();
+                        String ewm = resultMap.get("ewm").toString();
+                    }
+                    logger.debug("封装传开票通的返回报文" + JSONObject.toJSONString(resultMap));
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
     }
 }
