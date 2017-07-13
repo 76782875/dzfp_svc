@@ -53,9 +53,67 @@ public class GetDataService {
         String newSign = DigestUtils.md5Hex(signSourceData);
         return newSign;
     }
+    public String  xmldata(){
+            String xml1="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                    "<Responese>\n" +
+                    "\t<ReturnCode>Family_01</ReturnCode>\n" +
+                    "\t<ReturnMessage>Family_01</ReturnMessage>\n" +
+                    "\t<ReturnData>\n" +
+                    "\t<ExtractCode>2016062412444500001</ExtractCode>\n" +
+                    "\t<MemberID></MemberID>\n" +
+                    "\t<InvType>12</InvType>\n" +
+                    "\t<Spbmbbh>13.0</Spbmbbh>\n" +
+                    "\t<StoreNo></StoreNo>\n" +
+                    "\t<Seller>\n" +
+                    "\t\t<Identifier>500102010003643</Identifier>\n" +
+                    "\t\t<Name>测试全家电子发票</Name>\n" +
+                    "\t\t<Address>某某路10号1203室</Address>\n" +
+                    "\t\t<TelephoneNo>021-55555555</TelephoneNo>\n" +
+                    "\t\t<Bank>中国建设银行打浦桥支行</Bank>\n" +
+                    "\t\t<BankAcc>123456789-0</BankAcc>\n" +
+                    "\t</Seller>\n" +
+                    "\t\t<Orders>\n" +
+                    "\t\t\t<OrderMain>\n" +
+                    "\t\t\t\t<OrderNo>123456789</OrderNo>\n" +
+                    "\t\t\t\t<InvoiceList>0</InvoiceList>\n" +
+                    "\t\t\t\t<InvoiceSplit>1</InvoiceSplit>\n" +
+                    "\t\t\t\t<InvoiceSfdy>1</InvoiceSfdy>\n" +
+                    "\t\t\t\t<OrderDate>2016-06-22 23:59:59</OrderDate>\n" +
+                    "\t\t\t\t<ChargeTaxWay>0</ChargeTaxWay>\n" +
+                    "\t\t\t\t<TotalAmount>1170.00</TotalAmount>\n" +
+                    "\t\t\t\t<TaxMark>0</TaxMark>\n" +
+                    "\t\t\t\t<Remark></Remark>\n" +
+                    "\t\t\t</OrderMain>\n" +
+                    "\t\t\t<OrderDetails count=\"1\">\n" +
+                    "\t\t\t\t<ProductItem>\n" +
+                    "\t\t\t\t\t<VenderOwnCode></VenderOwnCode>\n" +
+                    "\t\t\t\t\t<ProductCode>1030201030000000000</ProductCode>\n" +
+                    "\t\t\t\t\t<ProductName>饼干</ProductName>\n" +
+                    "\t\t\t\t\t<RowType>0</RowType>\n" +
+                    "\t\t\t\t\t<Spec></Spec>\n" +
+                    "\t\t\t\t\t<Unit></Unit>\n" +
+                    "\t\t\t\t\t<Quantity>1</Quantity>\n" +
+                    "\t\t\t\t\t<UnitPrice>1000.00</UnitPrice>\n" +
+                    "\t\t\t\t\t<Amount>1000.00</Amount>\n" +
+                    "\t\t\t\t\t<DeductAmount></DeductAmount>\n" +
+                    "\t\t\t\t\t<TaxRate>0.17</TaxRate>\n" +
+                    "\t\t\t\t\t<TaxAmount>170.00</TaxAmount>\n" +
+                    "\t\t\t\t\t<MxTotalAmount>1170.00</MxTotalAmount>\n" +
+                    "\t\t\t\t\t<PolicyMark></PolicyMark>\n" +
+                    "\t\t\t\t\t<TaxRateMark></TaxRateMark>\n" +
+                    "\t\t\t\t\t<PolicyName></PolicyName>\n" +
+                    "\t\t\t\t</ProductItem>\n" +
+                    "\t\t\t</OrderDetails>\n" +
+                    "\t\t</Orders>\n" +
+                    "\t\t</ReturnData>\n" +
+                    "</Responese>\n";
+
+            return xml1;
+    }
+
     public Map getData(String ExtractCode,String gsdm){
             Map parmsMap=new HashMap();
-            String strMessage = "";
+          /*   String strMessage = "";
             BufferedReader reader = null;
             StringBuffer buffer = new StringBuffer();
             Map parms=new HashMap();
@@ -95,13 +153,10 @@ public class GetDataService {
                     }
                 }
                 System.out.println("接收返回值:" + buffer.toString());
-                String kpddm=ExtractCode.substring(4,10);
-                Map params = new HashMap();
-                params.put("kpddm", kpddm);
-                params.put("gsdm", gsdm);
-                Skp skp = skpService.findOneByParams(params);
-                Xf xf=xfService.findOne(skp.getXfid());
-                parmsMap=interpreting(xf,skp,gsdm,buffer.toString());
+                parmsMap=interpreting(gsdm,buffer.toString());*/
+        try {
+                parmsMap=interpreting(gsdm,this.xmldata());
+
                 List<Jyxxsq> jyxxsqList = (List) parmsMap.get("jyxxsqList");
                 List<Jymxsq> jymxsqList = (List) parmsMap.get("jymxsqList");
                 List<Jyzfmx> jyzfmxList = (List) parmsMap.get("jyzfmxList");
@@ -333,14 +388,12 @@ public class GetDataService {
     }
     /**
      * 解析数据
-     * @param xf
-     * @param skp
      * @param gsdm
      * @param data
      * @return
      * @throws Exception
      */
-    public Map interpreting(Xf xf,Skp skp,String gsdm,String data)throws Exception {
+    public Map interpreting(String gsdm,String data)throws Exception {
         Map params1 = new HashMap();
         params1.put("gsdm", gsdm);
         Yh yh = yhService.findOneByParams(params1);
@@ -351,13 +404,14 @@ public class GetDataService {
         Document xmlDoc = null;
         OMElement root = null;
         try {
+            data=this.xmldata();
             xmlDoc = DocumentHelper.parseText(data);
             root = XmlMapUtils.xml2OMElement(data);
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        Map rootMap = XmlMapUtils.xml2Map(root, "Orders");
+        Map rootMap = XmlMapUtils.xml2Map(root, "Responese");
         String ReturnCode=rootMap.get("ReturnCode").toString();
         String ReturnMessage=rootMap.get("ReturnMessage").toString();
         Element ReturnData  = (Element) xmlDoc.selectSingleNode("Responese/ReturnData");
@@ -394,39 +448,39 @@ public class GetDataService {
         Element Seller  = (Element) xmlDoc.selectSingleNode("Responese/ReturnData/Seller");
         // 销方税号
         String Identifier = "";
-        if (null != ReturnData.selectSingleNode("Identifier")
-                && !ReturnData.selectSingleNode("Identifier").equals("")) {
-            Identifier = ReturnData.selectSingleNode("Identifier").getText();
+        if (null != Seller.selectSingleNode("Identifier")
+                && !Seller.selectSingleNode("Identifier").equals("")) {
+            Identifier = Seller.selectSingleNode("Identifier").getText();
         }
         // 销方名称
         String Name = "";
-        if (null != ReturnData.selectSingleNode("Name")
-                && !ReturnData.selectSingleNode("Name").equals("")) {
-            Name = ReturnData.selectSingleNode("Name").getText();
+        if (null != Seller.selectSingleNode("Name")
+                && !Seller.selectSingleNode("Name").equals("")) {
+            Name = Seller.selectSingleNode("Name").getText();
         }
         // 销方地址
         String Address = "";
-        if (null != ReturnData.selectSingleNode("Address")
-                && !ReturnData.selectSingleNode("Address").equals("")) {
-            Address = ReturnData.selectSingleNode("Address").getText();
+        if (null != Seller.selectSingleNode("Address")
+                && !Seller.selectSingleNode("Address").equals("")) {
+            Address = Seller.selectSingleNode("Address").getText();
         }
         // 销方电话
         String TelephoneNo = "";
-        if (null != ReturnData.selectSingleNode("TelephoneNo")
-                && !ReturnData.selectSingleNode("TelephoneNo").equals("")) {
-            TelephoneNo = ReturnData.selectSingleNode("TelephoneNo").getText();
+        if (null != Seller.selectSingleNode("TelephoneNo")
+                && !Seller.selectSingleNode("TelephoneNo").equals("")) {
+            TelephoneNo = Seller.selectSingleNode("TelephoneNo").getText();
         }
         // 销方银行
         String Bank = "";
-        if (null != ReturnData.selectSingleNode("Bank")
-                && !ReturnData.selectSingleNode("Bank").equals("")) {
-            Bank = ReturnData.selectSingleNode("Bank").getText();
+        if (null != Seller.selectSingleNode("Bank")
+                && !Seller.selectSingleNode("Bank").equals("")) {
+            Bank = Seller.selectSingleNode("Bank").getText();
         }
         // 销方银行账号
         String BankAcc = "";
-        if (null != ReturnData.selectSingleNode("BankAcc")
-                && !ReturnData.selectSingleNode("BankAcc").equals("")) {
-            BankAcc = ReturnData.selectSingleNode("BankAcc").getText();
+        if (null != Seller.selectSingleNode("BankAcc")
+                && !Seller.selectSingleNode("BankAcc").equals("")) {
+            BankAcc = Seller.selectSingleNode("BankAcc").getText();
         }
         List<Element> xnList = xmlDoc.selectNodes("Responese/ReturnData/Orders");
         if (null != xnList && xnList.size() > 0) {
@@ -470,9 +524,8 @@ public class GetDataService {
                         && !orderMainMap.selectSingleNode("Remark").equals("")) {
                     remark = orderMainMap.selectSingleNode("Remark").getText();
                 }
-                Jyxxsq jxxxsq=new Jyxxsq();
-                jxxxsq.setTqm(ExtractCode);
-                jxxxsq.setDdh(orderNo);
+                jyxxsq.setTqm(ExtractCode);
+                jyxxsq.setDdh(orderNo);
                 SimpleDateFormat sim = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 try {
                     jyxxsq.setDdrq(orderDate == null ? new Date() : sim.parse(orderDate));
@@ -480,10 +533,14 @@ public class GetDataService {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
-                jyxxsq.setXfid(skp.getXfid());
+                Xf x = new Xf();
+                x.setGsdm(gsdm);
+                x.setXfsh(Identifier);
+                Xf xf = xfService.findOneByParams(x);
+                jyxxsq.setXfid(xf.getId());
                 jyxxsq.setJylsh("JY" + new SimpleDateFormat("yyyyMMddHHmmssSS").format(new Date()));
-                jyxxsq.setSkpid(skp.getId());
-                jyxxsq.setKpddm(skp.getKpddm());
+                String kpddm=ExtractCode.substring(4,10);
+                jyxxsq.setKpddm(kpddm);
                 jyxxsq.setJshj(Double.valueOf(totalAmount));
                 jyxxsq.setHsbz(taxMark);
                 jyxxsq.setBz(remark);
@@ -492,12 +549,12 @@ public class GetDataService {
                 jyxxsq.setKpr(xf.getKpr());
                 jyxxsq.setSkr(xf.getSkr());
                 jyxxsq.setFhr(xf.getFhr());
-                jyxxsq.setXfsh(xf.getXfsh());
-                jyxxsq.setXfmc(xf.getXfmc());
-                jyxxsq.setXfdz(xf.getXfdz());
-                jyxxsq.setXfdh(xf.getXfdh());
-                jyxxsq.setXfyh(xf.getXfyh());
-                jyxxsq.setXfyhzh(xf.getXfyhzh());
+                jyxxsq.setXfsh(Identifier);
+                jyxxsq.setXfmc(Name);
+                jyxxsq.setXfdz(Address);
+                jyxxsq.setXfdh(TelephoneNo);
+                jyxxsq.setXfyh(Bank);
+                jyxxsq.setXfyhzh(BankAcc);
                 jyxxsq.setYkpjshj(Double.valueOf("0.00"));
                 jyxxsq.setYxbz("1");
                 jyxxsq.setLrsj(new Date());
@@ -523,7 +580,7 @@ public class GetDataService {
                                 && !orderDetails.selectSingleNode("ProductCode").equals("")) {
                             ProductCode = orderDetails.selectSingleNode("ProductCode").getText();
                         }
-
+                        jymxsq.setDdh(jyxxsq.getDdh());
                         jymxsq.setSpdm(ProductCode);
                         // 商品名称
                         String ProductName = "";
@@ -662,7 +719,7 @@ public class GetDataService {
                     }
                 }
                 // 获取参数中对应的支付信息
-                Element payments = (Element) xn.selectSingleNode("Payments");
+                /*Element payments = (Element) xn.selectSingleNode("Payments");
                 if (null != payments && !payments.equals("")) {
                     List<Element> paymentItemList = (List<Element>) payments.elements("PaymentItem");
                     if (null != paymentItemList && paymentItemList.size() > 0) {
@@ -698,13 +755,13 @@ public class GetDataService {
                             jyzfmxList.add(jyzfmx);
                         }
                     }
-                }
+                }*/
             }
         }
         Map rsMap=new HashMap();
         rsMap.put("jyxxsqList", jyxxsqList);
         rsMap.put("jymxsqList", jymxsqList);
-        rsMap.put("jyzfmxList", jyzfmxList);
+        rsMap.put("jyzfmxList", new ArrayList<>());
         return rsMap;
     }
 }

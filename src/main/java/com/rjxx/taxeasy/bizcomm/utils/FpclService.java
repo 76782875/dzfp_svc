@@ -9,7 +9,10 @@ import com.rjxx.taxeasy.vo.KplsVO4;
 import com.rjxx.taxeasy.vo.KplsVO5;
 import com.rjxx.taxeasy.vo.Kpspmxvo;
 import com.rjxx.time.TimeUtil;
+import com.rjxx.utils.StringUtils;
 import com.rjxx.utils.TemplateUtils;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -66,6 +69,8 @@ public class FpclService {
     private ServerSend serversendservice;
     @Autowired
     private DataOperate dataOperate;
+    @Autowired
+    private GeneratePdfService generatePdfService;
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -676,7 +681,7 @@ public class FpclService {
                     System.out.println(result2);
                     logger.debug("封装传开票通的报文" + result2);
                     String url = "http://116.228.37.198:10002/SKServer/SKDo";
-                    resultMap = httpPost(result2, url, zjKplsvo5.getDjh() + "$" + zjKplsvo5.getKplsh(), zjKplsvo5.getXfsh(),
+                    resultMap =httpPost(result2, url, zjKplsvo5.getDjh() + "$" + zjKplsvo5.getKplsh(), zjKplsvo5.getXfsh(),
                             zjKplsvo5.getJylsh());
                     if (resultMap.get("returncode").equals("0")) {
                         String fpdm = resultMap.get("fpdm").toString();
@@ -694,6 +699,63 @@ public class FpclService {
             }
         }
         return JSONObject.toJSONString(resultMap).toString();
+    }
+
+    private Map DzfphttpPost(String sendMes, String url, String key, String xfsh, String jylsh) throws Exception {
+        HttpPost httpPost = new HttpPost(url);
+        CloseableHttpResponse response = null;
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        RequestConfig requestConfig = RequestConfig.custom().
+                setSocketTimeout(2000).setConnectTimeout(2000).build();
+        httpPost.setConfig(requestConfig);
+        httpPost.addHeader("Content-Type", "text/xml");
+        String strMessage = "";
+        BufferedReader reader = null;
+        StringBuffer buffer = new StringBuffer();
+        Map resultMap = null;
+        try {
+            StringEntity requestEntity = new StringEntity(sendMes, "GBK");
+            httpPost.setEntity(requestEntity);
+            response = httpClient.execute(httpPost, new BasicHttpContext());
+            if (response.getStatusLine().getStatusCode() != 200) {
+                System.out.println("request url failed, http code=" + response.getStatusLine().getStatusCode()
+                        + ", url=" + url);
+                return null;
+            }
+            HttpEntity entity = response.getEntity();
+            if (entity != null) {
+                reader = new BufferedReader(new InputStreamReader(entity.getContent(), "gbk"));
+                while ((strMessage = reader.readLine()) != null) {
+                    buffer.append(strMessage);
+                }
+            }
+            System.out.println("接收返回值:" + buffer.toString());
+            resultMap =DzfphanderReturnMes(buffer.toString(), key);
+            if (null != resultMap && !resultMap.isEmpty()) {
+                int pos = key.indexOf("$");
+                if (pos != -1) {
+                    key = key.substring(0, pos);
+                }
+                if (resultMap.get("returncode").equals("0")) {
+                    dataOperate.saveLog(Integer.valueOf(key), "91", "1", "Send:send",
+                            "(服务端)发送服务器成功" + resultMap.get("returnmsg").toString(), 2, xfsh, jylsh);
+                } else {
+                    dataOperate.saveLog(Integer.valueOf(key), "92", "1", "Send:send",
+                            "(服务端)发送服务器失败" + resultMap.get("returnmsg").toString(), 2, xfsh, jylsh);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("request url=" + url + ", exception, msg=" + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            if (response != null) try {
+                response.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return resultMap;
     }
 
     public Map httpPost(String sendMes, String url, String key, String xfsh, String jylsh) throws Exception {
@@ -752,9 +814,31 @@ public class FpclService {
 
         return resultMap;
     }
-
     /**
-     * 接收返回报文并做后续处理
+     * 接收返回报文并做后续处理(电票)
+     *
+     * @param returnMes
+     * @throws Exception
+     */
+    public Map DzfphanderReturnMes(String returnMes, String key) throws Exception {
+
+        Document document = DocumentHelper.parseText(returnMes);
+        Element root = document.getRootElement();
+        List<Element> childElements = root.elements();
+        Map resultMap = new HashMap();
+        for (Element child : childElements) {
+            int pos = key.indexOf("$");
+            if (pos != -1) {
+                key = key.substring(pos + 1);
+                System.out.println("传入开票流水号:" + key);
+            }
+                resultMap.put("kplsh", key);
+                resultMap.put(child.getName(), child.getText());// 返回结果
+        }
+        return resultMap;
+    }
+    /**
+     * 接收返回报文并做后续处理(卷票)
      *
      * @param returnMes
      * @throws Exception
@@ -815,23 +899,41 @@ public class FpclService {
             boolean spzsfp = false;//是否按商品整数分票
 
             Skp skp = skpService.findOne(jyxxsq.getSkpid());
-            /**
-             * 取税控盘的开票限额
-             */
-            if ("01".equals(jyxxsq.getFpzldm())) {
-                zdje = skp.getZpmax();
-            } else if ("02".equals(jyxxsq.getFpzldm())) {
-                zdje = skp.getPpmax();
-            } else if ("12".equals(jyxxsq.getFpzldm())) {
-                zdje = skp.getDpmax();
-            }else if ("03".equals(jyxxsq.getFpzldm())) {
-                zdje = skp.getDpmax();
-            }
-            List<Fpgz> listt = fpgzService.findAllByParams(new HashMap<>());
             Xf x = new Xf();
             x.setGsdm(jyxxsq.getGsdm());
             x.setXfsh(jyxxsq.getXfsh());
             Xf xf = xfService.findOneByParams(x);
+            /**
+             * 取税控盘的开票限额
+             */
+            if(skp!=null){
+                if ("01".equals(jyxxsq.getFpzldm())) {
+                    zdje = skp.getZpmax();
+                } else if ("02".equals(jyxxsq.getFpzldm())) {
+                    zdje = skp.getPpmax();
+                } else if ("12".equals(jyxxsq.getFpzldm())) {
+                    zdje = skp.getDpmax();
+                }else if ("03".equals(jyxxsq.getFpzldm())) {
+                    zdje = skp.getDpmax();
+                }
+                flag=true;
+            }
+            /**
+             * 如果取不到税控盘的限额，就取销方的限额
+             */
+            if(!flag){
+                if ("01".equals(jyxxsq.getFpzldm())) {
+                    zdje = xf.getZpzdje();
+                } else if ("02".equals(jyxxsq.getFpzldm())) {
+                    zdje = xf.getPpzdje();
+                } else if ("12".equals(jyxxsq.getFpzldm())) {
+                    zdje = xf.getDzpzdje();
+                }else if ("03".equals(jyxxsq.getFpzldm())) {
+                    zdje = xf.getDzpzdje();
+                }
+            }
+
+            List<Fpgz> listt = fpgzService.findAllByParams(new HashMap<>());
             for (Fpgz fpgz : listt) {
                 if (fpgz.getXfids().contains(String.valueOf(xf.getId()))) {
                     if ("01".equals(jyxxsq.getFpzldm())) {
@@ -869,14 +971,31 @@ public class FpclService {
             if (!flag) {
                 sfqzfp = false;
                 spzsfp = false;
+                if(skp!=null){
+                    if ("01".equals(jyxxsq.getFpzldm())) {
+                        fpje = skp.getZpfz();//专票阈值，分票金额
+                    } else if ("02".equals(jyxxsq.getFpzldm())) {
+                        fpje = skp.getPpfz();//普票阈值，分票金额
+                    } else if ("12".equals(jyxxsq.getFpzldm())) {
+                        fpje = skp.getFpfz();//电票阈值，分票金额
+                    } else if ("03".equals(jyxxsq.getFpzldm())) {//卷票
+                        fpje = skp.getFpfz();//卷票暂时没有
+                    }
+                    flag=true;
+                }
+            }
+            /**
+             * 税控盘如果为空，则取销方的分票金额
+             */
+            if(!flag){
                 if ("01".equals(jyxxsq.getFpzldm())) {
-                    fpje = skp.getZpfz();//专票阈值，分票金额
+                    fpje = xf.getZpfpje();//专票阈值，分票金额
                 } else if ("02".equals(jyxxsq.getFpzldm())) {
-                    fpje = skp.getPpfz();//普票阈值，分票金额
+                    fpje = xf.getPpfpje();//普票阈值，分票金额
                 } else if ("12".equals(jyxxsq.getFpzldm())) {
-                    fpje = skp.getFpfz();//电票阈值，分票金额
+                    fpje = xf.getDzpfpje();//电票阈值，分票金额
                 } else if ("03".equals(jyxxsq.getFpzldm())) {//卷票
-                    fpje = skp.getFpfz();//卷票暂时没有
+                    fpje =xf.getDzpfpje();//卷票暂时没有
                 }
             }
             /**
@@ -1072,7 +1191,7 @@ public class FpclService {
         List fpclList = new ArrayList();
         Map resultMap = null;
         try {
-            fpclList = (List) this.zjkp(jyxxsqList, kpfs);//组件
+            fpclList = (List) this.zjkp(jyxxsqList, kpfs);//直接开票
         } catch (Exception e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
@@ -1097,8 +1216,7 @@ public class FpclService {
                     hjje = hjje + kpspmxvo.getSpje();
                     hjse = hjse + kpspmxvo.getSpse();
                 }
-                String path = this.getClass().getClassLoader().getResource("dzfp-xml.xml")
-                        .getPath();
+                String path = this.getClass().getClassLoader().getResource("dzfp-xml.xml").getPath();
                 try {
                     Map params2 = new HashMap();
                     String fpzldm = zjKplsvo5.getFpzldm();
@@ -1111,6 +1229,14 @@ public class FpclService {
                     } else if (fpzldm.equals("03")) {
                         zjKplsvo5.setFpzldm("025");
                     }
+                    String fpczlxdm=zjKplsvo5.getFpczlxdm();
+                    String kplx=null;
+                    if(fpczlxdm.equals("11")){
+                        kplx="0";
+                    }else{
+                        kplx="1";
+                    }
+                    params2.put("kplx", kplx);
                     params2.put("kpls", zjKplsvo5);
                     params2.put("kpspmxList", tmpList);
                     params2.put("mxCount", tmpList.size());
@@ -1123,15 +1249,13 @@ public class FpclService {
                     System.out.println(result2);
                     logger.debug("封装传开票通的报文" + result2);
                     String url = "http://116.228.37.198:10002/SKServer/SKDo";
-                    resultMap = httpPost(result2, url, zjKplsvo5.getDjh() + "$" + zjKplsvo5.getKplsh(), zjKplsvo5.getXfsh(),
+                    resultMap = DzfphttpPost(result2, url, zjKplsvo5.getDjh() + "$" + zjKplsvo5.getKplsh(), zjKplsvo5.getXfsh(),
                             zjKplsvo5.getJylsh());
-                    if (resultMap.get("returncode").equals("0")) {
-                        String fpdm = resultMap.get("fpdm").toString();
-                        String fphm = resultMap.get("fphm").toString();
-                        String kprq = resultMap.get("kprq").toString();
-                        String skm = resultMap.get("skm").toString();
-                        String jym = resultMap.get("jym").toString();
-                        String ewm = resultMap.get("ewm").toString();
+                    if (resultMap.get("RETURNCODE").equals("0000")) {
+                        String kplsh=resultMap.get("KPLSH").toString();
+                        String returncode=resultMap.get("RETURNCODE").toString();
+                        String returnmsg=resultMap.get("RETURNMSG").toString();
+                        Kpls kpls = kplsService.findOne(Integer.valueOf(kplsh));
                     }
                     logger.debug("封装传开票通的返回报文" + JSONObject.toJSONString(resultMap));
                 } catch (Exception e) {
@@ -1141,5 +1265,85 @@ public class FpclService {
             }
         }
         return null;
+    }
+
+    public void updateKpls(Map resultMap){
+        try{
+            String kplsh=resultMap.get("KPLSH").toString();
+            Kpls kpls = kplsService.findOne(Integer.valueOf(kplsh));
+            String returncode=resultMap.get("RETURNCODE").toString();
+            String returnmsg=resultMap.get("RETURNMSG").toString();
+        if (returncode.equals("0000")) {
+            String fpdm = resultMap.get("FP_DM").toString();
+            String fphm = resultMap.get("FP_HM").toString();
+            String kprq = resultMap.get("KPRQ").toString();
+            String mwq=resultMap.get("FP_MW").toString();
+            String bz = resultMap.get("BZ").toString();
+            String jym = resultMap.get("JYM").toString();
+            String ewm = resultMap.get("EWM").toString();
+            String jqbh=resultMap.get("JQBH").toString();
+            String fpqqlsh=resultMap.get("FPQQLSH").toString();
+            kpls.setFpdm(fpdm);
+            kpls.setFphm(fphm);
+            kpls.setFpztdm("00");
+            kpls.setErrorReason(null);
+            kpls.setKprq(DateUtils.parseDate(kprq, "yyyy-MM-dd HH:mm:ss"));
+            kpls.setXgsj(new Date());
+            kpls.setXgry(1);
+            if (StringUtils.isNotBlank(returnmsg)) {
+                kpls.setErrorReason(returnmsg);
+            } else {
+                kpls.setErrorReason(null);
+            }
+            kplsService.save(kpls);
+            Jyls jyls = jylsService.findOne(kpls.getDjh());
+            jyls.setClztdm("91");
+            jylsService.save(jyls);
+            String czlxdm = kpls.getFpczlxdm();
+            if ("12".equals(czlxdm) || "13".equals(czlxdm)) {
+                    if (kpls.getHkFphm() != null && kpls.getHkFpdm() != null) {
+                        kpls.setJylsh("");
+                        Kpls ykpls = kplsService.findByhzfphm(kpls);
+                        Map param2 = new HashMap<>();
+                        param2.put("kplsh", ykpls.getKplsh());
+                        // 全部红冲后修改
+                        Kpspmxvo mxvo = kpspmxService.findKhcje(param2);
+                        if (mxvo.getKhcje() == 0) {
+                            param2.put("fpztdm", "02");
+                            kplsService.updateFpczlx(param2);
+                        } else {
+                            param2.put("fpztdm", "01");
+                            kplsService.updateFpczlx(param2);
+                        }
+                    }
+                }
+            generatePdfService.generatePdf(kpls.getKplsh());//此处生成PDF
+            Map parms=new HashMap();
+                parms.put("gsdm",kpls.getGsdm());
+                Gsxx gsxx=gsxxService.findOneByParams(parms);
+                //String url="https://vrapi.fvt.tujia.com/Invoice/CallBack";
+                String url=gsxx.getCallbackurl();
+                if(!("").equals(url)&&url!=null){
+                    String returnmessage=generatePdfService.CreateReturnMessage2(kpls.getKplsh());
+                    //输出调用结果
+                    logger.info("回写报文"+returnmessage);
+                    if(returnmessage!=null&&!"".equals(returnmessage)){
+                        Map returnMap =generatePdfService.httpPost(returnmessage, kpls);
+                        logger.info("返回报文"+ JSON.toJSONString(returnMap));
+                    }
+                }
+            }else{
+                kpls.setFpztdm("05");
+                kpls.setErrorReason(returnmsg);
+                kpls.setXgsj(new Date());
+                kpls.setXgry(1);
+                kplsService.save(kpls);
+                Jyls jyls = jylsService.findOne(kpls.getDjh());
+                jyls.setClztdm("92");
+                jylsService.save(jyls);
+            }
+        }catch (Exception e){
+           e.printStackTrace();
+        }
     }
 }

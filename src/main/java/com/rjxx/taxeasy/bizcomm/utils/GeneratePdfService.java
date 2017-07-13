@@ -1,16 +1,32 @@
 package com.rjxx.taxeasy.bizcomm.utils;
 
+import com.alibaba.fastjson.JSON;
 import com.rjxx.comm.utils.ApplicationContextUtils;
 import com.rjxx.taxeasy.bizcomm.utils.pdf.PdfDocumentGenerator;
 import com.rjxx.taxeasy.domains.*;
 import com.rjxx.taxeasy.service.*;
 import com.rjxx.utils.StringUtils;
 import com.rjxx.utils.XmlJaxbUtils;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.protocol.BasicHttpContext;
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -51,6 +67,8 @@ public class GeneratePdfService {
     private YjmbService yjmbService;
     @Autowired
     private JyxxsqService jyxxsqService;
+    @Autowired
+    private FphxwsjlService fphxwsjlService;
 
     /**
      * 销方省份名称
@@ -366,6 +384,97 @@ public class GeneratePdfService {
 
         }
         return Message;
+    }
+    private static String getSign(String QueryData, String key) {
+        String signSourceData = "data=" + QueryData + "&key=" + key;
+        String newSign = DigestUtils.md5Hex(signSourceData);
+        return newSign;
+    }
+    public  Map httpPost(String sendMes, Kpls kpls) throws Exception {
+        Map parms=new HashMap();
+        parms.put("gsdm",kpls.getGsdm());
+        Gsxx gsxx=gsxxService.findOneByParams(parms);
+        //String url="https://vrapi.fvt.tujia.com/Invoice/CallBack";
+        String url=gsxx.getCallbackurl();
+        String strMessage = "";
+        BufferedReader reader = null;
+        StringBuffer buffer = new StringBuffer();
+        Map resultMap = null;
+        if(!("").equals(url)&&url!=null){
+            String Secret=getSign(sendMes,gsxx.getSecretKey());
+            HttpPost httpPost = new HttpPost(url);
+            CloseableHttpResponse response = null;
+            RequestConfig requestConfig = RequestConfig.custom().
+                    setSocketTimeout(120*1000).setConnectionRequestTimeout(120*1000).setConnectTimeout(120*1000).build();
+            CloseableHttpClient httpClient = HttpClients.custom()
+                    .setDefaultRequestConfig(requestConfig)
+                    .build();
+            //httpPost.setConfig(requestConfig);
+            httpPost.addHeader("Content-Type", "application/json");
+            try {
+                Map nvps = new HashMap();
+                nvps.put("invoiceData", sendMes);
+                nvps.put("sign", Secret);
+                StringEntity requestEntity = new StringEntity(JSON.toJSONString(nvps), "utf-8");
+                httpPost.setEntity(requestEntity);
+                response = httpClient.execute(httpPost, new BasicHttpContext());
+                if (response.getStatusLine().getStatusCode() != 200) {
+                    System.out.println("request url failed, http code=" + response.getStatusLine().getStatusCode()
+                            + ", url=" + url);
+                    return null;
+                }
+                HttpEntity entity = response.getEntity();
+                if (entity != null) {
+                    reader = new BufferedReader(new InputStreamReader(entity.getContent(), "utf-8"));
+                    while ((strMessage = reader.readLine()) != null) {
+                        buffer.append(strMessage);
+                    }
+                }
+                System.out.println("接收返回值:" + buffer.toString());
+                resultMap = handerReturnMes(buffer.toString());
+                String returnCode=resultMap.get("ReturnCode").toString();
+                String ReturnMessage=resultMap.get("ReturnMessage").toString();
+                Fphxwsjl fphxwsjl=new Fphxwsjl();
+                fphxwsjl.setGsdm(kpls.getGsdm());
+                fphxwsjl.setEnddate(new Date());
+                fphxwsjl.setReturncode(returnCode);
+                fphxwsjl.setStartdate(new Date());
+                fphxwsjl.setSecretKey(gsxx.getSecretKey());
+                fphxwsjl.setSign(Secret);
+                fphxwsjl.setWsurl(gsxx.getCallbackurl());
+                fphxwsjl.setReturncontent(sendMes);
+                fphxwsjl.setReturnmessage(ReturnMessage);
+                fphxwsjlService.save(fphxwsjl);
+            } catch (IOException e) {
+                System.out.println("request url=" + url + ", exception, msg=" + e.getMessage());
+                e.printStackTrace();
+            } finally {
+                if (response != null) try {
+                    response.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return resultMap;
+    }
+    /**
+     * 接收返回报文并做后续处理
+     *
+     * @param returnMes
+     *
+     * @throws Exception
+     */
+    public  Map handerReturnMes(String returnMes) throws Exception {
+
+        Document document = DocumentHelper.parseText(returnMes);
+        Element root = document.getRootElement();
+        List<Element> childElements = root.elements();
+        Map resultMap = new HashMap();
+        for (Element child : childElements) {
+            resultMap.put(child.getName(), child.getText());// 返回结果
+        }
+        return resultMap;
     }
     public String CreateReturnMessage2(Integer kplsh) {
 
