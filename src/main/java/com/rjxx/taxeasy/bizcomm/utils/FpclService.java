@@ -71,6 +71,8 @@ public class FpclService {
     private DataOperate dataOperate;
     @Autowired
     private GeneratePdfService generatePdfService;
+    @Autowired
+    private CszbService cszbService;
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -736,7 +738,7 @@ public class FpclService {
                 if (pos != -1) {
                     key = key.substring(0, pos);
                 }
-                if (resultMap.get("returncode").equals("0")) {
+                if (resultMap.get("RETURNCODE").equals("0")) {
                     dataOperate.saveLog(Integer.valueOf(key), "91", "1", "Send:send",
                             "(服务端)发送服务器成功" + resultMap.get("returnmsg").toString(), 2, xfsh, jylsh);
                 } else {
@@ -897,8 +899,10 @@ public class FpclService {
             String hsbz = "";
             boolean flag = false;
             boolean spzsfp = false;//是否按商品整数分票
-
-            Skp skp = skpService.findOne(jyxxsq.getSkpid());
+            Map skpMap=new HashMap();
+            skpMap.put("kpddm",jyxxsq.getKpddm());
+            skpMap.put("gsdm",jyxxsq.getGsdm());
+            Skp skp = skpService.findOneByParams(skpMap);
             Xf x = new Xf();
             x.setGsdm(jyxxsq.getGsdm());
             x.setXfsh(jyxxsq.getXfsh());
@@ -1065,18 +1069,24 @@ public class FpclService {
                 if (kpfs.equals("01")) {
                     //保存开票流水
                     Kpls kpls = saveKpls(jyls, list2, jyxxsq.getSfdy(), kpfs);
+                    kpls.setKpddm(jyxxsq.getKpddm());
+                    kplsService.save(kpls);
                     saveKpspmx(kpls, list2);
                     skService.callService(kpls.getKplsh());
                     result.add(kpls.getSerialorder());
                 } else if (kpfs.equals("02")) {//组件
                     //保存开票流水
                     Kpls kpls = saveKpls(jyls, list2, jyxxsq.getSfdy(), kpfs);
+                    kpls.setKpddm(jyxxsq.getKpddm());
+                    kplsService.save(kpls);
                     saveKpspmx(kpls, list2);
                     KplsVO4 kplsVO4 = new KplsVO4(kpls, jyxxsq);
                     result.add(kplsVO4);
                 } else if (kpfs.equals("03")) {//税控服务器
                     //保存开票流水
                     Kpls kpls = saveKpls(jyls, list2, jyxxsq.getSfdy(), kpfs);
+                    kpls.setKpddm(jyxxsq.getKpddm());
+                    kplsService.save(kpls);
                     saveKpspmx(kpls, list2);
                     KplsVO5 kplsVO5 = new KplsVO5(kpls, jyxxsq);
                     result.add(kplsVO5);
@@ -1190,6 +1200,7 @@ public class FpclService {
     public List skdzfp(List jyxxsqList, String kpfs) {
         List fpclList = new ArrayList();
         Map resultMap = null;
+        List list=new ArrayList();
         try {
             fpclList = (List) this.zjkp(jyxxsqList, kpfs);//直接开票
         } catch (Exception e1) {
@@ -1216,7 +1227,6 @@ public class FpclService {
                     hjje = hjje + kpspmxvo.getSpje();
                     hjse = hjse + kpspmxvo.getSpse();
                 }
-                String path = this.getClass().getClassLoader().getResource("dzfp-xml.xml").getPath();
                 try {
                     Map params2 = new HashMap();
                     String fpzldm = zjKplsvo5.getFpzldm();
@@ -1237,26 +1247,24 @@ public class FpclService {
                         kplx="1";
                     }
                     params2.put("kplx", kplx);
+                    Cszb cszb = cszbService.getSpbmbbh(zjKplsvo5.getGsdm(), zjKplsvo5.getXfid(), null, "spbmbbh");
+                    String spbmbbh = cszb.getCsz();
+                    params.put("spbmbbh",spbmbbh);
                     params2.put("kpls", zjKplsvo5);
                     params2.put("kpspmxList", tmpList);
                     params2.put("mxCount", tmpList.size());
                     params2.put("hjje", hjje);
                     params2.put("hjse", hjse);
                     //params2.put("jyxxsq", jyxxsq);
-                    path = URLDecoder.decode(path, "UTF-8");
-                    File templateFile = new File(path);
-                    String result2 = TemplateUtils.generateContent(templateFile, params2, "gbk");
+                    String templateName = "dzfp-xml.ftl";
+                    String result2 = TemplateUtils.generateContent(templateName, params2);
                     System.out.println(result2);
                     logger.debug("封装传开票通的报文" + result2);
                     String url = "http://116.228.37.198:10002/SKServer/SKDo";
                     resultMap = DzfphttpPost(result2, url, zjKplsvo5.getDjh() + "$" + zjKplsvo5.getKplsh(), zjKplsvo5.getXfsh(),
                             zjKplsvo5.getJylsh());
-                    if (resultMap.get("RETURNCODE").equals("0000")) {
-                        String kplsh=resultMap.get("KPLSH").toString();
-                        String returncode=resultMap.get("RETURNCODE").toString();
-                        String returnmsg=resultMap.get("RETURNMSG").toString();
-                        Kpls kpls = kplsService.findOne(Integer.valueOf(kplsh));
-                    }
+                    String  serialorder=this.updateKpls(resultMap);
+                    list.add(serialorder);
                     logger.debug("封装传开票通的返回报文" + JSONObject.toJSONString(resultMap));
                 } catch (Exception e) {
                     // TODO Auto-generated catch block
@@ -1264,14 +1272,14 @@ public class FpclService {
                 }
             }
         }
-        return null;
+        return list;
     }
 
-    public void updateKpls(Map resultMap){
-        try{
+    public String updateKpls(Map resultMap){
+
             String kplsh=resultMap.get("KPLSH").toString();
             Kpls kpls = kplsService.findOne(Integer.valueOf(kplsh));
-            String returncode=resultMap.get("RETURNCODE").toString();
+        try{     String returncode=resultMap.get("RETURNCODE").toString();
             String returnmsg=resultMap.get("RETURNMSG").toString();
         if (returncode.equals("0000")) {
             String fpdm = resultMap.get("FP_DM").toString();
@@ -1345,5 +1353,6 @@ public class FpclService {
         }catch (Exception e){
            e.printStackTrace();
         }
+        return kpls.getSerialorder();
     }
 }
