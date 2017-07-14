@@ -761,7 +761,7 @@ public class GetDataService {
         Map rsMap=new HashMap();
         rsMap.put("jyxxsqList", jyxxsqList);
         rsMap.put("jymxsqList", jymxsqList);
-        rsMap.put("jyzfmxList", new ArrayList<>());
+        rsMap.put("jyzfmxList", jyzfmxList);
         return rsMap;
     }
 }
