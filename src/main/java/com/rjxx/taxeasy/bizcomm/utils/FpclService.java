@@ -834,8 +834,22 @@ public class FpclService {
                 key = key.substring(pos + 1);
                 System.out.println("传入开票流水号:" + key);
             }
-                resultMap.put("kplsh", key);
-                resultMap.put(child.getName(), child.getText());// 返回结果
+            if (child.elementText("RETURNCODE").equals("0000")) {
+                resultMap.put("FP_DM", child.elementText("FP_DM"));// 返回结果，发票代码
+                resultMap.put("FP_HM", child.elementText("FP_HM"));// 发票号码
+                resultMap.put("FP_MW", child.element("FP_MW").getText());// 发票密文
+                resultMap.put("JYM", child.element("JYM").getText());// 校验码
+                resultMap.put("EWM", child.element("EWM").getText());// 二维码
+                resultMap.put("JQBH", child.element("JQBH").getText());// 机器编号
+                resultMap.put("KPRQ", child.element("KPRQ").getText());
+                resultMap.put("RETURNCODE", child.elementText("RETURNCODE"));
+                resultMap.put("RETURNMSG", child.elementText("RETURNMSG"));
+                resultMap.put("KPLSH", key);
+            }else{
+                resultMap.put("RETURNCODE", child.elementText("RETURNCODE"));
+                resultMap.put("RETURNMSG", child.elementText("RETURNMSG"));
+                resultMap.put("KPLSH", key);
+            }
         }
         return resultMap;
     }
