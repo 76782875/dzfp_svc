@@ -740,10 +740,10 @@ public class FpclService {
                 }
                 if (resultMap.get("RETURNCODE").equals("0")) {
                     dataOperate.saveLog(Integer.valueOf(key), "91", "1", "Send:send",
-                            "(服务端)发送服务器成功" + resultMap.get("returnmsg").toString(), 2, xfsh, jylsh);
+                            "(服务端)发送服务器成功" + resultMap.get("RETURNMSG").toString(), 2, xfsh, jylsh);
                 } else {
                     dataOperate.saveLog(Integer.valueOf(key), "92", "1", "Send:send",
-                            "(服务端)发送服务器失败" + resultMap.get("returnmsg").toString(), 2, xfsh, jylsh);
+                            "(服务端)发送服务器失败" + resultMap.get("RETURNMSG").toString(), 2, xfsh, jylsh);
                 }
             }
         } catch (IOException e) {

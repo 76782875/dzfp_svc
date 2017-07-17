@@ -65,8 +65,8 @@ public class GetDataService {
                     "\t<Spbmbbh>13.0</Spbmbbh>\n" +
                     "\t<StoreNo></StoreNo>\n" +
                     "\t<Seller>\n" +
-                    "\t\t<Identifier>500102010003643</Identifier>\n" +
-                    "\t\t<Name>测试全家电子发票</Name>\n" +
+                    "\t\t<Identifier>310104132203459</Identifier>\n" +
+                    "\t\t<Name>上海西郊宾馆</Name>\n" +
                     "\t\t<Address>某某路10号1203室</Address>\n" +
                     "\t\t<TelephoneNo>021-55555555</TelephoneNo>\n" +
                     "\t\t<Bank>中国建设银行打浦桥支行</Bank>\n" +
