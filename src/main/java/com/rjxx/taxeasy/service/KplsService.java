@@ -118,6 +118,10 @@ public class KplsService {
     public List<Fpcxvo> findKhcfpByPage(Pagination pagination) {
         return kplsMapper.findKhcfpByPage(pagination);
     }
+    //重新生成PDF查询
+    public List<Fpcxvo> findPdf(Pagination pagination){
+        return  kplsMapper.findPdf(pagination);
+    }
 
     //红冲后更新发票状态
     public void updateFpczlx(Map params) {
