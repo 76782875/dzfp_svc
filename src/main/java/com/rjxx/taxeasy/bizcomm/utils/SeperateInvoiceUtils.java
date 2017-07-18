@@ -32,10 +32,11 @@ public class SeperateInvoiceUtils {
         List<Kpspmx> finalList = new ArrayList<>(kpspmxList.size());
         for (int i = 0; i < kpspmxList.size(); i++) {
             Kpspmx mx = kpspmxList.get(i);
-            BigDecimal jshj = new BigDecimal(mx.getSpje() + mx.getSpse());
-            BigDecimal spsl = new BigDecimal(mx.getSpsl());
-            BigDecimal jeWithoutTax = div(jshj, spsl.add(new BigDecimal(1))).setScale(6, BigDecimal.ROUND_HALF_UP);
-            mx.setSpje(jeWithoutTax.doubleValue());// 商品金额不含税
+            BigDecimal sps = new BigDecimal(mx.getSps());
+            sps=sps.setScale(6, BigDecimal.ROUND_HALF_UP);
+            BigDecimal spdj = div(new BigDecimal(mx.getSpje()),sps).setScale(15, BigDecimal.ROUND_HALF_UP);
+            mx.setSpdj(spdj.doubleValue());
+            mx.setSps(sps.doubleValue());
             finalList.add(mx);
         }
         return finalList;

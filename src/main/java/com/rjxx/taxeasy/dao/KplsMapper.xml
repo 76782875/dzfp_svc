@@ -338,42 +338,58 @@
 
     <!--重新生成PDF查询-->
     <select id="findPdf" parameterType="pagination" resultType="fpcxvo">
-    select * from t_kpls where fpzldm = '12'
-        and pdfurl is null
-        and fpdm is not null
-        and fphm is not null
-        and yxbz = '1'
-        <if test="params.gsdm != null and params.gsdm != ''">
-            and gsdm = #{params.gsdm}
+        select a.*,b.ddh,c.fpzlmc from t_kpls a,t_jyls b,t_fpzl c
+        where a.djh = b.djh and a.fpzldm=c.fpzldm
+        <!-- and a.fpzldm
+        = '12' -->
+        and a.fpczlxdm in('11','12')
+        and a.fpzldm ='12'
+        and a.fpdm is not null
+        and a.fphm is not null
+        and a.pdfurl is null
+        and b.fpczlxdm in('11','12')
+        and a.yxbz = '1'
+        <if test="params.gsdm !=null and params.gsdm !=''">
+            and a.gsdm = #{params.gsdm}
         </if>
         <if test="params.xfid !=null and params.xfid !=''">
-            and (xfid in
+            and (a.xfid in
             <foreach collection="params.xfid" item="item" index="index"
                      open="(" separator="," close=")">#{params.xfid[${index}]}
             </foreach>
-            or xfid is null)
+            or a.xfid is null)
         </if>
         <if test="params.skpid !=null and params.skpid !=''">
-            and (skpid in
+            and (a.skpid in
             <foreach collection="params.skpid" item="item" index="index"
                      open="(" separator="," close=")">#{params.skpid[${index}]}
             </foreach>
-            or skpid is null)
+            or a.skpid is null)
         </if>
         <if test="params.xfi !=null and params.xfi !=''">
-            and xfid = #{params.xfi}
+            and a.xfid = #{params.xfi}
         </if>
-        <if test="params.kprqq !=null and params.kprqq !='' and params.kprqz !=null and params.kprqz !=''">
-            and kprq between #{params.kprqq} and
-            date_add(str_to_date(#{params.kprqz},'%Y-%m-%d'))
+        <if
+                test="params.kprqq !=null and params.kprqq !='' and params.kprqz !=null and params.kprqz !=''">
+            and a.kprq between #{params.kprqq} and
+            date_add(str_to_date(#{params.kprqz},'%Y-%m-%d'),INTERVAL 1 day)
         </if>
         <if test="params.fpzldm !=null and params.fpzldm !=''">
-            and fpzldm = #{params.fpzldm}
+            and a.fpzldm = #{params.fpzldm}
+        </if>
+        <if test="params.fpdm !=null and params.fpdm !=''">
+            and a.fpdm = #{params.fpdm}
+        </if>
+        <if test="params.fphm !=null and params.fphm !=''">
+            and a.fphm = #{params.fphm}
         </if>
         <if test="params.gfmc !=null and params.gfmc !=''">
-            and gfmc like CONCAT('%',#{params.gfmc},'%')
+            and a.gfmc like CONCAT('%',#{params.gfmc},'%')
         </if>
-        order by lrsj desc
+        <if test="params.ddh !=null and params.ddh !=''">
+            and b.ddh = #{params.ddh}
+        </if>
+        order by a.lrsj desc
     </select>
 
     <!-- 红冲数据查询 -->
