@@ -32,11 +32,13 @@ public class SeperateInvoiceUtils {
         List<Kpspmx> finalList = new ArrayList<>(kpspmxList.size());
         for (int i = 0; i < kpspmxList.size(); i++) {
             Kpspmx mx = kpspmxList.get(i);
-            BigDecimal sps = new BigDecimal(mx.getSps());
-            sps=sps.setScale(6, BigDecimal.ROUND_HALF_UP);
-            BigDecimal spdj = div(new BigDecimal(mx.getSpje()),sps).setScale(15, BigDecimal.ROUND_HALF_UP);
-            mx.setSpdj(spdj.doubleValue());
-            mx.setSps(sps.doubleValue());
+            if(mx.getSps()!=null&&mx.getSpdj()!=null){
+                BigDecimal sps = new BigDecimal(mx.getSps());
+                sps=sps.setScale(6, BigDecimal.ROUND_HALF_UP);
+                BigDecimal spdj = div(new BigDecimal(mx.getSpje()),sps).setScale(15, BigDecimal.ROUND_HALF_UP);
+                mx.setSpdj(spdj.doubleValue());
+                mx.setSps(sps.doubleValue());
+            }
             finalList.add(mx);
         }
         return finalList;
