@@ -299,7 +299,7 @@ public class InvoiceSplitUtils {
 								// 被折扣行处理
 								spsm = cfjyspmxtmp.getSps();// 原商品数量
 
-								cfsm = div(spsm, cfbl);// 拆分数量
+								cfsm = div(spsm, cfbl).setScale(6, BigDecimal.ROUND_HALF_UP);// 拆分数量,保留6位解决误差
 								cfje = div(cfjyspmxtmp.getSpje(), cfbl);// 拆分金额
 								
 								cfse = div(spse, cfbl).setScale(2, BigDecimal.ROUND_HALF_UP);// 拆分税额
@@ -370,7 +370,7 @@ public class InvoiceSplitUtils {
 							cfjyspmx.setSpmc(spmc);
 							cfjyspmx.setSpggxh(spggxh);
 							cfjyspmx.setSpdw(spdw);
-							cfjyspmx.setSpdj(spdj);
+							cfjyspmx.setSpdj(div(cfje, cfsm).setScale(15, BigDecimal.ROUND_HALF_UP));
 							cfjyspmx.setSpsl(spsl);
 							cfjyspmx.setJshj(cfjshj);
 							cfjyspmx.setYkphj(new BigDecimal(0));
@@ -435,7 +435,7 @@ public class InvoiceSplitUtils {
 						BigDecimal cfse;
 						BigDecimal cfjshj;
 						
-						cfsm = div(spsm, cfbl);// 拆分数量
+						cfsm = div(spsm, cfbl).setScale(6, BigDecimal.ROUND_HALF_UP);// 拆分数量
 						cfje = div(spje, cfbl);// 拆分金额
 						cfse = div(spse, cfbl).setScale(2, BigDecimal.ROUND_HALF_UP);// 拆分税额
 						cfjshj = add(cfje, cfse);
@@ -492,7 +492,7 @@ public class InvoiceSplitUtils {
 						cfjyspmx.setSpmc(spmc);
 						cfjyspmx.setSpggxh(spggxh);
 						cfjyspmx.setSpdw(spdw);
-						cfjyspmx.setSpdj(spdj);
+						cfjyspmx.setSpdj(div(cfje, cfsm).setScale(15, BigDecimal.ROUND_HALF_UP));
 						cfjyspmx.setSpsl(spsl);
 						cfjyspmx.setJshj(cfjshj);
 						cfjyspmx.setYkphj(new BigDecimal(0));
