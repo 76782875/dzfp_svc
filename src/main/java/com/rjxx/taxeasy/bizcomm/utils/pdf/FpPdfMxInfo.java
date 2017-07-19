@@ -35,6 +35,10 @@ public class FpPdfMxInfo extends AbstractDocumentVo {
 
     private int spggxhSize;
 
+    private int spslSize;
+
+    private int spdjSize;
+
     public FpPdfMxInfo() {
 
     }
@@ -222,5 +226,21 @@ public class FpPdfMxInfo extends AbstractDocumentVo {
 
     public void setSpggxhSize(int spggxhSize) {
         this.spggxhSize = spggxhSize;
+    }
+
+    public int getSpslSize() {
+        return spslSize;
+    }
+
+    public void setSpslSize(int spslSize) {
+        this.spslSize = spslSize;
+    }
+
+    public int getSpdjSize() {
+        return spdjSize;
+    }
+
+    public void setSpdjSize(int spdjSize) {
+        this.spdjSize = spdjSize;
     }
 }
