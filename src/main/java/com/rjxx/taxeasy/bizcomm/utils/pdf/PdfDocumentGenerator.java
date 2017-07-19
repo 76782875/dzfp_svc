@@ -361,7 +361,10 @@ public class PdfDocumentGenerator {
 
             // 发票明细部分
             List<Kpspmx> t_kpspmxes = dataOperate.getPDFSpmx(kpls.getKplsh());
-            DecimalFormat df = new DecimalFormat("######0.00");
+            DecimalFormat df = new DecimalFormat("#.00");
+            DecimalFormat dfsl = new DecimalFormat("#.00####");
+            DecimalFormat dfdj = new DecimalFormat("#.00##########");
+
             // 合计金额部分
             String total = df.format(kpls.getJshj());
             String totalAmount = df.format(kpls.getHjje());     //le.getTotalAmount(djh, jyspmxs);// 两位小数已保留
@@ -384,13 +387,13 @@ public class PdfDocumentGenerator {
                     //数量
                     String xmsl = "";
                     if (sps != null && sps != 0) {
-                        xmsl = df.format(sps);
+                        xmsl = dfsl.format(sps);
                     }
                     //单价
                     Double dj = t_kpspmx.getSpdj();
                     String xmdj = "";
                     if (dj != null && dj != 0) {
-                        xmdj = df.format(dj);
+                        xmdj = dfdj.format(dj);
                     }
                     FpPdfMxInfo fpPdfMxInfo = new FpPdfMxInfo(t_kpspmx.getSpmc(),//商品名称
                             t_kpspmx.getSpggxh() == null ? "" : t_kpspmx.getSpggxh(),//规格型号
