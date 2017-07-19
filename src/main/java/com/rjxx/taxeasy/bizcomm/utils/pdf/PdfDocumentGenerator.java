@@ -281,8 +281,10 @@ public class PdfDocumentGenerator {
                 return 8;
             } else if (dataLength > 10 && dataLength <= 12) {
                 return 7;
-            } else {
+            } else if (dataLength > 12 && dataLength <= 14){
                 return 6;
+            }else{
+                return 4;
             }
         } catch (Exception e) {
             logger.error("", e);
@@ -412,9 +414,9 @@ public class PdfDocumentGenerator {
 
             // 发票明细部分
             List<Kpspmx> t_kpspmxes = dataOperate.getPDFSpmx(kpls.getKplsh());
-            DecimalFormat df = new DecimalFormat("#.00");
-            DecimalFormat dfsl = new DecimalFormat("#.00####");
-            DecimalFormat dfdj = new DecimalFormat("#.00##########");
+            DecimalFormat df = new DecimalFormat("#0.00");
+            DecimalFormat dfsl = new DecimalFormat("#0.00####");
+            DecimalFormat dfdj = new DecimalFormat("#0.00##########");
 
             // 合计金额部分
             String total = df.format(kpls.getJshj());
