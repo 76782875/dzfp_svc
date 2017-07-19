@@ -467,9 +467,9 @@ public class PdfDocumentGenerator {
                     //处理规格型号字体大小
                     fpPdfMxInfo.setSpggxhSize(getSpggxhFontSize(fpPdfMxInfo.getSpggxh()));
                     //处理商品数量字体大小
-                    fpPdfMxInfo.setSpslSize(getSpslFontSize(dfsl.format(fpPdfMxInfo.getSpsl())));
+                    fpPdfMxInfo.setSpslSize(getSpslFontSize(xmsl));
                     //处理商品单价字体大小
-                    fpPdfMxInfo.setSpdjSize(getSpdjFontSize(dfdj.format(fpPdfMxInfo.getSpdj())));
+                    fpPdfMxInfo.setSpdjSize(getSpdjFontSize(xmdj));
                     pdfMxList.add(fpPdfMxInfo);
                 }
             } else {
@@ -489,8 +489,6 @@ public class PdfDocumentGenerator {
                 //处理规格型号字体大小
 
                 fpPdfMxInfo.setSpggxhSize(getSpggxhFontSize(fpPdfMxInfo.getSpggxh()));
-                fpPdfMxInfo.setSpslSize(getSpslFontSize(dfsl.format(fpPdfMxInfo.getSpsl())));
-                fpPdfMxInfo.setSpdjSize(getSpdjFontSize(dfdj.format(fpPdfMxInfo.getSpdj())));
 
                 pdfMxList.add(fpPdfMxInfo);
                 /*****************************/
