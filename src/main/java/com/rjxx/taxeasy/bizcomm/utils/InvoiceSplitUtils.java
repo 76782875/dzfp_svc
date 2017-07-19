@@ -386,6 +386,7 @@ public class InvoiceSplitUtils {
 							cfjyspmxtmp.setSpje(sub(cfjyspmxtmp.getSpje(),cfje));
 							if (null != spdj && !"".equals(spdj) && null != spsm && !"".equals(spsm)) {
 							   cfjyspmxtmp.setSps(sub(cfjyspmxtmp.getSps(),cfsm));
+							   cfjyspmxtmp.setSpdj(div(cfjyspmxtmp.getSpje(),cfjyspmxtmp.getSps()).setScale(15, BigDecimal.ROUND_HALF_UP));
 							}
 							cfjyspmxtmp.setSpse(sub(cfjyspmxtmp.getSpse(),cfse));
 							cfjyspmxtmp.setJshj(sub(cfjyspmxtmp.getJshj(),cfjshj));
@@ -398,6 +399,7 @@ public class InvoiceSplitUtils {
 								cfjyspmxtmp.setJshj(spjshj.setScale(2, BigDecimal.ROUND_HALF_UP));
 								cfjyspmxtmp.setSpse(sub(spjshj,spje).setScale(2, BigDecimal.ROUND_HALF_UP));					
 								cfjyspmxtmp.setSps(sub(jyspmx.getSps(),cfsm));
+								cfjyspmxtmp.setSpdj(div(cfjyspmxtmp.getSpje(),cfjyspmxtmp.getSps()).setScale(15, BigDecimal.ROUND_HALF_UP));
 							}
 						}
 						
@@ -510,6 +512,7 @@ public class InvoiceSplitUtils {
 								cfjyspmxtmp.setJshj(sub(spjshj,cfjshj).setScale(2, BigDecimal.ROUND_HALF_UP));
 								cfjyspmxtmp.setSpse(sub(sub(spjshj,cfjshj),ccje).setScale(2, BigDecimal.ROUND_HALF_UP));					
 								cfjyspmxtmp.setSps(sub(jyspmx.getSps(),cfsm));
+								cfjyspmxtmp.setSpdj(div(cfjyspmxtmp.getSpje(), cfjyspmxtmp.getSps()).setScale(15, BigDecimal.ROUND_HALF_UP));
 							}
 						}
 					}
