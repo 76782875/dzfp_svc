@@ -284,7 +284,7 @@ public class PdfDocumentGenerator {
             } else if (dataLength > 12 && dataLength <= 14){
                 return 6;
             }else{
-                return 4;
+                return 5;
             }
         } catch (Exception e) {
             logger.error("", e);
