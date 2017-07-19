@@ -489,7 +489,10 @@ public class PdfDocumentGenerator {
                 //处理规格型号字体大小
 
                 fpPdfMxInfo.setSpggxhSize(getSpggxhFontSize(fpPdfMxInfo.getSpggxh()));
-
+                //处理商品数量字体大小
+                fpPdfMxInfo.setSpslSize(getSpslFontSize( df.format(/*xmsl*/1.00)));
+                //处理商品单价字体大小
+                fpPdfMxInfo.setSpdjSize(getSpdjFontSize( df.format(Double.parseDouble(totalAmount))));
                 pdfMxList.add(fpPdfMxInfo);
                 /*****************************/
             }
