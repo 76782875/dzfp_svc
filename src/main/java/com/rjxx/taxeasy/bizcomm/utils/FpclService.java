@@ -1313,6 +1313,7 @@ public class FpclService {
             kpls.setMwq(mwq);
             kpls.setFpEwm(ewm);
             kpls.setJym(jym);
+            kpls.setSksbm(jqbh);
             if(("").equals(kpls.getBz())||null==kpls.getBz()){
                 kpls.setBz("机器编号："+jqbh);
             }
