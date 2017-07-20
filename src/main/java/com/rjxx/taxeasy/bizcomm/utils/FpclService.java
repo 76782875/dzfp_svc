@@ -1300,11 +1300,9 @@ public class FpclService {
             String fphm = resultMap.get("FP_HM").toString();
             String kprq = resultMap.get("KPRQ").toString();
             String mwq=resultMap.get("FP_MW").toString();
-            String bz = resultMap.get("BZ").toString();
             String jym = resultMap.get("JYM").toString();
             String ewm = resultMap.get("EWM").toString();
             String jqbh=resultMap.get("JQBH").toString();
-            String fpqqlsh=resultMap.get("FPQQLSH").toString();
             kpls.setFpdm(fpdm);
             kpls.setFphm(fphm);
             kpls.setFpztdm("00");
@@ -1312,6 +1310,12 @@ public class FpclService {
             kpls.setKprq(DateUtils.parseDate(kprq, "yyyy-MM-dd HH:mm:ss"));
             kpls.setXgsj(new Date());
             kpls.setXgry(1);
+            kpls.setMwq(mwq);
+            kpls.setFpEwm(ewm);
+            kpls.setJym(jym);
+            if(("").equals(kpls.getBz())||null==kpls.getBz()){
+                kpls.setBz("机器编号："+jqbh);
+            }
             if (StringUtils.isNotBlank(returnmsg)) {
                 kpls.setErrorReason(returnmsg);
             } else {
@@ -1345,7 +1349,8 @@ public class FpclService {
                 Gsxx gsxx=gsxxService.findOneByParams(parms);
                 //String url="https://vrapi.fvt.tujia.com/Invoice/CallBack";
                 String url=gsxx.getCallbackurl();
-                if(!("").equals(url)&&url!=null){
+            System.out.println(JSON.toJSONString(generatePdfService.CreateReturnMessage2(kpls.getKplsh())));
+            if(!("").equals(url)&&url!=null){
                     String returnmessage=generatePdfService.CreateReturnMessage2(kpls.getKplsh());
                     //输出调用结果
                     logger.info("回写报文"+returnmessage);
