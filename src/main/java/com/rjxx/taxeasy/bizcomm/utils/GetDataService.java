@@ -86,7 +86,7 @@ public class GetDataService {
                     "\t\t\t\t<InvoiceSfdy>1</InvoiceSfdy>\n" +
                     "\t\t\t\t<OrderDate>2016-06-22 23:59:59</OrderDate>\n" +
                     "\t\t\t\t<ChargeTaxWay>0</ChargeTaxWay>\n" +
-                    "\t\t\t\t<TotalAmount>1170.00</TotalAmount>\n" +
+                    "\t\t\t\t<TotalAmount>11.7</TotalAmount>\n" +
                     "\t\t\t\t<TaxMark>0</TaxMark>\n" +
                     "\t\t\t\t<Remark></Remark>\n" +
                     "\t\t\t</OrderMain>\n" +
