@@ -120,7 +120,7 @@ public class GeneratePdfService {
                     List<String> pdfUrlList = new ArrayList<>();
                     boolean f=true;
                     for (Kpls kpls1 : lslist) {
-                        if(kpls1.getPdfurl()==null||"".equals(kpls1.getPdfurl())){
+                        if(null==kpls1.getPdfurl()||"".equals(kpls1.getPdfurl())){
                             f=false;
                             break;
                         }
@@ -198,6 +198,8 @@ public class GeneratePdfService {
                 dc.saveLog(djh, "91", "0", "正常开具", "", 1, jyls.getXfsh(), jyls.getJylsh());
             } else {
                 dc.updateFlag(jyls, "92");
+                logger.info("------1、生成pdf出现异常：---------" + kplsh);
+
                 dc.saveLog(djh, "21", "1", "PdfDocumentGenerator：GeneratPDF", "生成pdf失败,服务异常",
                         1, jyls.getXfsh(), jyls.getJylsh());
                 dc.updateKplsFpzt(kpls, "开具成功，但生成pdf失败,服务异常", "05");
@@ -207,7 +209,7 @@ public class GeneratePdfService {
             dc.saveLog(djh, "21", "1", "PdfDocumentGenerator：GeneratPDF", "生成pdf失败,服务异常",
                     1, jyls.getXfsh(), jyls.getJylsh());
             dc.updateKplsFpzt(kpls, "开具成功，但生成pdf失败,服务异常", "05");
-            logger.error("生成pdf出现异常：" + kplsh, e);
+            logger.info("------2生成pdf出现异常：-------" + kplsh, e);
             throw new RuntimeException(e);
         }
     }
