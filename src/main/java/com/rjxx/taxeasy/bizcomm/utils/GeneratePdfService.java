@@ -120,7 +120,7 @@ public class GeneratePdfService {
                     List<String> pdfUrlList = new ArrayList<>();
                     boolean f=true;
                     for (Kpls kpls1 : lslist) {
-                        if(!kpls1.getFpztdm().equals("00")||(kpls1.getPdfurl()==null&&"".equals(kpls1.getPdfurl()))){
+                        if(!kpls1.getFpztdm().equals("00")&&(kpls1.getPdfurl()==null&&"".equals(kpls1.getPdfurl()))){
                             f=false;
                         }
                         pdfUrlList.add(kpls1.getPdfurl());
