@@ -244,6 +244,7 @@ public class PdfDocumentGenerator {
      * @return
      */
     private int getSpslFontSize(String spsl) {
+        spsl=spsl.substring(0,14);
         if (StringUtils.isBlank(spsl)) {
             return 9;
         }
@@ -270,6 +271,7 @@ public class PdfDocumentGenerator {
      * @return
      */
     private int getSpdjFontSize(String spdj) {
+        spdj=spdj.substring(0,16);
         if (StringUtils.isBlank(spdj)) {
             return 9;
         }

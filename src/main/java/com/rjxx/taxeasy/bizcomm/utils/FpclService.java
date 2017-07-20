@@ -950,7 +950,7 @@ public class FpclService {
                     zdje = xf.getDzpzdje();
                 }
             }
-
+            flag=false;
             List<Fpgz> listt = fpgzService.findAllByParams(new HashMap<>());
             for (Fpgz fpgz : listt) {
                 if (fpgz.getXfids().contains(String.valueOf(xf.getId()))) {
