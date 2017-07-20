@@ -149,50 +149,52 @@ public class GeneratePdfService {
                         }
                     }
                     //发送手机短信
-                    Boolean sffsdx = sffsdxMap.get(jyls.getSkpid());
-                    if (sffsdx == null) {
-                        Cszb cszb = cszbService.getSpbmbbh(jyls.getGsdm(), jyls.getXfid(), jyls.getSkpid(), "sfktdx");
-                        String dxfsFlag = cszb.getCsz();
-                        if ("是".equals(dxfsFlag)) {
-                            sffsdxMap.put(jyls.getSkpid(), true);
-                            sffsdx = true;
-                        } else {
-                            sffsdxMap.put(jyls.getSkpid(), false);
-                            sffsdx = false;
+                    if(jyls.getSkpid()!=null){
+                        Boolean sffsdx = sffsdxMap.get(jyls.getSkpid());
+                        if (sffsdx == null) {
+                            Cszb cszb = cszbService.getSpbmbbh(jyls.getGsdm(), jyls.getXfid(), jyls.getSkpid(), "sfktdx");
+                            String dxfsFlag = cszb.getCsz();
+                            if ("是".equals(dxfsFlag)) {
+                                sffsdxMap.put(jyls.getSkpid(), true);
+                                sffsdx = true;
+                            } else {
+                                sffsdxMap.put(jyls.getSkpid(), false);
+                                sffsdx = false;
+                            }
                         }
-                    }
-                    if (sffsdx) {
-                        Cszb zb = cszbService.getSpbmbbh(jyls.getGsdm(), jyls.getXfid(), jyls.getSkpid(), "sfzdfs");
-                        String zdfsFlag = zb.getCsz();
-                        if ("是".equals(zdfsFlag)) {
-                            String sjhm = jyls.getGfsjh();
-                            Map<String, String> rep = new HashMap();
-                            rep.put("jshj", jyls.getJshj() + "");
-                            rep.put("tqm", jyls.getTqm());
-                            if (sjhm != null && !"".equals(sjhm)) {
-                                try {
-                                    saveMsg.saveMessage(jyls.getGsdm(), djh, sjhm, rep, "SMS_34725005", "泰易电子发票");
-                                    Map param3 = new HashMap<>();
-                                    param3.put("djh", djh);
-                                    param3.put("dxzt", '1');
-                                    jylsService.updateDxbz(param3);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                    System.out.println("发送短信失败" + e.getMessage());
-                                }
+                        if (sffsdx) {
+                            Cszb zb = cszbService.getSpbmbbh(jyls.getGsdm(), jyls.getXfid(), jyls.getSkpid(), "sfzdfs");
+                            String zdfsFlag = zb.getCsz();
+                            if ("是".equals(zdfsFlag)) {
+                                String sjhm = jyls.getGfsjh();
+                                Map<String, String> rep = new HashMap();
+                                rep.put("jshj", jyls.getJshj() + "");
+                                rep.put("tqm", jyls.getTqm());
+                                if (sjhm != null && !"".equals(sjhm)) {
+                                    try {
+                                        saveMsg.saveMessage(jyls.getGsdm(), djh, sjhm, rep, "SMS_34725005", "泰易电子发票");
+                                        Map param3 = new HashMap<>();
+                                        param3.put("djh", djh);
+                                        param3.put("dxzt", '1');
+                                        jylsService.updateDxbz(param3);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                        System.out.println("发送短信失败" + e.getMessage());
+                                    }
 
+                                }
+                            } else {
+                                Map param1 = new HashMap<>();
+                                param1.put("djh", djh);
+                                param1.put("dxzt", '2');
+                                jylsService.updateDxbz(param1);
                             }
                         } else {
-                            Map param1 = new HashMap<>();
-                            param1.put("djh", djh);
-                            param1.put("dxzt", '2');
-                            jylsService.updateDxbz(param1);
+                            Map param2 = new HashMap<>();
+                            param2.put("djh", djh);
+                            param2.put("dxzt", '2');
+                            jylsService.updateDxbz(param2);
                         }
-                    } else {
-                        Map param2 = new HashMap<>();
-                        param2.put("djh", djh);
-                        param2.put("dxzt", '2');
-                        jylsService.updateDxbz(param2);
                     }
                 }
                 dc.saveLog(djh, "91", "0", "正常开具", "", 1, jyls.getXfsh(), jyls.getJylsh());
