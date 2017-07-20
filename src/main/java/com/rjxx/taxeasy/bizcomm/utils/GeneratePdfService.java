@@ -209,7 +209,7 @@ public class GeneratePdfService {
             dc.saveLog(djh, "21", "1", "PdfDocumentGenerator：GeneratPDF", "生成pdf失败,服务异常",
                     1, jyls.getXfsh(), jyls.getJylsh());
             dc.updateKplsFpzt(kpls, "开具成功，但生成pdf失败,服务异常", "05");
-            logger.info("------2生成pdf出现异常：-------" + kplsh, e);
+            logger.info("------2、生成pdf出现异常：-------" + kplsh, e);
             throw new RuntimeException(e);
         }
     }
