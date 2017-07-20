@@ -1307,7 +1307,7 @@ public class FpclService {
             kpls.setFphm(fphm);
             kpls.setFpztdm("00");
             kpls.setErrorReason(null);
-            kpls.setKprq(DateUtils.parseDate(kprq, "yyyy-MM-dd HH:mm:ss"));
+            kpls.setKprq(TimeUtil.getSysDateInDate(kprq, null));
             kpls.setXgsj(new Date());
             kpls.setXgry(1);
             kpls.setMwq(mwq);
