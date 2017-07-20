@@ -1344,13 +1344,14 @@ public class FpclService {
                         }
                     }
                 }
+            //此处生成PDF
             skService.ReCreatePdf(kpls.getKplsh());
             Map parms=new HashMap();
                 parms.put("gsdm",kpls.getGsdm());
                 Gsxx gsxx=gsxxService.findOneByParams(parms);
                 //String url="https://vrapi.fvt.tujia.com/Invoice/CallBack";
                 String url=gsxx.getCallbackurl();
-            System.out.println(JSON.toJSONString(generatePdfService.CreateReturnMessage2(kpls.getKplsh())));
+            logger.info("回写报文"+generatePdfService.CreateReturnMessage2(kpls.getKplsh()));
             if(!("").equals(url)&&url!=null){
                     String returnmessage=generatePdfService.CreateReturnMessage2(kpls.getKplsh());
                     //输出调用结果
