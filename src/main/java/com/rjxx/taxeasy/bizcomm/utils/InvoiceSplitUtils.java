@@ -299,7 +299,7 @@ public class InvoiceSplitUtils {
 								// 被折扣行处理
 								spsm = cfjyspmxtmp.getSps();// 原商品数量
 
-								cfsm = div(spsm, cfbl);// 拆分数量
+								cfsm = div(spsm, cfbl);// 拆分数量,保留6位解决误差
 								cfje = div(cfjyspmxtmp.getSpje(), cfbl);// 拆分金额
 								
 								cfse = div(spse, cfbl).setScale(2, BigDecimal.ROUND_HALF_UP);// 拆分税额
@@ -364,13 +364,20 @@ public class InvoiceSplitUtils {
 							cfjyspmx.setSqlsh(sqlsh);
 							cfjyspmx.setSpmxxh(spmxxh);
 							cfjyspmx.setSpje(cfje);
-							cfjyspmx.setSps(cfsm);
+							if(null != cfsm && !cfsm.equals("")){
+								cfjyspmx.setSps(cfsm.setScale(6, BigDecimal.ROUND_HALF_UP));
+							}else{
+								cfjyspmx.setSps(cfsm);
+							}
+							
 							cfjyspmx.setSpse(cfse);
 							cfjyspmx.setFpnum(fpnum);
 							cfjyspmx.setSpmc(spmc);
 							cfjyspmx.setSpggxh(spggxh);
 							cfjyspmx.setSpdw(spdw);
-							cfjyspmx.setSpdj(spdj);
+							if(null!=cfsm && !cfsm.equals("") && (!cfsm.equals("")&&null!=cfsm&&cfsm.doubleValue()!=0)){
+								cfjyspmx.setSpdj(div(cfje, cfsm.setScale(6, BigDecimal.ROUND_HALF_UP)).setScale(15, BigDecimal.ROUND_HALF_UP));
+							}
 							cfjyspmx.setSpsl(spsl);
 							cfjyspmx.setJshj(cfjshj);
 							cfjyspmx.setYkphj(new BigDecimal(0));
@@ -386,6 +393,7 @@ public class InvoiceSplitUtils {
 							cfjyspmxtmp.setSpje(sub(cfjyspmxtmp.getSpje(),cfje));
 							if (null != spdj && !"".equals(spdj) && null != spsm && !"".equals(spsm)) {
 							   cfjyspmxtmp.setSps(sub(cfjyspmxtmp.getSps(),cfsm));
+							   cfjyspmxtmp.setSpdj(div(cfjyspmxtmp.getSpje(),cfjyspmxtmp.getSps()).setScale(15, BigDecimal.ROUND_HALF_UP));
 							}
 							cfjyspmxtmp.setSpse(sub(cfjyspmxtmp.getSpse(),cfse));
 							cfjyspmxtmp.setJshj(sub(cfjyspmxtmp.getJshj(),cfjshj));
@@ -397,7 +405,12 @@ public class InvoiceSplitUtils {
 								cfjyspmxtmp.setSpje(spje.setScale(2, BigDecimal.ROUND_HALF_UP));
 								cfjyspmxtmp.setJshj(spjshj.setScale(2, BigDecimal.ROUND_HALF_UP));
 								cfjyspmxtmp.setSpse(sub(spjshj,spje).setScale(2, BigDecimal.ROUND_HALF_UP));					
-								cfjyspmxtmp.setSps(sub(jyspmx.getSps(),cfsm));
+								if(null == jyspmx.getSps() || jyspmx.getSps().equals("")||(null != jyspmx.getSps() && !jyspmx.getSps().equals("")&&jyspmx.getSps().doubleValue() ==0)){
+									
+								}else{
+									cfjyspmxtmp.setSps(sub(jyspmx.getSps(),cfsm).setScale(6, BigDecimal.ROUND_HALF_UP));
+									cfjyspmxtmp.setSpdj(div(cfjyspmxtmp.getSpje(),cfjyspmxtmp.getSps()).setScale(15, BigDecimal.ROUND_HALF_UP));
+								}
 							}
 						}
 						
@@ -486,13 +499,19 @@ public class InvoiceSplitUtils {
 						cfjyspmx.setSqlsh(sqlsh);
 						cfjyspmx.setSpmxxh(spmxxh);
 						cfjyspmx.setSpje(cfje);
-						cfjyspmx.setSps(cfsm);
+						if(null !=cfsm && !cfsm.equals("")){
+							cfjyspmx.setSps(cfsm.setScale(6, BigDecimal.ROUND_HALF_UP));
+						}else{
+							cfjyspmx.setSps(cfsm);
+						}
 						cfjyspmx.setSpse(cfse);
 						cfjyspmx.setFpnum(fpnum);
 						cfjyspmx.setSpmc(spmc);
 						cfjyspmx.setSpggxh(spggxh);
 						cfjyspmx.setSpdw(spdw);
-						cfjyspmx.setSpdj(spdj);
+						if(null!= cfsm &&!cfsm.equals("") && (null !=cfsm &&!cfsm.equals("")&&cfsm.doubleValue()!=0)){
+							cfjyspmx.setSpdj(div(cfje, cfsm.setScale(6, BigDecimal.ROUND_HALF_UP)).setScale(15, BigDecimal.ROUND_HALF_UP));
+						}
 						cfjyspmx.setSpsl(spsl);
 						cfjyspmx.setJshj(cfjshj);
 						cfjyspmx.setYkphj(new BigDecimal(0));
@@ -509,7 +528,12 @@ public class InvoiceSplitUtils {
 								cfjyspmxtmp.setSpje(ccje.setScale(2, BigDecimal.ROUND_HALF_UP));
 								cfjyspmxtmp.setJshj(sub(spjshj,cfjshj).setScale(2, BigDecimal.ROUND_HALF_UP));
 								cfjyspmxtmp.setSpse(sub(sub(spjshj,cfjshj),ccje).setScale(2, BigDecimal.ROUND_HALF_UP));					
-								cfjyspmxtmp.setSps(sub(jyspmx.getSps(),cfsm));
+								if(null == jyspmx.getSps() || jyspmx.getSps().equals("")||(!jyspmx.getSps().equals("")&&jyspmx.getSps().doubleValue() ==0)){
+									
+								}else{
+									cfjyspmxtmp.setSps(sub(jyspmx.getSps(),cfsm).setScale(6, BigDecimal.ROUND_HALF_UP));
+									cfjyspmxtmp.setSpdj(div(cfjyspmxtmp.getSpje(),cfjyspmxtmp.getSps()).setScale(15, BigDecimal.ROUND_HALF_UP));
+								}
 							}
 						}
 					}

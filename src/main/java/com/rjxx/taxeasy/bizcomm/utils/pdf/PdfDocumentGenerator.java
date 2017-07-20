@@ -237,7 +237,66 @@ public class PdfDocumentGenerator {
         }
         return 9;
     }
+    /**
+     * 获取商品数量字体大小
+     *
+     * @param spsl
+     * @return
+     */
+    private int getSpslFontSize(String spsl) {
+        if(spsl.length()>15){
+            spsl=spsl.substring(0,14);
+        }
+        if (StringUtils.isBlank(spsl)) {
+            return 9;
+        }
+        try {
+            int dataLength = spsl.getBytes("gbk").length;
+            if (dataLength <= 6) {
+                return 9;
+            } else if (dataLength > 6 && dataLength <= 10) {
+                return 8;
+            } else if (dataLength > 10 && dataLength <= 12) {
+                return 7;
+            } else {
+                return 6;
+            }
+        } catch (Exception e) {
+            logger.error("", e);
+        }
+        return 9;
+    }
 
+    /**
+     * 获取商品单价字体大小
+     * @param spdj
+     * @return
+     */
+    private int getSpdjFontSize(String spdj) {
+        if(spdj.length()>17){
+            spdj=spdj.substring(0,16);
+        }
+        if (StringUtils.isBlank(spdj)) {
+            return 9;
+        }
+        try {
+            int dataLength = spdj.getBytes("gbk").length;
+            if (dataLength <= 6) {
+                return 9;
+            } else if (dataLength > 6 && dataLength <= 10) {
+                return 8;
+            } else if (dataLength > 10 && dataLength <= 12) {
+                return 7;
+            } else if (dataLength > 12 && dataLength <= 14){
+                return 6;
+            }else{
+                return 5;
+            }
+        } catch (Exception e) {
+            logger.error("", e);
+        }
+        return 9;
+    }
     public boolean GeneratPDF(Map<String, Object> map, Jyls jyls, Kpls kpls)
              {
         try {
@@ -361,7 +420,10 @@ public class PdfDocumentGenerator {
 
             // 发票明细部分
             List<Kpspmx> t_kpspmxes = dataOperate.getPDFSpmx(kpls.getKplsh());
-            DecimalFormat df = new DecimalFormat("######0.00");
+            DecimalFormat df = new DecimalFormat("#0.00");
+            DecimalFormat dfsl = new DecimalFormat("#0.00####");
+            DecimalFormat dfdj = new DecimalFormat("#0.00##########");
+
             // 合计金额部分
             String total = df.format(kpls.getJshj());
             String totalAmount = df.format(kpls.getHjje());     //le.getTotalAmount(djh, jyspmxs);// 两位小数已保留
@@ -384,13 +446,13 @@ public class PdfDocumentGenerator {
                     //数量
                     String xmsl = "";
                     if (sps != null && sps != 0) {
-                        xmsl = df.format(sps);
+                        xmsl = dfsl.format(sps);
                     }
                     //单价
                     Double dj = t_kpspmx.getSpdj();
                     String xmdj = "";
                     if (dj != null && dj != 0) {
-                        xmdj = df.format(dj);
+                        xmdj = dfdj.format(dj);
                     }
                     FpPdfMxInfo fpPdfMxInfo = new FpPdfMxInfo(t_kpspmx.getSpmc(),//商品名称
                             t_kpspmx.getSpggxh() == null ? "" : t_kpspmx.getSpggxh(),//规格型号
@@ -412,6 +474,10 @@ public class PdfDocumentGenerator {
                     fpPdfMxInfo.setSpmcSize(getSpmcFontSize(fpPdfMxInfo.getSpmc()));
                     //处理规格型号字体大小
                     fpPdfMxInfo.setSpggxhSize(getSpggxhFontSize(fpPdfMxInfo.getSpggxh()));
+                    //处理商品数量字体大小
+                    fpPdfMxInfo.setSpslSize(getSpslFontSize(xmsl));
+                    //处理商品单价字体大小
+                    fpPdfMxInfo.setSpdjSize(getSpdjFontSize(xmdj));
                     pdfMxList.add(fpPdfMxInfo);
                 }
             } else {
@@ -429,7 +495,12 @@ public class PdfDocumentGenerator {
                 //处理商品名称字体大小
                 fpPdfMxInfo.setSpmcSize(getSpmcFontSize(fpPdfMxInfo.getSpmc()));
                 //处理规格型号字体大小
+
                 fpPdfMxInfo.setSpggxhSize(getSpggxhFontSize(fpPdfMxInfo.getSpggxh()));
+                //处理商品数量字体大小
+                fpPdfMxInfo.setSpslSize(getSpslFontSize( df.format(/*xmsl*/1.00)));
+                //处理商品单价字体大小
+                fpPdfMxInfo.setSpdjSize(getSpdjFontSize( df.format(Double.parseDouble(totalAmount))));
                 pdfMxList.add(fpPdfMxInfo);
                 /*****************************/
             }
@@ -508,7 +579,6 @@ public class PdfDocumentGenerator {
         }
         return true;
     }
-
     public static void main(String[] args) throws Exception {
         DecimalFormat df = new DecimalFormat("######0.000000");
         //System.out.println(df.format(0.00));

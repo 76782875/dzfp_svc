@@ -71,12 +71,12 @@ public class GetDataService {
                     "\t<Spbmbbh>13.0</Spbmbbh>\n" +
                     "\t<StoreNo></StoreNo>\n" +
                     "\t<Seller>\n" +
-                    "\t\t<Identifier>310104132203459</Identifier>\n" +
-                    "\t\t<Name>上海西郊宾馆</Name>\n" +
-                    "\t\t<Address>某某路10号1203室</Address>\n" +
-                    "\t\t<TelephoneNo>021-55555555</TelephoneNo>\n" +
-                    "\t\t<Bank>中国建设银行打浦桥支行</Bank>\n" +
-                    "\t\t<BankAcc>123456789-0</BankAcc>\n" +
+                    "\t\t<Identifier>91310000770241126F</Identifier>\n" +
+                    "\t\t<Name>泉盛餐饮（上海）有限公司</Name>\n" +
+                    "\t\t<Address>上海市奉贤区南桥镇奉金路118号</Address>\n" +
+                    "\t\t<TelephoneNo>021-59895352</TelephoneNo>\n" +
+                    "\t\t<Bank>工商银行上海市天山路支行</Bank>\n" +
+                    "\t\t<BankAcc>1001246909006990813\t</BankAcc>\n" +
                     "\t</Seller>\n" +
                     "\t\t<Orders>\n" +
                     "\t\t\t<OrderMain>\n" +

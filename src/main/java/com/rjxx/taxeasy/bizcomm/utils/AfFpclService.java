@@ -218,9 +218,11 @@ public class AfFpclService {
             jyspmxs.get(0).setSpje(new BigDecimal(spje));
             jyspmxs.get(0).setSpse(new BigDecimal(spse));
             jyspmxs.get(0).setJshj(new BigDecimal(jshj));
+            List<JyspmxDecimal2> jyspmxOne = new ArrayList<JyspmxDecimal2>();
+            jyspmxOne.add(jyspmxs.get(0));
             // 价税分离
             if ("1".equals(jyxxsq.getHsbz())) {
-                jyspmxs = SeperateInvoiceUtils.separatePrice2(jyspmxs);
+                jyspmxs = SeperateInvoiceUtils.separatePrice2(jyspmxOne);
             }
             //取最大限额
             double zdje = 0d;
@@ -318,7 +320,7 @@ public class AfFpclService {
             }
             List<JyspmxDecimal2> splitKpspmxs = new ArrayList<JyspmxDecimal2>();
             Map mapResult = new HashMap();
-            mapResult = InvoiceSplitUtils.dealDiscountLine(jyspmxs);
+            mapResult = InvoiceSplitUtils.dealDiscountLine(jyspmxOne);
             if (hsbz.equals("1")) {
                 // 分票
                 if (jyxxsq.getFpzldm().equals("12")) {

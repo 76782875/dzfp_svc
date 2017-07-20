@@ -950,7 +950,7 @@ public class FpclService {
                     zdje = xf.getDzpzdje();
                 }
             }
-
+            flag=false;
             List<Fpgz> listt = fpgzService.findAllByParams(new HashMap<>());
             for (Fpgz fpgz : listt) {
                 if (fpgz.getXfids().contains(String.valueOf(xf.getId()))) {
@@ -1274,7 +1274,7 @@ public class FpclService {
                     String result2 = TemplateUtils.generateContent(templateName, params2);
                     System.out.println(result2);
                     logger.debug("封装传开票通的报文" + result2);
-                    String url = "http://116.228.37.198:10002/SKServer/SKDo";
+                    String url = "http://210.14.78.228:7090/SKServer/SKDo";
                     resultMap = DzfphttpPost(result2, url, zjKplsvo5.getDjh() + "$" + zjKplsvo5.getKplsh(), zjKplsvo5.getXfsh(),
                             zjKplsvo5.getJylsh());
                     String  serialorder=this.updateKpls(resultMap);
@@ -1293,7 +1293,7 @@ public class FpclService {
 
             String kplsh=resultMap.get("KPLSH").toString();
             Kpls kpls = kplsService.findOne(Integer.valueOf(kplsh));
-        try{     String returncode=resultMap.get("RETURNCODE").toString();
+        try{      String returncode=resultMap.get("RETURNCODE").toString();
             String returnmsg=resultMap.get("RETURNMSG").toString();
         if (returncode.equals("0000")) {
             String fpdm = resultMap.get("FP_DM").toString();
@@ -1339,7 +1339,7 @@ public class FpclService {
                         }
                     }
                 }
-            generatePdfService.generatePdf(kpls.getKplsh());//此处生成PDF
+            skService.ReCreatePdf(kpls.getKplsh());
             Map parms=new HashMap();
                 parms.put("gsdm",kpls.getGsdm());
                 Gsxx gsxx=gsxxService.findOneByParams(parms);
