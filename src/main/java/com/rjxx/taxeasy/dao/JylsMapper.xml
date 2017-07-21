@@ -211,6 +211,7 @@
         '91' AND a.djh = b.djh  AND b.fpczlxdm = '11' AND
         b.pdfurl IS NOT NULL AND b.pdfurl !=''
         <if test="khh != null and khh != ''"> and a.khh = #{khh} </if>
+        <if test="tqm != null and tqm != ''"> and a.tqm = #{tqm} </if>
         <if test="je != null and je != ''"> and a.jshj = #{je} </if>
         <if test="ddh != null and ddh != ''"> and a.ddh = #{ddh} </if>
 
