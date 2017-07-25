@@ -37,6 +37,7 @@ public class HttpUtils {
     public static String HttpUrlPost(String QueryData,String AppId,String key){
         String result="";
         try {
+            logger.info("----------发送的报文------"+QueryData);
             JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
             Client client = dcf.createClient(WS_URL);
             String methodName = "UploadOrderData";
