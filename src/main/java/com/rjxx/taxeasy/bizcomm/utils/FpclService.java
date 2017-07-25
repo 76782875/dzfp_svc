@@ -1252,8 +1252,6 @@ public class FpclService {
                 Kpspmxvo kpspmxvo = new Kpspmxvo();
                 for (int j = 0; j < tmpList.size(); j++) {
                     kpspmxvo = tmpList.get(j);
-                    kpspmxvo.setHsspje(kpspmxvo.getSpje() + kpspmxvo.getSpse());
-                    kpspmxvo.setHsspdj((kpspmxvo.getSpje() + kpspmxvo.getSpse()) / kpspmxvo.getSps());
                     hjje = hjje + kpspmxvo.getSpje();
                     hjse = hjse + kpspmxvo.getSpse();
                 }
