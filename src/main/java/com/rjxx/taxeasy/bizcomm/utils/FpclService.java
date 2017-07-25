@@ -703,6 +703,16 @@ public class FpclService {
         return JSONObject.toJSONString(resultMap).toString();
     }
 
+    /**
+     * 调用电子发票税控服务器
+     * @param sendMes
+     * @param url
+     * @param key
+     * @param xfsh
+     * @param jylsh
+     * @return
+     * @throws Exception
+     */
     private Map DzfphttpPost(String sendMes, String url, String key, String xfsh, String jylsh) throws Exception {
         HttpPost httpPost = new HttpPost(url);
         CloseableHttpResponse response = null;
@@ -1211,19 +1221,25 @@ public class FpclService {
         return list;
     }
 
-    public List skdzfp(List jyxxsqList, String kpfs) {
+    public String skdzfp(List jyxxsqList, String kpfs) {
         List fpclList = new ArrayList();
         Map resultMap = null;
-        List list=new ArrayList();
+        String resultxml="";
         try {
-            fpclList = (List) this.zjkp(jyxxsqList, kpfs);//直接开票
+            /**
+             * 调用直接开票方法
+             */
+            fpclList = (List) this.zjkp(jyxxsqList, kpfs);
         } catch (Exception e1) {
-            // TODO Auto-generated catch block
             e1.printStackTrace();
         }
+
         List resultList = new ArrayList();
         if (null != fpclList) {
             KplsVO5 zjKplsvo5 = new KplsVO5();
+            /**
+             * 循环分票后的list，封装成kplsVO5.
+             */
             for (int i = 0; i < fpclList.size(); i++) {
                 double hjje = 0.00;
                 double hjse = 0.00;
@@ -1269,7 +1285,9 @@ public class FpclService {
                     params2.put("mxCount", tmpList.size());
                     params2.put("hjje", hjje);
                     params2.put("hjse", hjse);
-                    //params2.put("jyxxsq", jyxxsq);
+                    /**
+                     * 模板名称，电子票税控服务器报文
+                     */
                     String templateName = "dzfp-xml.ftl";
                     String result2 = TemplateUtils.generateContent(templateName, params2);
                     System.out.println(result2);
@@ -1278,7 +1296,10 @@ public class FpclService {
                     resultMap = DzfphttpPost(result2, url, zjKplsvo5.getDjh() + "$" + zjKplsvo5.getKplsh(), zjKplsvo5.getXfsh(),
                             zjKplsvo5.getJylsh());
                     String  serialorder=this.updateKpls(resultMap);
-                    list.add(serialorder);
+                    resultxml="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                            "<Request>\n" +
+                            "<Serialorder>"+serialorder+"</Serialorder>\n" +
+                            "</Request>\n";
                     logger.debug("封装传开票通的返回报文" + JSONObject.toJSONString(resultMap));
                 } catch (Exception e) {
                     // TODO Auto-generated catch block
@@ -1286,7 +1307,7 @@ public class FpclService {
                 }
             }
         }
-        return list;
+        return resultxml;
     }
 
     public String updateKpls(Map resultMap){
