@@ -723,6 +723,12 @@
         <if test="gsdm !=null and gsdm !=''">
             and gsdm = #{gsdm}
         </if>
+        <if test="xfsh !=null and xfsh !=''">
+            and xfsh = #{xfsh}
+        </if>
+        <if test="kplsh !=null and kplsh !=''">
+            and kplsh = #{kplsh}
+        </if>
         <if test="serialorder !=null and serialorder !=''">
             and serialorder = #{serialorder}
         </if>
