@@ -1292,10 +1292,27 @@ public class GetDataService {
                        //获取     支付方式代码
                        String paytype ="";
                        if (null!=payData.getString("paytype")&&!payData.getString("paytype").equals("")){
-                           paytype =  payData.getString("paytype").toString();
-                           jyzfmx.setZffsDm(paytype);
-                       }
 
+                           if(payData.getString("paytype").toString().equals("现金")){
+                               paytype ="01";
+                           }
+                           if(payData.getString("paytype").toString().equals("支付宝")){
+                               paytype ="02";
+                           }
+                           if(payData.getString("paytype").toString().equals("积分")){
+                               paytype ="03";
+                           }
+                           if(payData.getString("paytype").toString().equals("微信")){
+                               paytype ="04";
+                           }
+                           if(payData.getString("paytype").toString().equals("银联卡")){
+                               paytype ="05";
+                           }
+                           if(payData.getString("paytype").toString().equals("会员卡")){
+                               paytype ="06";
+                           }
+                       }
+                       jyzfmx.setZffsDm(paytype);
                        //获取     顾客支付方式支付实际金额，负数为退款
                        Double zfje =null;
                        if (null!=payData.getDouble("payamount")&&!payData.getDouble("payamount").equals("")){
@@ -1320,10 +1337,7 @@ public class GetDataService {
 
                    }
                }
-
-
            }
-
       }
         Map rsMap=new HashMap();
         rsMap.put("jyxxsqList", jyxxsqList);
