@@ -152,7 +152,7 @@ public class CheckOrderUtil {
             // email
             String Email = (String) jyxxsq.getGfemail();
             if (Email != null && !Email.equals("") && !Email
-                    .matches("^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$")) {
+                    .matches("^([a-z0-9A-Z]+[-|\\_.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$")) {
                 result += ddh + ":请求参数<Email>格式有误;";
             }
             // 提取码校验
