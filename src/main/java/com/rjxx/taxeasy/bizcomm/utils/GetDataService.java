@@ -543,10 +543,13 @@ public class GetDataService {
                 x.setGsdm(gsdm);
                 x.setXfsh(Identifier);
                 Xf xf = xfService.findOneByParams(x);
+                Map params=new HashMap();
+                params.put("xfid",xf.getId());
+                Skp skp=skpService.findOneByParams(params);
                 jyxxsq.setXfid(xf.getId());
                 jyxxsq.setJylsh("JY" + new SimpleDateFormat("yyyyMMddHHmmssSS").format(new Date()));
-                String kpddm=ExtractCode.substring(4,10);
-                jyxxsq.setKpddm(kpddm);
+                //String kpddm=ExtractCode.substring(4,10);
+                jyxxsq.setKpddm(skp.getKpddm());
                 jyxxsq.setJshj(Double.valueOf(totalAmount));
                 jyxxsq.setHsbz(taxMark);
                 jyxxsq.setBz(remark);
