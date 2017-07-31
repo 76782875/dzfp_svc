@@ -4,6 +4,8 @@ import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.dao.ZffsJpaDao;
 import com.rjxx.taxeasy.dao.ZffsMapper;
 import com.rjxx.taxeasy.domains.Zffs;
+import com.rjxx.taxeasy.vo.ZffsVo;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,6 +48,10 @@ public class ZffsService {
         return zffsMapper.findAllByParams(params);
     }
 
+    public List<ZffsVo> findAllByMap(Map params) {
+        return zffsMapper.findAllByMap(params);
+    }
+    
     public List<Zffs> findByPage(Pagination pagination) {
         return zffsMapper.findByPage(pagination);
     }

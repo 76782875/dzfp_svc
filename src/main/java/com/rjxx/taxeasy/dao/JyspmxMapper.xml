@@ -61,7 +61,7 @@
     </select>
 
     <select id="getNeedToKP4" parameterType="map" resultType="jyspmxdecimal2">
-        SELECT * FROM t_jymxsq_cl t WHERE t.sqlsh= #{sqlsh} and t.jshj order by spmxxh
+        SELECT * FROM t_jymxsq_cl t WHERE t.sqlsh= #{sqlsh} order by spmxxh asc,fphxz desc
     </select>
 
 	<select id="findAll" parameterType="map" resultType="jyspmx">

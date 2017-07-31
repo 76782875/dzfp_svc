@@ -3,6 +3,7 @@ package com.rjxx.taxeasy.dao;
 import com.rjxx.comm.mybatis.MybatisRepository;
 import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.domains.Zffs;
+import com.rjxx.taxeasy.vo.ZffsVo;
 
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,8 @@ public interface ZffsMapper {
 
     public List<Zffs> findAllByParams(Map params);
 
+    public List<ZffsVo> findAllByMap(Map params);
+    
     public List<Zffs> findByPage(Pagination pagination);
 
 }

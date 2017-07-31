@@ -1,6 +1,7 @@
 package com.rjxx.taxeasy.bizcomm.utils;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,11 +11,13 @@ import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.rjxx.taxeasy.domains.Cszb;
 import com.rjxx.taxeasy.domains.Jymxsq;
 import com.rjxx.taxeasy.domains.JymxsqCl;
 import com.rjxx.taxeasy.domains.Jyxxsq;
 import com.rjxx.taxeasy.domains.Jyzfmx;
 import com.rjxx.taxeasy.domains.Zffs;
+import com.rjxx.taxeasy.service.CszbService;
 import com.rjxx.taxeasy.service.ZffsService;
 
 @Service
@@ -23,8 +26,11 @@ public class DiscountDealUtil {
 	@Autowired
 	private ZffsService zffsService;
 	
+	@Autowired
+	private CszbService cszbService;
+	
 	/**
-	 * 将多笔订单分开，逐条调用处理折扣数据。
+	 * 将多笔订单分开，逐条调用处理折扣数据（开票方式为2折扣）。
 	 */
 	public List<JymxsqCl> dealDiscount(List<Jyxxsq> jyxxsqList,List<Jymxsq> jymxsqList,List<Jyzfmx> jyzfmxList,String gsdm){
 		
@@ -49,7 +55,7 @@ public class DiscountDealUtil {
 					jymxsqTmpList.add(jymxsq);
 				}
 			}
-			if (null != jyzfmxList && !jyzfmxList.isEmpty() && null !=kpfsList && !kpfsList.isEmpty()) {
+			if (null != jyzfmxList && !jyzfmxList.isEmpty() && null !=zffsList && !zffsList.isEmpty()) {
 				for (int k = 0; k < jyzfmxList.size(); k++) {
 					Jyzfmx jyzfmx = jyzfmxList.get(k);
 					if (jyxxsq.getDdh().equals(jyzfmx.getDdh())) {
@@ -67,11 +73,48 @@ public class DiscountDealUtil {
 			}
 			jshj = jyxxsq.getJshj();
 			hsbz = jyxxsq.getHsbz();
+			zkzje = getShePontsPrice(zkzje,jyxxsq);//判断是否需要做舍分处理
 			jymxsqClTmpList = dealDiscount(jymxsqTmpList,zkzje,jshj,hsbz);
-			JymxsqClResultList.addAll(jymxsqClTmpList);
+			//判断是否需要做合并折扣行
+			Cszb cszb = cszbService.getSpbmbbh(jyxxsq.getGsdm(), jyxxsq.getXfid(), jyxxsq.getSkpid(), "sfhbzk");
+			if(null != cszb && !cszb.equals("")){
+				if("是" == cszb.getCsz() || cszb.getCsz().equals("是")){
+					List<JymxsqCl> resultList = discountMergeLines(jymxsqClTmpList);
+					JymxsqClResultList.addAll(resultList);	
+				}else{
+					JymxsqClResultList.addAll(jymxsqClTmpList);
+				}
+				
+			}else{
+				JymxsqClResultList.addAll(jymxsqClTmpList);
+			}
+			
 		}
 		return JymxsqClResultList;
 	}
+	
+	/**
+	 * 判断是否需要做舍分处理，将舍分金额预处理到各行明细中
+	 * @param zkzje 原折扣总金额
+	 * @param zkzje 处理后的折扣总金额
+	 */
+	private double getShePontsPrice(double zkzje,Jyxxsq jyxxsq){
+		double clzkzje = 0.00;
+		Cszb cszb = cszbService.getSpbmbbh(jyxxsq.getGsdm(), jyxxsq.getXfid(), jyxxsq.getSkpid(), "sfsfcl");
+		if(null != cszb && !cszb.equals("")){
+		    if("是" == cszb.getCsz() || cszb.getCsz().equals("是")){
+		    	 BigDecimal b = new BigDecimal(jyxxsq.getJshj());
+		         double f1 = b.setScale(1, BigDecimal.ROUND_DOWN).doubleValue();
+		         clzkzje = new BigDecimal((zkzje+jyxxsq.getJshj()-f1)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		    }else{
+		    	clzkzje = zkzje;
+		    }
+		}else{
+			clzkzje = zkzje;
+		}
+		return clzkzje;
+	}
+	
 	/**
 	 * 处理申请明细信息，将其处理到t_jymxsq_cl表中 
 	 * @param jymxsqList 原单笔交易申请明细
@@ -86,8 +129,8 @@ public class DiscountDealUtil {
         //折扣总金额判断，金额大于0说明需要处理折扣问题
 		if (zkzje > 0) {
 			//计算折扣率，保留十位小数
-			double zkl = div(zkzje,jshj, 10);
-			int spmxxh = 1;
+			double zkl = div(zkzje,jshj, 20);
+			//int spmxxh = 1;
 			
 			//存储金额最大的一条或两条申请明细
 			List<Jymxsq> jshjMaxList = new ArrayList<Jymxsq>();
@@ -126,43 +169,46 @@ public class DiscountDealUtil {
 				Jymxsq jymxsq = new Jymxsq(jymxsqList.get(i));
 				//该行为正常行
 				if (jymxsq.getFphxz().equals("0")) {
-					jymxsq.setSpmxxh(spmxxh);
+					//jymxsq.setSpmxxh(spmxxh);
 					jymxsq.setFphxz("2");// 被折扣行
 					JymxsqCl jymxsqClTmp = new JymxsqCl(jymxsq);
 					jymxsqClList.add(jymxsqClTmp);
-					spmxxh++;
+					//spmxxh++;
 					JymxsqCl jymxsqCl = new JymxsqCl(jymxsq);
 					jymxsqCl.setFphxz("1");// 折扣行
 					jymxsqCl.setSpje(-jymxsq.getSpje() * zkl);
 					jymxsqCl.setSpse(-jymxsq.getSpse() * zkl);
-					jymxsqCl.setJshj(-(jymxsq.getSpje() * zkl + jymxsq.getSpse() * zkl));
-					jymxsqCl.setSps(-jymxsq.getSpje() * zkl / jymxsq.getSpdj());
-					jymxsqCl.setSpmxxh(spmxxh);
+					jymxsqCl.setJshj(new BigDecimal((jymxsqCl.getSpje())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue()
+							+new BigDecimal((jymxsqCl.getSpse())).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue());
+					jymxsqCl.setSps(null);
+					jymxsqCl.setSpdj(null);
+					jymxsqCl.setSpmxxh(jymxsq.getSpmxxh());
 					jymxsqClList.add(jymxsqCl);
-					spmxxh++;
+					//spmxxh++;
 				} else {
 					if (jymxsq.getFphxz().equals("2")) {
-						int mxxh = jymxsq.getSpmxxh();
-						jymxsq.setSpmxxh(spmxxh);
+						//int mxxh = jymxsq.getSpmxxh();
+						//jymxsq.setSpmxxh(spmxxh);
 						// jymxsq.setFphxz("2");//被折扣行
 						JymxsqCl jymxsqClTmp = new JymxsqCl(jymxsq);
 						jymxsqClList.add(jymxsqClTmp);
-						spmxxh++;
+						//spmxxh++;
 						for (int j = 0; j < jymxsqList.size(); j++) {
 							Jymxsq jymxsq2 = new Jymxsq(jymxsqList.get(j));
-							if (jymxsq2.getSpmc().equals(jymxsq.getSpmc()) && jymxsq2.getSpdj().equals(jymxsq.getSpdj())
-									&& jymxsq2.getSpggxh().equals(jymxsq.getSpggxh())
-									&& jymxsq2.getSpmxxh() == (mxxh + 1)) {
+							if (jymxsq2.getSpmc().equals(jymxsq.getSpmc()) && jymxsq2.getSpdm().equals(jymxsq.getSpdm())
+									&& jymxsq2.getSpggxh().equals(jymxsq.getSpggxh())&&jymxsq2.getDdh().equals(jymxsq.getDdh())
+									&& jymxsq2.getSpmxxh() ==jymxsq.getSpmxxh() && jymxsq2.getFphxz().equals("1")) {
 								// jymxsqCl.setFphxz("1");//折扣行
 								JymxsqCl jymxsqCl = new JymxsqCl(jymxsq2);
 								jymxsqCl.setSpje(-(jymxsq2.getSpje() + jymxsq.getSpje()) * zkl+jymxsq2.getSpje());
 								jymxsqCl.setSpse(-(jymxsq2.getSpse() + jymxsq.getSpse()) * zkl+jymxsq2.getSpse());
-								jymxsqCl.setJshj(-((jymxsq2.getSpje() + jymxsq.getSpje()) * zkl
-										+ (jymxsq2.getSpse() + jymxsq.getSpse()) * zkl)+jymxsq2.getJshj());
-								jymxsqCl.setSps((-(jymxsq2.getSpje() + jymxsq.getSpje()) * zkl +jymxsq2.getSpje())/ jymxsq2.getSpdj());
-								jymxsqCl.setSpmxxh(spmxxh);
+								jymxsqCl.setJshj(new BigDecimal((jymxsqCl.getSpje())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue()
+										+new BigDecimal((jymxsqCl.getSpse())).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue());
+								jymxsqCl.setSps(null);
+								jymxsqCl.setSpdj(null);
+								jymxsqCl.setSpmxxh(jymxsq2.getSpmxxh());
 								jymxsqClList.add(jymxsqCl);
-								spmxxh++;
+								//spmxxh++;
 							}
 						}
 					}
@@ -178,41 +224,44 @@ public class DiscountDealUtil {
 			}
 			if(jshjMaxList.size()==1){
 				Jymxsq jymxsqMax = new Jymxsq(jshjMaxList.get(0));
-				jymxsqMax.setSpmxxh(spmxxh);
+				//jymxsqMax.setSpmxxh(spmxxh);
 				jymxsqMax.setFphxz("2");// 被折扣行
 				JymxsqCl jymxsqClTmp = new JymxsqCl(jymxsqMax);
 				jymxsqClList.add(jymxsqClTmp);
-				spmxxh++;
+				//spmxxh++;
 				JymxsqCl jymxsqCl = new JymxsqCl(jymxsqMax);
 				jymxsqCl.setFphxz("1");// 折扣行
 				jymxsqCl.setSpje(hsbz.equals("1")?-(zkzje+zkjehj):-(zkzje+zkjehj)/(1+jymxsqCl.getSpsl()));
 				jymxsqCl.setJshj(-(zkzje+zkjehj));
 				jymxsqCl.setSpse(hsbz.equals("1")?0:jymxsqCl.getJshj()-jymxsqCl.getSpje());
 				
-				jymxsqCl.setSps(-jymxsqMax.getSpje()/jymxsqMax.getSpdj());
-				jymxsqCl.setSpmxxh(spmxxh);
+				jymxsqCl.setSps(null);
+				jymxsqCl.setSpdj(null);
+				//jymxsqCl.setSpmxxh(spmxxh);
 				jymxsqClList.add(jymxsqCl);
-				spmxxh++;
+				//spmxxh++;
 			}else{
 				for(int n=0;n<jshjMaxList.size();n++){
 				  Jymxsq jymxsqMax = new Jymxsq(jshjMaxList.get(n));
 					if(jymxsqMax.getFphxz().equals("2")){
-						jymxsqMax.setSpmxxh(spmxxh);
+						//jymxsqMax.setSpmxxh(spmxxh);
 						// jymxsq.setFphxz("2");//被折扣行
 						JymxsqCl jymxsqClTmp = new JymxsqCl(jymxsqMax);
 						jymxsqClList.add(jymxsqClTmp);
-						spmxxh++;
+						//spmxxh++;
 					}else{
 						JymxsqCl jymxsqCl = new JymxsqCl(jymxsqMax);
 						jymxsqCl.setFphxz("1");// 折扣行
-						jymxsqCl.setSpje(hsbz.equals("1")?-(zkzje+zkjehj):-(zkzje+zkjehj)/(1+jymxsqCl.getSpsl()));
-						jymxsqCl.setJshj(-(zkzje+zkjehj));
+						double yjshj = jymxsqMax.getJshj();
+						jymxsqCl.setSpje(hsbz.equals("1")?-(zkzje+zkjehj-yjshj):-(zkzje+zkjehj-yjshj)/(1+jymxsqCl.getSpsl()));
+						jymxsqCl.setJshj(-(zkzje+zkjehj-yjshj));
 						jymxsqCl.setSpse(hsbz.equals("1")?0:jymxsqCl.getJshj()-jymxsqCl.getSpje());
 						
-						jymxsqCl.setSps(-jymxsqMax.getSpje()/jymxsqMax.getSpdj());
-						jymxsqCl.setSpmxxh(spmxxh);
+						jymxsqCl.setSps(null);
+						jymxsqCl.setSpdj(null);
+						//jymxsqCl.setSpmxxh(spmxxh);
 						jymxsqClList.add(jymxsqCl);
-						spmxxh++;
+						//spmxxh++;
 					}
 				}
 			}
@@ -272,9 +321,9 @@ public class DiscountDealUtil {
 						spmxxh++;
 						for (int j = 0; j < jymxsqList.size(); j++) {
 							Jymxsq jymxsq2 = jymxsqList.get(j);
-							if (jymxsq2.getSpmc().equals(jymxsq.getSpmc()) && jymxsq2.getSpdj().equals(jymxsq.getSpdj())
-									&& jymxsq2.getSpggxh().equals(jymxsq.getSpggxh())
-									&& jymxsq2.getSpmxxh() == (mxxh + 1)) {
+							if (jymxsq2.getSpmc().equals(jymxsq.getSpmc()) && jymxsq2.getSpdm().equals(jymxsq.getSpdm())
+									&& jymxsq2.getSpggxh().equals(jymxsq.getSpggxh())&& jymxsq2.getDdh().equals(jymxsq.getDdh())
+									&& jymxsq2.getSpmxxh() == (mxxh + 1) && jymxsq2.getFphxz().equals("1")) {
 								// jymxsqCl.setFphxz("1");//折扣行
 								JymxsqCl jymxsqCl = new JymxsqCl(jymxsq2);
 								jymxsqCl.setSpje(-(jymxsq2.getSpje() + jymxsq.getSpje()) * zkl+jymxsq2.getSpje());
@@ -300,8 +349,98 @@ public class DiscountDealUtil {
 		}
 		return jymxsqClList;
 	}
+	
+	/**
+	 * 将带有折扣行的数据进行合并，并将fphxz改为0。
+	 * @param jymxsqList 原单笔交易申请明细
+	 * @param zkzje 需要通过折扣处理的总金额（价税合计）
+	 * @param jshj 单笔订单总价税合计
+	 */
+	public List<JymxsqCl> discountMergeLines(List<JymxsqCl> jymxsqClList) {
+		List<JymxsqCl> resultList = new ArrayList<JymxsqCl>();//处理返回list
+		int spmxxh = 1;//商品明细
+		if (null != jymxsqClList && !jymxsqClList.isEmpty()) {
+			for (int i = 0; i < jymxsqClList.size(); i++) {
+				JymxsqCl jymxsqCl = jymxsqClList.get(i);
+				JymxsqCl jymxsqClR = new JymxsqCl();
+				//int mxxh = jymxsqCl.getSpmxxh();
+				if (jymxsqCl.getFphxz().equals("2") || "2" == jymxsqCl.getFphxz()) {
+					for (int j = 0; j < jymxsqClList.size(); j++) {
+						JymxsqCl jymxsqCl2 = jymxsqClList.get(j);
+						if (jymxsqCl2.getSpmc().equals(jymxsqCl.getSpmc())
+								&& jymxsqCl2.getSpdm().equals(jymxsqCl.getSpdm())
+								&& jymxsqCl2.getSpggxh().equals(jymxsqCl.getSpggxh())
+								&& jymxsqCl2.getSpmxxh() ==jymxsqCl.getSpmxxh() && jymxsqCl2.getFphxz().equals("1")) {
+							// jymxsqCl.setFphxz("1");//折扣行
+							jymxsqClR = genNewJymxsqCl(jymxsqCl);
+							jymxsqClR.setSpje(jymxsqCl.getSpje() + jymxsqCl2.getSpje());
+							jymxsqClR.setSpse(jymxsqCl.getSpse() + jymxsqCl2.getSpse());
+							jymxsqClR.setJshj(jymxsqCl.getJshj() + jymxsqCl2.getJshj());
+							jymxsqClR.setSps(jymxsqCl.getSps());
+							if(null != jymxsqClR.getSps() && !jymxsqClR.getSps().equals("")){
+								jymxsqClR.setSpdj(jymxsqClR.getSpje()/jymxsqClR.getSps());
+							}
+							jymxsqClR.setSpmxxh(spmxxh);
+							jymxsqClR.setFphxz("0");
+							resultList.add(jymxsqClR);
+							spmxxh++;
+						}
+					}
+				} else if (jymxsqCl.getFphxz().equals("0")) {
+					jymxsqClR = genNewJymxsqCl(jymxsqCl);
+					jymxsqClR.setSpmxxh(spmxxh);
+					resultList.add(jymxsqClR);
+					spmxxh++;
+				}
+			}
+		}
+		return resultList;
+	}
     
-    
+	/**
+     * 生成新的JymxsqCl，不会对原对象的值进行改变
+     *
+     * @param JymxsqCl
+     * @return 新JymxsqCl
+     */
+    private JymxsqCl genNewJymxsqCl(JymxsqCl jymxsqCl){
+    	JymxsqCl jymxsqClR = new JymxsqCl();
+    	jymxsqClR.setSqlsh(jymxsqCl.getSqlsh());
+		jymxsqClR.setDdh(jymxsqCl.getDdh());
+		jymxsqClR.setKpddm(jymxsqCl.getKpddm());
+		jymxsqClR.setHsbz(jymxsqCl.getHsbz());
+		jymxsqClR.setSpmxxh(jymxsqCl.getSpmxxh());
+		jymxsqClR.setFphxz(jymxsqCl.getFphxz());
+		jymxsqClR.setSpdm(jymxsqCl.getSpdm());
+		jymxsqClR.setSpmc(jymxsqCl.getSpmc());
+		jymxsqClR.setSpggxh(jymxsqCl.getSpggxh());
+		jymxsqClR.setSpzxbm(jymxsqCl.getSpzxbm());
+		jymxsqClR.setYhzcbs(jymxsqCl.getYhzcbs());
+		jymxsqClR.setYhzcmc(jymxsqCl.getYhzcmc());
+		jymxsqClR.setLslbz(jymxsqCl.getLslbz());
+		jymxsqClR.setSpdw(jymxsqCl.getSpdw());
+		jymxsqClR.setSps(jymxsqCl.getSps());
+		jymxsqClR.setSpdj(jymxsqCl.getSpdj());
+		jymxsqClR.setSpje(jymxsqCl.getSpje());
+		jymxsqClR.setSpsl(jymxsqCl.getSpsl());
+		jymxsqClR.setSpse(jymxsqCl.getSpse());
+		jymxsqClR.setKce(jymxsqCl.getKce());
+		jymxsqClR.setJshj(jymxsqCl.getJshj());
+		jymxsqClR.setHzkpxh(jymxsqCl.getHzkpxh());
+		jymxsqClR.setLrsj(jymxsqCl.getLrsj());
+		jymxsqClR.setLrry(jymxsqCl.getLrry());
+		jymxsqClR.setXgsj(jymxsqCl.getXgsj());
+		jymxsqClR.setXgry(jymxsqCl.getXgry());
+		jymxsqClR.setGsdm(jymxsqCl.getGsdm());
+		jymxsqClR.setSkpid(jymxsqCl.getSkpid());
+		jymxsqClR.setXfid(jymxsqCl.getXfid());
+		jymxsqClR.setYxbz(jymxsqCl.getYxbz());
+		jymxsqClR.setSpid(jymxsqCl.getSpid());
+		jymxsqClR.setYkjje(jymxsqCl.getYkjje());
+		jymxsqClR.setKkjje(jymxsqCl.getKkjje());
+		jymxsqClR.setSpbz(jymxsqCl.getSpbz());
+    	return jymxsqClR;
+    }
     /**
      * 提供（相对）精确的除法运算。 当发生除不尽的情况时，由scale参数指定精度，以后的数字四舍五入。
      *
@@ -327,9 +466,15 @@ public class DiscountDealUtil {
     
     public static void main(String[] args) {
 
-        double zkzje = 10.3333;
-        double jshj  = 222.332;
-        //System.out.println(div(zkzje,jshj,5));
+        double zkzje = 10.02;
+        double jshj  = 222.33;
+        System.out.println(new BigDecimal((jshj+zkzje)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+        DecimalFormat df = new DecimalFormat("0.0");
+        double f = 3.181;
+        BigDecimal b = new BigDecimal(f);
+        double f1 = b.setScale(1, BigDecimal.ROUND_DOWN).doubleValue();
+        System.out.println(b.setScale(1, BigDecimal.ROUND_DOWN));
+
         //System.out.println(zkzje/jshj);
     }
 }

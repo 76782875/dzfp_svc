@@ -1206,7 +1206,7 @@ public class FpclService {
             jymx.setLrry(jyls.getLrry());
             jymx.setXgsj(TimeUtil.getNowDate());
             jymx.setXgry(jyls.getXgry());
-            jymx.setFphxz("0");
+            jymx.setFphxz(mxItem.getFphxz());
             if (null == mxItem.getKce()) {
                 jymx.setKce(0d);
             } else {

@@ -12,9 +12,13 @@
     </select>
 
     <select id="findAllByParams" parameterType="map" resultType="xmlBean">
-        select * from t_xml where yxbz = '1'
-        <if test="orderBy != null">
-            order by #{orderBy}
+        select * from t_xml where 1 = 1
+        <if test="xfsh != null">
+          and xfsh =  #{xfsh}
+        </if>
+        <if test="lrsjq != null and lrsjq !='' and lrsjz != null and lrsjz !=''">
+            and lrsj between #{lrsjq} and
+            date_add(str_to_date(#{lrsjz},'%Y-%m-%d'),INTERVAL 1 day)
         </if>
     </select>
 

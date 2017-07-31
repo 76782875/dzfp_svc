@@ -5,6 +5,15 @@
 
     <select id="findOneByParams" parameterType="map" resultType="zffs">
         select * from t_zffs where yxbz = '1'
+        <if test="gsdm != null and gsdm !=''">
+             and gsdm = #{gsdm}
+        </if>
+        <foreach collection="kpfsList" open=" and kpfs_dm in (" separator="," close=")" item="item">
+                #{item}
+         </foreach>
+         <foreach collection="zffsList" open=" and zffs_dm in (" separator="," close=")" item="item">
+                #{item}
+         </foreach>
         <if test="orderBy != null">
             order by ${orderBy}
         </if>
@@ -16,17 +25,43 @@
           <if test="gsdm != null and gsdm !=''">
             and gsdm = #{gsdm}
         </if>
-        <foreach collection="kpfsList" open=" and kpfs_dm in (" separator="," close=")" item="item">
-                #{item}
-         </foreach>
-        <if test="zffsDm !=null and zffsDm !=''">
-            and zffs_dm = #{zffsDm}
-        </if>
+        <if test="kpfsList != null">
+       	 	<foreach collection="kpfsList" open=" and kpfs_dm in (" separator="," close=")" item="item">
+                	#{item}
+         	</foreach>
+         </if>
+         <if test="zffsList != null">
+        	<foreach collection="zffsList" open=" and zffs_dm in (" separator="," close=")" item="item">
+               	 #{item}
+       		</foreach>
+         </if>
+         <if test="zffsDm !=null and zffsDm !=''">
+             and zffs_dm = #{zffsDm}
+         </if>
         <if test="orderBy != null">
             order by ${orderBy}
         </if>
     </select>
 
+	<select id="findAllByMap" parameterType="map" resultType="zffsvo">
+        select a.* from t_zffs a where a.yxbz = '1' 
+        <if test="gsdm != null and gsdm !=''">
+            and a.gsdm = #{gsdm}
+        </if>
+        <if test="kpfsList != null">
+        	<foreach collection="kpfsList" open=" and a.kpfs_dm in (" separator="," close=")" item="item">
+               	 #{item}
+         	</foreach>
+         </if>
+        <if test="zffsList != null">
+        	<foreach collection="zffsList" open=" and a.zffs_dm in (" separator="," close=")" item="item">
+               	 #{item}
+       		</foreach>
+         </if>
+        <if test="orderBy != null">
+            order by ${orderBy}
+        </if>
+    </select>
     <select id="findByPage" parameterType="pagination" resultType="zffs">
         select * from t_zffs where yxbz = '1'
         <if test="params.orderBy != null">

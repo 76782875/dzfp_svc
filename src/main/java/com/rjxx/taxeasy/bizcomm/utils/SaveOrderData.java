@@ -95,7 +95,7 @@ public class SaveOrderData {
 				for (int k = 0; k < jyzfmxList.size(); k++) {
 					jyzfmx = jyzfmxList.get(k);
 					if (jyxxsq.getDdh().equals(jyzfmx.getDdh())) {
-						jyzfmx.setSqlsh(jyzfmx.getSqlsh());
+						jyzfmx.setSqlsh(jyxxsq.getSqlsh());
 						// 保存明细数据
 						jyzfmxService.save(jyzfmx);
 					}

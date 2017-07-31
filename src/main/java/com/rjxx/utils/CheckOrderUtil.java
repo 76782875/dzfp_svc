@@ -383,6 +383,9 @@ public class CheckOrderUtil {
 				String flag ="0";
 				for (int j = 0; j < jyzfmxList.size(); j++) {
 					jyzfmx = (Jyzfmx) jyzfmxList.get(j);
+					if(null ==jyzfmx.getZffsDm() || jyzfmx.getZffsDm().equals("")){
+						result += "订单号为" + ddh + "的订单,支付方式代码不能为空;";
+					}
 					if(null != zffsList && !zffsList.isEmpty()){
 						for(int k=0;k<zffsList.size();k++){
 							Zffs  zffs = zffsList.get(k);
@@ -409,8 +412,8 @@ public class CheckOrderUtil {
 					 * "条商品TaxAmount格式不正确！"; }
 					 */
 				}
-				
-				if (jshj2.compareTo(bd2) !=0) {
+				//交易支付明细合计！=价税合计并且交易支付明细合计舍分！=价税合计
+				if (jshj2.compareTo(bd2) !=0 && jshj2.setScale(1, BigDecimal.ROUND_DOWN).compareTo(bd2) !=0) {
 					result += "订单号为" + ddh + "的订单PayPrice合计与TotalAmount不等;";
 				}
 			}
