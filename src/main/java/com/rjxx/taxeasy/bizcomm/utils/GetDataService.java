@@ -849,9 +849,11 @@ public class GetDataService {
         parms.put("gsdm",gsdm);
 
         //查询参数总表第二次url
-        Cszb zb2 = cszbService.getSpbmbbh(gsdm, null,null, "sfzdfs");
-        String uri = zb2.getCsz()+"?access_token="+token;
-        System.out.println("第二次发送请求的url"+uri);
+        Cszb zb2 = cszbService.getSpbmbbh(gsdm, null,null, "sfhhurl");
+        //String uri = zb2.getCsz()+"?access_token="+token;
+        String uri = zb2.getCsz();
+        System.out.println("jkdz"+uri);
+        //System.out.println("第二次发送请求的url"+uri);
         Map resultMap = null;
         HttpPost httpPost = new HttpPost(uri);
         CloseableHttpResponse response = null;
@@ -862,12 +864,13 @@ public class GetDataService {
                 .build();
         //httpPost.setConfig(requestConfig);
         httpPost.addHeader("Content-Type", "application/json");
+        //传递数据验证码为json格式
+        Map nvps = new HashMap();
         try {
-            //传递数据验证码为json格式
-            Map nvps = new HashMap();
 
-            nvps.put("ExtractCode", ExtractCode);
-
+            nvps.put("channel","rongjin");
+            nvps.put("listno", ExtractCode);
+            System.out.println("kaipiaohao"+nvps.get("listno").toString());
             StringEntity requestEntity = new StringEntity(JSON.toJSONString(nvps), "utf-8");
             httpPost.setEntity(requestEntity);
             response = httpClient.execute(httpPost, new BasicHttpContext());
@@ -884,7 +887,7 @@ public class GetDataService {
             }
             System.out.println("接收返回值:" + buffer.toString());
             //解析json获取购物小票数据 封装数据
-            parmsMap = interpretSecForJson(gsdm, buffer.toString());
+            parmsMap = interpretSecForJson(gsdm, buffer.toString(),ExtractCode);
 
             List<Jyxxsq> jyxxsqList = (List) parmsMap.get("jyxxsqList");
             List<Jymxsq> jymxsqList = (List) parmsMap.get("jymxsqList");
@@ -892,7 +895,7 @@ public class GetDataService {
             String tmp = this.checkAll(jyxxsqList, jymxsqList, jyzfmxList,gsdm);
             parmsMap.put("tmp",tmp);
         }catch (Exception e){
-            System.out.println("request url=" + "" + ", exception, msg=" + e.getMessage());
+            System.out.println("request-url=" + uri+" request-requestEntity=" +nvps.toString()+ ", exception, msg=" + e.getMessage());
             e.printStackTrace();
             e.printStackTrace();
         }
@@ -1049,7 +1052,7 @@ public class GetDataService {
      * @return
      * @throws Exception
      */
-    public Map interpretSecForJson(String gsdm,String data)throws Exception {
+    public Map interpretSecForJson(String gsdm,String data,String tqm)throws Exception {
 
         Map params1 = new HashMap();
         params1.put("gsdm", gsdm);//公司代码
@@ -1077,15 +1080,15 @@ public class GetDataService {
 
                //获取发生日期
                Date tradeDate = null;
-               if (null!=jo.getDate("tradeDate")&&!jo.getDate("tradeDate").equals("")){
-                   tradeDate =jo.getDate("tradeDate") ;
+               if (null!=jo.getDate("tradedate")&&!jo.getDate("tradedate").equals("")){
+                   tradeDate =jo.getDate("tradedate") ;
                }
                System.out.println("获取发生日期"+tradeDate);
 
                //获取发生时间
                String tradeTime ="";
-               if (null!=jo.getString("tradeTime")&&!jo.getString("tradeTime").equals("")){
-                   tradeTime =  jo.getString("tradeTime").toString();
+               if (null!=jo.getString("tradetime")&&!jo.getString("tradetime").equals("")){
+                   tradeTime =  jo.getString("tradetime").toString();
                }
 
                //获取	退货时，原购物小票号
@@ -1141,13 +1144,14 @@ public class GetDataService {
                jyxxsq.setDdh(listno+"");//订单编号 对应小票流水号
                jyxxsq.setTqm(ExtractCode);// 提取码  对应购物小票流水号
                jyxxsq.setJylsh("JY" + new SimpleDateFormat("yyyyMMddHHmmssSS").format(new Date()));//交易流水号
-               String kpddm=ExtractCode.substring(0,2);
+               String kpddm=tqm.substring(0,3);
                jyxxsq.setKpddm(kpddm);
                //根据公司代码、开票点代码查询税控盘
                Map skpmap = new HashMap();
                skpmap.put("gsdm",gsdm);
                skpmap.put("kpddm",kpddm);
                Skp skpdata =   skpService.findOneByParams(skpmap);
+               //System.out.println("skp"+skpdata.toString());
                //根据销方id  查询
                Xf x = new Xf();
                x.setId(skpdata.getXfid());
@@ -1251,7 +1255,8 @@ public class GetDataService {
                        jymxsq.setSpdw("");//商品单位
                        //计算不含税金额
                         BigDecimal big = new BigDecimal("1");
-                        BigDecimal bhsamount =   amount.divide(big.add(taxrate));
+                        //BigDecimal bhsamount =   amount.divide(big.add(taxrate));
+                       BigDecimal bhsamount = InvoiceSplitUtils.div(amount,big.add(taxrate),2);
                        jymxsq.setSpje(bhsamount.doubleValue());//商品金额为不含税金额
                         //计算商品税额
                        BigDecimal spseAmount = bhsamount.multiply(taxrate);
@@ -1290,11 +1295,12 @@ public class GetDataService {
 
                        Jyzfmx jyzfmx = new Jyzfmx();
                        System.out.println("进入循环paylist");
-                       JSONObject payData = salelist.getJSONObject(p);
+                       JSONObject payData = paylist.getJSONObject(p);
 
                        //获取     支付方式代码
                        String paytype ="";
                        if (null!=payData.getString("paytype")&&!payData.getString("paytype").equals("")){
+/*
 
                            if(payData.getString("paytype").toString().equals("现金")){
                                paytype ="01";
@@ -1313,9 +1319,10 @@ public class GetDataService {
                            }
                            if(payData.getString("paytype").toString().equals("会员卡")){
                                paytype ="06";
-                           }
+                           }*/
+                            paytype= payData.getString("paytype");
+                           jyzfmx.setZffsDm(paytype);
                        }
-                       jyzfmx.setZffsDm(paytype);
                        //获取     顾客支付方式支付实际金额，负数为退款
                        Double zfje =null;
                        if (null!=payData.getDouble("payamount")&&!payData.getDouble("payamount").equals("")){
