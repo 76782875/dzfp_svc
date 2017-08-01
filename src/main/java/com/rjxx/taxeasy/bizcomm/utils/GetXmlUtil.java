@@ -2,6 +2,7 @@ package com.rjxx.taxeasy.bizcomm.utils;
 
 import com.rjxx.taxeasy.domains.Jymxsq;
 import com.rjxx.taxeasy.domains.Jyxxsq;
+import com.rjxx.taxeasy.domains.Jyzfmx;
 import com.rjxx.utils.TemplateUtils;
 import com.rjxx.utils.TimeUtil;
 import org.slf4j.Logger;
@@ -26,7 +27,7 @@ public class GetXmlUtil {
      * @param
      * @return
      */
-    public static String getFpkjXml(Jyxxsq jyxxsq, List<Jymxsq> jymxsqList){
+    public static String getFpkjXml(Jyxxsq jyxxsq, List<Jymxsq> jymxsqList,List<Jyzfmx> jyzfmxList){
 
         String templateName = "Fpkj.ftl";
         String jylssj = TimeUtil.formatDate(null == jyxxsq.getDdrq()? new Date():jyxxsq.getDdrq(), "yyyy-MM-dd HH:mm:ss");
@@ -35,6 +36,7 @@ public class GetXmlUtil {
         params2.put("jymxsqList",jymxsqList);
         params2.put("jylssj", jylssj);
         params2.put("count", jymxsqList.size());
+        params2.put("jyzfmxList",jyzfmxList);
         String result=null;
         try {
             result = TemplateUtils.generateContent(templateName, params2);

@@ -81,14 +81,20 @@ public class GeneratePdfService {
     private ConcurrentHashMap<Integer, Boolean> sffsdxMap = new ConcurrentHashMap<>();
 
     public void generatePdf(int kplsh) {
-        Kpls kpls = kplsService.findOne(kplsh);
-        int djh = kpls.getDjh();
-        Jyls jyls = jylsService.findOne(djh);
-        Map jyxxsqMap=new HashMap();
-        jyxxsqMap.put("gsdm",kpls.getGsdm());
-        jyxxsqMap.put("jylsh",jyls.getJylsh());
-        Jyxxsq jyxxsq=jyxxsqService.findOneByJylsh(jyxxsqMap);
+        Kpls kpls=null;
+        Jyls jyls=null;
+        Jyxxsq jyxxsq=null;
+        int djh=0;
         try {
+            logger.info("----生成PDF方法名----generatePdf---"+kplsh);
+            kpls = kplsService.findOne(kplsh);
+            djh = kpls.getDjh();
+            jyls = jylsService.findOne(djh);
+            Map jyxxsqMap=new HashMap();
+            jyxxsqMap.put("gsdm",kpls.getGsdm());
+            jyxxsqMap.put("jylsh",jyls.getJylsh());
+            jyxxsq=jyxxsqService.findOneByJylsh(jyxxsqMap);
+
             int xfid = jyls.getXfid();
             String sfmc = xfSfMap.get(xfid);
             if (StringUtils.isBlank(sfmc)) {
@@ -106,6 +112,7 @@ public class GeneratePdfService {
             map.put("FP_MW", kpls.getMwq());
             map.put("EWM", kpls.getFpEwm());
             if (pdg.GeneratPDF(map, jyls, kpls)) {
+                logger.info("----生成PDF方法名----generatePdf---"+kplsh);
                 dc.updatePDFUrl(map, jyls, kpls);// 生成pdf的路径更新入库
                 dc.updateFlag(jyls, "91");
                 //发送email
