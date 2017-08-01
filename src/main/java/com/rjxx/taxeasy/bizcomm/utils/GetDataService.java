@@ -17,6 +17,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.protocol.BasicHttpContext;
+import org.bouncycastle.pqc.math.linearalgebra.BigEndianConversions;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
@@ -792,7 +793,7 @@ public class GetDataService {
             parms.put("gsdm",gsdm);
 
             //查询参数总表url
-            Cszb zb1 = cszbService.getSpbmbbh(gsdm, null,null, "sfzdfs");
+            Cszb zb1 = cszbService.getSpbmbbh(gsdm, null,null, "shhqtokenurl");
 
             Map resultMap = null;
             HttpPost httpPost = new HttpPost(zb1.getCsz());
@@ -803,8 +804,12 @@ public class GetDataService {
                     .setDefaultRequestConfig(requestConfig)
                     .build();
             //httpPost.setConfig(requestConfig);
-            httpPost.addHeader("Content-Type", "application/json");
+            httpPost.addHeader("Accept", "application/json");
+            httpPost.addHeader("Authorization","Basic aWZpZWxkOmlmaWVsZDEyMzQ=");
+            //传递数据验证码为json格式
+             //Map nvps = new HashMap();
             try {
+              //  nvps.put("Authorization", "Basic aWZpZWxkOmlmaWVsZDEyMzQ=");
 
                 StringEntity requestEntity = new StringEntity(JSON.toJSONString(""), "utf-8");
                 httpPost.setEntity(requestEntity);
@@ -850,10 +855,10 @@ public class GetDataService {
 
         //查询参数总表第二次url
         Cszb zb2 = cszbService.getSpbmbbh(gsdm, null,null, "sfhhurl");
-        //String uri = zb2.getCsz()+"?access_token="+token;
-        String uri = zb2.getCsz();
-        System.out.println("jkdz"+uri);
-        //System.out.println("第二次发送请求的url"+uri);
+        String uri = zb2.getCsz()+"?access_token="+token;
+        //String uri = zb2.getCsz();
+        //System.out.println("jkdz"+uri);
+        System.out.println("two  url"+uri);
         Map resultMap = null;
         HttpPost httpPost = new HttpPost(uri);
         CloseableHttpResponse response = null;
@@ -965,7 +970,7 @@ public class GetDataService {
 
             //比较日期大小
             //获取当前时间转成秒数
-            Long datsTime = System.currentTimeMillis();
+           /* Long datsTime = System.currentTimeMillis();
             System.out.println(datsTime);
             System.out.println("第二个日期开始");
             String dateNow = "2017-07-20 10:20:16";
@@ -987,7 +992,14 @@ public class GetDataService {
             }
             if(sfgq >= 0){
                 System.out.println("过期了");
-            }
+            }*/
+           BigDecimal big1 = new BigDecimal("0.17");
+           BigDecimal big2 = new BigDecimal("1");
+           if(big1.compareTo(big2)>0){
+               System.out.println("big1 > big2");
+           }else {
+               System.out.println("big1 < big2");
+           }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1002,6 +1014,7 @@ public class GetDataService {
     public Map interpretFirstForJson(String gsdm,String data)throws Exception {
 
         Map resultMap=new HashMap();
+        System.out.println("data"+data);
         //传入数据
         JSONObject jsonObj = JSONObject.parseObject(data);
 
@@ -1160,7 +1173,7 @@ public class GetDataService {
 
                jyxxsq.setFpzldm("12"); //发票种类
                jyxxsq.setJshj(Double.valueOf(payamount));//价税合计
-               jyxxsq.setHsbz("1");//含税标志1含税
+               jyxxsq.setHsbz("1");//含税标志 1含税
                jyxxsq.setBz("");//备注
                jyxxsq.setZsfs("");//征税方式
                jyxxsq.setKpr(xf.getKpr());
@@ -1186,19 +1199,22 @@ public class GetDataService {
 
                JSONArray    salelist =   jo.getJSONArray("salelist");
                System.out.println("salelist的长度"+salelist.size());
+
                if(null != salelist && salelist.size() > 0 ){
                    //商品明细获取
                    int spmxxh = 0;
                    for (int s = 0; s< salelist.size(); s++ ){
 
-                        System.out.println("进入循环salelist");
                        Jymxsq jymxsq = new Jymxsq();
+                       System.out.println("进入循环salelist");
+
                        JSONObject saleData = salelist.getJSONObject(s);
 
                        //获取     商品税务附码
                        String goodsid ="";
                        if (null!=saleData.getString("goodsid")&&!saleData.getString("goodsid").equals("")){
                            goodsid =  saleData.getString("goodsid").toString();
+                           //String spdm = goodsid.replaceAll("\r\n");
                            jymxsq.setSpdm(goodsid);
                        }
                        System.out.println("获取salelist成功,数据商品税务附码gooid"+goodsid);
@@ -1207,7 +1223,7 @@ public class GetDataService {
                        String goodsname ="";
                        if (null!=saleData.getString("goodsname")&&!saleData.getString("goodsname").equals("")){
                            goodsname =  saleData.getString("goodsname").toString();
-                           jymxsq.setSpmc(goodsname);
+                           jymxsq.setSpmc(goodsname.trim());
                        }
 
                        //获取     	数量，负数为退货数量
@@ -1217,12 +1233,7 @@ public class GetDataService {
                            jymxsq.setSps(Double.valueOf(qty));//商品数量
                        }
 
-                       //获取     	实际单价,顾客应付金额 / 数量
-                       Double price =null;
-                       if (null!=saleData.getDouble("price")&&!saleData.getDouble("price").equals("")){
-                           price =  saleData.getDouble("price");
-                           jymxsq.setSpdj(Double.valueOf(price));//商品单价
-                       }
+
 
                        //获取      顾客应付金额，负数为退货金额
                        BigDecimal amount =null;
@@ -1233,8 +1244,24 @@ public class GetDataService {
                        //获取      销售税率
                        BigDecimal taxrate =null;
                        if (null!=saleData.getBigDecimal("taxrate")&&!saleData.getBigDecimal("taxrate").equals("")){
-                           taxrate =  saleData.getBigDecimal("taxrate");
+                        BigDecimal taxrates =  saleData.getBigDecimal("taxrate");
+
+                       if(taxrates.compareTo( new BigDecimal(1)) >0 ){
+                            taxrate = taxrates.multiply( new BigDecimal(0.01));
+                        }else {
+                            taxrate=taxrates;
+                        }
                            jymxsq.setSpsl(taxrate.doubleValue());// 商品税率
+                       }
+
+                       //获取     	实际单价,顾客应付金额 / 数量
+                       Double price =null;
+                       if (null!=saleData.getDouble("price")&&!saleData.getDouble("price").equals("")){
+                           price =  saleData.getDouble("price");
+                           /* BigDecimal big1 = taxrate.add(new BigDecimal(1));
+                            BigDecimal big2 = new BigDecimal(price.toString());
+                            Double bhsdj =   big1.divide(big2).setScale(15).doubleValue();*/
+                           jymxsq.setSpdj(price);//商品单价
                        }
 
                        //获取      	促销金额
@@ -1250,20 +1277,20 @@ public class GetDataService {
 
 
                        jymxsq.setHsbz(jyxxsq.getHsbz());
-                       jymxsq.setFphxz("");//发票行性质
-                       jymxsq.setSpggxh("");//商品规格型号
-                       jymxsq.setSpdw("");//商品单位
+                       jymxsq.setFphxz("0");//发票行性质
+                       //jymxsq.setSpggxh("");//商品规格型号
+                       //jymxsq.setSpdw("");//商品单位
                        //计算不含税金额
-                        BigDecimal big = new BigDecimal("1");
+                       BigDecimal big = new BigDecimal("1");
                         //BigDecimal bhsamount =   amount.divide(big.add(taxrate));
-                       BigDecimal bhsamount = InvoiceSplitUtils.div(amount,big.add(taxrate),2);
-                       jymxsq.setSpje(bhsamount.doubleValue());//商品金额为不含税金额
+                       BigDecimal bhsamount = InvoiceSplitUtils.div(amount,big.add(taxrate),6);
+                       jymxsq.setSpje(amount.doubleValue());//商品金额
                         //计算商品税额
                        BigDecimal spseAmount = bhsamount.multiply(taxrate);
                        jymxsq.setSpse(spseAmount.doubleValue());
                        jymxsq.setJshj(amount.doubleValue());//税价合计为绿地传进的金额
                        //可开具金额  = amount
-                       jymxsq.setKkjje(amount.doubleValue());
+                      // jymxsq.setKkjje(amount.doubleValue());
                        //已开具金额  = 0
                        jymxsq.setYkjje(0d);
                        Map spbmMap=new HashMap();
@@ -1286,9 +1313,10 @@ public class GetDataService {
 
                }
 
-
+               Double bkkjje = 0.00;
                JSONArray    paylist =   jo.getJSONArray("paylist");
                System.out.println("salelist的长度"+paylist.size());
+
                if(null != paylist && paylist.size() > 0){
                    // 获取支付明细
                    for (int p = 0;p<paylist.size();p++){
@@ -1300,26 +1328,7 @@ public class GetDataService {
                        //获取     支付方式代码
                        String paytype ="";
                        if (null!=payData.getString("paytype")&&!payData.getString("paytype").equals("")){
-/*
 
-                           if(payData.getString("paytype").toString().equals("现金")){
-                               paytype ="01";
-                           }
-                           if(payData.getString("paytype").toString().equals("支付宝")){
-                               paytype ="02";
-                           }
-                           if(payData.getString("paytype").toString().equals("积分")){
-                               paytype ="03";
-                           }
-                           if(payData.getString("paytype").toString().equals("微信")){
-                               paytype ="04";
-                           }
-                           if(payData.getString("paytype").toString().equals("银联卡")){
-                               paytype ="05";
-                           }
-                           if(payData.getString("paytype").toString().equals("会员卡")){
-                               paytype ="06";
-                           }*/
                             paytype= payData.getString("paytype");
                            jyzfmx.setZffsDm(paytype);
                        }
@@ -1335,6 +1344,27 @@ public class GetDataService {
                        if (null!=payData.getString("cardno")&&!payData.getString("cardno").equals("")){
                            paycardno =  payData.getString("cardno").toString();
                        }
+                       Double douje = 0.00;
+                     if(null!=paytype &&(paytype.equals("A")
+                               ||paytype.equals("B")
+                               ||paytype.equals("E")
+                               ||paytype.equals("F")
+                               ||paytype.equals("G")
+                               ||paytype.equals("h")
+                               ||paytype.equals("I")
+                               ||paytype.equals("J")
+                               ||paytype.equals("L")
+                               ||paytype.equals("N")
+                               ||paytype.equals("P")
+                               ||paytype.equals("Q")
+                               ||paytype.equals("S")
+                               ||paytype.equals("V")
+                               ||paytype.equals("X")
+                               ||paytype.equals("Y")
+                               ||paytype.equals("Z"))){
+                          bkkjje  = zfje+douje;
+                       }
+
 
                        //支付明细封装交易支付明细
                        jyzfmx.setGsdm(gsdm);
@@ -1347,6 +1377,9 @@ public class GetDataService {
 
                    }
                }
+               //可开具金额
+                Double kkjje= payamount-bkkjje;
+               //jymxsq.setKkjje(kkjje.doubleValue());
            }
       }
         Map rsMap=new HashMap();
