@@ -379,6 +379,12 @@ public class Jyxxsq  implements Serializable {
 	@Column(name="khh")
 	protected String khh;
 
+	/**
+	 * 数据来源对应终端的openid
+	 */
+	@Column(name="openid")
+	protected String openid;
+
 
 
 
@@ -861,5 +867,14 @@ public class Jyxxsq  implements Serializable {
 	public void setKhh(String khh) {
 		this.khh = khh;
 	}
+
+	public String getOpenid() {
+		return openid;
+	}
+
+	public void setOpenid(String openid) {
+		this.openid = openid;
+	}
+	
 }
 
