@@ -233,10 +233,8 @@ public class CheckOrderUtil {
         return result;
     }
 
-    public String checkAll(List<Jyxxsq> jyxxsqList, List<Jymxsq> jymxsqList,  String gsdm, String Operation) {
-       return  checkAll( jyxxsqList,  jymxsqList,new ArrayList<Jyzfmx>(),   gsdm,  Operation);
-    }
-        public String checkAll(List<Jyxxsq> jyxxsqList, List<Jymxsq> jymxsqList, List<Jyzfmx> jyzfmxList, String gsdm, String Operation) {
+    public String checkOrders(List<Jyxxsq> jyxxsqList, List<Jymxsq> jymxsqList, List<Jyzfmx> jyzfmxList, String gsdm, String Operation){
+
         String result = "";
         String ddh = "";
         String ddh2 = "";
@@ -245,8 +243,6 @@ public class CheckOrderUtil {
         Jyzfmx jyzfmx = new Jyzfmx();
 //        List ddhList = new ArrayList();
         Map ddhMap = new HashMap();
-        // 先校验购方
-        result += checkBuyer(jyxxsqList, gsdm, Operation);
 
         for (int i = 0; i < jyxxsqList.size(); i++) {
             BigDecimal ajshj;
@@ -428,7 +424,18 @@ public class CheckOrderUtil {
 //            }
 //        }
         return result;
+
     }
+    public String checkAll(List<Jyxxsq> jyxxsqList, List<Jymxsq> jymxsqList,  String gsdm, String Operation) {
+       return  checkAll( jyxxsqList,  jymxsqList,new ArrayList<Jyzfmx>(),   gsdm,  Operation);
+    }
+
+    public String checkAll(List<Jyxxsq> jyxxsqList, List<Jymxsq> jymxsqList, List<Jyzfmx> jyzfmxList, String gsdm, String Operation) {
+        	String result = "";
+        	result = checkBuyer(jyxxsqList, gsdm, Operation);
+        	result += checkOrders(jyxxsqList, jymxsqList, jyzfmxList, gsdm, Operation);
+        	return result;
+        }
 
     public static void main(String[] args) {
 
