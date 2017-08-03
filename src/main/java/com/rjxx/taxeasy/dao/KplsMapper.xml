@@ -188,7 +188,6 @@
             </foreach>
             or a.kplsh is null)
         </if>
-        group by a.kplsh
         order by a.djh asc,a.kplsh asc
     </select>
 
