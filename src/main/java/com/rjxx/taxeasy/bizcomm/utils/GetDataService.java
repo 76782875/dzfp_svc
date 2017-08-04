@@ -809,8 +809,7 @@ public class GetDataService {
             //传递数据验证码为json格式
              //Map nvps = new HashMap();
             try {
-              //  nvps.put("Authorization", "Basic aWZpZWxkOmlmaWVsZDEyMzQ=");
-
+                //nvps.put("Authorization", "Basic aWZpZWxkOmlmaWVsZDEyMzQ=");
                 StringEntity requestEntity = new StringEntity(JSON.toJSONString(""), "utf-8");
                 httpPost.setEntity(requestEntity);
                 response = httpClient.execute(httpPost, new BasicHttpContext());
@@ -828,7 +827,6 @@ public class GetDataService {
                 System.out.println("接收返回值:" + buffer.toString());
                 //解析json获取token
                 parmsMap = interpretFirstForJson(gsdm, buffer.toString());
-
 
         }catch (Exception e){
             System.out.println("request url=" + "" + ", exception, msg=" + e.getMessage());
@@ -872,7 +870,6 @@ public class GetDataService {
         //传递数据验证码为json格式
         Map nvps = new HashMap();
         try {
-
             nvps.put("channel","rongjin");
             nvps.put("listno", ExtractCode);
             System.out.println("kaipiaohao"+nvps.get("listno").toString());
@@ -897,8 +894,11 @@ public class GetDataService {
             List<Jyxxsq> jyxxsqList = (List) parmsMap.get("jyxxsqList");
             List<Jymxsq> jymxsqList = (List) parmsMap.get("jymxsqList");
             List<Jyzfmx> jyzfmxList = (List) parmsMap.get("jyzfmxList");
-            String tmp = this.checkAll(jyxxsqList, jymxsqList, jyzfmxList,gsdm);
-            parmsMap.put("tmp",tmp);
+            //String tmp = this.checkAll(jyxxsqList, jymxsqList, jyzfmxList,gsdm);
+            //parmsMap.put("tmp",tmp);
+           // if(parmsMap.size()>0){
+            //    return parmsMap;
+           // }
         }catch (Exception e){
             System.out.println("request-url=" + uri+" request-requestEntity=" +nvps.toString()+ ", exception, msg=" + e.getMessage());
             e.printStackTrace();
@@ -966,8 +966,6 @@ public class GetDataService {
            // nvps.put("ExtractCode", ExtractCode);
            // System.out.println("传递数据code格式是否为json"+ JSON.toJSONString(nvps));
 
-
-
             //比较日期大小
             //获取当前时间转成秒数
            /* Long datsTime = System.currentTimeMillis();
@@ -993,13 +991,17 @@ public class GetDataService {
             if(sfgq >= 0){
                 System.out.println("过期了");
             }*/
-           BigDecimal big1 = new BigDecimal("0.17");
+         /*  BigDecimal big1 = new BigDecimal("0.17");
            BigDecimal big2 = new BigDecimal("1");
            if(big1.compareTo(big2)>0){
                System.out.println("big1 > big2");
            }else {
                System.out.println("big1 < big2");
-           }
+           }*/
+         String a = "康宁京剧脸谱马克杯\n（薄荷色）";
+         String re = a.replaceAll("\n","");
+            System.out.println(""+re);
+            System.out.println(""+a);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1080,7 +1082,7 @@ public class GetDataService {
         JSONArray  jsondata = jsonObj.getJSONArray("data");
 
         if (jsondata.size()>0){
-            System.out.println("进入data数据");
+            //System.out.println("进入data数据");
            for(int i = 0; i < jsondata.size(); i++ ){
                 //基本信息获取
                JSONObject jo = jsondata.getJSONObject(i);
@@ -1089,75 +1091,64 @@ public class GetDataService {
                if (null!=jo.getString("billno")&&!jo.getString("billno").equals("")){
                    ExtractCode =  jo.getString("billno").toString();
                }
-
-
                //获取发生日期
                Date tradeDate = null;
                if (null!=jo.getDate("tradedate")&&!jo.getDate("tradedate").equals("")){
                    tradeDate =jo.getDate("tradedate") ;
                }
-               System.out.println("获取发生日期"+tradeDate);
-
+               //System.out.println("获取发生日期"+tradeDate);
                //获取发生时间
                String tradeTime ="";
                if (null!=jo.getString("tradetime")&&!jo.getString("tradetime").equals("")){
                    tradeTime =  jo.getString("tradetime").toString();
                }
-
                //获取	退货时，原购物小票号
                String voidbillno ="";
                if (null!=jo.getString("voidbillno")&&!jo.getString("voidbillno").equals("")){
                    voidbillno =  jo.getString("voidbillno").toString();
                }
-
                //获取		门店编码
                String shopid ="";
                if (null!=jo.getString("shopid")&&!jo.getString("shopid").equals("")){
                    shopid =  jo.getString("shopid").toString();
                }
-
                //获取		门店名称
                String shopname ="";
                if (null!=jo.getString("shopname")&&!jo.getString("shopname").equals("")){
                    shopname =  jo.getString("shopname").toString();
                }
-
                //获取		收银机号
                String posid ="";
                if (null!=jo.getString("posid")&&!jo.getString("posid").equals("")){
                    posid =  jo.getString("posid").toString();
                }
-
                //获取		小票流水号
                Integer listno =null;
                if (null!=jo.getInteger("listno")&&!jo.getInteger("listno").equals("")){
                    listno =  jo.getInteger("listno");
                }
-
                //获取		会员卡号(ld)
                String MemberID ="";
                if (null!=jo.getString("cardno")&&!jo.getString("cardno").equals("")){
                    MemberID =  jo.getString("cardno").toString();
                }
-
                //获取		顾额应付总金额
                Double payamount =null;
                if (null!=jo.getDouble("payamount")&&!jo.getDouble("payamount").equals("")){
                    payamount =  jo.getDouble("payamount");
                }
-
                //获取		附码版本
                String addcodev ="";
                if (null!=jo.getString("addcodev")&&!jo.getString("addcodev").equals("")){
                    addcodev =  jo.getString("addcodev").toString();
                }
-
                //基本数据封装进交易信息申请
                Jyxxsq jyxxsq = new Jyxxsq();
                jyxxsq.setDdh(listno+"");//订单编号 对应小票流水号
                jyxxsq.setTqm(ExtractCode);// 提取码  对应购物小票流水号
                jyxxsq.setJylsh("JY" + new SimpleDateFormat("yyyyMMddHHmmssSS").format(new Date()));//交易流水号
                String kpddm=tqm.substring(0,3);
+               //String kpddm=tqm.substring(0,3);
                jyxxsq.setKpddm(kpddm);
                //根据公司代码、开票点代码查询税控盘
                Map skpmap = new HashMap();
@@ -1170,7 +1161,6 @@ public class GetDataService {
                x.setId(skpdata.getXfid());
                Xf xf = xfService.findOneByParams(x);
                jyxxsq.setXfid(xf.getId());//销方id
-
                jyxxsq.setFpzldm("12"); //发票种类
                jyxxsq.setJshj(Double.valueOf(payamount));//价税合计
                jyxxsq.setHsbz("1");//含税标志 1含税
@@ -1198,7 +1188,7 @@ public class GetDataService {
                jyxxsqList.add(jyxxsq);
 
                JSONArray    salelist =   jo.getJSONArray("salelist");
-               System.out.println("salelist的长度"+salelist.size());
+               //System.out.println("salelist的长度"+salelist.size());
 
                if(null != salelist && salelist.size() > 0 ){
                    //商品明细获取
@@ -1206,10 +1196,8 @@ public class GetDataService {
                    for (int s = 0; s< salelist.size(); s++ ){
 
                        Jymxsq jymxsq = new Jymxsq();
-                       System.out.println("进入循环salelist");
-
+                       //System.out.println("进入循环salelist");
                        JSONObject saleData = salelist.getJSONObject(s);
-
                        //获取     商品税务附码
                        String goodsid ="";
                        if (null!=saleData.getString("goodsid")&&!saleData.getString("goodsid").equals("")){
@@ -1218,22 +1206,22 @@ public class GetDataService {
                            jymxsq.setSpdm(goodsid);
                        }
                        System.out.println("获取salelist成功,数据商品税务附码gooid"+goodsid);
-
                        //获取     	商品名称
                        String goodsname ="";
                        if (null!=saleData.getString("goodsname")&&!saleData.getString("goodsname").equals("")){
-                           goodsname =  saleData.getString("goodsname").toString();
+                          String  goodsna =  saleData.getString("goodsname").toString();
+                           goodsname= goodsna.replaceAll("\n","");
                            jymxsq.setSpmc(goodsname.trim());
+                           //jymxsq.setSpmc("测\\试#商<品名^称/特|殊@字符\"");
                        }
-
+                       System.out.println("商品名称"+goodsname);
+                       System.out.println("商品名称"+jymxsq.getSpmc());
                        //获取     	数量，负数为退货数量
                        Double qty =null;
                        if (null!=saleData.getDouble("qty")&&!saleData.getDouble("qty").equals("")){
                            qty =  saleData.getDouble("qty");
                            jymxsq.setSps(Double.valueOf(qty));//商品数量
                        }
-
-
 
                        //获取      顾客应付金额，负数为退货金额
                        BigDecimal amount =null;
@@ -1244,14 +1232,13 @@ public class GetDataService {
                        //获取      销售税率
                        BigDecimal taxrate =null;
                        if (null!=saleData.getBigDecimal("taxrate")&&!saleData.getBigDecimal("taxrate").equals("")){
-                        BigDecimal taxrates =  saleData.getBigDecimal("taxrate");
-
+                            BigDecimal taxrates =  saleData.getBigDecimal("taxrate");
                        if(taxrates.compareTo( new BigDecimal(1)) >0 ){
                             taxrate = taxrates.multiply( new BigDecimal(0.01));
                         }else {
                             taxrate=taxrates;
                         }
-                           jymxsq.setSpsl(taxrate.doubleValue());// 商品税率
+                            jymxsq.setSpsl(taxrate.doubleValue());// 商品税率
                        }
 
                        //获取     	实际单价,顾客应付金额 / 数量
@@ -1274,10 +1261,8 @@ public class GetDataService {
                        spmxxh++;
                        jymxsq.setSpmxxh(spmxxh);//商品明细序号
                        jymxsq.setDdh(jyxxsq.getDdh());//订单号
-
-
                        jymxsq.setHsbz(jyxxsq.getHsbz());
-                       jymxsq.setFphxz("0");//发票行性质
+                       jymxsq.setFphxz("0");//发票行性质 0：正常行
                        //jymxsq.setSpggxh("");//商品规格型号
                        //jymxsq.setSpdw("");//商品单位
                        //计算不含税金额
@@ -1290,7 +1275,7 @@ public class GetDataService {
                        jymxsq.setSpse(spseAmount.doubleValue());
                        jymxsq.setJshj(amount.doubleValue());//税价合计为绿地传进的金额
                        //可开具金额  = amount
-                      // jymxsq.setKkjje(amount.doubleValue());
+                       //jymxsq.setKkjje(amount.doubleValue());
                        //已开具金额  = 0
                        jymxsq.setYkjje(0d);
                        Map spbmMap=new HashMap();
@@ -1315,7 +1300,7 @@ public class GetDataService {
 
                Double bkkjje = 0.00;
                JSONArray    paylist =   jo.getJSONArray("paylist");
-               System.out.println("salelist的长度"+paylist.size());
+               //System.out.println("salelist的长度"+paylist.size());
 
                if(null != paylist && paylist.size() > 0){
                    // 获取支付明细
@@ -1328,7 +1313,6 @@ public class GetDataService {
                        //获取     支付方式代码
                        String paytype ="";
                        if (null!=payData.getString("paytype")&&!payData.getString("paytype").equals("")){
-
                             paytype= payData.getString("paytype");
                            jyzfmx.setZffsDm(paytype);
                        }
@@ -1338,33 +1322,11 @@ public class GetDataService {
                            zfje =  payData.getDouble("payamount");
                            jyzfmx.setZfje(Double.valueOf(zfje));//支付金额
                        }
-
                        //获取     支付方式是储值卡或会员卡时，记录卡号
                        String paycardno ="";
                        if (null!=payData.getString("cardno")&&!payData.getString("cardno").equals("")){
                            paycardno =  payData.getString("cardno").toString();
                        }
-                       Double douje = 0.00;
-                     if(null!=paytype &&(paytype.equals("A")
-                               ||paytype.equals("B")
-                               ||paytype.equals("E")
-                               ||paytype.equals("F")
-                               ||paytype.equals("G")
-                               ||paytype.equals("h")
-                               ||paytype.equals("I")
-                               ||paytype.equals("J")
-                               ||paytype.equals("L")
-                               ||paytype.equals("N")
-                               ||paytype.equals("P")
-                               ||paytype.equals("Q")
-                               ||paytype.equals("S")
-                               ||paytype.equals("V")
-                               ||paytype.equals("X")
-                               ||paytype.equals("Y")
-                               ||paytype.equals("Z"))){
-                          bkkjje  = zfje+douje;
-                       }
-
 
                        //支付明细封装交易支付明细
                        jyzfmx.setGsdm(gsdm);
@@ -1377,16 +1339,13 @@ public class GetDataService {
 
                    }
                }
-               //可开具金额
-                Double kkjje= payamount-bkkjje;
-               //jymxsq.setKkjje(kkjje.doubleValue());
+
            }
       }
         Map rsMap=new HashMap();
         rsMap.put("jyxxsqList", jyxxsqList);
         rsMap.put("jymxsqList", jymxsqList);
         rsMap.put("jyzfmxList", jyzfmxList);
-
         return  rsMap;
     }
 
