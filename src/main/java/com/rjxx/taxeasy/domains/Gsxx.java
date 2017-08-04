@@ -1,15 +1,16 @@
 package com.rjxx.taxeasy.domains;
 
-import javax.persistence.*;
-import org.hibernate.annotations.GenericGenerator;
-import com.rjxx.comm.json.JsonDateFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.rjxx.comm.json.JsonDatetimeFormat;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 /**
  * t_gsxx 实体类
  * 由GenEntityMysql类自动生成
@@ -47,7 +48,7 @@ public class Gsxx  implements Serializable {
 /**
  * 身份认证
  */ 
-@Column(name="appKey")
+@Column(name="appkey")
 	protected String appKey;
 
 /**

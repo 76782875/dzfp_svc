@@ -1,6 +1,7 @@
 package com.rjxx.taxeasy.dao;
 
 import com.rjxx.taxeasy.domains.Skp;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 /**
@@ -11,6 +12,10 @@ import org.springframework.data.repository.CrudRepository;
  * @ZhangBing
  */ 
 public interface SkpJpaDao extends CrudRepository<Skp, Integer> {
+    @Query(nativeQuery = true,value = "select kpddm from t_skp where gsdm=?1")
+    String findKpddmByGsdm(String gsdm);
 
+    @Query(nativeQuery = true,value = "select id from t_skp where kpddm=?1")
+    Integer findIdByKpddm(String kpddm);
 }
 

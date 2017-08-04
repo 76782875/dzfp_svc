@@ -11,6 +11,6 @@ import org.springframework.data.repository.CrudRepository;
  * @ZhangBing
  */ 
 public interface KplsJpaDao extends CrudRepository<Kpls, Integer> {
-
+    Kpls findOneBySerialorder(String serialorder);
 }
 
