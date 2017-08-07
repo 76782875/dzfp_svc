@@ -25,5 +25,7 @@ public interface JyzfmxMapper {
     public List<Jyzfmx> findByPage(Pagination pagination);
 
     List<Jyzfmxvo> findAllByParamsVo(Map parms);
+    
+    public void addJyzfmxBatch(List<Jyzfmx> jyzfmxs);
 }
 

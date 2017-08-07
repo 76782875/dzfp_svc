@@ -54,5 +54,9 @@ public class JyzfmxService {
     public List<Jyzfmxvo> findAllByParamsVo(Map parms) {
         return jyzfmxMapper.findAllByParamsVo(parms);
     }
+    
+    public void addJyzfmxBatch(List<Jyzfmx> jyzfmxs){
+    	jyzfmxMapper.addJyzfmxBatch(jyzfmxs);
+    }
 }
 

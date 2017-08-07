@@ -3,6 +3,7 @@ package com.rjxx.taxeasy.service;
 import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.dao.JymxsqClJpaDao;
 import com.rjxx.taxeasy.dao.JymxsqClMapper;
+import com.rjxx.taxeasy.domains.Jymxsq;
 import com.rjxx.taxeasy.domains.JymxsqCl;
 import com.rjxx.taxeasy.vo.JyspmxDecimal2;
 
@@ -55,5 +56,16 @@ public class JymxsqClService {
     //
     public List<JymxsqCl> findBySqlsh(Map  params){return  jymxsqClMapper.findBySqlsh(params);}
 
+    public void delete(List<JymxsqCl> jymxsqClList) {
+    	jymxsqClJpaDao.delete(jymxsqClList);
+    }
+
+    public List<JymxsqCl> findBySqlshList(List<Integer> sqlshList) {
+        return jymxsqClMapper.findBySqlshList(sqlshList);
+    }
+    
+    public void addJymxsqClBatch(List<JymxsqCl> jymxsqCls){
+    	jymxsqClMapper.addJymxsqClBatch(jymxsqCls);
+    }
 }
 

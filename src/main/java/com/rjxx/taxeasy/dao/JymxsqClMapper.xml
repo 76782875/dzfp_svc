@@ -35,5 +35,35 @@
         </if>
 
     </select>
+    
+    <select id="findBySqlshList" parameterType="list" resultType="JymxsqCl">
+        select * from t_jymxsq_cl where 1 = 1 and yxbz = '1'
+        <foreach collection="list" open=" and sqlsh in (" close=")" separator="," item="sqlsh">
+            #{sqlsh}
+        </foreach>
+    </select>
+    
+    <insert id="addJymxsqClBatch" useGeneratedKeys="true" keyProperty="id"
+		parameterType="java.util.List">
+
+		insert into t_jymxsq_cl (sqlsh, ddh, kpddm, hsbz, spmxxh, fphxz, spdm,
+		spmc,
+		spggxh, spzxbm, yhzcbs, yhzcmc, lslbz, spdw, sps, spdj, spje,
+		spsl, spse,
+		kce, jshj, hzkpxh, lrsj, lrry, xgsj, xgry, gsdm, skpid,
+		xfid,
+		yxbz, spid, ykjje, kkjje, spbz)
+		values
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(#{item.sqlsh},#{item.ddh},#{item.kpddm},#{item.hsbz},#{item.spmxxh},#{item.fphxz},
+			#{item.spdm},#{item.spmc},#{item.spggxh},#{item.spzxbm},#{item.yhzcbs},
+			#{item.yhzcmc},#{item.lslbz},#{item.spdw},#{item.sps},#{item.spdj},
+			#{item.spje},#{item.spsl},#{item.spse},#{item.kce},#{item.jshj},
+			#{item.hzkpxh},#{item.lrsj},#{item.lrry},#{item.xgsj},#{item.xgry},
+			#{item.gsdm},#{item.skpid},#{item.xfid},#{item.yxbz},#{item.spid},
+			#{item.ykjje},#{item.kkjje},#{item.spbz})
+		</foreach>
+	</insert>
 </mapper>
 

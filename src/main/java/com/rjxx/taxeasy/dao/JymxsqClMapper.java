@@ -2,6 +2,7 @@ package com.rjxx.taxeasy.dao;
 
 import com.rjxx.comm.mybatis.MybatisRepository;
 import com.rjxx.comm.mybatis.Pagination;
+import com.rjxx.taxeasy.domains.Jymxsq;
 import com.rjxx.taxeasy.domains.JymxsqCl;
 import com.rjxx.taxeasy.vo.JyspmxDecimal2;
 
@@ -26,5 +27,8 @@ public interface JymxsqClMapper {
 
     public List<JymxsqCl> findBySqlsh(Map params);
 
+    public List<JymxsqCl> findBySqlshList(List<Integer> sqlshList);
+
+    public void addJymxsqClBatch(List<JymxsqCl> jymxsqCls);
 }
 

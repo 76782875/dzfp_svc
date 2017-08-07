@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rjxx.taxeasy.dao.PldrjlMapper">
+
+    <select id="findOneByParams" parameterType="map" resultType="pldrjl">
+        select * from t_pldrjl where 1=1
+        <if test="xhs !=null">
+            <foreach collection="xhs" open=" and xh in (" separator="," close=")" item="xh" >
+                #{xh} 
+            </foreach>
+        </if>
+        <if test="xh !=null and xh !=''">
+           and xh = #{xh}
+        </if>
+        <if test="jylsh !=null and jylsh !=''">
+           and jylsh =  #{jylsh}
+        </if>
+        <if test="lrsj !=null and lrsj !=''">
+           and lrsj =  #{lrsj}
+        </if>
+        <if test="gsdm !=null and gsdm !=''">
+           and gsdm =  #{gsdm}
+        </if>
+        <if test="xfid !=null and xfid !=''">
+           and xfid =  #{xfid}
+        </if>
+        limit 1
+    </select>
+
+    <select id="findAllByParams" parameterType="map" resultType="pldrjl">
+        select * from t_pldrjl where 1=1
+       <if test="xhs !=null">
+            <foreach collection="xhs" open=" and xh in (" separator="," close=")" item="xh" >
+                #{xh} 
+            </foreach>
+        </if>
+        <if test="xh !=null and xh !=''">
+           and xh = #{xh}
+        </if>
+        <if test="jylsh !=null and jylsh !=''">
+           and jylsh = #{jylsh}
+        </if>
+        <if test="lrsj !=null and lrsj !=''">
+           and lrsj = #{lrsj}
+        </if>
+        <if test="gsdm !=null and gsdm !=''">
+           and gsdm = #{gsdm}
+        </if>
+        <if test="xfid !=null and xfid !=''">
+           and xfid = #{xfid}
+        </if>
+        <if test="orderBy != null">
+            order by #{orderBy}
+        </if>
+    </select>
+
+  <select id="findByPage" parameterType="pagination" resultType="pldrjl">
+        select * from t_pldrjl where 1=1
+        <if test="params.gsdm !=null and params.gsdm !=''">
+            and gsdm = #{params.gsdm}
+        </if>
+        <if test="params.xfs !=null">
+               <foreach collection="params.xfs" open=" and (xfid in (" separator="," close=")" item="item" index="index">
+                #{params.xfs[${index}].id} 
+            </foreach>
+            or xfid is null)
+         </if>
+         <if test="params.jylsh !=null and params.jylsh !=''">
+            and jylsh =#{params.jylsh}
+         </if>
+         <if test="params.xfid !=null and params.xfid !=''">
+            and xfid =#{params.xfid}
+         </if>
+        <if test="params.jyrqq !=null and params.jyrqq != ''">
+            and lrsj &gt;= #{params.jyrqq}
+         </if>
+        <if test="params.jyrqz !=null and params.jyrqz != ''">
+            and lrsj &lt; date_add(str_to_date(#{params.jyrqz},'%Y-%m-%d'),INTERVAL 1 day)
+        </if>
+        <if test="params.ztbz !=null and params.ztbz != ''">
+            and ztbz =#{params.ztbz}
+        </if>
+        <if test="params.orderBy != null">
+            order by #{params.orderBy}
+        </if>
+    </select>
+ 
+    <select id="findAllJyxxsqByParams" parameterType="map" resultType="jyxxsq">
+        select * from t_jyxxsq where yxbz = '1'
+        <if test="gsdm != null">
+            and gsdm = #{gsdm}
+        </if>
+        <if test="jylsh != null and jylsh != ''">
+            and jylsh = #{jylsh}
+        </if>
+        <if test="lrsj != null and lrsj != ''">
+            and lrsj = #{lrsj}
+        </if>
+        <if test="xfid != null and xfid != ''">
+            and xfid = #{xfid}
+        </if>
+        <if test="jylshList != null">
+            <foreach collection="jylshList" open=" and jylsh in (" separator="," close=")" item="jylsh">
+                #{jylsh}
+            </foreach>
+        </if>
+        <if test="tqmList != null">
+            <foreach collection="tqmList" open=" and tqm in (" separator="," close=")" item="tqm">
+                #{tqm}
+            </foreach>
+        </if>
+    </select>
+</mapper>
+

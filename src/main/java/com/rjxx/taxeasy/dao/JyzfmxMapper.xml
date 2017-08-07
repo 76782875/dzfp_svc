@@ -43,5 +43,17 @@
         </if>
     </select>
 
+	<insert id="addJyzfmxBatch" useGeneratedKeys="true"
+		keyProperty="id" parameterType="java.util.List">  
+    
+    	insert into t_jyzfmx (ddh, sqlsh, zffs_dm, zfje, gsdm, lrsj, lrry, xgsj,
+			xgry, paynumber)   
+   	 values  
+    	<foreach collection="list" item="item" index="index" separator="," >  
+       	 	(#{item.ddh},#{item.sqlsh},#{item.zffsDm},#{item.zfje},#{item.gsdm},#{item.lrsj},
+        	#{item.lrry},#{item.xgsj},#{item.xgry},#{item.paynumber})  
+    	</foreach>    
+	</insert>
+
 </mapper>
 

@@ -26,6 +26,7 @@ public interface JymxsqMapper {
     public List<Jymxsq> findByPage(Pagination pagination);
 
     public List<Jymxsq> findBySqlshList(List<Integer> sqlshList);
-
+  
+    public void addJymxsqBatch(List<Jymxsq> jymxsqs);
 }
 

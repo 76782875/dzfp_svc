@@ -72,6 +72,9 @@ public class JymxsqService {
     	jymxsqJpaDao.delete(jymxsqList);
     }
 
+    public void addJymxsqBatch(List<Jymxsq> jymxsqs){
+    	jymxsqMapper.addJymxsqBatch(jymxsqs);
+    }
 	
 }
 

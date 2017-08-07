@@ -99,6 +99,9 @@ public class JyxxsqService {
     	jyxxsqMapper.saveJyxxsq(jyxxsq);
     }
     
+    public void addJyxxsqBatch(List<Jyxxsq> Jyxxsqs){
+    	jyxxsqMapper.addJyxxsqBatch(Jyxxsqs);
+    }
     
     public List<JyxxsqVO> findYscByPage(Pagination pagination){
     	return jyxxsqMapper.findYscByPage(pagination);
@@ -117,6 +120,23 @@ public class JyxxsqService {
 		jymxsqservice.delete(jymxsqList);
 	}
 	
+	  /**
+		 * 删除交易流水，包括明细以及处理明细
+		 *
+		 * @param sqlshList
+		 */
+		@Transactional
+		public void delBySqlshList2(List<Integer> sqlshList) {
+			Iterable<Jyxxsq> jylsIterable = jyxxsqJpaDao.findAll(sqlshList);
+			jyxxsqJpaDao.delete(jylsIterable);
+			List<Jymxsq> jymxsqList = jymxsqservice.findBySqlshList(sqlshList);
+			
+			List<JymxsqCl> jymxsqCLList = jymxsqClService.findBySqlshList(sqlshList);
+
+			jymxsqservice.delete(jymxsqList);
+			
+			jymxsqClService.delete(jymxsqCLList);
+		}
 	
 	/**
 	 * 更新jyxxsq状态
@@ -214,7 +234,8 @@ public class JyxxsqService {
 	 */
 	@Transactional
 	public void saveAll(List<Jyxxsq> jyxxsqList, List<Jymxsq> jymxsqList,List<JymxsqCl> jymxsqClList,List<Jyzfmx> jyzfmxList) {
-		jyxxsqJpaDao.save(jyxxsqList);
+		//jyxxsqJpaDao.save(jyxxsqList);
+		addJyxxsqBatch(jyxxsqList);
 		List<Jymxsq> mxList = new ArrayList<>();
 		Jymxsq mx = null;
 		for (Jyxxsq jyxxsq : jyxxsqList) {
@@ -244,12 +265,18 @@ public class JyxxsqService {
 			}
 		}
 		
-		jymxsqservice.save(jymxsqList);
+		//jymxsqservice.save(jymxsqList);
+		jymxsqservice.addJymxsqBatch(jymxsqList);
 		if(null != jymxsqClList && !jymxsqClList.isEmpty()){
-			jymxsqClService.save(jymxsqClList);
+			//jymxsqClService.save(jymxsqClList);
+			System.out.println("jymxsqClList开始保存时间"+new Date());
+			jymxsqClService.addJymxsqClBatch(jymxsqClList);
+			System.out.println("jymxsqClList结束保存时间"+new Date());
 		}
+		
 		if(null != jyzfmxList && !jyzfmxList.isEmpty()){
-			jyzfmxService.save(jyzfmxList);
+			//jyzfmxService.save(jyzfmxList);
+			jyzfmxService.addJyzfmxBatch(jyzfmxList);
 		}
 	}
 	

@@ -1066,7 +1066,10 @@ public class FpclService {
                     InvoiceSplitUtils.splitInvoices((List) mapResult.get("jymxsqs"), (Map) mapResult.get("zkAndbzk"), new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs1, sfqzfp, false, 0, splitKpspmxs);
                 }
             }
-
+            //如果分票失败，继续往下执行。
+            if(null == splitKpspmxs || splitKpspmxs.isEmpty()){
+            	continue;
+            }
             // 保存进交易流水
             Map<Integer, List<JyspmxDecimal2>> fpMap = new HashMap<>();
             for (JyspmxDecimal2 jyspmx : splitKpspmxs) {

@@ -38,6 +38,8 @@ public interface JyxxsqMapper {
 
     public void saveJyxxsq(Jyxxsq jyxxsq);
     
+    public void addJyxxsqBatch(List<Jyxxsq> Jyxxsqs);
+    
     public List<Jyxxsq> findByMapParams(Map params);
     
     public List<JyxxsqVO> findYscByPage(Pagination pagination);

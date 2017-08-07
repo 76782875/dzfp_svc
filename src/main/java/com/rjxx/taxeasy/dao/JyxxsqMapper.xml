@@ -367,5 +367,30 @@
             </foreach>
         </if>
     </select>
+    
+    <insert id="addJyxxsqBatch" useGeneratedKeys="true"
+		keyProperty="sqlsh" parameterType="java.util.List">  
+    
+    insert into t_jyxxsq (kpddm, jylsh, ddrq, ddh, fpzldm, fpczlxdm, xfid, xfsh,
+		xfmc, xfyh, xfyhzh, xflxr, xfdz, xfdh, xfyb, gfid, gfsh, gfmc, gfyh,
+		gfyhzh, gflxr, gfdz, gfdh, gfyb, gfemail, sffsyj, clztdm, bz, skr,
+		kpr, fhr, sfcp, sfdyqd, zsfs, ssyf, hztzdh, yfpdm, yfphm, hsbz, jshj,
+		ykpjshj, yxbz, lrsj, lrry, xgsj, xgry, gfsjr, gfsjrdz, gsdm, tqm,
+		skpid, gfsjh, dxzt,sjly,sfzlkp,sfdy,ztbz)   
+    values  
+    <foreach collection="list" item="item" index="index" separator="," >  
+        (#{item.kpddm},#{item.jylsh},#{item.ddrq},#{item.ddh},#{item.fpzldm},#{item.fpczlxdm},
+        #{item.xfid},#{item.xfsh},#{item.xfmc},#{item.xfyh},#{item.xfyhzh},
+        #{item.xflxr},#{item.xfdz},#{item.xfdh},#{item.xfyb},#{item.gfid},
+        #{item.gfsh},#{item.gfmc},#{item.gfyh},#{item.gfyhzh},#{item.gflxr},
+        #{item.gfdz},#{item.gfdh},#{item.gfyb},#{item.gfemail},#{item.sffsyj},
+        #{item.clztdm},#{item.bz},#{item.skr},#{item.kpr},#{item.fhr},
+        #{item.sfcp},#{item.sfdyqd},#{item.zsfs},#{item.ssyf},#{item.hztzdh},
+        #{item.yfpdm},#{item.yfphm},#{item.hsbz},#{item.jshj},#{item.ykpjshj},
+        #{item.yxbz},#{item.lrsj},#{item.lrry},#{item.xgsj},#{item.xgry},
+        #{item.gfsjr},#{item.gfsjrdz},#{item.gsdm},#{item.tqm},#{item.skpid},
+        #{item.gfsjh},#{item.dxzt},#{item.sjly},#{item.sfzlkp},#{item.sfdy},#{item.ztbz})  
+    </foreach>    
+</insert>
 </mapper>
 
