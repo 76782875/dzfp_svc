@@ -1,6 +1,7 @@
 package com.rjxx.taxeasy.dao;
 
 import com.rjxx.taxeasy.domains.Kpls;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 /**
@@ -11,6 +12,8 @@ import org.springframework.data.repository.CrudRepository;
  * @ZhangBing
  */ 
 public interface KplsJpaDao extends CrudRepository<Kpls, Integer> {
+
+    @Query(nativeQuery = true,value = "select * from t_kpls where serialorder=?1")
     Kpls findOneBySerialorder(String serialorder);
 }
 
