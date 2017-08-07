@@ -32,6 +32,12 @@ public class Pldrjl  implements Serializable {
 	protected String jylsh;
 
 /**
+ * 导入批次号（交易流水号）
+ */ 
+@Column(name="drwjm")
+	protected String drwjm;
+
+/**
  * 导入时间（录入时间）
  */ 
 @Column(name="lrsj")
@@ -84,6 +90,14 @@ public class Pldrjl  implements Serializable {
 
 	public void setJylsh(String jylsh){
 		this.jylsh=jylsh;
+	}
+	
+	public String getDrwjm() {
+		return drwjm;
+	}
+
+	public void setDrwjm(String drwjm) {
+		this.drwjm = drwjm;
 	}
 
 	public Date getLrsj(){
