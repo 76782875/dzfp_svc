@@ -2,10 +2,7 @@ package com.rjxx.taxeasy.bizcomm.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.rjxx.taxeasy.domains.Jyls;
-import com.rjxx.taxeasy.domains.Jyspmx;
-import com.rjxx.taxeasy.domains.Kpls;
-import com.rjxx.taxeasy.domains.Kpspmx;
+import com.rjxx.taxeasy.domains.*;
 import com.rjxx.utils.StringUtils;
 
 import java.lang.reflect.Field;
@@ -26,7 +23,7 @@ public class Transferdata {
     private static String[] colnames; // 列名数组
 
     public static void main(String[] args) {
-       List<Object> Objectlist=getdata("t_kpls","wljqr",0,0);
+       List<Object> Objectlist=getdata("t_kpls","wljqr",0,0,0,0);
        String ClassName=generateClassName("t_kpls");
        for(int i=0;i<Objectlist.size();i++){
            if(ClassName.equals("Kpls")){
@@ -105,7 +102,7 @@ public class Transferdata {
     }
 
 
-    public  static List<Object> getdata(String tableName,String gsdm,int djh,int kplsh){
+    public  static List<Object> getdata(String tableName,String gsdm,int djh,int kplsh,int xfid,int skpid){
         List<Object> list=new ArrayList<Object>();
         try{
             //调用Class.forName()方法加载驱动程序
@@ -122,6 +119,10 @@ public class Transferdata {
                 sql = "select * from "+tableName+" t where t.gsdm='"+gsdm+"' and t.kplsh ="+kplsh;    //要执行的SQL
             }else if(model.equals("Jyspmx")){
                 sql = "select * from "+tableName+" t where t.gsdm='"+gsdm+"' and t.djh = "+djh;    //要执行的SQL
+            }else if(model.equals("Jyls")){
+                sql = "select * from "+tableName+" t where t.gsdm='"+gsdm+"' and t.skpid="+skpid;    //要执行的SQL
+            }else if(model.equals("Skp")){
+                sql = "select * from "+tableName+" t where t.gsdm='"+gsdm+"' and t.xfid="+xfid;    //要执行的SQL
             }else{
                 sql = "select * from "+tableName+" t where t.gsdm='"+gsdm+"'";    //要执行的SQL
             }
@@ -182,6 +183,30 @@ public class Transferdata {
                         f.set(kpspmxi, rs.getObject(i + 1));
                     }
                     list.add(kpspmxi);
+                }
+            }else if(model.equals("Xf")){
+                Xf xf=new Xf();
+                Field[] field = xf.getClass().getDeclaredFields();
+                while (rs.next()) {
+                     Xf xfi=new Xf();
+                    for (int i = 0; i < colnames.length; i++) {
+                        Field f = field[i];
+                        f.setAccessible(true);
+                        f.set(xfi, rs.getObject(i + 1));
+                    }
+                    list.add(xfi);
+                }
+            }else if(model.equals("Skp")){
+                Skp skp=new Skp();
+                Field[] field = skp.getClass().getDeclaredFields();
+                while (rs.next()) {
+                    Skp skpi=new Skp();
+                    for (int i = 0; i < colnames.length; i++) {
+                        Field f = field[i];
+                        f.setAccessible(true);
+                        f.set(skpi, rs.getObject(i + 1));
+                    }
+                    list.add(skpi);
                 }
             }
 

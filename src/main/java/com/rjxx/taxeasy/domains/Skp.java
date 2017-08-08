@@ -19,7 +19,7 @@ public class Skp implements Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	//private static final long serialVersionUID = 1L;
 
 	/**
 	 * 税控盘号
@@ -82,11 +82,7 @@ public class Skp implements Serializable {
 	@Column(name = "xfid")
 	protected Integer xfid;
 
-	/**
-	 *品牌id
-	 */
-	@Column(name = "pid")
-	protected Integer pid;
+
 
 	/**
 	 * 公司代码
@@ -95,23 +91,15 @@ public class Skp implements Serializable {
 	protected String gsdm;
 
 	/**
-	 * 开票点名称
-	 */
-	@Column(name = "kpdmc")
-	protected String kpdmc;
-	
-	/**
-	 * 开票点名称
-	 */
-	@Column(name = "kpddm")
-	protected String kpddm;
-
-	/**
 	 * 有效标志：0，无效；1，有效
 	 */
 	@Column(name = "yxbz")
 	protected String yxbz;
-
+	/**
+	 * 开票点名称
+	 */
+	@Column(name = "kpdmc")
+	protected String kpdmc;
 	/**
 	 * 电子发票最大开票限额
 	 */
@@ -157,6 +145,18 @@ public class Skp implements Serializable {
 	 */
 	@Column(name = "kpdip")
 	protected String kpdip;
+
+	/**
+	 * 开票点名称
+	 */
+	@Column(name = "kpddm")
+	protected String kpddm;
+
+	/**
+	 *品牌id
+	 */
+	@Column(name = "pid")
+	protected Integer pid;
 
 	@Column(name = "sbcs")
 	protected String sbcs;
