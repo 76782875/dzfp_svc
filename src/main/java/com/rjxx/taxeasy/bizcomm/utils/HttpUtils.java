@@ -36,8 +36,9 @@ public class HttpUtils {
 
     private  static Logger logger = LoggerFactory.getLogger(HttpUtils.class);
 
-    @Value("${WS_URL}")
-    public static String WS_URL;
+
+
+
 
     //public static String WS_URL = "http://open2.datarj.com/webService/services/invoiceService?wsdl";
     //public static String WS_URL = "http://test.datarj.com/webService/services/invoiceService?wsdl";
@@ -54,7 +55,7 @@ public class HttpUtils {
         try {
             logger.info("----------发送的报文------"+QueryData);
             JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
-            Client client = dcf.createClient(WS_URL);
+            Client client = dcf.createClient(URLUtils.WS_URL);
             String methodName = "UploadOrderData";
             String sign= SignUtils.getSign(QueryData,key);
             Object[] objects = client.invoke(methodName, AppId, sign, "01", QueryData);
