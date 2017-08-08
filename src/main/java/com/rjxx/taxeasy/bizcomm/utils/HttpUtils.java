@@ -16,6 +16,8 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 
 import java.io.*;
@@ -28,14 +30,17 @@ import java.util.Map;
 /**
  * Created by xlm on 2017/7/21.
  */
+@Service
 public class HttpUtils {
 
 
     private  static Logger logger = LoggerFactory.getLogger(HttpUtils.class);
 
+    @Value("${WS_URL}")
+    public static String WS_URL;
 
-    //public static String WS_URL = "http://open.datarj.com/webService/services/invoiceService?wsdl";
-    public static String WS_URL = "http://test.datarj.com/webService/services/invoiceService?wsdl";
+    //public static String WS_URL = "http://open2.datarj.com/webService/services/invoiceService?wsdl";
+    //public static String WS_URL = "http://test.datarj.com/webService/services/invoiceService?wsdl";
     //public static String WS_URL = "http://localhost:8080/services/invoiceService?wsdl";
     /**
      * 调用2.0接口开票
