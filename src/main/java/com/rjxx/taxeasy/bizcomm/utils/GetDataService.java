@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.rjxx.taxeasy.domains.*;
 import com.rjxx.taxeasy.service.*;
 import com.rjxx.taxeasy.vo.Spvo;
+import com.rjxx.utils.CheckOrderUtil;
 import org.apache.axiom.om.OMElement;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.time.DateUtils;
@@ -894,11 +895,13 @@ public class GetDataService {
             List<Jyxxsq> jyxxsqList = (List) parmsMap.get("jyxxsqList");
             List<Jymxsq> jymxsqList = (List) parmsMap.get("jymxsqList");
             List<Jyzfmx> jyzfmxList = (List) parmsMap.get("jyzfmxList");
+            CheckOrderUtil checkOrderUtil = new CheckOrderUtil();
+            String tmp = checkOrderUtil.checkOrders(jyxxsqList,jymxsqList,jyzfmxList,gsdm,"01");
             //String tmp = this.checkAll(jyxxsqList, jymxsqList, jyzfmxList,gsdm);
-            //parmsMap.put("tmp",tmp);
-           // if(parmsMap.size()>0){
-            //    return parmsMap;
-           // }
+            parmsMap.put("tmp",tmp);
+           if(parmsMap.size()>0){
+               return parmsMap;
+           }
         }catch (Exception e){
             System.out.println("request-url=" + uri+" request-requestEntity=" +nvps.toString()+ ", exception, msg=" + e.getMessage());
             e.printStackTrace();
