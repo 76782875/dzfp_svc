@@ -33,7 +33,9 @@ public class SeperateInvoiceUtils {
         for (int i = 0; i < kpspmxList.size(); i++) {
             Kpspmx mx = kpspmxList.get(i);
             BigDecimal jshj = new BigDecimal(mx.getSpje() + mx.getSpse());
+            jshj = jshj.setScale(2,BigDecimal.ROUND_HALF_UP);
             BigDecimal spsl = new BigDecimal(mx.getSpsl());
+            spsl = spsl.setScale(2,BigDecimal.ROUND_HALF_UP);
             BigDecimal jeWithoutTax = div(jshj, spsl.add(new BigDecimal(1))).setScale(6, BigDecimal.ROUND_HALF_UP);
             mx.setSpje(jeWithoutTax.doubleValue());// 商品金额不含税
             finalList.add(mx);
