@@ -103,9 +103,11 @@ public class DiscountDealUtil {
 		Cszb cszb = cszbService.getSpbmbbh(jyxxsq.getGsdm(), jyxxsq.getXfid(), jyxxsq.getSkpid(), "sfsfcl");
 		if(null != cszb && !cszb.equals("")){
 		    if("是" == cszb.getCsz() || cszb.getCsz().equals("是")){
-		    	 BigDecimal b = new BigDecimal(jyxxsq.getJshj());
-		         double f1 = b.setScale(1, BigDecimal.ROUND_DOWN).doubleValue();
-		         clzkzje = new BigDecimal((zkzje+jyxxsq.getJshj()-f1)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		    	 //BigDecimal b = new BigDecimal(jyxxsq.getJshj());
+				String strD = String.valueOf(jyxxsq.getJshj()*10);
+				String[] strArr = strD.split("\\.");
+				double f1 = Double.parseDouble(strArr[0])/10;
+				clzkzje = new BigDecimal((zkzje+jyxxsq.getJshj()-f1)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		    }else{
 		    	clzkzje = zkzje;
 		    }
