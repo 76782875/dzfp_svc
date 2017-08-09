@@ -896,7 +896,7 @@ public class GetDataService {
             List<Jymxsq> jymxsqList = (List) parmsMap.get("jymxsqList");
             List<Jyzfmx> jyzfmxList = (List) parmsMap.get("jyzfmxList");
             CheckOrderUtil checkOrderUtil = new CheckOrderUtil();
-            String tmp = checkOrderUtil.checkOrders(jyxxsqList,jymxsqList,jyzfmxList,gsdm,"01");
+            String tmp = checkOrderUtil.checkOrders(jyxxsqList,jymxsqList,jyzfmxList,gsdm,"");
             //String tmp = this.checkAll(jyxxsqList, jymxsqList, jyzfmxList,gsdm);
             parmsMap.put("tmp",tmp);
            if(parmsMap.size()>0){
