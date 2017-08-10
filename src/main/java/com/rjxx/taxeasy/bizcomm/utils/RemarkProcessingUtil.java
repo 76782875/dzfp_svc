@@ -1,6 +1,7 @@
 package com.rjxx.taxeasy.bizcomm.utils;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +28,11 @@ public class RemarkProcessingUtil {
 		if (null != jyxxsqList && !jyxxsqList.isEmpty() && null != jyzfmxList && !jyzfmxList.isEmpty()) {
 			String bz = "";
 			Map<String, Object> params = new HashMap<String, Object>();
+			List kpfsdmList = new ArrayList();
+			kpfsdmList.add("01");
+			kpfsdmList.add("02");
 			params.put("gsdm", gsdm);
+			params.put("kpfsList",kpfsdmList);
 			List<ZffsVo> zffsVoList = zffsService.findAllByMap(params);
 			for (int i = 0; i < jyxxsqList.size(); i++) {
 				Jyxxsq jyxxsq = jyxxsqList.get(i);
