@@ -18,7 +18,7 @@
 			and id != #{notid}
 		</if>
 		<if test="xfid != null and xfid != ''">
-			and xfid != #{xfid}
+			and xfid = #{xfid}
 		</if>
 		limit 1
 	</select>
