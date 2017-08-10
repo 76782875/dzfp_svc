@@ -387,7 +387,6 @@ public class CheckOrderUtil {
                 if (jshj2.compareTo(bd2) !=0 && jshj2.setScale(1, BigDecimal.ROUND_DOWN).compareTo(bd2) !=0) {
                     result += "订单号为" + ddh + "的订单PayPrice合计与TotalAmount不等;";
                 }
-                }
                 params.put("zffsList", zffsdmList);
                 List<Zffs> zffsList = zffsService.findAllByParams(params);
                 if(null == zffsList ||zffsList.isEmpty()){
@@ -397,7 +396,7 @@ public class CheckOrderUtil {
                         result += "订单号为" + ddh + "的订单有支付方式未维护，请联系管理员进行维护";
                     }
                 }
-
+            }
         }
 //        ddhMap.put("ddhList", ddhList);
 //        ddhMap.put("gsdm", gsdm);
