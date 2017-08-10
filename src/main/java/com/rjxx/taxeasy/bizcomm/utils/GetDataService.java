@@ -1152,7 +1152,7 @@ public class GetDataService {
                }
                //基本数据封装进交易信息申请
                Jyxxsq jyxxsq = new Jyxxsq();
-               jyxxsq.setDdh(listno+"");//订单编号 对应小票流水号
+               jyxxsq.setDdh(ExtractCode);//订单编号 对应小票流水号
                jyxxsq.setTqm(tqm);// 提取码  对应购物小票流水号
                jyxxsq.setJylsh("JY" + new SimpleDateFormat("yyyyMMddHHmmssSS").format(new Date()));//交易流水号
                String kpddm=tqm.substring(0,3);
