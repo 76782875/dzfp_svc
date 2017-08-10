@@ -365,55 +365,39 @@ public class CheckOrderUtil {
             if (bd2.setScale(2, BigDecimal.ROUND_HALF_UP).subtract(jshj.setScale(2, BigDecimal.ROUND_HALF_UP)).doubleValue() != 0.0) {
                 result += "订单号为" + ddh + "的订单TotalAmount，Amount，TaxAmount计算校验不通过";
             }
-            
+            Map params = new HashMap();
+            List zffsdmList = new ArrayList();
 			if (null != jyzfmxList && !jyzfmxList.isEmpty()) {
 				List kpfsList = new ArrayList();
 				//kpfsList.add("02");
-				Map params = new HashMap();
 				params.put("gsdm", gsdm);
 				//params.put("kpfsList", kpfsList);
-                System.out.println(null ==kpfsList);
+                for(int j = 0; j < jyzfmxList.size(); j++){
+                    jyzfmx = (Jyzfmx) jyzfmxList.get(j);
+                    if(!zffsdmList.contains(jyzfmx.getZffsDm()))
+                    zffsdmList.add(jyzfmx.getZffsDm());
+
+                    ddh2 = jyzfmx.getDdh();
+                    if (ddh.equals(ddh2)) {
+                        BigDecimal zfje = new BigDecimal(jyzfmx.getZfje());
+                        jshj2 = jshj2.add(zfje);
+                    }
+                }
+                //交易支付明细合计！=价税合计并且交易支付明细合计舍分！=价税合计
+                if (jshj2.compareTo(bd2) !=0 && jshj2.setScale(1, BigDecimal.ROUND_DOWN).compareTo(bd2) !=0) {
+                    result += "订单号为" + ddh + "的订单PayPrice合计与TotalAmount不等;";
+                }
+                }
+                params.put("zffsList", zffsdmList);
                 List<Zffs> zffsList = zffsService.findAllByParams(params);
                 if(null == zffsList ||zffsList.isEmpty()){
 					result += "请去平台支付方式管理维护对应的支付方式;";
-				}
-				String flag ="0";
-				for (int j = 0; j < jyzfmxList.size(); j++) {
-					jyzfmx = (Jyzfmx) jyzfmxList.get(j);
-					if(null ==jyzfmx.getZffsDm() || jyzfmx.getZffsDm().equals("")){
-						result += "订单号为" + ddh + "的订单,支付方式代码不能为空;";
-					}
-					if(null != zffsList && !zffsList.isEmpty()){
-						for(int k=0;k<zffsList.size();k++){
-							Zffs  zffs = zffsList.get(k);
-							if(jyzfmx.getZffsDm().equals(zffs.getZffsDm())){
-								flag = "1";
-							}
-						}
-						if(flag.equals("0")){
-							result += "订单号为" + ddh + "的订单,支付方式代码"+jyzfmx.getZffsDm()+"未在平台维护;";
-						}
-					}
-					ddh2 = jyzfmx.getDdh();
-					if (ddh.equals(ddh2)) {
-						BigDecimal zfje = new BigDecimal(jyzfmx.getZfje());
-						jshj2 = jshj2.add(zfje);
-					}
-					
-					// 支付方式代码
-					/*
-					 * String zffsdm = String.valueOf(jyzfmx.getZffsDm()); if
-					 * (zffsdm != null &&
-					 * zffsdm.equals("^\\-?[0-9]{0,15}+(.[0-9]{0,2})?$")) {
-					 * result += "订单号为" + ddh + "的订单第" + i +
-					 * "条商品TaxAmount格式不正确！"; }
-					 */
-				}
-				//交易支付明细合计！=价税合计并且交易支付明细合计舍分！=价税合计
-				if (jshj2.compareTo(bd2) !=0 && jshj2.setScale(1, BigDecimal.ROUND_DOWN).compareTo(bd2) !=0) {
-					result += "订单号为" + ddh + "的订单PayPrice合计与TotalAmount不等;";
-				}
-			}
+				}else{
+                    if(zffsList.size() != zffsdmList.size()){
+                        result += "订单号为" + ddh + "的订单有支付方式未维护，请联系管理员进行维护";
+                    }
+                }
+
         }
 //        ddhMap.put("ddhList", ddhList);
 //        ddhMap.put("gsdm", gsdm);
