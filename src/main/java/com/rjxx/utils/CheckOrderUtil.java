@@ -374,7 +374,6 @@ public class CheckOrderUtil {
 				//params.put("kpfsList", kpfsList);
                 System.out.println(null ==kpfsList);
                 List<Zffs> zffsList = zffsService.findAllByParams(params);
-                System.out.println("1111111111111");
                 if(null == zffsList ||zffsList.isEmpty()){
 					result += "请去平台支付方式管理维护对应的支付方式;";
 				}

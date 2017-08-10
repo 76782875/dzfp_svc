@@ -7,6 +7,7 @@ import com.rjxx.taxeasy.domains.*;
 import com.rjxx.taxeasy.service.*;
 import com.rjxx.taxeasy.vo.Spvo;
 import com.rjxx.utils.CheckOrderUtil;
+import com.rjxx.utils.StringUtils;
 import org.apache.axiom.om.OMElement;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.time.DateUtils;
@@ -56,6 +57,9 @@ public class GetDataService {
     private GsxxService gsxxService;
     @Autowired
     private CszbService cszbService;
+    @Autowired
+    private  CheckOrderUtil checkOrderUtil;
+
     private static String getSign(String QueryData, String key) {
         String signSourceData = "data=" + QueryData + "&key=" + key;
         String newSign = DigestUtils.md5Hex(signSourceData);
@@ -895,15 +899,16 @@ public class GetDataService {
             List<Jyxxsq> jyxxsqList = (List) parmsMap.get("jyxxsqList");
             List<Jymxsq> jymxsqList = (List) parmsMap.get("jymxsqList");
             List<Jyzfmx> jyzfmxList = (List) parmsMap.get("jyzfmxList");
-            CheckOrderUtil checkOrderUtil = new CheckOrderUtil();
+
             String tmp = checkOrderUtil.checkOrders(jyxxsqList,jymxsqList,jyzfmxList,gsdm,"");
-            //String tmp = this.checkAll(jyxxsqList, jymxsqList, jyzfmxList,gsdm);
-            parmsMap.put("tmp",tmp);
-           if(parmsMap.size()>0){
-               return parmsMap;
-           }
+            Map failMap = new HashMap();
+            if(null!=tmp&& StringUtils.isNotBlank(tmp)){
+                failMap.put("tmp",tmp);
+                return failMap;
+            }
+
         }catch (Exception e){
-            System.out.println("request-url=" + uri+" request-requestEntity=" +nvps.toString()+ ", exception, msg=" + e.getMessage());
+            //System.out.println("request-url=" + uri+" request-requestEntity=" +nvps.toString()+ ", exception, msg=" + e.getMessage());
             e.printStackTrace();
             e.printStackTrace();
         }
