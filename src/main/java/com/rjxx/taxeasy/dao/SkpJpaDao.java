@@ -13,12 +13,10 @@ import org.springframework.data.repository.CrudRepository;
  * @ZhangBing
  */ 
 public interface SkpJpaDao extends CrudRepository<Skp, Integer> {
-    @Query(nativeQuery = true,value = "select kpddm from t_skp where gsdm=?1")
+    @Query(nativeQuery = true,value = "select kpddm from t_skp where gsdm=?1 and yxbz='1' ")
     String findKpddmByGsdm(String gsdm);
 
-    @Query(nativeQuery = true,value = "select id from t_skp where kpddm=?1")
-    Integer findIdByKpddm(String kpddm);
-
+    @Query(nativeQuery = true,value = "select * from t_skp where gsdm=?2 and kpddm=?1 and yxbz='1' ")
     Skp findOneByKpddmAndGsdm(String kpddm,String gsdm);
 }
 
