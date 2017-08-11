@@ -13,7 +13,7 @@ import org.springframework.data.repository.CrudRepository;
  * @ZhangBing
  */ 
 public interface GsxxJpaDao extends CrudRepository<Gsxx, Integer> {
-    @Query(nativeQuery = true, value = "select * from t_gsxx where gsdm=?1 and yxbz='1'")
+    @Query(nativeQuery = true, value = "select * from t_gsxx where gsdm=?1")
     Gsxx findOneByGsdm(String gsdm);
 }
 
