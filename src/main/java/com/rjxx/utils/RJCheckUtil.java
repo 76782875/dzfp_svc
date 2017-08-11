@@ -2,11 +2,13 @@ package com.rjxx.utils;
 
 import org.apache.commons.codec.binary.Base64;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by Administrator on 2017/8/8 0008.
+ * Created by wangyahui on 2017/8/11 0011
  */
 public class RJCheckUtil {
     public static Boolean checkMD5(String key,String q){
@@ -45,5 +47,27 @@ public class RJCheckUtil {
         map.put("storeNo", storeNo);
         map.put("sign", sign);
         return map;
+    }
+
+    public static String getQ(String key,String orderNo,String orderTime,String price,String storeNo){
+        String str = "on="+orderNo+"&ot="+orderTime+"&pr="+price+"&sn="+storeNo+"&key="+key;
+        String sign = "";
+        try {
+            sign = MD5Util.generatePassword(str);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String string = "on="+orderNo+"&ot="+orderTime+"&pr="+price+"&sn="+storeNo+"&sign="+sign;
+        byte[] bytes = Base64.encodeBase64(string.getBytes());
+        return new String(bytes);
+    }
+
+    public static void main(String[] args) {
+        String key = "3f7626939b146cc47c31daf43edc42bd";
+        String orderNo = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+        String orderTime = new SimpleDateFormat("yyyyMMdd").format(new Date());
+        String price = "100";
+        String storeNo = "sh001";
+        System.out.println(getQ(key,orderNo,orderTime,price,storeNo));
     }
 }
