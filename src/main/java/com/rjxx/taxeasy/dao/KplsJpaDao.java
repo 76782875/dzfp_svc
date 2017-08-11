@@ -15,5 +15,7 @@ public interface KplsJpaDao extends CrudRepository<Kpls, Integer> {
 
     @Query(nativeQuery = true,value = "select * from t_kpls where serialorder=?1")
     Kpls findOneBySerialorder(String serialorder);
+
+    Kpls findOneByDjh(Integer djh);
 }
 
