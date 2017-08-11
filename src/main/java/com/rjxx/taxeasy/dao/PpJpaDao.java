@@ -1,6 +1,7 @@
 package com.rjxx.taxeasy.dao;
 
 import com.rjxx.taxeasy.domains.Pp;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 /**
@@ -11,6 +12,7 @@ import org.springframework.data.repository.CrudRepository;
  * @ZhangBing
  */ 
 public interface PpJpaDao extends CrudRepository<Pp, Integer> {
-
+    @Query(nativeQuery = true, value = "select * from t_pp where id=?1 and yxbz='1'")
+    Pp findOneById(Integer id);
 }
 

@@ -13,9 +13,10 @@ import org.springframework.data.repository.CrudRepository;
  */ 
 public interface KplsJpaDao extends CrudRepository<Kpls, Integer> {
 
-    @Query(nativeQuery = true,value = "select * from t_kpls where serialorder=?1")
+    @Query(nativeQuery = true,value = "select * from t_kpls where serialorder=?1 and yxbz='1'")
     Kpls findOneBySerialorder(String serialorder);
 
+    @Query(nativeQuery = true,value = "select * from t_kpls where djh=?1 and yxbz='1'")
     Kpls findOneByDjh(Integer djh);
 }
 
