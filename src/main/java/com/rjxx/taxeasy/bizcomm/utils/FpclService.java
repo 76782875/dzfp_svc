@@ -713,7 +713,7 @@ public class FpclService {
      * @return
      * @throws Exception
      */
-    private Map DzfphttpPost(String sendMes, String url, String key, String xfsh, String jylsh) throws Exception {
+    public Map DzfphttpPost(String sendMes, String url, String key, String xfsh, String jylsh) throws Exception {
         HttpPost httpPost = new HttpPost(url);
         CloseableHttpResponse response = null;
         CloseableHttpClient httpClient = HttpClients.createDefault();
