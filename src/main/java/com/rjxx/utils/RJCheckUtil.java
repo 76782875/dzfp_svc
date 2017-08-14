@@ -65,7 +65,7 @@ public class RJCheckUtil {
     public static void main(String[] args) {
         String key = "3f7626939b146cc47c31daf43edc42bd";
         String orderNo = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-        String orderTime = new SimpleDateFormat("yyyyMMdd").format(new Date());
+        String orderTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
         String price = "100";
         String storeNo = "sh001";
         System.out.println(getQ(key,orderNo,orderTime,price,storeNo));
