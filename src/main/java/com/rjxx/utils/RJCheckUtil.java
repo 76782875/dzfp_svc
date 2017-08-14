@@ -25,7 +25,7 @@ public class RJCheckUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if(!sign.equals(MD5dbs)){
+        if(!sign.equalsIgnoreCase(MD5dbs)){
             return false;
         }
         return true;
@@ -70,4 +70,9 @@ public class RJCheckUtil {
         String storeNo = "sh001";
         System.out.println(getQ(key,orderNo,orderTime,price,storeNo));
     }
+//
+//    public static void main(String[] args) {
+//        Boolean b =RJCheckUtil.checkMD5("3f7626939b146cc47c31daf43edc42bd","b249VFNUX1JCMjAxNzA4MTQwMDAyMCZvdD0yMDE3MDgxNDEwNDUwMCZwcj01NSZzbj1zaDAwMSZzaT00NDM1ZWMwM2JkN2ZjMzA0YTA0MzhjMjVhYjU0YWFmMQ==");
+//        System.out.println(b);
+//    }
 }
