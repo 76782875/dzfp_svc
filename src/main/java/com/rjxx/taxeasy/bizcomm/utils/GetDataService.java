@@ -108,9 +108,9 @@ public class GetDataService {
                     "\t\t\t\t\t<UnitPrice>10.00</UnitPrice>\n" +
                     "\t\t\t\t\t<Amount>10.00</Amount>\n" +
                     "\t\t\t\t\t<DeductAmount></DeductAmount>\n" +
-                    "\t\t\t\t\t<TaxRate>0.17</TaxRate>\n" +
-                    "\t\t\t\t\t<TaxAmount>1.7</TaxAmount>\n" +
-                    "\t\t\t\t\t<MxTotalAmount>11.7</MxTotalAmount>\n" +
+                    "\t\t\t\t\t<TaxRate>0.06</TaxRate>\n" +
+                    "\t\t\t\t\t<TaxAmount>0.6</TaxAmount>\n" +
+                    "\t\t\t\t\t<MxTotalAmount>10.6</MxTotalAmount>\n" +
                     "\t\t\t\t\t<PolicyMark></PolicyMark>\n" +
                     "\t\t\t\t\t<TaxRateMark></TaxRateMark>\n" +
                     "\t\t\t\t\t<PolicyName></PolicyName>\n" +
