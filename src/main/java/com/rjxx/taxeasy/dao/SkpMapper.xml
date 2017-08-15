@@ -25,7 +25,7 @@
 	<select id="findSkpbySkph" parameterType="map" resultType="skp">
         select * from t_skp where yxbz = '1'
 		<if test="kpdid != null and kpdid != ''">
-			and  t.skph=#{kpdid} or id=#{kpdid}
+			and ( t.skph=#{kpdid} or id=#{kpdid} )
 		</if>
 	</select>
 	<select id="getSkpListByYhId" parameterType="map" resultType="skp">
