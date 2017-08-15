@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * Created by wangyahui on 2017/8/11 0011
@@ -75,10 +76,10 @@ public class RJCheckUtil {
 
     public static void main(String[] args) {
         String key = "3f7626939b146cc47c31daf43edc42bd";
-        String orderNo = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+        String orderNo = String.valueOf(System.currentTimeMillis());
         String orderTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-        String price = "100";
-        String storeNo = "sh001";
+        String price = String.valueOf(new Random().nextInt(1000));
+        String storeNo = "shn";
         System.out.println(getQ(key,orderNo,orderTime,price,storeNo));
     }
 
