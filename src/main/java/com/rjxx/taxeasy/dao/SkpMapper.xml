@@ -22,7 +22,7 @@
 		</if>
 		limit 1
 	</select>
-	<select  id="findSkpbySkph" parameterMap="map" resultMap="skp">
+	<select  id="findSkpbySkph" parameterMap="map" resultType="skp">
         select * from t_skp where yxbz = '1'
 		<if test="kpdid != null and kpdid != ''">
 			and  t.skph=#{kpdid} or id=#{kpdid}
