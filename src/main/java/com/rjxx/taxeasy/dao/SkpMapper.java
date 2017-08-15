@@ -34,6 +34,6 @@ public interface SkpMapper {
 
 	public SkpVo findXfSkpNum(Map map);
 
-    List<Skp> findSkpbySkph(Map kpdid);
+    List<Skp> findSkpbySkph(Map parms);
 }
 

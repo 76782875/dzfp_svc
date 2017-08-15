@@ -145,7 +145,7 @@ public class SkpService {
 		return skpMapper.findXfSkpNum(map);
 	}
 
-    public List<Skp> findSkpbySkph(Map kpdid) {
-		return skpMapper.findSkpbySkph(kpdid);
+    public List<Skp> findSkpbySkph(Map parms) {
+		return skpMapper.findSkpbySkph(parms);
     }
 }
