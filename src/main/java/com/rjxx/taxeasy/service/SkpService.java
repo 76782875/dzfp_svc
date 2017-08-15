@@ -144,4 +144,8 @@ public class SkpService {
 		// TODO Auto-generated method stub
 		return skpMapper.findXfSkpNum(map);
 	}
+
+    public List<Skp> findSkpbySkph(Map kpdid) {
+		return skpMapper.findSkpbySkph(kpdid);
+    }
 }

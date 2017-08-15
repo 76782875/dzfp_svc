@@ -22,6 +22,12 @@
 		</if>
 		limit 1
 	</select>
+	<select  id="findSkpbySkph" parameterMap="map" resultMap="skp">
+        select * from t_skp where yxbz = '1'
+		<if test="kpdid != null and kpdid != ''">
+			and  t.skph=#{kpdid} or id=#{kpdid}
+		</if>
+	</select>
 	<select id="getSkpListByYhId" parameterType="map" resultType="skp">
 		select * from t_skp where yxbz = '1' 
 		<if test="xfs != null or skps != null">
