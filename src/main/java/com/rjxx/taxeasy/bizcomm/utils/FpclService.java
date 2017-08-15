@@ -1294,7 +1294,10 @@ public class FpclService {
                     String result2 = TemplateUtils.generateContent(templateName, params2);
                     System.out.println(result2);
                     logger.debug("封装传开票通的报文" + result2);
-                    String url = "http://210.14.78.228:7090/SKServer/SKDo";
+                    Map parms=new HashMap();
+                    parms.put("gsdm",zjKplsvo5.getGsdm());
+                    Gsxx gsxx=gsxxService.findOneByParams(parms);
+                    String url = gsxx.getWsUrl();
                     resultMap = DzfphttpPost(result2, url, zjKplsvo5.getDjh() + "$" + zjKplsvo5.getKplsh(), zjKplsvo5.getXfsh(),
                             zjKplsvo5.getJylsh());
                     String  serialorder=this.updateKpls(resultMap);
