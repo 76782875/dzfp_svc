@@ -179,7 +179,7 @@ public class DiscountDealUtil {
 					JymxsqCl jymxsqCl = new JymxsqCl(jymxsq);
 					jymxsqCl.setFphxz("1");// 折扣行
 					jymxsqCl.setSpje(-jymxsq.getSpje() * zkl);
-					jymxsqCl.setSpse(-jymxsq.getSpse() * zkl);
+					jymxsqCl.setSpse(hsbz.equals("1")?0d:-jymxsq.getSpse() * zkl);
 					jymxsqCl.setJshj(new BigDecimal((jymxsqCl.getSpje())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue()
 							+new BigDecimal((jymxsqCl.getSpse())).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue());
 					jymxsqCl.setSps(null);
@@ -203,7 +203,7 @@ public class DiscountDealUtil {
 								// jymxsqCl.setFphxz("1");//折扣行
 								JymxsqCl jymxsqCl = new JymxsqCl(jymxsq2);
 								jymxsqCl.setSpje(-(jymxsq2.getSpje() + jymxsq.getSpje()) * zkl+jymxsq2.getSpje());
-								jymxsqCl.setSpse(-(jymxsq2.getSpse() + jymxsq.getSpse()) * zkl+jymxsq2.getSpse());
+								jymxsqCl.setSpse(hsbz.equals("1")?0d:-(jymxsq2.getSpse() + jymxsq.getSpse()) * zkl+jymxsq2.getSpse());
 								jymxsqCl.setJshj(new BigDecimal((jymxsqCl.getSpje())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue()
 										+new BigDecimal((jymxsqCl.getSpse())).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue());
 								jymxsqCl.setSps(null);
