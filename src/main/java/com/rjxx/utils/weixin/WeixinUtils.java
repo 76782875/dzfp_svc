@@ -146,7 +146,7 @@ public class WeixinUtils {
 
         String auth_url ="";
         WeixinUtils weixinUtils = new WeixinUtils();
-
+        System.out.println("传入的数据订单编号"+orderid+"金额"+money+"时间"+timestamp+"门店号"+menDianId);
         String spappid =  weixinUtils.getSpappid();//获取开票平台
         String ticket = weixinUtils.getTicket();
         double d = Double.valueOf(money)*100;
@@ -158,6 +158,7 @@ public class WeixinUtils {
                 dateTime= TimeUtil.getSysDateInDate(timestamp,"yyyy-MM-dd HH:mm:ss");
             }
         }
+        System.out.println("转换之后金额"+d+"时间"+dateTime);
         String  source = "web";
         int type = 1;//填写抬头申请开票类型
         Map nvps = new HashMap();
