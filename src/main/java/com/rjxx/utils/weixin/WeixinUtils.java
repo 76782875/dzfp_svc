@@ -152,10 +152,13 @@ public class WeixinUtils {
         double d = Double.valueOf(money)*100;
         Date dateTime = null;
         if(null!=timestamp&&!timestamp.equals("")){
-            if("yyyyMMddHHmmss".equals(timestamp)){
-                dateTime= TimeUtil.getSysDateInDate(timestamp,"yyyyMMddHHmmss");
-            }else if("yyyy-MM-dd HH:mm:ss".equals(timestamp)){
+            String[] s = timestamp.split("-");
+            if(s.length> 1 ){
                 dateTime= TimeUtil.getSysDateInDate(timestamp,"yyyy-MM-dd HH:mm:ss");
+                System.out.println("日期格式为yyyy-MM-dd HH:mm:ss =============");
+            }else {
+                dateTime= TimeUtil.getSysDateInDate(timestamp,"yyyyMMddHHmmss");
+                System.out.println("日期格式为yyyyMMddHHmmss    ================");
             }
         }
         System.out.println("转换之后金额"+d+"时间"+dateTime);
