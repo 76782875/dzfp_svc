@@ -56,7 +56,7 @@ public class AlipayUtils {
      * @return
      */
     public static boolean isAlipayAuthorized(HttpSession session) throws AlipayApiException{
-        String userId = (String) session.getAttribute(AlipayConstants.ALIPAY_USER_ID);
+        String userId = (String) session.getAttribute(AlipayConstant.ALIPAY_USER_ID);
         String expires_in = (String) session.getAttribute("expires_in");
         String re_expires_in = (String) session.getAttribute("re_expires_in");
         if (StringUtils.isNotBlank(userId)) {
@@ -67,13 +67,13 @@ public class AlipayUtils {
     }
     public static  void refreshToken(HttpSession session) throws AlipayApiException {
         String refreshToken = (String) session.getAttribute("refresh_token");
-        AlipayClient alipayClient = new DefaultAlipayClient(AlipayConstants.GATEWAY_URL, AlipayConstants.APP_ID, AlipayConstants.PRIVATE_KEY, AlipayConstants.FORMAT, AlipayConstants.CHARSET, AlipayConstants.ALIPAY_PUBLIC_KEY, AlipayConstants.SIGN_TYPE);
+        AlipayClient alipayClient = new DefaultAlipayClient(AlipayConstant.GATEWAY_URL, AlipayConstant.APP_ID, AlipayConstant.PRIVATE_KEY, AlipayConstant.FORMAT, AlipayConstant.CHARSET, AlipayConstant.ALIPAY_PUBLIC_KEY, AlipayConstant.SIGN_TYPE);
         AlipaySystemOauthTokenRequest alipaySystemOauthTokenRequest = new AlipaySystemOauthTokenRequest();
         alipaySystemOauthTokenRequest.setRefreshToken(refreshToken);
         alipaySystemOauthTokenRequest.setGrantType("refresh_token");
         AlipaySystemOauthTokenResponse oauthTokenResponse = alipayClient.execute(alipaySystemOauthTokenRequest);
-        session.setAttribute(AlipayConstants.ALIPAY_ACCESS_TOKEN, oauthTokenResponse.getAccessToken());
-        session.setAttribute(AlipayConstants.ALIPAY_USER_ID, oauthTokenResponse.getUserId());
+        session.setAttribute(AlipayConstant.ALIPAY_ACCESS_TOKEN, oauthTokenResponse.getAccessToken());
+        session.setAttribute(AlipayConstant.ALIPAY_USER_ID, oauthTokenResponse.getUserId());
         session.setAttribute("refresh_token",oauthTokenResponse.getRefreshToken());
         logger.info(JSON.toJSONString(oauthTokenResponse)+"end application");
     }
@@ -85,7 +85,7 @@ public class AlipayUtils {
      * @param returnUrl
      */
     public static void initAlipayAuthorization(HttpServletRequest request, HttpServletResponse response, String returnUrl) throws Exception {
-        String redirectUrl = AlipayConstants.AUTH_URL.replace("ENCODED_URL", java.net.URLEncoder.encode(HtmlUtils.finishedUrl(request, AlipayConstants.AFTER_ALIPAY_AUTHORIZED_REDIRECT_URL), "UTF-8"));
+        String redirectUrl = AlipayConstant.AUTH_URL.replace("ENCODED_URL", java.net.URLEncoder.encode(HtmlUtils.finishedUrl(request, AlipayConstant.AFTER_ALIPAY_AUTHORIZED_REDIRECT_URL), "UTF-8"));
         redirectUrl += "&state=" + Base64.encodeBase64String(returnUrl.getBytes("UTF-8"));
         logger.info(redirectUrl);
         response.sendRedirect(redirectUrl);
@@ -98,13 +98,13 @@ public class AlipayUtils {
      * @return
      */
     public static List<InvoiceTitleVo> getAlipayInvoiceTitleList(HttpSession session) throws Exception {
-        String accessToken = (String) session.getAttribute(AlipayConstants.ALIPAY_ACCESS_TOKEN);
+        String accessToken = (String) session.getAttribute(AlipayConstant.ALIPAY_ACCESS_TOKEN);
         if (StringUtils.isBlank(accessToken)) {
             throw new Exception("alipay not authorized!!!");
         }
         System.out.println(accessToken);
-        String userId = (String) session.getAttribute(AlipayConstants.ALIPAY_USER_ID);
-        AlipayClient alipayClient = new DefaultAlipayClient(AlipayConstants.GATEWAY_URL, AlipayConstants.APP_ID, AlipayConstants.PRIVATE_KEY, AlipayConstants.FORMAT, AlipayConstants.CHARSET, AlipayConstants.ALIPAY_PUBLIC_KEY, AlipayConstants.SIGN_TYPE);
+        String userId = (String) session.getAttribute(AlipayConstant.ALIPAY_USER_ID);
+        AlipayClient alipayClient = new DefaultAlipayClient(AlipayConstant.GATEWAY_URL, AlipayConstant.APP_ID, AlipayConstant.PRIVATE_KEY, AlipayConstant.FORMAT, AlipayConstant.CHARSET, AlipayConstant.ALIPAY_PUBLIC_KEY, AlipayConstant.SIGN_TYPE);
         AlipayEbppInvoiceTitleListGetRequest request = new AlipayEbppInvoiceTitleListGetRequest();
         request.setBizContent("{" +
                 "\"user_id\":\"" + userId + "\"" +
@@ -142,7 +142,7 @@ public class AlipayUtils {
      * @return
      */
     public static String syncInvoiceAlipay(String userId,Kpls kpls, List<Kpspmx> kpspmxList, String mShortName, String subMShortName) throws Exception {
-        AlipayClient alipayClient = new DefaultAlipayClient(AlipayConstants.GATEWAY_URL, AlipayConstants.APP_ID, AlipayConstants.PRIVATE_KEY, AlipayConstants.FORMAT, AlipayConstants.CHARSET, AlipayConstants.ALIPAY_PUBLIC_KEY, AlipayConstants.SIGN_TYPE);
+        AlipayClient alipayClient = new DefaultAlipayClient(AlipayConstant.GATEWAY_URL, AlipayConstant.APP_ID, AlipayConstant.PRIVATE_KEY, AlipayConstant.FORMAT, AlipayConstant.CHARSET, AlipayConstant.ALIPAY_PUBLIC_KEY, AlipayConstant.SIGN_TYPE);
         AlipayEbppInvoiceSycnRequest alipayEbppInvoiceSycnRequest = new AlipayEbppInvoiceSycnRequest();
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
         AlipayBizObject alipayBizObject = new AlipayBizObject();

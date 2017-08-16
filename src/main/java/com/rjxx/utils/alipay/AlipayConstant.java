@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
  * Created by Administrator on 2017-06-23.
  */
 @Component
-public class AlipayConstants {
+public class AlipayConstant {
 
     public static  String GATEWAY_URL;
 
