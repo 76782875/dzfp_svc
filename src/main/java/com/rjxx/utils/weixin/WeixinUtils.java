@@ -41,7 +41,7 @@ public class WeixinUtils {
      * @param
      * @return
      */
-     public static boolean isWeiXinBrowser(HttpServletRequest request) {
+    public static boolean isWeiXinBrowser(HttpServletRequest request) {
         String ua = request.getHeader("user-agent").toLowerCase();
         boolean res = ua.contains("micromessenger");
         return res;
@@ -265,9 +265,9 @@ public class WeixinUtils {
         // System.out.println("获取微信token-----------"+msp);
 
 
-       /* try {
+       /*try {
 
-            weixinUtils.getTiaoURL("1122203","10", "2011-05-09 11:49:45","1");//获取微信授权
+            weixinUtils.getTiaoURL("11222031","10", "2011-05-09 11:49:45","1");//获取微信授权
         } catch (Exception e) {
             e.printStackTrace();
         }*/
@@ -279,12 +279,12 @@ public class WeixinUtils {
         //String card_id = (String) map.get("card_id");
         //System.out.println(""+card_id);
 
-
-        //weixinUtils.dzfpInCard("1131453220170808",WeiXinConstants.FAMILY_CARD_ID,weixinUtils.zdcxstatus("1131453220170808"));
+        //String access_token = (String) weixinUtils.hqtk().get("access_token");
+        //weixinUtils.dzfpInCard("11222031",WeiXinConstants.FAMILY_CARD_ID,weixinUtils.zdcxstatus("11222031",access_token));
         //String in =  weixinUtils.jujuekp("1131453222001122","微信授权失败，请重新开票");//重新开票
 
         //上传PDF
-       // weixinUtils.creatPDF("http://test.datarj.com/e-invoice-file/500102010003643/20170531/691fe064-80f4-4e81-9ae6-4d16ee0010a5.pdf","/usr/local/e-invoice-file");
+        //weixinUtils.creatPDF("http://test.datarj.com/e-invoice-file/500102010003643/20170531/691fe064-80f4-4e81-9ae6-4d16ee0010a5.pdf","/usr/local/e-invoice-file");
 
 
     }
@@ -596,7 +596,7 @@ public class WeixinUtils {
         Map sj = new HashMap();
         Map card_ext = new HashMap();
         Map user_card = new HashMap();
-        Map info = new HashMap();
+        List<Map> info = new ArrayList<>();
         Map invoice_user_data = new HashMap();
         sj.put("order_id",order_id);
         sj.put("card_id",card_id);
@@ -618,21 +618,21 @@ public class WeixinUtils {
         weiXinInfo.setBilling_code("3643259");//发票号码
         weiXinInfo.setFee_without_tax(1);//不含税金额
         weiXinInfo.setTax(1);//税额
-        weiXinInfo.setS_pdf_media_id("73181857960493557");
-        weiXinInfo.setCheck_code("07729518401464999926");
-        weiXinInfo.setName("衣服");
-        weiXinInfo.setUnit("件");
-        weiXinInfo.setNum(1);
-        weiXinInfo.setPrice(12);*/
+        weiXinInfo.setCheck_code("737806869");
+        weiXinInfo.setS_pdf_media_id("73700668353806869");*/
+
         if(kpspmxList.size()>0){
             for (Kpspmx kpspmx : kpspmxList){
-            weiXinInfo.setName(kpspmx.getSpmc());
-            weiXinInfo.setNum(kpspmx.getSps().intValue());
-            weiXinInfo.setPrice(kpspmx.getSpdj().intValue());
-            weiXinInfo.setUnit(kpspmx.getSpdw());
+
+                Map ma = new HashMap();
+                ma.put("name", kpspmx.getSpmc());
+                ma.put("num",kpspmx.getSps());
+                ma.put("unit",kpspmx.getSpdj());
+                ma.put("price",kpspmx.getSpdw());
+
+                info.add(ma);
             }
         }
-
 
         String pdfUrl = kpls.getPdfurl();
         String  s_media_id_pdf = weixinUtils.creatPDF(pdfUrl,pdf_file_url);
@@ -644,7 +644,7 @@ public class WeixinUtils {
         invoice_user_data.put("billing_time",weiXinInfo.getBilling_time());
         invoice_user_data.put("billing_no",weiXinInfo.getBilling_no());
         invoice_user_data.put("billing_code",weiXinInfo.getBilling_code());
-        invoice_user_data.put("info",weiXinInfo.getInfo());
+        invoice_user_data.put("info",info);
         invoice_user_data.put("fee_without_tax",weiXinInfo.getFee_without_tax());
         invoice_user_data.put("tax",weiXinInfo.getTax());
         invoice_user_data.put("s_pdf_media_id",weiXinInfo.getS_pdf_media_id());
@@ -660,13 +660,9 @@ public class WeixinUtils {
         invoice_user_data.put("cashier",weiXinInfo.getCashier());
         invoice_user_data.put("maker",weiXinInfo.getMaker());
 
-        info.put("name",weiXinInfo.getName());
-        info.put("num",weiXinInfo.getNum());
-        info.put("unit",weiXinInfo.getUnit());
-        info.put("price",weiXinInfo.getPrice());
 
         System.out.println("封装的数据"+JSON.toJSONString(sj));
-        if(null==sj.get("order_id")){
+       if(null==sj.get("order_id")){
             logger.info("订单order_id为空");
             return  null;
         }
@@ -712,22 +708,6 @@ public class WeixinUtils {
         }
         if(null==invoice_user_data.get("check_code")){
             logger.info("校验码check_code为null");
-            return  null;
-        }
-        if(null==info.get("name")){
-            logger.info("商品name为null");
-            return  null;
-        }
-        if(null==info.get("name")){
-            logger.info("商品name为null");
-            return  null;
-        }
-        if(null==info.get("unit")){
-            logger.info("商品unit为null");
-            return  null;
-        }
-        if(null==info.get("price")){
-            logger.info("商品price为null");
             return  null;
         }
         if(null==access_token){
