@@ -152,7 +152,11 @@ public class WeixinUtils {
         double d = Double.valueOf(money)*100;
         Date dateTime = null;
         if(null!=timestamp&&!timestamp.equals("")){
-            dateTime= TimeUtil.getSysDateInDate(timestamp,"yyyy-MM-dd HH:mm:ss");
+            if("yyyyMMddHHmmss".equals(timestamp)){
+                dateTime= TimeUtil.getSysDateInDate(timestamp,"yyyyMMddHHmmss");
+            }else if("yyyy-MM-dd HH:mm:ss".equals(timestamp)){
+                dateTime= TimeUtil.getSysDateInDate(timestamp,"yyyy-MM-dd HH:mm:ss");
+            }
         }
         String  source = "web";
         int type = 1;//填写抬头申请开票类型
