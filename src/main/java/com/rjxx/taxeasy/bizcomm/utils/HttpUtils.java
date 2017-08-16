@@ -41,8 +41,9 @@ public class HttpUtils {
 
 
     //public static String WS_URL = "http://open2.datarj.com/webService/services/invoiceService?wsdl";
-    //public static String WS_URL = "http://test.datarj.com/webService/services/invoiceService?wsdl";
+    public static String WS_URL = "http://test.datarj.com/webService/services/invoiceService?wsdl";
     //public static String WS_URL = "http://localhost:8080/services/invoiceService?wsdl";
+   // public static String WS_URL = "http://192.1681.133:8080/webService/services/invoiceService?wsdl";
     /**
      * 调用2.0接口开票
      * @param QueryData
