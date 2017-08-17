@@ -24,7 +24,7 @@ public class WeiXinConstants {
     //将电子发票插入微信卡包
     public  static  final  String dzfpInCard_url = "https://api.weixin.qq.com/card/invoice/insert?access_token=";
 
-    //全家发票模板card_id
+    //全家发票模板card_id    一次性设置
     public static  final  String FAMILY_CARD_ID ="ps2OFsxAwbb7SJ2v4H2cvHAq6ScM";
 
     //上传PDF地址

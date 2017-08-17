@@ -11,7 +11,7 @@ public class WeiXinInfo {
 
     private int fee;
 
-    private  int billing_time;
+    private  String billing_time;
 
     private  String billing_no;
 
@@ -19,9 +19,9 @@ public class WeiXinInfo {
 
     private List info;
 
-    private  int fee_without_tax;
+    private  Double fee_without_tax;
 
-    private  int tax;
+    private  Double tax;
 
     private  String s_pdf_media_id;
 
@@ -104,11 +104,11 @@ public class WeiXinInfo {
         this.fee = fee;
     }
 
-    public int getBilling_time() {
+    public String getBilling_time() {
         return billing_time;
     }
 
-    public void setBilling_time(int billing_time) {
+    public void setBilling_time(String billing_time) {
         this.billing_time = billing_time;
     }
 
@@ -136,19 +136,19 @@ public class WeiXinInfo {
         this.info = info;
     }
 
-    public int getFee_without_tax() {
+    public Double getFee_without_tax() {
         return fee_without_tax;
     }
 
-    public void setFee_without_tax(int fee_without_tax) {
+    public void setFee_without_tax(Double fee_without_tax) {
         this.fee_without_tax = fee_without_tax;
     }
 
-    public int getTax() {
+    public Double getTax() {
         return tax;
     }
 
-    public void setTax(int tax) {
+    public void setTax(Double tax) {
         this.tax = tax;
     }
 
