@@ -18,5 +18,8 @@ public interface SkpJpaDao extends CrudRepository<Skp, Integer> {
 
     @Query(nativeQuery = true,value = "select * from t_skp where gsdm=?2 and kpddm=?1 and yxbz='1' ")
     Skp findOneByKpddmAndGsdm(String kpddm,String gsdm);
+
+    @Query(nativeQuery = true,value = "select * from t_skp where id=?1 and yxbz='1' ")
+    Skp findOneById(Integer id);
 }
 
