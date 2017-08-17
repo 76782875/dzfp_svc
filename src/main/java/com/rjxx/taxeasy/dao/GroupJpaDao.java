@@ -12,7 +12,7 @@ import org.springframework.data.repository.CrudRepository;
  * @ZhangBing
  */ 
 public interface GroupJpaDao extends CrudRepository<Group, Integer> {
-    @Query(nativeQuery = true, value = "select * from t_group where yxbz='1' and  yhid=?1 ")
+    @Query(nativeQuery = true, value = "select * from t_group where yxbz='1' and  yhid=?1 and skpid is not null and xfid is not null ")
     Group findOneByYhid(Integer yhid);
 }
 
