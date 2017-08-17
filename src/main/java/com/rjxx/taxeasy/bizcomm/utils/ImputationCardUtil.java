@@ -137,7 +137,7 @@ public class ImputationCardUtil {
 
 			}else if(jyxxsq.getSjly().equals("4")){ //数据来源4表示微信
 				WeixinUtils weinxinUtil = new WeixinUtils();
-				String result = weinxinUtil.fpInsertCardBox(jyxxsq.getDdh(),kpls.getPdfurl()+getPdf_file_url(pdf_file_url),kpspmxList,kpls);
+				String result = weinxinUtil.fpInsertCardBox(jyxxsq.getDdh(),getpdfUrl(getPdf_file_url(pdf_file_url),kpls.getPdfurl()),kpspmxList,kpls);
 			   	 //存入卡包失败
 			     if(null == result){
 			    	return false;
@@ -178,7 +178,7 @@ public class ImputationCardUtil {
 				return true;
 			}else if(jyxxsq.getSjly().equals("4")){ //数据来源4表示微信
 				WeixinUtils weinxinUtil = new WeixinUtils();
-				String result = weinxinUtil.fpInsertCardBox(jyxxsq.getDdh(),kpls.getPdfurl()+getPdf_file_url(pdf_file_url),kpspmxList,kpls);
+				String result = weinxinUtil.fpInsertCardBox(jyxxsq.getDdh(),getpdfUrl(getPdf_file_url(pdf_file_url),kpls.getPdfurl()),kpspmxList,kpls);
 				//存入卡包失败
 				if(null == result){
 					return false;
@@ -193,6 +193,21 @@ public class ImputationCardUtil {
 		return true;
 	}
 
+
+	private String getpdfUrl(String pdf_file_url,String pdfurl){
+		String pdfUrlPath ="";
+		if(null!=pdfurl&&StringUtils.isNotBlank(pdfurl)){
+			String p = pdfurl.split("//")[1];
+			if(null!=p&&StringUtils.isNoneEmpty(p)){
+				String p1=pdfurl.split("//")[1].split("/")[1];
+				String p2=pdfurl.split("//")[1].split("/")[2];
+				String p3=pdfurl.split("//")[1].split("/")[3];
+				String p4=pdfurl.split("//")[1].split("/")[4];
+				pdfUrlPath= pdf_file_url+"/"+p1+"/"+p2+"/"+p3+"/"+p4;
+			}
+		}
+		return pdfUrlPath;
+	}
 	/**
 	 * <br>
 	 * 方法说明：主方法，用于测试 <br>
