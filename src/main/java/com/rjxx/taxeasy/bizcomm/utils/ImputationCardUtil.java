@@ -136,7 +136,7 @@ public class ImputationCardUtil {
 
 			}else if(jyxxsq.getSjly().equals("4")){ //数据来源4表示微信
 				WeixinUtils weinxinUtil = new WeixinUtils();
-				String result = weinxinUtil.fpInsertCardBox(jyxxsq.getDdh(),getpdfUrl(getPdf_file_url(pdf_file_url),kpls.getPdfurl()),kpspmxList,kpls);
+				String result = weinxinUtil.fpInsertCardBox(jyxxsq.getDdh(),getPdf_file_url(pdf_file_url),kpspmxList,kpls);
 			   	 //存入卡包失败
 			     if(null == result){
 			    	return false;
@@ -177,7 +177,7 @@ public class ImputationCardUtil {
 				return true;
 			}else if(jyxxsq.getSjly().equals("4")){ //数据来源4表示微信
 				WeixinUtils weinxinUtil = new WeixinUtils();
-				String result = weinxinUtil.fpInsertCardBox(jyxxsq.getDdh(),getpdfUrl(getPdf_file_url(pdf_file_url),kpls.getPdfurl()),kpspmxList,kpls);
+				String result = weinxinUtil.fpInsertCardBox(jyxxsq.getDdh(),getPdf_file_url(pdf_file_url),kpspmxList,kpls);
 				//存入卡包失败
 				if(null == result){
 					return false;
