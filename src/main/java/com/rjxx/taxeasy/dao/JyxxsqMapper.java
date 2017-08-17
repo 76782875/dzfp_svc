@@ -41,6 +41,8 @@ public interface JyxxsqMapper {
     public void addJyxxsqBatch(List<Jyxxsq> Jyxxsqs);
     
     public List<Jyxxsq> findByMapParams(Map params);
+
+    public Jyxxsq findSjlyAndOpenidByMap(Map params);
     
     public List<JyxxsqVO> findYscByPage(Pagination pagination);
 

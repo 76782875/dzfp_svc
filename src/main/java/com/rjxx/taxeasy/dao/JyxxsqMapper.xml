@@ -93,6 +93,9 @@
 		<if test="jylsh != null">
 			and jylsh = #{jylsh}
 		</if>
+		<if test="sqlsh != null and sqlsh != ''">
+			and sqlsh = #{sqlsh}
+		</if>
 		<if test="orderBy != null">
 			order by #{orderBy}
 		</if>
@@ -126,6 +129,18 @@
 
 	<select id="findskpExistByXfid" parameterType="map" resultType="skp">
 		select t.* from t_skp t where t.yxbz='1' and t.xfid =#{xfid} and t.gsdm =#{gsdm}
+		LIMIT 1
+	</select>
+
+	<select id="findSjlyAndOpenidByMap" parameterType="map" resultType="jyxxsq">
+		SELECT a.* FROM t_jyxxsq a,t_jyls b,t_kpls c WHERE c.djh = b.djh
+		AND b.sqlsh = a.sqlsh AND a.jylsh = b.jylsh
+		<if test="gsdm !=null and gsdm !=''">
+			and a.gsdm = #{gsdm}
+		</if>
+		<if test="kplsh !=null and kplsh !=''">
+			and c.kplsh = #{kplsh}
+		</if>
 		LIMIT 1
 	</select>
 
@@ -376,7 +391,7 @@
 		gfyhzh, gflxr, gfdz, gfdh, gfyb, gfemail, sffsyj, clztdm, bz, skr,
 		kpr, fhr, sfcp, sfdyqd, zsfs, ssyf, hztzdh, yfpdm, yfphm, hsbz, jshj,
 		ykpjshj, yxbz, lrsj, lrry, xgsj, xgry, gfsjr, gfsjrdz, gsdm, tqm,
-		skpid, gfsjh, dxzt,sjly,sfzlkp,sfdy,ztbz)   
+		skpid, gfsjh, dxzt,sjly,sfzlkp,sfdy,ztbz,khh,openid)
     values  
     <foreach collection="list" item="item" index="index" separator="," >  
         (#{item.kpddm},#{item.jylsh},#{item.ddrq},#{item.ddh},#{item.fpzldm},#{item.fpczlxdm},
@@ -389,7 +404,8 @@
         #{item.yfpdm},#{item.yfphm},#{item.hsbz},#{item.jshj},#{item.ykpjshj},
         #{item.yxbz},#{item.lrsj},#{item.lrry},#{item.xgsj},#{item.xgry},
         #{item.gfsjr},#{item.gfsjrdz},#{item.gsdm},#{item.tqm},#{item.skpid},
-        #{item.gfsjh},#{item.dxzt},#{item.sjly},#{item.sfzlkp},#{item.sfdy},#{item.ztbz})  
+        #{item.gfsjh},#{item.dxzt},#{item.sjly},#{item.sfzlkp},#{item.sfdy},#{item.ztbz}
+		,#{item.khh},#{item.openid})
     </foreach>    
 </insert>
 </mapper>

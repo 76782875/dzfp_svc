@@ -1,6 +1,7 @@
 package com.rjxx.taxeasy.dao;
 
 import com.rjxx.taxeasy.domains.Group;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 /**
@@ -11,6 +12,7 @@ import org.springframework.data.repository.CrudRepository;
  * @ZhangBing
  */ 
 public interface GroupJpaDao extends CrudRepository<Group, Integer> {
-
+    @Query(nativeQuery = true, value = "select * from t_group where yxbz='1' and  yhid=?1 and skpid is not null and xfid is not null ")
+    Group findOneByYhid(Integer yhid);
 }
 

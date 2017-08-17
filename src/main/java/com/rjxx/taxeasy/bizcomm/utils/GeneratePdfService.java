@@ -70,6 +70,9 @@ public class GeneratePdfService {
     @Autowired
     private FphxwsjlService fphxwsjlService;
 
+    @Autowired
+    private ImputationCardUtil imputationCardUtil;
+
     /**
      * 销方省份名称
      */
@@ -93,6 +96,7 @@ public class GeneratePdfService {
             Map jyxxsqMap=new HashMap();
             jyxxsqMap.put("gsdm",kpls.getGsdm());
             jyxxsqMap.put("jylsh",jyls.getJylsh());
+            jyxxsqMap.put("sqlsh",jyls.getSqlsh());
             jyxxsq=jyxxsqService.findOneByJylsh(jyxxsqMap);
 
             int xfid = jyls.getXfid();
@@ -205,6 +209,8 @@ public class GeneratePdfService {
                     }
                 }
                 dc.saveLog(djh, "91", "0", "正常开具", "", 1, jyls.getXfsh(), jyls.getJylsh());
+                //开具成功后写入卡包或发票管家
+                imputationCardUtil.invoice2card(jyxxsq,kpls);
             } else {
                 dc.updateFlag(jyls, "92");
                 logger.info("------1、生成pdf出现异常：---------" + kplsh);

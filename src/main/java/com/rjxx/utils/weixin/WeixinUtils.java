@@ -590,6 +590,32 @@ public class WeixinUtils {
         return  resultMap;
     }
 
+
+
+    /*
+   * 将电子发票插入卡包
+   *
+   * @params order_id 即客户订单号（唯一）
+   * @params pdf_file_url pdf存放地址url
+   * @kpspmxList 开票商品明细数据
+   * @kpls 开票流水数据
+   * @return String
+   *
+   * */
+    public String fpInsertCardBox(String order_id,String pdf_file_url,List<Kpspmx>
+            kpspmxList,Kpls kpls) {
+        //主动查询授权状态
+        String  access_token = (String)this.hqtk().get("access_token");
+        Map weiXinData = this.zdcxstatus(order_id,access_token);
+        if(null==weiXinData){
+            logger.info("主动查询授权失败++++++++++++");
+            return null;
+        }
+        String card_id = WeiXinConstants.FAMILY_CARD_ID;
+        //调用dzfpInCard方法将发票放入卡包
+        return dzfpInCard(order_id,card_id,pdf_file_url,weiXinData,kpspmxList,kpls,access_token);
+    }
+
     /*
     * 将电子发票插入卡包
     * */

@@ -71,7 +71,7 @@ public class GetDataService {
                     "\t<ReturnCode>Family_01</ReturnCode>\n" +
                     "\t<ReturnMessage>Family_01</ReturnMessage>\n" +
                     "\t<ReturnData>\n" +
-                    "\t<ExtractCode>061402100101123456781</ExtractCode>\n" +
+                    "\t<ExtractCode>061402100101123456740</ExtractCode>\n" +
                     "\t<MemberID></MemberID>\n" +
                     "\t<InvType>12</InvType>\n" +
                     "\t<Spbmbbh>13.0</Spbmbbh>\n" +
