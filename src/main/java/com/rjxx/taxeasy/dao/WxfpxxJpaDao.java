@@ -11,4 +11,7 @@ public interface WxfpxxJpaDao extends CrudRepository<WxFpxx,String>{
 
     @Query(nativeQuery = true,value = "select * from wx_fpxx where orderno=?1 and openid=?2")
    WxFpxx findOneByOrderNo(String orderNo,String openId);
+
+    @Query(nativeQuery = true,value = "select * from wx_fpxx where orderno=?1")
+    WxFpxx selsetByOrderNo(String orderNo);
 }
