@@ -75,7 +75,8 @@ public class RJCheckUtil {
     }
 
     public static void main(String[] args) {
-        String key = "3f7626939b146cc47c31daf43edc42bd";
+       // String key = "3f7626939b146cc47c31daf43edc42bd";
+        String key="42709f25722653a5d7b5b8dde426f494";
         String orderNo = String.valueOf(System.currentTimeMillis());
         String orderTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
         String price = String.valueOf(new Random().nextInt(1000));

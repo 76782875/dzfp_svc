@@ -1301,7 +1301,11 @@ public class FpclService {
                     resultMap = DzfphttpPost(result2, url, zjKplsvo5.getDjh() + "$" + zjKplsvo5.getKplsh(), zjKplsvo5.getXfsh(),
                             zjKplsvo5.getJylsh());
                     String  serialorder=this.updateKpls(resultMap);
-                    resultxml=serialorder;
+                    resultxml="<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
+                            "<Responese>\n" +
+                            "    <ReturnCode>0000</ReturnCode>\n" +
+                            "    <ReturnMessage>"+serialorder+"</ReturnMessage>\n" +
+                            "</Responese>\n";
                     logger.debug("封装传开票通的返回报文" + JSONObject.toJSONString(resultMap));
                 } catch (Exception e) {
                     // TODO Auto-generated catch block
