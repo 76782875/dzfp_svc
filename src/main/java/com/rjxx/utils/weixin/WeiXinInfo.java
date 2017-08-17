@@ -9,7 +9,7 @@ public class WeiXinInfo {
 
     private String title;
 
-    private int fee;
+    private Double fee;
 
     private  String billing_time;
 
@@ -96,11 +96,11 @@ public class WeiXinInfo {
         this.title = title;
     }
 
-    public int getFee() {
+    public Double getFee() {
         return fee;
     }
 
-    public void setFee(int fee) {
+    public void setFee(Double fee) {
         this.fee = fee;
     }
 
