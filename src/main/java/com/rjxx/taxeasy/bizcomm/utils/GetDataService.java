@@ -71,18 +71,18 @@ public class GetDataService {
                     "\t<ReturnCode>Family_01</ReturnCode>\n" +
                     "\t<ReturnMessage>Family_01</ReturnMessage>\n" +
                     "\t<ReturnData>\n" +
-                    "\t<ExtractCode>061402100101123456740</ExtractCode>\n" +
+                    "\t<ExtractCode>061402100101123456765</ExtractCode>\n" +
                     "\t<MemberID></MemberID>\n" +
                     "\t<InvType>12</InvType>\n" +
                     "\t<Spbmbbh>13.0</Spbmbbh>\n" +
                     "\t<StoreNo></StoreNo>\n" +
                     "\t<Seller>\n" +
-                    "\t\t<Identifier>91310000770241126F</Identifier>\n" +
-                    "\t\t<Name>泉盛餐饮（上海）有限公司</Name>\n" +
-                    "\t\t<Address>上海市奉贤区南桥镇奉金路118号</Address>\n" +
-                    "\t\t<TelephoneNo>021-59895352</TelephoneNo>\n" +
-                    "\t\t<Bank>工商银行上海市天山路支行</Bank>\n" +
-                    "\t\t<BankAcc>1001246909006990813\t</BankAcc>\n" +
+                    "\t\t<Identifier>9131000071785090X1</Identifier>\n" +
+                    "\t\t<Name>上海福满家便利有限公司</Name>\n" +
+                    "\t\t<Address>上海市普陀区真北路2167号上海鸿海大厦商铺2栋1层09号商铺</Address>\n" +
+                    "\t\t<TelephoneNo>021-62723187</TelephoneNo>\n" +
+                    "\t\t<Bank>中国民生银行上海分行陆家嘴支行</Bank>\n" +
+                    "\t\t<BankAcc>0216014180000511\t</BankAcc>\n" +
                     "\t</Seller>\n" +
                     "\t\t<Orders>\n" +
                     "\t\t\t<OrderMain>\n" +
