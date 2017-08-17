@@ -273,12 +273,11 @@ public class WeixinUtils {
         // System.out.println("获取微信token-----------"+msp);
 
 
-       /*try {
-
-            weixinUtils.getTiaoURL("11222031","10", "2011-05-09 11:49:45","1");//获取微信授权
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
+//       try {
+//            weixinUtils.getTiaoURL("11222041","10", "2017-08-17 10:05:45","1");//获取微信授权
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         //weixinUtils.zdcxstatus("1131453220170808");//查询用户授权状态
         //weixinUtils.cksqzd();//查看授权字段
         //weixinUtils.sqzd();//授权字段--只设一次
@@ -432,7 +431,7 @@ public class WeixinUtils {
 
         user_field.put("show_title",1);
         user_field.put("show_phone",0);
-        user_field.put("show_email",0);
+        user_field.put("show_email",1);
         user_field.put("custom_field",custom_field1);
 
         biz_field.put("show_title",1);
@@ -591,6 +590,32 @@ public class WeixinUtils {
         return  resultMap;
     }
 
+
+
+    /*
+   * 将电子发票插入卡包
+   *
+   * @params order_id 即客户订单号（唯一）
+   * @params pdf_file_url pdf存放地址url
+   * @kpspmxList 开票商品明细数据
+   * @kpls 开票流水数据
+   * @return String
+   *
+   * */
+    public String fpInsertCardBox(String order_id,String pdf_file_url,List<Kpspmx>
+            kpspmxList,Kpls kpls) {
+        //主动查询授权状态
+        String  access_token = (String)this.hqtk().get("access_token");
+        Map weiXinData = this.zdcxstatus(order_id,access_token);
+        if(null==weiXinData){
+            logger.info("主动查询授权失败++++++++++++");
+            return null;
+        }
+        String card_id = WeiXinConstants.FAMILY_CARD_ID;
+        //调用dzfpInCard方法将发票放入卡包
+        return dzfpInCard(order_id,card_id,pdf_file_url,weiXinData,kpspmxList,kpls,access_token);
+    }
+
     /*
     * 将电子发票插入卡包
     * */
@@ -606,20 +631,25 @@ public class WeixinUtils {
         Map user_card = new HashMap();
         List<Map> info = new ArrayList<>();
         Map invoice_user_data = new HashMap();
-        sj.put("order_id",order_id);
-        sj.put("card_id",card_id);
-        sj.put("appid",appid);
+        sj.put("order_id",order_id);   //订单编号     必填
+        sj.put("card_id",card_id);     //发票模板id   必填
+        sj.put("appid",appid);         //公众号APPid  必填
         sj.put("card_ext",card_ext);
 
-        String nonce_str = System.currentTimeMillis()+"";
+        String nonce_str = System.currentTimeMillis()+"";//随机字符串，防止重复  必填
         card_ext.put("nonce_str",nonce_str);
         card_ext.put("user_card",user_card);
 
         user_card.put("invoice_user_data",invoice_user_data);
 
-        weiXinInfo.setTitle((String) weiXinData.get("title"));//发票抬头
-        weiXinInfo.setFee(kpls.getJshj().intValue());//卡包开票金额,价税合计
-
+        weiXinInfo.setTitle((String) weiXinData.get("title"));//发票抬头    必填
+        weiXinInfo.setFee(kpls.getJshj().intValue());//卡包开票金额,价税合计  必填
+        weiXinInfo.setBilling_time(String.valueOf(kpls.getLrsj().getTime()));//开票时间  必填
+        weiXinInfo.setBilling_no(kpls.getFpdm());//发票代码      必填
+        weiXinInfo.setBilling_code(kpls.getFphm());//发票号码    必填
+        weiXinInfo.setFee_without_tax(kpls.getHjje()*100);//不含税金额  必填
+        weiXinInfo.setTax(kpls.getHjse()*100);//税额        必填
+        weiXinInfo.setCheck_code(kpls.getJym());//校验码    必填
        /* weiXinInfo.setFee(2);//发票金额
         weiXinInfo.setBilling_time(1480342498);//发票开票时间
         weiXinInfo.setBilling_no("150003522222");//发票代码
@@ -631,17 +661,16 @@ public class WeixinUtils {
 
         if(kpspmxList.size()>0){
             for (Kpspmx kpspmx : kpspmxList){
-
                 Map ma = new HashMap();
-                ma.put("name", kpspmx.getSpmc());
-                ma.put("num",kpspmx.getSps());
-                ma.put("unit",kpspmx.getSpdj());
-                ma.put("price",kpspmx.getSpdw());
+                ma.put("name", kpspmx.getSpmc());//商品名称 必填
+                ma.put("num",kpspmx.getSps());//商品数量    必填
+                ma.put("unit",kpspmx.getSpdj());//商品单位  必填
+                ma.put("price",kpspmx.getSpdw());//商品单价 必填
 
                 info.add(ma);
             }
         }
-
+        //上传PDF生成的一个发票s_media_id   关联发票PDF和发票卡券  必填
         String pdfUrl = kpls.getPdfurl();
         String  s_media_id_pdf = weixinUtils.creatPDF(pdfUrl,pdf_file_url);
         if(null!=s_media_id_pdf&& StringUtils.isNotBlank(s_media_id_pdf)){
@@ -792,6 +821,8 @@ public class WeixinUtils {
         MultipartEntityBuilder builder  = MultipartEntityBuilder.create();
         builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
         FileBody fileBody = new FileBody(new File(pdfUrlPath));
+       /// FileBody fileBody = new FileBody(new File("D:/5001020100036432.pdf"));
+       // FileBody fileBody = new FileBody(new File("D:/111111.pdf"));
         builder.addPart("pdf", fileBody);
         HttpEntity entit = builder.build();
         httpPost.setEntity(entit);
