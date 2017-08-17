@@ -282,7 +282,8 @@ public class WeixinUtils {
         //weixinUtils.cksqzd();//查看授权字段
         //weixinUtils.sqzd();//授权字段--只设一次
         //weixinUtils.getTicket();//获取ticket
-        //Map map =  weixinUtils.creatMb("全家超市");//创建模板
+        //Map map =  weixinUtils.creatMb("一茶一坐");//创建模板
+        //weixinUtils.uploadImage();//上传图片获取url
         //String card_id = (String) map.get("card_id");
         //System.out.println(""+card_id);
 
@@ -590,18 +591,60 @@ public class WeixinUtils {
         return  resultMap;
     }
 
+    /**
+     *上传图片
+     * @return ImageURL
+     */
 
+    public  String uploadImage(){
 
-    /*
-   * 将电子发票插入卡包
-   *
-   * @params order_id 即客户订单号（唯一）
-   * @params pdf_file_url pdf存放地址url
-   * @kpspmxList 开票商品明细数据
-   * @kpls 开票流水数据
-   * @return String
-   *
-   * */
+        String ImageURL="";
+        WeixinUtils weixinUtils = new WeixinUtils();
+        String access_token = (String) weixinUtils.hqtk().get("access_token");
+        String url ="//api.weixin.qq.com/cgi-bin/media/uploadimg?access_token="+access_token;
+        HttpPost httpPost = new HttpPost(url);
+        HttpClient httpClient = new DefaultHttpClient();
+        ObjectMapper jsonparer = new ObjectMapper();// 初始化解析json格式的对象
+
+        MultipartEntityBuilder builder  = MultipartEntityBuilder.create();
+        builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+        FileBody fileBody = new FileBody(new File("D:/1171042.jpg"));//上传图片路径
+        builder.addPart("media", fileBody);
+        HttpEntity entit = builder.build();
+        httpPost.setEntity(entit);
+        try {
+            HttpResponse res = httpClient.execute(httpPost);
+            String responseContent = null; // 响应内容
+            HttpEntity entityRes = res.getEntity();
+            responseContent = EntityUtils.toString(entityRes, "UTF-8");
+            Map map = jsonparer.readValue(responseContent, Map.class);
+
+            // 将json字符串转换为json对象
+            System.out.println("返回的数据"+map.toString());
+            ImageURL = (String) map.get("url");
+            if(ImageURL!=null){
+                System.out.println("图片上传成功");
+                System.out.println("url路径为"+url);
+            }
+            else {
+                System.out.println("图片上传失败");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return  ImageURL;
+    }
+
+    /**
+     *
+     * @param order_id
+     * @param pdf_file_url
+     * @param kpspmxList
+     * @param kpls
+     * @return
+     */
+
     public String fpInsertCardBox(String order_id,String pdf_file_url,List<Kpspmx>
             kpspmxList,Kpls kpls) {
         //主动查询授权状态
@@ -643,8 +686,8 @@ public class WeixinUtils {
         user_card.put("invoice_user_data",invoice_user_data);
 
         weiXinInfo.setTitle((String) weiXinData.get("title"));//发票抬头    必填
-        weiXinInfo.setFee(kpls.getJshj().intValue());//卡包开票金额,价税合计  必填
-        weiXinInfo.setBilling_time(String.valueOf(kpls.getLrsj().getTime()));//开票时间  必填
+        weiXinInfo.setFee(kpls.getJshj()*100);//卡包开票金额,价税合计  必填
+        weiXinInfo.setBilling_time(String.valueOf(kpls.getLrsj().getTime()/1000));//开票时间  必填
         weiXinInfo.setBilling_no(kpls.getFpdm());//发票代码      必填
         weiXinInfo.setBilling_code(kpls.getFphm());//发票号码    必填
         weiXinInfo.setFee_without_tax(kpls.getHjje()*100);//不含税金额  必填
