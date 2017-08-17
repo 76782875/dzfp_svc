@@ -71,6 +71,10 @@ public class JyxxsqService {
         return jyxxsqMapper.findAllByJylshs(params);
     }
 
+	public Jyxxsq findSjlyAndOpenidByMap(Map params) {
+		return jyxxsqMapper.findSjlyAndOpenidByMap(params);
+	}
+
     public List<Jyxxsq> findAllByDdhs(Map params) {
         return jyxxsqMapper.findAllByDdhs(params);
     } 
