@@ -43,9 +43,8 @@ public class ImputationCardUtil {
 	@Autowired
 	private PpService ppService;
 
-	@Value("$pdf.save-path:}")
+	@Value("${pdf.save-path:}")
 	private String pdf_file_url;
-
 
 
 	/**
