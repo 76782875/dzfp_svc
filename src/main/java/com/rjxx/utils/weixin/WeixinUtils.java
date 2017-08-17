@@ -273,12 +273,11 @@ public class WeixinUtils {
         // System.out.println("获取微信token-----------"+msp);
 
 
-       /*try {
-
-            weixinUtils.getTiaoURL("11222031","10", "2011-05-09 11:49:45","1");//获取微信授权
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
+//       try {
+//            weixinUtils.getTiaoURL("11222041","10", "2017-08-17 10:05:45","1");//获取微信授权
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         //weixinUtils.zdcxstatus("1131453220170808");//查询用户授权状态
         //weixinUtils.cksqzd();//查看授权字段
         //weixinUtils.sqzd();//授权字段--只设一次
@@ -432,7 +431,7 @@ public class WeixinUtils {
 
         user_field.put("show_title",1);
         user_field.put("show_phone",0);
-        user_field.put("show_email",0);
+        user_field.put("show_email",1);
         user_field.put("custom_field",custom_field1);
 
         biz_field.put("show_title",1);
@@ -619,7 +618,7 @@ public class WeixinUtils {
 
         weiXinInfo.setTitle((String) weiXinData.get("title"));//发票抬头
         weiXinInfo.setFee(kpls.getJshj().intValue());//卡包开票金额,价税合计
-
+        weiXinInfo.setBilling_time(Integer.parseInt(String.valueOf(kpls.getLrsj().getTime())));
        /* weiXinInfo.setFee(2);//发票金额
         weiXinInfo.setBilling_time(1480342498);//发票开票时间
         weiXinInfo.setBilling_no("150003522222");//发票代码
@@ -792,6 +791,8 @@ public class WeixinUtils {
         MultipartEntityBuilder builder  = MultipartEntityBuilder.create();
         builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
         FileBody fileBody = new FileBody(new File(pdfUrlPath));
+       /// FileBody fileBody = new FileBody(new File("D:/5001020100036432.pdf"));
+       // FileBody fileBody = new FileBody(new File("D:/111111.pdf"));
         builder.addPart("pdf", fileBody);
         HttpEntity entit = builder.build();
         httpPost.setEntity(entit);
