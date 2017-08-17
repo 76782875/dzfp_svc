@@ -136,7 +136,7 @@ public class ImputationCardUtil {
 
 			}else if(jyxxsq.getSjly().equals("4")){ //数据来源4表示微信
 				WeixinUtils weinxinUtil = new WeixinUtils();
-				String result = weinxinUtil.fpInsertCardBox(jyxxsq.getDdh(),getpdfUrl(getPdf_file_url(pdf_file_url),kpls.getPdfurl()),kpspmxList,kpls);
+				String result = weinxinUtil.fpInsertCardBox(jyxxsq.getDdh(),getPdf_file_url(pdf_file_url),kpspmxList,kpls);
 			   	 //存入卡包失败
 			     if(null == result){
 			    	return false;
@@ -177,7 +177,7 @@ public class ImputationCardUtil {
 				return true;
 			}else if(jyxxsq.getSjly().equals("4")){ //数据来源4表示微信
 				WeixinUtils weinxinUtil = new WeixinUtils();
-				String result = weinxinUtil.fpInsertCardBox(jyxxsq.getDdh(),getpdfUrl(getPdf_file_url(pdf_file_url),kpls.getPdfurl()),kpspmxList,kpls);
+				String result = weinxinUtil.fpInsertCardBox(jyxxsq.getDdh(),getPdf_file_url(pdf_file_url),kpspmxList,kpls);
 				//存入卡包失败
 				if(null == result){
 					return false;
@@ -216,7 +216,7 @@ public class ImputationCardUtil {
 	public static void main(String[] args) {
 			ImputationCardUtil tt = new ImputationCardUtil();
 		try {
-			String result =  tt.getPdf_file_url("/usr/local/e-invoice-file/e-invoice-file/");
+			String result =  tt.getpdfUrl("/usr/local/e-invoice-file","http://test.datarj.com/e-invoice-file/500102010003698/20170817/cefb8442-9757-4c50-8d44-80a3a3ae5793.pdf");
 			System.out.println(result);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
