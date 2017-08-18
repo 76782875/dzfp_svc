@@ -159,6 +159,8 @@ public class ImputationCardUtil {
 	 */
 	public boolean invoice2card(Jyxxsq jyxxsq,Kpls kpls, List<Kpspmx> kpspmxList) {
 		if(null != jyxxsq && !jyxxsq.equals("")){
+			if(kpls.getFpzldm().equals("11")){
+
 			//数据来源5表示支付宝
 			if(jyxxsq.getSjly().equals("5")){
 
@@ -189,6 +191,7 @@ public class ImputationCardUtil {
 			}
 		}
 
+		}
 		return true;
 	}
 
