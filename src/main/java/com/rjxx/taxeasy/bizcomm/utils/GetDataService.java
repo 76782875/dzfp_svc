@@ -554,7 +554,7 @@ public class GetDataService {
                 params.put("xfid",xf.getId());
                 Skp skp=skpService.findOneByParams(params);
                 jyxxsq.setXfid(xf.getId());
-                jyxxsq.setJylsh("JY" + new SimpleDateFormat("yyyyMMddHHmmssSS").format(new Date()));
+                jyxxsq.setJylsh(ExtractCode);
                 //String kpddm=ExtractCode.substring(4,10);
                 jyxxsq.setKpddm(skp.getKpddm());
                 jyxxsq.setJshj(Double.valueOf(totalAmount));
