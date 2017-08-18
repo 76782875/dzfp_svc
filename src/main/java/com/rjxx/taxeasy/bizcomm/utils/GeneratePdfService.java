@@ -452,6 +452,7 @@ public class GeneratePdfService {
                 nvps.put("invoiceData", sendMes);
                 nvps.put("sign", Secret);
                 StringEntity requestEntity = new StringEntity(JSON.toJSONString(nvps), "utf-8");
+                logger.info("-------数据-----"+JSON.toJSONString(nvps));
                 httpPost.setEntity(requestEntity);
                 response = httpClient.execute(httpPost, new BasicHttpContext());
                 if (response.getStatusLine().getStatusCode() != 200) {
