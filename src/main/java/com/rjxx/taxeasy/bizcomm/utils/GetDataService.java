@@ -147,7 +147,7 @@ public class GetDataService {
                         "<Request>\n" +
                         "<ExtractCode>"+ExtractCode+"</ExtractCode>\n" +
                         "</Request>\n";
-                String Secret=getSign(ExtractCodeXml,gsxx.getSecretKey());
+                String Secret=getSign(ExtractCode,gsxx.getSecretKey());
                 nvps.put("ExtractCode", ExtractCode);
                 nvps.put("sign", Secret);
                 StringEntity requestEntity = new StringEntity(JSON.toJSONString(nvps), "utf-8");
