@@ -230,8 +230,9 @@ public class GeneratePdfService {
     }
 
     public static void main(String[] args) {
-        GeneratePdfService generatePdfService= ApplicationContextUtils.getBean(GeneratePdfService.class);
-        generatePdfService.generatePdf( 14688);
+       /* GeneratePdfService generatePdfService= ApplicationContextUtils.getBean(GeneratePdfService.class);
+        generatePdfService.generatePdf( 14688);*/
+
     }
 
     public String CreateReturnMessage(Integer kplsh) {
@@ -420,6 +421,7 @@ public class GeneratePdfService {
         Map resultMap = null;
         if(!("").equals(url)&&url!=null){
             String Secret=getSign(sendMes,gsxx.getSecretKey());
+            logger.info("-----数据------"+sendMes+"-----key------"+gsxx.getSecretKey()+"-----签名-----"+Secret);
             HttpPost httpPost = new HttpPost(url);
             CloseableHttpResponse response = null;
             RequestConfig requestConfig = RequestConfig.custom().
