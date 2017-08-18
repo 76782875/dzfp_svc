@@ -41,7 +41,7 @@ public class WeixinUtils {
      * @param
      * @return
      */
-    public static boolean isWeiXinBrowser(HttpServletRequest request) {
+      public static boolean isWeiXinBrowser(HttpServletRequest request) {
         String ua = request.getHeader("user-agent").toLowerCase();
         boolean res = ua.contains("micromessenger");
         return res;
@@ -274,11 +274,11 @@ public class WeixinUtils {
 
 
 //       try {
-//            weixinUtils.getTiaoURL("11222041","10", "2017-08-17 10:05:45","1");//获取微信授权
+//            weixinUtils.getTiaoURL("11222043","10", "2017-08-17 10:05:45","1");//获取微信授权
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
-        //weixinUtils.zdcxstatus("1131453220170808");//查询用户授权状态
+
         //weixinUtils.cksqzd();//查看授权字段
         //weixinUtils.sqzd();//授权字段--只设一次
         //weixinUtils.getTicket();//获取ticket
@@ -288,7 +288,8 @@ public class WeixinUtils {
         //System.out.println(""+card_id);
 
         //String access_token = (String) weixinUtils.hqtk().get("access_token");
-        //weixinUtils.dzfpInCard("11222031",WeiXinConstants.FAMILY_CARD_ID,weixinUtils.zdcxstatus("11222031",access_token));
+        //weixinUtils.zdcxstatus("11222043",access_token);//查询用户授权状态
+        //weixinUtils.dzfpInCard("11222042",WeiXinConstants.FAMILY_CARD_ID,weixinUtils.zdcxstatus("11222042",access_token),access_token);
         //String in =  weixinUtils.jujuekp("1131453222001122","微信授权失败，请重新开票");//重新开票
 
         //上传PDF
@@ -379,6 +380,7 @@ public class WeixinUtils {
                                  value = (String) map1.get("value");
                                 System.out.println("key"+key);
                                 System.out.println("value"+value);
+
                             }
                         }
                         resultMap.put("title",title);//抬头
@@ -387,8 +389,12 @@ public class WeixinUtils {
                         resultMap.put("phone",phone);//电话
                         resultMap.put("bank_type",bank_type);//开户类型
                         resultMap.put("bank_no",bank_no);//银行账号
-                        resultMap.put("key",key);//其他
+                        resultMap.put("key",key);//邮箱
                         resultMap.put("value",value);//
+                        if(null!=key&&key.equals("邮箱")){
+                            resultMap.put("email",value);
+                        }
+                        System.out.println("封装的数据"+resultMap.toString());
                         return  resultMap;
                     }
 
@@ -423,7 +429,7 @@ public class WeixinUtils {
         Map cus1 =new HashMap();
         Map cus2 =new HashMap();
         cus1.put("key","其他");
-        cus2.put("key","其他");
+        cus2.put("key","邮箱");
         custom_field1.add(cus1);
         custom_field2.add(cus2);
 
@@ -433,6 +439,7 @@ public class WeixinUtils {
         user_field.put("show_title",1);
         user_field.put("show_phone",0);
         user_field.put("show_email",1);
+        user_field.put("require_email",1);
         user_field.put("custom_field",custom_field1);
 
         biz_field.put("show_title",1);
@@ -442,9 +449,10 @@ public class WeixinUtils {
         biz_field.put("show_phone",0);
         biz_field.put("show_bank_type",0);
         biz_field.put("show_bank_no",0);
-        biz_field.put("require_tax_no",0);
-        biz_field.put("require_addr",1);
+        biz_field.put("require_tax_no",1);
+        biz_field.put("require_addr",0);
         biz_field.put("custom_field",custom_field2);
+        biz_field.put("is_require",1);
 
         sjss.put("auth_field",auth_field);
         String sj = JSON.toJSONString(sjss);
@@ -657,6 +665,7 @@ public class WeixinUtils {
         String card_id = WeiXinConstants.FAMILY_CARD_ID;
         //调用dzfpInCard方法将发票放入卡包
         return dzfpInCard(order_id,card_id,pdf_file_url,weiXinData,kpspmxList,kpls,access_token);
+
     }
 
     /*
@@ -693,15 +702,22 @@ public class WeixinUtils {
         weiXinInfo.setFee_without_tax(kpls.getHjje()*100);//不含税金额  必填
         weiXinInfo.setTax(kpls.getHjse()*100);//税额        必填
         weiXinInfo.setCheck_code(kpls.getJym());//校验码    必填
-       /* weiXinInfo.setFee(2);//发票金额
-        weiXinInfo.setBilling_time(1480342498);//发票开票时间
-        weiXinInfo.setBilling_no("150003522222");//发票代码
-        weiXinInfo.setBilling_code("3643259");//发票号码
-        weiXinInfo.setFee_without_tax(1);//不含税金额
-        weiXinInfo.setTax(1);//税额
-        weiXinInfo.setCheck_code("737806869");
-        weiXinInfo.setS_pdf_media_id("73700668353806869");*/
+//        weiXinInfo.setFee(20.00);//发票金额
+//        weiXinInfo.setTitle("测试");
+//        weiXinInfo.setBilling_time("1480342498");//发票开票时间
+//        weiXinInfo.setBilling_no("150003521088");//发票代码
+//        weiXinInfo.setBilling_code("36984009");//发票号码
+//        weiXinInfo.setFee_without_tax(10.00);//不含税金额
+//        weiXinInfo.setTax(11.00);//税额
+//        weiXinInfo.setCheck_code("737806869");
+//        weiXinInfo.setS_pdf_media_id("75542938824475128");
+//        Map ma = new HashMap();
+//        ma.put("name", "饼干");//商品名称 必填
+//        ma.put("num",2);//商品数量    必填
+//        ma.put("unit","包");//商品单位  必填
+//        ma.put("price",20);//商品单价 必填
 
+        //info.add(ma);
         if(kpspmxList.size()>0){
             for (Kpspmx kpspmx : kpspmxList){
                 Map ma = new HashMap();
@@ -742,7 +758,7 @@ public class WeixinUtils {
 
 
         System.out.println("封装的数据"+JSON.toJSONString(sj));
-       if(null==sj.get("order_id")){
+        if(null==sj.get("order_id")){
             logger.info("订单order_id为空");
             return  null;
         }
