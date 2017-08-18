@@ -518,6 +518,7 @@ public class GeneratePdfService {
         String Message="";
         Kpls kpls=kplsService.findOne(kplsh);
         Integer djh = kpls.getDjh();
+        logger.info("-----------PDFURL--------------"+kpls.getPdfurl()+"-----kplsh--------"+kpls.getKplsh());
         Map param4 = new HashMap<>();
         param4.put("djh", djh);
         Jyls jyls = jylsService.findJylsByDjh(param4);
