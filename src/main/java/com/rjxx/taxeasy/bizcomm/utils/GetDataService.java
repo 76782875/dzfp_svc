@@ -125,14 +125,14 @@ public class GetDataService {
 
     public Map getData(String ExtractCode,String gsdm){
             Map parmsMap=new HashMap();
-          /*   String strMessage = "";
+            String strMessage = "";
             BufferedReader reader = null;
             StringBuffer buffer = new StringBuffer();
             Map parms=new HashMap();
             parms.put("gsdm",gsdm);
             Gsxx gsxx=gsxxService.findOneByParams(parms);
             Map resultMap = null;
-            HttpPost httpPost = new HttpPost("");
+            HttpPost httpPost = new HttpPost("http://103.13.247.68:6180/EinvoiceWeb/service/EInvoiceWS/QueryOrder");
             CloseableHttpResponse response = null;
             RequestConfig requestConfig = RequestConfig.custom().
                     setSocketTimeout(120*1000).setConnectionRequestTimeout(120*1000).setConnectTimeout(120*1000).build();
@@ -165,9 +165,9 @@ public class GetDataService {
                     }
                 }
                 System.out.println("接收返回值:" + buffer.toString());
-                parmsMap=interpreting(gsdm,buffer.toString());*/
-        try {
-                parmsMap=interpreting(gsdm,this.xmldata());
+                parmsMap=interpreting(gsdm,buffer.toString());
+
+                //parmsMap=interpreting(gsdm,this.xmldata());
 
                 List<Jyxxsq> jyxxsqList = (List) parmsMap.get("jyxxsqList");
                 List<Jymxsq> jymxsqList = (List) parmsMap.get("jymxsqList");
