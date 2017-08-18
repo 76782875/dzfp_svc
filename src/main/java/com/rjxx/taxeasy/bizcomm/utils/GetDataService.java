@@ -23,6 +23,8 @@ import org.bouncycastle.pqc.math.linearalgebra.BigEndianConversions;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -59,6 +61,8 @@ public class GetDataService {
     private CszbService cszbService;
     @Autowired
     private  CheckOrderUtil checkOrderUtil;
+
+    protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private static String getSign(String QueryData, String key) {
         String signSourceData = "data=" + QueryData + "&key=" + key;
@@ -148,6 +152,7 @@ public class GetDataService {
                         "<ExtractCode>"+ExtractCode+"</ExtractCode>\n" +
                         "</Request>\n";
                 String Secret=getSign(ExtractCode,gsxx.getSecretKey());
+                logger.info("-------------"+ExtractCode+"----------"+gsxx.getSecretKey());
                 nvps.put("ExtractCode", ExtractCode);
                 nvps.put("sign", Secret);
                 StringEntity requestEntity = new StringEntity(JSON.toJSONString(nvps), "utf-8");
