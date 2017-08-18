@@ -676,7 +676,9 @@ public class GetDataService {
                         if (null != orderDetails.selectSingleNode("TaxAmount")
                                 && !orderDetails.selectSingleNode("TaxAmount").equals("")) {
                             TaxAmount = orderDetails.selectSingleNode("TaxAmount").getText();
-                            jymxsq.setSpse(Double.valueOf(TaxAmount));
+                            if(TaxAmount!=null&&!"".equals(TaxAmount)){
+                                jymxsq.setSpse(Double.valueOf(TaxAmount));
+                            }
                         }
                         //价税合计
                         String MxTotalAmount = "";
