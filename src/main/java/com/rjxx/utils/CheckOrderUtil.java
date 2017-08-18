@@ -254,7 +254,7 @@ public class CheckOrderUtil {
                 if (jyxxsqList.get(i).getDdh().equals(jymxsq.getDdh())) {
                     jyxxsq = jyxxsqList.get(i);
                     if (ddh != null && !ddh.equals("")) {
-                        if (ddh.length() > 20) {
+                        if (ddh.length() > 100) {
                             result += "明细数据" + ddh + ":订单号太长;";
                         }
 //                        ddhList.add(ddh);
