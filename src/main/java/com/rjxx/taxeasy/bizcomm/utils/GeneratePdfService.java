@@ -537,9 +537,9 @@ public class GeneratePdfService {
                 if(kpls2.getFpztdm().equals("00")||kpls2.getFpztdm().equals("05")){
                     InvoiceItem2 invoiceItem=new InvoiceItem2();
                     if(kpls2.getFpztdm().equals("00")){
-                        invoiceItem.setInvoiceStatus("正常发票");
+                        invoiceItem.setInvoiceStatus("00");
                     }else if(kpls2.getFpztdm().equals("05")){
-                        invoiceItem.setInvoiceStatus("开具失败");
+                        invoiceItem.setInvoiceStatus("05");
                     }
                     invoiceItem.setInvoiceCode(kpls2.getFpdm());
                     invoiceItem.setInvoiceNumber(kpls2.getFphm());
@@ -574,9 +574,9 @@ public class GeneratePdfService {
 
             InvoiceItem2 invoiceItem=new InvoiceItem2();
             if(kpls.getFpztdm().equals("00")){
-                invoiceItem.setInvoiceStatus("正常发票");
+                invoiceItem.setInvoiceStatus("02");
             }else if(kpls.getFpztdm().equals("05")){
-                invoiceItem.setInvoiceStatus("开具失败");
+                invoiceItem.setInvoiceStatus("05");
             }
             invoiceItem.setInvoiceCode(kpls.getFpdm());
             invoiceItem.setInvoiceNumber(kpls.getFphm());
@@ -593,9 +593,9 @@ public class GeneratePdfService {
             Kpls ypkpls=kplsService.findByhzfphm(kpls);
             InvoiceItem2 ypinvoiceItem=new InvoiceItem2();
             if(ypkpls.getFpztdm().equals("02")){
-                ypinvoiceItem.setInvoiceStatus("已红冲");
+                ypinvoiceItem.setInvoiceStatus("02");
             }else if(ypkpls.getFpztdm().equals("00")){
-                ypinvoiceItem.setInvoiceStatus("正常发票");
+                ypinvoiceItem.setInvoiceStatus("00");
             }
             ypinvoiceItem.setInvoiceCode(ypkpls.getFpdm());
             ypinvoiceItem.setInvoiceNumber(ypkpls.getFphm());
@@ -626,9 +626,9 @@ public class GeneratePdfService {
 
             InvoiceItem2 invoiceItem=new InvoiceItem2();
             if(kpls.getFpztdm().equals("08")){
-                invoiceItem.setInvoiceStatus("已作废");
+                invoiceItem.setInvoiceStatus("08");
             }else {
-                invoiceItem.setInvoiceStatus("开具失败");
+                invoiceItem.setInvoiceStatus("05");
             }
             invoiceItem.setInvoiceCode(kpls.getFpdm());
             invoiceItem.setInvoiceNumber(kpls.getFphm());
