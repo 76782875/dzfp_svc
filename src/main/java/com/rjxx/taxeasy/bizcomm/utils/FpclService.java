@@ -1258,6 +1258,9 @@ public class FpclService {
                     kpspmxvo = tmpList.get(j);
                     hjje = hjje + kpspmxvo.getSpje();
                     hjse = hjse + kpspmxvo.getSpse();
+                    BigDecimal   b   =   new   BigDecimal(kpspmxvo.getSpdj());
+                    double   f1   =   b.setScale(6,BigDecimal.ROUND_HALF_UP).doubleValue();
+                    kpspmxvo.setSpdj(f1);
                 }
                 try {
                     Map params2 = new HashMap();
