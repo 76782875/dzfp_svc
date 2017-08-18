@@ -23,6 +23,8 @@ import org.bouncycastle.pqc.math.linearalgebra.BigEndianConversions;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -59,6 +61,8 @@ public class GetDataService {
     private CszbService cszbService;
     @Autowired
     private  CheckOrderUtil checkOrderUtil;
+
+    protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private static String getSign(String QueryData, String key) {
         String signSourceData = "data=" + QueryData + "&key=" + key;
@@ -125,14 +129,14 @@ public class GetDataService {
 
     public Map getData(String ExtractCode,String gsdm){
             Map parmsMap=new HashMap();
-          /*   String strMessage = "";
+            String strMessage = "";
             BufferedReader reader = null;
             StringBuffer buffer = new StringBuffer();
             Map parms=new HashMap();
             parms.put("gsdm",gsdm);
             Gsxx gsxx=gsxxService.findOneByParams(parms);
             Map resultMap = null;
-            HttpPost httpPost = new HttpPost("");
+            HttpPost httpPost = new HttpPost("http://103.13.247.68:6180/EinvoiceWeb/service/EInvoiceWS/QueryOrder");
             CloseableHttpResponse response = null;
             RequestConfig requestConfig = RequestConfig.custom().
                     setSocketTimeout(120*1000).setConnectionRequestTimeout(120*1000).setConnectTimeout(120*1000).build();
@@ -143,13 +147,10 @@ public class GetDataService {
             httpPost.addHeader("Content-Type", "application/json");
             try {
                 Map nvps = new HashMap();
-                String ExtractCodeXml="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                        "<Request>\n" +
-                        "<ExtractCode>"+ExtractCode+"</ExtractCode>\n" +
-                        "</Request>\n";
-                String Secret=getSign(ExtractCodeXml,gsxx.getSecretKey());
-                nvps.put("ExtractCode", ExtractCodeXml);
-                nvps.put("Secret", Secret);
+                String Secret=getSign(ExtractCode,gsxx.getSecretKey());
+                logger.info("-------------"+ExtractCode+"----------"+gsxx.getSecretKey());
+                nvps.put("ExtractCode", ExtractCode);
+                nvps.put("sign", Secret);
                 StringEntity requestEntity = new StringEntity(JSON.toJSONString(nvps), "utf-8");
                 httpPost.setEntity(requestEntity);
                 response = httpClient.execute(httpPost, new BasicHttpContext());
@@ -165,9 +166,9 @@ public class GetDataService {
                     }
                 }
                 System.out.println("接收返回值:" + buffer.toString());
-                parmsMap=interpreting(gsdm,buffer.toString());*/
-        try {
-                parmsMap=interpreting(gsdm,this.xmldata());
+                parmsMap=interpreting(gsdm,buffer.toString());
+
+                //parmsMap=interpreting(gsdm,this.xmldata());
 
                 List<Jyxxsq> jyxxsqList = (List) parmsMap.get("jyxxsqList");
                 List<Jymxsq> jymxsqList = (List) parmsMap.get("jymxsqList");
@@ -416,7 +417,7 @@ public class GetDataService {
         Document xmlDoc = null;
         OMElement root = null;
         try {
-            data=this.xmldata();
+            //data=this.xmldata();
             xmlDoc = DocumentHelper.parseText(data);
             root = XmlMapUtils.xml2OMElement(data);
         } catch (Exception e) {
