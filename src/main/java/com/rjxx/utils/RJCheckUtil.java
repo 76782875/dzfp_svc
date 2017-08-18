@@ -61,6 +61,50 @@ public class RJCheckUtil {
         }
     }
 
+    //解码
+    public static Map decodeV2(String q){
+        try {
+            byte[] bytes = Base64.decodeBase64(q);
+            String paramsUrl = new String(bytes);
+            String[] paramsArray = paramsUrl.split("&");
+            String tqm = paramsArray[0].substring(paramsArray[0].lastIndexOf("=") + 1);//提取码
+            String sign = paramsArray[1].substring(paramsArray[1].lastIndexOf("=") + 1);//签名
+
+            Map<String, String> map = new HashMap<>();
+            map.put("tqm", tqm);
+            map.put("sign", sign);
+            return map;
+        } catch(Exception e){
+            return null;
+        }
+    }
+    //验签
+    public static Boolean check2MD5(String key,String q){
+        try {
+            Map map  =decodeV2(q);
+            if(map==null){
+                return false;
+            }
+            String tqm = map.get("tqm").toString();
+            String sign = map.get("sign").toString();
+
+            String dbs = "on="+tqm+"&key="+key;
+            String MD5dbs = "";
+            try {
+                MD5dbs = MD5Util.generatePassword(dbs);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if(!sign.equalsIgnoreCase(MD5dbs)){
+                return false;
+            }
+            return true;
+        } catch(Exception e){
+            return false;
+        }
+    }
+
+
     public static String getQ(String key,String orderNo,String orderTime,String price,String storeNo){
         String str = "on="+orderNo+"&ot="+orderTime+"&pr="+price+"&sn="+storeNo+"&key="+key;
         String sign = "";
@@ -75,8 +119,10 @@ public class RJCheckUtil {
     }
 
     public static void main(String[] args) {
-       // String key = "3f7626939b146cc47c31daf43edc42bd";
-        String key="42709f25722653a5d7b5b8dde426f494";
+        //测试
+       String key = "3f7626939b146cc47c31daf43edc42bd";
+       //正式
+//        String key="42709f25722653a5d7b5b8dde426f494";
         String orderNo = String.valueOf(System.currentTimeMillis());
         String orderTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
         String price = String.valueOf(new Random().nextInt(1000));
