@@ -232,6 +232,22 @@ public class GeneratePdfService {
     public static void main(String[] args) {
        /* GeneratePdfService generatePdfService= ApplicationContextUtils.getBean(GeneratePdfService.class);
         generatePdfService.generatePdf( 14688);*/
+      String s= getSign("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
+               "<Request>\n" +
+               "    <ExtractCode>081820888801000000837</ExtractCode>\n" +
+               "    <InvoiceItems count=\"1\">\n" +
+               "        <InvoiceItem>\n" +
+               "            <InvoiceCode>031001700111</InvoiceCode>\n" +
+               "            <InvoiceNumber>97369803</InvoiceNumber>\n" +
+               "            <InvoiceDate>20170818155605</InvoiceDate>\n" +
+               "            <InvoiceStatus>正常发票</InvoiceStatus>\n" +
+               "            <Amount>4.27</Amount>\n" +
+               "            <TaxAmount>0.73</TaxAmount>\n" +
+               "            <PdfUrl>http://test.datarj.com/e-invoice-file/9131000071785090X1/20170818/bc9f7e58-e5f6-46b3-822a-e13e2c04ff19.pdf</PdfUrl>\n" +
+               "        </InvoiceItem>\n" +
+               "    </InvoiceItems>\n" +
+               "</Request>\n","bd79b66f566b5e2de07f1807c56b2469");
+        System.out.println(s);
 
     }
 
