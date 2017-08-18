@@ -589,26 +589,26 @@ public class GeneratePdfService {
             invoiceItem.setAmount(kpls.getHjje().toString());
             invoiceItem.setTaxAmount(kpls.getHjse().toString());
             invoiceItem.setPdfUrl(kpls.getPdfurl());
-            kpls.setJylsh("");
+          /*  kpls.setJylsh("");
             Kpls ypkpls=kplsService.findByhzfphm(kpls);
             InvoiceItem2 ypinvoiceItem=new InvoiceItem2();
             if(ypkpls.getFpztdm().equals("02")){
-                ypinvoiceItem.setInvoiceStatus("02");
+                ypinvoiceItem.setInvoiceStatus("01");
             }else if(ypkpls.getFpztdm().equals("00")){
                 ypinvoiceItem.setInvoiceStatus("00");
-            }
-            ypinvoiceItem.setInvoiceCode(ypkpls.getFpdm());
+            }*/
+           /* ypinvoiceItem.setInvoiceCode(ypkpls.getFpdm());
             ypinvoiceItem.setInvoiceNumber(ypkpls.getFphm());
             if(ypkpls.getKprq()==null){
                 ypinvoiceItem.setInvoiceDate(sdf.format(new Date()));
             }else{
                 ypinvoiceItem.setInvoiceDate(sdf.format(ypkpls.getKprq()));
-            }
-            ypinvoiceItem.setAmount(ypkpls.getHjje().toString());
-            ypinvoiceItem.setTaxAmount(ypkpls.getHjse().toString());
-            ypinvoiceItem.setPdfUrl(ypkpls.getPdfurl());
+            }*/
+           // ypinvoiceItem.setAmount(ypkpls.getHjje().toString());
+           // ypinvoiceItem.setTaxAmount(ypkpls.getHjse().toString());
+            //ypinvoiceItem.setPdfUrl(ypkpls.getPdfurl());
             invoiceItemList.add(invoiceItem);
-            invoiceItemList.add(ypinvoiceItem);
+            //invoiceItemList.add(ypinvoiceItem);
             invoiceItems.setCount(invoiceItemList.size());
             invoiceItems.setInvoiceItem(invoiceItemList);
             returnData.setInvoiceItems(invoiceItems);

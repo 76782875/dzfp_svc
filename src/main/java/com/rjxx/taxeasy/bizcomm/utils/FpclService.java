@@ -1374,6 +1374,8 @@ public class FpclService {
                         }
                     }
                 }
+            kpls.setJylsh(jyls.getJylsh());
+            kplsService.save(kpls);
             //此处生成PDF
             skService.ReCreatePdf(kpls.getKplsh());
             Map parms=new HashMap();
