@@ -147,10 +147,6 @@ public class GetDataService {
             httpPost.addHeader("Content-Type", "application/json");
             try {
                 Map nvps = new HashMap();
-                String ExtractCodeXml="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                        "<Request>\n" +
-                        "<ExtractCode>"+ExtractCode+"</ExtractCode>\n" +
-                        "</Request>\n";
                 String Secret=getSign(ExtractCode,gsxx.getSecretKey());
                 logger.info("-------------"+ExtractCode+"----------"+gsxx.getSecretKey());
                 nvps.put("ExtractCode", ExtractCode);
