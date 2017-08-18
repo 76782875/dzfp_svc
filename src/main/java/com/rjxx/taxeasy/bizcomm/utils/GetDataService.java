@@ -416,7 +416,7 @@ public class GetDataService {
         Document xmlDoc = null;
         OMElement root = null;
         try {
-            data=this.xmldata();
+            //data=this.xmldata();
             xmlDoc = DocumentHelper.parseText(data);
             root = XmlMapUtils.xml2OMElement(data);
         } catch (Exception e) {
