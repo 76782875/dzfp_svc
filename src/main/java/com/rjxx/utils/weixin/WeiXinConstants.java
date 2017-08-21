@@ -1,10 +1,12 @@
 package com.rjxx.utils.weixin;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 /**
  * Created by Administrator on 2017-08-03.
  */
+@Component
 public class WeiXinConstants {
 
     //微信appid
