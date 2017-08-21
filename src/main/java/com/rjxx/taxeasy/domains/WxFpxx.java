@@ -27,6 +27,8 @@ public class WxFpxx {
     @Column(name = "gsdm")
     private String gsdm;
 
+    @Column(name = "code")
+    private String code;
     public String getOrderNo() {
         return orderNo;
     }
@@ -59,6 +61,14 @@ public class WxFpxx {
         this.gsdm = gsdm;
     }
 
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
     @Override
     public String toString() {
         return "WxFpxx{" +
@@ -67,6 +77,7 @@ public class WxFpxx {
                 ", q='" + q + '\'' +
                 ", tqm='" + tqm + '\'' +
                 ", gsdm='" + gsdm + '\'' +
+                ", code='" + code + '\'' +
                 '}';
     }
 

@@ -890,6 +890,12 @@
         <if test="serialorder !=null and serialorder !=''">
             and serialorder = #{serialorder}
         </if>
+        <if test="gsdm !=null and gsdm !=''">
+            and gsdm = #{gsdm}
+        </if>
+        <if test="jylsh !=null and jylsh !=''">
+            and jylsh = #{jylsh}
+        </if>
     </select>
 
     <select id="findAllNeedRegeneratePdfKpls" parameterType="map" resultType="kpls">

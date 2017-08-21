@@ -38,4 +38,9 @@ public class WeiXinConstants {
 
     //申请开票完成跳转url     http://fpj.datarj.com/einv/Family/witting.html
     public  static final String SUCCESS_REDIRECT_URL = "http://fpjtest.datarj.com/einv/QR/zzkj.html";//测试地址等待页面
+
+    //发票模板发票详情url
+    public  static final String fpInfoURL ="http://fpjtest.datarj.com/einv/common/fpInfo";
+    //解码code  URL
+    public  static final String decodeURL="https://api.weixin.qq.com/card/code/decrypt?access_token=";
 }

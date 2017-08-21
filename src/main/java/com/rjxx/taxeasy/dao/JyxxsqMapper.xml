@@ -26,6 +26,9 @@
 		<if test="fphm != null">
 			and yfphm = #{fphm}
 		</if>
+		<if test="openid != null">
+			and openid = #{openid}
+		</if>
 		limit 1
 	</select>
 
