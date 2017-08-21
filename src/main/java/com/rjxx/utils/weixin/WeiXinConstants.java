@@ -44,7 +44,7 @@ public class WeiXinConstants {
     public  static  final  String dzfpInCard_url = "https://api.weixin.qq.com/card/invoice/insert?access_token=";
 
     //全家发票模板card_id    一次性设置
-    public static  final  String FAMILY_CARD_ID ="pPyotwYITo6nvMfoJBfhBqdkNeWo";
+    public static  final  String FAMILY_CARD_ID ="pPyotwXO_XZ1vNX8Rrpe9AI3nypg";
 
     //上传PDF地址
     public  static  final String CREAT_PDF_URL = "https://api.weixin.qq.com/card/invoice/platform/setpdf?access_token=";
