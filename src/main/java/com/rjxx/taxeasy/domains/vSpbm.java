@@ -18,7 +18,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 @Table(name="v_spbm")
 public class vSpbm  implements Serializable {
 
-@Column(name="spbm")
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	protected String spbm;
 
 @Column(name="yhzcbs")
