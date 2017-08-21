@@ -14,13 +14,13 @@ public class GenJavaCode {
         new GenJavaCode();
     }
 
-    private String javaFilePath = "./";//for eclipse
-    //private String javaFilePath = "dzfp-svc";//for idea
+    //private String javaFilePath = "./";//for eclipse
+    private String javaFilePath = "dzfp-svc";//for idea
     private String authorName = "ZhangBing";
     String baseOutputFiePath = javaFilePath + "/src/main/java/";
 
-    private String fullDomainClassName = "com.rjxx.taxeasy.domains.Pldrjl";
-    private String tableName = "t_pldrjl";
+    private String fullDomainClassName = "com.rjxx.taxeasy.domains.vSpbm";
+    private String tableName = "v_spbm";
     private String simpleDomainClassName = null;
     private String domainParamsName = null;
     private String servicePackageName = "com.rjxx.taxeasy.service";

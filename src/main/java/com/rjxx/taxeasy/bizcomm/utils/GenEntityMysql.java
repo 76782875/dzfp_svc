@@ -19,10 +19,10 @@ public class GenEntityMysql {
 
     private String packageOutPath = "com.rjxx.taxeasy.domains";//指定实体生成所在包的路径
     private String authorName = "ZhangBing";//作者名字
-    private String tablename = "t_pldrjl";//表名
+    private String tablename = "v_spbm";//表名
     private String tableComment = null;//表注释
-    private String javaFilePath = "./"; //for eclipse
-    //private String javaFilePath = "dzfp-svc"; //for idea
+    //private String javaFilePath = "./"; //for eclipse
+    private String javaFilePath = "dzfp-svc"; //for idea
     private String[] colnames; // 列名数组
     private String[] filedNames;//属性名，遵守驼峰规则
     private Map<String, String> columnCommentMap = new HashMap<String, String>();

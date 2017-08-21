@@ -61,6 +61,8 @@ public class GetDataService {
     private CszbService cszbService;
     @Autowired
     private  CheckOrderUtil checkOrderUtil;
+    @Autowired
+    private  vSpbmService vSpbmService;
 
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -709,11 +711,11 @@ public class GetDataService {
                         Map spbmMap=new HashMap();
                         spbmMap.put("spbm",ProductCode);
                         spbmMap.put("gsdm",gsdm);
-                        Spvo spvo=spvoService.findOneSpvo(spbmMap);
-                        if(spvo!=null){
-                            jymxsq.setYhzcbs(spvo.getYhzcbs());
-                            jymxsq.setLslbz(spvo.getLslbz());
-                            jymxsq.setYhzcmc(spvo.getYhzcmc());
+                        vSpbm spbm=vSpbmService.findOneByParams(spbmMap);
+                        if(spbm!=null){
+                            jymxsq.setYhzcbs(spbm.getYhzcbs().toString());
+                            jymxsq.setLslbz(spbm.getLslbz());
+                            jymxsq.setYhzcmc(spbm.getYhzcmc());
                         }
                         //优惠政策标识
                         String PolicyMark = "";
