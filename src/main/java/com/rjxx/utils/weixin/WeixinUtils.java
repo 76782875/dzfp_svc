@@ -683,7 +683,7 @@ public class WeixinUtils {
 
     public  String dzfpInCard(String order_id,String card_id,String pdf_file_url,Map weiXinData,List<Kpspmx> kpspmxList,Kpls kpls,String access_token){
         String appid = WeiXinConstants.APP_ID;
-        logger.info("插入卡包方法进入-----------");
+        logger.info("插入卡包方法进入-----------appid："+appid);
         WeiXinInfo weiXinInfo = new WeiXinInfo();
         WeixinUtils weixinUtils = new WeixinUtils();
 

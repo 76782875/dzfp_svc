@@ -15,6 +15,8 @@ import com.rjxx.taxeasy.service.PpService;
 import com.rjxx.utils.StringUtils;
 import com.rjxx.utils.alipay.AlipayUtils;
 import com.rjxx.utils.weixin.WeixinUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -46,6 +48,8 @@ public class ImputationCardUtil {
 	@Value("${pdf.save-path:}")
 	private String pdf_file_url;
 
+
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	/**
 	 * 截取pdf_file_url
@@ -100,6 +104,7 @@ public class ImputationCardUtil {
 		// 发票主数据
 		//Kpls kpls = kplsService.findOne(kpls.getKplsh());
 		// 发票明细部分
+		logger.info("插入卡包或发票管家开始---------");
 		List<Kpspmx> kpspmxList = dataOperate.getPDFSpmx(kpls.getKplsh());
 		//调用重载的invoice2card方法
 		return invoice2card(jyxxsq,kpls,kpspmxList);
