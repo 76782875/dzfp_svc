@@ -45,6 +45,8 @@ public class ImputationCardUtil {
 	@Autowired
 	private PpService ppService;
 
+	@Autowired
+	private WeixinUtils weixinUtils;
 	@Value("${pdf.save-path:}")
 	private String pdf_file_url;
 
@@ -140,8 +142,7 @@ public class ImputationCardUtil {
 				return true;
 
 			}else if(jyxxsq.getSjly().equals("4")){ //数据来源4表示微信
-				WeixinUtils weinxinUtil = new WeixinUtils();
-				String result = weinxinUtil.fpInsertCardBox(jyxxsq.getDdh(),getPdf_file_url(pdf_file_url),kpspmxList,kpls);
+				String result = weixinUtils.fpInsertCardBox(jyxxsq.getDdh(),getPdf_file_url(pdf_file_url),kpspmxList,kpls);
 			   	 //存入卡包失败
 			     if(null == result){
 			    	return false;
@@ -183,8 +184,8 @@ public class ImputationCardUtil {
 				}
 				return true;
 			}else if(jyxxsq.getSjly().equals("4")){ //数据来源4表示微信
-				WeixinUtils weinxinUtil = new WeixinUtils();
-				String result = weinxinUtil.fpInsertCardBox(jyxxsq.getDdh(),getPdf_file_url(pdf_file_url),kpspmxList,kpls);
+				//WeixinUtils weinxinUtil = new WeixinUtils();
+				String result = weixinUtils.fpInsertCardBox(jyxxsq.getDdh(),getPdf_file_url(pdf_file_url),kpspmxList,kpls);
 				//存入卡包失败
 				if(null == result){
 					return false;
