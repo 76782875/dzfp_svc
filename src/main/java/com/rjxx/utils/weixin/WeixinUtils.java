@@ -300,7 +300,7 @@ public class WeixinUtils {
         //weixinUtils.creatPDF("http://test.datarj.com/e-invoice-file/500102010003643/20170531/691fe064-80f4-4e81-9ae6-4d16ee0010a5.pdf","/usr/local/e-invoice-file");
 
         //
-        weixinUtils.decode("XXIzTtMqCxwOaawoE91+VJdsFmv7b8g0VZIZkqf4GWA60Fzpc8ksZ/5ZZ0DVkXdE");
+       // weixinUtils.decode("XXIzTtMqCxwOaawoE91+VJdsFmv7b8g0VZIZkqf4GWA60Fzpc8ksZ/5ZZ0DVkXdE");
 
     }
 
@@ -663,6 +663,7 @@ public class WeixinUtils {
 
     public String fpInsertCardBox(String order_id,String pdf_file_url,List<Kpspmx>
             kpspmxList,Kpls kpls) {
+        logger.info("发票插入卡包开始");
         //主动查询授权状态
         String  access_token = (String)this.hqtk().get("access_token");
         Map weiXinData = this.zdcxstatus(order_id,access_token);
@@ -682,7 +683,7 @@ public class WeixinUtils {
 
     public  String dzfpInCard(String order_id,String card_id,String pdf_file_url,Map weiXinData,List<Kpspmx> kpspmxList,Kpls kpls,String access_token){
         String appid = WeiXinConstants.APP_ID;
-
+        logger.info("插入卡包方法进入-----------");
         WeiXinInfo weiXinInfo = new WeiXinInfo();
         WeixinUtils weixinUtils = new WeixinUtils();
 
@@ -838,6 +839,7 @@ public class WeixinUtils {
                     logger.info("微信发票code信息"+wxFpxx.toString());
                     wxfpxxJpaDao.save(wxFpxx);
                     logger.info("code保存成功");
+                    logger.info("发票插入卡包成功-------------------------");
                     return code;
                 }else{
                     logger.info("返回的错误信息为"+errmsg);
