@@ -124,36 +124,37 @@ public class ImputationCardUtil {
 		params.put("kplsh",kplsh);
 		Jyxxsq jyxxsq = jyxxsqService.findSjlyAndOpenidByMap(params);
 		//交易信息数据存在
-		if(null != jyxxsq && !jyxxsq.equals("")){
-			//数据来源5表示支付宝
-			if(jyxxsq.getSjly().equals("5")){
-				AlipayUtils alipayUtils = new AlipayUtils();
-				Pp pp = ppService.findOnePpByGsdmSkpid(kpls.getSkpid(), kpls.getGsdm());
-				if (pp == null || StringUtils.isBlank(pp.getAliMShortName()) || StringUtils.isBlank(pp.getAliSubMShortName()) || StringUtils.isBlank(jyxxsq.getOpenid())) {
-					return false;
-				}else{
-					try {
-						alipayUtils.syncInvoiceAlipay(jyxxsq.getOpenid(),kpls,kpspmxList,pp.getAliMShortName(),pp.getAliSubMShortName());
-					} catch (Exception e) {
-						e.printStackTrace();
+		if(null != jyxxsq && !jyxxsq.equals("")) {
+			if (kpls.getFpczlxdm().equals("11")) {
+				//数据来源5表示支付宝
+				if (jyxxsq.getSjly().equals("5")) {
+					AlipayUtils alipayUtils = new AlipayUtils();
+					Pp pp = ppService.findOnePpByGsdmSkpid(kpls.getSkpid(), kpls.getGsdm());
+					if (pp == null || StringUtils.isBlank(pp.getAliMShortName()) || StringUtils.isBlank(pp.getAliSubMShortName()) || StringUtils.isBlank(jyxxsq.getOpenid())) {
 						return false;
+					} else {
+						try {
+							alipayUtils.syncInvoiceAlipay(jyxxsq.getOpenid(), kpls, kpspmxList, pp.getAliMShortName(), pp.getAliSubMShortName());
+						} catch (Exception e) {
+							e.printStackTrace();
+							return false;
+						}
 					}
-				}
-				return true;
+					return true;
 
-			}else if(jyxxsq.getSjly().equals("4")){ //数据来源4表示微信
-				String result = weixinUtils.fpInsertCardBox(jyxxsq.getDdh(),getPdf_file_url(pdf_file_url),kpspmxList,kpls);
-			   	 //存入卡包失败
-			     if(null == result){
-			    	return false;
-				}else{
-			    	return true;
+				} else if (jyxxsq.getSjly().equals("4")) { //数据来源4表示微信
+					String result = weixinUtils.fpInsertCardBox(jyxxsq.getDdh(), getPdf_file_url(pdf_file_url), kpspmxList, kpls);
+					//存入卡包失败
+					if (null == result) {
+						return false;
+					} else {
+						return true;
+					}
+				} else {
+					return false;
 				}
-			}else{
-				return false;
 			}
 		}
-
 		return true;
 	}
 
@@ -165,7 +166,7 @@ public class ImputationCardUtil {
 	 */
 	public boolean invoice2card(Jyxxsq jyxxsq,Kpls kpls, List<Kpspmx> kpspmxList) {
 		if(null != jyxxsq && !jyxxsq.equals("")){
-			if(kpls.getFpzldm().equals("11")){
+			if(kpls.getFpczlxdm().equals("11")){
 
 			//数据来源5表示支付宝
 			if(jyxxsq.getSjly().equals("5")){
