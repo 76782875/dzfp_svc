@@ -167,7 +167,7 @@ public class GetDataService {
                 }
                 System.out.println("接收返回值:" + buffer.toString());
                 parmsMap=interpreting(gsdm,buffer.toString());
-                String error = (String) resultMap.get("error");
+                String error = (String) parmsMap.get("error");
                 if(error==null) {
                     List<Jyxxsq> jyxxsqList = (List) parmsMap.get("jyxxsqList");
                     List<Jymxsq> jymxsqList = (List) parmsMap.get("jymxsqList");
