@@ -2,8 +2,10 @@ package com.rjxx.utils.weixin;
 
 import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rjxx.taxeasy.dao.WxfpxxJpaDao;
 import com.rjxx.taxeasy.domains.Kpls;
 import com.rjxx.taxeasy.domains.Kpspmx;
+import com.rjxx.taxeasy.domains.WxFpxx;
 import com.rjxx.utils.StringUtils;
 import com.rjxx.utils.TimeUtil;
 import com.rjxx.utils.WeixinUtil;
@@ -20,6 +22,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
@@ -30,11 +34,12 @@ import java.util.*;
  * 微信工具类
  * Created by zsq on 2017-08-03.
  */
-
+@Service
 public class WeixinUtils {
     private  static Logger logger = LoggerFactory.getLogger(WeixinUtils.class);
 
-
+    @Autowired
+    private WxfpxxJpaDao wxfpxxJpaDao;
     /**
      * 判断是不是微信浏览器
      *
@@ -46,7 +51,6 @@ public class WeixinUtils {
         boolean res = ua.contains("micromessenger");
         return res;
         }
-
     /*
     * 获取微信token
     * */
@@ -288,13 +292,15 @@ public class WeixinUtils {
         //System.out.println(""+card_id);
 
         //String access_token = (String) weixinUtils.hqtk().get("access_token");
-        //weixinUtils.zdcxstatus("11222043",access_token);//查询用户授权状态
+        //weixinUtils.zdcxstatus("1503053525092",access_token);//查询用户授权状态
         //weixinUtils.dzfpInCard("11222042",WeiXinConstants.FAMILY_CARD_ID,weixinUtils.zdcxstatus("11222042",access_token),access_token);
         //String in =  weixinUtils.jujuekp("1131453222001122","微信授权失败，请重新开票");//重新开票
 
         //上传PDF
         //weixinUtils.creatPDF("http://test.datarj.com/e-invoice-file/500102010003643/20170531/691fe064-80f4-4e81-9ae6-4d16ee0010a5.pdf","/usr/local/e-invoice-file");
 
+        //
+        weixinUtils.decode("XXIzTtMqCxwOaawoE91+VJdsFmv7b8g0VZIZkqf4GWA60Fzpc8ksZ/5ZZ0DVkXdE");
 
     }
 
@@ -551,10 +557,12 @@ public class WeixinUtils {
         weiXinMuBan.setType("增值税普通发票");
         weiXinMuBan.setTitle(gsmc);
         weiXinMuBan.setLogo_url("http://mmbiz.qpic.cn/mmbiz_jpg/l249Gu1JJaIGMFSN5XWGdEFQlvG9VCemjLbSmw1enLNoluvfnV9JbM7zLkUgKGEVPcvqseHo9PZHTJM5mia2vSw/0");
-        weiXinMuBan.setCustom_url_name("跳转名称");
-        weiXinMuBan.setCustom_url_sub_title("右入口名称");
-        weiXinMuBan.setPromotion_url_name("自定义入口");
-        weiXinMuBan.setPromotion_url_sub_title("右自定义名");
+        weiXinMuBan.setCustom_url_name("查看发票");
+        weiXinMuBan.setCustom_url_sub_title("电子发票");
+        weiXinMuBan.setCustom_url(WeiXinConstants.fpInfoURL);//发票详情
+        weiXinMuBan.setPromotion_url_name("电票简介");
+        weiXinMuBan.setPromotion_url_sub_title("看懂电子发票");
+        weiXinMuBan.setPromotion_url("");
         weiXinMuBan.setDescription("自己看流程");
         invoice_info.put("base_info",base_info);
         invoice_info.put("payee",weiXinMuBan.getPayee());
@@ -823,9 +831,14 @@ public class WeixinUtils {
                 System.out.println("错误码"+errcode);
                 if(errcode==0){
                     String openid = (String) map.get("openid");
+                    String code  = (String) map.get("code");
                     logger.info("插入卡包成功,成功返回的openid为"+openid);
-                    System.out.println("插入卡包成功,成功返回openid为"+openid);
-                    return openid;
+                    WxFpxx wxFpxx = wxfpxxJpaDao.findOneByOrderNo(order_id,openid);
+                    wxFpxx.setCode(code);
+                    logger.info("微信发票code信息"+wxFpxx.toString());
+                    wxfpxxJpaDao.save(wxFpxx);
+                    logger.info("code保存成功");
+                    return code;
                 }else{
                     logger.info("返回的错误信息为"+errmsg);
                     return null;
@@ -951,8 +964,35 @@ public class WeixinUtils {
     return msg;
     }
 
-    /*
-    *
-    * */
+   public String decode(String encrypt_code){
+        String code="";
+        if(null == encrypt_code){
+            return null;
+        }
+       WeixinUtils weixinUtils = new WeixinUtils();
+       String access_token = (String) weixinUtils.hqtk().get("access_token");
+        String URL=WeiXinConstants.decodeURL+access_token;
+       Map map = new HashMap();
+       map.put("encrypt_code",encrypt_code);
+       System.out.println("数据"+JSON.toJSONString(map));
+       String jsonStr = WeixinUtil.httpRequest(URL, "POST",JSON.toJSONString(map));
+       if(null!=jsonStr){
+           ObjectMapper jsonparer = new ObjectMapper();// 初始化解析json格式的对象
+           try {
+               Map maps = jsonparer.readValue(jsonStr, Map.class);
+               int errcode = (int) maps.get("errcode");
+               String errmsg = (String) maps.get("errmsg");
+               if(errcode==0){
+                   code = (String) maps.get("code");
+                   System.out.println("错误码"+errmsg);
+               }else{
+                   logger.info("解码code错误，返回的错误信息为"+errmsg);
+               }
+           } catch (Exception e) {
+               e.printStackTrace();
+           }
+       }
+        return  code;
+   }
 
 }
