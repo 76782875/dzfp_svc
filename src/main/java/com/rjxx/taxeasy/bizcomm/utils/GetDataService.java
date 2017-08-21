@@ -167,15 +167,14 @@ public class GetDataService {
                 }
                 System.out.println("接收返回值:" + buffer.toString());
                 parmsMap=interpreting(gsdm,buffer.toString());
-
-                //parmsMap=interpreting(gsdm,this.xmldata());
-
-                List<Jyxxsq> jyxxsqList = (List) parmsMap.get("jyxxsqList");
-                List<Jymxsq> jymxsqList = (List) parmsMap.get("jymxsqList");
-                List<Jyzfmx> jyzfmxList = (List) parmsMap.get("jyzfmxList");
-
-                String tmp = this.checkAll(jyxxsqList, jymxsqList, jyzfmxList,gsdm);
-                parmsMap.put("tmp",tmp);
+                String error = (String) resultMap.get("error");
+                if(error==null) {
+                    List<Jyxxsq> jyxxsqList = (List) parmsMap.get("jyxxsqList");
+                    List<Jymxsq> jymxsqList = (List) parmsMap.get("jymxsqList");
+                    List<Jyzfmx> jyzfmxList = (List) parmsMap.get("jyzfmxList");
+                    String tmp = this.checkAll(jyxxsqList, jymxsqList, jyzfmxList, gsdm);
+                    parmsMap.put("tmp", tmp);
+                }
             }catch (Exception e){
                 System.out.println("request url=" + "" + ", exception, msg=" + e.getMessage());
                 e.printStackTrace();
@@ -414,10 +413,10 @@ public class GetDataService {
         List<Jyxxsq> jyxxsqList = new ArrayList();
         List<Jymxsq> jymxsqList = new ArrayList();
         List<Jyzfmx> jyzfmxList = new ArrayList<Jyzfmx>();
+        Map rsMap=new HashMap();
         Document xmlDoc = null;
         OMElement root = null;
         try {
-            //data=this.xmldata();
             xmlDoc = DocumentHelper.parseText(data);
             root = XmlMapUtils.xml2OMElement(data);
         } catch (Exception e) {
@@ -427,6 +426,13 @@ public class GetDataService {
         Map rootMap = XmlMapUtils.xml2Map(root, "Responese");
         String ReturnCode=rootMap.get("ReturnCode").toString();
         String ReturnMessage=rootMap.get("ReturnMessage").toString();
+        if(!ReturnCode.equals("0000")){
+            rsMap.put("jyxxsqList", jyxxsqList);
+            rsMap.put("jymxsqList", jymxsqList);
+            rsMap.put("jyzfmxList", jyzfmxList);
+            rsMap.put("error",ReturnMessage);
+            return rsMap;
+        }
         Element ReturnData  = (Element) xmlDoc.selectSingleNode("Responese/ReturnData");
         // 提取码
         String ExtractCode = "";
@@ -777,7 +783,7 @@ public class GetDataService {
                 }*/
             }
         }
-        Map rsMap=new HashMap();
+
         rsMap.put("jyxxsqList", jyxxsqList);
         rsMap.put("jymxsqList", jymxsqList);
         rsMap.put("jyzfmxList", jyzfmxList);
