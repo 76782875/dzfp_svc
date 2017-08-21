@@ -4,7 +4,7 @@
 <mapper namespace="com.rjxx.taxeasy.dao.vSpbmMapper">
 
     <select id="findOneByParams" parameterType="map" resultType="vSpbm">
-        select * from v_spbm where yxbz = '1'
+        select * from v_spbm where
 
         <if test="spbm != null">
             and spbm = #{spbm}
@@ -17,14 +17,14 @@
     </select>
 
     <select id="findAllByParams" parameterType="map" resultType="vSpbm">
-        select * from v_spbm where yxbz = '1'
+        select * from v_spbm where
         <if test="orderBy != null">
             order by ${orderBy}
         </if>
     </select>
 
     <select id="findByPage" parameterType="pagination" resultType="vSpbm">
-        select * from v_spbm where yxbz = '1'
+        select * from v_spbm where
         <if test="params.orderBy != null">
             order by ${params.orderBy}
         </if>
