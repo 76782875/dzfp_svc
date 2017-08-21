@@ -15,12 +15,12 @@ public class WeiXinConstants {
     public static String APP_SECRET;
 
     @Value("${wechatappid}")
-    public static void setAppId(String wechatappid) {
+    public  void setAppId(String wechatappid) {
         APP_ID = wechatappid;
     }
 
     @Value("${wechatappsecret}")
-    public static void setAppSecret(String wechatappsecret) {
+    public  void setAppSecret(String wechatappsecret) {
         APP_SECRET = wechatappsecret;
     }
 
