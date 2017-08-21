@@ -14,14 +14,14 @@ public class WeiXinConstants {
     //微信AppSecret
     public static String APP_SECRET;
 
-    @Value("${wechat.appid}")
-    public static void setAppId(String appId) {
-        APP_ID = appId;
+    @Value("${wechatappid}")
+    public static void setAppId(String wechatappid) {
+        APP_ID = wechatappid;
     }
 
-    @Value("${wechat.app_secret}")
-    public static void setAppSecret(String appSecret) {
-        APP_SECRET = appSecret;
+    @Value("${wechatappsecret}")
+    public static void setAppSecret(String wechatappsecret) {
+        APP_SECRET = wechatappsecret;
     }
 
     //    沙箱appid
