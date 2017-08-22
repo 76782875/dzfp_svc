@@ -1168,7 +1168,8 @@ public class GetDataService {
                jyxxsq.setJylsh("JY" + new SimpleDateFormat("yyyyMMddHHmmssSS").format(new Date()));//交易流水号
                String kpddm=tqm.substring(0,3);
                //String kpddm=tqm.substring(0,3);
-               jyxxsq.setKpddm(kpddm);
+               jyxxsq.setKpddm("A"+kpddm);
+               logger.info("开票点代码为----"+jyxxsq.getKpddm());
                //根据公司代码、开票点代码查询税控盘
                Map skpmap = new HashMap();
                skpmap.put("gsdm",gsdm);
