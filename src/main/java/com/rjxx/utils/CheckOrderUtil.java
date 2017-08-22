@@ -313,17 +313,17 @@ public class CheckOrderUtil {
                         double res = jymxsq.getSpdj() * jymxsq.getSps();
                         BigDecimal big1 = new BigDecimal(res);
                         big1 = big1.setScale(2, BigDecimal.ROUND_HALF_UP);
-                        BigDecimal big2 = new BigDecimal(jymxsq.getSpje());
+                        BigDecimal big2 = new BigDecimal(jymxsq.getSpje().toString());
                         big2 = big2.setScale(2, BigDecimal.ROUND_HALF_UP);
                         if (big1.compareTo(big2) != 0) {
                             result += "订单号为" + ddh + "的订单第" + j+1+ "行商品单价，商品数量，商品金额之间的计算校验不通过，请检查！";
                         }
                     }
                     if(jymxsq.getSpdj() != null && jymxsq.getSps() != null && jymxsq.getSpje() != null){
-                        double spdj = jymxsq.getSpdj();
-                        double sps = jymxsq.getSps();
-                        BigDecimal big1 = new BigDecimal(spdj);
-                        BigDecimal big2 = new BigDecimal(sps);
+                        Double spdj = jymxsq.getSpdj();
+                        Double sps = jymxsq.getSps();
+                        BigDecimal big1 = new BigDecimal(spdj.toString());
+                        BigDecimal big2 = new BigDecimal(sps.toString());
                         if((big1.compareTo(new BigDecimal(0))==0)||(big2.compareTo(new BigDecimal(0))==0)){
                             result += "订单号为" + ddh + "的订单第" + j+1+ "行商品单价或商品数量不能为零！";
                         }
@@ -336,8 +336,8 @@ public class CheckOrderUtil {
 
                     // 校验金额误差
                     String TaxMark = jyxxsq.getHsbz();
-                    double je = Double.valueOf(Amount);
-                    double se = 0;
+                    Double je = Double.valueOf(Amount);
+                    Double se = 0d;
                     //含税时，忽略税额
                     if (TaxMark.equals("0")) {
                         if (TaxAmount != null && !"".equals(TaxAmount)) {
@@ -349,8 +349,8 @@ public class CheckOrderUtil {
                         result += "订单号为" + ddh + "的订单(Amount，TaxRate，TaxAmount)之间的校验不通过";
                     }
 
-                    BigDecimal bd = new BigDecimal(je);
-                    BigDecimal bd1 = new BigDecimal(se);
+                    BigDecimal bd = new BigDecimal(je.toString());
+                    BigDecimal bd1 = new BigDecimal(se.toString());
                     ajshj = bd.add(bd1);
                     jshj = jshj.add(ajshj);
 
@@ -361,7 +361,7 @@ public class CheckOrderUtil {
                     }
                 }
             }
-            BigDecimal bd2 = new BigDecimal(jyxxsq.getJshj());
+            BigDecimal bd2 = new BigDecimal(jyxxsq.getJshj().toString());
             if (bd2.setScale(2, BigDecimal.ROUND_HALF_UP).subtract(jshj.setScale(2, BigDecimal.ROUND_HALF_UP)).doubleValue() != 0.0) {
                 result += "订单号为" + ddh + "的订单TotalAmount，Amount，TaxAmount计算校验不通过";
             }
