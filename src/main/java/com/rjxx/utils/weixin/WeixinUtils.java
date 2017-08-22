@@ -286,7 +286,7 @@ public class WeixinUtils {
         //weixinUtils.cksqzd();//查看授权字段
         //weixinUtils.sqzd();//授权字段--只设一次
         //weixinUtils.getTicket();//获取ticket
-        //Map map =  weixinUtils.creatMb("一茶一坐");//创建模板
+        //String card_id =  weixinUtils.creatMb("全家便利","销方1");//创建模板
         //weixinUtils.uploadImage();//上传图片获取url
         //String card_id = (String) map.get("card_id");
         //System.out.println(""+card_id);
@@ -543,8 +543,8 @@ public class WeixinUtils {
 
     /*
     * 创建发票卡卷模板*/
-    public Map creatMb(String gsmc ){
-        Map resultMap = new HashMap();
+    public String creatMb(String gsmc ,String payee){
+        String card_id="";
         WeixinUtils weixinUtils = new WeixinUtils();
         String access_token = (String) weixinUtils.hqtk().get("access_token");
         String creatURL = WeiXinConstants.CREAT_MUBAN_URL+access_token;
@@ -553,10 +553,10 @@ public class WeixinUtils {
         Map invoice_info = new HashMap();
         Map base_info = new HashMap();
         WeiXinMuBan weiXinMuBan = new WeiXinMuBan();
-        weiXinMuBan.setPayee("测试-收款方");
+        weiXinMuBan.setPayee(payee);
         weiXinMuBan.setType("增值税普通发票");
         weiXinMuBan.setTitle(gsmc);
-        weiXinMuBan.setLogo_url("http://mmbiz.qpic.cn/mmbiz_jpg/l249Gu1JJaIGMFSN5XWGdEFQlvG9VCemjLbSmw1enLNoluvfnV9JbM7zLkUgKGEVPcvqseHo9PZHTJM5mia2vSw/0");
+        weiXinMuBan.setLogo_url("http://mmbiz.qpic.cn/mmbiz_jpg/l249Gu1JJaJjZiauO138MD1d6dnglRlj1bicFTaNyyDGcAOgxMd2WoXLKvEn8icJiaiaibRJkgeBcsCODI4AYP7V6vPg/0");
         weiXinMuBan.setCustom_url_name("查看发票");
         weiXinMuBan.setCustom_url_sub_title("电子发票");
         weiXinMuBan.setCustom_url(WeiXinConstants.fpInfoURL);//发票详情
@@ -589,22 +589,22 @@ public class WeixinUtils {
                 String errmsg = (String) map.get("errmsg");
                 System.out.println("错误码"+errcode);
                 if(errcode==0){
-                    String card_id = (String) map.get("card_id");
-                    resultMap.put("card_id",card_id);
-                    resultMap.put("msg","发票卡券设置成功");
-                    System.out.println("成功"+resultMap.toString());
+                     card_id = (String) map.get("card_id");
+                   // resultMap.put("card_id",card_id);
+                   // resultMap.put("msg","发票卡券设置成功");
+                    System.out.println("创建卡券模板成功"+card_id);
 
                 }else{
-                    resultMap.put("msg","发票卡券模板设置错误");
+                    //resultMap.put("msg","发票卡券模板设置错误");
                     logger.info("返回的错误信息为"+errmsg);
-                    System.out.println("卡券模板设置失败"+resultMap.toString());
+                    System.out.println("卡券模板设置失败"+errmsg);
 
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        return  resultMap;
+        return  card_id;
     }
 
     /**
@@ -624,7 +624,7 @@ public class WeixinUtils {
 
         MultipartEntityBuilder builder  = MultipartEntityBuilder.create();
         builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
-        FileBody fileBody = new FileBody(new File("D:/1171042.jpg"));//上传图片路径
+        FileBody fileBody = new FileBody(new File("D:/family.jpg"));//上传图片路径
         builder.addPart("media", fileBody);
         HttpEntity entit = builder.build();
         httpPost.setEntity(entit);
@@ -671,7 +671,9 @@ public class WeixinUtils {
             logger.info("主动查询授权失败++++++++++++");
             return null;
         }
-        String card_id = WeiXinConstants.FAMILY_CARD_ID;
+        //公司简称 品牌t_pp kpddm->skp->pid->ppmc
+        String card_id = this.creatMb("全家便利",kpls.getXfmc());
+        logger.info("插入卡包的模板id-------"+card_id);
         //调用dzfpInCard方法将发票放入卡包
         return dzfpInCard(order_id,card_id,pdf_file_url,weiXinData,kpspmxList,kpls,access_token);
 

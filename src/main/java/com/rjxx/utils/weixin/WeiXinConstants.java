@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class WeiXinConstants {
 
-//    //微信AppSecret
+    //微信AppSecret
     public static String APP_ID;
 
     public static String APP_SECRET;
@@ -24,9 +24,9 @@ public class WeiXinConstants {
     }
 
 //    沙箱appid
-//   public static final String APP_ID = "wx8c2a4c2289e10ffb";
+   //public static final String APP_ID = "wx8c2a4c2289e10ffb";
 //    沙箱appSecret
-//    public static  final  String APP_SECRET = "ad706ca065a0d384414ae3b568e030fb";
+    //public static  final  String APP_SECRET = "ad706ca065a0d384414ae3b568e030fb";
 //    //微信appid
 //    public static String APP_ID = "wx9abc729e2b4637ee";
 //    //微信AppSecret
@@ -44,9 +44,9 @@ public class WeiXinConstants {
     public  static  final  String dzfpInCard_url = "https://api.weixin.qq.com/card/invoice/insert?access_token=";
 
     //全家发票模板card_id    一次性设置
-    public static  final  String FAMILY_CARD_ID ="pPyotwWZi4W2onmIlX_ohO23lr28";
+   // public static  final  String FAMILY_CARD_ID ="pPyotwWZi4W2onmIlX_ohO23lr28";
     //一茶一坐  发票模板card_id
-    public static final String  CHAMATE_CARD_ID ="";
+   // public static final String  CHAMATE_CARD_ID ="";
     //上传PDF地址
     public  static  final String CREAT_PDF_URL = "https://api.weixin.qq.com/card/invoice/platform/setpdf?access_token=";
 
