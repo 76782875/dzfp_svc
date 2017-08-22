@@ -1385,13 +1385,17 @@ public class FpclService {
                 String url=gsxx.getCallbackurl();
             logger.info("回写报文"+generatePdfService.CreateReturnMessage2(kpls.getKplsh()));
             if(!("").equals(url)&&url!=null){
-                    String returnmessage=generatePdfService.CreateReturnMessage2(kpls.getKplsh());
-                    //输出调用结果
-                    logger.info("回写报文"+returnmessage);
-                    if(returnmessage!=null&&!"".equals(returnmessage)){
-                        Map returnMap =generatePdfService.httpPost(returnmessage, kpls);
-                        logger.info("返回报文"+ JSON.toJSONString(returnMap));
-                    }
+                   if(kpls.getFpzldm().equals("12")&&kpls.getGsdm().equals("Family")) {
+                       String returnmessage = generatePdfService.CreateReturnMessage2(kpls.getKplsh());
+                       //输出调用结果
+                       logger.info("回写报文" + returnmessage);
+                       if (returnmessage != null && !"".equals(returnmessage)) {
+                           Map returnMap = generatePdfService.httpPost(returnmessage, kpls);
+                           logger.info("返回报文" + JSON.toJSONString(returnMap));
+                       }
+                   }else{
+
+                   }
                 }
             }else{
                 kpls.setFpztdm("05");
