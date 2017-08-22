@@ -30,6 +30,21 @@ public class Pp implements Serializable {
     protected String ppdm;
 
     /**
+     * 微信卡包logourl
+     */
+    @Column(name = "wechat_logo_url")
+    protected String wechatLogoUrl;
+
+    public String getWechatLogoUrl() {
+        return wechatLogoUrl;
+    }
+
+    public void setWechatLogoUrl(String wechatLogoUrl) {
+        this.wechatLogoUrl = wechatLogoUrl;
+    }
+
+    /**
+
      * 品牌名称
      */
     @Column(name = "ppmc")
