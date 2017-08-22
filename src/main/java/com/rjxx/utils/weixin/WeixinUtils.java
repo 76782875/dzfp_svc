@@ -37,7 +37,7 @@ import java.util.*;
  */
 @Service
 public class WeixinUtils {
-    private  static Logger logger = LoggerFactory.getLogger(WeixinUtils.class);
+    private static Logger logger = LoggerFactory.getLogger(WeixinUtils.class);
 
     @Autowired
     private WxfpxxJpaDao wxfpxxJpaDao;
@@ -45,24 +45,26 @@ public class WeixinUtils {
     private SkpService skpService;
     @Autowired
     private PpJpaDao ppJpaDao;
+
     /**
      * 判断是不是微信浏览器
      *
      * @param
      * @return
      */
-      public static boolean isWeiXinBrowser(HttpServletRequest request) {
+    public static boolean isWeiXinBrowser(HttpServletRequest request) {
         String ua = request.getHeader("user-agent").toLowerCase();
         boolean res = ua.contains("micromessenger");
         return res;
-        }
+    }
+
     /*
     * 获取微信token
     * */
     public Map hqtk() {
         Map<String, Object> result = new HashMap<String, Object>();
         // 获取token
-        String turl = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+WeiXinConstants.APP_ID+"&secret="+WeiXinConstants.APP_SECRET;
+        String turl = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" + WeiXinConstants.APP_ID + "&secret=" + WeiXinConstants.APP_SECRET;
         HttpClient client = new DefaultHttpClient();
         HttpGet get = new HttpGet(turl);
         ObjectMapper jsonparer = new ObjectMapper();// 初始化解析json格式的对象
@@ -99,118 +101,118 @@ public class WeixinUtils {
     * 获取微信spappid
     *
     * */
-    public  String  getSpappid(){
+    public String getSpappid() {
 
         String invoice_url = "";
         String spappid = "";
         WeixinUtils weixinUtils = new WeixinUtils();
         String accessToken = (String) weixinUtils.hqtk().get("access_token");
-        System.out.println("微信"+accessToken);
-        String url = "https://api.weixin.qq.com/card/invoice/seturl?access_token="+accessToken;
+        System.out.println("微信" + accessToken);
+        String url = "https://api.weixin.qq.com/card/invoice/seturl?access_token=" + accessToken;
         String jsonStr = WeixinUtil.httpRequest(url, "POST", JSON.toJSONString(""));
-        System.out.println("返回信息"+jsonStr.toString());
-        if(jsonStr !=null){
+        System.out.println("返回信息" + jsonStr.toString());
+        if (jsonStr != null) {
             ObjectMapper jsonparer = new ObjectMapper();// 初始化解析json格式的对象
             try {
                 Map map = jsonparer.readValue(jsonStr, Map.class);
                 invoice_url = (String) map.get("invoice_url");
                 spappid = invoice_url.split("&")[1].split("=")[1];
-                return  spappid;
+                return spappid;
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-       return  null;
+        return null;
     }
 
     /*
     * 获取微信ticket
     * */
-    public  String getTicket(){
-        String ticket="";
+    public String getTicket() {
+        String ticket = "";
         WeixinUtils weixinUtils = new WeixinUtils();
-        String accessToken = (String)weixinUtils.hqtk().get("access_token");
-        String ticketUrl="https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token="+accessToken+"&type=wx_card";
+        String accessToken = (String) weixinUtils.hqtk().get("access_token");
+        String ticketUrl = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=" + accessToken + "&type=wx_card";
         String jsonStr = WeixinUtil.httpRequest(ticketUrl, "GET", null);
-        System.out.println("返回信息"+jsonStr.toString());
-        if(null!=jsonStr){
+        System.out.println("返回信息" + jsonStr.toString());
+        if (null != jsonStr) {
             ObjectMapper jsonparer = new ObjectMapper();// 初始化解析json格式的对象
             try {
                 Map map = jsonparer.readValue(jsonStr, Map.class);
                 ticket = (String) map.get("ticket");
-                System.out.println("ticket获取成功"+ticket);
-                return  ticket;
+                System.out.println("ticket获取成功" + ticket);
+                return ticket;
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        return  null;
+        return null;
     }
 
     /*
     拿到数据,调用微信接口获取微信授权链接,
     如果成功跳转页面,失败返回null
     */
-    public String getTiaoURL(String orderid,String money,String timestamp,String menDianId) throws Exception {
+    public String getTiaoURL(String orderid, String money, String timestamp, String menDianId) throws Exception {
 
-        String auth_url ="";
+        String auth_url = "";
         WeixinUtils weixinUtils = new WeixinUtils();
-        System.out.println("传入的数据订单编号"+orderid+"金额"+money+"时间"+timestamp+"门店号"+menDianId);
-        String spappid =  weixinUtils.getSpappid();//获取开票平台
+        System.out.println("传入的数据订单编号" + orderid + "金额" + money + "时间" + timestamp + "门店号" + menDianId);
+        String spappid = weixinUtils.getSpappid();//获取开票平台
         String ticket = weixinUtils.getTicket();
-        double d = Double.valueOf(money)*100;
+        double d = Double.valueOf(money) * 100;
         Date dateTime = null;
-        if(null!=timestamp&&!timestamp.equals("")){
+        if (null != timestamp && !timestamp.equals("")) {
             String[] s = timestamp.split("-");
-            if(s.length> 1 ){
-                dateTime= TimeUtil.getSysDateInDate(timestamp,"yyyy-MM-dd HH:mm:ss");
+            if (s.length > 1) {
+                dateTime = TimeUtil.getSysDateInDate(timestamp, "yyyy-MM-dd HH:mm:ss");
                 System.out.println("日期格式为yyyy-MM-dd HH:mm:ss =============");
-            }else {
-                dateTime= TimeUtil.getSysDateInDate(timestamp,"yyyyMMddHHmmss");
+            } else {
+                dateTime = TimeUtil.getSysDateInDate(timestamp, "yyyyMMddHHmmss");
                 System.out.println("日期格式为yyyyMMddHHmmss    ================");
             }
         }
-        System.out.println("转换之后金额"+d+"时间"+dateTime);
-        String  source = "web";
+        System.out.println("转换之后金额" + d + "时间" + dateTime);
+        String source = "web";
         int type = 1;//填写抬头申请开票类型
         Map nvps = new HashMap();
-        nvps.put("s_pappid",spappid);
-        nvps.put("order_id",orderid);
-        nvps.put("money",d);
-        nvps.put("timestamp",dateTime.getTime()/1000);
-        nvps.put("source",source);
-        nvps.put("redirect_url",WeiXinConstants.SUCCESS_REDIRECT_URL);
-        nvps.put("ticket",ticket);
-        nvps.put("type",type);
-        if(null==orderid&&StringUtils.isBlank(orderid)){
+        nvps.put("s_pappid", spappid);
+        nvps.put("order_id", orderid);
+        nvps.put("money", d);
+        nvps.put("timestamp", dateTime.getTime() / 1000);
+        nvps.put("source", source);
+        nvps.put("redirect_url", WeiXinConstants.SUCCESS_REDIRECT_URL);
+        nvps.put("ticket", ticket);
+        nvps.put("type", type);
+        if (null == orderid && StringUtils.isBlank(orderid)) {
             logger.info("获取微信授权链接,订单编号为null");
             return null;
         }
-        if(null==money&&StringUtils.isBlank(money)){
+        if (null == money && StringUtils.isBlank(money)) {
             logger.info("获取微信授权链接,金额为null");
-            return  null;
+            return null;
         }
 
         String sj = JSON.toJSONString(nvps);
-        System.out.println("封装数据"+sj);
+        System.out.println("封装数据" + sj);
         String access_token = (String) weixinUtils.hqtk().get("access_token");//获取token
-        String urls ="https://api.weixin.qq.com/card/invoice/getauthurl?access_token="+access_token;
+        String urls = "https://api.weixin.qq.com/card/invoice/getauthurl?access_token=" + access_token;
         String jsonStr3 = WeixinUtil.httpRequest(urls, "POST", sj);
-        System.out.println("返回信息"+jsonStr3.toString());
-        if(null!=jsonStr3){
+        System.out.println("返回信息" + jsonStr3.toString());
+        if (null != jsonStr3) {
             ObjectMapper jsonparer = new ObjectMapper();// 初始化解析json格式的对象
             try {
                 Map map = jsonparer.readValue(jsonStr3, Map.class);
 
                 int errcode = (int) map.get("errcode");
-                if(errcode==0){
+                if (errcode == 0) {
                     auth_url = (String) map.get("auth_url");
-                    logger.info("跳转url"+auth_url);
-                    System.out.println("授权链接"+auth_url);
-                    return  auth_url;
-                }else {
+                    logger.info("跳转url" + auth_url);
+                    System.out.println("授权链接" + auth_url);
+                    return auth_url;
+                } else {
                     logger.info("获取微信授权链接失败!");
-                    return  null;
+                    return null;
                 }
             } catch (Exception e) {
                 //处理异常
@@ -221,6 +223,7 @@ public class WeixinUtils {
         }
         return auth_url;
     }
+
     //微信授权跳转
     public static void main(String[] args) {
 
@@ -228,7 +231,7 @@ public class WeixinUtils {
         WeixinUtils weixinUtils = new WeixinUtils();
 
         //System.out.println(""+in);
-         //解析xml
+        //解析xml
            /* String data="<?xml version=\"1.0\" encoding=\"utf-8\"?>"
                 + "<xml>"
                 + "<ToUserName>1111</ToUserName>"
@@ -271,7 +274,6 @@ public class WeixinUtils {
         }*/
 
 
-
         //*String url ="https://mp.weixin.qq.com/bizmall/authinvoice?action=list&s_pappid=d3g5YWJjNzI5ZTJiNDYzN2VlX0PARqxCKGk0d1fanZfCN3KxU5K6C-9JRLhQXmLzcptB";
         //String a = url.split("&")[1].split("=")[1];
 
@@ -305,75 +307,76 @@ public class WeixinUtils {
         //weixinUtils.creatPDF("http://test.datarj.com/e-invoice-file/500102010003643/20170531/691fe064-80f4-4e81-9ae6-4d16ee0010a5.pdf","/usr/local/e-invoice-file");
 
         //
-       // weixinUtils.decode("XXIzTtMqCxwOaawoE91+VJdsFmv7b8g0VZIZkqf4GWA60Fzpc8ksZ/5ZZ0DVkXdE");
+        // weixinUtils.decode("XXIzTtMqCxwOaawoE91+VJdsFmv7b8g0VZIZkqf4GWA60Fzpc8ksZ/5ZZ0DVkXdE");
 
     }
 
     /*
     * 主动查询授权完成状态
     * */
-    public Map zdcxstatus(String order_id,String access_token){
+    public Map zdcxstatus(String order_id, String access_token) {
 
         Map resultMap = new HashMap();
         WeixinUtils weixinUtils = new WeixinUtils();
-        String s_pappid= weixinUtils.getSpappid();
+        String s_pappid = weixinUtils.getSpappid();
         //String access_token = (String) weixinUtils.hqtk().get("access_token");
-        String URL = "https://api.weixin.qq.com/card/invoice/getauthdata?access_token="+access_token;
+        String URL = "https://api.weixin.qq.com/card/invoice/getauthdata?access_token=" + access_token;
 
         Map nvps = new HashMap();
-        nvps.put("s_pappid",s_pappid);
-        nvps.put("order_id",order_id);
+        nvps.put("s_pappid", s_pappid);
+        nvps.put("order_id", order_id);
         String sj = JSON.toJSONString(nvps);
-        System.out.println("封装数据"+sj);
+        System.out.println("封装数据" + sj);
         String jsonStr3 = WeixinUtil.httpRequest(URL, "POST", sj);
-        System.out.println("返回信息"+jsonStr3.toString());
-        if(null!=jsonStr3){
+        System.out.println("返回信息" + jsonStr3.toString());
+        if (null != jsonStr3) {
             ObjectMapper jsonparer = new ObjectMapper();// 初始化解析json格式的对象
             try {
                 Map map = jsonparer.readValue(jsonStr3, Map.class);
                 Integer errcode = (Integer) map.get("errcode");
-                System.out.println("code"+errcode);
-                if(null!=errcode&&errcode.equals(0)){
+                System.out.println("code" + errcode);
+                if (null != errcode && errcode.equals(0)) {
                     System.out.println("返回数据成功！解析json数据");
-                    System.out.println("返回数据"+map.toString());
+                    System.out.println("返回数据" + map.toString());
                     String invoice_status = (String) map.get("invoice_status");
                     int auth_time = (int) map.get("auth_time");
                     Map user_auth_info = (Map) map.get("user_auth_info");
                     Date date = new Date(auth_time);
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                     String xdsj = sdf.format(date);//下单时间
-                    System.out.println(""+xdsj.toString());
-                    if(null!=user_auth_info.get("user_field")){
+                    System.out.println("" + xdsj.toString());
+                    if (null != user_auth_info.get("user_field")) {
                         //个人抬头
                         Map user_field = (Map) user_auth_info.get("user_field");
-                        System.out.println("个人抬头"+user_auth_info.toString());
+                        System.out.println("个人抬头" + user_auth_info.toString());
                         String title = (String) user_field.get("title");
                         String phone = (String) user_field.get("phone");
                         String email = (String) user_field.get("email");
                         List custom_field = (List) user_field.get("custom_field");
-                        String key ="";
-                        String value="";
-                        if(custom_field.size()>0){
-                           for(int  i=0;i<custom_field.size();i++){
-                               System.out.println("个人中的其他数据"+custom_field.get(i));
-                              Map map1= (Map) custom_field.get(i);
-                              key= (String) map1.get("key");
-                              value = (String) map1.get("value");
-                               //System.out.println("key"+key);
-                               //System.out.println("value"+value);
-                           }
+                        String key = "";
+                        String value = "";
+                        if (custom_field.size() > 0) {
+                            for (int i = 0; i < custom_field.size(); i++) {
+                                System.out.println("个人中的其他数据" + custom_field.get(i));
+                                Map map1 = (Map) custom_field.get(i);
+                                key = (String) map1.get("key");
+                                value = (String) map1.get("value");
+                                //System.out.println("key"+key);
+                                //System.out.println("value"+value);
+                            }
                         }
-                        resultMap.put("xdsj",xdsj);//下单时间
-                        resultMap.put("title",title);//发票抬头名称
-                        resultMap.put("phone",phone);//电话
-                        resultMap.put("email",email);//邮箱
-                        resultMap.put("key",key);
-                        resultMap.put("value",value);
-                        return  resultMap;
-                    }if(null!=user_auth_info.get("biz_field")){
+                        resultMap.put("xdsj", xdsj);//下单时间
+                        resultMap.put("title", title);//发票抬头名称
+                        resultMap.put("phone", phone);//电话
+                        resultMap.put("email", email);//邮箱
+                        resultMap.put("key", key);
+                        resultMap.put("value", value);
+                        return resultMap;
+                    }
+                    if (null != user_auth_info.get("biz_field")) {
                         //单位抬头
                         Map biz_field = (Map) user_auth_info.get("biz_field");
-                        System.out.println("个人抬头"+user_auth_info.toString());
+                        System.out.println("个人抬头" + user_auth_info.toString());
                         String title = (String) biz_field.get("title");
                         String tax_no = (String) biz_field.get("tax_no");
                         String addr = (String) biz_field.get("addr");
@@ -381,37 +384,37 @@ public class WeixinUtils {
                         String bank_type = (String) biz_field.get("bank_type");
                         String bank_no = (String) biz_field.get("bank_no");
                         List custom_field = (List) biz_field.get("custom_field");
-                        String key ="";
-                        String value="";
-                        if(custom_field.size()>0){
-                            for(int  i=0;i<custom_field.size();i++){
-                                System.out.println("个人中的其他数据"+custom_field.get(i));
-                                Map map1= (Map) custom_field.get(i);
-                                 key= (String) map1.get("key");
-                                 value = (String) map1.get("value");
-                                System.out.println("key"+key);
-                                System.out.println("value"+value);
+                        String key = "";
+                        String value = "";
+                        if (custom_field.size() > 0) {
+                            for (int i = 0; i < custom_field.size(); i++) {
+                                System.out.println("个人中的其他数据" + custom_field.get(i));
+                                Map map1 = (Map) custom_field.get(i);
+                                key = (String) map1.get("key");
+                                value = (String) map1.get("value");
+                                System.out.println("key" + key);
+                                System.out.println("value" + value);
 
                             }
                         }
-                        resultMap.put("title",title);//抬头
-                        resultMap.put("tax_no",tax_no);//税号
-                        resultMap.put("addr",addr);//地址
-                        resultMap.put("phone",phone);//电话
-                        resultMap.put("bank_type",bank_type);//开户类型
-                        resultMap.put("bank_no",bank_no);//银行账号
-                        resultMap.put("key",key);//邮箱
-                        resultMap.put("value",value);//
-                        if(null!=key&&key.equals("邮箱")){
-                            resultMap.put("email",value);
+                        resultMap.put("title", title);//抬头
+                        resultMap.put("tax_no", tax_no);//税号
+                        resultMap.put("addr", addr);//地址
+                        resultMap.put("phone", phone);//电话
+                        resultMap.put("bank_type", bank_type);//开户类型
+                        resultMap.put("bank_no", bank_no);//银行账号
+                        resultMap.put("key", key);//邮箱
+                        resultMap.put("value", value);//
+                        if (null != key && key.equals("邮箱")) {
+                            resultMap.put("email", value);
                         }
-                        System.out.println("封装的数据"+resultMap.toString());
-                        return  resultMap;
+                        System.out.println("封装的数据" + resultMap.toString());
+                        return resultMap;
                     }
 
-                }else if(null!=errcode&&errcode.equals(72038)){
-                    logger.info("主动查询授权完成状态失败,订单"+order_id+"没有授权,错误代码"+errcode);
-                    System.out.println("主动查询授权完成状态失败,订单"+order_id+"没有授权,错误代码"+errcode);
+                } else if (null != errcode && errcode.equals(72038)) {
+                    logger.info("主动查询授权完成状态失败,订单" + order_id + "没有授权,错误代码" + errcode);
+                    System.out.println("主动查询授权完成状态失败,订单" + order_id + "没有授权,错误代码" + errcode);
                     return null;
                 }
 
@@ -427,7 +430,7 @@ public class WeixinUtils {
         * 设置授权页字段
         * 一次性设置
         * */
-    public void  sqzd(){
+    public void sqzd() {
         WeixinUtils weixinUtils = new WeixinUtils();
         String access_token = (String) weixinUtils.hqtk().get("access_token");
         Map sjss = new HashMap();
@@ -437,68 +440,69 @@ public class WeixinUtils {
         List custom_field1 = new ArrayList();
         List custom_field2 = new ArrayList();
 
-        Map cus1 =new HashMap();
-        Map cus2 =new HashMap();
-        cus1.put("key","其他");
-        cus2.put("key","邮箱");
+        Map cus1 = new HashMap();
+        Map cus2 = new HashMap();
+        cus1.put("key", "其他");
+        cus2.put("key", "邮箱");
         custom_field1.add(cus1);
         custom_field2.add(cus2);
 
-        auth_field.put("user_field",user_field);
-        auth_field.put("biz_field",biz_field);
+        auth_field.put("user_field", user_field);
+        auth_field.put("biz_field", biz_field);
 
-        user_field.put("show_title",1);
-        user_field.put("show_phone",0);
-        user_field.put("show_email",1);
-        user_field.put("require_email",1);
-        user_field.put("custom_field",custom_field1);
+        user_field.put("show_title", 1);
+        user_field.put("show_phone", 0);
+        user_field.put("show_email", 1);
+        user_field.put("require_email", 1);
+        user_field.put("custom_field", custom_field1);
 
-        biz_field.put("show_title",1);
-        biz_field.put("show_tax_no",1);
-        biz_field.put("show_addr",0);
+        biz_field.put("show_title", 1);
+        biz_field.put("show_tax_no", 1);
+        biz_field.put("show_addr", 0);
 
-        biz_field.put("show_phone",0);
-        biz_field.put("show_bank_type",0);
-        biz_field.put("show_bank_no",0);
-        biz_field.put("require_tax_no",1);
-        biz_field.put("require_addr",0);
-        biz_field.put("custom_field",custom_field2);
-        biz_field.put("is_require",1);
+        biz_field.put("show_phone", 0);
+        biz_field.put("show_bank_type", 0);
+        biz_field.put("show_bank_no", 0);
+        biz_field.put("require_tax_no", 1);
+        biz_field.put("require_addr", 0);
+        biz_field.put("custom_field", custom_field2);
+        biz_field.put("is_require", 1);
 
-        sjss.put("auth_field",auth_field);
+        sjss.put("auth_field", auth_field);
         String sj = JSON.toJSONString(sjss);
-        System.out.println("封装数据"+sj);
-        String urls ="https://api.weixin.qq.com/card/invoice/setbizattr?action=set_auth_field&access_token="+access_token;
-       String jsonStr3 = WeixinUtil.httpRequest(urls, "POST", sj);
-       System.out.println("返回信息"+jsonStr3.toString());
-        if(null!=jsonStr3){
+        System.out.println("封装数据" + sj);
+        String urls = "https://api.weixin.qq.com/card/invoice/setbizattr?action=set_auth_field&access_token=" + access_token;
+        String jsonStr3 = WeixinUtil.httpRequest(urls, "POST", sj);
+        System.out.println("返回信息" + jsonStr3.toString());
+        if (null != jsonStr3) {
             ObjectMapper jsonparer = new ObjectMapper();// 初始化解析json格式的对象
             try {
                 Map map = jsonparer.readValue(jsonStr3, Map.class);
                 String errmsg = (String) map.get("errmsg");
-                System.out.println("错误类型"+errmsg);
+                System.out.println("错误类型" + errmsg);
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
+
     /*
     * 查看授权页面字段信息
     * */
-    public void cksqzd(){
+    public void cksqzd() {
         WeixinUtils weixinUtils = new WeixinUtils();
-        String  access_token= (String) weixinUtils.hqtk().get("access_token");
-        String ckUrl ="https://api.weixin.qq.com/card/invoice/setbizattr?action=get_auth_field&access_token="+access_token;
-        String jsonStr3 = WeixinUtil.httpRequest(ckUrl, "POST",  JSON.toJSONString(""));
-        System.out.println("返回信息"+jsonStr3.toString());
-        if(null!=jsonStr3){
+        String access_token = (String) weixinUtils.hqtk().get("access_token");
+        String ckUrl = "https://api.weixin.qq.com/card/invoice/setbizattr?action=get_auth_field&access_token=" + access_token;
+        String jsonStr3 = WeixinUtil.httpRequest(ckUrl, "POST", JSON.toJSONString(""));
+        System.out.println("返回信息" + jsonStr3.toString());
+        if (null != jsonStr3) {
             ObjectMapper jsonparer = new ObjectMapper();// 初始化解析json格式的对象
             try {
                 Map map = jsonparer.readValue(jsonStr3, Map.class);
                 String errmsg = (String) map.get("errmsg");
-                System.out.println("错误类型"+errmsg);
-                return ;
+                System.out.println("错误类型" + errmsg);
+                return;
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -507,35 +511,35 @@ public class WeixinUtils {
 
     /*拒绝开票*/
 
-    public  String jujuekp(String order_id,String reason,String access_token){
-        String msg="";
+    public String jujuekp(String order_id, String reason, String access_token) {
+        String msg = "";
         WeixinUtils weixinUtils = new WeixinUtils();
         //String access_token = (String) weixinUtils.hqtk().get("access_token");
-        String jjkpURL ="https://api.weixin.qq.com/card/invoice/rejectinsert?access_token="+access_token;
+        String jjkpURL = "https://api.weixin.qq.com/card/invoice/rejectinsert?access_token=" + access_token;
         Map mapInfo = new HashMap();
         String s_pappid = weixinUtils.getSpappid();
-        String url =WeiXinConstants.RJXX_REDIRECT_URL;
-        mapInfo.put("s_pappid",s_pappid);
-        mapInfo.put("order_id",order_id);
-        mapInfo.put("reason",reason);
-        mapInfo.put("url",url);
+        String url = WeiXinConstants.RJXX_REDIRECT_URL;
+        mapInfo.put("s_pappid", s_pappid);
+        mapInfo.put("order_id", order_id);
+        mapInfo.put("reason", reason);
+        mapInfo.put("url", url);
         String info = JSON.toJSONString(mapInfo);
-        String jsonStr3 = WeixinUtil.httpRequest(jjkpURL, "POST",  info);
-        System.out.println("返回信息"+jsonStr3.toString());
-        if(null!=jsonStr3){
+        String jsonStr3 = WeixinUtil.httpRequest(jjkpURL, "POST", info);
+        System.out.println("返回信息" + jsonStr3.toString());
+        if (null != jsonStr3) {
             ObjectMapper jsonparer = new ObjectMapper();// 初始化解析json格式的对象
             try {
                 Map map = jsonparer.readValue(jsonStr3, Map.class);
                 int errcode = (int) map.get("errcode");
                 String errmsg = (String) map.get("errmsg");
-                System.out.println("错误码"+errcode);
-                if(errcode==0){
+                System.out.println("错误码" + errcode);
+                if (errcode == 0) {
                     logger.info("拒绝开票成功");
-                     msg = "1";
+                    msg = "1";
 
-                }else {
-                    logger.info("该发票已被拒绝开票，返回的错误信息为"+errmsg);
-                    msg="0";
+                } else {
+                    logger.info("该发票已被拒绝开票，返回的错误信息为" + errmsg);
+                    msg = "0";
 
                 }
 
@@ -543,18 +547,18 @@ public class WeixinUtils {
                 e.printStackTrace();
             }
         }
-    return msg;
+        return msg;
     }
 
     /*
     * 创建发票卡卷模板*/
-    public String creatMb(String gsmc ,String payee,String logo_url){
-        String card_id="";
-        logger.info("进入创建卡券模板----logo_url"+logo_url);
+    public String creatMb(String gsmc, String payee, String logo_url) {
+        String card_id = "";
+        logger.info("进入创建卡券模板----logo_url" + logo_url);
         WeixinUtils weixinUtils = new WeixinUtils();
         String access_token = (String) weixinUtils.hqtk().get("access_token");
-        String creatURL = WeiXinConstants.CREAT_MUBAN_URL+access_token;
-        System.out.println("创建卡卷模板url地址"+creatURL);
+        String creatURL = WeiXinConstants.CREAT_MUBAN_URL + access_token;
+        System.out.println("创建卡卷模板url地址" + creatURL);
         Map paraInfo = new HashMap();
         Map invoice_info = new HashMap();
         Map base_info = new HashMap();
@@ -571,65 +575,66 @@ public class WeixinUtils {
         weiXinMuBan.setPromotion_url_sub_title("看懂电子发票");
         weiXinMuBan.setPromotion_url("");
         weiXinMuBan.setDescription("自己看流程");
-        invoice_info.put("base_info",base_info);
-        invoice_info.put("payee",weiXinMuBan.getPayee());
-        invoice_info.put("type",weiXinMuBan.getType());
-        invoice_info.put("detail","测试-detail");
-        base_info.put("logo_url",weiXinMuBan.getLogo_url());
-        base_info.put("title",weiXinMuBan.getTitle());
-        base_info.put("description",weiXinMuBan.getDescription());
-        base_info.put("custom_url_name",weiXinMuBan.getCustom_url_name());
-        base_info.put("custom_url",weiXinMuBan.getCustom_url());
-        base_info.put("custom_url_sub_title",weiXinMuBan.getCustom_url_sub_title());
-        base_info.put("promotion_url_name",weiXinMuBan.getPromotion_url_name());
-        base_info.put("promotion_url",weiXinMuBan.getPromotion_url());
-        base_info.put("promotion_url_sub_title",weiXinMuBan.getPromotion_url_sub_title());
-        paraInfo.put("invoice_info",invoice_info);
+        invoice_info.put("base_info", base_info);
+        invoice_info.put("payee", weiXinMuBan.getPayee());
+        invoice_info.put("type", weiXinMuBan.getType());
+        invoice_info.put("detail", "测试-detail");
+        base_info.put("logo_url", weiXinMuBan.getLogo_url());
+        base_info.put("title", weiXinMuBan.getTitle());
+        base_info.put("description", weiXinMuBan.getDescription());
+        base_info.put("custom_url_name", weiXinMuBan.getCustom_url_name());
+        base_info.put("custom_url", weiXinMuBan.getCustom_url());
+        base_info.put("custom_url_sub_title", weiXinMuBan.getCustom_url_sub_title());
+        base_info.put("promotion_url_name", weiXinMuBan.getPromotion_url_name());
+        base_info.put("promotion_url", weiXinMuBan.getPromotion_url());
+        base_info.put("promotion_url_sub_title", weiXinMuBan.getPromotion_url_sub_title());
+        paraInfo.put("invoice_info", invoice_info);
 
-        System.out.println("参数"+JSON.toJSONString(paraInfo));
-        String jsonStr = WeixinUtil.httpRequest(creatURL, "POST",JSON.toJSONString(paraInfo));
-        if(null!=jsonStr){
+        System.out.println("参数" + JSON.toJSONString(paraInfo));
+        String jsonStr = WeixinUtil.httpRequest(creatURL, "POST", JSON.toJSONString(paraInfo));
+        if (null != jsonStr) {
             ObjectMapper jsonparer = new ObjectMapper();// 初始化解析json格式的对象
             try {
                 Map map = jsonparer.readValue(jsonStr, Map.class);
                 int errcode = (int) map.get("errcode");
                 String errmsg = (String) map.get("errmsg");
-                System.out.println("错误码"+errcode);
-                if(errcode==0){
-                     card_id = (String) map.get("card_id");
-                   // resultMap.put("card_id",card_id);
-                   // resultMap.put("msg","发票卡券设置成功");
-                    System.out.println("创建卡券模板成功"+card_id);
+                System.out.println("错误码" + errcode);
+                if (errcode == 0) {
+                    card_id = (String) map.get("card_id");
+                    // resultMap.put("card_id",card_id);
+                    // resultMap.put("msg","发票卡券设置成功");
+                    System.out.println("创建卡券模板成功" + card_id);
 
-                }else{
+                } else {
                     //resultMap.put("msg","发票卡券模板设置错误");
-                    logger.info("返回的错误信息为"+errmsg);
-                    System.out.println("卡券模板设置失败"+errmsg);
+                    logger.info("返回的错误信息为" + errmsg);
+                    System.out.println("卡券模板设置失败" + errmsg);
 
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        return  card_id;
+        return card_id;
     }
 
     /**
-     *上传图片
+     * 上传图片
+     *
      * @return ImageURL
      */
 
-    public  String uploadImage(){
+    public String uploadImage() {
 
-        String ImageURL="";
+        String ImageURL = "";
         WeixinUtils weixinUtils = new WeixinUtils();
         String access_token = (String) weixinUtils.hqtk().get("access_token");
-        String url ="//api.weixin.qq.com/cgi-bin/media/uploadimg?access_token="+access_token;
+        String url = "//api.weixin.qq.com/cgi-bin/media/uploadimg?access_token=" + access_token;
         HttpPost httpPost = new HttpPost(url);
         HttpClient httpClient = new DefaultHttpClient();
         ObjectMapper jsonparer = new ObjectMapper();// 初始化解析json格式的对象
 
-        MultipartEntityBuilder builder  = MultipartEntityBuilder.create();
+        MultipartEntityBuilder builder = MultipartEntityBuilder.create();
         builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
         FileBody fileBody = new FileBody(new File("D:/family.jpg"));//上传图片路径
         builder.addPart("media", fileBody);
@@ -643,24 +648,22 @@ public class WeixinUtils {
             Map map = jsonparer.readValue(responseContent, Map.class);
 
             // 将json字符串转换为json对象
-            System.out.println("返回的数据"+map.toString());
+            System.out.println("返回的数据" + map.toString());
             ImageURL = (String) map.get("url");
-            if(ImageURL!=null){
+            if (ImageURL != null) {
                 System.out.println("图片上传成功");
-                System.out.println("url路径为"+url);
-            }
-            else {
+                System.out.println("url路径为" + url);
+            } else {
                 System.out.println("图片上传失败");
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return  ImageURL;
+        return ImageURL;
     }
 
     /**
-     *
      * @param order_id
      * @param pdf_file_url
      * @param kpspmxList
@@ -668,48 +671,52 @@ public class WeixinUtils {
      * @return
      */
 
-    public String fpInsertCardBox(String order_id,String pdf_file_url,List<Kpspmx>
-            kpspmxList,Kpls kpls) {
+    public String fpInsertCardBox(String order_id, String pdf_file_url, List<Kpspmx>
+            kpspmxList, Kpls kpls) {
         logger.info("发票插入卡包开始");
         //主动查询授权状态
-        String  access_token = (String)this.hqtk().get("access_token");
-        Map weiXinData = this.zdcxstatus(order_id,access_token);
-        if(null==weiXinData){
+        String access_token = (String) this.hqtk().get("access_token");
+        Map weiXinData = this.zdcxstatus(order_id, access_token);
+        if (null == weiXinData) {
             logger.info("主动查询授权失败++++++++++++");
             return null;
         }
         //公司简称 品牌t_pp kpddm->skp->pid->ppmc
-        if(null==kpls.getKpddm()){
+        if (null == kpls.getKpddm()) {
             logger.info("开票点代码为空！");
             return null;
         }
         Map skpMap = new HashMap();
         logger.info("根据开票点代码查询税控盘-----");
-        skpMap.put("kpddm",kpls.getKpddm());
+        skpMap.put("kpddm", kpls.getKpddm());
         Skp skp = skpService.findOneByParams(skpMap);
-        if(null==skp.getPid()){
+        if (null == skp.getPid()) {
             logger.info("pid 为空----");
             return null;
         }
         logger.info("根据品牌代码查询品牌表---");
         Pp pp = ppJpaDao.findOneById(skp.getPid());
+        String card_id = "";
+        if (null == pp) {
+            card_id = this.creatMb("", kpls.getXfmc(), "");
 
-        logger.info("公司简称---"+pp.getPpmc());
-        logger.info("logourl---"+pp.getWechatLogoUrl());
-        String card_id = this.creatMb(pp.getPpmc(),kpls.getXfmc(),pp.getWechatLogoUrl());
-        logger.info("插入卡包的模板id-------"+card_id);
-        //调用dzfpInCard方法将发票放入卡包
-        return dzfpInCard(order_id,card_id,pdf_file_url,weiXinData,kpspmxList,kpls,access_token);
-
+        } else {
+            logger.info("公司简称---" + pp.getPpmc());
+            logger.info("logourl---" + pp.getWechatLogoUrl());
+            card_id = this.creatMb(pp.getPpmc(), kpls.getXfmc(), pp.getWechatLogoUrl());
+            logger.info("插入卡包的模板id-------" + card_id);
+            //调用dzfpInCard方法将发票放入卡包
+        }
+        return dzfpInCard(order_id, card_id, pdf_file_url, weiXinData, kpspmxList, kpls, access_token);
     }
 
     /*
     * 将电子发票插入卡包
     * */
 
-    public  String dzfpInCard(String order_id,String card_id,String pdf_file_url,Map weiXinData,List<Kpspmx> kpspmxList,Kpls kpls,String access_token){
+    public String dzfpInCard(String order_id, String card_id, String pdf_file_url, Map weiXinData, List<Kpspmx> kpspmxList, Kpls kpls, String access_token) {
         String appid = WeiXinConstants.APP_ID;
-        logger.info("插入卡包方法进入-----------appid："+appid);
+        logger.info("插入卡包方法进入-----------appid：" + appid);
         WeiXinInfo weiXinInfo = new WeiXinInfo();
         WeixinUtils weixinUtils = new WeixinUtils();
 
@@ -718,24 +725,24 @@ public class WeixinUtils {
         Map user_card = new HashMap();
         List<Map> info = new ArrayList<>();
         Map invoice_user_data = new HashMap();
-        sj.put("order_id",order_id);   //订单编号     必填
-        sj.put("card_id",card_id);     //发票模板id   必填
-        sj.put("appid",appid);         //公众号APPid  必填
-        sj.put("card_ext",card_ext);
+        sj.put("order_id", order_id);   //订单编号     必填
+        sj.put("card_id", card_id);     //发票模板id   必填
+        sj.put("appid", appid);         //公众号APPid  必填
+        sj.put("card_ext", card_ext);
 
-        String nonce_str = System.currentTimeMillis()+"";//随机字符串，防止重复  必填
-        card_ext.put("nonce_str",nonce_str);
-        card_ext.put("user_card",user_card);
+        String nonce_str = System.currentTimeMillis() + "";//随机字符串，防止重复  必填
+        card_ext.put("nonce_str", nonce_str);
+        card_ext.put("user_card", user_card);
 
-        user_card.put("invoice_user_data",invoice_user_data);
+        user_card.put("invoice_user_data", invoice_user_data);
 
         weiXinInfo.setTitle((String) weiXinData.get("title"));//发票抬头    必填
-        weiXinInfo.setFee(kpls.getJshj()*100);//卡包开票金额,价税合计  必填
-        weiXinInfo.setBilling_time(String.valueOf(kpls.getLrsj().getTime()/1000));//开票时间  必填
+        weiXinInfo.setFee(kpls.getJshj() * 100);//卡包开票金额,价税合计  必填
+        weiXinInfo.setBilling_time(String.valueOf(kpls.getLrsj().getTime() / 1000));//开票时间  必填
         weiXinInfo.setBilling_no(kpls.getFpdm());//发票代码      必填
         weiXinInfo.setBilling_code(kpls.getFphm());//发票号码    必填
-        weiXinInfo.setFee_without_tax(kpls.getHjje()*100);//不含税金额  必填
-        weiXinInfo.setTax(kpls.getHjse()*100);//税额        必填
+        weiXinInfo.setFee_without_tax(kpls.getHjje() * 100);//不含税金额  必填
+        weiXinInfo.setTax(kpls.getHjse() * 100);//税额        必填
         weiXinInfo.setCheck_code(kpls.getJym());//校验码    必填
 //        weiXinInfo.setFee(20.00);//发票金额
 //        weiXinInfo.setTitle("测试");
@@ -753,122 +760,122 @@ public class WeixinUtils {
 //        ma.put("price",20);//商品单价 必填
 
         //info.add(ma);
-        if(kpspmxList.size()>0){
-            for (Kpspmx kpspmx : kpspmxList){
+        if (kpspmxList.size() > 0) {
+            for (Kpspmx kpspmx : kpspmxList) {
                 Map ma = new HashMap();
                 ma.put("name", kpspmx.getSpmc());//商品名称 必填
-                ma.put("num",kpspmx.getSps());//商品数量    必填
-                ma.put("unit",kpspmx.getSpdj());//商品单位  必填
-                ma.put("price",kpspmx.getSpdw());//商品单价 必填
+                ma.put("num", kpspmx.getSps());//商品数量    必填
+                ma.put("unit", kpspmx.getSpdj());//商品单位  必填
+                ma.put("price", kpspmx.getSpdw());//商品单价 必填
 
                 info.add(ma);
             }
         }
         //上传PDF生成的一个发票s_media_id   关联发票PDF和发票卡券  必填
         String pdfUrl = kpls.getPdfurl();
-        String  s_media_id_pdf = weixinUtils.creatPDF(pdfUrl,pdf_file_url);
-        if(null!=s_media_id_pdf&& StringUtils.isNotBlank(s_media_id_pdf)){
+        String s_media_id_pdf = weixinUtils.creatPDF(pdfUrl, pdf_file_url);
+        if (null != s_media_id_pdf && StringUtils.isNotBlank(s_media_id_pdf)) {
             weiXinInfo.setS_pdf_media_id(s_media_id_pdf);
         }
-        invoice_user_data.put("fee",weiXinInfo.getFee());
-        invoice_user_data.put("title",weiXinInfo.getTitle());
-        invoice_user_data.put("billing_time",weiXinInfo.getBilling_time());
-        invoice_user_data.put("billing_no",weiXinInfo.getBilling_no());
-        invoice_user_data.put("billing_code",weiXinInfo.getBilling_code());
-        invoice_user_data.put("info",info);
-        invoice_user_data.put("fee_without_tax",weiXinInfo.getFee_without_tax());
-        invoice_user_data.put("tax",weiXinInfo.getTax());
-        invoice_user_data.put("s_pdf_media_id",weiXinInfo.getS_pdf_media_id());
-        invoice_user_data.put("s_trip_pdf_media_id",weiXinInfo.getS_trip_pdf_media_id());
-        invoice_user_data.put("check_code",weiXinInfo.getCheck_code());
-        invoice_user_data.put("buyer_number",weiXinInfo.getBuyer_number());
-        invoice_user_data.put("buyer_address_and_phone",weiXinInfo.getBuyer_address_and_phone());
-        invoice_user_data.put("buyer_bank_account",weiXinInfo.getBuyer_bank_account());
-        invoice_user_data.put("seller_number",weiXinInfo.getSeller_number());
-        invoice_user_data.put("seller_address_and_phone",weiXinInfo.getSeller_address_and_phone());
-        invoice_user_data.put("seller_bank_account",weiXinInfo.getSeller_bank_account());
-        invoice_user_data.put("remarks",weiXinInfo.getRemarks());
-        invoice_user_data.put("cashier",weiXinInfo.getCashier());
-        invoice_user_data.put("maker",weiXinInfo.getMaker());
+        invoice_user_data.put("fee", weiXinInfo.getFee());
+        invoice_user_data.put("title", weiXinInfo.getTitle());
+        invoice_user_data.put("billing_time", weiXinInfo.getBilling_time());
+        invoice_user_data.put("billing_no", weiXinInfo.getBilling_no());
+        invoice_user_data.put("billing_code", weiXinInfo.getBilling_code());
+        invoice_user_data.put("info", info);
+        invoice_user_data.put("fee_without_tax", weiXinInfo.getFee_without_tax());
+        invoice_user_data.put("tax", weiXinInfo.getTax());
+        invoice_user_data.put("s_pdf_media_id", weiXinInfo.getS_pdf_media_id());
+        invoice_user_data.put("s_trip_pdf_media_id", weiXinInfo.getS_trip_pdf_media_id());
+        invoice_user_data.put("check_code", weiXinInfo.getCheck_code());
+        invoice_user_data.put("buyer_number", weiXinInfo.getBuyer_number());
+        invoice_user_data.put("buyer_address_and_phone", weiXinInfo.getBuyer_address_and_phone());
+        invoice_user_data.put("buyer_bank_account", weiXinInfo.getBuyer_bank_account());
+        invoice_user_data.put("seller_number", weiXinInfo.getSeller_number());
+        invoice_user_data.put("seller_address_and_phone", weiXinInfo.getSeller_address_and_phone());
+        invoice_user_data.put("seller_bank_account", weiXinInfo.getSeller_bank_account());
+        invoice_user_data.put("remarks", weiXinInfo.getRemarks());
+        invoice_user_data.put("cashier", weiXinInfo.getCashier());
+        invoice_user_data.put("maker", weiXinInfo.getMaker());
 
 
-        System.out.println("封装的数据"+JSON.toJSONString(sj));
-        if(null==sj.get("order_id")){
+        System.out.println("封装的数据" + JSON.toJSONString(sj));
+        if (null == sj.get("order_id")) {
             logger.info("订单order_id为空");
-            return  null;
+            return null;
         }
-        if(null==sj.get("card_id")){
+        if (null == sj.get("card_id")) {
             logger.info("发票card_id为null");
-            return  null;
+            return null;
         }
-        if(null==sj.get("appid")){
+        if (null == sj.get("appid")) {
             logger.info("商户appid为null");
-            return  null;
+            return null;
         }
-        if(null==card_ext.get("nonce_str")){
+        if (null == card_ext.get("nonce_str")) {
             logger.info("随机字符串nonce_str为null");
-            return  null;
+            return null;
         }
-        if(null==invoice_user_data.get("fee")){
+        if (null == invoice_user_data.get("fee")) {
             logger.info("发票金额fee为null");
-            return  null;
+            return null;
         }
-        if(null==invoice_user_data.get("title")){
+        if (null == invoice_user_data.get("title")) {
             logger.info("发票抬头title为null");
-            return  null;
+            return null;
         }
-        if(null==invoice_user_data.get("billing_time")){
+        if (null == invoice_user_data.get("billing_time")) {
             logger.info("发票的开票时间billing_time为null");
-            return  null;
+            return null;
         }
-        if(null==invoice_user_data.get("billing_no")){
+        if (null == invoice_user_data.get("billing_no")) {
             logger.info("发票的发票代码billing_no为null");
-            return  null;
+            return null;
         }
-        if(null==invoice_user_data.get("billing_code")){
+        if (null == invoice_user_data.get("billing_code")) {
             logger.info("发票的发票号码billing_code为null");
-            return  null;
+            return null;
         }
-        if(null==invoice_user_data.get("fee_without_tax")){
+        if (null == invoice_user_data.get("fee_without_tax")) {
             logger.info("不含税金额fee_without_tax为null");
-            return  null;
+            return null;
         }
-        if(null==invoice_user_data.get("s_pdf_media_id")){
+        if (null == invoice_user_data.get("s_pdf_media_id")) {
             logger.info("上传PDF的s_pdf_media_id为null");
-            return  null;
+            return null;
         }
-        if(null==invoice_user_data.get("check_code")){
+        if (null == invoice_user_data.get("check_code")) {
             logger.info("校验码check_code为null");
-            return  null;
+            return null;
         }
-        if(null==access_token){
+        if (null == access_token) {
             logger.info("获取token错误");
-            return  null;
+            return null;
         }
         //String access_token = (String) weixinUtils.hqtk().get("access_token");
-        String URL =WeiXinConstants.dzfpInCard_url+access_token;
-        System.out.println("电子发票插入卡包url为++++"+URL);
-        String jsonStr = WeixinUtil.httpRequest(URL, "POST",JSON.toJSONString(sj));
-       if(null!=jsonStr){
+        String URL = WeiXinConstants.dzfpInCard_url + access_token;
+        System.out.println("电子发票插入卡包url为++++" + URL);
+        String jsonStr = WeixinUtil.httpRequest(URL, "POST", JSON.toJSONString(sj));
+        if (null != jsonStr) {
             ObjectMapper jsonparer = new ObjectMapper();// 初始化解析json格式的对象
             try {
                 Map map = jsonparer.readValue(jsonStr, Map.class);
                 int errcode = (int) map.get("errcode");
                 String errmsg = (String) map.get("errmsg");
-                System.out.println("错误码"+errcode);
-                if(errcode==0){
+                System.out.println("错误码" + errcode);
+                if (errcode == 0) {
                     String openid = (String) map.get("openid");
-                    String code  = (String) map.get("code");
-                    logger.info("插入卡包成功,成功返回的openid为"+openid);
-                    WxFpxx wxFpxx = wxfpxxJpaDao.findOneByOrderNo(order_id,openid);
+                    String code = (String) map.get("code");
+                    logger.info("插入卡包成功,成功返回的openid为" + openid);
+                    WxFpxx wxFpxx = wxfpxxJpaDao.findOneByOrderNo(order_id, openid);
                     wxFpxx.setCode(code);
-                    logger.info("微信发票code信息"+wxFpxx.toString());
+                    logger.info("微信发票code信息" + wxFpxx.toString());
                     wxfpxxJpaDao.save(wxFpxx);
                     logger.info("code保存成功");
                     logger.info("发票插入卡包成功-------------------------");
                     return code;
-                }else{
-                    logger.info("返回的错误信息为"+errmsg);
+                } else {
+                    logger.info("返回的错误信息为" + errmsg);
                     return null;
                 }
             } catch (Exception e) {
@@ -877,52 +884,53 @@ public class WeixinUtils {
         }
         return null;
     }
+
     /*
     * 上传PDF
     * */
-    public  String creatPDF(String pdfurl,String pdf_file_url){
-        String pdfUrlPath="";
+    public String creatPDF(String pdfurl, String pdf_file_url) {
+        String pdfUrlPath = "";
 
-        if(null==pdf_file_url){
+        if (null == pdf_file_url) {
             logger.info("上传PDF路径pdf_file_url为null");
-            return  null;
+            return null;
         }
-        if(null==pdfurl){
+        if (null == pdfurl) {
             logger.info("上传PDF的url路径pdfurl为null");
-            return  null;
+            return null;
         }
-        if(null!=pdfurl&&StringUtils.isNotBlank(pdfurl)){
+        if (null != pdfurl && StringUtils.isNotBlank(pdfurl)) {
             String p = pdfurl.split("//")[1];
-            if(null!=p&&StringUtils.isNoneEmpty(p)){
-                String p1=pdfurl.split("//")[1].split("/")[1];
-                String p2=pdfurl.split("//")[1].split("/")[2];
-                String p3=pdfurl.split("//")[1].split("/")[3];
-                String p4=pdfurl.split("//")[1].split("/")[4];
-                pdfUrlPath= pdf_file_url+"/"+p1+"/"+p2+"/"+p3+"/"+p4;
+            if (null != p && StringUtils.isNoneEmpty(p)) {
+                String p1 = pdfurl.split("//")[1].split("/")[1];
+                String p2 = pdfurl.split("//")[1].split("/")[2];
+                String p3 = pdfurl.split("//")[1].split("/")[3];
+                String p4 = pdfurl.split("//")[1].split("/")[4];
+                pdfUrlPath = pdf_file_url + "/" + p1 + "/" + p2 + "/" + p3 + "/" + p4;
             }
         }
 
-        System.out.println("pdf路径问题"+pdfUrlPath);
-        String s_media_id ="";
+        System.out.println("pdf路径问题" + pdfUrlPath);
+        String s_media_id = "";
         WeixinUtils weixinUtils = new WeixinUtils();
         String access_token = (String) weixinUtils.hqtk().get("access_token");
-        String pdfURL=WeiXinConstants.CREAT_PDF_URL+access_token;
+        String pdfURL = WeiXinConstants.CREAT_PDF_URL + access_token;
 
 
         HttpPost httpPost = new HttpPost(pdfURL);
         HttpClient httpClient = new DefaultHttpClient();
 
         ObjectMapper jsonparer = new ObjectMapper();// 初始化解析json格式的对象
-       // Map nvps = new HashMap();
-       // nvps.put("pdf", file);
-       // StringEntity requestEntity = new StringEntity(nvps.toString(), ContentType.MULTIPART_FORM_DATA);
+        // Map nvps = new HashMap();
+        // nvps.put("pdf", file);
+        // StringEntity requestEntity = new StringEntity(nvps.toString(), ContentType.MULTIPART_FORM_DATA);
 
 
-        MultipartEntityBuilder builder  = MultipartEntityBuilder.create();
+        MultipartEntityBuilder builder = MultipartEntityBuilder.create();
         builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
         FileBody fileBody = new FileBody(new File(pdfUrlPath));
-       /// FileBody fileBody = new FileBody(new File("D:/5001020100036432.pdf"));
-       // FileBody fileBody = new FileBody(new File("D:/111111.pdf"));
+        /// FileBody fileBody = new FileBody(new File("D:/5001020100036432.pdf"));
+        // FileBody fileBody = new FileBody(new File("D:/111111.pdf"));
         builder.addPart("pdf", fileBody);
         HttpEntity entit = builder.build();
         httpPost.setEntity(entit);
@@ -934,93 +942,93 @@ public class WeixinUtils {
             Map map = jsonparer.readValue(responseContent, Map.class);
             int errcode = (int) map.get("errcode");
             // 将json字符串转换为json对象
-            System.out.println("返回的数据"+map.toString());
-            if(errcode==0){
-                 System.out.println("上传PDF成功");
-                 s_media_id = (String) map.get("s_media_id");
-                 return  s_media_id;
-            }else {
+            System.out.println("返回的数据" + map.toString());
+            if (errcode == 0) {
+                System.out.println("上传PDF成功");
+                s_media_id = (String) map.get("s_media_id");
+                return s_media_id;
+            } else {
                 String errmsg = (String) map.get("errmsg");
-                System.out.println("上传PDF失败,失败原因"+errmsg);
-                return  "上传PDF失败";
+                System.out.println("上传PDF失败,失败原因" + errmsg);
+                return "上传PDF失败";
             }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return  null;
+        return null;
     }
 
     /*
     *更新发票卡券状态
     *
     * */
-    public  String updateStatus(String card_id,String code,String reimburse_status ){
-        String msg="";
+    public String updateStatus(String card_id, String code, String reimburse_status) {
+        String msg = "";
         WeixinUtils weixinUtils = new WeixinUtils();
         //String reimburse_status = "";
         Map map = new HashMap();
-        map.put("card_id",card_id);
-        map.put("code",code);
-        map.put("reimburse_status",reimburse_status);
-        System.out.println("封装数据"+JSON.toJSONString(map));
+        map.put("card_id", card_id);
+        map.put("code", code);
+        map.put("reimburse_status", reimburse_status);
+        System.out.println("封装数据" + JSON.toJSONString(map));
 
         String access_token = (String) weixinUtils.hqtk().get("access_token");
-        String updeatStatusURL="https://api.weixin.qq.com/card/invoice/platform/updatestatus?access_token="+access_token;
-        System.out.println("电子发票插入卡包url为++++"+updeatStatusURL);
+        String updeatStatusURL = "https://api.weixin.qq.com/card/invoice/platform/updatestatus?access_token=" + access_token;
+        System.out.println("电子发票插入卡包url为++++" + updeatStatusURL);
 
-        String jsonStr = WeixinUtil.httpRequest(updeatStatusURL, "POST",JSON.toJSONString(map));
-        if(null!=jsonStr){
+        String jsonStr = WeixinUtil.httpRequest(updeatStatusURL, "POST", JSON.toJSONString(map));
+        if (null != jsonStr) {
             ObjectMapper jsonparer = new ObjectMapper();// 初始化解析json格式的对象
             try {
                 Map maps = jsonparer.readValue(jsonStr, Map.class);
                 int errcode = (int) maps.get("errcode");
                 String errmsg = (String) maps.get("errmsg");
-                if(errcode==0){
-                    msg="1";
-                    System.out.println("错误码"+errmsg);
+                if (errcode == 0) {
+                    msg = "1";
+                    System.out.println("错误码" + errmsg);
 
-                }else{
-                    msg="0";
-                    logger.info("返回的错误信息为"+errmsg);
+                } else {
+                    msg = "0";
+                    logger.info("返回的错误信息为" + errmsg);
 
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-    return msg;
+        return msg;
     }
 
-   public String decode(String encrypt_code){
-        String code="";
-        if(null == encrypt_code){
+    public String decode(String encrypt_code) {
+        String code = "";
+        if (null == encrypt_code) {
             return null;
         }
-       WeixinUtils weixinUtils = new WeixinUtils();
-       String access_token = (String) weixinUtils.hqtk().get("access_token");
-        String URL=WeiXinConstants.decodeURL+access_token;
-       Map map = new HashMap();
-       map.put("encrypt_code",encrypt_code);
-       System.out.println("数据"+JSON.toJSONString(map));
-       String jsonStr = WeixinUtil.httpRequest(URL, "POST",JSON.toJSONString(map));
-       if(null!=jsonStr){
-           ObjectMapper jsonparer = new ObjectMapper();// 初始化解析json格式的对象
-           try {
-               Map maps = jsonparer.readValue(jsonStr, Map.class);
-               int errcode = (int) maps.get("errcode");
-               String errmsg = (String) maps.get("errmsg");
-               if(errcode==0){
-                   code = (String) maps.get("code");
-                   System.out.println("错误码"+errmsg);
-               }else{
-                   logger.info("解码code错误，返回的错误信息为"+errmsg);
-               }
-           } catch (Exception e) {
-               e.printStackTrace();
-           }
-       }
-        return  code;
-   }
+        WeixinUtils weixinUtils = new WeixinUtils();
+        String access_token = (String) weixinUtils.hqtk().get("access_token");
+        String URL = WeiXinConstants.decodeURL + access_token;
+        Map map = new HashMap();
+        map.put("encrypt_code", encrypt_code);
+        System.out.println("数据" + JSON.toJSONString(map));
+        String jsonStr = WeixinUtil.httpRequest(URL, "POST", JSON.toJSONString(map));
+        if (null != jsonStr) {
+            ObjectMapper jsonparer = new ObjectMapper();// 初始化解析json格式的对象
+            try {
+                Map maps = jsonparer.readValue(jsonStr, Map.class);
+                int errcode = (int) maps.get("errcode");
+                String errmsg = (String) maps.get("errmsg");
+                if (errcode == 0) {
+                    code = (String) maps.get("code");
+                    System.out.println("错误码" + errmsg);
+                } else {
+                    logger.info("解码code错误，返回的错误信息为" + errmsg);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return code;
+    }
 
 }

@@ -379,7 +379,7 @@ public class CheckOrderUtil {
 
                     ddh2 = jyzfmx.getDdh();
                     if (ddh.equals(ddh2)) {
-                        BigDecimal zfje = new BigDecimal(jyzfmx.getZfje());
+                        BigDecimal zfje = new BigDecimal(jyzfmx.getZfje().toString());
                         jshj2 = jshj2.add(zfje);
                     }
                 }
