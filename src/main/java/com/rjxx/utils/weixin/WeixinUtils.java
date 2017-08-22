@@ -2,10 +2,11 @@ package com.rjxx.utils.weixin;
 
 import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rjxx.taxeasy.dao.PpJpaDao;
 import com.rjxx.taxeasy.dao.WxfpxxJpaDao;
-import com.rjxx.taxeasy.domains.Kpls;
-import com.rjxx.taxeasy.domains.Kpspmx;
-import com.rjxx.taxeasy.domains.WxFpxx;
+import com.rjxx.taxeasy.domains.*;
+import com.rjxx.taxeasy.service.PpService;
+import com.rjxx.taxeasy.service.SkpService;
 import com.rjxx.utils.StringUtils;
 import com.rjxx.utils.TimeUtil;
 import com.rjxx.utils.WeixinUtil;
@@ -40,6 +41,10 @@ public class WeixinUtils {
 
     @Autowired
     private WxfpxxJpaDao wxfpxxJpaDao;
+    @Autowired
+    private SkpService skpService;
+    @Autowired
+    private PpJpaDao ppJpaDao;
     /**
      * 判断是不是微信浏览器
      *
@@ -287,7 +292,7 @@ public class WeixinUtils {
         //weixinUtils.sqzd();//授权字段--只设一次
         //weixinUtils.getTicket();//获取ticket
         //String card_id =  weixinUtils.creatMb("全家便利","销方1");//创建模板
-        //weixinUtils.uploadImage();//上传图片获取url
+        weixinUtils.uploadImage();//上传图片获取url
         //String card_id = (String) map.get("card_id");
         //System.out.println(""+card_id);
 
@@ -543,8 +548,9 @@ public class WeixinUtils {
 
     /*
     * 创建发票卡卷模板*/
-    public String creatMb(String gsmc ,String payee){
+    public String creatMb(String gsmc ,String payee,String logo_url){
         String card_id="";
+        logger.info("进入创建卡券模板----logo_url"+logo_url);
         WeixinUtils weixinUtils = new WeixinUtils();
         String access_token = (String) weixinUtils.hqtk().get("access_token");
         String creatURL = WeiXinConstants.CREAT_MUBAN_URL+access_token;
@@ -556,7 +562,8 @@ public class WeixinUtils {
         weiXinMuBan.setPayee(payee);
         weiXinMuBan.setType("增值税普通发票");
         weiXinMuBan.setTitle(gsmc);
-        weiXinMuBan.setLogo_url("http://mmbiz.qpic.cn/mmbiz_jpg/l249Gu1JJaJjZiauO138MD1d6dnglRlj1bicFTaNyyDGcAOgxMd2WoXLKvEn8icJiaiaibRJkgeBcsCODI4AYP7V6vPg/0");
+        weiXinMuBan.setLogo_url(logo_url);
+        //weiXinMuBan.setLogo_url("http://mmbiz.qpic.cn/mmbiz_jpg/l249Gu1JJaJjZiauO138MD1d6dnglRlj1bicFTaNyyDGcAOgxMd2WoXLKvEn8icJiaiaibRJkgeBcsCODI4AYP7V6vPg/0");
         weiXinMuBan.setCustom_url_name("查看发票");
         weiXinMuBan.setCustom_url_sub_title("电子发票");
         weiXinMuBan.setCustom_url(WeiXinConstants.fpInfoURL);//发票详情
@@ -672,7 +679,24 @@ public class WeixinUtils {
             return null;
         }
         //公司简称 品牌t_pp kpddm->skp->pid->ppmc
-        String card_id = this.creatMb("全家便利",kpls.getXfmc());
+        if(null==kpls.getKpddm()){
+            logger.info("开票点代码为空！");
+            return null;
+        }
+        Map skpMap = new HashMap();
+        logger.info("根据开票点代码查询税控盘-----");
+        skpMap.put("kpddm",kpls.getKpddm());
+        Skp skp = skpService.findOneByParams(skpMap);
+        if(null==skp.getPid()){
+            logger.info("pid 为空----");
+            return null;
+        }
+        logger.info("根据品牌代码查询品牌表---");
+        Pp pp = ppJpaDao.findOneById(skp.getPid());
+
+        logger.info("公司简称---"+pp.getPpmc());
+        logger.info("logourl---"+pp.getWechatLogoUrl());
+        String card_id = this.creatMb(pp.getPpmc(),kpls.getXfmc(),pp.getWechatLogoUrl());
         logger.info("插入卡包的模板id-------"+card_id);
         //调用dzfpInCard方法将发票放入卡包
         return dzfpInCard(order_id,card_id,pdf_file_url,weiXinData,kpspmxList,kpls,access_token);
