@@ -697,8 +697,9 @@ public class WeixinUtils {
         logger.info("根据品牌代码查询品牌表---");
         Pp pp = ppJpaDao.findOneById(skp.getPid());
         String card_id = "";
+        //如果是空默认我们自己公司 logo
         if (null == pp) {
-            card_id = this.creatMb("", kpls.getXfmc(), "");
+            card_id = this.creatMb("容津信息", kpls.getXfmc(), "http://mmbiz.qpic.cn/mmbiz_png/l249Gu1JJaJjZiauO138MD1d6dnglRlj1nPxqrRnWSCMvOoYxaOricVibjzXVP3obaD9kDjcqFsBic2NIiaykS1GV6A/0");
 
         } else {
             logger.info("公司简称---" + pp.getPpmc());
