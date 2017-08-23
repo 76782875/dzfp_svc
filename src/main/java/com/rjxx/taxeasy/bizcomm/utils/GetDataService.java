@@ -645,7 +645,7 @@ public class GetDataService {
                         if (null != orderDetails.selectSingleNode("Quantity")
                                 && !orderDetails.selectSingleNode("Quantity").equals("")) {
                             Quantity = orderDetails.selectSingleNode("Quantity").getText();
-                            jymxsq.setSps(Double.valueOf(Quantity));
+                            try{jymxsq.setSps(Double.valueOf(Quantity));}catch (Exception e){jymxsq.setSps(null);}
                         }
 
                         // 商品单价
@@ -653,7 +653,7 @@ public class GetDataService {
                         if (null != orderDetails.selectSingleNode("UnitPrice")
                                 && !orderDetails.selectSingleNode("UnitPrice").equals("")) {
                             UnitPrice = orderDetails.selectSingleNode("UnitPrice").getText();
-                            jymxsq.setSpdj(Double.valueOf(UnitPrice));
+                            try{jymxsq.setSpdj(Double.valueOf(UnitPrice));}catch (Exception e){jymxsq.setSpdj(null);}
                         }
 
                         // 商品金额
@@ -661,7 +661,8 @@ public class GetDataService {
                         if (null != orderDetails.selectSingleNode("Amount")
                                 && !orderDetails.selectSingleNode("Amount").equals("")) {
                             Amount = orderDetails.selectSingleNode("Amount").getText();
-                            jymxsq.setSpje(Double.valueOf(Amount));
+                            try{jymxsq.setSpje(Double.valueOf(Amount));}catch (Exception e){jymxsq.setSpje(null);}
+
                         }
 
                         // 扣除金额
