@@ -579,17 +579,17 @@ public class GeneratePdfService {
             }else if(kpls.getFpztdm().equals("05")){
                 invoiceItem.setInvoiceStatus("05");
             }
-            invoiceItem.setInvoiceCode(kpls.getFpdm());
-            invoiceItem.setInvoiceNumber(kpls.getFphm());
+            invoiceItem.setInvoiceCode(kplsList.get(0).getFpdm());
+            invoiceItem.setInvoiceNumber(kplsList.get(0).getFphm());
             SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMddHHmmss");
             if(kpls.getKprq()==null){
                 invoiceItem.setInvoiceDate(sdf.format(new Date()));
             }else{
                 invoiceItem.setInvoiceDate(sdf.format(kpls.getKprq()));
             }
-            invoiceItem.setAmount(kpls.getHjje().toString());
-            invoiceItem.setTaxAmount(kpls.getHjse().toString());
-            invoiceItem.setPdfUrl(kpls.getPdfurl());
+            invoiceItem.setAmount(kplsList.get(0).getHjje().toString());
+            invoiceItem.setTaxAmount(kplsList.get(0).getHjse().toString());
+            invoiceItem.setPdfUrl(kplsList.get(0).getPdfurl());
           /*  kpls.setJylsh("");
             Kpls ypkpls=kplsService.findByhzfphm(kpls);
             InvoiceItem2 ypinvoiceItem=new InvoiceItem2();
