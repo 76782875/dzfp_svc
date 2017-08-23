@@ -432,7 +432,7 @@ public class GetDataService {
             rsMap.put("jyxxsqList", jyxxsqList);
             rsMap.put("jymxsqList", jymxsqList);
             rsMap.put("jyzfmxList", jyzfmxList);
-            rsMap.put("error",ReturnMessage);
+            rsMap.put("error",ReturnCode+":"+ReturnMessage);
             return rsMap;
         }
         Element ReturnData  = (Element) xmlDoc.selectSingleNode("Responese/ReturnData");
