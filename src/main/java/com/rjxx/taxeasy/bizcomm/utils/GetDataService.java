@@ -1166,8 +1166,10 @@ public class GetDataService {
                jyxxsq.setDdh(ExtractCode);//订单编号 对应小票流水号
                jyxxsq.setTqm(tqm);// 提取码  对应购物小票流水号
                jyxxsq.setJylsh("JY" + new SimpleDateFormat("yyyyMMddHHmmssSS").format(new Date()));//交易流水号
-               String kpddm="A"+tqm.substring(0,3);
-               //String kpddm=tqm.substring(0,3);
+                //正式
+               //String kpddm="A"+tqm.substring(0,3);
+               //测试
+               String kpddm=tqm.substring(0,3);
                jyxxsq.setKpddm(kpddm);
                logger.info("开票点代码为----"+jyxxsq.getKpddm());
                //根据公司代码、开票点代码查询税控盘
