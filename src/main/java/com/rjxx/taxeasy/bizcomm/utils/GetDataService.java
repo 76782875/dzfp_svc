@@ -433,6 +433,7 @@ public class GetDataService {
             rsMap.put("jymxsqList", jymxsqList);
             rsMap.put("jyzfmxList", jyzfmxList);
             rsMap.put("error",ReturnCode+":"+ReturnMessage);
+            logger.info("------错误信息--------"+ReturnCode+":"+ReturnMessage);
             return rsMap;
         }
         Element ReturnData  = (Element) xmlDoc.selectSingleNode("Responese/ReturnData");
