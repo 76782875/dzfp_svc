@@ -29,7 +29,7 @@ public class Xf  implements Serializable {
 	/**
 	 * 微信卡券模板id
 	 */
-	@Column(name="wechatCardId")
+	@Column(name="wechatcardid")
 	protected String wechatCardId;
 
 
