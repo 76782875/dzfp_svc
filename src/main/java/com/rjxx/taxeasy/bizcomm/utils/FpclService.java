@@ -1282,7 +1282,7 @@ public class FpclService {
             kpls.setJylsh(jyls.getJylsh());
             kplsService.save(kpls);
             //此处生成PDF
-            skService.ReCreatePdf(kpls.getKplsh());
+            generatePdfService.generatePdf(kpls.getKplsh());
             Map parms=new HashMap();
                 parms.put("gsdm",kpls.getGsdm());
                 Gsxx gsxx=gsxxService.findOneByParams(parms);
