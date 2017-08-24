@@ -699,7 +699,10 @@ public class WeixinUtils {
         }
         logger.info("根据品牌代码查询品牌表---");
         Pp pp = ppJpaDao.findOneById(skp.getPid());
+        logger.info("品牌详情---"+pp.toString());
         Xf xf = xfJpaDao.findOne(skp.getXfid());
+        logger.info("销方详情----"+xf.toString());
+        logger.info("wechatCardId----"+xf.getWechatCardId());
         String card_id = "";
         if(null==xf.getWechatCardId()&&xf.getWechatCardId().equals("")){
             //销方表没有值，调用生成卡券模板
