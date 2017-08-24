@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rjxx.taxeasy.dao.PpJpaDao;
 import com.rjxx.taxeasy.dao.WxfpxxJpaDao;
+import com.rjxx.taxeasy.dao.XfJpaDao;
 import com.rjxx.taxeasy.domains.*;
 import com.rjxx.taxeasy.service.PpService;
 import com.rjxx.taxeasy.service.SkpService;
@@ -46,6 +47,8 @@ public class WeixinUtils {
     @Autowired
     private PpJpaDao ppJpaDao;
 
+    @Autowired
+    private XfJpaDao xfJpaDao;
     /**
      * 判断是不是微信浏览器
      *
@@ -294,7 +297,7 @@ public class WeixinUtils {
         //weixinUtils.sqzd();//授权字段--只设一次
         //weixinUtils.getTicket();//获取ticket
         //String card_id =  weixinUtils.creatMb("全家便利","销方1");//创建模板
-        weixinUtils.uploadImage();//上传图片获取url
+        //weixinUtils.uploadImage();//上传图片获取url
         //String card_id = (String) map.get("card_id");
         //System.out.println(""+card_id);
 
@@ -696,18 +699,27 @@ public class WeixinUtils {
         }
         logger.info("根据品牌代码查询品牌表---");
         Pp pp = ppJpaDao.findOneById(skp.getPid());
+        logger.info("品牌详情---"+pp.toString());
+        Xf xf = xfJpaDao.findOneById(skp.getXfid());
+        logger.info("销方详情----"+JSON.toJSONString(xf));
+        logger.info("wechatCardId----"+xf.getWechatCardId());
         String card_id = "";
-        //如果是空默认我们自己公司 logo
-        if (null == pp) {
-            card_id = this.creatMb("容津信息", kpls.getXfmc(), "http://mmbiz.qpic.cn/mmbiz_png/l249Gu1JJaJjZiauO138MD1d6dnglRlj1nPxqrRnWSCMvOoYxaOricVibjzXVP3obaD9kDjcqFsBic2NIiaykS1GV6A/0");
-
-        } else {
+        if(null==xf.getWechatCardId()||xf.getWechatCardId().equals("")){
+            //销方表没有值，调用生成卡券模板
+            card_id = this.creatMb(pp.getPpmc(), kpls.getXfmc(), pp.getWechatLogoUrl());
             logger.info("公司简称---" + pp.getPpmc());
             logger.info("logourl---" + pp.getWechatLogoUrl());
-            card_id = this.creatMb(pp.getPpmc(), kpls.getXfmc(), pp.getWechatLogoUrl());
             logger.info("插入卡包的模板id-------" + card_id);
-            //调用dzfpInCard方法将发票放入卡包
+            //保存卡券模板id进xf表
+
+            xf.setWechatCardId(card_id);
+            xfJpaDao.save(xf);
+            logger.info("保存新建的卡券模板id进入库-----------"+xf.getWechatCardId());
+        }else {
+            card_id=xf.getWechatCardId();
+            logger.info("直接获取到卡券模板id---------"+card_id);
         }
+            //调用dzfpInCard方法将发票放入卡包
         return dzfpInCard(order_id, card_id, pdf_file_url, weiXinData, kpspmxList, kpls, access_token);
     }
 
