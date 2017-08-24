@@ -711,15 +711,10 @@ public class WeixinUtils {
             logger.info("logourl---" + pp.getWechatLogoUrl());
             logger.info("插入卡包的模板id-------" + card_id);
             //保存卡券模板id进xf表
-            Xf xfsave = new Xf();
-            xfsave.setId(xf.getId());
-            xfsave.setXfsh(xf.getXfsh());
-            xfsave.setXfmc(xf.getXfmc());
-            xfsave.setXfyh(xf.getXfyh());
-            xfsave.setXfyhzh(xf.getXfyhzh());
-            xfsave.setWechatCardId(card_id);
-            xfJpaDao.save(xfsave);
-            logger.info("保存新建的卡券模板id进入库-----------"+xfsave.getWechatCardId());
+
+            xf.setWechatCardId(card_id);
+            xfJpaDao.save(xf);
+            logger.info("保存新建的卡券模板id进入库-----------"+xf.getWechatCardId());
         }else {
             card_id=xf.getWechatCardId();
             logger.info("直接获取到卡券模板id---------"+card_id);
