@@ -701,7 +701,7 @@ public class WeixinUtils {
         Pp pp = ppJpaDao.findOneById(skp.getPid());
         logger.info("品牌详情---"+pp.toString());
         Xf xf = xfJpaDao.findOneById(skp.getXfid());
-        logger.info("销方详情----"+xf.toString());
+        logger.info("销方详情----"+JSON.toJSONString(xf));
         logger.info("wechatCardId----"+xf.getWechatCardId());
         String card_id = "";
         if(null==xf.getWechatCardId()||xf.getWechatCardId().equals("")){
@@ -713,6 +713,10 @@ public class WeixinUtils {
             //保存卡券模板id进xf表
             Xf xfsave = new Xf();
             xfsave.setId(xf.getId());
+            xfsave.setXfsh(xf.getXfsh());
+            xfsave.setXfmc(xf.getXfmc());
+            xfsave.setXfyh(xf.getXfyh());
+            xfsave.setXfyhzh(xf.getXfyhzh());
             xfsave.setWechatCardId(card_id);
             xfJpaDao.save(xfsave);
             logger.info("保存新建的卡券模板id进入库-----------"+xfsave.getWechatCardId());
