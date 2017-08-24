@@ -1118,7 +1118,7 @@ public class FpclService {
                     saveKpspmx(kpls, list2);
                     KplsVO5 kplsVO5 = new KplsVO5(kpls, jyxxsq);
                     result.add(kplsVO5);
-                    this.skServerKP(kpls.getKplsh());//税控开票
+                    skService.SkServerKP(kpls.getKplsh());//税控开票
                 }
                 i++;
             }
