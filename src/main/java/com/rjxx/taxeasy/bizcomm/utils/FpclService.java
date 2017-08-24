@@ -1118,6 +1118,7 @@ public class FpclService {
                     saveKpspmx(kpls, list2);
                     KplsVO5 kplsVO5 = new KplsVO5(kpls, jyxxsq);
                     result.add(kplsVO5);
+                    this.skServerKP(kpls.getKplsh());//税控开票
                 }
                 i++;
             }
@@ -1224,103 +1225,7 @@ public class FpclService {
         }
         return list;
     }
-
-    public String skdzfp(List jyxxsqList, String kpfs) {
-        List fpclList = new ArrayList();
-        Map resultMap = null;
-        String resultxml="";
-        try {
-            /**
-             * 调用直接开票方法
-             */
-            fpclList = (List) this.zjkp(jyxxsqList, kpfs);
-        } catch (Exception e1) {
-            e1.printStackTrace();
-        }
-
-        List resultList = new ArrayList();
-        if (null != fpclList) {
-            KplsVO5 zjKplsvo5 = new KplsVO5();
-            /**
-             * 循环分票后的list，封装成kplsVO5.
-             */
-            for (int i = 0; i < fpclList.size(); i++) {
-                double hjje = 0.00;
-                double hjse = 0.00;
-                List<Kpspmxvo> tmpList = new ArrayList<Kpspmxvo>();
-                zjKplsvo5 = (KplsVO5) fpclList.get(i);
-                //获取对应开票商品明细信息
-                Map params = new HashMap();
-                params.put("kplsh", zjKplsvo5.getKplsh());
-                tmpList = kpspmxService.findSkMxList(params);
-                Kpspmxvo kpspmxvo = new Kpspmxvo();
-                for (int j = 0; j < tmpList.size(); j++) {
-                    kpspmxvo = tmpList.get(j);
-                    hjje = hjje + kpspmxvo.getSpje();
-                    hjse = hjse + kpspmxvo.getSpse();
-                    BigDecimal   b   =   new   BigDecimal(kpspmxvo.getSpdj());
-                    double   f1   =   b.setScale(6,BigDecimal.ROUND_HALF_UP).doubleValue();
-                    kpspmxvo.setSpdj(f1);
-                }
-                try {
-                    Map params2 = new HashMap();
-                    String fpzldm = zjKplsvo5.getFpzldm();
-                    if (fpzldm.equals("01")) {
-                        zjKplsvo5.setFpzldm("004");
-                    } else if (fpzldm.equals("02")) {
-                        zjKplsvo5.setFpzldm("007");
-                    } else if (fpzldm.equals("12")) {
-                        zjKplsvo5.setFpzldm("026");
-                    } else if (fpzldm.equals("03")) {
-                        zjKplsvo5.setFpzldm("025");
-                    }
-                    String fpczlxdm=zjKplsvo5.getFpczlxdm();
-                    String kplx=null;
-                    if(fpczlxdm.equals("11")){
-                        kplx="0";
-                    }else{
-                        kplx="1";
-                    }
-                    params2.put("kplx", kplx);
-                    Cszb cszb = cszbService.getSpbmbbh(zjKplsvo5.getGsdm(), zjKplsvo5.getXfid(), null, "spbmbbh");
-                    String spbmbbh = cszb.getCsz();
-                    params.put("spbmbbh",spbmbbh);
-                    params2.put("kpls", zjKplsvo5);
-                    params2.put("kpspmxList", tmpList);
-                    params2.put("mxCount", tmpList.size());
-                    params2.put("hjje", hjje);
-                    params2.put("hjse", hjse);
-                    /**
-                     * 模板名称，电子票税控服务器报文
-                     */
-                    String templateName = "dzfp-xml.ftl";
-                    String result2 = TemplateUtils.generateContent(templateName, params2);
-                    System.out.println(result2);
-                    logger.debug("封装传开票通的报文" + result2);
-                    Map parms=new HashMap();
-                    parms.put("gsdm",zjKplsvo5.getGsdm());
-                    Gsxx gsxx=gsxxService.findOneByParams(parms);
-                    String url = gsxx.getWsUrl();
-                    resultMap = DzfphttpPost(result2, url, zjKplsvo5.getDjh() + "$" + zjKplsvo5.getKplsh(), zjKplsvo5.getXfsh(),
-                            zjKplsvo5.getJylsh());
-                    String  serialorder=this.updateKpls(resultMap);
-                    resultxml="<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
-                            "<Responese>\n" +
-                            "    <ReturnCode>0000</ReturnCode>\n" +
-                            "    <ReturnMessage>"+serialorder+"</ReturnMessage>\n" +
-                            "</Responese>\n";
-                    logger.debug("封装传开票通的返回报文" + JSONObject.toJSONString(resultMap));
-                } catch (Exception e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-        }
-        return resultxml;
-    }
-
     public String updateKpls(Map resultMap){
-
             String kplsh=resultMap.get("KPLSH").toString();
             Kpls kpls = kplsService.findOne(Integer.valueOf(kplsh));
         try{      String returncode=resultMap.get("RETURNCODE").toString();
@@ -1411,5 +1316,85 @@ public class FpclService {
            e.printStackTrace();
         }
         return kpls.getSerialorder();
+    }
+
+    public String  skServerKP(int kplsh) {
+        try {
+                Kpls kpls=kplsService.findOne(kplsh);
+                Jyls jyls=jylsService.findOne(kpls.getDjh());
+                Jyxxsq jyxxsq=jyxxsqService.findOne(jyls.getSqlsh());
+                KplsVO5 kplsVO5 = new KplsVO5(kpls, jyxxsq);
+                Map resultMap = null;
+                String resultxml="";
+                List resultList = new ArrayList();
+                double hjje = 0.00;
+                double hjse = 0.00;
+                //获取对应开票商品明细信息
+                Map params = new HashMap();
+                params.put("kplsh", kplsVO5.getKplsh());
+                List<Kpspmxvo> tmpList = kpspmxService.findSkMxList(params);
+                Kpspmxvo kpspmxvo = new Kpspmxvo();
+                for (int j = 0; j < tmpList.size(); j++) {
+                    kpspmxvo = tmpList.get(j);
+                    hjje = hjje + kpspmxvo.getSpje();
+                    hjse = hjse + kpspmxvo.getSpse();
+                    BigDecimal   b   =   new   BigDecimal(kpspmxvo.getSpdj());
+                    double   f1   =   b.setScale(6,BigDecimal.ROUND_HALF_UP).doubleValue();
+                    kpspmxvo.setSpdj(f1);
+                }
+
+                    Map params2 = new HashMap();
+                    String fpzldm = kplsVO5.getFpzldm();
+                    if (fpzldm.equals("01")) {
+                        kplsVO5.setFpzldm("004");
+                    } else if (fpzldm.equals("02")) {
+                        kplsVO5.setFpzldm("007");
+                    } else if (fpzldm.equals("12")) {
+                        kplsVO5.setFpzldm("026");
+                    } else if (fpzldm.equals("03")) {
+                        kplsVO5.setFpzldm("025");
+                    }
+                    String fpczlxdm=kplsVO5.getFpczlxdm();
+                    String kplx=null;
+                    if(fpczlxdm.equals("11")){
+                        kplx="0";
+                    }else if(fpczlxdm.equals("12")){
+                        kplx="1";
+                    }
+                    params2.put("kplx", kplx);
+                    Cszb cszb = cszbService.getSpbmbbh(kplsVO5.getGsdm(), kplsVO5.getXfid(), null, "spbmbbh");
+                    String spbmbbh = cszb.getCsz();
+                    params.put("spbmbbh",spbmbbh);
+                    params2.put("kpls", kplsVO5);
+                    params2.put("kpspmxList", tmpList);
+                    params2.put("mxCount", tmpList.size());
+                    params2.put("hjje", hjje);
+                    params2.put("hjse", hjse);
+                    /**
+                     * 模板名称，电子票税控服务器报文
+                     */
+                    String templateName = "dzfp-xml.ftl";
+                    String result2 = TemplateUtils.generateContent(templateName, params2);
+                    System.out.println(result2);
+                    logger.debug("封装传开票通的报文" + result2);
+                    Map parms=new HashMap();
+                    parms.put("gsdm",kplsVO5.getGsdm());
+                    Gsxx gsxx=gsxxService.findOneByParams(parms);
+                    String url = gsxx.getWsUrl();
+                    resultMap = DzfphttpPost(result2, url, kplsVO5.getDjh() + "$" + kplsVO5.getKplsh(), kplsVO5.getXfsh(),
+                            kplsVO5.getJylsh());
+                    String  serialorder=this.updateKpls(resultMap);
+                    resultxml="<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
+                            "<Responese>\n" +
+                            "    <ReturnCode>0000</ReturnCode>\n" +
+                            "    <ReturnMessage>"+serialorder+"</ReturnMessage>\n" +
+                            "</Responese>\n";
+                    logger.debug("封装传开票通的返回报文" + JSONObject.toJSONString(resultMap));
+                    return  "1";
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                    return "0";
+                }
     }
 }
