@@ -3,7 +3,6 @@ package com.rjxx.taxeasy.domains;
 import java.io.Serializable;
 
 public class CorpUserBaseInfo implements Serializable {
-    private static final long serialVersionUID = 1L;
     private String deviceId;
     private Boolean is_sys;
     private Integer sys_level;

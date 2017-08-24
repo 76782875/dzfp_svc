@@ -16,10 +16,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 @Table(name = "t_skp")
 public class Skp implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+
 
 	/**
 	 * 税控盘号

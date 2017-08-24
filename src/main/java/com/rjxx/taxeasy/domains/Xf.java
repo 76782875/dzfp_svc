@@ -26,15 +26,6 @@ public class Xf  implements Serializable {
 @GeneratedValue(strategy=GenerationType.IDENTITY)
 	protected Integer id;
 
-	/**
-	 * 微信卡券模板id
-	 */
-	@Column(name="wechatcardid")
-	protected String wechatCardId;
-
-
-
-
 /**
  * 机构编码
  */ 
@@ -197,6 +188,12 @@ public class Xf  implements Serializable {
  */ 
 @Column(name="ppzdje")
 	protected Double ppzdje;
+
+	/**
+	 * 微信卡券模板id
+	 */
+@Column(name="wechatcardid")
+protected String wechatCardId;
 
 
 	public Integer getId(){
