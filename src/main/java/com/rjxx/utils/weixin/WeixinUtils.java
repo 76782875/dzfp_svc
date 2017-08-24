@@ -704,7 +704,7 @@ public class WeixinUtils {
         logger.info("销方详情----"+xf.toString());
         logger.info("wechatCardId----"+xf.getWechatCardId());
         String card_id = "";
-        if(null==xf.getWechatCardId()&&xf.getWechatCardId().equals("")){
+        if(null==xf.getWechatCardId()||xf.getWechatCardId().equals("")){
             //销方表没有值，调用生成卡券模板
             card_id = this.creatMb(pp.getPpmc(), kpls.getXfmc(), pp.getWechatLogoUrl());
             logger.info("公司简称---" + pp.getPpmc());
