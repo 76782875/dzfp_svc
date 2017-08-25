@@ -410,11 +410,10 @@ public class DiscountDealUtil {
 				if (kpspmx.getFphxz().equals("2") || "2" == kpspmx.getFphxz()) {
 					for (int j = 0; j < KpspmxList.size(); j++) {
 						Kpspmx kpspmx2 = KpspmxList.get(j);
-						if(kpspmx2.getFphxz().equals("1")) {
 							if (kpspmx2.getSpmc().equals(kpspmx.getSpmc())
 									&& kpspmx2.getSpdm().equals(kpspmx.getSpdm())
 									&& kpspmx2.getSpggxh().equals(kpspmx.getSpggxh())
-									&& kpspmx2.getSpmxxh() == kpspmx.getSpmxxh()) {
+									&& kpspmx2.getSpmxxh() == kpspmx.getSpmxxh()&&kpspmx2.getFphxz().equals("1")) {
 								KpspmxR = genNewKpspmx(kpspmx);
 								KpspmxR.setSpje(kpspmx.getSpje() + kpspmx2.getSpje());
 								KpspmxR.setSpse(kpspmx.getSpse() + kpspmx2.getSpse());
@@ -427,7 +426,6 @@ public class DiscountDealUtil {
 								resultList.add(KpspmxR);
 								spmxxh++;
 							}
-						}
 					}
 				} else if (kpspmx.getFphxz().equals("0")) {
 					KpspmxR = genNewKpspmx(kpspmx);
