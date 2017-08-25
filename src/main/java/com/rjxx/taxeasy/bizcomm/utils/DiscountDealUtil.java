@@ -449,11 +449,11 @@ public class DiscountDealUtil {
 		kpspmxR.setSpmc(kpspmx1.getSpmc());
 		kpspmxR.setSpggxh(kpspmx1.getSpggxh());
 		kpspmxR.setSpdw(kpspmx1.getSpdw());
-		if (kpspmxR.getSpdj() != null) {
+		if (kpspmx1.getSpdj() != null) {
 			kpspmxR.setSpdj(kpspmx1.getSpdj());
 		}
 		kpspmxR.setSpdw(kpspmx1.getSpdw());
-		if (kpspmxR.getSps() != null) {
+		if (kpspmx1.getSps() != null) {
 			kpspmxR.setSps(kpspmx1.getSps());
 		}
 		kpspmxR.setSpje(kpspmx1.getSpje());
@@ -466,6 +466,13 @@ public class DiscountDealUtil {
 		kpspmxR.setXgry(kpspmx1.getXgry());
 		kpspmxR.setKhcje(0d);
 		kpspmxR.setYhcje(-(kpspmx1.getSpje()+kpspmx1.getSpse()));
+		kpspmxR.setYhzcmc(kpspmx1.getYhzcmc());
+		kpspmxR.setYhzcbs(kpspmx1.getYhzcbs());
+		kpspmxR.setLslbz(kpspmx1.getLslbz());
+		kpspmxR.setGsdm(kpspmx1.getGsdm());
+		kpspmxR.setKpddm(kpspmx1.getKpddm());
+		kpspmxR.setZfry(kpspmx1.getZfry());
+		kpspmxR.setHcry(kpspmx1.getHcry());
 		return kpspmxR;
 	}
 
