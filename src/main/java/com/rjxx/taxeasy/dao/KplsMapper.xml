@@ -56,6 +56,12 @@
         <if test="hkFphm !=null and hkFphm !=''">
             and fphm = #{hkFphm}
         </if>
+        <if test="hzyfpdm !=null and hzyfpdm !=''">
+            and hzyfpdm = #{hzyfpdm}
+        </if>
+        <if test="hzyfphm !=null and hzyfphm !=''">
+            and hzyfphm = #{hzyfphm}
+        </if>
         <if test="jylsh !=null and jylsh !=''">
             and jylsh = #{jylsh}
         </if>
