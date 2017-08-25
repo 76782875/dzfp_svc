@@ -350,9 +350,9 @@ public class DiscountDealUtil {
 	
 	/**
 	 * 将带有折扣行的数据进行合并，并将fphxz改为0。
-	 * @param jymxsqList 原单笔交易申请明细
-	 * @param zkzje 需要通过折扣处理的总金额（价税合计）
-	 * @param jshj 单笔订单总价税合计
+	 * @param
+	 * @param
+	 * @param
 	 */
 	public List<JymxsqCl> discountMergeLines(List<JymxsqCl> jymxsqClList) {
 		List<JymxsqCl> resultList = new ArrayList<JymxsqCl>();//处理返回list
@@ -440,6 +440,7 @@ public class DiscountDealUtil {
 
 	private static Kpspmx genNewKpspmx(Kpspmx kpspmx1) {
 		Kpspmx kpspmxR=new Kpspmx();
+		kpspmxR.setId(kpspmx1.getId());
 		kpspmxR.setKplsh(kpspmx1.getKplsh());
 		kpspmxR.setDjh(kpspmx1.getDjh());
 		kpspmxR.setSpmxxh(kpspmx1.getSpmxxh());
