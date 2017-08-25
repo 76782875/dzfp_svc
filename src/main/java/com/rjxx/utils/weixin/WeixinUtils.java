@@ -156,7 +156,7 @@ public class WeixinUtils {
     拿到数据,调用微信接口获取微信授权链接,
     如果成功跳转页面,失败返回null
     */
-    public String getTiaoURL(String orderid, String money, String timestamp, String menDianId) throws Exception {
+    public String getTiaoURL(String orderid, String money, String timestamp, String menDianId,String type) throws Exception {
 
         String auth_url = "";
         WeixinUtils weixinUtils = new WeixinUtils();
@@ -177,7 +177,7 @@ public class WeixinUtils {
         }
         System.out.println("转换之后金额" + d + "时间" + dateTime);
         String source = "web";
-        int type = 1;//填写抬头申请开票类型
+        //int type = 1;//填写抬头申请开票类型
         Map nvps = new HashMap();
         nvps.put("s_pappid", spappid);
         nvps.put("order_id", orderid);

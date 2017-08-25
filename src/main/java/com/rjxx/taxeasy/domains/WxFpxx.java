@@ -18,6 +18,9 @@ public class WxFpxx {
     @Column(name = "openid")
     private String openId;
 
+    @Column(name = "userid")
+    private String userid;
+
     @Column(name = "q")
     private String q;
 
@@ -74,6 +77,7 @@ public class WxFpxx {
         return "WxFpxx{" +
                 "orderNo='" + orderNo + '\'' +
                 ", openId='" + openId + '\'' +
+                ", userid='" + userid + '\'' +
                 ", q='" + q + '\'' +
                 ", tqm='" + tqm + '\'' +
                 ", gsdm='" + gsdm + '\'' +
@@ -87,5 +91,13 @@ public class WxFpxx {
 
     public void setOpenId(String openId) {
         this.openId = openId;
+    }
+
+    public String getUserid() {
+        return userid;
+    }
+
+    public void setUserid(String userid) {
+        this.userid = userid;
     }
 }
