@@ -184,7 +184,8 @@ public class WeixinUtils {
         nvps.put("money", d);
         nvps.put("timestamp", dateTime.getTime() / 1000);
         nvps.put("source", source);
-        nvps.put("redirect_url", WeiXinConstants.SUCCESS_REDIRECT_URL);
+        //nvps.put("redirect_url", WeiXinConstants.TEST_SUCCESS_REDIRECT_URL);//测试跳转url
+        nvps.put("redirect_url", WeiXinConstants.SUCCESS_REDIRECT_URL);//正式跳转url
         nvps.put("ticket", ticket);
         nvps.put("type", type);
         if (null == orderid && StringUtils.isBlank(orderid)) {
