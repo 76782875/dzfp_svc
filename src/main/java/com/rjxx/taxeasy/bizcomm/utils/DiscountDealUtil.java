@@ -414,7 +414,7 @@ public class DiscountDealUtil {
 						if (kpspmx2.getSpmc().equals(kpspmx1.getSpmc())
 								&& kpspmx2.getSpdm().equals(kpspmx1.getSpdm())
 								&& kpspmx2.getSpggxh().equals(kpspmx1.getSpggxh())
-								&& kpspmx2.getSpmxxh() ==kpspmx1.getSpmxxh() && kpspmx1.getFphxz().equals("1")) {
+								&& kpspmx2.getSpmxxh() ==kpspmx1.getSpmxxh() && kpspmx2.getFphxz().equals("1")) {
 							// jymxsqCl.setFphxz("1");//折扣行
 							KpspmxR = genNewKpspmx(kpspmx1);
 							KpspmxR.setSpje(kpspmx1.getSpje() + kpspmx2.getSpje());
