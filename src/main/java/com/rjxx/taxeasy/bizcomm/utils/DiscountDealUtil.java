@@ -8,15 +8,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import com.rjxx.taxeasy.domains.*;
+import com.rjxx.time.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.rjxx.taxeasy.domains.Cszb;
-import com.rjxx.taxeasy.domains.Jymxsq;
-import com.rjxx.taxeasy.domains.JymxsqCl;
-import com.rjxx.taxeasy.domains.Jyxxsq;
-import com.rjxx.taxeasy.domains.Jyzfmx;
-import com.rjxx.taxeasy.domains.Zffs;
 import com.rjxx.taxeasy.service.CszbService;
 import com.rjxx.taxeasy.service.ZffsService;
 
@@ -398,7 +394,82 @@ public class DiscountDealUtil {
 		}
 		return resultList;
 	}
-    
+	/**
+	 * 将带有折扣行的数据进行合并，并将fphxz改为0。
+	 * @param KpspmxList 原单笔交易申请明细
+	 *
+	 *
+	 */
+	public static List<Kpspmx> discountMergeLinesKpspmx(List<Kpspmx> KpspmxList) {
+		List<Kpspmx> resultList = new ArrayList<Kpspmx>();//处理返回list
+		int spmxxh = 1;//商品明细
+		if (null != KpspmxList && !KpspmxList.isEmpty()) {
+			for (int i = 0; i < KpspmxList.size(); i++) {
+				Kpspmx kpspmx1 = KpspmxList.get(i);
+				Kpspmx KpspmxR = new Kpspmx();
+				//int mxxh = jymxsqCl.getSpmxxh();
+				if (kpspmx1.getFphxz().equals("2") || "2" == kpspmx1.getFphxz()) {
+					for (int j = 0; j < KpspmxList.size(); j++) {
+						Kpspmx kpspmx2 = KpspmxList.get(j);
+						if (kpspmx2.getSpmc().equals(kpspmx1.getSpmc())
+								&& kpspmx2.getSpdm().equals(kpspmx1.getSpdm())
+								&& kpspmx2.getSpggxh().equals(kpspmx1.getSpggxh())
+								&& kpspmx2.getSpmxxh() ==kpspmx1.getSpmxxh() && kpspmx1.getFphxz().equals("1")) {
+							// jymxsqCl.setFphxz("1");//折扣行
+							KpspmxR = genNewKpspmx(kpspmx1);
+							KpspmxR.setSpje(kpspmx1.getSpje() + kpspmx2.getSpje());
+							KpspmxR.setSpse(kpspmx1.getSpse() + kpspmx2.getSpse());
+							KpspmxR.setSps(kpspmx1.getSps());
+							if(null != KpspmxR.getSps() && !KpspmxR.getSps().equals("")){
+								KpspmxR.setSpdj(KpspmxR.getSpje()/KpspmxR.getSps());
+							}
+							KpspmxR.setSpmxxh(spmxxh);
+							KpspmxR.setFphxz("0");
+							resultList.add(KpspmxR);
+							spmxxh++;
+						}
+					}
+				} else if (kpspmx1.getFphxz().equals("0")) {
+					KpspmxR = genNewKpspmx(kpspmx1);
+					KpspmxR.setSpmxxh(spmxxh);
+					resultList.add(KpspmxR);
+					spmxxh++;
+				}
+			}
+		}
+		return resultList;
+	}
+
+	private static Kpspmx genNewKpspmx(Kpspmx kpspmx1) {
+		Kpspmx kpspmxR=new Kpspmx();
+		kpspmxR.setKplsh(kpspmx1.getKplsh());
+		kpspmxR.setDjh(kpspmx1.getDjh());
+		kpspmxR.setSpmxxh(kpspmx1.getSpmxxh());
+		kpspmxR.setFphxz(kpspmx1.getFphxz());
+		kpspmxR.setSpdm(kpspmx1.getSpdm());
+		kpspmxR.setSpmc(kpspmx1.getSpmc());
+		kpspmxR.setSpggxh(kpspmx1.getSpggxh());
+		kpspmxR.setSpdw(kpspmx1.getSpdw());
+		if (kpspmxR.getSpdj() != null) {
+			kpspmxR.setSpdj(kpspmx1.getSpdj());
+		}
+		kpspmxR.setSpdw(kpspmx1.getSpdw());
+		if (kpspmxR.getSps() != null) {
+			kpspmxR.setSps(kpspmx1.getSps());
+		}
+		kpspmxR.setSpje(kpspmx1.getSpje());
+		kpspmxR.setSpsl(kpspmx1.getSpsl());
+		kpspmxR.setSpse(kpspmx1.getSpse());
+		kpspmxR.setHcrq(TimeUtil.getNowDate());
+		kpspmxR.setLrsj(kpspmx1.getLrsj());
+		kpspmxR.setLrry(kpspmx1.getLrry());
+		kpspmxR.setXgsj(kpspmx1.getXgsj());
+		kpspmxR.setXgry(kpspmx1.getXgry());
+		kpspmxR.setKhcje(0d);
+		kpspmxR.setYhcje(-(kpspmx1.getSpje()+kpspmx1.getSpse()));
+		return kpspmxR;
+	}
+
 	/**
      * 生成新的JymxsqCl，不会对原对象的值进行改变
      *
