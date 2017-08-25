@@ -405,32 +405,32 @@ public class DiscountDealUtil {
 		int spmxxh = 1;//商品明细
 		if (null != KpspmxList && !KpspmxList.isEmpty()) {
 			for (int i = 0; i < KpspmxList.size(); i++) {
-				Kpspmx kpspmx1 = KpspmxList.get(i);
+				Kpspmx kpspmx = KpspmxList.get(i);
 				Kpspmx KpspmxR = new Kpspmx();
-				//int mxxh = jymxsqCl.getSpmxxh();
-				if (kpspmx1.getFphxz().equals("2") || "2" == kpspmx1.getFphxz()) {
+				if (kpspmx.getFphxz().equals("2") || "2" == kpspmx.getFphxz()) {
 					for (int j = 0; j < KpspmxList.size(); j++) {
 						Kpspmx kpspmx2 = KpspmxList.get(j);
-						if (kpspmx2.getSpmc().equals(kpspmx1.getSpmc())
-								&& kpspmx2.getSpdm().equals(kpspmx1.getSpdm())
-								&& kpspmx2.getSpggxh().equals(kpspmx1.getSpggxh())
-								&& kpspmx2.getSpmxxh() ==kpspmx1.getSpmxxh() && kpspmx2.getFphxz().equals("1")) {
-							// jymxsqCl.setFphxz("1");//折扣行
-							KpspmxR = genNewKpspmx(kpspmx1);
-							KpspmxR.setSpje(kpspmx1.getSpje() + kpspmx2.getSpje());
-							KpspmxR.setSpse(kpspmx1.getSpse() + kpspmx2.getSpse());
-							KpspmxR.setSps(kpspmx1.getSps());
-							if(null != KpspmxR.getSps() && !KpspmxR.getSps().equals("")){
-								KpspmxR.setSpdj(KpspmxR.getSpje()/KpspmxR.getSps());
+						if(kpspmx2.getFphxz().equals("1")) {
+							if (kpspmx2.getSpmc().equals(kpspmx.getSpmc())
+									&& kpspmx2.getSpdm().equals(kpspmx.getSpdm())
+									&& kpspmx2.getSpggxh().equals(kpspmx.getSpggxh())
+									&& kpspmx2.getSpmxxh() == kpspmx.getSpmxxh()) {
+								KpspmxR = genNewKpspmx(kpspmx);
+								KpspmxR.setSpje(kpspmx.getSpje() + kpspmx2.getSpje());
+								KpspmxR.setSpse(kpspmx.getSpse() + kpspmx2.getSpse());
+								KpspmxR.setSps(kpspmx.getSps());
+								if (null != KpspmxR.getSps() && !KpspmxR.getSps().equals("")) {
+									KpspmxR.setSpdj(KpspmxR.getSpje() / KpspmxR.getSps());
+								}
+								KpspmxR.setSpmxxh(spmxxh);
+								KpspmxR.setFphxz("0");
+								resultList.add(KpspmxR);
+								spmxxh++;
 							}
-							KpspmxR.setSpmxxh(spmxxh);
-							KpspmxR.setFphxz("0");
-							resultList.add(KpspmxR);
-							spmxxh++;
 						}
 					}
-				} else if (kpspmx1.getFphxz().equals("0")) {
-					KpspmxR = genNewKpspmx(kpspmx1);
+				} else if (kpspmx.getFphxz().equals("0")) {
+					KpspmxR = genNewKpspmx(kpspmx);
 					KpspmxR.setSpmxxh(spmxxh);
 					resultList.add(KpspmxR);
 					spmxxh++;
@@ -473,7 +473,7 @@ public class DiscountDealUtil {
 	/**
      * 生成新的JymxsqCl，不会对原对象的值进行改变
      *
-     * @param JymxsqCl
+     * @param
      * @return 新JymxsqCl
      */
     private JymxsqCl genNewJymxsqCl(JymxsqCl jymxsqCl){
