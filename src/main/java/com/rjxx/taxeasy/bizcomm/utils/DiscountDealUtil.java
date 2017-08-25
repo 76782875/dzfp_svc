@@ -440,7 +440,7 @@ public class DiscountDealUtil {
 
 	private static Kpspmx genNewKpspmx(Kpspmx kpspmx1) {
 		Kpspmx kpspmxR=new Kpspmx();
-		kpspmxR.setId(kpspmx1.getId());
+		//kpspmxR.setId(kpspmx1.getId());
 		kpspmxR.setKplsh(kpspmx1.getKplsh());
 		kpspmxR.setDjh(kpspmx1.getDjh());
 		kpspmxR.setSpmxxh(kpspmx1.getSpmxxh());
