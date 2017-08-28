@@ -36,6 +36,9 @@ public class WxFpxx {
     @Column(name = "wxtype")
     private String wxtype;
 
+    @Column(name = "kplsh")
+    private String kplsh;
+
     public String getOrderNo() {
         return orderNo;
     }
@@ -76,6 +79,14 @@ public class WxFpxx {
         this.code = code;
     }
 
+    public String getKplsh() {
+        return kplsh;
+    }
+
+    public void setKplsh(String kplsh) {
+        this.kplsh = kplsh;
+    }
+
     @Override
     public String toString() {
         return "WxFpxx{" +
@@ -87,6 +98,7 @@ public class WxFpxx {
                 ", gsdm='" + gsdm + '\'' +
                 ", code='" + code + '\'' +
                 ", wxtype='" + wxtype + '\'' +
+                ", kplsh='" + kplsh + '\'' +
                 '}';
     }
 
