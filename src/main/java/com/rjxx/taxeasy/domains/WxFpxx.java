@@ -32,6 +32,10 @@ public class WxFpxx {
 
     @Column(name = "code")
     private String code;
+
+    @Column(name = "wxtype")
+    private String wxtype;
+
     public String getOrderNo() {
         return orderNo;
     }
@@ -82,7 +86,16 @@ public class WxFpxx {
                 ", tqm='" + tqm + '\'' +
                 ", gsdm='" + gsdm + '\'' +
                 ", code='" + code + '\'' +
+                ", wxtype='" + wxtype + '\'' +
                 '}';
+    }
+
+    public String getWxtype() {
+        return wxtype;
+    }
+
+    public void setWxtype(String wxtype) {
+        this.wxtype = wxtype;
     }
 
     public String getOpenId() {

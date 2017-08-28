@@ -713,10 +713,15 @@ public class WeixinUtils {
             logger.info("logourl---" + pp.getWechatLogoUrl());
             logger.info("插入卡包的模板id-------" + card_id);
             //保存卡券模板id进xf表
-
-            xf.setWechatCardId(card_id);
-            xfJpaDao.save(xf);
-            logger.info("保存新建的卡券模板id进入库-----------"+xf.getWechatCardId());
+            try {
+                xf.setWechatCardId(card_id);
+                xfJpaDao.save(xf);
+                logger.info("保存新建的卡券模板id进入库-----------"+xf.getWechatCardId());
+                //防止生成卡包模板和插卡时间间隔过短
+                //Thread.sleep(300000);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }else {
             card_id=xf.getWechatCardId();
             logger.info("直接获取到卡券模板id---------"+card_id);
@@ -782,8 +787,8 @@ public class WeixinUtils {
                 ma.put("num", kpspmx.getSps());//商品数量    必填
                 ma.put("unit", kpspmx.getSpdj());//商品单位  必填
                 ma.put("price", kpspmx.getSpdw());//商品单价 必填
-
                 info.add(ma);
+                //break;
             }
         }
         //上传PDF生成的一个发票s_media_id   关联发票PDF和发票卡券  必填
