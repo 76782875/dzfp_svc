@@ -6,6 +6,7 @@ import java.io.Serializable;
  * Created by xlm on 2017/3/14.
  */
 public class TaskInfo implements Serializable {
+    private static final long serialVersionUID = -8054692082716173379L;
     private int id = 0;
 
     /**任务名称*/

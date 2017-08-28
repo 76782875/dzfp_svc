@@ -9,14 +9,17 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
  * t_skp 实体类 税控盘信息表 由GenEntityMysql类自动生成 Fri Oct 14 08:53:29 GMT+08:00 2016
- * 
+ *
  * @ZhangBing
  */
 @Entity
 @Table(name = "t_skp")
 public class Skp implements Serializable {
 
-
+	/**
+	 *
+	 */
+	//private static final long serialVersionUID = 1L;
 
 	/**
 	 * 税控盘号
