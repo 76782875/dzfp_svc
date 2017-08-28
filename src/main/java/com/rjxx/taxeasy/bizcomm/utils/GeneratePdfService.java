@@ -559,6 +559,9 @@ public class GeneratePdfService {
                     break;
                 }
             }
+            if(invoiceItemList.size()!=kplsList.size()){
+                f=false;
+            }
             invoiceItems.setCount(invoiceItemList.size());
             invoiceItems.setInvoiceItem(invoiceItemList);
             returnData.setInvoiceItems(invoiceItems);
@@ -572,48 +575,44 @@ public class GeneratePdfService {
             returnData.setExtractCode(jyls.getTqm());
             InvoiceItems2 invoiceItems=new InvoiceItems2();
             List<InvoiceItem2> invoiceItemList=new ArrayList<>();
-
-            InvoiceItem2 invoiceItem=new InvoiceItem2();
-            if(kpls.getFpztdm().equals("00")){
-                invoiceItem.setInvoiceStatus("02");
-            }else if(kpls.getFpztdm().equals("05")){
-                invoiceItem.setInvoiceStatus("05");
+            boolean f=true;
+            for(int i=0;i<kplsList.size();i++){
+                Kpls kpls2=kplsList.get(i);
+                if(kpls2.getFpztdm().equals("00")||kpls2.getFpztdm().equals("05")){
+                    InvoiceItem2 invoiceItem=new InvoiceItem2();
+                    if(kpls2.getFpztdm().equals("00")){
+                        invoiceItem.setInvoiceStatus("02");
+                    }else if(kpls2.getFpztdm().equals("05")){
+                        invoiceItem.setInvoiceStatus("05");
+                    }
+                    invoiceItem.setInvoiceCode(kpls2.getFpdm());
+                    invoiceItem.setInvoiceNumber(kpls2.getFphm());
+                    SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMddHHmmss");
+                    if(kpls2.getKprq()==null){
+                        invoiceItem.setInvoiceDate(sdf.format(new Date()));
+                    }else{
+                        invoiceItem.setInvoiceDate(sdf.format(kpls2.getKprq()));
+                    }
+                    invoiceItem.setAmount(kpls2.getHjje().toString());
+                    invoiceItem.setTaxAmount(kpls2.getHjse().toString());
+                    invoiceItem.setPdfUrl(kpls2.getPdfurl());
+                    invoiceItemList.add(invoiceItem);
+                }else{
+                    f=false;
+                    break;
+                }
             }
-            invoiceItem.setInvoiceCode(kplsList.get(0).getFpdm());
-            invoiceItem.setInvoiceNumber(kplsList.get(0).getFphm());
-            SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMddHHmmss");
-            if(kpls.getKprq()==null){
-                invoiceItem.setInvoiceDate(sdf.format(new Date()));
-            }else{
-                invoiceItem.setInvoiceDate(sdf.format(kpls.getKprq()));
+            if(invoiceItemList.size()!=kplsList.size()){
+                f=false;
             }
-            invoiceItem.setAmount(kplsList.get(0).getHjje().toString());
-            invoiceItem.setTaxAmount(kplsList.get(0).getHjse().toString());
-            invoiceItem.setPdfUrl(kplsList.get(0).getPdfurl());
-          /*  kpls.setJylsh("");
-            Kpls ypkpls=kplsService.findByhzfphm(kpls);
-            InvoiceItem2 ypinvoiceItem=new InvoiceItem2();
-            if(ypkpls.getFpztdm().equals("02")){
-                ypinvoiceItem.setInvoiceStatus("01");
-            }else if(ypkpls.getFpztdm().equals("00")){
-                ypinvoiceItem.setInvoiceStatus("00");
-            }*/
-           /* ypinvoiceItem.setInvoiceCode(ypkpls.getFpdm());
-            ypinvoiceItem.setInvoiceNumber(ypkpls.getFphm());
-            if(ypkpls.getKprq()==null){
-                ypinvoiceItem.setInvoiceDate(sdf.format(new Date()));
-            }else{
-                ypinvoiceItem.setInvoiceDate(sdf.format(ypkpls.getKprq()));
-            }*/
-           // ypinvoiceItem.setAmount(ypkpls.getHjje().toString());
-           // ypinvoiceItem.setTaxAmount(ypkpls.getHjse().toString());
-            //ypinvoiceItem.setPdfUrl(ypkpls.getPdfurl());
-            invoiceItemList.add(invoiceItem);
-            //invoiceItemList.add(ypinvoiceItem);
             invoiceItems.setCount(invoiceItemList.size());
             invoiceItems.setInvoiceItem(invoiceItemList);
             returnData.setInvoiceItems(invoiceItems);
-            Message=XmlJaxbUtils.toXml(returnData);
+            if(f){
+                Message=XmlJaxbUtils.toXml(returnData);
+            }else{
+                Message="";
+            }
 
         }else if(kpls.getFpczlxdm().equals("14")){
             Map parameter =new HashMap();
