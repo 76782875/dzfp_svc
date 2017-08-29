@@ -449,11 +449,11 @@ public class GeneratePdfService {
                     InvoiceItem3 invoiceItem=new InvoiceItem3();
                     if(kpls2.getFpztdm().equals("00")){
                         invoiceItem.setReturnCode("0000");
-                        invoiceItem.setInvoiceStatus("正常发票");
+                        invoiceItem.setInvoiceStatus("00");
                         invoiceItem.setReturnMessage("");
                     }else if(kpls2.getFpztdm().equals("05")){
                         invoiceItem.setReturnCode("9999");
-                        invoiceItem.setInvoiceStatus("开具失败");
+                        invoiceItem.setInvoiceStatus("05");
                         invoiceItem.setReturnMessage(kpls2.getErrorReason());
                     }
                     invoiceItem.setInvoiceCode(kpls2.getFpdm());
@@ -496,11 +496,11 @@ public class GeneratePdfService {
             InvoiceItem3 invoiceItem=new InvoiceItem3();
             if(kpls.getFpztdm().equals("00")){
                 invoiceItem.setReturnCode("0000");
-                invoiceItem.setInvoiceStatus("正常发票");
+                invoiceItem.setInvoiceStatus("00");
                 invoiceItem.setReturnMessage("");
             }else if(kpls.getFpztdm().equals("05")){
                 invoiceItem.setReturnCode("9999");
-                invoiceItem.setInvoiceStatus("开具失败");
+                invoiceItem.setInvoiceStatus("05");
                 invoiceItem.setReturnMessage(kpls.getErrorReason());
             }
             invoiceItem.setInvoiceCode(kpls.getFpdm());
@@ -522,11 +522,11 @@ public class GeneratePdfService {
             InvoiceItem3 ypinvoiceItem=new InvoiceItem3();
             if(ypkpls.getFpztdm().equals("02")){
                 ypinvoiceItem.setReturnCode("0000");
-                ypinvoiceItem.setInvoiceStatus("已红冲");
+                ypinvoiceItem.setInvoiceStatus("02");
                 ypinvoiceItem.setReturnMessage("");
             }else if(ypkpls.getFpztdm().equals("00")){
                 ypinvoiceItem.setReturnCode("0000");
-                ypinvoiceItem.setInvoiceStatus("正常发票");
+                ypinvoiceItem.setInvoiceStatus("00");
                 ypinvoiceItem.setReturnMessage("");
             }
             ypinvoiceItem.setInvoiceCode(ypkpls.getFpdm());
