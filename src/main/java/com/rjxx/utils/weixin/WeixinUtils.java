@@ -683,8 +683,16 @@ public class WeixinUtils {
         String access_token = (String) this.hqtk().get("access_token");
         Map weiXinData = this.zdcxstatus(order_id, access_token);
         if (null == weiXinData) {
-            logger.info("主动查询授权失败++++++++++++");
-            return null;
+            weiXinData.put("title",kpls.getGfmc());
+            weiXinData.put("tax_no",kpls.getGfsh());
+            weiXinData.put("email",kpls.getGfemail());
+            weiXinData.put("bank_type",kpls.getGfyh());
+            weiXinData.put("bank_no",kpls.getGfyhzh());
+            weiXinData.put("addr",kpls.getGfdz());
+            weiXinData.put("phone",kpls.getGfdh());
+
+            logger.info("主动查询授权没有数据++++++++++++");
+            logger.info(JSON.toJSONString(weiXinData));
         }
         //公司简称 品牌t_pp kpddm->skp->pid->ppmc
         if (null == kpls.getKpddm()) {
