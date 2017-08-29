@@ -533,7 +533,7 @@ public class PdfDocumentGenerator {
             imgbase64string = imgbase64string.replaceAll("\r\n", "");
             in_request.setBase64Image(imgbase64string);
             // classpath 中模板路径
-            String template = "config/templates/invoice.html";
+            String template = "config/templates/invoice2.html";
             //PdfDocumentGenerator pdfGenerator = new PdfDocumentGenerator();
             // 生成pdf
             generate(map, template, in_request, outputFile);
@@ -550,7 +550,7 @@ public class PdfDocumentGenerator {
             String signImagePath = ResourceLoader.getPath("config/images") + "/" + xfsh + ".png";
             PdfSignUtils.eInvoicePdfSign(sourcePdfPath, signImagePath, outputFile);
             //签章成功，删除源文件
-            new File(sourcePdfPath).delete();
+            //new File(sourcePdfPath).delete();
 
             //pdf生成jpg文件
             //先生成带章的pdf
