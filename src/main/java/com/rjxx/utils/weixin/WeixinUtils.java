@@ -686,6 +686,8 @@ public class WeixinUtils {
         if (null == weiXinData) {
             logger.info("主动查询授权没有数据++++++++++++");
             logger.info("开票流水为---"+JSON.toJSONString(kpls));
+            logger.info("====="+JSON.toJSONString(weiXinData));
+            logger.info("-------------"+kpls.getGfmc());
             weiXinData.put("title",kpls.getGfmc());
             weiXinData.put("tax_no",kpls.getGfsh());
             weiXinData.put("email",kpls.getGfemail());
