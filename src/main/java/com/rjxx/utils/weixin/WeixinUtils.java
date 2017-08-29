@@ -684,10 +684,10 @@ public class WeixinUtils {
         String access_token = (String) this.hqtk().get("access_token");
         Map weiXinData = this.zdcxstatus(order_id, access_token);
         if (null == weiXinData) {
-            logger.info("主动查询授权没有数据++++++++++++");
-            logger.info("开票流水为---"+JSON.toJSONString(kpls));
-            logger.info("====="+JSON.toJSONString(weiXinData));
-            logger.info("-------------"+kpls.getGfmc());
+            //logger.info("主动查询授权没有数据++++++++++++");
+            //logger.info("开票流水为---"+JSON.toJSONString(kpls));
+           // logger.info("====="+JSON.toJSONString(weiXinData));
+           // logger.info("-------------"+kpls.getGfmc());
             Map resultMap = new HashMap();
             resultMap.put("title",kpls.getGfmc());
             resultMap.put("tax_no",kpls.getGfsh());
@@ -697,8 +697,8 @@ public class WeixinUtils {
             resultMap.put("addr",kpls.getGfdz());
             resultMap.put("phone",kpls.getGfdh());
             weiXinData = resultMap;
-            logger.info(JSON.toJSONString(resultMap));
-            logger.info(JSON.toJSONString(weiXinData));
+           // logger.info(JSON.toJSONString(resultMap));
+           // logger.info(JSON.toJSONString(weiXinData));
         }
         //公司简称 品牌t_pp kpddm->skp->pid->ppmc
         if (null == kpls.getKpddm()) {
