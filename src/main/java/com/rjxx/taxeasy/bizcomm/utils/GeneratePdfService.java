@@ -420,6 +420,182 @@ public class GeneratePdfService {
         }
         return Message;
     }
+    public String CreateReturnMessage3(Integer kplsh) {
+
+        String Message="";
+        Kpls kpls=kplsService.findOne(kplsh);
+        Integer djh = kpls.getDjh();
+        Map param4 = new HashMap<>();
+        param4.put("djh", djh);
+        Jyls jyls = jylsService.findJylsByDjh(param4);
+        String ddh = jyls.getDdh(); // 查询原交易流水得ddh
+        Map params=new HashMap();
+        params.put("gsdm",kpls.getGsdm());
+        params.put("serialorder",kpls.getSerialorder());
+        List<Kpls> kplsList=kplsService.findKplsBySerialOrder(params);
+        if(kpls.getFpczlxdm().equals("11")){
+            ReturnData3 returnData=new ReturnData3();
+            OperationItem3 operationItem=new OperationItem3();
+            operationItem.setSerialNumber(kpls.getJylsh());
+            operationItem.setOrderNumber(ddh);
+            operationItem.setOperationType(kpls.getFpczlxdm());
+            operationItem.setBuyerID(jyls.getBz());
+            InvoiceItems3 invoiceItems=new InvoiceItems3();
+            List<InvoiceItem3> invoiceItemList=new ArrayList<>();
+            boolean f=true;
+            for(int i=0;i<kplsList.size();i++){
+                Kpls kpls2=kplsList.get(i);
+                if(kpls2.getFpztdm().equals("00")||kpls2.getFpztdm().equals("05")){
+                    InvoiceItem3 invoiceItem=new InvoiceItem3();
+                    if(kpls2.getFpztdm().equals("00")){
+                        invoiceItem.setReturnCode("0000");
+                        invoiceItem.setInvoiceStatus("正常发票");
+                        invoiceItem.setReturnMessage("");
+                    }else if(kpls2.getFpztdm().equals("05")){
+                        invoiceItem.setReturnCode("9999");
+                        invoiceItem.setInvoiceStatus("开具失败");
+                        invoiceItem.setReturnMessage(kpls2.getErrorReason());
+                    }
+                    invoiceItem.setInvoiceCode(kpls2.getFpdm());
+                    invoiceItem.setInvoiceNumber(kpls2.getFphm());
+                    SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMddHHmmss");
+                    if(kpls2.getKprq()==null){
+                        invoiceItem.setInvoiceDate(sdf.format(new Date()));
+                    }else{
+                        invoiceItem.setInvoiceDate(sdf.format(kpls2.getKprq()));
+                    }
+                    invoiceItem.setAmount(kpls2.getHjje().toString());
+                    invoiceItem.setTaxAmount(kpls2.getHjse().toString());
+                    invoiceItem.setPdfUrl(kpls2.getPdfurl());
+                    invoiceItem.setExtractCode(jyls.getTqm());
+                    invoiceItemList.add(invoiceItem);
+                }else{
+                    f=false;
+                    break;
+                }
+            }
+            invoiceItems.setCount(invoiceItemList.size());
+            invoiceItems.setInvoiceItem(invoiceItemList);
+            returnData.setOperationItem(operationItem);
+            returnData.setInvoiceItems(invoiceItems);
+            if(f){
+                Message=XmlJaxbUtils.toXml(returnData);
+            }else{
+                Message="";
+            }
+        }else if(kpls.getFpczlxdm().equals("12")){
+            ReturnData3 returnData=new ReturnData3();
+            OperationItem3 operationItem=new OperationItem3();
+            operationItem.setSerialNumber(kpls.getJylsh());
+            operationItem.setOrderNumber(ddh);
+            operationItem.setOperationType(kpls.getFpczlxdm());
+            operationItem.setBuyerID(jyls.getBz());
+            InvoiceItems3 invoiceItems=new InvoiceItems3();
+            List<InvoiceItem3> invoiceItemList=new ArrayList<>();
+
+            InvoiceItem3 invoiceItem=new InvoiceItem3();
+            if(kpls.getFpztdm().equals("00")){
+                invoiceItem.setReturnCode("0000");
+                invoiceItem.setInvoiceStatus("正常发票");
+                invoiceItem.setReturnMessage("");
+            }else if(kpls.getFpztdm().equals("05")){
+                invoiceItem.setReturnCode("9999");
+                invoiceItem.setInvoiceStatus("开具失败");
+                invoiceItem.setReturnMessage(kpls.getErrorReason());
+            }
+            invoiceItem.setInvoiceCode(kpls.getFpdm());
+            invoiceItem.setInvoiceNumber(kpls.getFphm());
+            SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMddHHmmss");
+            if(kpls.getKprq()==null){
+                invoiceItem.setInvoiceDate(sdf.format(new Date()));
+            }else{
+                invoiceItem.setInvoiceDate(sdf.format(kpls.getKprq()));
+            }
+            invoiceItem.setAmount(kpls.getHjje().toString());
+            invoiceItem.setTaxAmount(kpls.getHjse().toString());
+            invoiceItem.setPdfUrl(kpls.getPdfurl());
+            invoiceItem.setExtractCode(jyls.getTqm());
+            Kpls parms=new Kpls();
+            parms.setFphm(kpls.getHzyfphm());
+            parms.setFpdm(kpls.getHzyfpdm());
+            Kpls ypkpls=kplsService.findByfphm(kpls);
+            InvoiceItem3 ypinvoiceItem=new InvoiceItem3();
+            if(ypkpls.getFpztdm().equals("02")){
+                ypinvoiceItem.setReturnCode("0000");
+                ypinvoiceItem.setInvoiceStatus("已红冲");
+                ypinvoiceItem.setReturnMessage("");
+            }else if(ypkpls.getFpztdm().equals("00")){
+                ypinvoiceItem.setReturnCode("0000");
+                ypinvoiceItem.setInvoiceStatus("正常发票");
+                ypinvoiceItem.setReturnMessage("");
+            }
+            ypinvoiceItem.setInvoiceCode(ypkpls.getFpdm());
+            ypinvoiceItem.setInvoiceNumber(ypkpls.getFphm());
+            if(ypkpls.getKprq()==null){
+                ypinvoiceItem.setInvoiceDate(sdf.format(new Date()));
+            }else{
+                ypinvoiceItem.setInvoiceDate(sdf.format(ypkpls.getKprq()));
+            }
+            ypinvoiceItem.setAmount(ypkpls.getHjje().toString());
+            ypinvoiceItem.setTaxAmount(ypkpls.getHjse().toString());
+            ypinvoiceItem.setPdfUrl(ypkpls.getPdfurl());
+            ypinvoiceItem.setExtractCode(jyls.getTqm());
+            invoiceItemList.add(invoiceItem);
+            invoiceItemList.add(ypinvoiceItem);
+            invoiceItems.setCount(invoiceItemList.size());
+            invoiceItems.setInvoiceItem(invoiceItemList);
+            returnData.setOperationItem(operationItem);
+            returnData.setInvoiceItems(invoiceItems);
+            Message=XmlJaxbUtils.toXml(returnData);
+
+        }else if(kpls.getFpczlxdm().equals("14")){
+
+            Map parameter =new HashMap();
+            parameter.put("fpdm",kpls.getFpdm());
+            parameter.put("fphm",kpls.getFphm());
+            Jyxxsq jyxxsq=jyxxsqService.findOneByParams(parameter);
+
+            ReturnData returnData=new ReturnData();
+            OperationItem operationItem=new OperationItem();
+            operationItem.setSerialNumber(jyxxsq.getJylsh());
+            operationItem.setOrderNumber(jyxxsq.getDdh());
+            operationItem.setOperationType(jyxxsq.getFpczlxdm());
+            InvoiceItems invoiceItems=new InvoiceItems();
+            List<InvoiceItem> invoiceItemList=new ArrayList<>();
+
+            InvoiceItem invoiceItem=new InvoiceItem();
+            if(kpls.getFpztdm().equals("08")){
+                invoiceItem.setReturnCode("0000");
+                invoiceItem.setInvoiceStatus("已作废");
+                invoiceItem.setReturnMessage("");
+            }else {
+                invoiceItem.setReturnCode("9999");
+                invoiceItem.setInvoiceStatus("开具失败");
+                invoiceItem.setReturnMessage(kpls.getErrorReason());
+            }
+            invoiceItem.setInvoiceCode(kpls.getFpdm());
+            invoiceItem.setInvoiceNumber(kpls.getFphm());
+            SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMddHHmmss");
+
+            if(kpls.getZfrq()==null){
+                invoiceItem.setInvoiceDate(sdf.format(new Date()));
+            }else{
+                invoiceItem.setInvoiceDate(sdf.format(kpls.getZfrq()));
+            }
+            invoiceItem.setAmount(kpls.getHjje().toString());
+            invoiceItem.setTaxAmount(kpls.getHjse().toString());
+            invoiceItem.setPdfUrl(kpls.getPdfurl());
+            invoiceItemList.add(invoiceItem);
+
+            invoiceItems.setCount(invoiceItemList.size());
+            invoiceItems.setInvoiceItem(invoiceItemList);
+            returnData.setOperationItem(operationItem);
+            returnData.setInvoiceItems(invoiceItems);
+            Message=XmlJaxbUtils.toXml(returnData);
+
+        }
+        return Message;
+    }
     private static String getSign(String QueryData, String key) {
         String signSourceData = "data=" + QueryData + "&key=" + key;
         String newSign = DigestUtils.md5Hex(signSourceData);
