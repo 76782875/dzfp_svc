@@ -688,14 +688,16 @@ public class WeixinUtils {
             logger.info("开票流水为---"+JSON.toJSONString(kpls));
             logger.info("====="+JSON.toJSONString(weiXinData));
             logger.info("-------------"+kpls.getGfmc());
-            weiXinData.put("title",kpls.getGfmc());
-            weiXinData.put("tax_no",kpls.getGfsh());
-            weiXinData.put("email",kpls.getGfemail());
-            weiXinData.put("bank_type",kpls.getGfyh());
-            weiXinData.put("bank_no",kpls.getGfyhzh());
-            weiXinData.put("addr",kpls.getGfdz());
-            weiXinData.put("phone",kpls.getGfdh());
-
+            Map resultMap = new HashMap();
+            resultMap.put("title",kpls.getGfmc());
+            resultMap.put("tax_no",kpls.getGfsh());
+            resultMap.put("email",kpls.getGfemail());
+            resultMap.put("bank_type",kpls.getGfyh());
+            resultMap.put("bank_no",kpls.getGfyhzh());
+            resultMap.put("addr",kpls.getGfdz());
+            resultMap.put("phone",kpls.getGfdh());
+            weiXinData = resultMap;
+            logger.info(JSON.toJSONString(resultMap));
             logger.info(JSON.toJSONString(weiXinData));
         }
         //公司简称 品牌t_pp kpddm->skp->pid->ppmc
