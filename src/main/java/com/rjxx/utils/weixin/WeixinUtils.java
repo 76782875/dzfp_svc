@@ -679,10 +679,13 @@ public class WeixinUtils {
     public String fpInsertCardBox(String order_id, String pdf_file_url, List<Kpspmx>
             kpspmxList, Kpls kpls) {
         logger.info("发票插入卡包开始");
+        logger.info("开票商品明细为---"+JSON.toJSONString(kpspmxList));
         //主动查询授权状态
         String access_token = (String) this.hqtk().get("access_token");
         Map weiXinData = this.zdcxstatus(order_id, access_token);
         if (null == weiXinData) {
+            logger.info("主动查询授权没有数据++++++++++++");
+            logger.info("开票流水为---"+JSON.toJSONString(kpls));
             weiXinData.put("title",kpls.getGfmc());
             weiXinData.put("tax_no",kpls.getGfsh());
             weiXinData.put("email",kpls.getGfemail());
@@ -691,7 +694,6 @@ public class WeixinUtils {
             weiXinData.put("addr",kpls.getGfdz());
             weiXinData.put("phone",kpls.getGfdh());
 
-            logger.info("主动查询授权没有数据++++++++++++");
             logger.info(JSON.toJSONString(weiXinData));
         }
         //公司简称 品牌t_pp kpddm->skp->pid->ppmc
