@@ -104,9 +104,9 @@ public class PdfDocumentGenerator {
             out = new FileOutputStream(outputFile);
             iTextRenderer = (ITextRenderer) ITextRendererObjectFactory
                     .getObjectPool().borrowObject();// 获取对象池中对象
-            ITextFontResolver fontResolver = iTextRenderer.getFontResolver();
-            fontResolver.addFont("/config/fonts/STKAITI.TTF", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
-            fontResolver.addFont("/config/fonts/STZhongsong.TTF", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+            //ITextFontResolver fontResolver = iTextRenderer.getFontResolver();
+            //fontResolver.addFont("/config/fonts/STKAITI.TTF", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+            //fontResolver.addFont("/config/fonts/STZhongsong.TTF", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
 
             SharedContext sharedContext = iTextRenderer.getSharedContext();
 
