@@ -606,6 +606,14 @@ public class GetDataService {
                                 && !orderDetails.selectSingleNode("ProductCode").equals("")) {
                             ProductCode = orderDetails.selectSingleNode("ProductCode").getText();
                         }
+                        if(ProductCode==null||ProductCode.equals("")){
+                            rsMap.put("jyxxsqList", jyxxsqList);
+                            rsMap.put("jymxsqList", jymxsqList);
+                            rsMap.put("jyzfmxList", jyzfmxList);
+                            rsMap.put("error","9003:开票信息有误，请联系商家");
+                            logger.info("------错误信息--------"+"9003:开票信息有误，请联系商家");
+                            return rsMap;
+                        }
                         jymxsq.setDdh(jyxxsq.getDdh());
                         jymxsq.setSpdm(ProductCode);
                         // 商品名称
