@@ -167,4 +167,20 @@ public class HttpUtils {
         }
         return retStr;
     }
+    public static String netWebService (String url,String methodName,String QueryData,String AppId,String key){
+        String result="";
+        try {
+            logger.info("----------发送的报文------"+QueryData);
+            JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+            Client client = dcf.createClient(url);
+            String sign= SignUtils.getSign(QueryData,key);
+            Object[] objects = client.invoke(methodName, AppId,QueryData,sign);
+            //输出调用结果
+            result = objects[0].toString();
+            logger.info("----------接收返回值------"+result.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 }
