@@ -183,11 +183,15 @@ public class GeneratePdfService {
                                 rep.put("tqm", jyls.getTqm());
                                 if (sjhm != null && !"".equals(sjhm)) {
                                     try {
+                                        if(jyls.getGsdm().equals("fwk")){
+
+                                        }else{
                                         saveMsg.saveMessage(jyls.getGsdm(), djh, sjhm, rep, "SMS_34725005", "泰易电子发票");
                                         Map param3 = new HashMap<>();
                                         param3.put("djh", djh);
                                         param3.put("dxzt", '1');
                                         jylsService.updateDxbz(param3);
+                                        }
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                         System.out.println("发送短信失败" + e.getMessage());
