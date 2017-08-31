@@ -42,6 +42,12 @@ public class Jyzfmx  implements Serializable {
 @Column(name="zffs_dm")
 	protected String zffsDm;
 
+	/**
+	 * 支付方式名称
+	 */
+	@Column(name="zffs_mc")
+	protected String zffsMc;
+
 /**
  * 对应支付方式所支付金额
  */ 
@@ -176,6 +182,14 @@ public class Jyzfmx  implements Serializable {
 
 	public void setPaynumber(String paynumber) {
 		this.paynumber = paynumber;
+	}
+
+	public String getZffsMc() {
+		return zffsMc;
+	}
+
+	public void setZffsMc(String zffsMc) {
+		this.zffsMc = zffsMc;
 	}
 }
 
