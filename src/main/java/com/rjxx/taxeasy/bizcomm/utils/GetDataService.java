@@ -175,8 +175,9 @@ public class GetDataService {
                     List<Jyxxsq> jyxxsqList = (List) parmsMap.get("jyxxsqList");
                     List<Jymxsq> jymxsqList = (List) parmsMap.get("jymxsqList");
                     List<Jyzfmx> jyzfmxList = (List) parmsMap.get("jyzfmxList");
-                    String tmp = this.checkAll(jyxxsqList, jymxsqList, jyzfmxList, gsdm);
-                    parmsMap.put("tmp", tmp);
+                   // String tmp = this.checkAll(jyxxsqList, jymxsqList, jyzfmxList, gsdm);
+                    String msg = checkOrderUtil.checkOrders(jyxxsqList,jymxsqList,jyzfmxList,gsdm,"");
+                    parmsMap.put("tmp", msg);
                 }
             }catch (Exception e){
                 System.out.println("request url=" + "" + ", exception, msg=" + e.getMessage());
