@@ -547,7 +547,7 @@ public class PdfDocumentGenerator {
                         + dateString + "/" + UUID.randomUUID().toString() + ".pdf";
             }
             outputFile = tempPath + outputFile_AbsolutePath;
-            String signImagePath = ResourceLoader.getPath("config/images") + "/" + xfsh + ".png";
+            String signImagePath = ResourceLoader.getPath("config/images") + "/"+"sign.png";
             PdfSignUtils.eInvoicePdfSign(sourcePdfPath, signImagePath, outputFile);
             //签章成功，删除源文件
             new File(sourcePdfPath).delete();
