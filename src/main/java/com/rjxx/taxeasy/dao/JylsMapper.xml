@@ -204,6 +204,9 @@
 		<if test="je != null">
 			and jshj = #{je}
 		</if>
+        <if test="sqlsh != null">
+            and sqlsh = #{sqlsh}
+        </if>
 		limit 1
 	</select>
     <select resultType="kpls" parameterType="map" id="findBykhh">
