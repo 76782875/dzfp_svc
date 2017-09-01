@@ -1,5 +1,6 @@
 package com.rjxx.taxeasy.bizcomm.utils;
 
+import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rjxx.utils.SignUtils;
 import com.rjxx.utils.XmlJaxbUtils;
@@ -13,6 +14,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -166,5 +169,66 @@ public class HttpUtils {
             System.out.println("exception in doPostSoap1_2" + e);
         }
         return retStr;
+    }
+
+    /**
+     * .net webService
+     * @param url
+     * @param methodName
+     * @param QueryData
+     * @param AppId
+     * @param key
+     * @return
+     */
+    public static String netWebService (String url,String methodName,String QueryData,String AppId,String key){
+        String result="";
+        try {
+            logger.info("----------发送的报文------"+QueryData);
+            JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+            Client client = dcf.createClient(url);
+            String sign= SignUtils.getSign(QueryData,key);
+            Object[] objects = client.invoke(methodName, AppId,QueryData,sign);
+            //输出调用结果
+            result = objects[0].toString();
+            logger.info("----------接收返回值------"+result.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+    public static String HttpPost_Basic(String url,String data){
+        HttpPost httpPost = new HttpPost(url);
+        CloseableHttpResponse response = null;
+        RequestConfig requestConfig = RequestConfig.custom().
+                setSocketTimeout(120*1000).setConnectionRequestTimeout(120*1000).setConnectTimeout(120*1000).build();
+        CloseableHttpClient httpClient = HttpClients.custom()
+                .setDefaultRequestConfig(requestConfig)
+                .build();
+        String strMessage = "";
+        BufferedReader reader = null;
+        StringBuffer buffer = new StringBuffer();
+        httpPost.addHeader("Content-Type", "application/json");
+        try {
+            StringEntity requestEntity = new StringEntity(data, "utf-8");
+            httpPost.setEntity(requestEntity);
+            response = httpClient.execute(httpPost, new BasicHttpContext());
+            if (response.getStatusLine().getStatusCode() != 200) {
+                logger.info("request url failed, http code=" + response.getStatusLine().getStatusCode()
+                        + ", url=" + url);
+                return null;
+            }
+            HttpEntity entity = response.getEntity();
+            if (entity != null) {
+                reader = new BufferedReader(new InputStreamReader(entity.getContent(), "utf-8"));
+                while ((strMessage = reader.readLine()) != null) {
+                    buffer.append(strMessage);
+                }
+            }
+            logger.info("接收返回值:" + buffer.toString());
+        }catch (IOException e){
+            logger.info("request url=" + url + ", exception, msg=" + e.getMessage());
+            e.printStackTrace();
+        }
+        return buffer.toString();
     }
 }

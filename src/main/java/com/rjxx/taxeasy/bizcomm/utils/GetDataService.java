@@ -175,8 +175,9 @@ public class GetDataService {
                     List<Jyxxsq> jyxxsqList = (List) parmsMap.get("jyxxsqList");
                     List<Jymxsq> jymxsqList = (List) parmsMap.get("jymxsqList");
                     List<Jyzfmx> jyzfmxList = (List) parmsMap.get("jyzfmxList");
-                    String tmp = this.checkAll(jyxxsqList, jymxsqList, jyzfmxList, gsdm);
-                    parmsMap.put("tmp", tmp);
+                   // String tmp = this.checkAll(jyxxsqList, jymxsqList, jyzfmxList, gsdm);
+                    String msg = checkOrderUtil.checkOrders(jyxxsqList,jymxsqList,jyzfmxList,gsdm,"");
+                    parmsMap.put("tmp", msg);
                 }
             }catch (Exception e){
                 System.out.println("request url=" + "" + ", exception, msg=" + e.getMessage());
@@ -1183,9 +1184,9 @@ public class GetDataService {
                     jyxxsq.setTqm(tqm);// 提取码  对应购物小票流水号
                     jyxxsq.setJylsh("JY" + new SimpleDateFormat("yyyyMMddHHmmssSS").format(new Date()));//交易流水号
                     //正式
-                    String kpddm = "A" + tqm.substring(0, 3);
+                    //String kpddm = "A" + tqm.substring(0, 3);
                     //测试
-                    //String kpddm=tqm.substring(0,3);
+                    String kpddm=tqm.substring(0,3);
                     jyxxsq.setKpddm(kpddm);
                     logger.info("开票点代码为----" + jyxxsq.getKpddm());
                     //根据公司代码、开票点代码查询税控盘
