@@ -184,12 +184,5 @@ public class Jyzfmx  implements Serializable {
 		this.paynumber = paynumber;
 	}
 
-	public String getZffsMc() {
-		return zffsMc;
-	}
-
-	public void setZffsMc(String zffsMc) {
-		this.zffsMc = zffsMc;
-	}
 }
 
