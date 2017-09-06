@@ -100,6 +100,15 @@ public class WeixinUtils {
         return result;
     }
 
+    /**
+     *
+     *
+     * @return
+     */
+    public String refreshToken(){
+        String refresh_token="";
+        return refresh_token;
+    }
     /*
     * 获取微信spappid
     *
@@ -156,11 +165,12 @@ public class WeixinUtils {
     拿到数据,调用微信接口获取微信授权链接,
     如果成功跳转页面,失败返回null
     */
-    public String getTiaoURL(String orderid, String money, String timestamp, String menDianId,String type) throws Exception {
+    public String getTiaoURL(String orderid, String money, String timestamp, String menDianId,String type,String access_token) throws Exception {
 
         String auth_url = "";
         WeixinUtils weixinUtils = new WeixinUtils();
-        System.out.println("传入的数据订单编号" + orderid + "金额" + money + "时间" + timestamp + "门店号" + menDianId);
+        logger.info("传入的数据订单编号" + orderid + "金额" + money + "时间" + timestamp + "门店号" + menDianId);
+        logger.info("传入的access_token--------" + access_token);
         String spappid = weixinUtils.getSpappid();//获取开票平台
         String ticket = weixinUtils.getTicket();
         double d = Double.valueOf(money) * 100;
@@ -199,7 +209,7 @@ public class WeixinUtils {
 
         String sj = JSON.toJSONString(nvps);
         System.out.println("封装数据" + sj);
-        String access_token = (String) weixinUtils.hqtk().get("access_token");//获取token
+        //String access_token = (String) weixinUtils.hqtk().get("access_token");//获取token
         String urls = "https://api.weixin.qq.com/card/invoice/getauthurl?access_token=" + access_token;
         String jsonStr3 = WeixinUtil.httpRequest(urls, "POST", sj);
         System.out.println("返回信息" + jsonStr3.toString());
