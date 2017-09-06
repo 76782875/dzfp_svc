@@ -68,6 +68,8 @@ public class WeixinUtils {
         Map<String, Object> result = new HashMap<String, Object>();
         // 获取token
         String turl = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" + WeiXinConstants.APP_ID + "&secret=" + WeiXinConstants.APP_SECRET;
+        logger.info("调用获取accesstoken的appid"+WeiXinConstants.APP_ID);
+        logger.info("调用获取accesstoken的appid----"+WeiXinConstants.APP_SECRET);
         HttpClient client = new DefaultHttpClient();
         HttpGet get = new HttpGet(turl);
         ObjectMapper jsonparer = new ObjectMapper();// 初始化解析json格式的对象
@@ -171,6 +173,8 @@ public class WeixinUtils {
         WeixinUtils weixinUtils = new WeixinUtils();
         logger.info("传入的数据订单编号" + orderid + "金额" + money + "时间" + timestamp + "门店号" + menDianId);
         logger.info("传入的access_token--------" + access_token);
+        String accesstoken = (String) weixinUtils.hqtk().get("access_token");//获取token
+        logger.info("调用weixinutils获取的"+accesstoken);
         String spappid = weixinUtils.getSpappid();//获取开票平台
         String ticket = weixinUtils.getTicket();
         double d = Double.valueOf(money) * 100;
