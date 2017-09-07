@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -794,14 +795,30 @@ public class WeixinUtils {
         user_card.put("invoice_user_data", invoice_user_data);
 
         weiXinInfo.setTitle((String) weiXinData.get("title"));//发票抬头    必填
-        weiXinInfo.setFee(kpls.getJshj() * 100);//卡包开票金额,价税合计  必填
+
+        BigDecimal bigjshj= new BigDecimal(kpls.getJshj().toString());
+        BigDecimal bigzh = bigjshj.multiply(new BigDecimal(100));
+        Double doujshj= new Double(bigzh.toString());
+        weiXinInfo.setFee(doujshj);//卡包开票金额,价税合计  必填
+        //weiXinInfo.setFee(kpls.getJshj()*100);//卡包开票金额,价税合计  必填
+
         logger.info("数据库开票录入时间----"+kpls.getKprq());
         logger.info("插入卡包时间-----"+String.valueOf(kpls.getKprq().getTime() / 1000));
         weiXinInfo.setBilling_time(String.valueOf(kpls.getKprq().getTime() / 1000));//开票时间  必填
         weiXinInfo.setBilling_no(kpls.getFpdm());//发票代码      必填
         weiXinInfo.setBilling_code(kpls.getFphm());//发票号码    必填
-        weiXinInfo.setFee_without_tax(kpls.getHjje() * 100);//不含税金额  必填
-        weiXinInfo.setTax(kpls.getHjse() * 100);//税额        必填
+
+        BigDecimal bighjje = new BigDecimal(kpls.getHjje().toString());
+        BigDecimal bigzzhjje = bighjje.multiply(new BigDecimal(100));
+        Double douhjje = new Double(bigzzhjje.toString());
+        weiXinInfo.setFee_without_tax(douhjje);//不含税金额  必填
+        //weiXinInfo.setFee_without_tax(kpls.getHjje()* 100);//不含税金额  必填
+
+        BigDecimal bighjse = new BigDecimal(kpls.getHjje().toString());
+        BigDecimal bigzzhjse = bighjse.multiply(new BigDecimal(100));
+        Double douhjse = new Double(bigzzhjse.toString());
+        weiXinInfo.setTax(douhjse);//税额        必填
+        // weiXinInfo.setTax(kpls.getHjse() * 100);//税额        必填
         weiXinInfo.setCheck_code(kpls.getJym());//校验码    必填
 //        weiXinInfo.setFee(20.00);//发票金额
 //        weiXinInfo.setTitle("测试");
@@ -914,6 +931,7 @@ public class WeixinUtils {
         //String access_token = (String) weixinUtils.hqtk().get("access_token");
         String URL = WeiXinConstants.dzfpInCard_url + access_token;
         System.out.println("电子发票插入卡包url为++++" + URL);
+        System.out.println("电子发票插入卡包封装的数据++++++++"+JSON.toJSONString(sj));
         String jsonStr = WeixinUtil.httpRequest(URL, "POST", JSON.toJSONString(sj));
         if (null != jsonStr) {
             ObjectMapper jsonparer = new ObjectMapper();// 初始化解析json格式的对象
