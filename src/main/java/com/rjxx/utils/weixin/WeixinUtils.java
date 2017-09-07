@@ -6,7 +6,6 @@ import com.rjxx.taxeasy.dao.PpJpaDao;
 import com.rjxx.taxeasy.dao.WxfpxxJpaDao;
 import com.rjxx.taxeasy.dao.XfJpaDao;
 import com.rjxx.taxeasy.domains.*;
-import com.rjxx.taxeasy.service.PpService;
 import com.rjxx.taxeasy.service.SkpService;
 import com.rjxx.utils.StringUtils;
 import com.rjxx.utils.TimeUtil;
@@ -29,6 +28,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -50,8 +50,7 @@ public class WeixinUtils {
     @Autowired
     private XfJpaDao xfJpaDao;
     /**
-     * 判断是不是微信浏览器
-     *
+     * 判断是否微信浏览器
      * @param
      * @return
      */
@@ -61,13 +60,16 @@ public class WeixinUtils {
         return res;
     }
 
-    /*
-    * 获取微信token
-    * */
+    /**
+     * 获取平台accessToken
+     * @return
+     */
     public Map hqtk() {
         Map<String, Object> result = new HashMap<String, Object>();
         // 获取token
         String turl = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" + WeiXinConstants.APP_ID + "&secret=" + WeiXinConstants.APP_SECRET;
+        logger.info("调用获取accesstoken的appid"+WeiXinConstants.APP_ID);
+        logger.info("调用获取accesstoken的appid----"+WeiXinConstants.APP_SECRET);
         HttpClient client = new DefaultHttpClient();
         HttpGet get = new HttpGet(turl);
         ObjectMapper jsonparer = new ObjectMapper();// 初始化解析json格式的对象
@@ -100,10 +102,10 @@ public class WeixinUtils {
         return result;
     }
 
-    /*
-    * 获取微信spappid
-    *
-    * */
+    /**
+     * 获取平台sappid
+     * @return
+     */
     public String getSpappid() {
 
         String invoice_url = "";
@@ -128,9 +130,10 @@ public class WeixinUtils {
         return null;
     }
 
-    /*
-    * 获取微信ticket
-    * */
+    /**
+     * 获取ticket
+     * @return
+     */
     public String getTicket() {
         String ticket = "";
         WeixinUtils weixinUtils = new WeixinUtils();
@@ -152,15 +155,21 @@ public class WeixinUtils {
         return null;
     }
 
-    /*
-    拿到数据,调用微信接口获取微信授权链接,
-    如果成功跳转页面,失败返回null
-    */
+    /**
+     * 获取微信授权页，跳转链接
+     * @param orderid
+     * @param money
+     * @param timestamp
+     * @param menDianId
+     * @param type
+     * @return
+     * @throws Exception
+     */
     public String getTiaoURL(String orderid, String money, String timestamp, String menDianId,String type) throws Exception {
 
         String auth_url = "";
         WeixinUtils weixinUtils = new WeixinUtils();
-        System.out.println("传入的数据订单编号" + orderid + "金额" + money + "时间" + timestamp + "门店号" + menDianId);
+        logger.info("传入的数据订单编号" + orderid + "金额" + money + "时间" + timestamp + "门店号" + menDianId);
         String spappid = weixinUtils.getSpappid();//获取开票平台
         String ticket = weixinUtils.getTicket();
         double d = Double.valueOf(money) * 100;
@@ -228,12 +237,9 @@ public class WeixinUtils {
         return auth_url;
     }
 
-    //微信授权跳转
     public static void main(String[] args) {
-
         //Map msp = new HashMap();
-        WeixinUtils weixinUtils = new WeixinUtils();
-
+       // WeixinUtils weixinUtils = new WeixinUtils();
         //System.out.println(""+in);
         //解析xml
            /* String data="<?xml version=\"1.0\" encoding=\"utf-8\"?>"
@@ -315,9 +321,12 @@ public class WeixinUtils {
 
     }
 
-    /*
-    * 主动查询授权完成状态
-    * */
+    /**
+     * 主动查询order_id授权状态
+     * @param order_id
+     * @param access_token
+     * @return
+     */
     public Map zdcxstatus(String order_id, String access_token) {
 
         Map resultMap = new HashMap();
@@ -429,11 +438,9 @@ public class WeixinUtils {
         return null;
     }
 
-
-    /*
-        * 设置授权页字段
-        * 一次性设置
-        * */
+    /**
+     * 微信授权页面 设置字段
+     */
     public void sqzd() {
         WeixinUtils weixinUtils = new WeixinUtils();
         String access_token = (String) weixinUtils.hqtk().get("access_token");
@@ -491,9 +498,9 @@ public class WeixinUtils {
         }
     }
 
-    /*
-    * 查看授权页面字段信息
-    * */
+    /**
+     * 查询授权页面字段
+     */
     public void cksqzd() {
         WeixinUtils weixinUtils = new WeixinUtils();
         String access_token = (String) weixinUtils.hqtk().get("access_token");
@@ -513,8 +520,13 @@ public class WeixinUtils {
         }
     }
 
-    /*拒绝开票*/
-
+    /**
+     * 拒绝开票
+     * @param order_id
+     * @param reason
+     * @param access_token
+     * @return
+     */
     public String jujuekp(String order_id, String reason, String access_token) {
         String msg = "";
         WeixinUtils weixinUtils = new WeixinUtils();
@@ -554,8 +566,13 @@ public class WeixinUtils {
         return msg;
     }
 
-    /*
-    * 创建发票卡卷模板*/
+    /**
+     * 创建发票卡券模板
+     * @param gsmc
+     * @param payee
+     * @param logo_url
+     * @return
+     */
     public String creatMb(String gsmc, String payee, String logo_url) {
         String card_id = "";
         logger.info("进入创建卡券模板----logo_url" + logo_url);
@@ -744,10 +761,17 @@ public class WeixinUtils {
         return dzfpInCard(order_id, card_id, pdf_file_url, weiXinData, kpspmxList, kpls, access_token);
     }
 
-    /*
-    * 将电子发票插入卡包
-    * */
-
+    /**
+     * 发票插入卡包
+     * @param order_id
+     * @param card_id
+     * @param pdf_file_url
+     * @param weiXinData
+     * @param kpspmxList
+     * @param kpls
+     * @param access_token
+     * @return
+     */
     public String dzfpInCard(String order_id, String card_id, String pdf_file_url, Map weiXinData, List<Kpspmx> kpspmxList, Kpls kpls, String access_token) {
         String appid = WeiXinConstants.APP_ID;
         logger.info("插入卡包方法进入-----------appid：" + appid);
@@ -771,14 +795,30 @@ public class WeixinUtils {
         user_card.put("invoice_user_data", invoice_user_data);
 
         weiXinInfo.setTitle((String) weiXinData.get("title"));//发票抬头    必填
-        weiXinInfo.setFee(kpls.getJshj() * 100);//卡包开票金额,价税合计  必填
+
+        BigDecimal bigjshj= new BigDecimal(kpls.getJshj().toString());
+        BigDecimal bigzh = bigjshj.multiply(new BigDecimal(100));
+        Double doujshj= new Double(bigzh.toString());
+        weiXinInfo.setFee(doujshj);//卡包开票金额,价税合计  必填
+        //weiXinInfo.setFee(kpls.getJshj()*100);//卡包开票金额,价税合计  必填
+
         logger.info("数据库开票录入时间----"+kpls.getKprq());
         logger.info("插入卡包时间-----"+String.valueOf(kpls.getKprq().getTime() / 1000));
         weiXinInfo.setBilling_time(String.valueOf(kpls.getKprq().getTime() / 1000));//开票时间  必填
         weiXinInfo.setBilling_no(kpls.getFpdm());//发票代码      必填
         weiXinInfo.setBilling_code(kpls.getFphm());//发票号码    必填
-        weiXinInfo.setFee_without_tax(kpls.getHjje() * 100);//不含税金额  必填
-        weiXinInfo.setTax(kpls.getHjse() * 100);//税额        必填
+
+        BigDecimal bighjje = new BigDecimal(kpls.getHjje().toString());
+        BigDecimal bigzzhjje = bighjje.multiply(new BigDecimal(100));
+        Double douhjje = new Double(bigzzhjje.toString());
+        weiXinInfo.setFee_without_tax(douhjje);//不含税金额  必填
+        //weiXinInfo.setFee_without_tax(kpls.getHjje()* 100);//不含税金额  必填
+
+        BigDecimal bighjse = new BigDecimal(kpls.getHjje().toString());
+        BigDecimal bigzzhjse = bighjse.multiply(new BigDecimal(100));
+        Double douhjse = new Double(bigzzhjse.toString());
+        weiXinInfo.setTax(douhjse);//税额        必填
+        // weiXinInfo.setTax(kpls.getHjse() * 100);//税额        必填
         weiXinInfo.setCheck_code(kpls.getJym());//校验码    必填
 //        weiXinInfo.setFee(20.00);//发票金额
 //        weiXinInfo.setTitle("测试");
@@ -891,6 +931,7 @@ public class WeixinUtils {
         //String access_token = (String) weixinUtils.hqtk().get("access_token");
         String URL = WeiXinConstants.dzfpInCard_url + access_token;
         System.out.println("电子发票插入卡包url为++++" + URL);
+        System.out.println("电子发票插入卡包封装的数据++++++++"+JSON.toJSONString(sj));
         String jsonStr = WeixinUtil.httpRequest(URL, "POST", JSON.toJSONString(sj));
         if (null != jsonStr) {
             ObjectMapper jsonparer = new ObjectMapper();// 初始化解析json格式的对象
@@ -921,9 +962,12 @@ public class WeixinUtils {
         return null;
     }
 
-    /*
-    * 上传PDF
-    * */
+    /**
+     * 上传PDF
+     * @param pdfurl
+     * @param pdf_file_url
+     * @return
+     */
     public String creatPDF(String pdfurl, String pdf_file_url) {
         String pdfUrlPath = "";
 
@@ -995,10 +1039,13 @@ public class WeixinUtils {
         return null;
     }
 
-    /*
-    *更新发票卡券状态
-    *
-    * */
+    /**
+     * 更新发票卡券状态
+     * @param card_id
+     * @param code
+     * @param reimburse_status
+     * @return
+     */
     public String updateStatus(String card_id, String code, String reimburse_status) {
         String msg = "";
         WeixinUtils weixinUtils = new WeixinUtils();
@@ -1036,6 +1083,11 @@ public class WeixinUtils {
         return msg;
     }
 
+    /**
+     * 微信解码code
+     * @param encrypt_code
+     * @return
+     */
     public String decode(String encrypt_code) {
         String code = "";
         if (null == encrypt_code) {
