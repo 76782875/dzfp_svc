@@ -9,7 +9,7 @@ public class WeiXinInfo {
 
     private String title;
 
-    private Double fee;
+    private String fee;
 
     private  String billing_time;
 
@@ -19,9 +19,9 @@ public class WeiXinInfo {
 
     private List info;
 
-    private  Double fee_without_tax;
+    private  String fee_without_tax;
 
-    private  Double tax;
+    private  String tax;
 
     private  String s_pdf_media_id;
 
@@ -96,12 +96,20 @@ public class WeiXinInfo {
         this.title = title;
     }
 
-    public Double getFee() {
+    public String getFee() {
         return fee;
     }
 
-    public void setFee(Double fee) {
+    public void setFee(String fee) {
         this.fee = fee;
+    }
+
+    public String getFee_without_tax() {
+        return fee_without_tax;
+    }
+
+    public void setFee_without_tax(String fee_without_tax) {
+        this.fee_without_tax = fee_without_tax;
     }
 
     public String getBilling_time() {
@@ -136,19 +144,12 @@ public class WeiXinInfo {
         this.info = info;
     }
 
-    public Double getFee_without_tax() {
-        return fee_without_tax;
-    }
 
-    public void setFee_without_tax(Double fee_without_tax) {
-        this.fee_without_tax = fee_without_tax;
-    }
-
-    public Double getTax() {
+    public String getTax() {
         return tax;
     }
 
-    public void setTax(Double tax) {
+    public void setTax(String tax) {
         this.tax = tax;
     }
 

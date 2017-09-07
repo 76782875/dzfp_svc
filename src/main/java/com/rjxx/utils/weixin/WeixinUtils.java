@@ -794,14 +794,17 @@ public class WeixinUtils {
         user_card.put("invoice_user_data", invoice_user_data);
 
         weiXinInfo.setTitle((String) weiXinData.get("title"));//发票抬头    必填
-        weiXinInfo.setFee(kpls.getJshj() * 100);//卡包开票金额,价税合计  必填
+        Double jshj=kpls.getJshj() * 100;
+        weiXinInfo.setFee(jshj.toString());//卡包开票金额,价税合计  必填
         logger.info("数据库开票录入时间----"+kpls.getKprq());
         logger.info("插入卡包时间-----"+String.valueOf(kpls.getKprq().getTime() / 1000));
         weiXinInfo.setBilling_time(String.valueOf(kpls.getKprq().getTime() / 1000));//开票时间  必填
         weiXinInfo.setBilling_no(kpls.getFpdm());//发票代码      必填
         weiXinInfo.setBilling_code(kpls.getFphm());//发票号码    必填
-        weiXinInfo.setFee_without_tax(kpls.getHjje() * 100);//不含税金额  必填
-        weiXinInfo.setTax(kpls.getHjse() * 100);//税额        必填
+        Double hjje = kpls.getHjje() * 100;
+        weiXinInfo.setFee_without_tax(hjje.toString());//不含税金额  必填
+        Double hjse = kpls.getHjse() * 100;
+        weiXinInfo.setTax(hjse.toString());//税额        必填
         weiXinInfo.setCheck_code(kpls.getJym());//校验码    必填
 //        weiXinInfo.setFee(20.00);//发票金额
 //        weiXinInfo.setTitle("测试");
