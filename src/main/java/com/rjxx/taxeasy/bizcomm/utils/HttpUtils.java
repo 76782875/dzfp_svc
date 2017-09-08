@@ -71,8 +71,8 @@ public class HttpUtils {
         }
         return result;
     }
-    static int socketTimeout = 30000;// 请求超时时间
-    static int connectTimeout = 30000;// 传输超时时间
+    static int socketTimeout = 180*1000;// 请求超时时间
+    static int connectTimeout = 180*1000;// 传输超时时间
 
 
     /**
@@ -112,7 +112,7 @@ public class HttpUtils {
             if (httpEntity != null) {
                 // 打印响应内容
                 retStr = EntityUtils.toString(httpEntity, "UTF-8");
-                System.out.println("response:" + retStr);
+                //System.out.println("response:" + retStr);
             }
             // 释放资源
             closeableHttpClient.close();
