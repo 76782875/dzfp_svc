@@ -814,7 +814,7 @@ public class WeixinUtils {
         weiXinInfo.setFee_without_tax(douhjje);//不含税金额  必填
         //weiXinInfo.setFee_without_tax(kpls.getHjje()* 100);//不含税金额  必填
 
-        BigDecimal bighjse = new BigDecimal(kpls.getHjje().toString());
+        BigDecimal bighjse = new BigDecimal(kpls.getHjse().toString());
         BigDecimal bigzzhjse = bighjse.multiply(new BigDecimal(100));
         Double douhjse = new Double(bigzzhjse.toString());
         weiXinInfo.setTax(douhjse);//税额        必填
