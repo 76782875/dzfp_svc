@@ -28,7 +28,13 @@ public interface KplsMapper {
 
     public List<Fpcxvo> findAllByParams(Map params);
 
+    public List<Fpcxvo> findAllByParams2(Map params);
+
     public List<Fpcxvo> findByPage(Pagination pagination);
+
+    public List<Fpcxvo> findByPage2(Map map);
+
+    public Integer findTotal(Map map);
 
     public void update(Map params);
 

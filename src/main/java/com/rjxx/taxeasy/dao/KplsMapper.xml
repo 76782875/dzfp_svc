@@ -197,6 +197,163 @@
         order by a.djh asc,a.kplsh asc
     </select>
 
+    <select id="findAllByParams2" parameterType="map" resultType="fpcxvo">
+        SELECT
+        (mx.spje+mx.spse) jshj,
+        mx.spje hjje,
+        mx.spse hjse,
+        a.kplsh,
+        a.fpdm,
+        a.fphm,
+        a.kprq,
+        a.pdfurl,
+        a.fpztdm,
+        a.errorReason,
+        c.fpzlmc,
+        d.fpczlxmc,
+        e.djh,
+        e.jylsh,
+        e.jylssj,
+        e.ddh,
+        e.fpzldm,
+        e.fpczlxdm,
+        e.xfid,
+        e.xfsh,
+        e.xfmc,
+        e.xfyh,
+        e.xfyhzh,
+        e.xflxr,
+        e.xfdz,
+        e.xfdh,
+        e.xfyb,
+        e.gfid,
+        e.gfsh,
+        e.gfmc,
+        e.gfyh,
+        e.gfyhzh,
+        e.gflxr,
+        e.gfdz,
+        e.gfdh,
+        e.gfyb,
+        e.gfemail,
+        e.sffsyj,
+        e.clztdm,
+        e.bz,
+        e.skr,
+        e.kpr,
+        e.fhr,
+        e.ssyf,
+        e.hztzdh,
+        e.yfpdm,
+        e.yfphm,
+        e.hsbz,
+        e.ykpjshj,
+        e.yxbz,
+        e.lrsj,
+        e.lrry,
+        e.xgsj,
+        e.xgry,
+        e.gfsjr,
+        e.gsdm,
+        e.tqm,
+        e.skpid,
+        e.gfsjh,
+        e.dxzt,
+        (
+        CASE
+        WHEN a.printflag = '1' THEN
+        '已打印'
+        ELSE
+        '未打印'
+        END
+        ) AS sfdy,
+        f.fpztmc fpzt,
+        mx.spmc,
+        mx.spje,
+        mx.spse
+        FROM
+        t_kpls a
+        JOIN (
+        SELECT
+        kp.kplsh
+        FROM
+        t_kpls kp
+        join t_jyls jy on jy.djh = kp.djh
+        WHERE 1=1
+        <if test="gsdm !=null and gsdm !=''">
+            and kp.gsdm = #{gsdm}
+        </if>
+        <if test="xfid !=null and xfid !=''">
+            and (kp.xfid in
+            <foreach collection="xfid" item="item" index="index" open="("
+                     separator="," close=")">#{xfid[${index}]}
+            </foreach>
+            or kp.xfid is null)
+        </if>
+        <if test="skpid !=null and skpid !=''">
+            and (kp.skpid in
+            <foreach collection="skpid" item="item" index="index" open="("
+                     separator="," close=")">#{skpid[${index}]}
+            </foreach>
+            or kp.skpid is null)
+        </if>
+        <if test="ddh != null and ddh !=''">
+            and jy.ddh = #{ddh}
+        </if>
+        <if test="fphm != null and fphm !=''">
+            and kp.fphm = #{fphm}
+        </if>
+        <if test="xfsh != null and xfsh !=''">
+            and kp.xfsh = #{xfsh}
+        </if>
+        <if test="sk != null and sk !=''">
+            and kp.skpid = #{sk}
+        </if>
+        <if test="kprqq != null and kprqq !='' and kprqz != null and kprqz !=''">
+            and kp.kprq between #{kprqq} and
+            date_add(str_to_date(#{kprqz},'%Y-%m-%d'),INTERVAL 1 day)
+        </if>
+        <if test="spmc != null and spmc != ''">
+            and mx.spmc like CONCAT('%',#{spmc},'%')
+        </if>
+        <if test="jzjtzt != null and jzjtzt != ''">
+            and EXISTS(select * from t_kpspmx n,t_sp g where a.kplsh =
+            n.kplsh and n.spdm = g.spdm and g.jzjtbz = #{jzjtzt})
+        </if>
+        <if test="printflag != null and printflag != ''">
+            and kp.printflag = #{printflag}
+        </if>
+        <if test="gfmc != null and gfmc != ''">
+            and kp.gfmc like CONCAT('%',#{gfmc},'%')
+        </if>
+        <if test="fpdm != null and fpdm !=''">
+            and kp.fpdm = #{fpdm}
+        </if>
+        <if test="fpzt != null and fpzt !=''">
+            and kp.fpztdm = #{fpzt}
+        </if>
+        <if test="fpczlx != null and fpczlx !=''">
+            and kp.fpczlxdm = #{fpczlx}
+        </if>
+        <if test="kplsh != null and kplsh !=''">
+            and (kp.kplsh in
+            <foreach collection="kplsh" item="item" index="index" open="("
+                     separator="," close=")">#{kplsh[${index}]}
+            </foreach>
+            or kp.kplsh is null)
+        </if>
+        ORDER BY
+        kp.kplsh  DESC
+        ) b ON a.kplsh = b.kplsh
+        LEFT JOIN t_fpzl c ON c.fpzldm = a.fpzldm
+        LEFT JOIN t_fpczlx d ON d.fpczlxdm = a.fpczlxdm
+        LEFT JOIN t_jyls e ON e.djh = a.djh
+        LEFT JOIN t_fpzt f ON f.fpztdm = a.fpztdm
+        join t_kpspmx mx on mx.kplsh = a.kplsh
+        ORDER BY
+        a.kplsh  DESC
+    </select>
+
     <select id="findByPage" parameterType="pagination" resultType="fpcxvo">
         SELECT a.jshj,a.hjje,a.hjse, a.kplsh, a.fpdm,a.fphm,a.kprq,a.pdfurl,a.fpztdm,a.errorReason, b.fpzlmc,c.fpczlxmc,e.djh,
         e.jylsh,
@@ -316,6 +473,236 @@
         </if>
         group by a.kplsh
         order by a.lrsj desc, a.fphm desc,a.fpdm desc
+    </select>
+
+    <select id="findByPage2" parameterType="map" resultType="fpcxvo">
+          SELECT
+            a.jshj,
+            a.hjje,
+            a.hjse,
+            a.kplsh,
+            a.fpdm,
+            a.fphm,
+            a.kprq,
+            a.pdfurl,
+            a.fpztdm,
+            a.errorReason,
+            c.fpzlmc,
+            d.fpczlxmc,
+            e.djh,
+            e.jylsh,
+            e.jylssj,
+            e.ddh,
+            e.fpzldm,
+            e.fpczlxdm,
+            e.xfid,
+            e.xfsh,
+            e.xfmc,
+            e.xfyh,
+            e.xfyhzh,
+            e.xflxr,
+            e.xfdz,
+            e.xfdh,
+            e.xfyb,
+            e.gfid,
+            e.gfsh,
+            e.gfmc,
+            e.gfyh,
+            e.gfyhzh,
+            e.gflxr,
+            e.gfdz,
+            e.gfdh,
+            e.gfyb,
+            e.gfemail,
+            e.sffsyj,
+            e.clztdm,
+            e.bz,
+            e.skr,
+            e.kpr,
+            e.fhr,
+            e.ssyf,
+            e.hztzdh,
+            e.yfpdm,
+            e.yfphm,
+            e.hsbz,
+            e.ykpjshj,
+            e.yxbz,
+            e.lrsj,
+            e.lrry,
+            e.xgsj,
+            e.xgry,
+            e.gfsjr,
+            e.gsdm,
+            e.tqm,
+            e.skpid,
+            e.gfsjh,
+            e.dxzt,
+            (
+            CASE
+            WHEN a.printflag = '1' THEN
+            '已打印'
+            ELSE
+            '未打印'
+            END
+            ) AS sfdy,
+            f.fpztmc fpzt
+            FROM
+            t_kpls a
+            JOIN (
+            SELECT
+            kp.kplsh
+            FROM
+            t_kpls kp
+            join t_jyls jy on jy.djh = kp.djh
+            WHERE 1=1
+        <if test="gsdm !=null and gsdm !=''">
+            and kp.gsdm = #{gsdm}
+        </if>
+        <if test="xfid !=null and xfid !=''">
+            and (kp.xfid in
+            <foreach collection="xfid" item="item" index="index" open="("
+                     separator="," close=")">#{xfid[${index}]}
+            </foreach>
+            or kp.xfid is null)
+        </if>
+        <if test="skpid !=null and skpid !=''">
+            and (kp.skpid in
+            <foreach collection="skpid" item="item" index="index" open="("
+                     separator="," close=")">#{skpid[${index}]}
+            </foreach>
+            or kp.skpid is null)
+        </if>
+        <if test="ddh != null and ddh !=''">
+            and jy.ddh = #{ddh}
+        </if>
+        <if test="fpzldm != null and fpzldm !=''">
+            and jy.fpzldm = #{fpzldm}
+        </if>
+        <if test="fphm != null and fphm !=''">
+            and kp.fphm = #{fphm}
+        </if>
+        <if test="kprqq != null and kprqq !='' and kprqz != null and kprqz !=''">
+            and kp.kprq between #{kprqq} and
+            date_add(str_to_date(#{kprqz},'%Y-%m-%d'),INTERVAL 1 day)
+        </if>
+        <!--<if test="spmc != null and spmc != ''">
+            and d.spmc like CONCAT('%',#{spmc},'%')
+        </if>-->
+        <!--<if test="jzjtzt != null and jzjtzt != ''">
+            and EXISTS(select * from t_kpspmx m,t_sp n where kp.kplsh =
+            d.kplsh and d.spdm = g.spdm and g.jzjtbz = #{jzjtzt})
+        </if>-->
+        <if test="printflag != null and printflag != ''">
+            and kp.printflag = #{printflag}
+        </if>
+        <if test="gfmc != null and gfmc !=''">
+            and kp.gfmc like CONCAT('%',#{gfmc},'%')
+        </if>
+        <if test="fpdm != null and fpdm !=''">
+            and kp.fpdm = #{fpdm}
+        </if>
+        <if test="fpzt != null and fpzt !=''">
+            and kp.fpztdm = #{fpzt}
+        </if>
+        <if test="fpczlx != null and fpczlx !=''">
+            and kp.fpczlxdm = #{fpczlx}
+        </if>
+        <if test="xfsh != null and xfsh !=''">
+            and kp.xfsh = #{xfsh}
+        </if>
+        <if test="sk != null and sk !=''">
+            and kp.skpid = #{sk}
+        </if>
+            ORDER BY
+            kp.kplsh  DESC
+            LIMIT #{start},
+            #{length}
+            ) b ON a.kplsh = b.kplsh
+            LEFT JOIN t_fpzl c ON c.fpzldm = a.fpzldm
+            LEFT JOIN t_fpczlx d ON d.fpczlxdm = a.fpczlxdm
+            LEFT JOIN t_jyls e ON e.djh = a.djh
+            LEFT JOIN t_fpzt f ON f.fpztdm = a.fpztdm
+            ORDER BY
+            a.kplsh  DESC
+    </select>
+
+    <select id="findTotal" parameterType="map" resultType="int">
+        SELECT
+        count(a.kplsh)
+        FROM
+        t_kpls a
+        JOIN (
+        SELECT
+        kp.kplsh
+        FROM
+        t_kpls kp
+        join t_jyls jy on jy.djh = kp.djh
+        WHERE 1=1
+        <if test="gsdm !=null and gsdm !=''">
+            and kp.gsdm = #{gsdm}
+        </if>
+        <if test="xfid !=null and xfid !=''">
+            and (kp.xfid in
+            <foreach collection="xfid" item="item" index="index" open="("
+                     separator="," close=")">#{xfid[${index}]}
+            </foreach>
+            or kp.xfid is null)
+        </if>
+        <if test="skpid !=null and skpid !=''">
+            and (kp.skpid in
+            <foreach collection="skpid" item="item" index="index" open="("
+                     separator="," close=")">#{skpid[${index}]}
+            </foreach>
+            or kp.skpid is null)
+        </if>
+        <if test="ddh != null and ddh !=''">
+            and jy.ddh = #{ddh}
+        </if>
+        <if test="fpzldm != null and fpzldm !=''">
+            and jy.fpzldm = #{fpzldm}
+        </if>
+        <if test="fphm != null and fphm !=''">
+            and kp.fphm = #{fphm}
+        </if>
+        <if test="kprqq != null and kprqq !='' and kprqz != null and kprqz !=''">
+            and kp.kprq between #{kprqq} and
+            date_add(str_to_date(#{kprqz},'%Y-%m-%d'),INTERVAL 1 day)
+        </if>
+        <!--<if test="spmc != null and spmc != ''">
+            and d.spmc like CONCAT('%',#{spmc},'%')
+        </if>-->
+        <!--<if test="jzjtzt != null and jzjtzt != ''">
+            and EXISTS(select * from t_kpspmx m,t_sp n where kp.kplsh =
+            d.kplsh and d.spdm = g.spdm and g.jzjtbz = #{jzjtzt})
+        </if>-->
+        <if test="printflag != null and printflag != ''">
+            and kp.printflag = #{printflag}
+        </if>
+        <if test="gfmc != null and gfmc !=''">
+            and kp.gfmc like CONCAT('%',#{gfmc},'%')
+        </if>
+        <if test="fpdm != null and fpdm !=''">
+            and kp.fpdm = #{fpdm}
+        </if>
+        <if test="fpzt != null and fpzt !=''">
+            and kp.fpztdm = #{fpzt}
+        </if>
+        <if test="fpczlx != null and fpczlx !=''">
+            and kp.fpczlxdm = #{fpczlx}
+        </if>
+        <if test="xfsh != null and xfsh !=''">
+            and kp.xfsh = #{xfsh}
+        </if>
+        <if test="sk != null and sk !=''">
+            and kp.skpid = #{sk}
+        </if>
+        ) b ON a.kplsh = b.kplsh
+        LEFT JOIN t_fpzl c ON c.fpzldm = a.fpzldm
+        LEFT JOIN t_fpczlx d ON d.fpczlxdm = a.fpczlxdm
+        LEFT JOIN t_jyls e ON e.djh = a.djh
+        LEFT JOIN t_fpzt f ON f.fpztdm = a.fpztdm
+        ORDER BY
+        a.kplsh  DESC
     </select>
     <update id="update" parameterType="map">
 		update t_kpls set printflag =
