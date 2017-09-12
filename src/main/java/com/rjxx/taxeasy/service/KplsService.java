@@ -205,6 +205,9 @@ public class KplsService {
     public List<Kpls> findAll(Map params) {
         return kplsMapper.findAll(params);
     }
+    public List<Kpls> findAllKpInfo(Map params) {
+        return kplsMapper.findAllKpInfo(params);
+    }
 
     public List<Kpls> findAllNeedRegeneratePdfKpls(Map params) {
         return kplsMapper.findAllNeedRegeneratePdfKpls(params);

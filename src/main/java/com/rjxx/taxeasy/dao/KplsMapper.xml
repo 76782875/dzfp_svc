@@ -1290,6 +1290,16 @@
             and jylsh = #{jylsh}
         </if>
     </select>
+    <select id="findAllKpInfo" parameterType="map" resultType="kpls">
+        select kplsh,djh,jylsh,fpzldm,jshj,pdfurl,gsdm,serialorder
+        from t_kpls where yxbz = '1' and pdfurl is not null
+        <if test="gsdm !=null and gsdm !=''">
+            and gsdm = #{gsdm}
+        </if>
+        <if test="kplsh !=null and kplsh !=''">
+            and kplsh = #{kplsh}
+        </if>
+    </select>
 
     <select id="findAllNeedRegeneratePdfKpls" parameterType="map" resultType="kpls">
 		select * from t_kpls where yxbz = '1' and fpztdm = '99'

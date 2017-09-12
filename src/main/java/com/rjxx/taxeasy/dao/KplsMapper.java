@@ -93,6 +93,8 @@ public interface KplsMapper {
 
     public List<Kpls> findAll(Map params);
 
+    public List<Kpls> findAllKpInfo(Map params);
+
     //更新调用接口返回数据
     public void updateReturnMes(Map params);
 
