@@ -92,9 +92,18 @@ public class KplsService {
         return kplsMapper.findAllByParams(params);
     }
 
+    public List<Fpcxvo> findAllByParams2(Map params){ return kplsMapper.findAllByParams2(params);}
+
     public List<Fpcxvo> findByPage(Pagination pagination) {
         return kplsMapper.findByPage(pagination);
     }
+
+    public List<Fpcxvo> findByPage2(Map params) {
+        return kplsMapper.findByPage2(params);
+    }
+
+
+    public Integer findTotal(Map map){return kplsMapper.findTotal(map);}
 
     public void update(Map params) {
         kplsMapper.update(params);
@@ -195,6 +204,9 @@ public class KplsService {
 
     public List<Kpls> findAll(Map params) {
         return kplsMapper.findAll(params);
+    }
+    public List<Kpls> findAllKpInfo(Map params) {
+        return kplsMapper.findAllKpInfo(params);
     }
 
     public List<Kpls> findAllNeedRegeneratePdfKpls(Map params) {

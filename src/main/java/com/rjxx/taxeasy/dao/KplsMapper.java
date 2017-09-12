@@ -28,7 +28,13 @@ public interface KplsMapper {
 
     public List<Fpcxvo> findAllByParams(Map params);
 
+    public List<Fpcxvo> findAllByParams2(Map params);
+
     public List<Fpcxvo> findByPage(Pagination pagination);
+
+    public List<Fpcxvo> findByPage2(Map map);
+
+    public Integer findTotal(Map map);
 
     public void update(Map params);
 
@@ -86,6 +92,8 @@ public interface KplsMapper {
     public List<Kpls> findByDjh(Kpls kpls);
 
     public List<Kpls> findAll(Map params);
+
+    public List<Kpls> findAllKpInfo(Map params);
 
     //更新调用接口返回数据
     public void updateReturnMes(Map params);

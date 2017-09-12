@@ -1184,6 +1184,7 @@ public class FpclService {
         jyls1.setXgsj(TimeUtil.getNowDate());
         jyls1.setSkpid(jyxxsq.getSkpid());
         jyls1.setSqlsh(jyxxsq.getSqlsh());
+        jyls1.setKhh(jyxxsq.getKhh());
         jylsService.save(jyls1);
         return jyls1;
     }

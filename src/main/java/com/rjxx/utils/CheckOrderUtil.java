@@ -1,11 +1,7 @@
 package com.rjxx.utils;
 
-import com.rjxx.taxeasy.domains.Jymxsq;
-import com.rjxx.taxeasy.domains.Jyxxsq;
-import com.rjxx.taxeasy.domains.Jyzfmx;
-import com.rjxx.taxeasy.domains.Skp;
-import com.rjxx.taxeasy.domains.Xf;
-import com.rjxx.taxeasy.domains.Zffs;
+import com.rjxx.taxeasy.domains.*;
+import com.rjxx.taxeasy.service.CszbService;
 import com.rjxx.taxeasy.service.JymxsqService;
 import com.rjxx.taxeasy.service.JyxxsqService;
 import com.rjxx.taxeasy.service.ZffsService;
@@ -19,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 @Service
@@ -32,6 +29,9 @@ public class CheckOrderUtil {
     
     @Autowired
     private ZffsService zffsService;
+
+    @Autowired
+    private CszbService cszbservice;
 
     public String checkBuyer(List<Jyxxsq> jyxxsqList, String gsdm, String Operation) {
         String result = "";
@@ -383,10 +383,14 @@ public class CheckOrderUtil {
                         jshj2 = jshj2.add(zfje);
                     }
                 }
-                //交易支付明细合计！=价税合计并且交易支付明细合计舍分！=价税合计
-                if (jshj2.compareTo(bd2) !=0 && jshj2.setScale(1, BigDecimal.ROUND_DOWN).compareTo(bd2) !=0) {
-                    result += "订单号为" + ddh + "的订单PayPrice合计与TotalAmount不等;";
+                Cszb cszb = cszbservice.getSpbmbbh(gsdm, jymxsq.getXfid(), jyxxsq.getSkpid(), "sfsfcl");
+                if (null == cszb || cszb.getCsz().equals("否")) {
+                    //交易支付明细合计！=价税合计并且交易支付明细合计舍分！=价税合计
+                    if (jshj2.compareTo(bd2) !=0 && jshj2.setScale(1, BigDecimal.ROUND_DOWN).compareTo(bd2) !=0) {
+                        result += "订单号为" + ddh + "的订单PayPrice合计与TotalAmount不等;";
+                    }
                 }
+
                 params.put("zffsList", zffsdmList);
                 List<Zffs> zffsList = zffsService.findAllByParams(params);
                 if(null == zffsList ||zffsList.isEmpty()){
