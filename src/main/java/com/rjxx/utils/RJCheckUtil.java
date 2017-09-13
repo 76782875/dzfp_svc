@@ -3,7 +3,9 @@ package com.rjxx.utils;
 import org.apache.commons.codec.binary.Base64;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -111,27 +113,22 @@ public class RJCheckUtil {
      * 通用验签方法
      * @param key   由容津信息生成，告知客户
      * @param q     按照二维码生成策略生成，每家公司生成策略不同
-     * @param args  生成q中的参数名，每家公司不同，需按顺序填入，si之前的所有参数。
-     *               例如一茶一坐：
-     *               参数总共有on,ot,pr,sn,si 五个，而我们只需要填入on,ot,pr,sn四个
      * @return      返回验签成功或失败
      * @author      wangyahui
      */
-    public static Boolean checkMD5ForAll(String key,String q,String... args){
+    public static Boolean checkMD5ForAll(String key,String q){
         try {
-            if(args.length==0||args==null){
-                return false;
-            }
             Map map  =decodeForAll(q);
             if(map==null){
                 return false;
             }
+            List args = (List) map.get("args");
             Integer size = (Integer) map.get("size");
             String sign = map.get("A" + (size-1)).toString();
             StringBuilder dbs = new StringBuilder();
-            if((size-1)==args.length){
-                for (int i=0;i<args.length;i++){
-                    dbs.append(args[i] + "=" + map.get("A" + i).toString()+"&");
+            if((size-1)==args.size()){
+                for (int i=0;i<args.size();i++){
+                    dbs.append(args.get(i) + "=" + map.get("A" + i).toString()+"&");
                 }
                 dbs.append("key="+key);
                 String MD5dbs = "";
@@ -166,11 +163,17 @@ public class RJCheckUtil {
             String paramsUrl = new String(bytes);
             Integer size = getSize(paramsUrl, "=");
             String[] paramsArray = paramsUrl.split("&");
+            List list = new ArrayList<>();
             Map map = new HashMap<>();
             map.put("size", size);
             for (int i=0;i<size;i++){
                 map.put("A" + i, paramsArray[i].substring(paramsArray[i].lastIndexOf("=") + 1));
+                String x=paramsArray[i].substring(0, paramsArray[i].lastIndexOf("="));
+                if(!"si".equals(x)){
+                    list.add(x);
+                }
             }
+            map.put("args", list);
             System.out.println("解析后的Q为："+map.toString());
             return map;
         } catch(Exception e){
@@ -239,8 +242,7 @@ public class RJCheckUtil {
     //测试验签
 //    public static void main(String[] args) {
 //        Boolean b =RJCheckUtil.checkMD5ForAll("3f7626939b146cc47c31daf43edc42bd",
-//                "b249MTUwNTIwNjkwNTEyNSZvdD0yMDE3MDkxMjE3MDE0NSZwcj0wLjEmc249c2huJnNwPTEyMzQ1Njc4OTEyMzQ1Njc4OTAmc2k9NkYxQTkzRTY5NjJDRkE3RjBCNURCMEMwODg1MDlCMjE=",
-//                "on","ot","pr","sn","sp");
+//                "b249MTUwNTI2Njg1NTIyMSZvdD0yMDE3MDkxMzA5NDA1NSZwcj0wLjEmc249c2huJnNwPTEyMzQ1Njc4OTEyMzQ1Njc4OTAmc2k9RTRGNkY3MThFNEI2ODY2RTJFNDVERUQ5MTk4NDk1QzY=");
 //        System.out.println(b);
 //    }
 
