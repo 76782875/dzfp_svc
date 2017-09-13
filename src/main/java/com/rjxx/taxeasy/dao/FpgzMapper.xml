@@ -11,6 +11,9 @@
         <if test="gsdm != null">
             and gsdm = #{gsdm}
         </if>
+        <if test="xfids != null">
+            and xfids = #{xfids}
+        </if>
         limit 1
     </select>
 
