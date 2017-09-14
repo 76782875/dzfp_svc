@@ -1311,7 +1311,7 @@ public class GetDataService {
                             jymxsq.setSpje(amount.doubleValue());//商品金额
                             //计算商品税额
                             BigDecimal spseAmount = bhsamount.multiply(taxrate);
-                            jymxsq.setSpse(spseAmount.doubleValue());
+                            //jymxsq.setSpse(spseAmount.doubleValue());
                             jymxsq.setJshj(amount.doubleValue());//税价合计为绿地传进的金额
                             //可开具金额  = amount
                             //jymxsq.setKkjje(amount.doubleValue());
