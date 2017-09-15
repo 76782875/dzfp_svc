@@ -40,7 +40,7 @@
   </select>
     <!--  根据kplsh查询明细 -->
     <select id="findSkMxList" parameterType="map" resultType="kpspmxvo">
-        select * from t_kpspmx where kplsh = #{kplsh} order by spmxxh
+        select * from t_kpspmx where kplsh = #{kplsh} order by spmxxh asc,fphxz desc
     </select>
    <select id="findMxNewList" parameterType="map" resultType="kpspmx">
        select * from t_kpspmx where 1 = 1 
