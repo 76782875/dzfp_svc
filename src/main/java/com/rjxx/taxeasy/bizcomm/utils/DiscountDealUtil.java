@@ -372,7 +372,7 @@ public class DiscountDealUtil {
 							// jymxsqCl.setFphxz("1");//折扣行
 							jymxsqClR = genNewJymxsqCl(jymxsqCl);
 							jymxsqClR.setSpje(jymxsqCl.getSpje() + jymxsqCl2.getSpje());
-							jymxsqClR.setSpse(jymxsqCl.getSpse() + jymxsqCl2.getSpse());
+							jymxsqClR.setSpse(((jymxsqCl.getSpse()==null || jymxsqCl.getSpse().equals(""))?0d:jymxsqCl.getSpse()) + ((jymxsqCl2.getSpse() == null || jymxsqCl2.getSpse().equals(""))?0d:jymxsqCl2.getSpse()));
 							jymxsqClR.setJshj(jymxsqCl.getJshj() + jymxsqCl2.getJshj());
 							jymxsqClR.setSps(jymxsqCl.getSps());
 							if(null != jymxsqClR.getSps() && !jymxsqClR.getSps().equals("")){
@@ -416,7 +416,8 @@ public class DiscountDealUtil {
 									&& kpspmx2.getSpmxxh() == kpspmx.getSpmxxh()&&kpspmx2.getFphxz().equals("1")) {
 								KpspmxR = genNewKpspmx(kpspmx);
 								KpspmxR.setSpje(kpspmx.getSpje() + kpspmx2.getSpje());
-								KpspmxR.setSpse(kpspmx.getSpse() + kpspmx2.getSpse());
+								//KpspmxR.setSpse(kpspmx.getSpse() + kpspmx2.getSpse());
+								KpspmxR.setSpse(((kpspmx.getSpse()==null || kpspmx.getSpse().equals(""))?0d:kpspmx.getSpse()) + ((kpspmx2.getSpse() == null || kpspmx2.getSpse().equals(""))?0d:kpspmx2.getSpse()));
 								KpspmxR.setSps(kpspmx.getSps());
 								if (null != KpspmxR.getSps() && !KpspmxR.getSps().equals("")) {
 									KpspmxR.setSpdj(KpspmxR.getSpje() / KpspmxR.getSps());
