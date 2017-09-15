@@ -90,7 +90,8 @@ public class SeperateInvoiceUtils {
             if (spdj == null) {
                 djWithoutTax = null;// 单价不含税
             } else {
-                djWithoutTax = div(spdj, spsl.add(new BigDecimal(1)));
+                //djWithoutTax = div(spdj, spsl.add(new BigDecimal(1)));
+                djWithoutTax = div(jeWithoutTax,mx.getSps());
             }
             mx.setSpje(jeWithoutTax);// 商品金额不含税
             mx.setSpse(jeTax);// 税额
