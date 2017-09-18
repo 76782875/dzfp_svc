@@ -140,9 +140,9 @@ public class WeixinUtils {
         String invoice_url = "";
         String spappid = "";
         String accessToken = "";
-        logger.info("---"+wxTokenJpaDao);
+        logger.info("--wxTokenJpaDao-------"+wxTokenJpaDao);
         WxToken wxToken = wxTokenJpaDao.findByFlag("01");
-        logger.info("---"+wxToken);
+        logger.info("--wxToken-"+wxToken);
         if(wxToken==null){
             WeixinUtils weixinUtils = new WeixinUtils();
             accessToken = (String) weixinUtils.hqtk().get("access_token");

@@ -1,6 +1,7 @@
 package com.rjxx.taxeasy.domains;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -8,9 +9,9 @@ import java.util.Date;
  */
 @Entity
 @Table(name="wx_token")
-public class WxToken {
+public class WxToken implements Serializable {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "create_time")
