@@ -294,6 +294,10 @@ public class CheckOrderUtil {
                     } else if (!Amount.matches("^\\-?[0-9]{0,15}+(.[0-9]{0,2})?$")) {
                         result += "订单号为" + ddh + "的订单Amount格式不正确！";
                     }
+
+                    if(RowType.equals("1")&&Double.valueOf(Amount)>=0){
+                        result += "订单号为" + ddh + "的订单,RowType为1时，Amount必须小于0！";
+                    }
                     // 商品税率
                     String TaxRate = String.valueOf(jymxsq.getSpsl());
                     if (TaxRate == null) {
