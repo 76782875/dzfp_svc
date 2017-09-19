@@ -146,9 +146,27 @@ public class WeixinUtils {
             ObjectMapper jsonparer = new ObjectMapper();// 初始化解析json格式的对象
             try {
                 Map map = jsonparer.readValue(jsonStr, Map.class);
-                invoice_url = (String) map.get("invoice_url");
-                spappid = invoice_url.split("&")[1].split("=")[1];
-                return spappid;
+                Integer errcode = (Integer) map.get("errcode");
+                if(null!= errcode && errcode.equals("0")){
+                    invoice_url = (String) map.get("invoice_url");
+                    spappid = invoice_url.split("&")[1].split("=")[1];
+                    return spappid;
+                }else if(null!= errcode && errcode.equals("40001")){
+                    Map map1 = this.hqtk();
+                    String access_token = (String) map1.get("access_token");
+                    String ticket = this.getTicket(access_token);
+                    WxToken wxToken = wxTokenJpaDao.findByFlag("01");
+                    WxToken wxToken1 = new WxToken();
+                    wxToken1.setId(wxToken.getId());
+                    wxToken1.setAccessToken(access_token);
+                    wxToken1.setTicket(ticket);
+                    wxToken1.setCreatTime(new Date());
+                    wxToken1.setFlag("01");
+                    wxTokenJpaDao.save(wxToken1);
+                }else{
+                    return null;
+                }
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -168,13 +186,13 @@ public class WeixinUtils {
      * @return
      * @throws Exception
      */
-    public String getTiaoURL(String orderid, String money, String timestamp, String menDianId,String type,String access_token,String ticket) throws Exception {
+    public String getTiaoURL(String orderid, String money, String timestamp, String menDianId,String type,String access_token,String ticket,String spappid) throws Exception {
 
         String auth_url = "";
-        WeixinUtils weixinUtils = new WeixinUtils();
+        //WeixinUtils weixinUtils = new WeixinUtils();
         logger.info("传入的数据订单编号" + orderid + "金额" + money + "时间" + timestamp + "门店号" + menDianId);
 
-        String spappid = weixinUtils.getSpappid(access_token);//获取开票平台
+        //String spappid = weixinUtils.getSpappid(access_token);//获取开票平台
         double d = Double.valueOf(money) * 100;
         Date dateTime = null;
         if (null != timestamp && !timestamp.equals("")) {
