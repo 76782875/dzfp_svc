@@ -135,23 +135,10 @@ public class WeixinUtils {
      * 获取平台sappid
      * @return
      */
-    public String getSpappid() {
+    public String getSpappid(String accessToken) {
 
         String invoice_url = "";
         String spappid = "";
-        String accessToken = "";
-        logger.info("--wxTokenJpaDao-------"+wxTokenJpaDao);
-        WxToken wxToken = wxTokenJpaDao.findByFlag("01");
-        logger.info("--wxToken-"+wxToken);
-        if(wxToken==null){
-            WeixinUtils weixinUtils = new WeixinUtils();
-            accessToken = (String) weixinUtils.hqtk().get("access_token");
-        }else {
-            accessToken= wxToken.getAccessToken();
-        }
-
-        //String accessToken = (String) weixinUtils.hqtk().get("access_token");
-        logger.info("存表里的微信token-----" + wxToken.getAccessToken());
         String url = "https://api.weixin.qq.com/card/invoice/seturl?access_token=" + accessToken;
         String jsonStr = WeixinUtil.httpRequest(url, "POST", JSON.toJSONString(""));
         System.out.println("返回信息" + jsonStr.toString());
@@ -181,25 +168,13 @@ public class WeixinUtils {
      * @return
      * @throws Exception
      */
-    public String getTiaoURL(String orderid, String money, String timestamp, String menDianId,String type) throws Exception {
+    public String getTiaoURL(String orderid, String money, String timestamp, String menDianId,String type,String access_token,String ticket) throws Exception {
 
         String auth_url = "";
         WeixinUtils weixinUtils = new WeixinUtils();
         logger.info("传入的数据订单编号" + orderid + "金额" + money + "时间" + timestamp + "门店号" + menDianId);
-        String spappid = weixinUtils.getSpappid();//获取开票平台
 
-        String ticket = "";
-        String access_token ="";
-
-        WxToken wxToken = wxTokenJpaDao.findByFlag("01");
-        if(wxToken==null){
-            access_token= (String) weixinUtils.hqtk().get("access_token");
-             ticket = weixinUtils.getTicket(access_token);
-        }else {
-            ticket= wxToken.getTicket();
-            access_token = wxToken.getAccessToken();
-        }
-
+        String spappid = weixinUtils.getSpappid(access_token);//获取开票平台
         double d = Double.valueOf(money) * 100;
         Date dateTime = null;
         if (null != timestamp && !timestamp.equals("")) {
@@ -236,7 +211,6 @@ public class WeixinUtils {
 
         String sj = JSON.toJSONString(nvps);
         System.out.println("封装数据" + sj);
-        //String access_token = (String) weixinUtils.hqtk().get("access_token");//获取token
         String urls = "https://api.weixin.qq.com/card/invoice/getauthurl?access_token=" + access_token;
         String jsonStr3 = WeixinUtil.httpRequest(urls, "POST", sj);
         System.out.println("返回信息" + jsonStr3.toString());
@@ -357,7 +331,7 @@ public class WeixinUtils {
 
         Map resultMap = new HashMap();
         WeixinUtils weixinUtils = new WeixinUtils();
-        String s_pappid = weixinUtils.getSpappid();
+        String s_pappid = weixinUtils.getSpappid(access_token);
 
         String URL = "https://api.weixin.qq.com/card/invoice/getauthdata?access_token=" + access_token;
 
@@ -574,18 +548,10 @@ public class WeixinUtils {
     public String jujuekp(String order_id, String reason, String access_token) {
         String msg = "";
         WeixinUtils weixinUtils = new WeixinUtils();
-
-        WxToken wxToken = wxTokenJpaDao.findByFlag("01");
-        if(wxToken==null){
-            access_token= (String) weixinUtils.hqtk().get("access_token");
-        }else {
-            access_token = wxToken.getAccessToken();
-        }
-
         //String access_token = (String) weixinUtils.hqtk().get("access_token");
         String jjkpURL = "https://api.weixin.qq.com/card/invoice/rejectinsert?access_token=" + access_token;
         Map mapInfo = new HashMap();
-        String s_pappid = weixinUtils.getSpappid();
+        String s_pappid = weixinUtils.getSpappid(access_token);
         String url = WeiXinConstants.RJXX_REDIRECT_URL;
         mapInfo.put("s_pappid", s_pappid);
         mapInfo.put("order_id", order_id);
@@ -625,19 +591,9 @@ public class WeixinUtils {
      * @param logo_url
      * @return
      */
-    public String creatMb(String gsmc, String payee, String logo_url) {
+    public String creatMb(String gsmc, String payee, String logo_url,String access_token) {
         String card_id = "";
         logger.info("进入创建卡券模板----logo_url" + logo_url);
-        WeixinUtils weixinUtils = new WeixinUtils();
-        //String access_token = (String) weixinUtils.hqtk().get("access_token");
-        String access_token ="";
-
-        WxToken wxToken = wxTokenJpaDao.findByFlag("01");
-        if(wxToken==null){
-            access_token= (String) weixinUtils.hqtk().get("access_token");
-        }else {
-            access_token = wxToken.getAccessToken();
-        }
 
         String creatURL = WeiXinConstants.CREAT_MUBAN_URL + access_token;
         System.out.println("创建卡卷模板url地址" + creatURL);
@@ -817,7 +773,7 @@ public class WeixinUtils {
         String card_id = "";
         if(null==xf.getWechatCardId()||xf.getWechatCardId().equals("")){
             //销方表没有值，调用生成卡券模板
-            card_id = this.creatMb(pp.getPpmc(), kpls.getXfmc(), pp.getWechatLogoUrl());
+            card_id = this.creatMb(pp.getPpmc(), kpls.getXfmc(), pp.getWechatLogoUrl(),access_token);
             logger.info("公司简称---" + pp.getPpmc());
             logger.info("logourl---" + pp.getWechatLogoUrl());
             logger.info("插入卡包的模板id-------" + card_id);
@@ -927,7 +883,7 @@ public class WeixinUtils {
         }
         //上传PDF生成的一个发票s_media_id   关联发票PDF和发票卡券  必填
         String pdfUrl = kpls.getPdfurl();
-        String s_media_id_pdf = weixinUtils.creatPDF(pdfUrl, pdf_file_url);
+        String s_media_id_pdf = weixinUtils.creatPDF(pdfUrl, pdf_file_url,access_token);
         if (null != s_media_id_pdf && StringUtils.isNotBlank(s_media_id_pdf)) {
             weiXinInfo.setS_pdf_media_id(s_media_id_pdf);
         }
@@ -1006,13 +962,6 @@ public class WeixinUtils {
             logger.info("获取token错误");
             return null;
         }
-        //String access_token = (String) weixinUtils.hqtk().get("access_token");
-        WxToken wxToken = wxTokenJpaDao.findByFlag("01");
-        if(wxToken==null){
-            access_token= (String) weixinUtils.hqtk().get("access_token");
-        }else {
-            access_token = wxToken.getAccessToken();
-        }
         String URL = WeiXinConstants.dzfpInCard_url + access_token;
         System.out.println("电子发票插入卡包url为++++" + URL);
         System.out.println("电子发票插入卡包封装的数据++++++++"+JSON.toJSONString(sj));
@@ -1052,7 +1001,7 @@ public class WeixinUtils {
      * @param pdf_file_url
      * @return
      */
-    public String creatPDF(String pdfurl, String pdf_file_url) {
+    public String creatPDF(String pdfurl, String pdf_file_url,String access_token ) {
         String pdfUrlPath = "";
 
         if (null == pdf_file_url) {
@@ -1076,15 +1025,7 @@ public class WeixinUtils {
 
         System.out.println("pdf路径问题" + pdfUrlPath);
         String s_media_id = "";
-        WeixinUtils weixinUtils = new WeixinUtils();
-        //String access_token = (String) weixinUtils.hqtk().get("access_token");
-        String access_token ="";
-        WxToken wxToken = wxTokenJpaDao.findByFlag("01");
-        if(wxToken==null){
-            access_token= (String) weixinUtils.hqtk().get("access_token");
-        }else {
-            access_token = wxToken.getAccessToken();
-        }
+
         String pdfURL = WeiXinConstants.CREAT_PDF_URL + access_token;
 
         HttpPost httpPost = new HttpPost(pdfURL);
@@ -1184,19 +1125,10 @@ public class WeixinUtils {
      * @param encrypt_code
      * @return
      */
-    public String decode(String encrypt_code) {
+    public String decode(String encrypt_code,String access_token) {
         String code = "";
         if (null == encrypt_code) {
             return null;
-        }
-        WeixinUtils weixinUtils = new WeixinUtils();
-        //String access_token = (String) weixinUtils.hqtk().get("access_token");
-        String access_token ="";
-        WxToken wxToken = wxTokenJpaDao.findByFlag("01");
-        if(wxToken==null){
-            access_token= (String) weixinUtils.hqtk().get("access_token");
-        }else {
-            access_token = wxToken.getAccessToken();
         }
         String URL = WeiXinConstants.decodeURL + access_token;
         Map map = new HashMap();
