@@ -5,6 +5,8 @@ import com.rjxx.comm.utils.ApplicationContextUtils;
 import com.rjxx.taxeasy.bizcomm.utils.pdf.PdfDocumentGenerator;
 import com.rjxx.taxeasy.domains.*;
 import com.rjxx.taxeasy.service.*;
+import com.rjxx.taxeasy.vo.messageParams;
+import com.rjxx.taxeasy.vo.smsEnvelopes;
 import com.rjxx.utils.StringUtils;
 import com.rjxx.utils.XmlJaxbUtils;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -184,16 +186,22 @@ public class GeneratePdfService {
                                 if (sjhm != null && !"".equals(sjhm)) {
                                     try {
                                         if(jyls.getGsdm().equals("fwk")){
-                                            Map messageMap=new HashMap();
+                                          /*  Map messageMap=new HashMap();
                                             messageMap.put("toPhoneNumber",jyls.getGfsjh());
                                             Map messageParams=new HashMap();
                                             messageParams.put("extractcode",jyls.getTqm());
                                             messageMap.put("messageParams",messageParams);
                                             messageMap.put("Messagetype","DigitalInvoiceCode");
                                             Map smsEnvelopesMap=new HashMap();
-                                            smsEnvelopesMap.put("smsEnvelopes",messageMap);
-                                            logger.info("-----短信模板-------"+JSON.toJSONString(smsEnvelopesMap));
-                                            HttpUtils.HttpPost_Basic("http://qa.m.vorwerk.com.cn/msgcenter/message/sms",JSON.toJSONString(smsEnvelopesMap));
+                                            smsEnvelopesMap.put("smsEnvelopes",messageMap);*/
+                                            smsEnvelopes mb=new smsEnvelopes();
+                                            mb.setToPhoneNumber(jyls.getGfsjh());
+                                            messageParams messageParams=new messageParams();
+                                            messageParams.setExtractcode(jyls.getTqm());
+                                            mb.setMessageType("DigitalInvoiceCode");
+                                            mb.setMessageParams(messageParams);
+                                            logger.info("-----短信模板-------"+JSON.toJSONString(mb));
+                                            HttpUtils.HttpPost_Basic("http://qa.m.vorwerk.com.cn/msgcenter/message/sms",JSON.toJSONString(mb));
                                         }else{
                                         saveMsg.saveMessage(jyls.getGsdm(), djh, sjhm, rep, "SMS_34725005", "泰易电子发票");
                                         Map param3 = new HashMap<>();
