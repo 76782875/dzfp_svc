@@ -147,11 +147,11 @@ public class WeixinUtils {
             try {
                 Map map = jsonparer.readValue(jsonStr, Map.class);
                 Integer errcode = (Integer) map.get("errcode");
-                if(null!= errcode && errcode.equals("0")){
+                if(null!= errcode && errcode == 0){
                     invoice_url = (String) map.get("invoice_url");
                     spappid = invoice_url.split("&")[1].split("=")[1];
                     return spappid;
-                }else if(null!= errcode && errcode.equals("40001")){
+                }else if(null!= errcode && errcode==40001){
                     Map map1 = this.hqtk();
                     String access_token = (String) map1.get("access_token");
                     String ticket = this.getTicket(access_token);
