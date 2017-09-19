@@ -184,7 +184,15 @@ public class GeneratePdfService {
                                 if (sjhm != null && !"".equals(sjhm)) {
                                     try {
                                         if(jyls.getGsdm().equals("fwk")){
-
+                                            Map messageMap=new HashMap();
+                                            messageMap.put("toPhoneNumber",jyls.getGfsjh());
+                                            Map messageParams=new HashMap();
+                                            messageParams.put("extractcode",jyls.getTqm());
+                                            messageMap.put("messageParams",messageParams);
+                                            messageMap.put("Messagetype","DigitalInvoiceCode");
+                                            Map smsEnvelopesMap=new HashMap();
+                                            smsEnvelopesMap.put("smsEnvelopes",messageMap);
+                                            HttpUtils.HttpPost_Basic("http://qa.m.vorwerk.com.cn/msgcenter/message/sms",JSON.toJSONString(smsEnvelopesMap));
                                         }else{
                                         saveMsg.saveMessage(jyls.getGsdm(), djh, sjhm, rep, "SMS_34725005", "泰易电子发票");
                                         Map param3 = new HashMap<>();
