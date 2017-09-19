@@ -200,8 +200,10 @@ public class GeneratePdfService {
                                             messageParams.setExtractcode(jyls.getTqm());
                                             mb.setMessageType("DigitalInvoiceCode");
                                             mb.setMessageParams(messageParams);
-                                            logger.info("-----短信模板-------"+JSON.toJSONString(mb));
-                                            HttpUtils.HttpPost_Basic("http://qa.m.vorwerk.com.cn/msgcenter/message/sms",JSON.toJSONString(mb));
+                                            Map smsEnvelopesMap=new HashMap();
+                                            smsEnvelopesMap.put("smsEnvelopes",mb);
+                                            logger.info("-----短信模板-------"+JSON.toJSONString(smsEnvelopesMap));
+                                            HttpUtils.HttpPost_Basic("http://qa.m.vorwerk.com.cn/msgcenter/message/sms",JSON.toJSONString(smsEnvelopesMap));
                                         }else{
                                         saveMsg.saveMessage(jyls.getGsdm(), djh, sjhm, rep, "SMS_34725005", "泰易电子发票");
                                         Map param3 = new HashMap<>();
