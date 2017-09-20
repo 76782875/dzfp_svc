@@ -234,8 +234,8 @@ public class RJCheckUtil {
         map.put("A1", new SimpleDateFormat("yyyyMMddHHmmss").format(new java.util.Date()));
         map.put("A2", "0.1");
         map.put("A3", "shn");
-        map.put("A4", "1234567891234567890");
-        String result = getQForAll(key, map,"on","ot","pr","sn","sp");
+//        map.put("A4", "1234567891234567890");
+        String result = getQForAll(key, map,"on","ot","pr","sn");
         System.out.println(result);
     }
 
