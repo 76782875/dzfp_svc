@@ -366,7 +366,7 @@ public class WeixinUtils {
                 Map map = jsonparer.readValue(jsonStr3, Map.class);
                 Integer errcode = (Integer) map.get("errcode");
                 System.out.println("code" + errcode);
-                if (null != errcode && errcode.equals(0)) {
+                if (null != errcode && errcode==0) {
                     System.out.println("返回数据成功！解析json数据");
                     System.out.println("返回数据" + map.toString());
                     String invoice_status = (String) map.get("invoice_status");
@@ -443,7 +443,7 @@ public class WeixinUtils {
                         return resultMap;
                     }
 
-                } else if (null != errcode && errcode.equals(72038)) {
+                } else if (null != errcode && errcode==72038) {
                     logger.info("主动查询授权完成状态失败,订单" + order_id + "没有授权,错误代码" + errcode);
                     System.out.println("主动查询授权完成状态失败,订单" + order_id + "没有授权,错误代码" + errcode);
                     return null;

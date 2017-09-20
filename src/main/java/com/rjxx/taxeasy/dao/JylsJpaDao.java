@@ -4,6 +4,8 @@ import com.rjxx.taxeasy.domains.Jyls;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.List;
+
 /**
  * 由GenJavaCode类自动生成
  * <p>
@@ -14,6 +16,6 @@ import org.springframework.data.repository.CrudRepository;
 public interface JylsJpaDao extends CrudRepository<Jyls, Integer> {
 
     @Query(nativeQuery = true,value = "select djh from t_jyls where tqm=?1 and gsdm=?2 and yxbz='1'")
-    Integer findDjhByTqmAndGsdm(String tqm, String gsdm);
+    List<Integer> findDjhByTqmAndGsdm(String tqm, String gsdm);
 }
 
