@@ -770,13 +770,13 @@ public class WeixinUtils {
            // logger.info(JSON.toJSONString(weiXinData));
         }
         //公司简称 品牌t_pp kpddm->skp->pid->ppmc
-        if (null == kpls.getKpddm()) {
-            logger.info("开票点代码为空！");
+        if (null == kpls.getSkpid()) {
+            logger.info("税控盘id为空！");
             return null;
         }
         Map skpMap = new HashMap();
-        logger.info("根据开票点代码查询税控盘-----");
-        skpMap.put("kpddm", kpls.getKpddm());
+        logger.info("根据税控盘id查询税控盘-----");
+        skpMap.put("kpdid", kpls.getSkpid());
         Skp skp = skpService.findOneByParams(skpMap);
         if (null == skp.getPid()) {
             logger.info("pid 为空----");
