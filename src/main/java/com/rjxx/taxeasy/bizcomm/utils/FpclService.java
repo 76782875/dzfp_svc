@@ -1185,6 +1185,7 @@ public class FpclService {
         jyls1.setSkpid(jyxxsq.getSkpid());
         jyls1.setSqlsh(jyxxsq.getSqlsh());
         jyls1.setKhh(jyxxsq.getKhh());
+        jyls1.setGfsjh(jyxxsq.getGfsjh());
         jylsService.save(jyls1);
         return jyls1;
     }
