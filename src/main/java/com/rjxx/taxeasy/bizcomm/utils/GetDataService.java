@@ -152,6 +152,7 @@ public class GetDataService {
             logger.info("-------------"+code+"----------"+gsxx.getSecretKey());
             nvps.put("ExtractCode", code);
             nvps.put("sign", Secret);
+            logger.info("请求报文----"+JSON.toJSONString(nvps));
             StringEntity requestEntity = new StringEntity(JSON.toJSONString(nvps), "utf-8");
             httpPost.setEntity(requestEntity);
             response = httpClient.execute(httpPost, new BasicHttpContext());
