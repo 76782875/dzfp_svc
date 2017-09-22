@@ -292,7 +292,9 @@ public class GetDataService {
                 List<Jymxsq> jymxsqList = (List) parmsMap.get("jymxsqList");
                 List<Jyzfmx> jyzfmxList = (List) parmsMap.get("jyzfmxList");
                 String msg = checkOrderUtil.checkOrders(jyxxsqList,jymxsqList,jyzfmxList,gsdm,"");
-                parmsMap.put("tmp", msg);
+                if(null!=msg&& !"".equals(msg)){
+                    parmsMap.put("msg",msg);
+                }
             }
         }catch (Exception e){
             System.out.println("msg=" + e.getMessage());

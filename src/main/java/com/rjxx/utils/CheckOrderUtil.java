@@ -263,23 +263,23 @@ public class CheckOrderUtil {
                     }
                     String ProductCode = (String) jymxsq.getSpdm();
                     if (ProductCode == null) {
-                        result += "订单号为" + ddh + "的订单ProductCode为空";
+                        result += "订单号为" + ddh + "的订单,第"+ j+1 + "行的商品税收分类编码为空!\r\n";
                     } else if (ProductCode.length() != 19) {
-                        result += "订单号为" + ddh + "的订单ProductCode不等于19位;";
+                        result += "订单号为" + ddh + "的订单,第"+ j+1 + "行的商品税收分类编码维护不正确，请联系商户!\r\n;";
                     }
                     // 商品名称
                     String ProductName = (String) jymxsq.getSpmc();
                     if (ProductName == null) {
-                        result += "订单号为" + ddh + "的订单ProductName为空！";
+                        result += "订单号为" + ddh + "的订单，第"+ j+1 + "行的商品名称为空！\r\n";
                     } else if (ProductName.length() > 50) {
-                        result += "订单号为" + ddh + "的订单ProductName太长！";
+                        result += "订单号为" + ddh + "的订单，第"+ j+1 + "行的商品名称维护不正确，请联系商户！\r\n";
                     }
                     // 发票行性质
                     String RowType = (String) jymxsq.getFphxz();
                     if (RowType == null) {
-                        result += "订单号为" + ddh + "的订单RowType为空;";
+                        result += "订单号为" + ddh + "的订单RowType为空！\r\n";
                     } else if (!("0".equals(RowType) || "1".equals(RowType) || "2".equals(RowType))) {
-                        result += "订单号为" + ddh + "的订单RowType只能填写0，1或2;";
+                        result += "订单号为" + ddh + "的订单RowType只能填写0，1或2!\r\n";
                     }
                     // 商品数
                     /*
@@ -290,28 +290,28 @@ public class CheckOrderUtil {
                     // 商品金额
                     String Amount = String.valueOf(jymxsq.getSpje());
                     if (Amount == null) {
-                        result += "订单号为" + ddh + "的订单商品Amount为空;";
+                        result += "订单号为" + ddh + "的订单,第"+ j+1+"行的商品金额为空\r\n";
                     } else if (!Amount.matches("^\\-?[0-9]{0,15}+(.[0-9]{0,2})?$")) {
-                        result += "订单号为" + ddh + "的订单Amount格式不正确！";
+                        result += "订单号为" + ddh + "的订单，第"+ j+1+"行的商品金额格式不正确！\r\n";
                     }
 
                     if(RowType.equals("1")&&Double.valueOf(Amount)>=0){
-                        result += "订单号为" + ddh + "的订单,RowType为1时，Amount必须小于0！";
+                        result += "订单号为" + ddh + "的订单,发票行性质为1时，Amount必须小于0！\r\n";
                     }
                     // 商品税率
                     String TaxRate = String.valueOf(jymxsq.getSpsl());
                     if (TaxRate == null) {
-                        result = "订单号为" + ddh + "的订单TaxRate为空;";
+                        result = "订单号为" + ddh + "的订单，第"+ j+1+"行的商品税率(TaxRate)为空;\r\n";
                     } else {
                         double taxRate = Double.valueOf(TaxRate);
                         if (!(taxRate == 0 || taxRate == 0.03 || taxRate == 0.04
                                 || taxRate == 0.06 || taxRate == 0.11 || taxRate == 0.13
                                 || taxRate == 0.17)) {
-                            result += "订单号为" + ddh + "的订单TaxRate格式有误;";
+                            result += "订单号为" + ddh + "的订单,商品税率(TaxRate)格式有误，请联系商户;\r\n";
                         }
                     }
                     if((jymxsq.getSpdj()==null&&jymxsq.getSps()!=null)||(jymxsq.getSps()==null&&jymxsq.getSpdj()!=null)){
-                        result += "订单号为" + ddh + "的订单第" + j+1+ "行商品单价，商品数量必须全部为空或者全部不为空！";
+                        result += "订单号为" + ddh + "的订单第" + j+1+ "行商品单价，商品数量必须全部为空或者全部不为空！\r\n";
                     }
                     if (jymxsq.getSpdj() != null && jymxsq.getSps() != null && jymxsq.getSpje() != null) {
                         double res = jymxsq.getSpdj() * jymxsq.getSps();
@@ -320,7 +320,7 @@ public class CheckOrderUtil {
                         BigDecimal big2 = new BigDecimal(jymxsq.getSpje().toString());
                         big2 = big2.setScale(2, BigDecimal.ROUND_HALF_UP);
                         if (big1.compareTo(big2) != 0) {
-                            result += "订单号为" + ddh + "的订单第" + j+1+ "行商品单价，商品数量，商品金额之间的计算校验不通过，请检查！";
+                            result += "订单号为" + ddh + "的订单第" + j+1+ "行商品单价，商品数量，商品金额之间的计算校验不通过，请检查！\r\n";
                         }
                     }
                     if(jymxsq.getSpdj() != null && jymxsq.getSps() != null && jymxsq.getSpje() != null){
@@ -329,13 +329,13 @@ public class CheckOrderUtil {
                         BigDecimal big1 = new BigDecimal(spdj.toString());
                         BigDecimal big2 = new BigDecimal(sps.toString());
                         if((big1.compareTo(new BigDecimal(0))==0)||(big2.compareTo(new BigDecimal(0))==0)){
-                            result += "订单号为" + ddh + "的订单第" + j+1+ "行商品单价或商品数量不能为零！";
+                            result += "订单号为" + ddh + "的订单第" + j+1+ "行商品单价或商品数量不能为零！\r\n";
                         }
                     }
                     // 商品税额
                     String TaxAmount = String.valueOf(jymxsq.getSpse());
                     if (TaxAmount != null && TaxAmount.equals("^\\-?[0-9]{0,15}+(.[0-9]{0,2})?$")) {
-                        result += "订单号为" + ddh + "的订单第" + j +1+ "条商品TaxAmount格式不正确！";
+                        result += "订单号为" + ddh + "的订单第" + j +1+ "条商品税额(TaxAmount)格式不正确！\r\n";
                     }
 
                     // 校验金额误差
@@ -350,7 +350,7 @@ public class CheckOrderUtil {
                     }
                     double sl = Double.valueOf(TaxRate);
                     if (TaxMark.equals("0") && je * sl - se >= 0.0625) {
-                        result += "订单号为" + ddh + "的订单(Amount，TaxRate，TaxAmount)之间的校验不通过";
+                        result += "订单号为" + ddh + "的订单(Amount，TaxRate，TaxAmount)之间的校验不通过!\r\n";
                     }
 
                     BigDecimal bd = new BigDecimal(je.toString());
@@ -361,13 +361,13 @@ public class CheckOrderUtil {
                     String ChargeTaxWay = jyxxsq.getZsfs();
                     String DeductAmount = String.valueOf(jymxsq.getKce());
                     if (ChargeTaxWay.equals("2") && (null == DeductAmount || DeductAmount.equals(""))) {
-                        result += "订单号为" + ddh + "的订单DeductAmount不能为空";
+                        result += "订单号为" + ddh + "的订单DeductAmount不能为空!\r\n";
                     }
                 }
             }
             BigDecimal bd2 = new BigDecimal(jyxxsq.getJshj().toString());
             if (bd2.setScale(2, BigDecimal.ROUND_HALF_UP).subtract(jshj.setScale(2, BigDecimal.ROUND_HALF_UP)).doubleValue() != 0.0) {
-                result += "订单号为" + ddh + "的订单TotalAmount，Amount，TaxAmount计算校验不通过";
+                result += "订单号为" + ddh + "的订单TotalAmount，Amount，TaxAmount计算校验不通过\r\n";
             }
             Map params = new HashMap();
             List zffsdmList = new ArrayList();
@@ -391,17 +391,17 @@ public class CheckOrderUtil {
                 if (null == cszb || cszb.getCsz().equals("否")) {
                     //交易支付明细合计！=价税合计并且交易支付明细合计舍分！=价税合计
                     if (jshj2.compareTo(bd2) !=0 && jshj2.setScale(1, BigDecimal.ROUND_DOWN).compareTo(bd2) !=0) {
-                        result += "订单号为" + ddh + "的订单PayPrice合计与TotalAmount不等;";
+                        result += "订单号为" + ddh + "的订单,商品单价合计与总金额不等;\r\n";
                     }
                 }
 
                 params.put("zffsList", zffsdmList);
                 List<Zffs> zffsList = zffsService.findAllByParams(params);
                 if(null == zffsList ||zffsList.isEmpty()){
-					result += "请去平台支付方式管理维护对应的支付方式;";
+					result += "请去平台支付方式管理维护对应的支付方式;\r\n";
 				}else{
                     if(zffsList.size() != zffsdmList.size()){
-                        result += "订单号为" + ddh + "的订单有支付方式未维护，请联系管理员进行维护";
+                        result += "订单号为" + ddh + "的订单有支付方式未维护，请联系管理员进行维护\r\n";
                     }
                 }
             }
