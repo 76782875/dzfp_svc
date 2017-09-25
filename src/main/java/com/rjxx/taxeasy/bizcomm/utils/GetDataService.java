@@ -248,6 +248,7 @@ public class GetDataService {
             return xml2;
     }
     public Map getDataForBqw(String code,String gsdm,String url){
+        logger.info("拉取数据参数值code"+code+"公司代码"+gsdm+"url地址"+url);
         Map parmsMap=new HashMap();
         String strMessage = "";
         BufferedReader reader = null;
@@ -292,7 +293,9 @@ public class GetDataService {
                 List<Jymxsq> jymxsqList = (List) parmsMap.get("jymxsqList");
                 List<Jyzfmx> jyzfmxList = (List) parmsMap.get("jyzfmxList");
                 String msg = checkOrderUtil.checkOrders(jyxxsqList,jymxsqList,jyzfmxList,gsdm,"");
-                parmsMap.put("tmp", msg);
+                if(null!=msg&& !"".equals(msg)){
+                    parmsMap.put("msg",msg);
+                }
             }
         }catch (Exception e){
             System.out.println("msg=" + e.getMessage());
