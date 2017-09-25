@@ -1377,7 +1377,7 @@ public class FpclService {
                     /**
                      * 模板名称，电子票税控服务器报文
                      */
-                    String templateName = "dzfp-xml.ftl";
+                    String templateName = "skdzfp-xml.ftl";
                     String result2 = TemplateUtils.generateContent(templateName, params2);
                     System.out.println(result2);
                     logger.debug("封装传开票通的报文" + result2);

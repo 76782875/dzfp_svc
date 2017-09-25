@@ -7,10 +7,9 @@ import com.rjxx.taxeasy.domains.*;
 import com.rjxx.taxeasy.service.*;
 import com.rjxx.taxeasy.vo.Spvo;
 import com.rjxx.utils.CheckOrderUtil;
-import com.rjxx.utils.StringUtils;
+import com.rjxx.utils.weixin.HttpClientUtil;
 import org.apache.axiom.om.OMElement;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang.time.DateUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -19,20 +18,17 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.protocol.BasicHttpContext;
-import org.bouncycastle.pqc.math.linearalgebra.BigEndianConversions;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.number.PercentFormatter;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -73,6 +69,11 @@ public class GetDataService {
         return newSign;
     }
     public String  xmldata(){
+        String xml3 = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                "\t\t\t\t<Responese>\n" +
+                "\t\t\t\t<ReturnCode>9002</ReturnCode>\n" +
+                "\t\t\t\t<ReturnMessage>未提取到交易数据，请稍后再试</ReturnMessage>\n" +
+                "\t\t\t\t</Responese>\n";
             String xml1="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                     "<Responese>\n" +
                     "\t<ReturnCode>Family_01</ReturnCode>\n" +
@@ -245,7 +246,7 @@ public class GetDataService {
                 "\t\t\t\t\t</ReturnData>\n" +
                 "\t\t\t\t</Responese>\n";
 
-            return xml2;
+            return xml3;
     }
     public Map getDataForBqw(String code,String gsdm,String url){
         logger.info("拉取数据参数值code"+code+"公司代码"+gsdm+"url地址"+url);
@@ -256,37 +257,45 @@ public class GetDataService {
         Map parms=new HashMap();
         parms.put("gsdm",gsdm);
         Gsxx gsxx=gsxxService.findOneByParams(parms);
-        Map resultMap = null;
-        HttpPost httpPost = new HttpPost(url);
-        CloseableHttpResponse response = null;
-        RequestConfig requestConfig = RequestConfig.custom().
-                setSocketTimeout(120*1000).setConnectionRequestTimeout(120*1000).setConnectTimeout(120*1000).build();
-        CloseableHttpClient httpClient = HttpClients.custom()
-                .setDefaultRequestConfig(requestConfig)
-                .build();
-        httpPost.addHeader("Content-Type", "application/json");
+
+
+//        HttpPost httpPost = new HttpPost(url);
+//        CloseableHttpResponse response = null;
+//        RequestConfig requestConfig = RequestConfig.custom().
+//                setSocketTimeout(120*1000).setConnectionRequestTimeout(120*1000).setConnectTimeout(120*1000).build();
+//        CloseableHttpClient httpClient = HttpClients.custom()
+//                .setDefaultRequestConfig(requestConfig)
+//                .build();
+//        httpPost.addHeader("Content-Type", "application/json");
         try {
-            Map nvps = new HashMap();
+//            Map nvps = new HashMap();
+//            String Secret = getSign(code,gsxx.getSecretKey());
+//            logger.info("-------------"+code+"----------"+gsxx.getSecretKey());
+//            nvps.put("ExtractCode", code);
+//            nvps.put("sign", Secret);
+//            logger.info("请求报文----"+JSON.toJSONString(nvps));
+//            StringEntity requestEntity = new StringEntity(JSON.toJSONString(nvps), "utf-8");
+//            httpPost.setEntity(requestEntity);
+//            response = httpClient.execute(httpPost, new BasicHttpContext());
+//            if (response.getStatusLine().getStatusCode() != 200) {
+//                System.out.println("request url failed");
+//            }
+//            HttpEntity entity = response.getEntity();
+//            if (entity != null) {
+//                reader = new BufferedReader(new InputStreamReader(entity.getContent(), "utf-8"));
+//                while ((strMessage = reader.readLine()) != null) {
+//                    buffer.append(strMessage);
+//                }
+//            }
+
             String Secret = getSign(code,gsxx.getSecretKey());
-            logger.info("-------------"+code+"----------"+gsxx.getSecretKey());
-            nvps.put("ExtractCode", code);
-            nvps.put("sign", Secret);
-            logger.info("请求报文----"+JSON.toJSONString(nvps));
-            StringEntity requestEntity = new StringEntity(JSON.toJSONString(nvps), "utf-8");
-            httpPost.setEntity(requestEntity);
-            response = httpClient.execute(httpPost, new BasicHttpContext());
-            if (response.getStatusLine().getStatusCode() != 200) {
-                System.out.println("request url failed");
-            }
-            HttpEntity entity = response.getEntity();
-            if (entity != null) {
-                reader = new BufferedReader(new InputStreamReader(entity.getContent(), "utf-8"));
-                while ((strMessage = reader.readLine()) != null) {
-                    buffer.append(strMessage);
-                }
-            }
-            System.out.println("接收返回值:" + buffer.toString());
-            parmsMap=interpretingForBqw(gsdm,buffer.toString());
+            Map map = new HashMap();
+            map.put("method","getOrderInfo");
+            map.put("ExtractCode",code);
+            map.put("sign",Secret);
+            String response = HttpClientUtil.doPost(url, map);
+            System.out.println("波奇网---接收返回值:" + response);
+            parmsMap=interpretingForBqw(gsdm,response);
             String error = (String) parmsMap.get("error");
             if(error==null) {
                 List<Jyxxsq> jyxxsqList = (List) parmsMap.get("jyxxsqList");
@@ -458,7 +467,9 @@ public class GetDataService {
                 }
                 Xf x = new Xf();
                 x.setGsdm(gsdm);
-                x.setXfsh(Identifier);
+                //x.setXfsh(Identifier);
+                //测试销方
+                x.setXfsh("500102010003698");
                 Xf xf = xfService.findOneByParams(x);
                 Map params=new HashMap();
                 params.put("xfid",xf.getId());
