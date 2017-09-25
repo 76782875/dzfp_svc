@@ -69,6 +69,11 @@ public class GetDataService {
         return newSign;
     }
     public String  xmldata(){
+        String xml3 = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                "\t\t\t\t<Responese>\n" +
+                "\t\t\t\t<ReturnCode>9002</ReturnCode>\n" +
+                "\t\t\t\t<ReturnMessage>未提取到交易数据，请稍后再试</ReturnMessage>\n" +
+                "\t\t\t\t</Responese>\n";
             String xml1="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                     "<Responese>\n" +
                     "\t<ReturnCode>Family_01</ReturnCode>\n" +
@@ -241,7 +246,7 @@ public class GetDataService {
                 "\t\t\t\t\t</ReturnData>\n" +
                 "\t\t\t\t</Responese>\n";
 
-            return xml2;
+            return xml3;
     }
     public Map getDataForBqw(String code,String gsdm,String url){
         logger.info("拉取数据参数值code"+code+"公司代码"+gsdm+"url地址"+url);
@@ -462,7 +467,9 @@ public class GetDataService {
                 }
                 Xf x = new Xf();
                 x.setGsdm(gsdm);
-                x.setXfsh(Identifier);
+                //x.setXfsh(Identifier);
+                //测试销方
+                x.setXfsh("500102010003698");
                 Xf xf = xfService.findOneByParams(x);
                 Map params=new HashMap();
                 params.put("xfid",xf.getId());
