@@ -248,6 +248,7 @@ public class GetDataService {
             return xml2;
     }
     public Map getDataForBqw(String code,String gsdm,String url){
+        logger.info("拉取数据参数值code"+code+"公司代码"+gsdm+"url地址"+url);
         Map parmsMap=new HashMap();
         String strMessage = "";
         BufferedReader reader = null;

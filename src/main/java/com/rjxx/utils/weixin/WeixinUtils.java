@@ -626,7 +626,7 @@ public class WeixinUtils {
         //weiXinMuBan.setLogo_url("http://mmbiz.qpic.cn/mmbiz_jpg/l249Gu1JJaJjZiauO138MD1d6dnglRlj1bicFTaNyyDGcAOgxMd2WoXLKvEn8icJiaiaibRJkgeBcsCODI4AYP7V6vPg/0");
         weiXinMuBan.setCustom_url_name("查看发票");
         weiXinMuBan.setCustom_url_sub_title("电子发票");
-        weiXinMuBan.setCustom_url(WeiXinConstants.fpInfoURL);//发票详情--正式
+        //weiXinMuBan.setCustom_url(WeiXinConstants.fpInfoURL);//发票详情--正式
         //weiXinMuBan.setCustom_url(WeiXinConstants.testfpInfoURL);//发票详情--测试
         weiXinMuBan.setPromotion_url_name("电票简介");
         weiXinMuBan.setPromotion_url_sub_title("看懂电子发票");
