@@ -486,7 +486,7 @@ public class GetDataService {
                 jyxxsq.setKpr(xf.getKpr());
                 jyxxsq.setSkr(xf.getSkr());
                 jyxxsq.setFhr(xf.getFhr());
-                jyxxsq.setXfsh(Identifier);
+                jyxxsq.setXfsh("500102010003698");
                 jyxxsq.setXfmc(Name);
                 jyxxsq.setXfdz(Address);
                 jyxxsq.setXfdh(TelephoneNo);
