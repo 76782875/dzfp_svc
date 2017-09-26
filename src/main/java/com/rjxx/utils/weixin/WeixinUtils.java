@@ -570,11 +570,11 @@ public class WeixinUtils {
         String jjkpURL = "https://api.weixin.qq.com/card/invoice/rejectinsert?access_token=" + access_token;
         Map mapInfo = new HashMap();
         String s_pappid = weixinUtils.getSpappid(access_token);
-        //String url = WeiXinConstants.RJXX_REDIRECT_URL;
+        String url = WeiXinConstants.RJXX_REDIRECT_URL;
         mapInfo.put("s_pappid", s_pappid);
         mapInfo.put("order_id", order_id);
         mapInfo.put("reason", reason);
-        //mapInfo.put("url", url);
+        mapInfo.put("url", url);
         String info = JSON.toJSONString(mapInfo);
         String jsonStr3 = WeixinUtil.httpRequest(jjkpURL, "POST", info);
         System.out.println("返回信息" + jsonStr3.toString());
