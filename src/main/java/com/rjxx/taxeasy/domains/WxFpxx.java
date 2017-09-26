@@ -39,7 +39,7 @@ public class WxFpxx {
     @Column(name = "kplsh")
     private String kplsh;
 
-    @Column(name = "weixin_orderno")
+    @Column(name = "weixinorderno")
     private String weixinOderno;
 
     @Column(name = "count")
