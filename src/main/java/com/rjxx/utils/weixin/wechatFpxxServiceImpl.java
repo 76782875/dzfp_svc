@@ -21,10 +21,12 @@ public class wechatFpxxServiceImpl {
         WxFpxx wxFpxx = wxfpxxJpaDao.selsetByOrderNo(orderNo);
         if(null!=wxFpxx){
             if(wxFpxx.getCount() == 0){
+                logger.info("没有进行过计数的"+orderNo);
                 wxFpxx.setWeixinOderno(orderNo);
                 wxfpxxJpaDao.save(wxFpxx);
                 return orderNo;
             }else {
+                logger.info("进行过计数的"+orderNo);
                 String weixinOrderno = orderNo +"-"+ wxFpxx.getCount();
                 wxFpxx.setWeixinOderno(weixinOrderno);
                 wxfpxxJpaDao.save(wxFpxx);
