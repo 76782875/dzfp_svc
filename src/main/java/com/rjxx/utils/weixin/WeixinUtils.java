@@ -566,7 +566,6 @@ public class WeixinUtils {
     public String jujuekp(String order_id, String reason, String access_token) {
         String msg = "";
         WeixinUtils weixinUtils = new WeixinUtils();
-        //String access_token = (String) weixinUtils.hqtk().get("access_token");
         String jjkpURL = "https://api.weixin.qq.com/card/invoice/rejectinsert?access_token=" + access_token;
         Map mapInfo = new HashMap();
         String s_pappid = weixinUtils.getSpappid(access_token);
@@ -588,7 +587,20 @@ public class WeixinUtils {
                 if (errcode == 0) {
                     logger.info("拒绝开票成功");
                     msg = "1";
-
+                    WxFpxx wxFpxx = wxfpxxJpaDao.selsetByOrderNo(order_id);
+                     int coun = wxFpxx.getCount()+ 1;
+//                     WxFpxx wxFpxx1 = new WxFpxx();
+//                     wxFpxx1.setTqm(wxFpxx.getTqm());
+//                     wxFpxx1.setGsdm(wxFpxx.getGsdm());
+//                     wxFpxx1.setQ(wxFpxx.getQ());
+//                     wxFpxx1.setOpenId(wxFpxx.getOpenId());
+//                     wxFpxx1.setCode(wxFpxx.getCode());
+//                     wxFpxx1.setOrderNo(wxFpxx.getOrderNo());
+//                     wxFpxx1.setKplsh(wxFpxx.getKplsh());
+//                     wxFpxx1.setWeixinOderno(wxFpxx.getWeixinOderno());
+                     wxFpxx.setCount(coun);
+                     wxfpxxJpaDao.save(wxFpxx);
+                     logger.info("拒绝开票----更新计数"+coun);
                 } else {
                     logger.info("该发票已被拒绝开票，返回的错误信息为" + errmsg);
                     msg = "0";
