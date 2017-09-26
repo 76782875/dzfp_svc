@@ -476,9 +476,7 @@ public class GetDataService {
                 Skp skp=skpService.findOneByParams(params);
                 jyxxsq.setXfid(xf.getId());
                 jyxxsq.setJylsh(ExtractCode);
-                //jyxxsq.setKpddm(ClientNO);
                 //测试
-                jyxxsq.setKpddm("bqw_01");
                 jyxxsq.setJshj(Double.valueOf(totalAmount));
                 jyxxsq.setHsbz(taxMark);
                 jyxxsq.setBz(remark);
@@ -487,14 +485,22 @@ public class GetDataService {
                 jyxxsq.setKpr(xf.getKpr());
                 jyxxsq.setSkr(xf.getSkr());
                 jyxxsq.setFhr(xf.getFhr());
-                //jyxxsq.setXfsh(Identifier);
                 //测试
+                jyxxsq.setKpddm("bqw_01");
+                jyxxsq.setXfmc(xf.getXfmc());
                 jyxxsq.setXfsh("500102010003698");
-                jyxxsq.setXfmc(Name);
-                jyxxsq.setXfdz(Address);
-                jyxxsq.setXfdh(TelephoneNo);
-                jyxxsq.setXfyh(Bank);
-                jyxxsq.setXfyhzh(BankAcc);
+                jyxxsq.setXfdz(xf.getXfdz());
+                jyxxsq.setXfdh(xf.getXfdh());
+                jyxxsq.setXfyh(xf.getXfyh());
+                jyxxsq.setXfyhzh(xf.getXfyhzh());
+
+                //jyxxsq.setKpddm(ClientNO);
+                //jyxxsq.setXfmc(Name);
+                //jyxxsq.setXfsh(Identifier);
+                //jyxxsq.setXfdz(Address);
+                //jyxxsq.setXfdh(TelephoneNo);
+                //jyxxsq.setXfyh(Bank);
+                //jyxxsq.setXfyhzh(BankAcc);
                 jyxxsq.setYkpjshj(Double.valueOf("0.00"));
                 jyxxsq.setYxbz("1");
                 jyxxsq.setLrsj(new Date());
