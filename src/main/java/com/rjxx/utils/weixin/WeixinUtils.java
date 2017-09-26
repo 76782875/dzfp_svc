@@ -587,7 +587,7 @@ public class WeixinUtils {
                 if (errcode == 0) {
                     logger.info("拒绝开票成功");
                     msg = "1";
-                    WxFpxx wxFpxx = wxfpxxJpaDao.selsetByOrderNo(order_id);
+                    WxFpxx wxFpxx = wxfpxxJpaDao.selectByWeiXinOrderNo(order_id);
                      int coun = wxFpxx.getCount()+ 1;
 //                     WxFpxx wxFpxx1 = new WxFpxx();
 //                     wxFpxx1.setTqm(wxFpxx.getTqm());
