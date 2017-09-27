@@ -15,6 +15,7 @@ import com.rjxx.taxeasy.service.PpService;
 import com.rjxx.utils.StringUtils;
 import com.rjxx.utils.alipay.AlipayUtils;
 import com.rjxx.utils.weixin.WeixinUtils;
+import com.rjxx.utils.weixin.wechatFpxxServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,10 @@ public class ImputationCardUtil {
 
 	@Autowired
 	private WeixinUtils weixinUtils;
+
+	@Autowired
+	private wechatFpxxServiceImpl wechatFpxxImpl;
+
 	@Value("${pdf.save-path:}")
 	private String pdf_file_url;
 
@@ -143,7 +148,8 @@ public class ImputationCardUtil {
 					return true;
 
 				} else if (jyxxsq.getSjly().equals("4")) { //数据来源4表示微信
-					String result = weixinUtils.fpInsertCardBox(jyxxsq.getDdh(), getPdf_file_url(pdf_file_url), kpspmxList, kpls);
+					String newDdh = wechatFpxxImpl.getweixinOrderNo(jyxxsq.getDdh());
+					String result = weixinUtils.fpInsertCardBox(newDdh, getPdf_file_url(pdf_file_url), kpspmxList, kpls);
 					//存入卡包失败
 					if (null == result) {
 						return false;
@@ -185,8 +191,10 @@ public class ImputationCardUtil {
 				}
 				return true;
 			}else if(jyxxsq.getSjly().equals("4")){ //数据来源4表示微信
+				wechatFpxxServiceImpl imp = new wechatFpxxServiceImpl();
 				//WeixinUtils weinxinUtil = new WeixinUtils();
-				String result = weixinUtils.fpInsertCardBox(jyxxsq.getDdh(),getPdf_file_url(pdf_file_url),kpspmxList,kpls);
+				String newDdh = wechatFpxxImpl.getweixinOrderNo(jyxxsq.getDdh());
+				String result = weixinUtils.fpInsertCardBox(newDdh,getPdf_file_url(pdf_file_url),kpspmxList,kpls);
 				//存入卡包失败
 				if(null == result){
 					return false;

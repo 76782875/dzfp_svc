@@ -564,12 +564,23 @@ public class WeixinUtils {
      * @return
      */
     public String jujuekp(String order_id, String reason, String access_token) {
+        logger.info("拒绝---开票时传入的"+order_id);
         String msg = "";
         WeixinUtils weixinUtils = new WeixinUtils();
-        //String access_token = (String) weixinUtils.hqtk().get("access_token");
         String jjkpURL = "https://api.weixin.qq.com/card/invoice/rejectinsert?access_token=" + access_token;
         Map mapInfo = new HashMap();
         String s_pappid = weixinUtils.getSpappid(access_token);
+        //原始订单 ----- 开票平台的订单
+//        String orderno_old="";
+//        int i = order_id.indexOf("-");
+//        if(i<0){
+//            logger.info("没有-，表示没有拒绝过开票");
+//            orderno_old=order_id;
+//        }else {
+//            logger.info("表示拒绝过开票");
+//            String[] split = order_id.split("-");
+//            orderno_old=split[0];
+//        }
         //String url = WeiXinConstants.RJXX_REDIRECT_URL;
         mapInfo.put("s_pappid", s_pappid);
         mapInfo.put("order_id", order_id);
@@ -588,7 +599,20 @@ public class WeixinUtils {
                 if (errcode == 0) {
                     logger.info("拒绝开票成功");
                     msg = "1";
-
+                    WxFpxx wxFpxx = wxfpxxJpaDao.selectByWeiXinOrderNo(order_id);
+                     int coun = wxFpxx.getCount()+ 1;
+//                     WxFpxx wxFpxx1 = new WxFpxx();
+//                     wxFpxx1.setTqm(wxFpxx.getTqm());
+//                     wxFpxx1.setGsdm(wxFpxx.getGsdm());
+//                     wxFpxx1.setQ(wxFpxx.getQ());
+//                     wxFpxx1.setOpenId(wxFpxx.getOpenId());
+//                     wxFpxx1.setCode(wxFpxx.getCode());
+//                     wxFpxx1.setOrderNo(wxFpxx.getOrderNo());
+//                     wxFpxx1.setKplsh(wxFpxx.getKplsh());
+//                     wxFpxx1.setWeixinOderno(wxFpxx.getWeixinOderno());
+                     wxFpxx.setCount(coun);
+                     wxfpxxJpaDao.save(wxFpxx);
+                     logger.info("拒绝开票----更新计数"+coun);
                 } else {
                     logger.info("该发票已被拒绝开票，返回的错误信息为" + errmsg);
                     msg = "0";
@@ -981,8 +1005,6 @@ public class WeixinUtils {
             return null;
         }
         String URL = WeiXinConstants.dzfpInCard_url + access_token;
-        System.out.println("电子发票插入卡包url为++++" + URL);
-        System.out.println("电子发票插入卡包封装的数据++++++++"+JSON.toJSONString(sj));
         String jsonStr = WeixinUtil.httpRequest(URL, "POST", JSON.toJSONString(sj));
         if (null != jsonStr) {
             ObjectMapper jsonparer = new ObjectMapper();// 初始化解析json格式的对象
@@ -994,8 +1016,7 @@ public class WeixinUtils {
                 if (errcode == 0) {
                     String openid = (String) map.get("openid");
                     String code = (String) map.get("code");
-                    logger.info("插入卡包成功,成功返回的openid为" + openid);
-                    WxFpxx wxFpxx = wxfpxxJpaDao.findOneByOrderNo(order_id, openid);
+                    WxFpxx wxFpxx = wxfpxxJpaDao.selectByWeiXinOrderNo(order_id);
                     wxFpxx.setCode(code);
                     logger.info("微信发票code信息" + wxFpxx.toString());
                     wxfpxxJpaDao.save(wxFpxx);

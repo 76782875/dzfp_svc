@@ -104,16 +104,16 @@ public class CheckOrderUtil {
             if (CustomerType != null && !CustomerType.equals("")) {
                 if(CustomerType.equals("1")){
                 	String buyerIdentifier = (String) jyxxsq.getGfsh();
-                	if(null == buyerIdentifier || buyerIdentifier.equals("")){
-                		result += ddh + ":购方税号不能为空;";
+                	if(null == buyerIdentifier || buyerIdentifier.equals("") || buyerIdentifier.substring(0,1).equals(0)){
+                		result += ddh + ":购方税号不能为空或不符合规则;";
                 	}
                 }
             }
             // 购方税号
             String buyerIdentifier = (String) jyxxsq.getGfsh();
             if (buyerIdentifier != null && !buyerIdentifier.equals("")) {
-                if (!(buyerIdentifier.length() == 15 || buyerIdentifier.length() == 18)) {
-                    result += ddh + ":购方税号只能是15或者18位;";
+                if (!(buyerIdentifier.length() == 15 || buyerIdentifier.length() == 18 || buyerIdentifier.length() == 20 )) {
+                    result += ddh + ":购方税号"+buyerIdentifier+"长度有误，请核对;";
                 }
             }
             // 购方地址
@@ -433,7 +433,7 @@ public class CheckOrderUtil {
 
         String s = "123;";
         // System.out.print(s.replace(s.substring(s.length()-1), ""));
-        System.out.print(s.charAt(s.length() - 1));
+        System.out.print(s.substring(0,1));
         System.out.print(Double.parseDouble(".00") == 0);
     }
 }

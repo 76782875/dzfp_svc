@@ -39,6 +39,12 @@ public class WxFpxx {
     @Column(name = "kplsh")
     private String kplsh;
 
+    @Column(name = "weixinorderno")
+    private String weixinOderno;
+
+    @Column(name = "count")
+    private int count;
+
     public String getOrderNo() {
         return orderNo;
     }
@@ -99,6 +105,8 @@ public class WxFpxx {
                 ", code='" + code + '\'' +
                 ", wxtype='" + wxtype + '\'' +
                 ", kplsh='" + kplsh + '\'' +
+                ", weixinOderno='" + weixinOderno + '\'' +
+                ", count=" + count +
                 '}';
     }
 
@@ -124,5 +132,21 @@ public class WxFpxx {
 
     public void setUserid(String userid) {
         this.userid = userid;
+    }
+
+    public String getWeixinOderno() {
+        return weixinOderno;
+    }
+
+    public void setWeixinOderno(String weixinOderno) {
+        this.weixinOderno = weixinOderno;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 }
