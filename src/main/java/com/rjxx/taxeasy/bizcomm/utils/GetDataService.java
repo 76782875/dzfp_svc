@@ -293,6 +293,7 @@ public class GetDataService {
             map.put("method","getOrderInfo");
             map.put("ExtractCode",code);
             map.put("sign",Secret);
+            logger.info("传入参数"+JSON.toJSONString(map));
             String response = HttpClientUtil.doPost(url, map);
             System.out.println("波奇网---接收返回值:" + response);
             parmsMap=interpretingForBqw(gsdm,response);
