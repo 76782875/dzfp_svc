@@ -594,25 +594,22 @@ public class WeixinUtils {
                 System.out.println("错误码" + errcode);
                 if (errcode == 0) {
                     logger.info("拒绝开票成功");
-                    msg = "1";
-                    WxFpxx wxFpxx = wxfpxxJpaDao.selectByWeiXinOrderNo(order_id);
+                     msg = "1";
+                     WxFpxx wxFpxx = wxfpxxJpaDao.selectByWeiXinOrderNo(order_id);
                      int coun = wxFpxx.getCount()+ 1;
-//                     WxFpxx wxFpxx1 = new WxFpxx();
-//                     wxFpxx1.setTqm(wxFpxx.getTqm());
-//                     wxFpxx1.setGsdm(wxFpxx.getGsdm());
-//                     wxFpxx1.setQ(wxFpxx.getQ());
-//                     wxFpxx1.setOpenId(wxFpxx.getOpenId());
-//                     wxFpxx1.setCode(wxFpxx.getCode());
-//                     wxFpxx1.setOrderNo(wxFpxx.getOrderNo());
-//                     wxFpxx1.setKplsh(wxFpxx.getKplsh());
-//                     wxFpxx1.setWeixinOderno(wxFpxx.getWeixinOderno());
                      wxFpxx.setCount(coun);
                      wxfpxxJpaDao.save(wxFpxx);
                      logger.info("拒绝开票----更新计数"+coun);
-                } else {
-                    logger.info("该发票已被拒绝开票，返回的错误信息为" + errmsg);
+                } else if(errcode == 72035) {
+                    msg = "1";
+                    WxFpxx wxFpxx = wxfpxxJpaDao.selectByWeiXinOrderNo(order_id);
+                    int coun = wxFpxx.getCount()+ 1;
+                    wxFpxx.setCount(coun);
+                    wxfpxxJpaDao.save(wxFpxx);
+                    logger.info("发票已被拒绝---72035----更新计数"+coun);
+                }else {
+                    logger.info("其他错误信息为" + errmsg);
                     msg = "0";
-
                 }
 
             } catch (Exception e) {
