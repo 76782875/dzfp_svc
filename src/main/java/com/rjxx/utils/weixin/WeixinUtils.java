@@ -564,25 +564,26 @@ public class WeixinUtils {
      * @return
      */
     public String jujuekp(String order_id, String reason, String access_token) {
+        logger.info("拒绝---开票时传入的"+order_id);
         String msg = "";
         WeixinUtils weixinUtils = new WeixinUtils();
         String jjkpURL = "https://api.weixin.qq.com/card/invoice/rejectinsert?access_token=" + access_token;
         Map mapInfo = new HashMap();
         String s_pappid = weixinUtils.getSpappid(access_token);
         //原始订单 ----- 开票平台的订单
-        String orderno_old="";
-        int i = order_id.indexOf("-");
-        if(i<0){
-            logger.info("没有-，表示没有拒绝过开票");
-            orderno_old=order_id;
-        }else {
-            logger.info("表示拒绝过开票");
-            String[] split = order_id.split("-");
-            orderno_old=split[0];
-        }
+//        String orderno_old="";
+//        int i = order_id.indexOf("-");
+//        if(i<0){
+//            logger.info("没有-，表示没有拒绝过开票");
+//            orderno_old=order_id;
+//        }else {
+//            logger.info("表示拒绝过开票");
+//            String[] split = order_id.split("-");
+//            orderno_old=split[0];
+//        }
         //String url = WeiXinConstants.RJXX_REDIRECT_URL;
         mapInfo.put("s_pappid", s_pappid);
-        mapInfo.put("order_id", orderno_old);
+        mapInfo.put("order_id", order_id);
         mapInfo.put("reason", reason);
         //mapInfo.put("url", url);
         String info = JSON.toJSONString(mapInfo);

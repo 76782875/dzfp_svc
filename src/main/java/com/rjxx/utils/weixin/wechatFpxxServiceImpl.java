@@ -33,7 +33,7 @@ public class wechatFpxxServiceImpl {
                 return weixinOrderno;
             }
         }else {
-            return  null;
+            return  orderNo;
         }
     }
 }
