@@ -1005,8 +1005,6 @@ public class WeixinUtils {
             return null;
         }
         String URL = WeiXinConstants.dzfpInCard_url + access_token;
-        System.out.println("电子发票插入卡包url为++++" + URL);
-        System.out.println("电子发票插入卡包封装的数据++++++++"+JSON.toJSONString(sj));
         String jsonStr = WeixinUtil.httpRequest(URL, "POST", JSON.toJSONString(sj));
         if (null != jsonStr) {
             ObjectMapper jsonparer = new ObjectMapper();// 初始化解析json格式的对象
@@ -1018,8 +1016,7 @@ public class WeixinUtils {
                 if (errcode == 0) {
                     String openid = (String) map.get("openid");
                     String code = (String) map.get("code");
-                    logger.info("插入卡包成功,成功返回的openid为" + openid);
-                    WxFpxx wxFpxx = wxfpxxJpaDao.findOneByOrderNo(order_id, openid);
+                    WxFpxx wxFpxx = wxfpxxJpaDao.selectByWeiXinOrderNo(order_id);
                     wxFpxx.setCode(code);
                     logger.info("微信发票code信息" + wxFpxx.toString());
                     wxfpxxJpaDao.save(wxFpxx);
