@@ -189,11 +189,12 @@ public class WeixinUtils {
     public String getTiaoURL(String orderid, String money, String timestamp, String menDianId,String type,String access_token,String ticket,String spappid) throws Exception {
 
         String auth_url = "";
-        //WeixinUtils weixinUtils = new WeixinUtils();
         logger.info("传入的数据订单编号" + orderid + "金额" + money + "时间" + timestamp + "门店号" + menDianId);
-
         //String spappid = weixinUtils.getSpappid(access_token);//获取开票平台
-        double d = Double.valueOf(money) * 100;
+        //double d = Double.valueOf(money) * 100;
+        BigDecimal big = new BigDecimal(money);
+        BigDecimal newbig = big.multiply(new BigDecimal(100));
+        Double doumoney = new Double(newbig.toString());
         Date dateTime = null;
         if (null != timestamp && !timestamp.equals("")) {
             String[] s = timestamp.split("-");
@@ -205,13 +206,13 @@ public class WeixinUtils {
                 System.out.println("日期格式为yyyyMMddHHmmss    ================");
             }
         }
-        System.out.println("转换之后金额" + d + "时间" + dateTime);
+        logger.info("转换之后金额" + doumoney + "时间" + dateTime);
         String source = "web";
         //int type = 1;//填写抬头申请开票类型
         Map nvps = new HashMap();
         nvps.put("s_pappid", spappid);
         nvps.put("order_id", orderid);
-        nvps.put("money", d);
+        nvps.put("money", doumoney);
         nvps.put("timestamp", dateTime.getTime() / 1000);
         nvps.put("source", source);
         //nvps.put("redirect_url", WeiXinConstants.TEST_SUCCESS_REDIRECT_URL);//测试跳转url
@@ -226,12 +227,9 @@ public class WeixinUtils {
             logger.info("获取微信授权链接,金额为null");
             return null;
         }
-
         String sj = JSON.toJSONString(nvps);
-        System.out.println("封装数据" + sj);
         String urls = "https://api.weixin.qq.com/card/invoice/getauthurl?access_token=" + access_token;
         String jsonStr3 = WeixinUtil.httpRequest(urls, "POST", sj);
-        System.out.println("返回信息" + jsonStr3.toString());
         if (null != jsonStr3) {
             ObjectMapper jsonparer = new ObjectMapper();// 初始化解析json格式的对象
             try {
@@ -241,7 +239,6 @@ public class WeixinUtils {
                 if (errcode == 0) {
                     auth_url = (String) map.get("auth_url");
                     logger.info("跳转url" + auth_url);
-                    System.out.println("授权链接" + auth_url);
                     return auth_url;
                 } else {
                     logger.info("获取微信授权链接失败!");
@@ -352,7 +349,6 @@ public class WeixinUtils {
         String s_pappid = weixinUtils.getSpappid(access_token);
 
         String URL = "https://api.weixin.qq.com/card/invoice/getauthdata?access_token=" + access_token;
-
         Map nvps = new HashMap();
         nvps.put("s_pappid", s_pappid);
         nvps.put("order_id", order_id);
@@ -790,8 +786,6 @@ public class WeixinUtils {
             resultMap.put("addr",kpls.getGfdz());
             resultMap.put("phone",kpls.getGfdh());
             weiXinData = resultMap;
-           // logger.info(JSON.toJSONString(resultMap));
-           // logger.info(JSON.toJSONString(weiXinData));
         }
         //公司简称 品牌t_pp kpddm->skp->pid->ppmc
         if (null == kpls.getSkpid()) {
