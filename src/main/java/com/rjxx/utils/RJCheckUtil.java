@@ -1,6 +1,7 @@
 package com.rjxx.utils;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -223,19 +224,33 @@ public class RJCheckUtil {
         return sb;
     }
 
+    public static String decodeXml(String key,String orderData,String sign){
+        String signSourceData = "data=" + orderData + "&key=" + key;
+        String newSign = DigestUtils.md5Hex(signSourceData);
+        if (!sign.equals(newSign)) {
+            return "0"; //失败
+        }else{
+            return "1"; //成功
+        }
+    }
+
     /**
      * 以下所有方法为白盒测试时候使用，不涉及业务
      */
         //生成Q
     public static void main(String[] args) {
-       String key = "3f7626939b146cc47c31daf43edc42bd";
+        //一茶一坐
+//       String key = "3f7626939b146cc47c31daf43edc42bd";
+        String key="42709f25722653a5d7b5b8dde426f494";
+        //德克士
+//        String key = "dbd4ae1c59837510b70411e20f3a84f9";
         Map map = new HashMap();
         map.put("A0", String.valueOf(System.currentTimeMillis()));
         map.put("A1", new SimpleDateFormat("yyyyMMddHHmmss").format(new java.util.Date()));
-        map.put("A2", "0.1");
+        map.put("A2", "0.11,0.12");
         map.put("A3", "shn");
-//        map.put("A4", "1234567891234567890");
-        String result = getQForAll(key, map,"on","ot","pr","sn");
+        map.put("A4", "1,1");
+        String result = getQForAll(key, map,"on","ot","pr","sn","sp");
         System.out.println(result);
     }
 
