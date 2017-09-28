@@ -100,20 +100,23 @@ public class CheckOrderUtil {
                     result += ddh + ":购方名称太长;";
                 }
             }
-            String CustomerType = (String) jyxxsq.getGflx();
-            if (CustomerType != null && !CustomerType.equals("")) {
-                if(CustomerType.equals("1")){
-                	String buyerIdentifier = (String) jyxxsq.getGfsh();
-                	if(null == buyerIdentifier || buyerIdentifier.equals("") || buyerIdentifier.substring(0,1).equals("0")){
-                		result += ddh + ":购方税号不能为空或不符合规则;";
-                	}
-                }
-            }
+//            String CustomerType = (String) jyxxsq.getGflx();
+//            if (CustomerType != null && !CustomerType.equals("")) {
+//                if(CustomerType.equals("1")){
+//                	String buyerIdentifier = (String) jyxxsq.getGfsh();
+//                	if(null == buyerIdentifier || buyerIdentifier.equals("") || ){
+//                		result += ddh + ":购方税号不能为空或不符合规则;";
+//                	}
+//                }
+//            }
             // 购方税号
             String buyerIdentifier = (String) jyxxsq.getGfsh();
             if (buyerIdentifier != null && !buyerIdentifier.equals("")) {
                 if (!(buyerIdentifier.length() == 15 || buyerIdentifier.length() == 18 || buyerIdentifier.length() == 20 )) {
                     result += ddh + ":购方税号"+buyerIdentifier+"长度有误，请核对;";
+                }
+                if(buyerIdentifier.substring(0,1).equals("0")){
+                    result += ddh + ":购方税号不符合规则;";
                 }
             }
             // 购方地址
