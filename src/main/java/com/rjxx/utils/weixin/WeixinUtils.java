@@ -841,7 +841,7 @@ public class WeixinUtils {
      */
     public String dzfpInCard(String order_id, String card_id, String pdf_file_url, Map weiXinData, List<Kpspmx> kpspmxList, Kpls kpls, String access_token) {
         String appid = WeiXinConstants.APP_ID;
-        logger.info("插入卡包方法进入-----------");
+        logger.info("插入卡包方法进入-----------appid：" + appid);
         WeiXinInfo weiXinInfo = new WeiXinInfo();
         WeixinUtils weixinUtils = new WeixinUtils();
 
@@ -1005,19 +1005,13 @@ public class WeixinUtils {
                 String errmsg = (String) map.get("errmsg");
                 System.out.println("错误码" + errcode);
                 if (errcode == 0) {
+                    String openid = (String) map.get("openid");
                     String code = (String) map.get("code");
-                    String wxfpxxOrderNo= "";
-                    int i = order_id.indexOf("-");
-                    if(i<0){
-                        wxfpxxOrderNo=order_id;
-                    }else {
-                        String[] split = order_id.split("-");
-                        wxfpxxOrderNo = split[0];
-                    }
-                    WxFpxx wxFpxx = wxfpxxJpaDao.selsetByOrderNo(wxfpxxOrderNo);
+                    WxFpxx wxFpxx = wxfpxxJpaDao.selectByWeiXinOrderNo(order_id);
                     wxFpxx.setCode(code);
-                    wxFpxx.setWeixinOderno(order_id);
+                    logger.info("微信发票code信息" + wxFpxx.toString());
                     wxfpxxJpaDao.save(wxFpxx);
+                    logger.info("code保存成功");
                     logger.info("发票插入卡包成功-------------------------");
                     return code;
                 } else {
