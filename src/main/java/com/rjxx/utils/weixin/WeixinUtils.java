@@ -116,7 +116,6 @@ public class WeixinUtils {
         // String accessToken = (String) weixinUtils.hqtk().get("access_token");
         String ticketUrl = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=" + accessToken + "&type=wx_card";
         String jsonStr = WeixinUtil.httpRequest(ticketUrl, "GET", null);
-        System.out.println("返回信息" + jsonStr.toString());
         if (null != jsonStr) {
             ObjectMapper jsonparer = new ObjectMapper();// 初始化解析json格式的对象
             try {
@@ -141,7 +140,6 @@ public class WeixinUtils {
         String spappid = "";
         String url = "https://api.weixin.qq.com/card/invoice/seturl?access_token=" + accessToken;
         String jsonStr = WeixinUtil.httpRequest(url, "POST", JSON.toJSONString(""));
-        System.out.println("返回信息" + jsonStr.toString());
         if (jsonStr != null) {
             ObjectMapper jsonparer = new ObjectMapper();// 初始化解析json格式的对象
             try {
@@ -353,9 +351,7 @@ public class WeixinUtils {
         nvps.put("s_pappid", s_pappid);
         nvps.put("order_id", order_id);
         String sj = JSON.toJSONString(nvps);
-        System.out.println("封装数据" + sj);
         String jsonStr3 = WeixinUtil.httpRequest(URL, "POST", sj);
-        System.out.println("返回信息" + jsonStr3.toString());
         if (null != jsonStr3) {
             ObjectMapper jsonparer = new ObjectMapper();// 初始化解析json格式的对象
             try {
@@ -504,10 +500,8 @@ public class WeixinUtils {
 
         sjss.put("auth_field", auth_field);
         String sj = JSON.toJSONString(sjss);
-        System.out.println("封装数据" + sj);
         String urls = "https://api.weixin.qq.com/card/invoice/setbizattr?action=set_auth_field&access_token=" + access_token;
         String jsonStr3 = WeixinUtil.httpRequest(urls, "POST", sj);
-        System.out.println("返回信息" + jsonStr3.toString());
         if (null != jsonStr3) {
             ObjectMapper jsonparer = new ObjectMapper();// 初始化解析json格式的对象
             try {
@@ -814,7 +808,6 @@ public class WeixinUtils {
             try {
                 xf.setWechatCardId(card_id);
                 xfJpaDao.save(xf);
-                logger.info("保存新建的卡券模板id进入库-----------"+xf.getWechatCardId());
                 //防止生成卡包模板和插卡时间间隔过短
                 //Thread.sleep(300000);
             } catch (Exception e) {
@@ -841,7 +834,6 @@ public class WeixinUtils {
      */
     public String dzfpInCard(String order_id, String card_id, String pdf_file_url, Map weiXinData, List<Kpspmx> kpspmxList, Kpls kpls, String access_token) {
         String appid = WeiXinConstants.APP_ID;
-        logger.info("插入卡包方法进入-----------appid：" + appid);
         WeiXinInfo weiXinInfo = new WeiXinInfo();
         WeixinUtils weixinUtils = new WeixinUtils();
 
@@ -942,7 +934,6 @@ public class WeixinUtils {
         invoice_user_data.put("maker", weiXinInfo.getMaker());
 
 
-        System.out.println("封装的数据" + JSON.toJSONString(sj));
         if (null == sj.get("order_id")) {
             logger.info("订单order_id为空");
             return null;
@@ -1009,9 +1000,7 @@ public class WeixinUtils {
                     String code = (String) map.get("code");
                     WxFpxx wxFpxx = wxfpxxJpaDao.selectByWeiXinOrderNo(order_id);
                     wxFpxx.setCode(code);
-                    logger.info("微信发票code信息" + wxFpxx.toString());
                     wxfpxxJpaDao.save(wxFpxx);
-                    logger.info("code保存成功");
                     logger.info("发票插入卡包成功-------------------------");
                     return code;
                 } else {
