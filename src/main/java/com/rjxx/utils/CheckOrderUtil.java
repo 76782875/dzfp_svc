@@ -104,7 +104,7 @@ public class CheckOrderUtil {
             if (CustomerType != null && !CustomerType.equals("")) {
                 if(CustomerType.equals("1")){
                 	String buyerIdentifier = (String) jyxxsq.getGfsh();
-                	if(null == buyerIdentifier || buyerIdentifier.equals("") || buyerIdentifier.substring(0,1).equals(0)){
+                	if(null == buyerIdentifier || buyerIdentifier.equals("") || buyerIdentifier.substring(0,1).equals("0")){
                 		result += ddh + ":购方税号不能为空或不符合规则;";
                 	}
                 }
@@ -431,9 +431,11 @@ public class CheckOrderUtil {
 
     public static void main(String[] args) {
 
-        String s = "123;";
+        String s = "000000000000000;";
         // System.out.print(s.replace(s.substring(s.length()-1), ""));
         System.out.print(s.substring(0,1));
         System.out.print(Double.parseDouble(".00") == 0);
+        System.out.println(s.substring(0,1).equals("0"));
+
     }
 }
