@@ -110,7 +110,10 @@ public class JyxxsqService {
     public List<JyxxsqVO> findYscByPage(Pagination pagination){
     	return jyxxsqMapper.findYscByPage(pagination);
     }
-    
+
+    public void updateGfxx(Map params){
+    	jyxxsqMapper.updateGfxx(params);
+	}
     /**
 	 * 删除交易流水，包括明细
 	 *
