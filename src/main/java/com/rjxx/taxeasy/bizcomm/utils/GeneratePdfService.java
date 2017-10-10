@@ -543,7 +543,7 @@ public class GeneratePdfService {
             Kpls parms=new Kpls();
             parms.setFphm(kpls.getHzyfphm());
             parms.setFpdm(kpls.getHzyfpdm());
-            Kpls ypkpls=kplsService.findByfphm(kpls);
+            Kpls ypkpls=kplsService.findByfphm(parms);
             InvoiceItem3 ypinvoiceItem=new InvoiceItem3();
             if(ypkpls.getFpztdm().equals("02")){
                 ypinvoiceItem.setReturnCode("0000");
