@@ -470,7 +470,7 @@ public class GetDataService {
                 x.setGsdm(gsdm);
                 //x.setXfsh(Identifier);
                 //测试销方
-                x.setXfsh("500102010003698");
+                x.setXfsh("500102010003643");
                 Xf xf = xfService.findOneByParams(x);
                 Map params=new HashMap();
                 params.put("xfid",xf.getId());
@@ -489,7 +489,7 @@ public class GetDataService {
                 //测试
                 jyxxsq.setKpddm("bqw_01");
                 jyxxsq.setXfmc(xf.getXfmc());
-                jyxxsq.setXfsh("500102010003698");
+                jyxxsq.setXfsh("500102010003643");
                 jyxxsq.setXfdz(xf.getXfdz());
                 jyxxsq.setXfdh(xf.getXfdh());
                 jyxxsq.setXfyh(xf.getXfyh());
