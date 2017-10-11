@@ -413,7 +413,7 @@
 </insert>
 
 	<update id="updateGfxx" parameterType="map">
-	  UPDATE t_jyxxsq set gfsh=#{gfsh},gfmc=#{gfmc},gfemail=#{email},gfdh=#{gfdh},gfdz=#{gfdz},
+	  UPDATE t_jyxxsq set gfsh=#{gfsh},gfmc=#{gfmc},gfemail=#{email},gfdh=#{gfdh},gfdz=#{gfdz},sffsyj=#{sffsyj},
 	  gfyh=#{gfyh},gfyhzh=#{gfyhzh} where gsdm=#{gsdm} and tqm=#{tqm}
 	</update>
 </mapper>
