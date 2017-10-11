@@ -1484,9 +1484,11 @@ public class GetDataService {
             List<Jymxsq> jymxsqList = (List) parmsMap.get("jymxsqList");
             List<Jyzfmx> jyzfmxList = (List) parmsMap.get("jyzfmxList");
 
-            String msg = checkOrderUtil.checkOrders(jyxxsqList,jymxsqList,jyzfmxList,gsdm,"");
-            if(null!=msg&& !"".equals(msg)){
-                parmsMap.put("msg",msg);
+            if(null!=jyxxsqList &&!"".equals(jyxxsqList)&& null!=jymxsqList && !"".equals(jymxsqList)){
+                String msg = checkOrderUtil.checkOrders(jyxxsqList,jymxsqList,jyzfmxList,gsdm,"");
+                if(null!=msg&& !"".equals(msg)){
+                    parmsMap.put("msg",msg);
+                }
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -1668,8 +1670,7 @@ public class GetDataService {
         List<Jyzfmx> jyzfmxList = new ArrayList<Jyzfmx>();//交易支付明细
         //传入数据
         JSONObject jsonObj = JSONObject.parseObject(data);
-        //code值为0 表示数据正常
-        String code = jsonObj.getString("code");
+        String code = jsonObj.getString("code"); //code值为0 表示数据正常
         //根据data获取购物小票信息
         if(null!=code&&code.equals("0")) {
             JSONArray jsondata = jsonObj.getJSONArray("data");
@@ -1900,7 +1901,6 @@ public class GetDataService {
                         for (int p = 0; p < paylist.size(); p++) {
 
                             Jyzfmx jyzfmx = new Jyzfmx();
-                            System.out.println("进入循环paylist");
                             JSONObject payData = paylist.getJSONObject(p);
 
                             //获取     支付方式代码
@@ -1942,14 +1942,21 @@ public class GetDataService {
             rsMap.put("jyzfmxList", jyzfmxList);
             return rsMap;
         }else {
-            String msg ="获取数据失败，请重试！";
-            rsMap.put("msg",msg);
+            String msg = jsonObj.getString("msg");
+            if(null!=msg && !"".equals(msg)){
+                rsMap.put("msg",msg);
+                rsMap.put("jyxxsqList", jyxxsqList);
+                rsMap.put("jymxsqList", jymxsqList);
+                rsMap.put("jyzfmxList", jyzfmxList);
+            }else {
+                 msg = "获取数据失败，请重试！";
+                rsMap.put("msg", msg);
+                rsMap.put("jyxxsqList", jyxxsqList);
+                rsMap.put("jymxsqList", jymxsqList);
+                rsMap.put("jyzfmxList", jyzfmxList);
+            }
         }
         return rsMap;
     }
-
-
-
-
 
 }
