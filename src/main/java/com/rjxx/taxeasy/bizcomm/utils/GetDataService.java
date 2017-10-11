@@ -257,37 +257,7 @@ public class GetDataService {
         Map parms=new HashMap();
         parms.put("gsdm",gsdm);
         Gsxx gsxx=gsxxService.findOneByParams(parms);
-
-
-//        HttpPost httpPost = new HttpPost(url);
-//        CloseableHttpResponse response = null;
-//        RequestConfig requestConfig = RequestConfig.custom().
-//                setSocketTimeout(120*1000).setConnectionRequestTimeout(120*1000).setConnectTimeout(120*1000).build();
-//        CloseableHttpClient httpClient = HttpClients.custom()
-//                .setDefaultRequestConfig(requestConfig)
-//                .build();
-//        httpPost.addHeader("Content-Type", "application/json");
         try {
-//            Map nvps = new HashMap();
-//            String Secret = getSign(code,gsxx.getSecretKey());
-//            logger.info("-------------"+code+"----------"+gsxx.getSecretKey());
-//            nvps.put("ExtractCode", code);
-//            nvps.put("sign", Secret);
-//            logger.info("请求报文----"+JSON.toJSONString(nvps));
-//            StringEntity requestEntity = new StringEntity(JSON.toJSONString(nvps), "utf-8");
-//            httpPost.setEntity(requestEntity);
-//            response = httpClient.execute(httpPost, new BasicHttpContext());
-//            if (response.getStatusLine().getStatusCode() != 200) {
-//                System.out.println("request url failed");
-//            }
-//            HttpEntity entity = response.getEntity();
-//            if (entity != null) {
-//                reader = new BufferedReader(new InputStreamReader(entity.getContent(), "utf-8"));
-//                while ((strMessage = reader.readLine()) != null) {
-//                    buffer.append(strMessage);
-//                }
-//            }
-
             String Secret = getSign(code,gsxx.getSecretKey());
             Map map = new HashMap();
             map.put("method","getOrderInfo");
@@ -470,7 +440,7 @@ public class GetDataService {
                 x.setGsdm(gsdm);
                 //x.setXfsh(Identifier);
                 //测试销方
-                x.setXfsh("500102010003698");
+                x.setXfsh("500102010003643");
                 Xf xf = xfService.findOneByParams(x);
                 Map params=new HashMap();
                 params.put("xfid",xf.getId());
@@ -489,7 +459,7 @@ public class GetDataService {
                 //测试
                 jyxxsq.setKpddm("bqw_01");
                 jyxxsq.setXfmc(xf.getXfmc());
-                jyxxsq.setXfsh("500102010003698");
+                jyxxsq.setXfsh("500102010003643");
                 jyxxsq.setXfdz(xf.getXfdz());
                 jyxxsq.setXfdh(xf.getXfdh());
                 jyxxsq.setXfyh(xf.getXfyh());
@@ -574,7 +544,6 @@ public class GetDataService {
                             Quantity = orderDetails.selectSingleNode("Quantity").getText();
                             try{jymxsq.setSps(Double.valueOf(Quantity));}catch (Exception e){jymxsq.setSps(null);}
                         }
-
                         // 商品单价
                         String UnitPrice = "";
                         if (null != orderDetails.selectSingleNode("UnitPrice")
@@ -582,7 +551,6 @@ public class GetDataService {
                             UnitPrice = orderDetails.selectSingleNode("UnitPrice").getText();
                             try{jymxsq.setSpdj(Double.valueOf(UnitPrice));}catch (Exception e){jymxsq.setSpdj(null);}
                         }
-
                         // 商品金额
                         String Amount = "";
                         if (null != orderDetails.selectSingleNode("Amount")
@@ -591,7 +559,6 @@ public class GetDataService {
                             try{jymxsq.setSpje(Double.valueOf(Amount));}catch (Exception e){jymxsq.setSpje(null);}
 
                         }
-
                         // 扣除金额
                         String DeductAmount = "";
                         if (null != orderDetails.selectSingleNode("DeductAmount")
@@ -636,20 +603,17 @@ public class GetDataService {
                             VenderOwnCode = orderDetails.selectSingleNode("VenderOwnCode").getText();
                         }
                         jymxsq.setSpzxbm(VenderOwnCode);
-//                        Map spbmMap=new HashMap();
-//                        spbmMap.put("spbm",ProductCode);
-//                        spbmMap.put("gsdm",gsdm);
-//                        vSpbm spbm=vSpbmService.findOneByParams(spbmMap);
-//                        if(spbm!=null){
-//                            jymxsq.setYhzcbs(spbm.getYhzcbs().toString());
-//                            jymxsq.setLslbz(spbm.getLslbz());
-//                            jymxsq.setYhzcmc(spbm.getYhzcmc());
-//                        }
 
                         Map spvoMap = new HashMap();
                         spvoMap.put("gsdm",gsdm);
                         spvoMap.put("spdm",VenderOwnCode);
                         Spvo spvo = spvoService.findOneSpvo(spvoMap);
+                        if(null==spvo){
+                            rsMap.put("jyxxsqList", jyxxsqList);
+                            rsMap.put("jymxsqList", jymxsqList);
+                            rsMap.put("jyzfmxList", jyzfmxList);
+                            rsMap.put("error", "开票信息有误，请联系商家!");
+                        }
                         jymxsq.setSpdm(spvo.getSpbm());
                         jymxsq.setYhzcbs(spvo.getYhzcbs());
                         jymxsq.setLslbz(spvo.getLslbz());
@@ -1478,7 +1442,6 @@ public class GetDataService {
             System.out.println("接收返回值:" + buffer.toString());
             //解析json获取购物小票数据 封装数据
             parmsMap = interpretSecForJson(gsdm, buffer.toString(),ExtractCode);
-
 
             List<Jyxxsq> jyxxsqList = (List) parmsMap.get("jyxxsqList");
             List<Jymxsq> jymxsqList = (List) parmsMap.get("jymxsqList");

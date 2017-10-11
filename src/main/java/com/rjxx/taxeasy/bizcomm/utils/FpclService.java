@@ -11,8 +11,6 @@ import com.rjxx.taxeasy.vo.Kpspmxvo;
 import com.rjxx.time.TimeUtil;
 import com.rjxx.utils.StringUtils;
 import com.rjxx.utils.TemplateUtils;
-import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -21,7 +19,6 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.protocol.BasicHttpContext;
-import org.apache.http.util.EntityUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
@@ -683,7 +680,7 @@ public class FpclService {
                     System.out.println(result2);
                     logger.debug("封装传开票通的报文" + result2);
                     String url = "http://116.228.37.198:10002/SKServer/SKDo";
-                    resultMap =httpPost(result2, url, zjKplsvo5.getDjh() + "$" + zjKplsvo5.getKplsh(), zjKplsvo5.getXfsh(),
+                    resultMap = httpPost(result2, url, zjKplsvo5.getDjh() + "$" + zjKplsvo5.getKplsh(), zjKplsvo5.getXfsh(),
                             zjKplsvo5.getJylsh());
                     if (resultMap.get("returncode").equals("0")) {
                         String fpdm = resultMap.get("fpdm").toString();
@@ -705,6 +702,7 @@ public class FpclService {
 
     /**
      * 调用电子发票税控服务器
+     *
      * @param sendMes
      * @param url
      * @param key
@@ -718,7 +716,7 @@ public class FpclService {
         CloseableHttpResponse response = null;
         CloseableHttpClient httpClient = HttpClients.createDefault();
         RequestConfig requestConfig = RequestConfig.custom().
-                setSocketTimeout(120*1000).setConnectionRequestTimeout(120*1000).setConnectTimeout(120*1000).build();
+                setSocketTimeout(120 * 1000).setConnectionRequestTimeout(120 * 1000).setConnectTimeout(120 * 1000).build();
         httpPost.setConfig(requestConfig);
         httpPost.addHeader("Content-Type", "text/xml");
         String strMessage = "";
@@ -742,7 +740,7 @@ public class FpclService {
                 }
             }
             System.out.println("接收返回值:" + buffer.toString());
-            resultMap =DzfphanderReturnMes(buffer.toString(), key);
+            resultMap = DzfphanderReturnMes(buffer.toString(), key);
             if (null != resultMap && !resultMap.isEmpty()) {
                 int pos = key.indexOf("$");
                 if (pos != -1) {
@@ -826,6 +824,7 @@ public class FpclService {
 
         return resultMap;
     }
+
     /**
      * 接收返回报文并做后续处理(电票)
      *
@@ -855,7 +854,7 @@ public class FpclService {
                 resultMap.put("RETURNCODE", child.elementText("RETURNCODE"));
                 resultMap.put("RETURNMSG", child.elementText("RETURNMSG"));
                 resultMap.put("KPLSH", key);
-            }else{
+            } else {
                 resultMap.put("RETURNCODE", child.elementText("RETURNCODE"));
                 resultMap.put("RETURNMSG", child.elementText("RETURNMSG"));
                 resultMap.put("KPLSH", key);
@@ -863,6 +862,7 @@ public class FpclService {
         }
         return resultMap;
     }
+
     /**
      * 接收返回报文并做后续处理(卷票)
      *
@@ -923,9 +923,9 @@ public class FpclService {
             String hsbz = "";
             boolean flag = false;
             boolean spzsfp = false;//是否按商品整数分票
-            Map skpMap=new HashMap();
-            skpMap.put("kpddm",jyxxsq.getKpddm());
-            skpMap.put("gsdm",jyxxsq.getGsdm());
+            Map skpMap = new HashMap();
+            skpMap.put("kpddm", jyxxsq.getKpddm());
+            skpMap.put("gsdm", jyxxsq.getGsdm());
             Skp skp = skpService.findOneByParams(skpMap);
             Xf x = new Xf();
             x.setGsdm(jyxxsq.getGsdm());
@@ -934,48 +934,48 @@ public class FpclService {
             /**
              * 取税控盘的开票限额
              */
-            if(skp!=null){
+            if (skp != null) {
                 if ("01".equals(jyxxsq.getFpzldm())) {
                     zdje = skp.getZpmax();
                 } else if ("02".equals(jyxxsq.getFpzldm())) {
                     zdje = skp.getPpmax();
                 } else if ("12".equals(jyxxsq.getFpzldm())) {
                     zdje = skp.getDpmax();
-                }else if ("03".equals(jyxxsq.getFpzldm())) {
+                } else if ("03".equals(jyxxsq.getFpzldm())) {
                     zdje = skp.getDpmax();
                 }
-                flag=true;
+                flag = true;
             }
             /**
              * 如果取不到税控盘的限额，就取销方的限额
              */
-            if(!flag){
+            if (!flag) {
                 if ("01".equals(jyxxsq.getFpzldm())) {
                     zdje = xf.getZpzdje();
                 } else if ("02".equals(jyxxsq.getFpzldm())) {
                     zdje = xf.getPpzdje();
                 } else if ("12".equals(jyxxsq.getFpzldm())) {
                     zdje = xf.getDzpzdje();
-                }else if ("03".equals(jyxxsq.getFpzldm())) {
+                } else if ("03".equals(jyxxsq.getFpzldm())) {
                     zdje = xf.getDzpzdje();
                 }
             }
-            flag=false;
+            flag = false;
             List<Fpgz> listt = fpgzService.findAllByParams(new HashMap<>());
             for (Fpgz fpgz : listt) {
                 if (fpgz.getXfids().contains(String.valueOf(xf.getId()))) {
                     if ("01".equals(jyxxsq.getFpzldm())) {
-                        if(!"".equals(fpgz.getZphs())&&null!=fpgz.getZphs()){
+                        if (!"".equals(fpgz.getZphs()) && null != fpgz.getZphs()) {
                             fphs1 = fpgz.getZphs();
                         }
                         fpje = fpgz.getZpxe();
                     } else if ("02".equals(jyxxsq.getFpzldm())) {
-                        if(!"".equals(fpgz.getPphs())&&null!=fpgz.getPphs()){
+                        if (!"".equals(fpgz.getPphs()) && null != fpgz.getPphs()) {
                             fphs1 = fpgz.getPphs();
                         }
                         fpje = fpgz.getPpxe();
                     } else if ("12".equals(jyxxsq.getFpzldm())) {
-                        if(!"".equals(fpgz.getDzphs())&&null!=fpgz.getDzphs()){
+                        if (!"".equals(fpgz.getDzphs()) && null != fpgz.getDzphs()) {
                             fphs2 = fpgz.getDzphs();
                         }
                         fpje = fpgz.getDzpxe();
@@ -999,7 +999,7 @@ public class FpclService {
             if (!flag) {
                 sfqzfp = false;
                 spzsfp = false;
-                if(skp!=null){
+                if (skp != null) {
                     if ("01".equals(jyxxsq.getFpzldm())) {
                         fpje = skp.getZpfz();//专票阈值，分票金额
                     } else if ("02".equals(jyxxsq.getFpzldm())) {
@@ -1009,13 +1009,13 @@ public class FpclService {
                     } else if ("03".equals(jyxxsq.getFpzldm())) {//卷票
                         fpje = skp.getFpfz();//卷票暂时没有
                     }
-                    flag=true;
+                    flag = true;
                 }
             }
             /**
              * 税控盘如果为空，则取销方的分票金额
              */
-            if(!flag){
+            if (!flag) {
                 if ("01".equals(jyxxsq.getFpzldm())) {
                     fpje = xf.getZpfpje();//专票阈值，分票金额
                 } else if ("02".equals(jyxxsq.getFpzldm())) {
@@ -1023,7 +1023,7 @@ public class FpclService {
                 } else if ("12".equals(jyxxsq.getFpzldm())) {
                     fpje = xf.getDzpfpje();//电票阈值，分票金额
                 } else if ("03".equals(jyxxsq.getFpzldm())) {//卷票
-                    fpje =xf.getDzpfpje();//卷票暂时没有
+                    fpje = xf.getDzpfpje();//卷票暂时没有
                 }
             }
             /**
@@ -1067,8 +1067,8 @@ public class FpclService {
                 }
             }
             //如果分票失败，继续往下执行。
-            if(null == splitKpspmxs || splitKpspmxs.isEmpty()){
-            	continue;
+            if (null == splitKpspmxs || splitKpspmxs.isEmpty()) {
+                continue;
             }
             // 保存进交易流水
             Map<Integer, List<JyspmxDecimal2>> fpMap = new HashMap<>();
@@ -1227,44 +1227,46 @@ public class FpclService {
         }
         return list;
     }
-    public String updateKpls(Map resultMap){
-            String kplsh=resultMap.get("KPLSH").toString();
-            Kpls kpls = kplsService.findOne(Integer.valueOf(kplsh));
-        try{      String returncode=resultMap.get("RETURNCODE").toString();
-            String returnmsg=resultMap.get("RETURNMSG").toString();
-        if (returncode.equals("0000")) {
-            String fpdm = resultMap.get("FP_DM").toString();
-            String fphm = resultMap.get("FP_HM").toString();
-            String kprq = resultMap.get("KPRQ").toString();
-            String mwq=resultMap.get("FP_MW").toString();
-            String jym = resultMap.get("JYM").toString();
-            String ewm = resultMap.get("EWM").toString();
-            String jqbh=resultMap.get("JQBH").toString();
-            kpls.setFpdm(fpdm);
-            kpls.setFphm(fphm);
-            kpls.setFpztdm("00");
-            kpls.setErrorReason(null);
-            kpls.setKprq(TimeUtil.getSysDateInDate(kprq, null));
-            kpls.setXgsj(new Date());
-            kpls.setXgry(1);
-            kpls.setMwq(mwq);
-            kpls.setFpEwm(ewm);
-            kpls.setJym(jym);
-            kpls.setSksbm(jqbh);
-            if(("").equals(kpls.getBz())||null==kpls.getBz()){
-                kpls.setBz("机器编号："+jqbh);
-            }
-            if (StringUtils.isNotBlank(returnmsg)) {
-                kpls.setErrorReason(returnmsg);
-            } else {
+
+    public String updateKpls(Map resultMap) {
+        String kplsh = resultMap.get("KPLSH").toString();
+        Kpls kpls = kplsService.findOne(Integer.valueOf(kplsh));
+        try {
+            String returncode = resultMap.get("RETURNCODE").toString();
+            String returnmsg = resultMap.get("RETURNMSG").toString();
+            if (returncode.equals("0000")) {
+                String fpdm = resultMap.get("FP_DM").toString();
+                String fphm = resultMap.get("FP_HM").toString();
+                String kprq = resultMap.get("KPRQ").toString();
+                String mwq = resultMap.get("FP_MW").toString();
+                String jym = resultMap.get("JYM").toString();
+                String ewm = resultMap.get("EWM").toString();
+                String jqbh = resultMap.get("JQBH").toString();
+                kpls.setFpdm(fpdm);
+                kpls.setFphm(fphm);
+                kpls.setFpztdm("00");
                 kpls.setErrorReason(null);
-            }
-            kplsService.save(kpls);
-            Jyls jyls = jylsService.findOne(kpls.getDjh());
-            jyls.setClztdm("91");
-            jylsService.save(jyls);
-            String czlxdm = kpls.getFpczlxdm();
-            if ("12".equals(czlxdm) || "13".equals(czlxdm)) {
+                kpls.setKprq(TimeUtil.getSysDateInDate(kprq, null));
+                kpls.setXgsj(new Date());
+                kpls.setXgry(1);
+                kpls.setMwq(mwq);
+                kpls.setFpEwm(ewm);
+                kpls.setJym(jym);
+                kpls.setSksbm(jqbh);
+                if (("").equals(kpls.getBz()) || null == kpls.getBz()) {
+                    kpls.setBz("机器编号：" + jqbh);
+                }
+                if (StringUtils.isNotBlank(returnmsg)) {
+                    kpls.setErrorReason(returnmsg);
+                } else {
+                    kpls.setErrorReason(null);
+                }
+                kplsService.save(kpls);
+                Jyls jyls = jylsService.findOne(kpls.getDjh());
+                jyls.setClztdm("91");
+                jylsService.save(jyls);
+                String czlxdm = kpls.getFpczlxdm();
+                if ("12".equals(czlxdm) || "13".equals(czlxdm)) {
                     if (kpls.getHkFphm() != null && kpls.getHkFpdm() != null) {
                         kpls.setJylsh("");
                         Kpls ykpls = kplsService.findByhzfphm(kpls);
@@ -1281,30 +1283,33 @@ public class FpclService {
                         }
                     }
                 }
-            kpls.setJylsh(jyls.getJylsh());
-            kplsService.save(kpls);
-            //此处生成PDF
-            generatePdfService.generatePdf(kpls.getKplsh());
-            Map parms=new HashMap();
-                parms.put("gsdm",kpls.getGsdm());
-                Gsxx gsxx=gsxxService.findOneByParams(parms);
+                kpls.setJylsh(jyls.getJylsh());
+                kplsService.save(kpls);
+                //此处生成PDF
+                generatePdfService.generatePdf(kpls.getKplsh());
+                Map parms = new HashMap();
+                parms.put("gsdm", kpls.getGsdm());
+                Gsxx gsxx = gsxxService.findOneByParams(parms);
                 //String url="https://vrapi.fvt.tujia.com/Invoice/CallBack";
-                String url=gsxx.getCallbackurl();
-            logger.info("回写报文"+generatePdfService.CreateReturnMessage2(kpls.getKplsh()));
-            if(!("").equals(url)&&url!=null){
-                   if(kpls.getFpzldm().equals("12")&&kpls.getGsdm().equals("Family")) {
-                       String returnmessage = generatePdfService.CreateReturnMessage2(kpls.getKplsh());
-                       //输出调用结果
-                       logger.info("回写报文" + returnmessage);
-                       if (returnmessage != null && !"".equals(returnmessage)) {
-                           Map returnMap = generatePdfService.httpPost(returnmessage, kpls);
-                           logger.info("返回报文" + JSON.toJSONString(returnMap));
-                       }
-                   }else{
+                String url = gsxx.getCallbackurl();
+                logger.info("回写报文" + generatePdfService.CreateReturnMessage2(kpls.getKplsh()));
+                if (!("").equals(url) && url != null) {
+                    String returnmessage = "";
+                    if (kpls.getFpzldm().equals("12") && kpls.getGsdm().equals("Family")) {
+                        returnmessage = generatePdfService.CreateReturnMessage2(kpls.getKplsh());
 
-                   }
+                    } else if (kpls.getFpzldm().equals("12") && kpls.getGsdm().equals("mcake")) {
+                        returnmessage = generatePdfService.CreateReturnMessage(kpls.getKplsh());
+
+                    }
+                    //输出调用结果
+                    logger.info("回写报文" + returnmessage);
+                    if (returnmessage != null && !"".equals(returnmessage)) {
+                        Map returnMap = generatePdfService.httpPost(returnmessage, kpls);
+                        logger.info("返回报文" + JSON.toJSONString(returnMap));
+                    }
                 }
-            }else{
+            } else {
                 kpls.setFpztdm("05");
                 kpls.setErrorReason(returnmsg);
                 kpls.setXgsj(new Date());
@@ -1314,91 +1319,91 @@ public class FpclService {
                 jyls.setClztdm("92");
                 jylsService.save(jyls);
             }
-        }catch (Exception e){
-           e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return kpls.getSerialorder();
     }
 
-    public String  skServerKP(int kplsh) {
+    public String skServerKP(int kplsh) {
         try {
-                Kpls kpls=kplsService.findOne(kplsh);
-                Jyls jyls=jylsService.findOne(kpls.getDjh());
-                Jyxxsq jyxxsq=jyxxsqService.findOne(jyls.getSqlsh());
-                KplsVO5 kplsVO5 = new KplsVO5(kpls, jyxxsq);
-                Map resultMap = null;
-                String resultxml="";
-                List resultList = new ArrayList();
-                double hjje = 0.00;
-                double hjse = 0.00;
-                //获取对应开票商品明细信息
-                Map params = new HashMap();
-                params.put("kplsh", kplsVO5.getKplsh());
-                List<Kpspmxvo> tmpList = kpspmxService.findSkMxList(params);
-                Kpspmxvo kpspmxvo = new Kpspmxvo();
-                for (int j = 0; j < tmpList.size(); j++) {
-                    kpspmxvo = tmpList.get(j);
-                    hjje = hjje + kpspmxvo.getSpje();
-                    hjse = hjse + kpspmxvo.getSpse();
-                    if(kpspmxvo.getSpdj()!=null) {
-                        BigDecimal b = new BigDecimal(kpspmxvo.getSpdj());
-                        double f1 = b.setScale(6, BigDecimal.ROUND_HALF_UP).doubleValue();
-                        kpspmxvo.setSpdj(f1);
-                    }
+            Kpls kpls = kplsService.findOne(kplsh);
+            Jyls jyls = jylsService.findOne(kpls.getDjh());
+            Jyxxsq jyxxsq = jyxxsqService.findOne(jyls.getSqlsh());
+            KplsVO5 kplsVO5 = new KplsVO5(kpls, jyxxsq);
+            Map resultMap = null;
+            String resultxml = "";
+            List resultList = new ArrayList();
+            double hjje = 0.00;
+            double hjse = 0.00;
+            //获取对应开票商品明细信息
+            Map params = new HashMap();
+            params.put("kplsh", kplsVO5.getKplsh());
+            List<Kpspmxvo> tmpList = kpspmxService.findSkMxList(params);
+            Kpspmxvo kpspmxvo = new Kpspmxvo();
+            for (int j = 0; j < tmpList.size(); j++) {
+                kpspmxvo = tmpList.get(j);
+                hjje = hjje + kpspmxvo.getSpje();
+                hjse = hjse + kpspmxvo.getSpse();
+                if (kpspmxvo.getSpdj() != null) {
+                    BigDecimal b = new BigDecimal(kpspmxvo.getSpdj());
+                    double f1 = b.setScale(6, BigDecimal.ROUND_HALF_UP).doubleValue();
+                    kpspmxvo.setSpdj(f1);
                 }
+            }
 
-                    Map params2 = new HashMap();
-                    String fpzldm = kplsVO5.getFpzldm();
-                    if (fpzldm.equals("01")) {
-                        kplsVO5.setFpzldm("004");
-                    } else if (fpzldm.equals("02")) {
-                        kplsVO5.setFpzldm("007");
-                    } else if (fpzldm.equals("12")) {
-                        kplsVO5.setFpzldm("026");
-                    } else if (fpzldm.equals("03")) {
-                        kplsVO5.setFpzldm("025");
-                    }
-                    String fpczlxdm=kplsVO5.getFpczlxdm();
-                    String kplx=null;
-                    if(fpczlxdm.equals("11")){
-                        kplx="0";
-                    }else if(fpczlxdm.equals("12")){
-                        kplx="1";
-                    }
-                    params2.put("kplx", kplx);
-                    Cszb cszb = cszbService.getSpbmbbh(kplsVO5.getGsdm(), kplsVO5.getXfid(), null, "spbmbbh");
-                    String spbmbbh = cszb.getCsz();
-                    params.put("spbmbbh",spbmbbh);
-                    params2.put("kpls", kplsVO5);
-                    params2.put("kpspmxList", tmpList);
-                    params2.put("mxCount", tmpList.size());
-                    params2.put("hjje", hjje);
-                    params2.put("hjse", hjse);
-                    /**
-                     * 模板名称，电子票税控服务器报文
-                     */
-                    String templateName = "skdzfp-xml.ftl";
-                    String result2 = TemplateUtils.generateContent(templateName, params2);
-                    System.out.println(result2);
-                    logger.debug("封装传开票通的报文" + result2);
-                    Map parms=new HashMap();
-                    parms.put("gsdm",kplsVO5.getGsdm());
-                    Gsxx gsxx=gsxxService.findOneByParams(parms);
-                    String url = gsxx.getWsUrl();
-                    resultMap = DzfphttpPost(result2, url, kplsVO5.getDjh() + "$" + kplsVO5.getKplsh(), kplsVO5.getXfsh(),
-                            kplsVO5.getJylsh());
-                    String  serialorder=this.updateKpls(resultMap);
-                    resultxml="<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
-                            "<Responese>\n" +
-                            "    <ReturnCode>0000</ReturnCode>\n" +
-                            "    <ReturnMessage>"+serialorder+"</ReturnMessage>\n" +
-                            "</Responese>\n";
-                    logger.debug("封装传开票通的返回报文" + JSONObject.toJSONString(resultMap));
-                    return  "1";
-                } catch (Exception e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                    return "0";
-                }
+            Map params2 = new HashMap();
+            String fpzldm = kplsVO5.getFpzldm();
+            if (fpzldm.equals("01")) {
+                kplsVO5.setFpzldm("004");
+            } else if (fpzldm.equals("02")) {
+                kplsVO5.setFpzldm("007");
+            } else if (fpzldm.equals("12")) {
+                kplsVO5.setFpzldm("026");
+            } else if (fpzldm.equals("03")) {
+                kplsVO5.setFpzldm("025");
+            }
+            String fpczlxdm = kplsVO5.getFpczlxdm();
+            String kplx = null;
+            if (fpczlxdm.equals("11")) {
+                kplx = "0";
+            } else if (fpczlxdm.equals("12")) {
+                kplx = "1";
+            }
+            params2.put("kplx", kplx);
+            Cszb cszb = cszbService.getSpbmbbh(kplsVO5.getGsdm(), kplsVO5.getXfid(), null, "spbmbbh");
+            String spbmbbh = cszb.getCsz();
+            params.put("spbmbbh", spbmbbh);
+            params2.put("kpls", kplsVO5);
+            params2.put("kpspmxList", tmpList);
+            params2.put("mxCount", tmpList.size());
+            params2.put("hjje", hjje);
+            params2.put("hjse", hjse);
+            /**
+             * 模板名称，电子票税控服务器报文
+             */
+            String templateName = "skdzfp-xml.ftl";
+            String result2 = TemplateUtils.generateContent(templateName, params2);
+            System.out.println(result2);
+            logger.debug("封装传开票通的报文" + result2);
+            Map parms = new HashMap();
+            parms.put("gsdm", kplsVO5.getGsdm());
+            Gsxx gsxx = gsxxService.findOneByParams(parms);
+            String url = gsxx.getWsUrl();
+            resultMap = DzfphttpPost(result2, url, kplsVO5.getDjh() + "$" + kplsVO5.getKplsh(), kplsVO5.getXfsh(),
+                    kplsVO5.getJylsh());
+            String serialorder = this.updateKpls(resultMap);
+            resultxml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
+                    "<Responese>\n" +
+                    "    <ReturnCode>0000</ReturnCode>\n" +
+                    "    <ReturnMessage>" + serialorder + "</ReturnMessage>\n" +
+                    "</Responese>\n";
+            logger.debug("封装传开票通的返回报文" + JSONObject.toJSONString(resultMap));
+            return "1";
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return "0";
+        }
     }
 }
