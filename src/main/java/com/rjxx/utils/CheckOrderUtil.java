@@ -100,24 +100,34 @@ public class CheckOrderUtil {
                     result += ddh + ":购方名称太长;";
                 }
             }
-//            String CustomerType = (String) jyxxsq.getGflx();
-//            if (CustomerType != null && !CustomerType.equals("")) {
-//                if(CustomerType.equals("1")){
-//                	String buyerIdentifier = (String) jyxxsq.getGfsh();
-//                	if(null == buyerIdentifier || buyerIdentifier.equals("") || ){
-//                		result += ddh + ":购方税号不能为空或不符合规则;";
-//                	}
-//                }
-//            }
+            String CustomerType = (String) jyxxsq.getGflx();
+            if (CustomerType != null && !CustomerType.equals("")) {
+                if(CustomerType.equals("1")){
+                	String buyerIdentifier = (String) jyxxsq.getGfsh();
+                	if(null == buyerIdentifier || buyerIdentifier.equals("") ){
+                		result += ddh + ":购方税号不能为空;";
+                	}
+                }
+            }
             // 购方税号
             String buyerIdentifier = (String) jyxxsq.getGfsh();
             if (buyerIdentifier != null && !buyerIdentifier.equals("")) {
                 if (!(buyerIdentifier.length() == 15 || buyerIdentifier.length() == 18 || buyerIdentifier.length() == 20 )) {
                     result += ddh + ":购方税号"+buyerIdentifier+"长度有误，请核对;";
+                }else{
+                    if(buyerIdentifier.length() == 18){
+                        //校验18位是否满足条件
+                        if(!CheckSocialCreditCode(buyerIdentifier)){
+                            result += ddh + ":购方税号不符合规则;";
+                        }
+                    }
+                    if(isSameChars(buyerIdentifier)){
+                        result += ddh + ":购方税号不符合规则;";
+                    }
                 }
-                if(buyerIdentifier.substring(0,1).equals("0")){
+                /*if(buyerIdentifier.substring(0,1).equals("0")){
                     result += ddh + ":购方税号不符合规则;";
-                }
+                }*/
             }
             // 购方地址
             String buyerAddress = (String) jyxxsq.getGfdz();
@@ -432,13 +442,56 @@ public class CheckOrderUtil {
         	return result;
         }
 
+    //校验18位社会统一信用代码是否正确（未加入最后一位以为校验）
+    public static  boolean CheckSocialCreditCode(String gfsh){
+        if ((gfsh.equals("")) || gfsh.length() != 18) {
+        return false;
+    }
+        String baseCode = "0123456789ABCDEFGHJKLMNPQRTUWXY";
+        char[] baseCodeArray = baseCode.toCharArray();
+        Map<Character, Integer> codes = new HashMap<Character, Integer>();
+        for (int i = 0; i < baseCode.length(); i++) {
+            codes.put(baseCodeArray[i], i);
+        }
+        char[] businessCodeArray = gfsh.toCharArray();
+        Character check = businessCodeArray[17];
+        if (baseCode.indexOf(check) == -1) {
+            return false;
+        }
+        /*int[] wi = { 1, 3, 9, 27, 19, 26, 16, 17, 20, 29, 25, 13, 8, 24, 10, 30, 28 };
+        int sum = 0;
+        for (int i = 0; i < 17; i++) {
+            Character key = businessCodeArray[i];
+            if (baseCode.indexOf(key) == -1) {
+                return false;
+            }
+            sum += (codes.get(key) * wi[i]);
+        }
+        int value = 31 - sum % 31;
+        return value == codes.get(check);*/
+        return true;
+    }
+
+    //校验税号是否全为相同的字符
+    public static boolean isSameChars(String str){
+        if (str.length() == 15 || str.length() == 18 || str.length() == 20){
+            char first = str.charAt(0);
+            for (int i=1; i<str.length(); i++)
+                if (str.charAt(i) != first)
+                    return false;
+            return true;
+        }else {
+            return false;
+        }
+    }
+
     public static void main(String[] args) {
 
         String s = "000000000000000;";
         // System.out.print(s.replace(s.substring(s.length()-1), ""));
-        System.out.print(s.substring(0,1));
-        System.out.print(Double.parseDouble(".00") == 0);
-        System.out.println(s.substring(0,1).equals("0"));
+        System.out.print(CheckSocialCreditCode("010000000000000000"));
+        //System.out.print(Double.parseDouble(".00") == 0);
+        //System.out.println(s.substring(0,1).equals("0"));
 
     }
 }
