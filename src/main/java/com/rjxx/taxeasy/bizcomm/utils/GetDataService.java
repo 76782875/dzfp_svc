@@ -1249,9 +1249,15 @@ public class GetDataService {
                         spbmMap.put("gsdm",gsdm);
                         vSpbm spbm=vSpbmService.findOneByParams(spbmMap);
                         if(spbm!=null){
-                            jymxsq.setYhzcbs(spbm.getYhzcbs().toString());
-                            jymxsq.setLslbz(spbm.getLslbz());
-                            jymxsq.setYhzcmc(spbm.getYhzcmc());
+                            if(Double.valueOf(TaxRate)>0){
+                                jymxsq.setYhzcbs("0");
+                                jymxsq.setLslbz("");
+                                jymxsq.setYhzcmc("");
+                            }else{
+                                jymxsq.setYhzcbs(spbm.getYhzcbs().toString());
+                                jymxsq.setLslbz(spbm.getLslbz());
+                                jymxsq.setYhzcmc(spbm.getYhzcmc());
+                            }
                         }
                         //优惠政策标识
                         String PolicyMark = "";
