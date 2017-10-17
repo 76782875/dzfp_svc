@@ -604,6 +604,11 @@
         <if test="fpzt != null and fpzt !=''">
             and kp.fpztdm = #{fpzt}
         </if>
+        <if test="fpztlist != null">
+            <foreach collection="fpztlist" open=" and kp.fpztdm in (" separator="," close=")" item="fpztdm">
+                #{fpztdm}
+            </foreach>
+        </if>
         <if test="fpczlx != null and fpczlx !=''">
             and kp.fpczlxdm = #{fpczlx}
         </if>
@@ -687,6 +692,11 @@
         <if test="fpzt != null and fpzt !=''">
             and kp.fpztdm = #{fpzt}
         </if>
+        <if test="fpztlist != null">
+        <foreach collection="fpztlist" open=" and kp.fpztdm in (" separator="," close=")" item="fpztdm">
+            #{fpztdm}
+        </foreach>
+    </if>
         <if test="fpczlx != null and fpczlx !=''">
             and kp.fpczlxdm = #{fpczlx}
         </if>
