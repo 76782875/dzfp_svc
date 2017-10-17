@@ -1242,6 +1242,7 @@ public class FpclService {
         @Override
         public void run() {
             //synchronized (this){
+            logger.info("------多线程执行生成pdf----------");
             generatePdfService.generatePdf(kplsh);
             //}
         }
