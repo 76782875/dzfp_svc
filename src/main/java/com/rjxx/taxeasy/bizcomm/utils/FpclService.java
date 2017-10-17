@@ -2,6 +2,7 @@ package com.rjxx.taxeasy.bizcomm.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.rjxx.comm.utils.ApplicationContextUtils;
 import com.rjxx.taxeasy.domains.*;
 import com.rjxx.taxeasy.service.*;
 import com.rjxx.taxeasy.vo.JyspmxDecimal2;
@@ -25,6 +26,7 @@ import org.dom4j.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -1227,7 +1229,26 @@ public class FpclService {
         }
         return list;
     }
+    /**
+     * 线程池执行任务
+     */
+    private static ThreadPoolTaskExecutor taskExecutor = null;
+    /**
+     * 多线程执行生成pdf
+     */
+    class PdfTask implements Runnable {
 
+        private int kplsh;
+        @Override
+        public void run() {
+            //synchronized (this){
+            generatePdfService.generatePdf(kplsh);
+            //}
+        }
+        public void setKplsh(int kplsh) {
+            this.kplsh = kplsh;
+        }
+    }
     public String updateKpls(Map resultMap) {
         String kplsh = resultMap.get("KPLSH").toString();
         Kpls kpls = kplsService.findOne(Integer.valueOf(kplsh));
@@ -1286,7 +1307,13 @@ public class FpclService {
                 kpls.setJylsh(jyls.getJylsh());
                 kplsService.save(kpls);
                 //此处生成PDF
-                generatePdfService.generatePdf(kpls.getKplsh());
+                PdfTask pdfTask=new PdfTask();
+                pdfTask.setKplsh(kpls.getKplsh());
+                if (taskExecutor == null) {
+                    taskExecutor = ApplicationContextUtils.getBean(ThreadPoolTaskExecutor.class);
+                }
+                taskExecutor.execute(pdfTask);
+                //generatePdfService.generatePdf(kplsh);
                 Map parms = new HashMap();
                 parms.put("gsdm", kpls.getGsdm());
                 Gsxx gsxx = gsxxService.findOneByParams(parms);
