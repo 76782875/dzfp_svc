@@ -291,367 +291,373 @@ public class GetDataService {
      * @throws Exception
      */
     public Map interpretingForBqw(String gsdm,String data)throws Exception {
-        Map params1 = new HashMap();
-        params1.put("gsdm", gsdm);
-        Yh yh = yhService.findOneByParams(params1);
-        int lrry = yh.getId();
-        List<Jyxxsq> jyxxsqList = new ArrayList();
-        List<Jymxsq> jymxsqList = new ArrayList();
-        List<Jyzfmx> jyzfmxList = new ArrayList<Jyzfmx>();
-        Map rsMap=new HashMap();
-        Document xmlDoc = null;
-        OMElement root = null;
+        Map rsMap= null;
         try {
-            xmlDoc = DocumentHelper.parseText(data);
-            root = XmlMapUtils.xml2OMElement(data);
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        Map rootMap = XmlMapUtils.xml2Map(root, "Responese");
-        String ReturnCode=rootMap.get("ReturnCode").toString();
-        String ReturnMessage=rootMap.get("ReturnMessage").toString();
-        if(!ReturnCode.equals("0000")){
+            Map params1 = new HashMap();
+            params1.put("gsdm", gsdm);
+            Yh yh = yhService.findOneByParams(params1);
+            int lrry = yh.getId();
+            List<Jyxxsq> jyxxsqList = new ArrayList();
+            List<Jymxsq> jymxsqList = new ArrayList();
+            List<Jyzfmx> jyzfmxList = new ArrayList<Jyzfmx>();
+            rsMap = new HashMap();
+            Document xmlDoc = null;
+            OMElement root = null;
+            try {
+                xmlDoc = DocumentHelper.parseText(data);
+                root = XmlMapUtils.xml2OMElement(data);
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            Map rootMap = XmlMapUtils.xml2Map(root, "Responese");
+            String ReturnCode=rootMap.get("ReturnCode").toString();
+            String ReturnMessage=rootMap.get("ReturnMessage").toString();
+            if(!ReturnCode.equals("0000")){
+                rsMap.put("jyxxsqList", jyxxsqList);
+                rsMap.put("jymxsqList", jymxsqList);
+                rsMap.put("jyzfmxList", jyzfmxList);
+                rsMap.put("error",ReturnCode+":"+ReturnMessage);
+                logger.info("------错误信息--------"+ReturnCode+":"+ReturnMessage);
+                return rsMap;
+            }
+            Element ReturnData  = (Element) xmlDoc.selectSingleNode("Responese/ReturnData");
+            // 提取码
+            String ExtractCode = "";
+            if (null != ReturnData.selectSingleNode("ExtractCode")
+                    && !ReturnData.selectSingleNode("ExtractCode").equals("")) {
+                ExtractCode = ReturnData.selectSingleNode("ExtractCode").getText();
+            }
+            // 发票种类
+            String InvType = "";
+            if (null != ReturnData.selectSingleNode("InvType")
+                    && !ReturnData.selectSingleNode("InvType").equals("")) {
+                InvType = ReturnData.selectSingleNode("InvType").getText();
+            }
+            // 商品编码版本号
+            String Spbmbbh = "";
+            if (null != ReturnData.selectSingleNode("Spbmbbh")
+                    && !ReturnData.selectSingleNode("Spbmbbh").equals("")) {
+                Spbmbbh = ReturnData.selectSingleNode("Spbmbbh").getText();
+            }
+            // 开票点编码
+            String ClientNO = "";
+            if (null != ReturnData.selectSingleNode("ClientNO")
+                    && !ReturnData.selectSingleNode("ClientNO").equals("")) {
+                ClientNO = ReturnData.selectSingleNode("ClientNO").getText();
+            }
+
+            //二级节点--销方信息
+            Element Seller  = (Element) xmlDoc.selectSingleNode("Responese/ReturnData/Seller");
+            // 销方税号
+            String Identifier = "";
+            if (null != Seller.selectSingleNode("Identifier")
+                    && !Seller.selectSingleNode("Identifier").equals("")) {
+                Identifier = Seller.selectSingleNode("Identifier").getText();
+            }
+            // 销方名称
+            String Name = "";
+            if (null != Seller.selectSingleNode("Name")
+                    && !Seller.selectSingleNode("Name").equals("")) {
+                Name = Seller.selectSingleNode("Name").getText();
+            }
+            // 销方地址
+            String Address = "";
+            if (null != Seller.selectSingleNode("Address")
+                    && !Seller.selectSingleNode("Address").equals("")) {
+                Address = Seller.selectSingleNode("Address").getText();
+            }
+            // 销方电话
+            String TelephoneNo = "";
+            if (null != Seller.selectSingleNode("TelephoneNo")
+                    && !Seller.selectSingleNode("TelephoneNo").equals("")) {
+                TelephoneNo = Seller.selectSingleNode("TelephoneNo").getText();
+            }
+            // 销方银行
+            String Bank = "";
+            if (null != Seller.selectSingleNode("Bank")
+                    && !Seller.selectSingleNode("Bank").equals("")) {
+                Bank = Seller.selectSingleNode("Bank").getText();
+            }
+            // 销方银行账号
+            String BankAcc = "";
+            if (null != Seller.selectSingleNode("BankAcc")
+                    && !Seller.selectSingleNode("BankAcc").equals("")) {
+                BankAcc = Seller.selectSingleNode("BankAcc").getText();
+            }
+            //二级节点--待开票信息
+            List<Element> xnList = xmlDoc.selectNodes("Responese/ReturnData/Orders");
+            if (null != xnList && xnList.size() > 0) {
+                for (Element xn : xnList) {
+                    Jyxxsq jyxxsq = new Jyxxsq();
+                    //三级节点--待开票交易主信息
+                    Element orderMainMap = (Element) xn.selectSingleNode("OrderMain");
+                    // 订单号
+                    String orderNo = "";
+                    if (null != orderMainMap.selectSingleNode("OrderNo")
+                            && !orderMainMap.selectSingleNode("OrderNo").equals("")) {
+                        orderNo = orderMainMap.selectSingleNode("OrderNo").getText();
+                    }
+                    // 订单时间
+                    String orderDate = "";
+                    if (null != orderMainMap.selectSingleNode("OrderDate")
+                            && !orderMainMap.selectSingleNode("OrderDate").equals("")) {
+                        orderDate = orderMainMap.selectSingleNode("OrderDate").getText();
+                    }
+                    // 征税方式
+                    String chargeTaxWay = "";
+                    if (null != orderMainMap.selectSingleNode("ChargeTaxWay")
+                            && !orderMainMap.selectSingleNode("ChargeTaxWay").equals("")) {
+                        chargeTaxWay = orderMainMap.selectSingleNode("ChargeTaxWay").getText();
+                    }
+                    // 价税合计
+                    String totalAmount = "";
+                    if (null != orderMainMap.selectSingleNode("TotalAmount")
+                            && !orderMainMap.selectSingleNode("TotalAmount").equals("")) {
+                        totalAmount = orderMainMap.selectSingleNode("TotalAmount").getText();
+                    }
+                    // 含税标志
+                    String taxMark = "";
+                    if (null != orderMainMap.selectSingleNode("TaxMark")
+                            && !orderMainMap.selectSingleNode("TaxMark").equals("")) {
+                        taxMark = orderMainMap.selectSingleNode("TaxMark").getText();
+                    }
+
+                    // 备注
+                    String remark = "";
+                    if (null != orderMainMap.selectSingleNode("Remark")
+                            && !orderMainMap.selectSingleNode("Remark").equals("")) {
+                        remark = orderMainMap.selectSingleNode("Remark").getText();
+                    }
+                    jyxxsq.setTqm(ExtractCode);
+                    jyxxsq.setDdh(orderNo);
+                    SimpleDateFormat sim = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    try {
+                        jyxxsq.setDdrq(orderDate == null ? new Date() : sim.parse(orderDate));
+                    } catch (ParseException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                    Xf x = new Xf();
+                    x.setGsdm(gsdm);
+                    x.setXfsh(Identifier);
+                    //测试销方
+                    //x.setXfsh("500102010003643");
+                    Xf xf = xfService.findOneByParams(x);
+                    Map params=new HashMap();
+                    params.put("xfid",xf.getId());
+                    Skp skp=skpService.findOneByParams(params);
+                    jyxxsq.setXfid(xf.getId());
+                    jyxxsq.setJylsh(ExtractCode);
+                    //测试
+                    jyxxsq.setJshj(Double.valueOf(totalAmount));
+                    jyxxsq.setHsbz(taxMark);
+                    jyxxsq.setBz(remark);
+                    jyxxsq.setFpzldm(InvType);
+                    jyxxsq.setZsfs(chargeTaxWay);
+                    jyxxsq.setKpr(xf.getKpr());
+                    jyxxsq.setSkr(xf.getSkr());
+                    jyxxsq.setFhr(xf.getFhr());
+                    //测试
+    //                jyxxsq.setKpddm("bqw_01");
+    //                jyxxsq.setXfmc(xf.getXfmc());
+    //                jyxxsq.setXfsh("500102010003643");
+    //                jyxxsq.setXfdz(xf.getXfdz());
+    //                jyxxsq.setXfdh(xf.getXfdh());
+    //                jyxxsq.setXfyh(xf.getXfyh());
+    //                jyxxsq.setXfyhzh(xf.getXfyhzh());
+
+                    jyxxsq.setKpddm(ClientNO);
+                    jyxxsq.setXfmc(Name);
+                    jyxxsq.setXfsh(Identifier);
+                    jyxxsq.setXfdz(Address);
+                    jyxxsq.setXfdh(TelephoneNo);
+                    jyxxsq.setXfyh(Bank);
+                    jyxxsq.setXfyhzh(BankAcc);
+                    jyxxsq.setYkpjshj(Double.valueOf("0.00"));
+                    jyxxsq.setYxbz("1");
+                    jyxxsq.setLrsj(new Date());
+                    jyxxsq.setLrry(lrry);
+                    jyxxsq.setXgry(lrry);
+                    jyxxsq.setFpczlxdm("11");
+                    jyxxsq.setXgsj(new Date());
+                    jyxxsq.setGsdm(gsdm);
+                    jyxxsq.setSjly("1");
+                    jyxxsq.setClztdm("00");
+                    jyxxsqList.add(jyxxsq);
+                    //三级节点--待开票交易明细商品信息
+                    Element OrderDetails = (Element) xn.selectSingleNode("OrderDetails");
+                    //四级节点
+                    List<Element> orderDetailsList = (List<Element>) OrderDetails.elements("ProductItem");
+                    if (null != orderDetailsList && orderDetailsList.size() > 0) {
+                        int spmxxh = 0;
+                        for (Element orderDetails : orderDetailsList) {
+                            Jymxsq jymxsq = new Jymxsq();
+                            // Map ProductItem = (Map) orderDetailsList.get(j);
+                            spmxxh++;
+
+                            // 商品编码
+                            String ProductCode = "";
+                            if (null != orderDetails.selectSingleNode("ProductCode")
+                                    && !orderDetails.selectSingleNode("ProductCode").equals("")) {
+                                ProductCode = orderDetails.selectSingleNode("ProductCode").getText();
+                            }
+
+                            jymxsq.setDdh(jyxxsq.getDdh());
+                           // jymxsq.setSpdm(ProductCode);
+                            // 商品名称
+                            String ProductName = "";
+                            if (null != orderDetails.selectSingleNode("ProductName")
+                                    && !orderDetails.selectSingleNode("ProductName").equals("")) {
+                                ProductName = orderDetails.selectSingleNode("ProductName").getText();
+                            }
+
+                            jymxsq.setSpmc(ProductName);
+                            jymxsq.setDdh(jyxxsq.getDdh());
+                            jymxsq.setHsbz(jyxxsq.getHsbz());
+                            // 发票行性质
+                            String RowType = "";
+                            if (null != orderDetails.selectSingleNode("RowType")
+                                    && !orderDetails.selectSingleNode("RowType").equals("")) {
+                                RowType = orderDetails.selectSingleNode("RowType").getText();
+                            }
+
+                            jymxsq.setFphxz(RowType);
+                            // 商品规格型号
+                            String Spec = "";
+                            if (null != orderDetails.selectSingleNode("Spec")
+                                    && !orderDetails.selectSingleNode("Spec").equals("")) {
+                                Spec = orderDetails.selectSingleNode("Spec").getText();
+                            }
+
+                            jymxsq.setSpggxh(Spec);
+                            // 商品单位
+                            String Unit = "";
+                            if (null != orderDetails.selectSingleNode("Unit")
+                                    && !orderDetails.selectSingleNode("Unit").equals("")) {
+                                Unit = orderDetails.selectSingleNode("Unit").getText();
+                            }
+
+                            jymxsq.setSpdw(Unit);
+                            // 商品数量
+                            String Quantity = "";
+                            if (null != orderDetails.selectSingleNode("Quantity")
+                                    && !orderDetails.selectSingleNode("Quantity").equals("")) {
+                                Quantity = orderDetails.selectSingleNode("Quantity").getText();
+                                try{jymxsq.setSps(Double.valueOf(Quantity));}catch (Exception e){jymxsq.setSps(null);}
+                            }
+                            // 商品单价
+                            String UnitPrice = "";
+                            if (null != orderDetails.selectSingleNode("UnitPrice")
+                                    && !orderDetails.selectSingleNode("UnitPrice").equals("")) {
+                                UnitPrice = orderDetails.selectSingleNode("UnitPrice").getText();
+                                try{jymxsq.setSpdj(Double.valueOf(UnitPrice));}catch (Exception e){jymxsq.setSpdj(null);}
+                            }
+                            // 商品金额
+                            String Amount = "";
+                            if (null != orderDetails.selectSingleNode("Amount")
+                                    && !orderDetails.selectSingleNode("Amount").equals("")) {
+                                Amount = orderDetails.selectSingleNode("Amount").getText();
+                                try{jymxsq.setSpje(Double.valueOf(Amount));}catch (Exception e){jymxsq.setSpje(null);}
+
+                            }
+                            // 扣除金额
+                            String DeductAmount = "";
+                            if (null != orderDetails.selectSingleNode("DeductAmount")
+                                    && !orderDetails.selectSingleNode("DeductAmount").equals("")) {
+                                DeductAmount = orderDetails.selectSingleNode("DeductAmount").getText();
+                                jymxsq.setKce((null == DeductAmount || DeductAmount.equals("")) ? Double.valueOf("0.00")
+                                        : Double.valueOf(DeductAmount));
+                            }
+                            //商品税率
+                            String TaxRate = "";
+                            if (null != orderDetails.selectSingleNode("TaxRate")
+                                    && !orderDetails.selectSingleNode("TaxRate").equals("")) {
+                                TaxRate = orderDetails.selectSingleNode("TaxRate").getText();
+                                jymxsq.setSpsl(Double.valueOf(TaxRate));
+                            }
+                            //商品税额
+                            String TaxAmount = "";
+                            if (null != orderDetails.selectSingleNode("TaxAmount")
+                                    && !orderDetails.selectSingleNode("TaxAmount").equals("")) {
+                                TaxAmount = orderDetails.selectSingleNode("TaxAmount").getText();
+                                if(TaxAmount!=null&&!"".equals(TaxAmount)){
+                                    jymxsq.setSpse(Double.valueOf(TaxAmount));
+                                }
+                            }
+                            //价税合计
+                            String MxTotalAmount = "";
+                            if (null != orderDetails.selectSingleNode("MxTotalAmount")
+                                    && !orderDetails.selectSingleNode("MxTotalAmount").equals("")) {
+                                MxTotalAmount = orderDetails.selectSingleNode("MxTotalAmount").getText();
+                                jymxsq.setJshj(Double.valueOf(MxTotalAmount));
+                            }
+                            //商品明细序号
+                            jymxsq.setSpmxxh(spmxxh);
+                            //可开具金额
+                            jymxsq.setKkjje(Double.valueOf(MxTotalAmount));
+                            //已开具金额
+                            jymxsq.setYkjje(0d);
+                            //商品自行编码
+                            String VenderOwnCode = "";
+                            if (null != orderDetails.selectSingleNode("VenderOwnCode")
+                                    && !orderDetails.selectSingleNode("VenderOwnCode").equals("")) {
+                                VenderOwnCode = orderDetails.selectSingleNode("VenderOwnCode").getText();
+                            }
+                            jymxsq.setSpzxbm(VenderOwnCode);
+
+                            Map spvoMap = new HashMap();
+                            spvoMap.put("gsdm",gsdm);
+                            spvoMap.put("spdm",VenderOwnCode);
+                            Spvo spvo = spvoService.findOneSpvo(spvoMap);
+                            if(null==spvo){
+                                rsMap.put("jyxxsqList", jyxxsqList);
+                                rsMap.put("jymxsqList", jymxsqList);
+                                rsMap.put("jyzfmxList", jyzfmxList);
+                                rsMap.put("error", "开票信息有误，请联系商家!");
+                                return rsMap;
+                            }
+                            jymxsq.setSpdm(spvo.getSpbm());
+                            jymxsq.setYhzcbs(spvo.getYhzcbs());
+                            jymxsq.setLslbz(spvo.getLslbz());
+                            jymxsq.setYhzcmc(spvo.getYhzcmc());
+                            //优惠政策标识
+                            String PolicyMark = "";
+                            if (null != orderDetails.selectSingleNode("PolicyMark")
+                                    && !orderDetails.selectSingleNode("PolicyMark").equals("")) {
+                                PolicyMark = orderDetails.selectSingleNode("PolicyMark").getText();
+                            }
+                            //零税率标志
+                            String TaxRateMark = "";
+                            if (null != orderDetails.selectSingleNode("TaxRateMark")
+                                    && !orderDetails.selectSingleNode("TaxRateMark").equals("")) {
+                                TaxRateMark = orderDetails.selectSingleNode("TaxRateMark").getText();
+                            }
+                            //优惠政策名称
+                            String PolicyName = "";
+                            if (null != orderDetails.selectSingleNode("PolicyName")
+                                    && !orderDetails.selectSingleNode("PolicyName").equals("")) {
+                                PolicyName = orderDetails.selectSingleNode("PolicyName").getText();
+                            }
+                            jymxsq.setGsdm(gsdm);
+                            jymxsq.setLrry(lrry);
+                            jymxsq.setLrsj(new Date());
+                            jymxsq.setXgry(lrry);
+                            jymxsq.setXgsj(new Date());
+                            jymxsq.setYxbz("1");
+                            jymxsqList.add(jymxsq);
+                        }
+                    }
+
+                }
+            }
+
             rsMap.put("jyxxsqList", jyxxsqList);
             rsMap.put("jymxsqList", jymxsqList);
             rsMap.put("jyzfmxList", jyzfmxList);
-            rsMap.put("error",ReturnCode+":"+ReturnMessage);
-            logger.info("------错误信息--------"+ReturnCode+":"+ReturnMessage);
-            return rsMap;
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
         }
-        Element ReturnData  = (Element) xmlDoc.selectSingleNode("Responese/ReturnData");
-        // 提取码
-        String ExtractCode = "";
-        if (null != ReturnData.selectSingleNode("ExtractCode")
-                && !ReturnData.selectSingleNode("ExtractCode").equals("")) {
-            ExtractCode = ReturnData.selectSingleNode("ExtractCode").getText();
-        }
-        // 发票种类
-        String InvType = "";
-        if (null != ReturnData.selectSingleNode("InvType")
-                && !ReturnData.selectSingleNode("InvType").equals("")) {
-            InvType = ReturnData.selectSingleNode("InvType").getText();
-        }
-        // 商品编码版本号
-        String Spbmbbh = "";
-        if (null != ReturnData.selectSingleNode("Spbmbbh")
-                && !ReturnData.selectSingleNode("Spbmbbh").equals("")) {
-            Spbmbbh = ReturnData.selectSingleNode("Spbmbbh").getText();
-        }
-        // 开票点编码
-        String ClientNO = "";
-        if (null != ReturnData.selectSingleNode("ClientNO")
-                && !ReturnData.selectSingleNode("ClientNO").equals("")) {
-            ClientNO = ReturnData.selectSingleNode("ClientNO").getText();
-        }
-
-        //二级节点--销方信息
-        Element Seller  = (Element) xmlDoc.selectSingleNode("Responese/ReturnData/Seller");
-        // 销方税号
-        String Identifier = "";
-        if (null != Seller.selectSingleNode("Identifier")
-                && !Seller.selectSingleNode("Identifier").equals("")) {
-            Identifier = Seller.selectSingleNode("Identifier").getText();
-        }
-        // 销方名称
-        String Name = "";
-        if (null != Seller.selectSingleNode("Name")
-                && !Seller.selectSingleNode("Name").equals("")) {
-            Name = Seller.selectSingleNode("Name").getText();
-        }
-        // 销方地址
-        String Address = "";
-        if (null != Seller.selectSingleNode("Address")
-                && !Seller.selectSingleNode("Address").equals("")) {
-            Address = Seller.selectSingleNode("Address").getText();
-        }
-        // 销方电话
-        String TelephoneNo = "";
-        if (null != Seller.selectSingleNode("TelephoneNo")
-                && !Seller.selectSingleNode("TelephoneNo").equals("")) {
-            TelephoneNo = Seller.selectSingleNode("TelephoneNo").getText();
-        }
-        // 销方银行
-        String Bank = "";
-        if (null != Seller.selectSingleNode("Bank")
-                && !Seller.selectSingleNode("Bank").equals("")) {
-            Bank = Seller.selectSingleNode("Bank").getText();
-        }
-        // 销方银行账号
-        String BankAcc = "";
-        if (null != Seller.selectSingleNode("BankAcc")
-                && !Seller.selectSingleNode("BankAcc").equals("")) {
-            BankAcc = Seller.selectSingleNode("BankAcc").getText();
-        }
-        //二级节点--待开票信息
-        List<Element> xnList = xmlDoc.selectNodes("Responese/ReturnData/Orders");
-        if (null != xnList && xnList.size() > 0) {
-            for (Element xn : xnList) {
-                Jyxxsq jyxxsq = new Jyxxsq();
-                //三级节点--待开票交易主信息
-                Element orderMainMap = (Element) xn.selectSingleNode("OrderMain");
-                // 订单号
-                String orderNo = "";
-                if (null != orderMainMap.selectSingleNode("OrderNo")
-                        && !orderMainMap.selectSingleNode("OrderNo").equals("")) {
-                    orderNo = orderMainMap.selectSingleNode("OrderNo").getText();
-                }
-                // 订单时间
-                String orderDate = "";
-                if (null != orderMainMap.selectSingleNode("OrderDate")
-                        && !orderMainMap.selectSingleNode("OrderDate").equals("")) {
-                    orderDate = orderMainMap.selectSingleNode("OrderDate").getText();
-                }
-                // 征税方式
-                String chargeTaxWay = "";
-                if (null != orderMainMap.selectSingleNode("ChargeTaxWay")
-                        && !orderMainMap.selectSingleNode("ChargeTaxWay").equals("")) {
-                    chargeTaxWay = orderMainMap.selectSingleNode("ChargeTaxWay").getText();
-                }
-                // 价税合计
-                String totalAmount = "";
-                if (null != orderMainMap.selectSingleNode("TotalAmount")
-                        && !orderMainMap.selectSingleNode("TotalAmount").equals("")) {
-                    totalAmount = orderMainMap.selectSingleNode("TotalAmount").getText();
-                }
-                // 含税标志
-                String taxMark = "";
-                if (null != orderMainMap.selectSingleNode("TaxMark")
-                        && !orderMainMap.selectSingleNode("TaxMark").equals("")) {
-                    taxMark = orderMainMap.selectSingleNode("TaxMark").getText();
-                }
-
-                // 备注
-                String remark = "";
-                if (null != orderMainMap.selectSingleNode("Remark")
-                        && !orderMainMap.selectSingleNode("Remark").equals("")) {
-                    remark = orderMainMap.selectSingleNode("Remark").getText();
-                }
-                jyxxsq.setTqm(ExtractCode);
-                jyxxsq.setDdh(orderNo);
-                SimpleDateFormat sim = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                try {
-                    jyxxsq.setDdrq(orderDate == null ? new Date() : sim.parse(orderDate));
-                } catch (ParseException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                Xf x = new Xf();
-                x.setGsdm(gsdm);
-                x.setXfsh(Identifier);
-                //测试销方
-                //x.setXfsh("500102010003643");
-                Xf xf = xfService.findOneByParams(x);
-                Map params=new HashMap();
-                params.put("xfid",xf.getId());
-                Skp skp=skpService.findOneByParams(params);
-                jyxxsq.setXfid(xf.getId());
-                jyxxsq.setJylsh(ExtractCode);
-                //测试
-                jyxxsq.setJshj(Double.valueOf(totalAmount));
-                jyxxsq.setHsbz(taxMark);
-                jyxxsq.setBz(remark);
-                jyxxsq.setFpzldm(InvType);
-                jyxxsq.setZsfs(chargeTaxWay);
-                jyxxsq.setKpr(xf.getKpr());
-                jyxxsq.setSkr(xf.getSkr());
-                jyxxsq.setFhr(xf.getFhr());
-                //测试
-//                jyxxsq.setKpddm("bqw_01");
-//                jyxxsq.setXfmc(xf.getXfmc());
-//                jyxxsq.setXfsh("500102010003643");
-//                jyxxsq.setXfdz(xf.getXfdz());
-//                jyxxsq.setXfdh(xf.getXfdh());
-//                jyxxsq.setXfyh(xf.getXfyh());
-//                jyxxsq.setXfyhzh(xf.getXfyhzh());
-
-                jyxxsq.setKpddm(ClientNO);
-                jyxxsq.setXfmc(Name);
-                jyxxsq.setXfsh(Identifier);
-                jyxxsq.setXfdz(Address);
-                jyxxsq.setXfdh(TelephoneNo);
-                jyxxsq.setXfyh(Bank);
-                jyxxsq.setXfyhzh(BankAcc);
-                jyxxsq.setYkpjshj(Double.valueOf("0.00"));
-                jyxxsq.setYxbz("1");
-                jyxxsq.setLrsj(new Date());
-                jyxxsq.setLrry(lrry);
-                jyxxsq.setXgry(lrry);
-                jyxxsq.setFpczlxdm("11");
-                jyxxsq.setXgsj(new Date());
-                jyxxsq.setGsdm(gsdm);
-                jyxxsq.setSjly("1");
-                jyxxsq.setClztdm("00");
-                jyxxsqList.add(jyxxsq);
-                //三级节点--待开票交易明细商品信息
-                Element OrderDetails = (Element) xn.selectSingleNode("OrderDetails");
-                //四级节点
-                List<Element> orderDetailsList = (List<Element>) OrderDetails.elements("ProductItem");
-                if (null != orderDetailsList && orderDetailsList.size() > 0) {
-                    int spmxxh = 0;
-                    for (Element orderDetails : orderDetailsList) {
-                        Jymxsq jymxsq = new Jymxsq();
-                        // Map ProductItem = (Map) orderDetailsList.get(j);
-                        spmxxh++;
-
-                        // 商品编码
-                        String ProductCode = "";
-                        if (null != orderDetails.selectSingleNode("ProductCode")
-                                && !orderDetails.selectSingleNode("ProductCode").equals("")) {
-                            ProductCode = orderDetails.selectSingleNode("ProductCode").getText();
-                        }
-
-                        jymxsq.setDdh(jyxxsq.getDdh());
-                       // jymxsq.setSpdm(ProductCode);
-                        // 商品名称
-                        String ProductName = "";
-                        if (null != orderDetails.selectSingleNode("ProductName")
-                                && !orderDetails.selectSingleNode("ProductName").equals("")) {
-                            ProductName = orderDetails.selectSingleNode("ProductName").getText();
-                        }
-
-                        jymxsq.setSpmc(ProductName);
-                        jymxsq.setDdh(jyxxsq.getDdh());
-                        jymxsq.setHsbz(jyxxsq.getHsbz());
-                        // 发票行性质
-                        String RowType = "";
-                        if (null != orderDetails.selectSingleNode("RowType")
-                                && !orderDetails.selectSingleNode("RowType").equals("")) {
-                            RowType = orderDetails.selectSingleNode("RowType").getText();
-                        }
-
-                        jymxsq.setFphxz(RowType);
-                        // 商品规格型号
-                        String Spec = "";
-                        if (null != orderDetails.selectSingleNode("Spec")
-                                && !orderDetails.selectSingleNode("Spec").equals("")) {
-                            Spec = orderDetails.selectSingleNode("Spec").getText();
-                        }
-
-                        jymxsq.setSpggxh(Spec);
-                        // 商品单位
-                        String Unit = "";
-                        if (null != orderDetails.selectSingleNode("Unit")
-                                && !orderDetails.selectSingleNode("Unit").equals("")) {
-                            Unit = orderDetails.selectSingleNode("Unit").getText();
-                        }
-
-                        jymxsq.setSpdw(Unit);
-                        // 商品数量
-                        String Quantity = "";
-                        if (null != orderDetails.selectSingleNode("Quantity")
-                                && !orderDetails.selectSingleNode("Quantity").equals("")) {
-                            Quantity = orderDetails.selectSingleNode("Quantity").getText();
-                            try{jymxsq.setSps(Double.valueOf(Quantity));}catch (Exception e){jymxsq.setSps(null);}
-                        }
-                        // 商品单价
-                        String UnitPrice = "";
-                        if (null != orderDetails.selectSingleNode("UnitPrice")
-                                && !orderDetails.selectSingleNode("UnitPrice").equals("")) {
-                            UnitPrice = orderDetails.selectSingleNode("UnitPrice").getText();
-                            try{jymxsq.setSpdj(Double.valueOf(UnitPrice));}catch (Exception e){jymxsq.setSpdj(null);}
-                        }
-                        // 商品金额
-                        String Amount = "";
-                        if (null != orderDetails.selectSingleNode("Amount")
-                                && !orderDetails.selectSingleNode("Amount").equals("")) {
-                            Amount = orderDetails.selectSingleNode("Amount").getText();
-                            try{jymxsq.setSpje(Double.valueOf(Amount));}catch (Exception e){jymxsq.setSpje(null);}
-
-                        }
-                        // 扣除金额
-                        String DeductAmount = "";
-                        if (null != orderDetails.selectSingleNode("DeductAmount")
-                                && !orderDetails.selectSingleNode("DeductAmount").equals("")) {
-                            DeductAmount = orderDetails.selectSingleNode("DeductAmount").getText();
-                            jymxsq.setKce((null == DeductAmount || DeductAmount.equals("")) ? Double.valueOf("0.00")
-                                    : Double.valueOf(DeductAmount));
-                        }
-                        //商品税率
-                        String TaxRate = "";
-                        if (null != orderDetails.selectSingleNode("TaxRate")
-                                && !orderDetails.selectSingleNode("TaxRate").equals("")) {
-                            TaxRate = orderDetails.selectSingleNode("TaxRate").getText();
-                            jymxsq.setSpsl(Double.valueOf(TaxRate));
-                        }
-                        //商品税额
-                        String TaxAmount = "";
-                        if (null != orderDetails.selectSingleNode("TaxAmount")
-                                && !orderDetails.selectSingleNode("TaxAmount").equals("")) {
-                            TaxAmount = orderDetails.selectSingleNode("TaxAmount").getText();
-                            if(TaxAmount!=null&&!"".equals(TaxAmount)){
-                                jymxsq.setSpse(Double.valueOf(TaxAmount));
-                            }
-                        }
-                        //价税合计
-                        String MxTotalAmount = "";
-                        if (null != orderDetails.selectSingleNode("MxTotalAmount")
-                                && !orderDetails.selectSingleNode("MxTotalAmount").equals("")) {
-                            MxTotalAmount = orderDetails.selectSingleNode("MxTotalAmount").getText();
-                            jymxsq.setJshj(Double.valueOf(MxTotalAmount));
-                        }
-                        //商品明细序号
-                        jymxsq.setSpmxxh(spmxxh);
-                        //可开具金额
-                        jymxsq.setKkjje(Double.valueOf(MxTotalAmount));
-                        //已开具金额
-                        jymxsq.setYkjje(0d);
-                        //商品自行编码
-                        String VenderOwnCode = "";
-                        if (null != orderDetails.selectSingleNode("VenderOwnCode")
-                                && !orderDetails.selectSingleNode("VenderOwnCode").equals("")) {
-                            VenderOwnCode = orderDetails.selectSingleNode("VenderOwnCode").getText();
-                        }
-                        jymxsq.setSpzxbm(VenderOwnCode);
-
-                        Map spvoMap = new HashMap();
-                        spvoMap.put("gsdm",gsdm);
-                        spvoMap.put("spdm",VenderOwnCode);
-                        Spvo spvo = spvoService.findOneSpvo(spvoMap);
-                        if(null==spvo){
-                            rsMap.put("jyxxsqList", jyxxsqList);
-                            rsMap.put("jymxsqList", jymxsqList);
-                            rsMap.put("jyzfmxList", jyzfmxList);
-                            rsMap.put("error", "开票信息有误，请联系商家!");
-                        }
-                        jymxsq.setSpdm(spvo.getSpbm());
-                        jymxsq.setYhzcbs(spvo.getYhzcbs());
-                        jymxsq.setLslbz(spvo.getLslbz());
-                        jymxsq.setYhzcmc(spvo.getYhzcmc());
-                        //优惠政策标识
-                        String PolicyMark = "";
-                        if (null != orderDetails.selectSingleNode("PolicyMark")
-                                && !orderDetails.selectSingleNode("PolicyMark").equals("")) {
-                            PolicyMark = orderDetails.selectSingleNode("PolicyMark").getText();
-                        }
-                        //零税率标志
-                        String TaxRateMark = "";
-                        if (null != orderDetails.selectSingleNode("TaxRateMark")
-                                && !orderDetails.selectSingleNode("TaxRateMark").equals("")) {
-                            TaxRateMark = orderDetails.selectSingleNode("TaxRateMark").getText();
-                        }
-                        //优惠政策名称
-                        String PolicyName = "";
-                        if (null != orderDetails.selectSingleNode("PolicyName")
-                                && !orderDetails.selectSingleNode("PolicyName").equals("")) {
-                            PolicyName = orderDetails.selectSingleNode("PolicyName").getText();
-                        }
-                        jymxsq.setGsdm(gsdm);
-                        jymxsq.setLrry(lrry);
-                        jymxsq.setLrsj(new Date());
-                        jymxsq.setXgry(lrry);
-                        jymxsq.setXgsj(new Date());
-                        jymxsq.setYxbz("1");
-                        jymxsqList.add(jymxsq);
-                    }
-                }
-
-            }
-        }
-
-        rsMap.put("jyxxsqList", jyxxsqList);
-        rsMap.put("jymxsqList", jymxsqList);
-        rsMap.put("jyzfmxList", jyzfmxList);
         return rsMap;
     }
     public Map getData(String ExtractCode,String gsdm){
