@@ -3,6 +3,7 @@ package com.rjxx.taxeasy.bizcomm.utils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.rjxx.comm.utils.ApplicationContextUtils;
+import com.rjxx.taxeasy.config.RabbitmqUtils;
 import com.rjxx.taxeasy.domains.*;
 import com.rjxx.taxeasy.service.*;
 import com.rjxx.taxeasy.vo.JyspmxDecimal2;
@@ -72,6 +73,9 @@ public class FpclService {
     private GeneratePdfService generatePdfService;
     @Autowired
     private CszbService cszbService;
+
+    @Autowired
+    private RabbitmqUtils rabbitmqSend;
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -1338,6 +1342,9 @@ public class FpclService {
                     }
                 }
             } else {
+                if(returnmsg.equals("09D103:发票领购信息已用完")||returnmsg.equals("00F103:Socket连接有误")){
+                    rabbitmqSend.sendMsg("ErrorException_Sk", kpls.getFpzldm(), kpls.getKplsh() + "");
+                }
                 kpls.setFpztdm("05");
                 kpls.setErrorReason(returnmsg);
                 kpls.setXgsj(new Date());
