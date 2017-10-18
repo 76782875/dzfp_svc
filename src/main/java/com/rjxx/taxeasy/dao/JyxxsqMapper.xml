@@ -29,6 +29,9 @@
 		<if test="openid != null">
 			and openid = #{openid}
 		</if>
+		<if test="je != null">
+			and jshj = #{je}
+		</if>
 		limit 1
 	</select>
 
