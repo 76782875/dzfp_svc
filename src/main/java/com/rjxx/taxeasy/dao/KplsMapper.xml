@@ -604,10 +604,22 @@
         <if test="fpzt != null and fpzt !=''">
             and kp.fpztdm = #{fpzt}
         </if>
+        <if test="yxbz != null and yxbz !=''">
+            and kp.yxbz = #{yxbz}
+        </if>
         <if test="fpztlist != null">
             <foreach collection="fpztlist" open=" and kp.fpztdm in (" separator="," close=")" item="fpztdm">
                 #{fpztdm}
             </foreach>
+        </if>
+        <if test="fpzllist != null">
+            <foreach collection="fpzllist" open=" and kp.fpzldm in (" separator="," close=")" item="fpzl">
+                #{fpzl}
+            </foreach>
+        </if>
+        <if test="kprqq2 !=null and kprqq2 !='' and kprqz2 !=null and kprqz2 !=''">
+            and kp.kprq between #{kprqq2} and
+            date_add(str_to_date(#{kprqz2},'%Y-%m-%d'),INTERVAL 1 day)
         </if>
         <if test="fpczlx != null and fpczlx !=''">
             and kp.fpczlxdm = #{fpczlx}
@@ -673,6 +685,7 @@
             and kp.lrsj between #{kprqq} and
             date_add(str_to_date(#{kprqz},'%Y-%m-%d'),INTERVAL 1 day)
         </if>
+
         <!--<if test="spmc != null and spmc != ''">
             and d.spmc like CONCAT('%',#{spmc},'%')
         </if>-->
@@ -692,11 +705,23 @@
         <if test="fpzt != null and fpzt !=''">
             and kp.fpztdm = #{fpzt}
         </if>
+        <if test="yxbz != null and yxbz !=''">
+            and kp.yxbz = #{yxbz}
+        </if>
         <if test="fpztlist != null">
         <foreach collection="fpztlist" open=" and kp.fpztdm in (" separator="," close=")" item="fpztdm">
             #{fpztdm}
         </foreach>
-    </if>
+        </if>
+        <if test="fpzllist != null">
+            <foreach collection="fpzllist" open=" and kp.fpzldm in (" separator="," close=")" item="fpzldm">
+                #{fpzldm}
+            </foreach>
+        </if>
+        <if test="kprqq2 !=null and kprqq2 !='' and kprqz2 !=null and kprqz2 !=''">
+            and kp.kprq between #{kprqq2} and
+            date_add(str_to_date(#{kprqz2},'%Y-%m-%d'),INTERVAL 1 day)
+        </if>
         <if test="fpczlx != null and fpczlx !=''">
             and kp.fpczlxdm = #{fpczlx}
         </if>
