@@ -121,6 +121,28 @@ public class GeneratePdfService {
                 logger.info("----生成PDF方法名----generatePdf---"+kplsh);
                 dc.updatePDFUrl(map, jyls, kpls);// 生成pdf的路径更新入库
                 dc.updateFlag(jyls, "91");
+                Map parms = new HashMap();
+                parms.put("gsdm", kpls.getGsdm());
+                Gsxx gsxx = gsxxService.findOneByParams(parms);
+                //String url="https://vrapi.fvt.tujia.com/Invoice/CallBack";
+                String url = gsxx.getCallbackurl();
+                logger.info("回写报文" + this.CreateReturnMessage2(kpls.getKplsh()));
+                if (!("").equals(url) && url != null) {
+                    String returnmessage = "";
+                    if (kpls.getFpzldm().equals("12") && kpls.getGsdm().equals("Family")) {
+                        returnmessage = this.CreateReturnMessage2(kpls.getKplsh());
+
+                    } else if (kpls.getFpzldm().equals("12") && kpls.getGsdm().equals("mcake")) {
+                        returnmessage = this.CreateReturnMessage(kpls.getKplsh());
+
+                    }
+                    //输出调用结果
+                    logger.info("回写报文" + returnmessage);
+                    if (returnmessage != null && !"".equals(returnmessage)) {
+                        Map returnMap = this.httpPost(returnmessage, kpls);
+                        logger.info("返回报文" + JSON.toJSONString(returnMap));
+                    }
+                }
                 //发送email
                 if ("1".equals(jyls.getSffsyj()) && jyls.getGfemail() != null && !"".equals(jyls.getGfemail())) {
                     Kpls ls = new Kpls();
@@ -141,9 +163,9 @@ public class GeneratePdfService {
                     }
                     if(f) {
                         GetYjnr getYjnr = new GetYjnr();
-                        Map gsxxmap = new HashMap();
+                       /* Map gsxxmap = new HashMap();
                         gsxxmap.put("gsdm", kpls.getGsdm());
-                        Gsxx gsxx = gsxxService.findOneByGsdm(gsxxmap);
+                        Gsxx gsxx = gsxxService.findOneByGsdm(gsxxmap);*/
                         Integer yjmbDm = gsxx.getYjmbDm();
                         Yjmb yjmb = yjmbService.findOne(yjmbDm);
                         String yjmbcontent = yjmb.getYjmbNr();

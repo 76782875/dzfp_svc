@@ -1319,28 +1319,6 @@ public class FpclService {
                 }
                 taskExecutor.execute(pdfTask);
                 //generatePdfService.generatePdf(kplsh);
-                Map parms = new HashMap();
-                parms.put("gsdm", kpls.getGsdm());
-                Gsxx gsxx = gsxxService.findOneByParams(parms);
-                //String url="https://vrapi.fvt.tujia.com/Invoice/CallBack";
-                String url = gsxx.getCallbackurl();
-                logger.info("回写报文" + generatePdfService.CreateReturnMessage2(kpls.getKplsh()));
-                if (!("").equals(url) && url != null) {
-                    String returnmessage = "";
-                    if (kpls.getFpzldm().equals("12") && kpls.getGsdm().equals("Family")) {
-                        returnmessage = generatePdfService.CreateReturnMessage2(kpls.getKplsh());
-
-                    } else if (kpls.getFpzldm().equals("12") && kpls.getGsdm().equals("mcake")) {
-                        returnmessage = generatePdfService.CreateReturnMessage(kpls.getKplsh());
-
-                    }
-                    //输出调用结果
-                    logger.info("回写报文" + returnmessage);
-                    if (returnmessage != null && !"".equals(returnmessage)) {
-                        Map returnMap = generatePdfService.httpPost(returnmessage, kpls);
-                        logger.info("返回报文" + JSON.toJSONString(returnMap));
-                    }
-                }
             } else {
                 if(returnmsg.equals("09D103:发票领购信息已用完")||returnmsg.equals("00F103:Socket连接有误")){
                     rabbitmqSend.sendMsg("ErrorException_Sk", kpls.getFpzldm(), kpls.getKplsh() + "");
