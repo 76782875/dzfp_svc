@@ -1738,6 +1738,7 @@ public class GetDataService {
                     jyxxsq.setKpr(xf.getKpr());
                     jyxxsq.setSkr(xf.getSkr());
                     jyxxsq.setFhr(xf.getFhr());
+                    jyxxsq.setDdrq(new Date());
                     jyxxsq.setXfsh(xf.getXfsh());
                     jyxxsq.setXfmc(xf.getXfmc());
                     jyxxsq.setXfdz(xf.getXfdz());
