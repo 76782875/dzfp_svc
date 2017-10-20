@@ -1739,11 +1739,24 @@ public class GetDataService {
                     skpmap.put("gsdm", gsdm);
                     skpmap.put("kpddm", kpddm);
                     Skp skpdata = skpService.findOneByParams(skpmap);
-                    //System.out.println("skp"+skpdata.toString());
+                    if(skpdata==null){
+                        rsMap.put("jyxxsqList", jyxxsqList);
+                        rsMap.put("jymxsqList", jymxsqList);
+                        rsMap.put("jyzfmxList", jyzfmxList);
+                        rsMap.put("msg","开票信息有误，请联系商家");
+                        return rsMap;
+                    }
                     //根据销方id  查询
                     Xf x = new Xf();
                     x.setId(skpdata.getXfid());
                     Xf xf = xfService.findOneByParams(x);
+                    if(xf==null){
+                        rsMap.put("msg","开票信息有误，请联系商家");
+                        rsMap.put("jyxxsqList", jyxxsqList);
+                        rsMap.put("jymxsqList", jymxsqList);
+                        rsMap.put("jyzfmxList", jyzfmxList);
+                        return rsMap;
+                    }
                     jyxxsq.setXfid(xf.getId());//销方id
                     jyxxsq.setFpzldm("12"); //发票种类
                     jyxxsq.setJshj(Double.valueOf(payamount));//价税合计
@@ -1771,17 +1784,13 @@ public class GetDataService {
                     jyxxsq.setSjly("1");
                     jyxxsq.setClztdm("00");
                     jyxxsqList.add(jyxxsq);
-
                     JSONArray salelist = jo.getJSONArray("salelist");
-                    //System.out.println("salelist的长度"+salelist.size());
-
                     if (null != salelist && salelist.size() > 0) {
                         //商品明细获取
                         int spmxxh = 0;
                         for (int s = 0; s < salelist.size(); s++) {
 
                             Jymxsq jymxsq = new Jymxsq();
-                            //System.out.println("进入循环salelist");
                             JSONObject saleData = salelist.getJSONObject(s);
                             //获取     商品税务附码
                             String goodsid = "";
@@ -1797,10 +1806,7 @@ public class GetDataService {
                                 String goodsna = saleData.getString("goodsname").toString();
                                 goodsname = goodsna.replaceAll("\n", "");
                                 jymxsq.setSpmc(goodsname.trim());
-                                //jymxsq.setSpmc("测\\试#商<品名^称/特|殊@字符\"");
                             }
-                            System.out.println("商品名称" + goodsname);
-                            System.out.println("商品名称" + jymxsq.getSpmc());
                             //获取     	数量，负数为退货数量
                             Double qty = null;
                             if (null != saleData.getDouble("qty") && !saleData.getDouble("qty").equals("")) {
@@ -1830,18 +1836,13 @@ public class GetDataService {
                             Double price = null;
                             if (null != saleData.getDouble("price") && !saleData.getDouble("price").equals("")) {
                                 price = saleData.getDouble("price");
-                           /* BigDecimal big1 = taxrate.add(new BigDecimal(1));
-                            BigDecimal big2 = new BigDecimal(price.toString());
-                            Double bhsdj =   big1.divide(big2).setScale(15).doubleValue();*/
                                 jymxsq.setSpdj(price);//商品单价
                             }
-
                             //获取      	促销金额
                             Double discamount = null;
                             if (null != saleData.getDouble("discamount") && !saleData.getDouble("discamount").equals("")) {
                                 discamount = saleData.getDouble("discamount");
                             }
-
                             //商品明细 封装进交易明细申请
                             spmxxh++;
                             jymxsq.setSpmxxh(spmxxh);//商品明细序号
@@ -1885,15 +1886,11 @@ public class GetDataService {
 
                     Double bkkjje = 0.00;
                     JSONArray paylist = jo.getJSONArray("paylist");
-                    //System.out.println("salelist的长度"+paylist.size());
-
                     if (null != paylist && paylist.size() > 0) {
                         // 获取支付明细
                         for (int p = 0; p < paylist.size(); p++) {
-
                             Jyzfmx jyzfmx = new Jyzfmx();
                             JSONObject payData = paylist.getJSONObject(p);
-
                             //获取     支付方式代码
                             String paytype = "";
                             if (null != payData.getString("paytype") && !payData.getString("paytype").equals("")) {
@@ -1919,7 +1916,6 @@ public class GetDataService {
                             jyzfmx.setXgry(lrry);
                             jyzfmx.setXgsj(new Date());
                             jyzfmxList.add(jyzfmx);
-
                         }
                     }
                 }
@@ -1927,7 +1923,6 @@ public class GetDataService {
                 String msg ="获取数据为空，请稍后再试！";
                 rsMap.put("msg",msg);
             }
-
             rsMap.put("jyxxsqList", jyxxsqList);
             rsMap.put("jymxsqList", jymxsqList);
             rsMap.put("jyzfmxList", jyzfmxList);
