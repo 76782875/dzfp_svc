@@ -444,6 +444,13 @@ public class GetDataService {
                     //测试销方
                     //x.setXfsh("500102010003643");
                     Xf xf = xfService.findOneByParams(x);
+                    if(null==xf){
+                        rsMap.put("jyxxsqList", jyxxsqList);
+                        rsMap.put("jymxsqList", jymxsqList);
+                        rsMap.put("jyzfmxList", jyzfmxList);
+                        rsMap.put("error","9003:开票信息有误，请联系商家");
+                        return rsMap;
+                    }
                     Map params=new HashMap();
                     params.put("xfid",xf.getId());
                     Skp skp=skpService.findOneByParams(params);
@@ -1091,6 +1098,14 @@ public class GetDataService {
                 x.setGsdm(gsdm);
                 x.setXfsh(Identifier);
                 Xf xf = xfService.findOneByParams(x);
+                if(null==xf){
+                    rsMap.put("jyxxsqList", jyxxsqList);
+                    rsMap.put("jymxsqList", jymxsqList);
+                    rsMap.put("jyzfmxList", jyzfmxList);
+                    rsMap.put("error","9003:开票信息有误，请联系商家");
+                    logger.info("------错误信息--------"+"9003:开票信息有误，请联系商家");
+                    return rsMap;
+                }
                 Map params=new HashMap();
                 params.put("xfid",xf.getId());
                 Skp skp=skpService.findOneByParams(params);
