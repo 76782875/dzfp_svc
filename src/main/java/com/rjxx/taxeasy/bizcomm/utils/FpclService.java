@@ -761,8 +761,16 @@ public class FpclService {
                 }
             }
         } catch (IOException e) {
+            int pos = key.indexOf("$");
+            if (pos != -1) {
+                key = key.substring(pos + 1);
+                System.out.println("传入开票流水号:" + key);
+            }
             System.out.println("request url=" + url + ", exception, msg=" + e.getMessage());
             e.printStackTrace();
+            if(e.getMessage().startsWith("Read")){
+                rabbitmqSend.sendMsg("ErrorException_Sk", "12", key + "");
+            }
         } finally {
             if (response != null) try {
                 response.close();
