@@ -2,25 +2,13 @@ package com.rjxx.taxeasy.bizcomm.utils;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+import com.alibaba.fastjson.JSON;
+import com.rjxx.taxeasy.domains.*;
+import com.rjxx.taxeasy.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.rjxx.taxeasy.domains.Gsxx;
-import com.rjxx.taxeasy.domains.Jyls;
-import com.rjxx.taxeasy.domains.Jyspmx;
-import com.rjxx.taxeasy.domains.Kpls;
-import com.rjxx.taxeasy.domains.Kpspmx;
-import com.rjxx.taxeasy.service.CszbService;
-import com.rjxx.taxeasy.service.FpgzService;
-import com.rjxx.taxeasy.service.GsxxService;
-import com.rjxx.taxeasy.service.JylsService;
-import com.rjxx.taxeasy.service.JyspmxService;
-import com.rjxx.taxeasy.service.KplsService;
-import com.rjxx.taxeasy.service.KpspmxService;
-import com.rjxx.taxeasy.service.XfService;
 import com.rjxx.taxeasy.vo.Kpspmxvo;
 import com.rjxx.time.TimeUtil;
 
@@ -36,9 +24,12 @@ public class FphcService {
 	 @Autowired private DataOperte dc;
 	 @Autowired private XfService xfService;
 	 @Autowired private CszbService cszbService;
-		
-	 
-	    //红冲处理
+	 @Autowired private JyxxsqService jyxxsqService;
+	 @Autowired private JymxsqService jymxsqService;
+
+
+
+	//红冲处理
 		public InvoiceResponse hccl(Integer kplsh,Integer yhid, String gsdm,String hcjeStr,String xhStr,String hztzdh) throws Exception {
 
 			InvoiceResponse response=new InvoiceResponse();
@@ -165,6 +156,7 @@ public class FphcService {
 				double hjje = 0;
 				double hjse = 0;
 				double jshj = 0;
+				List<Kpspmx> kpspmxList2=new ArrayList<>();
 				for (int i = 0; i < xh.length; i++) {
 					Map params = new HashMap<>();
 					params.put("kplsh", kplsh);
@@ -215,7 +207,7 @@ public class FphcService {
 							jymx.setLrry(yhid);
 							jymx.setXgsj(TimeUtil.getNowDate());
 							jymx.setXgry(yhid);
-							jymx.setFphxz("0");
+							jymx.setFphxz(mxItem.getFphxz());
 							hjje += jymx.getSpje();
 							hjse += jymx.getSpse();
 							jshj += jymx.getJshj();
@@ -245,7 +237,8 @@ public class FphcService {
 							kpspmx.setXgry(jymx.getXgry());
 							kpspmx.setKhcje(jymx.getJshj().doubleValue());
 							kpspmx.setYhcje(0d);
-							kpspmxService.save(kpspmx);
+							//kpspmxService.save(kpspmx);
+							kpspmxList2.add(kpspmx);
 						}
 					} else {
 						String khcje = df.format(mxItem.getJshj() - Double.valueOf(hcje[i]));
@@ -296,12 +289,26 @@ public class FphcService {
 						}
 					}
 				}
+				kpspmxList2= DiscountDealUtil.discountMergeLinesKpspmx(kpspmxList2);
+				kpspmxService.save(kpspmxList2);
 				kpls2.setHjje(hjje);
 				kpls2.setHjse(hjse);
 				kpls2.setJshj(jshj);
 				kpls2.setFpztdm("14"); //正在开具
 				kplsService.save(kpls2);
-				skService.callService(kpls2.getKplsh());
+				Savejyxxsq(kpls2.getKplsh(),jyls1.getJylsh(),jyls1);
+				//区分开票方式
+				Cszb cszb = cszbService.getSpbmbbh(kpls2.getGsdm(), kpls2.getXfid(), kpls2.getSkpid(), "kpfs");
+				if(cszb != null && cszb.getCsz().equals("01")){
+					skService.callService(kpls2.getKplsh());
+				}
+				if(cszb != null && cszb.getCsz().equals("03")){
+					if(kpls2.getGsdm().equals("Family")&&kpls2.getFpzldm().equals("02")){
+						skService.callService(kpls2.getKplsh());
+					}else{
+						skService.SkServerKP(kpls2.getKplsh());
+					}
+				}
 				response.setReturnCode("0000");
 				response.setReturnMessage("红冲请求已接受！");
 				return response;
@@ -312,4 +319,106 @@ public class FphcService {
 				return response;
 			}
 		}
+	private Map Savejyxxsq(Integer kplsh,String tqm,Jyls jyls) throws Exception {
+		Map result = new HashMap();
+		Kpls kpls = kplsService.findOne(kplsh);
+		Jyxxsq jyxxsq = new Jyxxsq();
+		String jylsh = "JY" + new SimpleDateFormat("yyyyMMddHHmmssSS").format(new Date());
+		jyxxsq.setJylsh(tqm);
+		jyxxsq.setDdh(tqm);
+		jyxxsq.setGflxr(kpls.getGflxr());
+		jyxxsq.setGfyb(kpls.getGfyb());
+		jyxxsq.setBz(kpls.getBz());
+		jyxxsq.setClztdm("00");
+		jyxxsq.setHsbz(jyls.getHsbz());
+		jyxxsq.setDdrq(new Date());
+		jyxxsq.setFpczlxdm("12");
+		jyxxsq.setFpzldm(kpls.getFpzldm());
+		jyxxsq.setFhr(kpls.getFhr());
+		jyxxsq.setGfdh(kpls.getGfdh());
+		jyxxsq.setGfdz(kpls.getGfdz());
+		jyxxsq.setGfemail(kpls.getGfemail());
+		jyxxsq.setGfid(kpls.getGfid());
+		jyxxsq.setGfmc(kpls.getGfmc());
+		jyxxsq.setGfsh(kpls.getGfsh());
+		jyxxsq.setGsdm(kpls.getGsdm());
+		jyxxsq.setGfyh(kpls.getGfyh());
+		jyxxsq.setGfyhzh(kpls.getGfyhzh());
+		jyxxsq.setXfdh(kpls.getXfdh());
+		jyxxsq.setXfdz(kpls.getXfdz());
+		jyxxsq.setXfid(kpls.getXfid());
+		jyxxsq.setXflxr(kpls.getXflxr());
+		jyxxsq.setXgsj(new Date());
+		jyxxsq.setXfmc(kpls.getXfmc());
+		jyxxsq.setXfsh(kpls.getXfsh());
+		jyxxsq.setXfyb(kpls.getXfyb());
+		jyxxsq.setXfyh(kpls.getXfyh());
+		jyxxsq.setXfyhzh(kpls.getXfyhzh());
+		jyxxsq.setYxbz("1");
+		jyxxsq.setYkpjshj(0d);
+		jyxxsq.setLrsj(new Date());
+		jyxxsq.setJshj(-kpls.getJshj());
+		jyxxsq.setHztzdh(kpls.getHztzdh());
+		jyxxsq.setKpddm(kpls.getKpddm());
+		jyxxsq.setZtbz("3");
+		jyxxsq.setXgsj(kpls.getXgsj());
+		jyxxsq.setSkr(kpls.getSkr());
+		jyxxsq.setSkpid(kpls.getSkpid());
+		jyxxsq.setKpr(kpls.getKpr());
+		jyxxsq.setYfpdm(kpls.getFpdm());
+		jyxxsq.setYfphm(kpls.getFphm());
+		jyxxsq.setLrry(kpls.getLrry());
+		jyxxsq.setSfdyqd(kpls.getSfdyqd());
+		jyxxsq.setHsbz("1");
+		jyxxsq.setTqm(tqm);
+		jyxxsqService.save(jyxxsq);
+		result.put("jyxxsq", jyxxsq);
+		Map parms = new HashMap();
+		parms.put("kplsh", kpls.getKplsh());
+		List<Kpspmx> kpspmxList = kpspmxService.findMxList(parms);
+		List<Jymxsq> jymxsqList = new ArrayList<>();
+		for (int i = 0; i < kpspmxList.size(); i++) {
+			Kpspmx kpspmx = kpspmxList.get(i);
+			Jymxsq jymxsq = new Jymxsq();
+			jymxsq.setDdh(jyls.getDdh());
+			jymxsq.setLrry(kpspmx.getLrry());
+			jymxsq.setFphxz(kpspmx.getFphxz());
+			jymxsq.setGsdm(kpspmx.getGsdm());
+			jymxsq.setJshj(-(kpspmx.getSpje() + kpspmx.getSpse()));
+			jymxsq.setKkjje(-(kpspmx.getSpje() + kpspmx.getSpse()));
+			jymxsq.setKce(kpspmx.getKce());
+			jymxsq.setKpddm(kpspmx.getKpddm());
+			jymxsq.setLslbz(kpspmx.getLslbz());
+			try {
+				jymxsq.setSps(-kpspmx.getSps());
+			}catch (Exception e){
+				jymxsq.setSps(null);
+			}
+			try {
+				jymxsq.setSpdj(kpspmx.getSpdj());
+			}catch (Exception e){
+				jymxsq.setSpdj(null);
+			}
+			jymxsq.setSpdm(kpspmx.getSpdm());
+			jymxsq.setSpse(-kpspmx.getSpse());
+			jymxsq.setSpdw(kpspmx.getSpdw());
+			jymxsq.setSpje(-kpspmx.getSpje());
+			jymxsq.setSpsl(kpspmx.getSpsl());
+			jymxsq.setSpggxh(kpspmx.getSpggxh());
+			jymxsq.setSpmc(kpspmx.getSpmc());
+			jymxsq.setSpmxxh(kpspmx.getSpmxxh());
+			jymxsq.setYxbz("1");
+			jymxsq.setHsbz(jyls.getHsbz());
+			jymxsq.setYhzcbs(kpspmx.getYhzcbs());
+			jymxsq.setYhzcmc(kpspmx.getYhzcmc());
+			jymxsq.setSqlsh(jyxxsq.getSqlsh());
+			jymxsq.setJshj(-(kpspmx.getSpje() + kpspmx.getSpse()));
+			jymxsq.setXgsj(new Date());
+			jymxsq.setLrsj(new Date());
+			jymxsqList.add(jymxsq);
+		}
+		jymxsqService.save(jymxsqList);
+		result.put("jymxsqList",jymxsqList);
+		return result;
+	}
 }
