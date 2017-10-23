@@ -59,6 +59,8 @@ public class FphcService {
 				Map param4 = new HashMap<>();
 				param4.put("djh", djh);
 				Jyls jyls = jylsService.findJylsByDjh(param4);
+				Map resultMap=Savejyxxsq(kplsh,jyls.getJylsh(),jyls);
+				Jyxxsq jyxxsq=(Jyxxsq) resultMap.get("jyxxsq");
 				String ddh = jyls.getDdh(); // 查询原交易流水得ddh
 				Map jylsParam = new HashMap<>();
 				//保存交易流水
@@ -106,6 +108,7 @@ public class FphcService {
 				jyls1.setXgsj(TimeUtil.getNowDate());
 				jyls1.setSkpid(kpls.getSkpid());
 				jyls1.setHztzdh(hztzdh);
+				jyls1.setSqlsh(jyxxsq.getSqlsh());
 				jylsService.save(jyls1);
 				//保存开票流水
 				Kpls kpls2 = new Kpls();
@@ -296,7 +299,6 @@ public class FphcService {
 				kpls2.setJshj(jshj);
 				kpls2.setFpztdm("14"); //正在开具
 				kplsService.save(kpls2);
-				Savejyxxsq(kpls2.getKplsh(),jyls1.getJylsh(),jyls1);
 				//区分开票方式
 				Cszb cszb = cszbService.getSpbmbbh(kpls2.getGsdm(), kpls2.getXfid(), kpls2.getSkpid(), "kpfs");
 				if(cszb != null && cszb.getCsz().equals("01")){
