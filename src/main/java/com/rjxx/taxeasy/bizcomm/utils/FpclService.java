@@ -1295,7 +1295,10 @@ public class FpclService {
                 if ("12".equals(czlxdm) || "13".equals(czlxdm)) {
                     if (kpls.getHkFphm() != null && kpls.getHkFpdm() != null) {
                         kpls.setJylsh("");
-                        Kpls ykpls = kplsService.findByhzfphm(kpls);
+                        Kpls parms=new Kpls();
+                        parms.setFpdm(kpls.getHzyfpdm());
+                        parms.setFphm(kpls.getHzyfphm());
+                        Kpls ykpls = kplsService.findByfphm(parms);
                         Map param2 = new HashMap<>();
                         param2.put("kplsh", ykpls.getKplsh());
                         // 全部红冲后修改
