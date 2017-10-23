@@ -2,17 +2,12 @@ package com.rjxx.taxeasy.bizcomm.utils;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+import com.alibaba.fastjson.JSON;
+import com.rjxx.taxeasy.domains.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.rjxx.taxeasy.domains.Gsxx;
-import com.rjxx.taxeasy.domains.Jyls;
-import com.rjxx.taxeasy.domains.Jyspmx;
-import com.rjxx.taxeasy.domains.Kpls;
-import com.rjxx.taxeasy.domains.Kpspmx;
 import com.rjxx.taxeasy.service.CszbService;
 import com.rjxx.taxeasy.service.FpgzService;
 import com.rjxx.taxeasy.service.GsxxService;
@@ -165,6 +160,7 @@ public class FphcService {
 				double hjje = 0;
 				double hjse = 0;
 				double jshj = 0;
+				List<Kpspmx> kpspmxList2=new ArrayList<>();
 				for (int i = 0; i < xh.length; i++) {
 					Map params = new HashMap<>();
 					params.put("kplsh", kplsh);
@@ -215,7 +211,7 @@ public class FphcService {
 							jymx.setLrry(yhid);
 							jymx.setXgsj(TimeUtil.getNowDate());
 							jymx.setXgry(yhid);
-							jymx.setFphxz("0");
+							jymx.setFphxz(mxItem.getFphxz());
 							hjje += jymx.getSpje();
 							hjse += jymx.getSpse();
 							jshj += jymx.getJshj();
@@ -245,7 +241,8 @@ public class FphcService {
 							kpspmx.setXgry(jymx.getXgry());
 							kpspmx.setKhcje(jymx.getJshj().doubleValue());
 							kpspmx.setYhcje(0d);
-							kpspmxService.save(kpspmx);
+							//kpspmxService.save(kpspmx);
+							kpspmxList2.add(kpspmx);
 						}
 					} else {
 						String khcje = df.format(mxItem.getJshj() - Double.valueOf(hcje[i]));
@@ -296,12 +293,25 @@ public class FphcService {
 						}
 					}
 				}
+				kpspmxList2= DiscountDealUtil.discountMergeLinesKpspmx(kpspmxList2);
+				kpspmxService.save(kpspmxList2);
 				kpls2.setHjje(hjje);
 				kpls2.setHjse(hjse);
 				kpls2.setJshj(jshj);
 				kpls2.setFpztdm("14"); //正在开具
 				kplsService.save(kpls2);
-				skService.callService(kpls2.getKplsh());
+				//区分开票方式
+				Cszb cszb = cszbService.getSpbmbbh(kpls2.getGsdm(), kpls2.getXfid(), kpls2.getSkpid(), "kpfs");
+				if(cszb != null && cszb.getCsz().equals("01")){
+					skService.callService(kpls2.getKplsh());
+				}
+				if(cszb != null && cszb.getCsz().equals("03")){
+					if(kpls2.getGsdm().equals("Family")&&kpls2.getFpzldm().equals("02")){
+						skService.callService(kpls2.getKplsh());
+					}else{
+						skService.SkServerKP(kpls2.getKplsh());
+					}
+				}
 				response.setReturnCode("0000");
 				response.setReturnMessage("红冲请求已接受！");
 				return response;
