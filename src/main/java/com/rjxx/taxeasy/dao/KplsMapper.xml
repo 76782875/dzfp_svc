@@ -8,6 +8,9 @@
         <if test="kplsh !=null and kplsh !=''">
             and kplsh = #{kplsh}
         </if>
+        <if test="jylsh != null and jylsh != ''">
+            and jylsh = #{jylsh}
+        </if>
         <if test="fpzldm != null and fpzldm != ''">
             and fpzldm = #{fpzldm}
         </if>
