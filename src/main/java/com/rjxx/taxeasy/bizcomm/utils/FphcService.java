@@ -30,7 +30,7 @@ public class FphcService {
 
 
 	//红冲处理
-		public InvoiceResponse hccl(Integer kplsh,Integer yhid, String gsdm,String hcjeStr,String xhStr,String hztzdh) throws Exception {
+		public InvoiceResponse hccl(Integer kplsh,Integer yhid, String gsdm,String hcjeStr,String xhStr,String hztzdh,String jylsh) throws Exception {
 
 			InvoiceResponse response=new InvoiceResponse();
 			DecimalFormat df = new DecimalFormat("#.00");
@@ -41,7 +41,6 @@ public class FphcService {
 				Map paramsTmp = new HashMap();
 				paramsTmp.put("gsdm", gsdm);
 				Gsxx gsxx = gsxxService.findOneByParams(paramsTmp);
-				String jylsh = "";
 				Integer djh = 0;
 				double hjhcje = 0;
 				String[] hcje = hcjeStr.substring(0, hcjeStr.length() - 1).split(",");
@@ -66,8 +65,12 @@ public class FphcService {
 				//保存交易流水
 				Jyls jyls1 = new Jyls();
 				jyls1.setDdh(ddh);
-				jylsh = "JY" + new SimpleDateFormat("yyyyMMddHHmmssSS").format(new Date());
-				jyls1.setJylsh(jylsh);
+				if(jylsh==null){
+					jylsh = "JY" + new SimpleDateFormat("yyyyMMddHHmmssSS").format(new Date());
+					jyls1.setJylsh(jylsh);
+				}else{
+					jyls1.setJylsh(jylsh);
+				}
 				jyls1.setJylssj(TimeUtil.getNowDate());
 				jyls1.setFpzldm(kpls.getFpzldm());
 				jyls1.setFpczlxdm("12");
@@ -113,7 +116,7 @@ public class FphcService {
 				//保存开票流水
 				Kpls kpls2 = new Kpls();
 				kpls2.setDjh(jyls1.getDjh());
-				kpls2.setJylsh(jylsh);
+				kpls2.setJylsh(jyls1.getJylsh());
 				kpls2.setJylssj(jyls1.getJylssj());
 				kpls2.setFpzldm(jyls1.getFpzldm());
 				kpls2.setFpczlxdm(jyls1.getFpczlxdm());
@@ -153,6 +156,7 @@ public class FphcService {
 				kpls2.setLrry(yhid);
 				kpls2.setSerialorder(jyls1.getJylsh()+jyls1.getDdh());
 				kpls2.setXgry(yhid);
+				kpls2.setKpddm(kpls.getKpddm());
 				kpls2.setHztzdh(hztzdh);
 				kplsService.save(kpls2);
 				djh = jyls1.getDjh();
