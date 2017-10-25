@@ -71,6 +71,25 @@ public class HttpUtils {
         }
         return result;
     }
+
+    public static String HttpUrlWebService(String QueryData,String AppId,String key,String kpff){
+        String result="";
+        try {
+            logger.info("----------发送的报文------"+QueryData);
+            JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+            Client client = dcf.createClient(URLUtils.WS_URL);
+            String methodName = "UploadOrderData";
+            String sign= SignUtils.getSign(QueryData,key);
+            Object[] objects = client.invoke(methodName, AppId, sign, kpff, QueryData);
+            //输出调用结果
+            result = objects[0].toString();
+            logger.info("----------接收返回值------"+result.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     static int socketTimeout = 180*1000;// 请求超时时间
     static int connectTimeout = 180*1000;// 传输超时时间
 

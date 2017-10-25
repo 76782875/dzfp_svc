@@ -16,6 +16,8 @@
         <if test="orderBy != null">
             order by #{orderBy}
         </if>
+
+        order by px asc
     </select>
 
     <select id="findByPage" parameterType="pagination" resultType="dmFpbc">

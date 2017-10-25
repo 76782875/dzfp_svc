@@ -4,6 +4,9 @@ package com.rjxx.utils.weixin;
  * Created by rj-wyh on 2017/4/7.
  */
 
+import com.rjxx.utils.SignUtils;
+import org.apache.cxf.endpoint.Client;
+import org.apache.cxf.jaxws.endpoint.dynamic.JaxWsDynamicClientFactory;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.config.RequestConfig;
@@ -184,5 +187,35 @@ public class HttpClientUtil {
             logger.error("exception in doPostSoap1_2", e);
         }
         return retStr;
+    }
+
+    public static String wsUploadOrderData(String url,String QueryData,String AppId,String key,String operation){
+        String result="";
+        try {
+            JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+            Client client = dcf.createClient(url);
+            String sign= SignUtils.getSign(QueryData,key);
+            Object[] objects = client.invoke("UploadOrderData", AppId, sign, operation, QueryData);
+            //输出调用结果
+            result = objects[0].toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public static String wsUploadOrder(String url,String QueryData,String AppId,String key){
+        String result="";
+        try {
+            JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+            Client client = dcf.createClient(url);
+            String sign= SignUtils.getSign(QueryData,key);
+            Object[] objects = client.invoke("UploadOrder", AppId, sign, QueryData);
+            //输出调用结果
+            result = objects[0].toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 }

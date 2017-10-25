@@ -8,6 +8,9 @@
         <if test="kplsh !=null and kplsh !=''">
             and kplsh = #{kplsh}
         </if>
+        <if test="jylsh != null and jylsh != ''">
+            and jylsh = #{jylsh}
+        </if>
         <if test="fpzldm != null and fpzldm != ''">
             and fpzldm = #{fpzldm}
         </if>
@@ -588,10 +591,10 @@
         <!--<if test="spmc != null and spmc != ''">
             and d.spmc like CONCAT('%',#{spmc},'%')
         </if>-->
-        <!--<if test="jzjtzt != null and jzjtzt != ''">
-            and EXISTS(select * from t_kpspmx m,t_sp n where kp.kplsh =
-            d.kplsh and d.spdm = g.spdm and g.jzjtbz = #{jzjtzt})
-        </if>-->
+        <if test="jzjtzt != null and jzjtzt != ''">
+            and EXISTS(select 1 from t_kpspmx m,t_sp n where kp.kplsh =
+            m.kplsh and m.spdm = n.spdm and n.jzjtbz = #{jzjtzt})
+        </if>
         <if test="printflag != null and printflag != ''">
             and kp.printflag = #{printflag}
         </if>
@@ -689,10 +692,10 @@
         <!--<if test="spmc != null and spmc != ''">
             and d.spmc like CONCAT('%',#{spmc},'%')
         </if>-->
-        <!--<if test="jzjtzt != null and jzjtzt != ''">
-            and EXISTS(select * from t_kpspmx m,t_sp n where kp.kplsh =
-            d.kplsh and d.spdm = g.spdm and g.jzjtbz = #{jzjtzt})
-        </if>-->
+        <if test="jzjtzt != null and jzjtzt != ''">
+            and EXISTS(select 1 from t_kpspmx m,t_sp n where kp.kplsh =
+            m.kplsh and m.spdm = n.spdm and n.jzjtbz = #{jzjtzt})
+        </if>
         <if test="printflag != null and printflag != ''">
             and kp.printflag = #{printflag}
         </if>

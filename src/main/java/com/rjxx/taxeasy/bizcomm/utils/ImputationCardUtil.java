@@ -132,7 +132,7 @@ public class ImputationCardUtil {
 		if(null != jyxxsq && !jyxxsq.equals("")) {
 			if (kpls.getFpczlxdm().equals("11")) {
 				//数据来源5表示支付宝
-				if (jyxxsq.getSjly().equals("5")) {
+				if (null!=jyxxsq.getSjly()&&jyxxsq.getSjly().equals("5")) {
 					AlipayUtils alipayUtils = new AlipayUtils();
 					Pp pp = ppService.findOnePpByGsdmSkpid(kpls.getSkpid(), kpls.getGsdm());
 					if (pp == null || StringUtils.isBlank(pp.getAliMShortName()) || StringUtils.isBlank(pp.getAliSubMShortName()) || StringUtils.isBlank(jyxxsq.getOpenid())) {
@@ -147,7 +147,7 @@ public class ImputationCardUtil {
 					}
 					return true;
 
-				} else if (jyxxsq.getSjly().equals("4")) { //数据来源4表示微信
+				} else if (null!= jyxxsq.getSjly()&& jyxxsq.getSjly().equals("4")) { //数据来源4表示微信
 					String newDdh = wechatFpxxImpl.getweixinOrderNo(jyxxsq.getDdh());
 					String result = weixinUtils.fpInsertCardBox(newDdh, getPdf_file_url(pdf_file_url), kpspmxList, kpls);
 					//存入卡包失败
@@ -175,7 +175,7 @@ public class ImputationCardUtil {
 			if(kpls.getFpczlxdm().equals("11")){
 
 			//数据来源5表示支付宝
-			if(jyxxsq.getSjly().equals("5")){
+			if(jyxxsq.getSjly()!=null&&jyxxsq.getSjly().equals("5")){
 
 				AlipayUtils alipayUtils = new AlipayUtils();
 				Pp pp = ppService.findOnePpByGsdmSkpid(kpls.getSkpid(), kpls.getGsdm());
@@ -190,7 +190,7 @@ public class ImputationCardUtil {
 					}
 				}
 				return true;
-			}else if(jyxxsq.getSjly().equals("4")){ //数据来源4表示微信
+			}else if(jyxxsq.getSjly()!=null && jyxxsq.getSjly().equals("4")){ //数据来源4表示微信
 				wechatFpxxServiceImpl imp = new wechatFpxxServiceImpl();
 				//WeixinUtils weinxinUtil = new WeixinUtils();
 				String newDdh = wechatFpxxImpl.getweixinOrderNo(jyxxsq.getDdh());
