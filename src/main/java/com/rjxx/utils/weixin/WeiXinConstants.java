@@ -57,7 +57,11 @@ public class WeiXinConstants {
 
     //申请开票完成跳转url     http://fpj.datarj.com/einv/Family/witting.html
     public  static final String TEST_SUCCESS_REDIRECT_URL = "http://fpjtest.datarj.com/einv/QR/zzkj.html";//测试地址等待页面
+
     public  static final String SUCCESS_REDIRECT_URL = "http://fpj.datarj.com/einv/QR/zzkj.html";//正式地址等待页面
+
+    //德克士开票完成跳转url
+    public static final String DICOS_REDIRECT_URL ="http://fpjtest.datarj.com/einv/dicos/witting.html";
 
     // 测试  发票模板发票详情url
     public  static final String testfpInfoURL ="http://fpjtest.datarj.com/einv/common/fpInfo";
