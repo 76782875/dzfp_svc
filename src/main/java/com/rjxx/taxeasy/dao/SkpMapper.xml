@@ -31,7 +31,51 @@
 			and ( t.skph=#{kpdid} or id=#{kpdid} )
 		</if>
 	</select>
+
 	<select id="getSkpListByYhId" parameterType="map" resultType="skp">
+		SELECT
+		*
+		FROM
+		t_skp a
+		WHERE
+		a.yxbz = '1'
+		AND EXISTS (
+		SELECT
+		1
+		FROM
+		t_group b,
+		t_yh c
+		WHERE
+        b.yxbz = '1'
+		<if test="yhid != null and yhid != ''">
+			and b.yhid =#{yhid}
+		</if>
+		AND b.yhid = c.id
+		AND c.yxbz = '1'
+		AND (
+		(
+		 /*t_group xfid is null and skpid is null 赋予用户公司全部销方全部开票点权限*/
+		a.gsdm = c.gsdm
+		AND b.xfid IS NULL
+		AND b.skpid IS NULL
+		)
+		OR (
+		/*t_group skpid is null 赋予销方全部开票点权限*/
+		a.xfid = b.xfid
+		AND b.skpid IS NULL
+		)
+		OR (
+		/*指定开票点权限*/
+		a.xfid = b.xfid
+		AND a.id = b.skpid
+		)
+		)
+		)
+
+
+	</select>
+
+	<!--<select id="getSkpListByYhId" parameterType="map" resultType="skp">
 		select * from t_skp where yxbz = '1' 
 		<if test="xfs != null or skps != null">
 			and (
@@ -54,7 +98,7 @@
 			and xfid is null
 		</if>
 		
-	</select>
+	</select>-->
 	<select id="findAllByParams" parameterType="skp" resultType="skp">
 		select * from t_skp where yxbz = '1'
 		<if test="xfid != null and xfid != ''">

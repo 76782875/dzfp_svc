@@ -184,12 +184,13 @@ public class WeixinUtils {
      * @return
      * @throws Exception
      */
-    public String getTiaoURL(String orderid, String money, String timestamp, String menDianId,String type,String access_token,String ticket,String spappid) throws Exception {
+    public String getTiaoURL(String gsdm,String orderid, String money, String timestamp, String menDianId,String type,String access_token,String ticket,String spappid) throws Exception {
 
         String auth_url = "";
-        logger.info("传入的数据订单编号" + orderid + "金额" + money + "时间" + timestamp + "门店号" + menDianId);
-        //String spappid = weixinUtils.getSpappid(access_token);//获取开票平台
-        //double d = Double.valueOf(money) * 100;
+        logger.info("拉取授权订单编号" + orderid + "金额" + money + "时间" + timestamp + "门店号" + menDianId);
+        if (null == orderid || null == money || timestamp == null || spappid == null || access_token == null || ticket == null) {
+            return null;
+        }
         BigDecimal big = new BigDecimal(money);
         BigDecimal newbig = big.multiply(new BigDecimal(100));
         Double doumoney = new Double(newbig.toString());
@@ -198,33 +199,27 @@ public class WeixinUtils {
             String[] s = timestamp.split("-");
             if (s.length > 1) {
                 dateTime = TimeUtil.getSysDateInDate(timestamp, "yyyy-MM-dd HH:mm:ss");
-                System.out.println("日期格式为yyyy-MM-dd HH:mm:ss =============");
             } else {
                 dateTime = TimeUtil.getSysDateInDate(timestamp, "yyyyMMddHHmmss");
-                System.out.println("日期格式为yyyyMMddHHmmss    ================");
             }
         }
-        logger.info("转换之后金额" + doumoney + "时间" + dateTime);
         String source = "web";
-        //int type = 1;//填写抬头申请开票类型
+        String redirect_url ="";
+        if(gsdm.equals("dicos")){
+            redirect_url = WeiXinConstants.DICOS_REDIRECT_URL;
+        }else {
+            redirect_url = WeiXinConstants.SUCCESS_REDIRECT_URL;
+        }
         Map nvps = new HashMap();
         nvps.put("s_pappid", spappid);
         nvps.put("order_id", orderid);
         nvps.put("money", doumoney);
         nvps.put("timestamp", dateTime.getTime() / 1000);
         nvps.put("source", source);
-        //nvps.put("redirect_url", WeiXinConstants.TEST_SUCCESS_REDIRECT_URL);//测试跳转url
-        nvps.put("redirect_url", WeiXinConstants.SUCCESS_REDIRECT_URL);//正式跳转url
+        nvps.put("redirect_url", redirect_url);//正式跳转url
         nvps.put("ticket", ticket);
         nvps.put("type", type);
-        if (null == orderid && StringUtils.isBlank(orderid)) {
-            logger.info("获取微信授权链接,订单编号为null");
-            return null;
-        }
-        if (null == money && StringUtils.isBlank(money)) {
-            logger.info("获取微信授权链接,金额为null");
-            return null;
-        }
+
         String sj = JSON.toJSONString(nvps);
         String urls = "https://api.weixin.qq.com/card/invoice/getauthurl?access_token=" + access_token;
         String jsonStr3 = WeixinUtil.httpRequest(urls, "POST", sj);
@@ -245,6 +240,7 @@ public class WeixinUtils {
             } catch (Exception e) {
                 //处理异常
                 logger.error("Get Ali Access_token error", e);
+                return null;
             }
         }
         return auth_url;
