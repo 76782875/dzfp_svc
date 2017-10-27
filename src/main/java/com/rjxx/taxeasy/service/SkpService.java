@@ -80,7 +80,7 @@ public class SkpService {
 		return skpMapper.findByPage(pagination);
 	}
 
-	public List<Skp> getSkpListByYhId(int yhid) {
+	/*public List<Skp> getSkpListByYhId(int yhid) {
 		Map<String, Object> params = new HashMap<>();
 		Group g = new Group();
 		g.setYhid(yhid);
@@ -126,8 +126,14 @@ public class SkpService {
 			params.put("skps", skps);
 		}
 		return skpMapper.getSkpListByYhId(params);
-	}
+	}*/
 
+	public List<Skp> getSkpListByYhId(int yhid) {
+		Map params  = new HashMap();
+		params.put("yhid",yhid);
+
+		return skpMapper.getSkpListByYhId(params);
+	}
 	public List<Skp> getKpd(Map params) {
 		return skpMapper.getKpd(params);
 	}
