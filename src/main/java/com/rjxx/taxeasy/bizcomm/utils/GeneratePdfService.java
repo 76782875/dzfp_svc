@@ -175,6 +175,9 @@ public class GeneratePdfService {
                         csmap.put("ddrq", sdf.format(jyxxsq.getDdrq()));
                         csmap.put("pdfurls", pdfUrlList);
                         csmap.put("xfmc", jyls.getXfmc());
+                        SimpleDateFormat sdfw = new SimpleDateFormat("dd MMMM,yyyy",
+                                Locale.ENGLISH);
+                        csmap.put("ywdqrq", sdfw.format(new Date()));
                         String content = getYjnr.getFpkjYj(csmap, yjmbcontent);
                         try {
                             se.sendEmail(String.valueOf(kpls.getDjh()), kpls.getGsdm(), kpls.getGfemail(), "发票开具成功发送邮件", String.valueOf(kpls.getDjh()), content, "电子发票");
