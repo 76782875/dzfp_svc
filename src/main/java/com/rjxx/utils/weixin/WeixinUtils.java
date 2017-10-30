@@ -187,7 +187,7 @@ public class WeixinUtils {
     public String getTiaoURL(String gsdm,String orderid, String money, String timestamp, String menDianId,String type,String access_token,String ticket,String spappid) throws Exception {
 
         String auth_url = "";
-        logger.info("拉取授权订单编号" + orderid + "金额" + money + "时间" + timestamp + "门店号" + menDianId);
+        logger.info("拉取授权订单编号" + orderid + "金额" + money + "时间" + timestamp + "门店号" + menDianId+"--------------"+gsdm);
         if (null == orderid || null == money || timestamp == null || spappid == null || access_token == null || ticket == null) {
             return null;
         }
@@ -206,7 +206,9 @@ public class WeixinUtils {
         String source = "web";
         String redirect_url ="";
         if(gsdm.equals("dicos")){
-            redirect_url = WeiXinConstants.DICOS_REDIRECT_URL;
+            redirect_url = WeiXinConstants.DICOS_REDIRECT_URL+new Date()+"="+gsdm;
+        }else if(gsdm.equals("ksf")){
+            redirect_url = WeiXinConstants.DICOS_REDIRECT_URL+new Date()+"="+gsdm;
         }else {
             redirect_url = WeiXinConstants.SUCCESS_REDIRECT_URL;
         }
