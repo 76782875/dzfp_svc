@@ -206,9 +206,7 @@ public class WeixinUtils {
         String source = "web";
         String redirect_url ="";
         if(gsdm.equals("dicos")){
-            redirect_url = WeiXinConstants.DICOS_REDIRECT_URL+"?param="+new Date()+"="+gsdm;
-        }else if(gsdm.equals("ksf")){
-            redirect_url = WeiXinConstants.DICOS_REDIRECT_URL+"?param="+new Date()+"="+gsdm;
+            redirect_url = WeiXinConstants.DICOS_REDIRECT_URL;
         }else {
             redirect_url = WeiXinConstants.SUCCESS_REDIRECT_URL;
         }
