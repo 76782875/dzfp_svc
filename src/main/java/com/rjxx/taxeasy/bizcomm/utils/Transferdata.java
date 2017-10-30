@@ -23,8 +23,8 @@ public class Transferdata {
     private static String[] colnames; // 列名数组
 
     public static void main(String[] args) {
-       List<Object> Objectlist=getdata("t_kpls","wljqr",0,0,0,0);
-       String ClassName=generateClassName("t_kpls");
+       List<Object> Objectlist=getdata("t_jyls","sqj","",0,0,0,0);
+       String ClassName=generateClassName("t_jyls");
        for(int i=0;i<Objectlist.size();i++){
            if(ClassName.equals("Kpls")){
                Kpls kpls=(Kpls)Objectlist.get(i);
@@ -102,7 +102,7 @@ public class Transferdata {
     }
 
 
-    public  static List<Object> getdata(String tableName,String gsdm,int djh,int kplsh,int xfid,int skpid){
+    public  static   List<Object> getdata(String tableName,String gsdm,String xfsh,int djh,int kplsh,int xfid,int skpid){
         List<Object> list=new ArrayList<Object>();
         try{
             //调用Class.forName()方法加载驱动程序
@@ -126,7 +126,7 @@ public class Transferdata {
             }else{
                 sql = "select * from "+tableName+" t where t.gsdm='"+gsdm+"'";    //要执行的SQL
             }
-
+            System.out.println(sql);
             //查询数据的代码
             PreparedStatement pst=conn.prepareStatement(sql);
             ResultSet rs= pst.executeQuery();
