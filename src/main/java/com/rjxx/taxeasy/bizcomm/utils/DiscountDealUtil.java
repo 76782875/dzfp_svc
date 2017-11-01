@@ -415,17 +415,19 @@ public class DiscountDealUtil {
 									&& kpspmx2.getSpggxh().equals(kpspmx.getSpggxh())
 									&& kpspmx2.getSpmxxh() == kpspmx.getSpmxxh()&&kpspmx2.getFphxz().equals("1")) {
 								KpspmxR = genNewKpspmx(kpspmx);
-								KpspmxR.setSpje(kpspmx.getSpje() + kpspmx2.getSpje());
-								//KpspmxR.setSpse(kpspmx.getSpse() + kpspmx2.getSpse());
-								KpspmxR.setSpse(((kpspmx.getSpse()==null || kpspmx.getSpse().equals(""))?0d:kpspmx.getSpse()) + ((kpspmx2.getSpse() == null || kpspmx2.getSpse().equals(""))?0d:kpspmx2.getSpse()));
-								KpspmxR.setSps(kpspmx.getSps());
-								if (null != KpspmxR.getSps() && !KpspmxR.getSps().equals("")) {
-									KpspmxR.setSpdj(KpspmxR.getSpje() / KpspmxR.getSps());
+								if((kpspmx.getSpje() + kpspmx2.getSpje())!=0){
+									KpspmxR.setSpje(kpspmx.getSpje() + kpspmx2.getSpje());
+									//KpspmxR.setSpse(kpspmx.getSpse() + kpspmx2.getSpse());
+									KpspmxR.setSpse(((kpspmx.getSpse()==null || kpspmx.getSpse().equals(""))?0d:kpspmx.getSpse()) + ((kpspmx2.getSpse() == null || kpspmx2.getSpse().equals(""))?0d:kpspmx2.getSpse()));
+									KpspmxR.setSps(kpspmx.getSps());
+									if (null != KpspmxR.getSps() && !KpspmxR.getSps().equals("")) {
+										KpspmxR.setSpdj(KpspmxR.getSpje() / KpspmxR.getSps());
+									}
+									KpspmxR.setSpmxxh(spmxxh);
+									KpspmxR.setFphxz("0");
+									resultList.add(KpspmxR);
+									spmxxh++;
 								}
-								KpspmxR.setSpmxxh(spmxxh);
-								KpspmxR.setFphxz("0");
-								resultList.add(KpspmxR);
-								spmxxh++;
 							}
 					}
 				} else if (kpspmx.getFphxz().equals("0")) {
