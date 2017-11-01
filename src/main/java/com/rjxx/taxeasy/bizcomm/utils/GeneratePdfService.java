@@ -198,9 +198,9 @@ public class GeneratePdfService {
                         SimpleDateFormat sdfw = new SimpleDateFormat("dd MMMM,yyyy",
                                 Locale.ENGLISH);
                         csmap.put("ywdqrq", sdfw.format(new Date()));
-                        QRCodeUtil.QRCodeCreate("fpjtest.datarj.com/einv/common/smInOut?serialOrder="+listkpls.get(0).getSerialorder(),GeneratePdfService.class.getClassLoader().getResource("/template/")+"ewm.jpg",15,"");
-                        String ewm ="data:image/jpeg;base64,"+getImageStr(URLDecoder.decode(GeneratePdfService.class.getClassLoader().getResource("/template/")+"ewm.jpg", "UTF-8"));
-                        csmap.put("ewm", ewm);
+                        //QRCodeUtil.QRCodeCreate("fpjtest.datarj.com/einv/common/smInOut?serialOrder="+listkpls.get(0).getSerialorder(),GeneratePdfService.class.getClassLoader().getResource("/template/")+"ewm.jpg",15,"");
+                        //String ewm ="data:image/jpeg;base64,"+getImageStr(URLDecoder.decode(GeneratePdfService.class.getClassLoader().getResource("/template/")+"ewm.jpg", "UTF-8"));
+                        //csmap.put("ewm", ewm);
                         String content = getYjnr.getFpkjYj(csmap, yjmbcontent);
                         try {
                             se.sendEmail(String.valueOf(kpls.getDjh()), kpls.getGsdm(), kpls.getGfemail(), "发票开具成功发送邮件", String.valueOf(kpls.getDjh()), content, "电子发票");
