@@ -102,7 +102,7 @@ public class Transferdata {
     }
 
 
-    public  static   List<Object> getdata(String tableName,String gsdm,String xfsh,int djh,int kplsh,int xfid,int skpid){
+    public  static  synchronized  List<Object> getdata(String tableName,String gsdm,String xfsh,int djh,int kplsh,int xfid,int skpid){
         List<Object> list=new ArrayList<Object>();
         try{
             //调用Class.forName()方法加载驱动程序
@@ -124,7 +124,7 @@ public class Transferdata {
             }else if(model.equals("Skp")){
                 sql = "select * from "+tableName+" t where t.gsdm='"+gsdm+"' and t.xfid="+xfid;    //要执行的SQL
             }else{
-                sql = "select * from "+tableName+" t where t.gsdm='"+gsdm+"'";    //要执行的SQL
+                sql = "select * from "+tableName+" t where t.gsdm='"+gsdm+"' and t.xfsh!="+"'"+xfsh+"'";    //要执行的SQL
             }
             System.out.println(sql);
             //查询数据的代码

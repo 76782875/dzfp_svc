@@ -24,7 +24,7 @@
     </select>
  <!--    根据kplsh及spmxxh查询开票商品明细 -->
     <select id="findMxByParams" parameterType="map" resultType="kpspmxvo">
-       select *,(spje+spse) jshj from t_kpspmx where kplsh = #{kplsh} and spmxxh = #{xh}
+       select *,(spje+spse) jshj from t_kpspmx where kplsh = #{kplsh} and id = #{xh}
     </select>
    <!--  更新发票的红冲金额 -->
    <update id="update" parameterType="map">

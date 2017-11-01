@@ -124,6 +124,9 @@ public class CheckOrderUtil {
                     if(isSameChars(buyerIdentifier)){
                         result += ddh + ":购方税号不符合规则;";
                     }
+                    if(isSpecialCharacter(buyerIdentifier)){
+                        result +=  " :购方税号只能包含数字和大写英文字母;";
+                    }
                 }
                 /*if(buyerIdentifier.substring(0,1).equals("0")){
                     result += ddh + ":购方税号不符合规则;";
@@ -485,13 +488,53 @@ public class CheckOrderUtil {
         }
     }
 
+    /**
+     * 判断税号是否包含特殊字符
+     *  ^[A-Z0-9]+$ 大写字母或数字
+     * */
+    public static boolean isSpecialCharacter(String str){
+        boolean flag = false;
+        for (int i=str.length(); --i>=0;) {
+            String b = str.substring(i, i+1);
+            boolean c = java.util.regex.Pattern.matches("^[A-Z0-9]+$", b);
+            if(!c) {
+                flag = true;
+                break;
+            }
+        }
+        return flag;
+    }
+
+
     public static void main(String[] args) {
 
-        String s = "000000000000000;";
+        String buyerIdentifier = "91310101MA1FW0008P";
         // System.out.print(s.replace(s.substring(s.length()-1), ""));
-        System.out.print(CheckSocialCreditCode("010000000000000000"));
+       // System.out.print(CheckSocialCreditCode("liniyanxing@yeah.net"));
         //System.out.print(Double.parseDouble(".00") == 0);
         //System.out.println(s.substring(0,1).equals("0"));
+        String result ="";
+        if (buyerIdentifier != null && !buyerIdentifier.equals("")) {
+            if (!(buyerIdentifier.length() == 15 || buyerIdentifier.length() == 18 || buyerIdentifier.length() == 20 )) {
+                result +=  ":购方税号"+buyerIdentifier+"长度有误，请核对;";
+            }else{
+                if(buyerIdentifier.length() == 18){
+                    //校验18位是否满足条件
+                    if(!CheckSocialCreditCode(buyerIdentifier)){
+                        result +=  ":购方税号不符合规则;";
+                    }
+                }
+                if(isSameChars(buyerIdentifier)){
+                    result +=  " :购方税号不符合规则;";
+                }
+                if(isSpecialCharacter(buyerIdentifier)){
+                    result +=  " :购方税号只能包含数字和大写英文字母;";
+                }
+            }
+
+        }
+
+        System.out.print(result);
 
     }
 }
