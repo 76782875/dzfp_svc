@@ -25,10 +25,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sun.misc.BASE64Encoder;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -84,7 +84,27 @@ public class GeneratePdfService {
      * 是否发送短信
      */
     private ConcurrentHashMap<Integer, Boolean> sffsdxMap = new ConcurrentHashMap<>();
-
+    /**
+     * @Description: 根据图片地址转换为base64编码字符串
+     * @Author:
+     * @CreateTime:
+     * @return
+     */
+    public static String getImageStr(String imgFile) {
+        InputStream inputStream = null;
+        byte[] data = null;
+        try {
+            inputStream = new FileInputStream(imgFile);
+            data = new byte[inputStream.available()];
+            inputStream.read(data);
+            inputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // 加密
+        BASE64Encoder encoder = new BASE64Encoder();
+        return encoder.encode(data);
+    }
     public void generatePdf(int kplsh) {
         Kpls kpls=null;
         Jyls jyls=null;
@@ -178,6 +198,9 @@ public class GeneratePdfService {
                         SimpleDateFormat sdfw = new SimpleDateFormat("dd MMMM,yyyy",
                                 Locale.ENGLISH);
                         csmap.put("ywdqrq", sdfw.format(new Date()));
+                        QRCodeUtil.QRCodeCreate("fpjtest.datarj.com/einv/common/smInOut?serialOrder="+listkpls.get(0).getSerialorder(),GeneratePdfService.class.getClassLoader().getResource("/template/")+"ewm.jpg",15,"");
+                        String ewm ="data:image/jpeg;base64,"+getImageStr(URLDecoder.decode(GeneratePdfService.class.getClassLoader().getResource("/template/")+"ewm.jpg", "UTF-8"));
+                        csmap.put("ewm", ewm);
                         String content = getYjnr.getFpkjYj(csmap, yjmbcontent);
                         try {
                             se.sendEmail(String.valueOf(kpls.getDjh()), kpls.getGsdm(), kpls.getGfemail(), "发票开具成功发送邮件", String.valueOf(kpls.getDjh()), content, "电子发票");
