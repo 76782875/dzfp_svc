@@ -65,11 +65,15 @@ public class FphcService {
 				//保存交易流水
 				Jyls jyls1 = new Jyls();
 				jyls1.setDdh(ddh);
-				if(jylsh==null){
-					jylsh = "JY" + new SimpleDateFormat("yyyyMMddHHmmssSS").format(new Date());
-					jyls1.setJylsh(jylsh);
+				if(jyls.getGsdm().equals("fwk")){
+					if(null==jylsh||"".equals(jylsh)){
+						jylsh = "JY" + new SimpleDateFormat("yyyyMMddHHmmssSS").format(new Date());
+						jyls1.setJylsh(jylsh);
+					}else{
+						jyls1.setJylsh(jylsh);
+					}
 				}else{
-					jyls1.setJylsh(jylsh);
+					jyls1.setJylsh("JY" + new SimpleDateFormat("yyyyMMddHHmmssSS").format(new Date()));
 				}
 				jyls1.setJylssj(TimeUtil.getNowDate());
 				jyls1.setFpzldm(kpls.getFpzldm());
