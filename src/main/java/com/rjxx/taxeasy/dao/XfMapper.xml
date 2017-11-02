@@ -4,7 +4,25 @@
 <mapper namespace="com.rjxx.taxeasy.dao.XfMapper">
 
     <select id="getXfListByYhId" parameterType="int" resultType="xf">
-        select * from t_xf where id in ( select xfid from t_group where yhid = #{yhId} and yxbz = '1') and yxbz = '1'
+        SELECT
+	      *
+        FROM
+	      t_xf a
+            WHERE
+	          a.yxbz = '1'
+                AND EXISTS (
+	                 SELECT
+		              1
+	                FROM
+		              t_group b,
+		              t_yh c
+	                  WHERE
+	                    a.gsdm = c.gsdm
+	                    AND b.yhid = c.id
+	                    AND c.yxbz = '1'
+	                    AND b.yxbz = '1'
+                        and b.yhid = #{yhId}
+	                    AND ((b.xfid IS NULL) OR (a.id = b.xfid)))
     </select>
 	<select id="findOneByParams" parameterType="xf" resultType="xf">
         select * from t_xf where yxbz = '1'
