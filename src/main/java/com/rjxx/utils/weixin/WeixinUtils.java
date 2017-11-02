@@ -61,11 +61,11 @@ public class WeixinUtils {
      * @param
      * @return
      */
-    public static boolean isWeiXinBrowser(HttpServletRequest request) {
+     public static boolean isWeiXinBrowser(HttpServletRequest request) {
         String ua = request.getHeader("user-agent").toLowerCase();
         boolean res = ua.contains("micromessenger");
         return res;
-    }
+     }
 
     /**
      * 获取平台accessToken
@@ -92,7 +92,6 @@ public class WeixinUtils {
                     return result;
                 } else {// 正常情况下{"access_token":"ACCESS_TOKEN","expires_in":7200}
                     map.put("success", true);
-
                     return map;
                 }
             }
@@ -112,7 +111,6 @@ public class WeixinUtils {
      */
     public String getTicket(String accessToken) {
         String ticket = "";
-        //WeixinUtils weixinUtils = new WeixinUtils();
         // String accessToken = (String) weixinUtils.hqtk().get("access_token");
         String ticketUrl = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=" + accessToken + "&type=wx_card";
         String jsonStr = WeixinUtil.httpRequest(ticketUrl, "GET", null);
@@ -172,8 +170,6 @@ public class WeixinUtils {
         return null;
     }
 
-
-
     /**
      * 获取微信授权页，跳转链接
      * @param orderid
@@ -216,7 +212,9 @@ public class WeixinUtils {
         nvps.put("money", doumoney);
         nvps.put("timestamp", dateTime.getTime() / 1000);
         nvps.put("source", source);
-        nvps.put("redirect_url", redirect_url);//正式跳转url
+        if(type.equals("1")){
+            nvps.put("redirect_url", redirect_url);//正式跳转url
+        }
         nvps.put("ticket", ticket);
         nvps.put("type", type);
 
@@ -291,43 +289,6 @@ public class WeixinUtils {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }*/
-
-
-        //*String url ="https://mp.weixin.qq.com/bizmall/authinvoice?action=list&s_pappid=d3g5YWJjNzI5ZTJiNDYzN2VlX0PARqxCKGk0d1fanZfCN3KxU5K6C-9JRLhQXmLzcptB";
-        //String a = url.split("&")[1].split("=")[1];
-
-        //System.out.println("截取"+a);
-        // msp = weixinUtils.getSpappid();
-        //msp = weixinUtils.hqtk();
-        // String msp=weixinUtils.getTicket();
-        // System.out.println("获取微信token-----------"+msp);
-
-
-//       try {
-//            weixinUtils.getTiaoURL("11222043","10", "2017-08-17 10:05:45","1");//获取微信授权
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
-        //weixinUtils.cksqzd();//查看授权字段
-        //weixinUtils.sqzd();//授权字段--只设一次
-        //weixinUtils.getTicket();//获取ticket
-        //String card_id =  weixinUtils.creatMb("全家便利","销方1");//创建模板
-        //weixinUtils.uploadImage();//上传图片获取url
-        //String card_id = (String) map.get("card_id");
-        //System.out.println(""+card_id);
-
-        //String access_token = (String) weixinUtils.hqtk().get("access_token");
-        //weixinUtils.zdcxstatus("1503053525092",access_token);//查询用户授权状态
-        //weixinUtils.dzfpInCard("11222042",WeiXinConstants.FAMILY_CARD_ID,weixinUtils.zdcxstatus("11222042",access_token),access_token);
-        //String in =  weixinUtils.jujuekp("1131453222001122","微信授权失败，请重新开票");//重新开票
-
-        //上传PDF
-        //weixinUtils.creatPDF("http://test.datarj.com/e-invoice-file/500102010003643/20170531/691fe064-80f4-4e81-9ae6-4d16ee0010a5.pdf","/usr/local/e-invoice-file");
-
-        //
-        // weixinUtils.decode("XXIzTtMqCxwOaawoE91+VJdsFmv7b8g0VZIZkqf4GWA60Fzpc8ksZ/5ZZ0DVkXdE");
-
     }
 
     /**
@@ -451,14 +412,12 @@ public class WeixinUtils {
         WeixinUtils weixinUtils = new WeixinUtils();
         //String access_token = (String) weixinUtils.hqtk().get("access_token");
         String access_token ="";
-
         WxToken wxToken = wxTokenJpaDao.findByFlag("01");
         if(wxToken==null){
             access_token= (String) weixinUtils.hqtk().get("access_token");
         }else {
             access_token = wxToken.getAccessToken();
         }
-
         Map sjss = new HashMap();
         Map auth_field = new HashMap();
         Map user_field = new HashMap();
@@ -477,20 +436,20 @@ public class WeixinUtils {
         auth_field.put("biz_field", biz_field);
 
         user_field.put("show_title", 1);
-        user_field.put("show_phone", 0);
+        user_field.put("show_phone", 1);
         user_field.put("show_email", 1);
         user_field.put("require_email", 1);
         user_field.put("custom_field", custom_field1);
 
         biz_field.put("show_title", 1);
         biz_field.put("show_tax_no", 1);
-        biz_field.put("show_addr", 0);
+        biz_field.put("show_addr", 1);
 
-        biz_field.put("show_phone", 0);
-        biz_field.put("show_bank_type", 0);
-        biz_field.put("show_bank_no", 0);
+        biz_field.put("show_phone", 1);
+        biz_field.put("show_bank_type", 1);
+        biz_field.put("show_bank_no", 1);
         biz_field.put("require_tax_no", 1);
-        biz_field.put("require_addr", 0);
+        biz_field.put("require_addr", 1);
         biz_field.put("custom_field", custom_field2);
         biz_field.put("is_require", 1);
 
