@@ -203,9 +203,9 @@ public class GeneratePdfService {
                         // 二维码生成部分
                         TwoDimensionCode handler = new TwoDimensionCode();
                         ByteArrayOutputStream output = new ByteArrayOutputStream();
-                        handler.encoderQRCode("http://fpjtest.datarj.com/einv/tq?s="+listkpls.get(0).getSerialorder(), output);// 二维码中数据的来源
+                        handler.encoderQRCode("http://fpjtest.datarj.com/einv/tq?q="+listkpls.get(0).getSerialorder(), output);// 二维码中数据的来源
                         String imgbase64string = org.apache.commons.codec.binary.Base64.encodeBase64String(output.toByteArray());
-                        csmap.put("ewm", imgbase64string);
+                        csmap.put("ewm", "data:image/jpeg;base64,"+imgbase64string);
                         String content = getYjnr.getFpkjYj(csmap, yjmbcontent);
                         try {
                             se.sendEmail(String.valueOf(kpls.getDjh()), kpls.getGsdm(), kpls.getGfemail(), "发票开具成功发送邮件", String.valueOf(kpls.getDjh()), content, "电子发票");
