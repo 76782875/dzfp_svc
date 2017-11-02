@@ -568,6 +568,9 @@
             </foreach>
             or kp.xfid is null)
         </if>
+        <if test="xfid2 !=null and xfid2 !=''">
+            and kp.xfid = #{xfid2}
+        </if>
         <if test="skpid !=null and skpid !=''">
             and (kp.skpid in
             <foreach collection="skpid" item="item" index="index" open="("
@@ -667,6 +670,9 @@
                      separator="," close=")">#{xfid[${index}]}
             </foreach>
             or kp.xfid is null)
+        </if>
+        <if test="xfid2 !=null and xfid2 !=''">
+            and kp.xfid = #{xfid2}
         </if>
         <if test="skpid !=null and skpid !=''">
             and (kp.skpid in

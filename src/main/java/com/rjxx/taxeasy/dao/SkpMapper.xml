@@ -51,11 +51,12 @@
 			and b.yhid =#{yhid}
 		</if>
 		AND b.yhid = c.id
+		AND a.gsdm = c.gsdm
 		AND c.yxbz = '1'
+		AND b.yxbz = '1'
 		AND (
 		(
 		 /*t_group xfid is null and skpid is null 赋予用户公司全部销方全部开票点权限*/
-		a.gsdm = c.gsdm
 		AND b.xfid IS NULL
 		AND b.skpid IS NULL
 		)
