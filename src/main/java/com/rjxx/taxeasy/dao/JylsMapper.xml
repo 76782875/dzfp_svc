@@ -215,7 +215,7 @@
     <select resultType="kpls" parameterType="map" id="findBykhh">
         select b.* from t_jyls a, t_kpls b where a.yxbz = '1' AND a.clztdm =
         '91' AND a.djh = b.djh  AND b.fpczlxdm = '11' AND
-        b.pdfurl IS NOT NULL AND b.pdfurl !=''
+        b.pdfurl IS NOT NULL AND b.pdfurl !='' and b.fpztdm='00'
         <if test="khh != null and khh != ''"> and a.khh = #{khh} </if>
         <if test="tqm != null and tqm != ''"> and a.tqm = #{tqm} </if>
         <if test="je != null and je != ''"> and a.jshj = #{je} </if>
