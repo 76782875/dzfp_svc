@@ -198,8 +198,8 @@ public class GeneratePdfService {
                         SimpleDateFormat sdfw = new SimpleDateFormat("dd MMMM,yyyy",
                                 Locale.ENGLISH);
                         csmap.put("ywdqrq", sdfw.format(new Date()));
-                        QRCodeUtil.QRCodeCreate("fpjtest.datarj.com/einv/common/smInOut?serialOrder="+listkpls.get(0).getSerialorder(),GeneratePdfService.class.getClassLoader().getResource("/template/")+"ewm.jpg",15,null);
-                        String ewm ="data:image/jpeg;base64,"+getImageStr(URLDecoder.decode(GeneratePdfService.class.getClassLoader().getResource("/template/")+"ewm.jpg", "UTF-8"));
+                        QRCodeUtil.QRCodeCreate("fpjtest.datarj.com/einv/common/smInOut?serialOrder="+listkpls.get(0).getSerialorder(),GeneratePdfService.class.getClassLoader().getResource("/template/").getPath()+"ewm.jpg",15,null);
+                        String ewm ="data:image/jpeg;base64,"+getImageStr(URLDecoder.decode(GeneratePdfService.class.getClassLoader().getResource("/template/").getPath()+"ewm.jpg", "UTF-8"));
                         csmap.put("ewm", ewm);
                         String content = getYjnr.getFpkjYj(csmap, yjmbcontent);
                         try {
