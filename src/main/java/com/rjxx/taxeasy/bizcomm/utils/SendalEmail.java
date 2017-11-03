@@ -62,7 +62,7 @@ public class SendalEmail {
 		yjjl.setLrsj(new Date());
 		yjjl.setRefId(djh);
 		yjjl.setReturnid(message);
-		yjjl.setYjnr(yjnr);
+		//yjjl.setYjnr(yjnr);
 		yjjl.setYjbt(yjbt);
 		yjjlService.save(yjjl);
 	   return true;
