@@ -58,8 +58,6 @@ public class FphcService {
 				Map param4 = new HashMap<>();
 				param4.put("djh", djh);
 				Jyls jyls = jylsService.findJylsByDjh(param4);
-				Map resultMap=Savejyxxsq(kplsh,jyls.getJylsh(),jyls);
-				Jyxxsq jyxxsq=(Jyxxsq) resultMap.get("jyxxsq");
 				String ddh = jyls.getDdh(); // 查询原交易流水得ddh
 				Map jylsParam = new HashMap<>();
 				//保存交易流水
@@ -75,6 +73,8 @@ public class FphcService {
 				}else{
 					jyls1.setJylsh("JY" + new SimpleDateFormat("yyyyMMddHHmmssSS").format(new Date()));
 				}
+				Map resultMap=Savejyxxsq(kplsh,"JY" + new SimpleDateFormat("yyyyMMddHHmmssSS").format(new Date()),jyls);
+				Jyxxsq jyxxsq=(Jyxxsq) resultMap.get("jyxxsq");
 				jyls1.setJylssj(TimeUtil.getNowDate());
 				jyls1.setFpzldm(kpls.getFpzldm());
 				jyls1.setFpczlxdm("12");
@@ -219,6 +219,11 @@ public class FphcService {
 							jymx.setXgsj(TimeUtil.getNowDate());
 							jymx.setXgry(yhid);
 							jymx.setFphxz(mxItem.getFphxz());
+							jymx.setYhzcbs(mxItem.getYhzcbs());
+							jymx.setLslbz(mxItem.getLslbz());
+							jymx.setYhzcmc(mxItem.getYhzcmc());
+							jymx.setXfid(kpls.getXfid());
+							jymx.setSkpid(kpls.getSkpid());
 							hjje += jymx.getSpje();
 							hjse += jymx.getSpse();
 							jshj += jymx.getJshj();
@@ -248,6 +253,11 @@ public class FphcService {
 							kpspmx.setXgry(jymx.getXgry());
 							kpspmx.setKhcje(jymx.getJshj().doubleValue());
 							kpspmx.setYhcje(0d);
+							kpspmx.setGsdm(jymx.getGsdm());
+							kpspmx.setYhzcbs(jymx.getYhzcbs());
+							kpspmx.setLslbz(jymx.getLslbz());
+							kpspmx.setYhzcmc(jymx.getYhzcmc());
+							kpspmx.setKpddm(kpls.getKpddm());
 							//kpspmxService.save(kpspmx);
 							kpspmxList2.add(kpspmx);
 						}
@@ -334,7 +344,9 @@ public class FphcService {
 		Kpls kpls = kplsService.findOne(kplsh);
 		Jyxxsq jyxxsq = new Jyxxsq();
 		String jylsh = "JY" + new SimpleDateFormat("yyyyMMddHHmmssSS").format(new Date());
+		jyxxsq.setKpddm(kpls.getKpddm());
 		jyxxsq.setJylsh(tqm);
+		jyxxsq.setSjly("0");
 		jyxxsq.setDdh(tqm);
 		jyxxsq.setGflxr(kpls.getGflxr());
 		jyxxsq.setGfyb(kpls.getGfyb());
@@ -422,6 +434,9 @@ public class FphcService {
 			jymxsq.setYhzcbs(kpspmx.getYhzcbs());
 			jymxsq.setYhzcmc(kpspmx.getYhzcmc());
 			jymxsq.setSqlsh(jyxxsq.getSqlsh());
+			jymxsq.setXfid(kpls.getXfid());
+			jymxsq.setSkpid(kpls.getSkpid());
+			jymxsq.setKpddm(kpls.getKpddm());
 			jymxsq.setJshj(-(kpspmx.getSpje() + kpspmx.getSpse()));
 			jymxsq.setXgsj(new Date());
 			jymxsq.setLrsj(new Date());
