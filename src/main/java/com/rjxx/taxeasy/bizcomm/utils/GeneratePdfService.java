@@ -3,12 +3,14 @@ package com.rjxx.taxeasy.bizcomm.utils;
 import com.alibaba.fastjson.JSON;
 import com.rjxx.comm.utils.ApplicationContextUtils;
 import com.rjxx.taxeasy.bizcomm.utils.pdf.PdfDocumentGenerator;
+import com.rjxx.taxeasy.bizcomm.utils.pdf.TwoDimensionCode;
 import com.rjxx.taxeasy.domains.*;
 import com.rjxx.taxeasy.service.*;
 import com.rjxx.taxeasy.vo.messageParams;
 import com.rjxx.taxeasy.vo.smsEnvelopes;
 import com.rjxx.utils.StringUtils;
 import com.rjxx.utils.XmlJaxbUtils;
+import org.apache.commons.codec.binary.*;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.config.RequestConfig;
@@ -198,9 +200,12 @@ public class GeneratePdfService {
                         SimpleDateFormat sdfw = new SimpleDateFormat("dd MMMM,yyyy",
                                 Locale.ENGLISH);
                         csmap.put("ywdqrq", sdfw.format(new Date()));
-                        //QRCodeUtil.QRCodeCreate("fpjtest.datarj.com/einv/common/smInOut?serialOrder="+listkpls.get(0).getSerialorder(),GeneratePdfService.class.getClassLoader().getResource("/template/")+"ewm.jpg",15,"");
-                        //String ewm ="data:image/jpeg;base64,"+getImageStr(URLDecoder.decode(GeneratePdfService.class.getClassLoader().getResource("/template/")+"ewm.jpg", "UTF-8"));
-                        //csmap.put("ewm", ewm);
+                        // 二维码生成部分
+                        TwoDimensionCode handler = new TwoDimensionCode();
+                        ByteArrayOutputStream output = new ByteArrayOutputStream();
+                        handler.encoderQRCode("http://fpjtest.datarj.com/einv/tq?q="+listkpls.get(0).getSerialorder(), output);// 二维码中数据的来源
+                        String imgbase64string = org.apache.commons.codec.binary.Base64.encodeBase64String(output.toByteArray());
+                        csmap.put("ewm", "data:image/jpeg;base64,"+imgbase64string);
                         String content = getYjnr.getFpkjYj(csmap, yjmbcontent);
                         try {
                             se.sendEmail(String.valueOf(kpls.getDjh()), kpls.getGsdm(), kpls.getGfemail(), "发票开具成功发送邮件", String.valueOf(kpls.getDjh()), content, "电子发票");
