@@ -4,12 +4,15 @@
 <mapper namespace="com.rjxx.taxeasy.dao.JymxsqMapper">
 
     <select id="findOneByParams" parameterType="map" resultType="jymxsq">
-        select * from t_jymxsq where 1 = 1
+        select * from t_jymxsq where  yxbz = '1'
         <if test="gsdm != null">
             and gsdm =#{gsdm}
         </if>
         <if test="ddh != null">
             and ddh=#{ddh}
+        </if>
+        <if test="sqlsh != null and sqlsh !=''">
+            and  sqlsh = #{sqlsh}
         </if>
         <if test="orderBy != null">
             order by #{orderBy}
