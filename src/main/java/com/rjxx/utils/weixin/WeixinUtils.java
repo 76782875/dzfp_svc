@@ -119,7 +119,7 @@ public class WeixinUtils {
             try {
                 Map map = jsonparer.readValue(jsonStr, Map.class);
                 ticket = (String) map.get("ticket");
-                System.out.println("ticket获取成功" + ticket);
+                logger.info("ticket获取成功" + ticket);
                 return ticket;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -147,18 +147,6 @@ public class WeixinUtils {
                     invoice_url = (String) map.get("invoice_url");
                     spappid = invoice_url.split("&")[1].split("=")[1];
                     return spappid;
-                }else if(null!= errcode && errcode==40001){
-                    Map map1 = this.hqtk();
-                    String access_token = (String) map1.get("access_token");
-                    String ticket = this.getTicket(access_token);
-                    WxToken wxToken = wxTokenJpaDao.findByFlag("01");
-                    WxToken wxToken1 = new WxToken();
-                    wxToken1.setId(wxToken.getId());
-                    wxToken1.setAccessToken(access_token);
-                    wxToken1.setTicket(ticket);
-                    wxToken1.setCreatTime(new Date());
-                    wxToken1.setFlag("01");
-                    wxTokenJpaDao.save(wxToken1);
                 }else{
                     return null;
                 }
@@ -303,6 +291,9 @@ public class WeixinUtils {
         WeixinUtils weixinUtils = new WeixinUtils();
         String s_pappid = weixinUtils.getSpappid(access_token);
 
+        if(s_pappid == null){
+            return null;
+        }
         String URL = "https://api.weixin.qq.com/card/invoice/getauthdata?access_token=" + access_token;
         Map nvps = new HashMap();
         nvps.put("s_pappid", s_pappid);
@@ -475,7 +466,6 @@ public class WeixinUtils {
      */
     public void cksqzd() {
         WeixinUtils weixinUtils = new WeixinUtils();
-        //String access_token = (String) weixinUtils.hqtk().get("access_token");
         String access_token ="";
 
         WxToken wxToken = wxTokenJpaDao.findByFlag("01");
@@ -527,6 +517,9 @@ public class WeixinUtils {
 //            orderno_old=split[0];
 //        }
         //String url = WeiXinConstants.RJXX_REDIRECT_URL;
+        if(s_pappid==null){
+            return null;
+        }
         mapInfo.put("s_pappid", s_pappid);
         mapInfo.put("order_id", order_id);
         mapInfo.put("reason", reason);
