@@ -118,9 +118,14 @@ public class WeixinUtils {
             ObjectMapper jsonparer = new ObjectMapper();// 初始化解析json格式的对象
             try {
                 Map map = jsonparer.readValue(jsonStr, Map.class);
-                ticket = (String) map.get("ticket");
-                logger.info("ticket获取成功" + ticket);
-                return ticket;
+                Integer errcode = (Integer) map.get("errcode");
+                if(null!= errcode && errcode == 0){
+                    ticket = (String) map.get("ticket");
+                    logger.info("ticket获取成功" + ticket);
+                    return ticket;
+                }else{
+                    return null;
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
