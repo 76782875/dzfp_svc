@@ -2024,7 +2024,10 @@ public class GetDataService {
                     if (null != jo.getString("status") && !jo.getString("status").equals("")) {
                         status = jo.getString("status").toString();
                     }
-
+                    String remark = null;
+                    if (null != jo.getString("remark") && !jo.getString("remark").equals("")) {
+                        remark = jo.getString("remark").toString();
+                    }
                     //基本数据封装进交易信息申请
                     Jyxxsq jyxxsq = new Jyxxsq();
                     jyxxsq.setDdh(orderNo);//订单编号 对应小票流水号
@@ -2082,6 +2085,7 @@ public class GetDataService {
                     jyxxsq.setGsdm(gsdm);
                     jyxxsq.setSjly("1");
                     jyxxsq.setClztdm("00");
+                    jyxxsq.setBz(remark);
                     jyxxsqList.add(jyxxsq);
                     JSONArray salelist = jo.getJSONArray("details");
                     if (null != salelist && salelist.size() > 0) {
