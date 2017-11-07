@@ -3,6 +3,7 @@ package com.rjxx.taxeasy.dao;
 import com.rjxx.comm.mybatis.MybatisRepository;
 import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.domains.Xf;
+import com.rjxx.taxeasy.vo.XfKzVo;
 import com.rjxx.taxeasy.vo.XfVo;
 
 import java.util.List;
@@ -36,4 +37,5 @@ public interface XfMapper {
 
 	public XfVo findAllByXfxx(Map map);
 
+	public List<XfKzVo> findXfkzListByXfid(Map map);
 }
