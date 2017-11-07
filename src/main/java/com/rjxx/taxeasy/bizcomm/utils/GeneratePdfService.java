@@ -148,8 +148,9 @@ public class GeneratePdfService {
                 Gsxx gsxx = gsxxService.findOneByParams(parms);
                 //String url="https://vrapi.fvt.tujia.com/Invoice/CallBack";
                 String url = gsxx.getCallbackurl();
-                logger.info("回写报文" + this.CreateReturnMessage2(kpls.getKplsh()));
                 if (!("").equals(url) && url != null) {
+
+                    logger.info("回写报文" + this.CreateReturnMessage2(kpls.getKplsh()));
                     String returnmessage = "";
                     if (kpls.getFpzldm().equals("12") && kpls.getGsdm().equals("Family")) {
                         returnmessage = this.CreateReturnMessage2(kpls.getKplsh());
