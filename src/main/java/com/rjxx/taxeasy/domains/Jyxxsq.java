@@ -385,8 +385,19 @@ public class Jyxxsq  implements Serializable {
 	@Column(name="openid")
 	protected String openid;
 
+	/**
+	 * 全局折扣qjzk
+	 */
+	@Column(name="qjzk")
+	protected Double qjzk;
 
+	public Double getQjzk() {
+		return qjzk;
+	}
 
+	public void setQjzk(Double qjzk) {
+		this.qjzk = qjzk;
+	}
 
 	public Integer getSqlsh(){
 		return sqlsh;

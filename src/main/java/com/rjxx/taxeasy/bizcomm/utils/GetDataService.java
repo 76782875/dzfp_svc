@@ -248,12 +248,17 @@ public class GetDataService {
 
             return xml3;
     }
+
+    /**
+     * 波奇网--调用接口获取数据
+     * @param code
+     * @param gsdm
+     * @param url
+     * @return
+     */
     public Map getDataForBqw(String code,String gsdm,String url){
         logger.info("拉取数据参数值code"+code+"公司代码"+gsdm+"url地址"+url);
         Map parmsMap=new HashMap();
-        String strMessage = "";
-        BufferedReader reader = null;
-        StringBuffer buffer = new StringBuffer();
         Map parms=new HashMap();
         parms.put("gsdm",gsdm);
         Gsxx gsxx=gsxxService.findOneByParams(parms);
@@ -263,9 +268,8 @@ public class GetDataService {
             map.put("method","getOrderInfo");
             map.put("ExtractCode",code);
             map.put("sign",Secret);
-            logger.info("传入参数"+JSON.toJSONString(map));
             String response = HttpClientUtil.doPost(url, map);
-            System.out.println("波奇网---接收返回值:" + response);
+            logger.info("波奇网---接收返回值:" + response);
             parmsMap=interpretingForBqw(gsdm,response);
             String error = (String) parmsMap.get("error");
             if(error==null) {
@@ -278,13 +282,13 @@ public class GetDataService {
                 }
             }
         }catch (Exception e){
-            System.out.println("msg=" + e.getMessage());
+            logger.info("msg=" + e.getMessage());
             e.printStackTrace();
         }
         return parmsMap;
     }
     /**
-     * 解析数据 --波奇网
+     * 波奇网-- 解析数据
      * @param gsdm
      * @param data
      * @return
@@ -655,10 +659,8 @@ public class GetDataService {
                             jymxsqList.add(jymxsq);
                         }
                     }
-
                 }
             }
-
             rsMap.put("jyxxsqList", jyxxsqList);
             rsMap.put("jymxsqList", jymxsqList);
             rsMap.put("jyzfmxList", jyzfmxList);
@@ -667,6 +669,13 @@ public class GetDataService {
         }
         return rsMap;
     }
+
+    /**
+     * 全家--调用接口获取数据
+     * @param ExtractCode
+     * @param gsdm
+     * @return
+     */
     public Map getData(String ExtractCode,String gsdm){
             Map parmsMap=new HashMap();
             String strMessage = "";
@@ -723,6 +732,15 @@ public class GetDataService {
             }
             return parmsMap;
     }
+
+    /**
+     * 校验方法
+     * @param jyxxsqList
+     * @param jymxsqList
+     * @param jyzfmxList
+     * @param gsdm
+     * @return
+     */
     public String checkAll(List<Jyxxsq> jyxxsqList, List<Jymxsq> jymxsqList, List<Jyzfmx> jyzfmxList, String gsdm) {
         String result = "";
         String ddh = "";
@@ -940,7 +958,7 @@ public class GetDataService {
         return result;
     }
     /**
-     * 解析数据
+     * 全家 -- 解析数据
      * @param gsdm
      * @param data
      * @return
@@ -1355,25 +1373,22 @@ public class GetDataService {
         return rsMap;
     }
 
-
-    /*
-    * @zsq
-    * 绿地公司第一次调用接口获取token
-    * */
-
+    /**
+     * 绿地优鲜--获取验签接口
+     * @param ExtractCode
+     * @param gsdm
+     * @return
+     */
     public Map getldyxFirData(String ExtractCode,String gsdm){
 
             Map parmsMap=new HashMap();
-
             String strMessage = "";
             BufferedReader reader = null;
             StringBuffer buffer = new StringBuffer();
             Map parms=new HashMap();
             parms.put("gsdm",gsdm);
-
             //查询参数总表url
             Cszb zb1 = cszbService.getSpbmbbh(gsdm, null,null, "shhqtokenurl");
-
             Map resultMap = null;
             HttpPost httpPost = new HttpPost(zb1.getCsz());
             CloseableHttpResponse response = null;
@@ -1406,7 +1421,6 @@ public class GetDataService {
                 System.out.println("接收返回值:" + buffer.toString());
                 //解析json获取token
                 parmsMap = interpretFirstForJson(gsdm, buffer.toString());
-
         }catch (Exception e){
             System.out.println("request url=" + "" + ", exception, msg=" + e.getMessage());
             e.printStackTrace();
@@ -1415,15 +1429,16 @@ public class GetDataService {
         return parmsMap;
     }
 
-    /*
-    * @zsq
-    * 绿地公司购物小票查询  获取数据
-    * */
-
+    /**
+     * 绿地优鲜 --调用接口获取获取数据
+     * @param ExtractCode
+     * @param gsdm
+     * @param token
+     * @return
+     */
     public Map getldyxSecData(String ExtractCode,String gsdm,String token){
 
         Map parmsMap=new HashMap();
-
         String strMessage = "";
         BufferedReader reader = null;
         StringBuffer buffer = new StringBuffer();
@@ -1469,11 +1484,9 @@ public class GetDataService {
             System.out.println("接收返回值:" + buffer.toString());
             //解析json获取购物小票数据 封装数据
             parmsMap = interpretSecForJson(gsdm, buffer.toString(),ExtractCode);
-
             List<Jyxxsq> jyxxsqList = (List) parmsMap.get("jyxxsqList");
             List<Jymxsq> jymxsqList = (List) parmsMap.get("jymxsqList");
             List<Jyzfmx> jyzfmxList = (List) parmsMap.get("jyzfmxList");
-
             if(null!=jyxxsqList &&!"".equals(jyxxsqList)&& null!=jymxsqList && !"".equals(jymxsqList)){
                 String msg = checkOrderUtil.checkOrders(jyxxsqList,jymxsqList,jyzfmxList,gsdm,"");
                 if(null!=msg&& !"".equals(msg)){
@@ -1528,67 +1541,51 @@ public class GetDataService {
                 "    }]\n" +
                 "  }";
         String json1="{\n" +
-                "    \"access_token\": \"7a0c3bd7-4371-4bdb-99b4-9de3a95ddd99\",\n" +
-                "    \"token_type\": \"bearer\",\n" +
-                "    \"refresh_token\": \"2f5f82f7-bbee-4e94-be83-c54cd98d3744\",\n" +
-                "    \"expires_in\": 3440,\n" +
-                "    \"scope\": \"ifield read write\",\n" +
-                "    \"organization\": \"wz-efuture\"\n" +
+                "    \"storeNo\": \"S017\",\n" +
+                "    \"total\": \"1689.00000000\",\n" +
+                "    \"orderNo\": \"S017-05144911\",\n" +
+                "    \"totalDiscounts\": \"337.80000000\",\n" +
+                "    \"details\": [\n" +
+                "        {\n" +
+                "            \"unitPrice\": 790,\n" +
+                "            \"quantity\": 1,\n" +
+                "            \"priceDiscounts\": 100,\n" +
+                "            \"name\": \"FACNM1705\",\n" +
+                "            \"afterDiscountPrice\": 690\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"unitPrice\": 999,\n" +
+                "            \"quantity\": 1,\n" +
+                "            \"priceDiscounts\": 0,\n" +
+                "            \"name\": \"HOYA金级镜片\",\n" +
+                "            \"afterDiscountPrice\": 999\n" +
+                "        }\n" +
+                "    ],\n" +
+                "    \"payment\": [\n" +
+                "        {\n" +
+                "            \"pay_amout\": \"248.0\",\n" +
+                "            \"pay_code\": \"PT_06\",\n" +
+                "            \"pay_name\": \"巍康卡\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"pay_amout\": \"1103.2\",\n" +
+                "            \"pay_code\": \"PT_15\",\n" +
+                "            \"pay_name\": \"国内银行卡\"\n" +
+                "        }\n" +
+                "    ],\n" +
+                "    \"orderDate\": \"2017-10-17 22:10:09.0\",\n" +
+                "    \"afterDiscountTotal\": \"1351.20000000\",\n" +
+                "    \"status\": \"COMPLETED\"\n" +
                 "}";
           GetDataService getDataService=new GetDataService();
         try {
-            //Map result=getDataService.interpretFirstForJson("ldyx",json1);
-           // Map result=getDataService.interpretSecForJson("ldyx",json);
-            //System.out.println(JSON.toJSONString(result));
-            //String ExtractCode = "7819";
-            //Map nvps = new HashMap();
-           // nvps.put("ExtractCode", ExtractCode);
-           // System.out.println("传递数据code格式是否为json"+ JSON.toJSONString(nvps));
-
-            //比较日期大小
-            //获取当前时间转成秒数
-           /* Long datsTime = System.currentTimeMillis();
-            System.out.println(datsTime);
-            System.out.println("第二个日期开始");
-            String dateNow = "2017-07-20 10:20:16";
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date  datsNowTime = dateFormat.parse(dateNow);
-            Long dateNowTime = datsNowTime.getTime();
-            System.out.println(dateNowTime);
-            Long cha = datsTime - dateNowTime;
-            System.out.println("时间差"+cha);
-            System.out.println("过期时间");
-            Long  expiresIn  = (long) 30;
-            System.out.println(expiresIn);
-            Long exp = expiresIn * 1000;
-            System.out.println(exp);
-            Long sfgq = cha - exp ;
-            System.out.println("是否过期"+sfgq);
-            if(sfgq<0){
-                System.out.println("没有过期");
-            }
-            if(sfgq >= 0){
-                System.out.println("过期了");
-            }*/
-         /*  BigDecimal big1 = new BigDecimal("0.17");
-           BigDecimal big2 = new BigDecimal("1");
-           if(big1.compareTo(big2)>0){
-               System.out.println("big1 > big2");
-           }else {
-               System.out.println("big1 < big2");
-           }*/
-//         String a = "康宁京剧脸谱马克杯\n（薄荷色）";
-//         String re = a.replaceAll("\n","");
-//            System.out.println(""+re);
-//            System.out.println(""+a);
-            String xmldata = getDataService.xmldata();
-            getDataService.interpretingForBqw("bqw",xmldata);
+            getDataService.interpretForGVC("gvc",json1,"S017-05144911");
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     /**
-     * 解析json数据   获取token
+     * 绿地优鲜--解析json数据,获取token
      * @param gsdm
      * @param data
      * @return
@@ -1597,10 +1594,8 @@ public class GetDataService {
     public Map interpretFirstForJson(String gsdm,String data)throws Exception {
 
         Map resultMap=new HashMap();
-        System.out.println("data"+data);
         //传入数据
         JSONObject jsonObj = JSONObject.parseObject(data);
-
         //获取accessToken
         String accessToken ="";
         if (null!=jsonObj.getString("access_token")&&!jsonObj.getString("access_token").equals("")){
@@ -1631,18 +1626,16 @@ public class GetDataService {
         if (null!=jsonObj.getString("organization")&&!jsonObj.getString("organization").equals("")){
             organization =  jsonObj.getString("organization").toString();
         }
-
         resultMap.put("accessToken",accessToken);
         resultMap.put("tokenType",tokenType);
         resultMap.put("expiresIn",expiresIn);
         resultMap.put("scope",scope);
         resultMap.put("organization",organization);
-
         return  resultMap;
     }
 
     /**
-     * 解析json数据 封装
+     * 绿地优鲜--解析json数据,封装
      * @param gsdm
      * @param data
      * @return
@@ -1945,4 +1938,361 @@ public class GetDataService {
         return rsMap;
     }
 
+    /**
+     * 光唯尚--调用接口获取数据
+     * @param orderNo
+     * @param gsdm
+     * @param url
+     * @return
+     */
+    public Map getDataForGvc(String orderNo,String gsdm,String url){
+        Map parmsMap=new HashMap();
+        try {
+            Map map = new HashMap();
+            map.put("orderNo",orderNo);
+            //map.put("gsdm",gsdm);
+            logger.info("光唯尚---传入参数"+JSON.toJSONString(map));
+            String response = HttpClientUtil.doGet(url, map);
+            logger.info("光唯尚---接收返回值:" + response);
+            //解析返回数据
+            parmsMap=interpretForGVC(gsdm,response,orderNo);
+            String msg = (String) parmsMap.get("msg");
+            if(msg==null) {
+                List<Jyxxsq> jyxxsqList = (List) parmsMap.get("jyxxsqList");
+                List<Jymxsq> jymxsqList = (List) parmsMap.get("jymxsqList");
+                List<Jyzfmx> jyzfmxList = (List) parmsMap.get("jyzfmxList");
+                /*String error = checkOrderUtil.checkOrders(jyxxsqList,jymxsqList,jyzfmxList,gsdm,"");
+                if(null!=error && !"".equals(error)){
+                    parmsMap.put("msg",error);
+                }*/
+            }
+            logger.info("-----封装好的数据"+JSON.toJSON(parmsMap));
+        }catch (Exception e){
+            logger.info("msg=" + e.getMessage());
+            e.printStackTrace();
+        }
+        return parmsMap;
+    }
+
+    /**
+     * 光唯尚--解析数据并封装
+     * @param gsdm
+     * @param data
+     * @param orderNo
+     * @return
+     * @throws Exception
+     */
+    public Map interpretForGVC(String gsdm,String data,String orderNo)throws Exception {
+
+        Map rsMap = new HashMap();
+        Map params1 = new HashMap();
+        params1.put("gsdm", gsdm);//公司代码
+        Yh yh = yhService.findOneByParams(params1);
+        int lrry = yh.getId();
+        List<Jyxxsq> jyxxsqList = new ArrayList();//交易信息申请
+        List<Jymxsq> jymxsqList = new ArrayList();//交易明细申请
+        List<Jyzfmx> jyzfmxList = new ArrayList<Jyzfmx>();//交易支付明细
+        //传入数据
+        JSONObject jsonObj = JSONObject.parseObject(data);
+        String code = jsonObj.getString("code"); //code值为0 表示数据正常
+        if(null!=code&&code.equals("0000")) {
+            JSONObject jsondata = jsonObj.getJSONObject("data");
+            if (jsondata!=null) {
+                //for (int i = 0; i < jsondata.size(); i++) {
+                    JSONObject jo = jsondata;
+                    String storeNo = "";
+                    if (null != jo.getString("storeNo") && !jo.getString("storeNo").equals("")) {
+                        storeNo = jo.getString("storeNo").toString();
+                    }
+                    Date orderDate = null;
+                    if (null != jo.getDate("orderDate") && !jo.getDate("orderDate").equals("")) {
+                        orderDate = jo.getDate("orderDate");
+                    }
+                    Double total = null;
+                    if (null != jo.getDouble("total") && !jo.getDouble("total").equals("")) {
+                        total = jo.getDouble("total");
+                    }
+                    Double totalDiscounts = null;
+                    if (null != jo.getDouble("totalDiscounts") && !jo.getDouble("totalDiscounts").equals("")) {
+                        totalDiscounts = jo.getDouble("totalDiscounts");
+                    }
+                    Double afterDiscountTotal = null;
+                    if (null != jo.getString("afterDiscountTotal") && !jo.getDouble("afterDiscountTotal").equals("")) {
+                        afterDiscountTotal = jo.getDouble("afterDiscountTotal");
+                    }
+                    String status = "";
+                    if (null != jo.getString("status") && !jo.getString("status").equals("")) {
+                        status = jo.getString("status").toString();
+                    }
+
+                    //基本数据封装进交易信息申请
+                    Jyxxsq jyxxsq = new Jyxxsq();
+                    jyxxsq.setDdh(orderNo);//订单编号 对应小票流水号
+                    jyxxsq.setTqm(orderNo);// 提取码  对应购物小票流水号
+                    jyxxsq.setJylsh("JY" + new SimpleDateFormat("yyyyMMddHHmmssSS").format(new Date()));//交易流水号
+                    jyxxsq.setKpddm("gvc_01");
+                    //根据公司代码、开票点代码查询税控盘
+                    Map skpmap = new HashMap();
+                    skpmap.put("gsdm", gsdm);
+                    skpmap.put("kpddm", "gvc_01");
+                    Skp skpdata = skpService.findOneByParams(skpmap);
+                    if(skpdata==null){
+                        rsMap.put("jyxxsqList", jyxxsqList);
+                        rsMap.put("jymxsqList", jymxsqList);
+                        rsMap.put("jyzfmxList", jyzfmxList);
+                        rsMap.put("msg","开票信息有误，请联系商家");
+                        return rsMap;
+                    }
+                    //根据销方id  查询
+                    Xf x = new Xf();
+                    x.setId(skpdata.getXfid());
+                    Xf xf = xfService.findOneByParams(x);
+                    if(xf==null){
+                        rsMap.put("msg","开票信息有误，请联系商家");
+                        rsMap.put("jyxxsqList", jyxxsqList);
+                        rsMap.put("jymxsqList", jymxsqList);
+                        rsMap.put("jyzfmxList", jyzfmxList);
+                        return rsMap;
+                    }
+                    jyxxsq.setXfid(xf.getId());//销方id
+                    jyxxsq.setFpzldm("12"); //发票种类
+                    jyxxsq.setJshj(Double.valueOf(total));//价税合计
+                    //全局折扣
+                    jyxxsq.setQjzk(Double.valueOf(totalDiscounts));
+                    jyxxsq.setHsbz("1");//含税标志 1含税
+                    jyxxsq.setBz("");//备注
+                    jyxxsq.setZsfs("");//征税方式
+                    jyxxsq.setKpr(xf.getKpr());
+                    jyxxsq.setSkr(xf.getSkr());
+                    jyxxsq.setFhr(xf.getFhr());
+                    jyxxsq.setDdrq(orderDate);
+                    jyxxsq.setXfsh(xf.getXfsh());
+                    jyxxsq.setXfmc(xf.getXfmc());
+                    jyxxsq.setXfdz(xf.getXfdz());
+                    jyxxsq.setXfdh(xf.getXfdh());
+                    jyxxsq.setXfyh(xf.getXfyh());
+                    jyxxsq.setXfyhzh(xf.getXfyhzh());
+                    jyxxsq.setYkpjshj(Double.valueOf("0.00"));
+                    jyxxsq.setYxbz("1");
+                    jyxxsq.setLrsj(new Date());
+                    jyxxsq.setLrry(lrry);
+                    jyxxsq.setXgry(lrry);
+                    jyxxsq.setFpczlxdm("11");
+                    jyxxsq.setXgsj(new Date());
+                    jyxxsq.setGsdm(gsdm);
+                    jyxxsq.setSjly("1");
+                    jyxxsq.setClztdm("00");
+                    jyxxsqList.add(jyxxsq);
+                    JSONArray salelist = jo.getJSONArray("details");
+                    if (null != salelist && salelist.size() > 0) {
+                        //商品明细获取
+                        int spmxxh = 1;
+                        for (int s = 0; s < salelist.size(); s++) {
+
+                            JSONObject saleData = salelist.getJSONObject(s);
+                            String name = "";//名称
+                            if (null != saleData.getString("name") && !saleData.getString("name").equals("")) {
+                                String goodsna = saleData.getString("name").toString();
+                                name = goodsna.replaceAll("\n", "");
+                            }
+                            BigDecimal quantity = null;//数量
+                            if (null != saleData.getBigDecimal("quantity") && !saleData.getBigDecimal("quantity").equals("")) {
+                                quantity = saleData.getBigDecimal("quantity");
+                            }
+                            BigDecimal unitPrice = null;//单价
+                            if (null != saleData.getBigDecimal("unitPrice") && !saleData.getBigDecimal("unitPrice").equals("")) {
+                                unitPrice = saleData.getBigDecimal("unitPrice");
+                            }
+                            BigDecimal priceDiscounts = null;
+                            if (null != saleData.getBigDecimal("priceDiscounts") && !saleData.getBigDecimal("priceDiscounts").equals("")) {
+                                priceDiscounts = saleData.getBigDecimal("priceDiscounts");
+                            }
+                            BigDecimal afterDiscountPrice = null;
+                            if (null != saleData.getBigDecimal("afterDiscountPrice") && !saleData.getBigDecimal("afterDiscountPrice").equals("")) {
+                                afterDiscountPrice = saleData.getBigDecimal("afterDiscountPrice");
+                            }
+
+                            //商品明细 封装进交易明细申请
+                            Cszb cszb = cszbService.getSpbmbbh("gvc",xf.getId(), skpdata.getId(), "dyspbmb");
+                            int b = priceDiscounts.compareTo(new BigDecimal("0"));
+                            if(b==0){
+                                Jymxsq jymxsq = new Jymxsq();
+                                jymxsq.setSpmc(name.trim());
+                                jymxsq.setFphxz("0");//发票行性质 0：正常行
+                                jymxsq.setSpmc(name);
+                                jymxsq.setSpdj(new Double(unitPrice.toString()));
+                                jymxsq.setSps(new Double(quantity.toString()));
+                                BigDecimal zch = unitPrice.multiply(quantity);
+                                Double zchSpje = new Double(zch.toString());
+                                jymxsq.setSpje(zchSpje);
+                                jymxsq.setJshj(zchSpje);
+                                jymxsq.setSpmxxh(spmxxh);//商品明细序号
+                                spmxxh++;
+                                jymxsq.setDdh(jyxxsq.getDdh());//订单号
+                                jymxsq.setHsbz(jyxxsq.getHsbz());
+                                jymxsq.setYkjje(0d);
+                                Map mapoo = new HashMap();
+                                mapoo.put("gsdm", "gvc");
+                                if (cszb.getCsz() != null) {
+                                    mapoo.put("spdm", cszb.getCsz());
+                                }
+                                Spvo spvo = spvoService.findOneSpvo(mapoo);
+                                if (spvo == null) {
+                                    rsMap.put("msg","开票信息有误，请联系商家");
+                                    rsMap.put("jyxxsqList", jyxxsqList);
+                                    rsMap.put("jymxsqList", jymxsqList);
+                                    rsMap.put("jyzfmxList", jyzfmxList);
+                                    return rsMap;
+                                }
+                                jymxsq.setSpsl(spvo.getSl());
+                                jymxsq.setSpdm(spvo.getSpbm());
+                                jymxsq.setYhzcbs(spvo.getYhzcbs());
+                                jymxsq.setLslbz(spvo.getLslbz());
+                                jymxsq.setYhzcmc(spvo.getYhzcmc());
+                                jymxsq.setGsdm(gsdm);
+                                jymxsq.setLrry(lrry);
+                                jymxsq.setLrsj(new Date());
+                                jymxsq.setXgry(lrry);
+                                jymxsq.setXgsj(new Date());
+                                jymxsq.setYxbz("1");
+                                jymxsqList.add(jymxsq);
+                            }else {
+                                Jymxsq jymxsq2 = new Jymxsq(); //被折扣行
+                                jymxsq2.setSpmc(name.trim());
+                                jymxsq2.setFphxz("2");//发票行性质 2：被折扣行
+                                jymxsq2.setHsbz(jyxxsq.getHsbz());
+                                jymxsq2.setSpdj(new Double(priceDiscounts.toString()));
+                                jymxsq2.setSps(new Double(quantity.toString()));
+                                //计算被折扣行  单价乘以数量
+                                BigDecimal bzkh = unitPrice.multiply(quantity);
+                                Double spje2 = new Double(bzkh.toString());
+                                jymxsq2.setSpje(spje2);//商品金额
+                                //计算商品税额
+                                jymxsq2.setJshj(spje2);//税价合计
+                                jymxsq2.setSpmxxh(spmxxh);//商品明细序号
+                                spmxxh++;
+                                jymxsq2.setDdh(jyxxsq.getDdh());//订单号
+                                //已开具金额  = 0
+                                jymxsq2.setYkjje(0d);
+                                Map mapoo = new HashMap();
+                                mapoo.put("gsdm", "gvc");
+                                if (cszb.getCsz() != null) {
+                                    mapoo.put("spdm", cszb.getCsz());
+                                }
+                                Spvo spvo = spvoService.findOneSpvo(mapoo);
+                                if (spvo == null) {
+                                    rsMap.put("msg","开票信息有误，请联系商家");
+                                    rsMap.put("jyxxsqList", jyxxsqList);
+                                    rsMap.put("jymxsqList", jymxsqList);
+                                    rsMap.put("jyzfmxList", jyzfmxList);
+                                    return rsMap;
+                                }
+                                jymxsq2.setSpsl(spvo.getSl());
+                                jymxsq2.setSpdm(spvo.getSpbm());
+                                jymxsq2.setYhzcbs(spvo.getYhzcbs());
+                                jymxsq2.setLslbz(spvo.getLslbz());
+                                jymxsq2.setYhzcmc(spvo.getYhzcmc());
+                                jymxsq2.setGsdm(gsdm);
+                                jymxsq2.setLrry(lrry);
+                                jymxsq2.setLrsj(new Date());
+                                jymxsq2.setXgry(lrry);
+                                jymxsq2.setXgsj(new Date());
+                                jymxsq2.setYxbz("1");
+                                jymxsqList.add(jymxsq2);
+
+                                //折扣行
+                                Jymxsq jymxsq1 = new Jymxsq();
+                                jymxsq1.setSpmc(name.trim());
+                                jymxsq1.setFphxz("1");
+                                //jymxsq1.setSpdj(new Double(unitPrice.toString()));
+                                //jymxsq1.setSps(new Double(quantity.toString()));
+                                BigDecimal zkh = priceDiscounts.multiply(new BigDecimal(-1));
+                                Double spje1 = new Double(zkh.toString());
+                                jymxsq1.setSpje(spje1);//商品金额
+                                //计算商品税额
+                                jymxsq1.setJshj(spje1);//税价合计
+                                jymxsq1.setSpmxxh(spmxxh);//商品明细序号
+                                spmxxh++;
+                                jymxsq1.setDdh(jyxxsq.getDdh());//订单号
+                                jymxsq1.setHsbz(jyxxsq.getHsbz());
+                                //已开具金额  = 0
+                                jymxsq1.setYkjje(0d);
+                                if (spvo == null) {
+                                    rsMap.put("msg","开票信息有误，请联系商家");
+                                    rsMap.put("jyxxsqList", jyxxsqList);
+                                    rsMap.put("jymxsqList", jymxsqList);
+                                    rsMap.put("jyzfmxList", jyzfmxList);
+                                    return rsMap;
+                                }
+                                jymxsq1.setSpsl(spvo.getSl());
+                                jymxsq1.setSpdm(spvo.getSpbm());
+                                jymxsq1.setYhzcbs(spvo.getYhzcbs());
+                                jymxsq1.setLslbz(spvo.getLslbz());
+                                jymxsq1.setYhzcmc(spvo.getYhzcmc());
+                                jymxsq1.setGsdm(gsdm);
+                                jymxsq1.setLrry(lrry);
+                                jymxsq1.setLrsj(new Date());
+                                jymxsq1.setXgry(lrry);
+                                jymxsq1.setXgsj(new Date());
+                                jymxsq1.setYxbz("1");
+                                jymxsqList.add(jymxsq1);
+                            }
+                        }
+                    }
+                    JSONArray paylist = jo.getJSONArray("payment");
+                    if (null != paylist && paylist.size() > 0) {
+                        // 获取支付明细
+                        for (int p = 0; p < paylist.size(); p++) {
+                            Jyzfmx jyzfmx = new Jyzfmx();
+                            JSONObject payData = paylist.getJSONObject(p);
+                            String pay_code = "";
+                            if (null != payData.getString("pay_code") && !payData.getString("pay_code").equals("")) {
+                                pay_code = payData.getString("pay_code");
+                                jyzfmx.setZffsDm(pay_code);
+                            }
+                            Double pay_amout = null;
+                            if (null != payData.getDouble("pay_amout") && !payData.getDouble("pay_amout").equals("")) {
+                                pay_amout = payData.getDouble("pay_amout");
+                                jyzfmx.setZfje(Double.valueOf(pay_amout));//支付金额
+                            }
+                            String pay_name = "";
+                            if (null != payData.getString("pay_name") && !payData.getString("pay_name").equals("")) {
+                                pay_name = payData.getString("pay_name").toString();
+                            }
+                            //支付明细封装交易支付明细
+                            jyzfmx.setGsdm(gsdm);
+                            jyzfmx.setDdh(jyxxsq.getDdh());
+                            jyzfmx.setLrry(lrry);
+                            jyzfmx.setLrsj(new Date());
+                            jyzfmx.setXgry(lrry);
+                            jyzfmx.setXgsj(new Date());
+                            jyzfmxList.add(jyzfmx);
+                        }
+                    }
+                //}
+            }else {
+                String msg ="获取数据为空，请稍后再试！";
+                rsMap.put("msg",msg);
+            }
+            rsMap.put("jyxxsqList", jyxxsqList);
+            rsMap.put("jymxsqList", jymxsqList);
+            rsMap.put("jyzfmxList", jyzfmxList);
+            return rsMap;
+        }else {
+            String msg = jsonObj.getString("msg");
+            if(null!=msg && !"".equals(msg)){
+                rsMap.put("msg",msg);
+                rsMap.put("jyxxsqList", jyxxsqList);
+                rsMap.put("jymxsqList", jymxsqList);
+                rsMap.put("jyzfmxList", jyzfmxList);
+            }else {
+                msg = "获取数据失败，请重试！";
+                rsMap.put("msg", msg);
+                rsMap.put("jyxxsqList", jyxxsqList);
+                rsMap.put("jymxsqList", jymxsqList);
+                rsMap.put("jyzfmxList", jyzfmxList);
+            }
+        }
+        return rsMap;
+    }
 }

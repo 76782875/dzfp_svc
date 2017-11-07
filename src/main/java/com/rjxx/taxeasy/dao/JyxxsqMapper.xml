@@ -397,7 +397,7 @@
 		gfyhzh, gflxr, gfdz, gfdh, gfyb, gfemail, sffsyj, clztdm, bz, skr,
 		kpr, fhr, sfcp, sfdyqd, zsfs, ssyf, hztzdh, yfpdm, yfphm, hsbz, jshj,
 		ykpjshj, yxbz, lrsj, lrry, xgsj, xgry, gfsjr, gfsjrdz, gsdm, tqm,
-		skpid, gfsjh, dxzt,sjly,sfzlkp,sfdy,ztbz,khh,openid)
+		skpid, gfsjh, dxzt,sjly,sfzlkp,sfdy,ztbz,khh,openid,qjzk)
     values  
     <foreach collection="list" item="item" index="index" separator="," >  
         (#{item.kpddm},#{item.jylsh},#{item.ddrq},#{item.ddh},#{item.fpzldm},#{item.fpczlxdm},
@@ -411,7 +411,7 @@
         #{item.yxbz},#{item.lrsj},#{item.lrry},#{item.xgsj},#{item.xgry},
         #{item.gfsjr},#{item.gfsjrdz},#{item.gsdm},#{item.tqm},#{item.skpid},
         #{item.gfsjh},#{item.dxzt},#{item.sjly},#{item.sfzlkp},#{item.sfdy},#{item.ztbz}
-		,#{item.khh},#{item.openid})
+		,#{item.khh},#{item.openid},#{item.qjzk})
     </foreach>    
 </insert>
 
