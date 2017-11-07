@@ -2063,7 +2063,6 @@ public class GetDataService {
                     //全局折扣
                     jyxxsq.setQjzk(Double.valueOf(totalDiscounts));
                     jyxxsq.setHsbz("1");//含税标志 1含税
-                    jyxxsq.setBz("");//备注
                     jyxxsq.setZsfs("");//征税方式
                     jyxxsq.setKpr(xf.getKpr());
                     jyxxsq.setSkr(xf.getSkr());
