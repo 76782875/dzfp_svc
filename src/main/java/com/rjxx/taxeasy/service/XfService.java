@@ -6,6 +6,7 @@ import com.rjxx.taxeasy.dao.XfMapper;
 import com.rjxx.taxeasy.domains.Group;
 import com.rjxx.taxeasy.domains.Skp;
 import com.rjxx.taxeasy.domains.Xf;
+import com.rjxx.taxeasy.vo.XfKzVo;
 import com.rjxx.taxeasy.vo.XfVo;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -144,5 +145,10 @@ public class XfService {
 	public XfVo findAllByXfxx(Map map) {
 		return xfMapper.findAllByXfxx(map);
 	}
+
+    public List<XfKzVo> findXfkzListByXfid(Map<String, Object> map) {
+        return xfMapper.findXfkzListByXfid(map);
+    }
+
 
 }
