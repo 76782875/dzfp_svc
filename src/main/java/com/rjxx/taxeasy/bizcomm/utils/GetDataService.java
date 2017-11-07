@@ -2253,10 +2253,10 @@ public class GetDataService {
                                 pay_code = payData.getString("pay_code");
                                 jyzfmx.setZffsDm(pay_code);
                             }
-                            Double pay_amout = null;
-                            if (null != payData.getDouble("pay_amout") && !payData.getDouble("pay_amout").equals("")) {
-                                pay_amout = payData.getDouble("pay_amout");
-                                jyzfmx.setZfje(Double.valueOf(pay_amout));//支付金额
+                            Double pay_amount = null;
+                            if (null != payData.getDouble("pay_amount") && !payData.getDouble("pay_amount").equals("")) {
+                                pay_amount = payData.getDouble("pay_amount");
+                                jyzfmx.setZfje(pay_amount);//支付金额
                             }
                             String pay_name = "";
                             if (null != payData.getString("pay_name") && !payData.getString("pay_name").equals("")) {
