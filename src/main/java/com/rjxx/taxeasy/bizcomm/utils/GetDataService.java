@@ -2164,7 +2164,7 @@ public class GetDataService {
                                 jymxsq2.setSpmc(name.trim());
                                 jymxsq2.setFphxz("2");//发票行性质 2：被折扣行
                                 jymxsq2.setHsbz(jyxxsq.getHsbz());
-                                jymxsq2.setSpdj(new Double(priceDiscounts.toString()));
+                                jymxsq2.setSpdj(new Double(unitPrice.toString()));
                                 jymxsq2.setSps(new Double(quantity.toString()));
                                 //计算被折扣行  单价乘以数量
                                 BigDecimal bzkh = unitPrice.multiply(quantity);
