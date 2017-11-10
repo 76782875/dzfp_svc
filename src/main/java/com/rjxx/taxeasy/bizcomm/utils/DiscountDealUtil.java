@@ -24,7 +24,9 @@ public class DiscountDealUtil {
 	
 	@Autowired
 	private CszbService cszbService;
-	
+
+	@Autowired
+	private Discount2UnitDealUtil discount2UnitDealUtil;
 	/**
 	 * 将多笔订单分开，逐条调用处理折扣数据（开票方式为2折扣）。
 	 */
@@ -39,8 +41,8 @@ public class DiscountDealUtil {
 		params.put("kpfsList", kpfsList);
 		List<Zffs> zffsList = zffsService.findAllByParams(params);
 		for(int i=0;i<jyxxsqList.size();i++){
-			List<JymxsqCl> jymxsqClTmpList = new ArrayList<JymxsqCl>(); 
-			List<Jymxsq> jymxsqTmpList = new ArrayList<Jymxsq>(); 
+			List<JymxsqCl> jymxsqClTmpList = new ArrayList<JymxsqCl>();
+			List<Jymxsq> jymxsqTmpList = new ArrayList<Jymxsq>();
 			double zkzje = 0.00;
 			double jshj = 0.00;
 			String hsbz = "";//0不含税，1含税
@@ -70,7 +72,12 @@ public class DiscountDealUtil {
 			jshj = jyxxsq.getJshj();
 			hsbz = jyxxsq.getHsbz();
 			zkzje = getShePontsPrice(zkzje,jyxxsq);//判断是否需要做舍分处理
-			jymxsqClTmpList = dealDiscount(jymxsqTmpList,zkzje,jshj,hsbz);
+			if(jyxxsq.getQjzk()>0 && hsbz.equals("1")){ //若果全局折扣不为0，调用新的处理折扣方法
+				//jymxsqClTmpList = dealDiscount2(jymxsqList, jyxxsq.getQjzk() ,zkzje,hsbz);
+				jymxsqClTmpList = discount2UnitDealUtil.dealDiscount(jymxsqList, jyxxsq.getQjzk() ,zkzje);
+			}else{
+				jymxsqClTmpList = dealDiscount(jymxsqTmpList,zkzje,jshj,hsbz);
+			}
 			//判断是否需要做合并折扣行
 			Cszb cszb = cszbService.getSpbmbbh(jyxxsq.getGsdm(), jyxxsq.getXfid(), jyxxsq.getSkpid(), "sfhbzk");
 			if(null != cszb && !cszb.equals("")){
@@ -90,7 +97,7 @@ public class DiscountDealUtil {
 	}
 	
 	/**
-	 * 判断是否需要做舍分处理，将舍分金额预处理到各行明细中
+	 * 判断是否需要做舍分处理和全单折扣，将舍分金额预处理到各行明细中
 	 * @param zkzje 原折扣总金额
 	 * @param zkzje 处理后的折扣总金额
 	 */
@@ -98,7 +105,7 @@ public class DiscountDealUtil {
 		double clzkzje = 0.00;
 		Cszb cszb = cszbService.getSpbmbbh(jyxxsq.getGsdm(), jyxxsq.getXfid(), jyxxsq.getSkpid(), "sfsfcl");
 		if(null != cszb && !cszb.equals("")){
-		    if("是" == cszb.getCsz() || cszb.getCsz().equals("是")){
+		    if("是" == cszb.getCsz() || cszb.getCsz().equals("是")){ //舍分处理
 		    	 //BigDecimal b = new BigDecimal(jyxxsq.getJshj());
 				String strD = String.valueOf(jyxxsq.getJshj()*10);
 				String[] strArr = strD.split("\\.");
@@ -107,6 +114,8 @@ public class DiscountDealUtil {
 		    }else{
 		    	clzkzje = zkzje;
 		    }
+		}else if(jyxxsq ==null){ //全单折扣
+			clzkzje = zkzje;
 		}else{
 			clzkzje = zkzje;
 		}
@@ -273,7 +282,48 @@ public class DiscountDealUtil {
 		}
 		return jymxsqClList;
 	}
-    
+
+
+	/**
+	 * 处理申请明细信息，将其处理到t_jymxsq_cl表中
+	 * @param jymxsqList 原单笔交易申请明细
+	 * @param zkzje 交易支付明细的所有金额（价税合计）
+	 * @param hsbz 含税标志0不含税，1含税
+	 */
+	public List<JymxsqCl> dealDiscount2(List<Jymxsq> jymxsqList, double qjzk ,double zkzje,String hsbz) {
+		//处理折扣行最终结果list
+		List<JymxsqCl> jymxsqClList = new ArrayList<JymxsqCl>();
+		double dhzkhj = 0.00;
+		double zshhj =0.00; //正数行的合计金额
+		for(int i = 0 ;i<jymxsqList.size();i++){
+			Jymxsq jymxsq = jymxsqList.get(i);
+			if(jymxsq.getFphxz().equals("1")){
+				dhzkhj = dhzkhj + jymxsq.getJshj();
+			}
+			if(jymxsq.getFphxz().equals("2") || jymxsq.getFphxz().equals("0")){
+				zshhj = zshhj + jymxsq.getJshj();
+			}
+		}
+		for(int j = 0 ;j<jymxsqList.size();j++){
+			Jymxsq jymxsq2 = jymxsqList.get(j);
+			if(jymxsq2.getFphxz().equals("2") || jymxsq2.getFphxz().equals("0")){
+				JymxsqCl jymxsqCl = new JymxsqCl(jymxsq2);
+				jymxsqCl.setFphxz("2");
+				jymxsqClList.add(jymxsqCl);
+
+				JymxsqCl jymxsqClTmp = new JymxsqCl(jymxsq2);
+				jymxsqClTmp.setJshj(-(qjzk+zkzje-dhzkhj)*jymxsq2.getJshj()/zshhj);
+				jymxsqClTmp.setSpje(hsbz.equals("1")?jymxsqClTmp.getJshj():-jymxsqClTmp.getJshj()/(1+jymxsqClTmp.getSpsl()));
+				jymxsqClTmp.setSpse(hsbz.equals("1")?0d:(jymxsqClTmp.getJshj()-jymxsqClTmp.getSpje()));
+				jymxsqClTmp.setFphxz("1");
+				jymxsqClTmp.setSps(null);
+				jymxsqClTmp.setSpdj(null);
+				jymxsqClList.add(jymxsqClTmp);
+
+			}
+		}
+		return jymxsqClList;
+	}
 	
 	/**
 	 * 处理申请明细信息，将其处理到t_jymxsq_cl表中，每条折扣信息全部为乘折扣率算出。

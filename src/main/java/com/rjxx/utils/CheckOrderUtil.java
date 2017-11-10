@@ -382,6 +382,7 @@ public class CheckOrderUtil {
                 }
             }
             BigDecimal bd2 = new BigDecimal(jyxxsq.getJshj().toString());
+            BigDecimal qjzk = new BigDecimal(jyxxsq.getQjzk().toString());
             if (bd2.setScale(2, BigDecimal.ROUND_HALF_UP).subtract(jshj.setScale(2, BigDecimal.ROUND_HALF_UP)).doubleValue() != 0.0) {
                 result += "订单号为" + ddh + "的订单TotalAmount，Amount，TaxAmount计算校验不通过\r\n";
             }
@@ -403,13 +404,13 @@ public class CheckOrderUtil {
                         jshj2 = jshj2.add(zfje);
                     }
                 }
-                Cszb cszb = cszbservice.getSpbmbbh(gsdm, jymxsq.getXfid(), jyxxsq.getSkpid(), "sfsfcl");
-                if (null == cszb || cszb.getCsz().equals("否")) {
-                    //交易支付明细合计！=价税合计并且交易支付明细合计舍分！=价税合计
-                    if (jshj2.compareTo(bd2) !=0 && jshj2.setScale(1, BigDecimal.ROUND_DOWN).compareTo(bd2) !=0) {
+                /*Cszb cszb = cszbservice.getSpbmbbh(gsdm, jymxsq.getXfid(), jyxxsq.getSkpid(), "sfsfcl");
+                if (null == cszb || cszb.getCsz().equals("否")) {*/
+                    //交易支付明细合计！=价税合计合计舍分
+                    if (jshj2.compareTo(bd2.subtract(qjzk)) !=0 && bd2.subtract(qjzk).setScale(1, BigDecimal.ROUND_DOWN).compareTo(jshj2) !=0) {
                         result += "订单号为" + ddh + "的订单,商品单价合计与总金额不等;\r\n";
                     }
-                }
+                //}
 
                 params.put("zffsList", zffsdmList);
                 List<Zffs> zffsList = zffsService.findAllByParams(params);
