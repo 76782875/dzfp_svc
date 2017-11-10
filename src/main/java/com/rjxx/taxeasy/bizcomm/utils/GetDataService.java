@@ -2149,6 +2149,7 @@ public class GetDataService {
                                 }
                                 jymxsq.setSpsl(spvo.getSl());
                                 jymxsq.setSpdm(spvo.getSpbm());
+                                jymxsq.setSpse(0d);
                                 jymxsq.setYhzcbs(spvo.getYhzcbs());
                                 jymxsq.setLslbz(spvo.getLslbz());
                                 jymxsq.setYhzcmc(spvo.getYhzcmc());
@@ -2192,6 +2193,7 @@ public class GetDataService {
                                 }
                                 jymxsq2.setSpsl(spvo.getSl());
                                 jymxsq2.setSpdm(spvo.getSpbm());
+                                jymxsq2.setSpse(0d);
                                 jymxsq2.setYhzcbs(spvo.getYhzcbs());
                                 jymxsq2.setLslbz(spvo.getLslbz());
                                 jymxsq2.setYhzcmc(spvo.getYhzcmc());
@@ -2229,6 +2231,7 @@ public class GetDataService {
                                 }
                                 jymxsq1.setSpsl(spvo.getSl());
                                 jymxsq1.setSpdm(spvo.getSpbm());
+                                jymxsq1.setSpse(0d);
                                 jymxsq1.setYhzcbs(spvo.getYhzcbs());
                                 jymxsq1.setLslbz(spvo.getLslbz());
                                 jymxsq1.setYhzcmc(spvo.getYhzcmc());
