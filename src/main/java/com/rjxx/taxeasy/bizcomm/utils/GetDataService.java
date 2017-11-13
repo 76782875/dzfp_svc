@@ -1989,6 +1989,7 @@ public class GetDataService {
         List<Jyzfmx> jyzfmxList = new ArrayList<Jyzfmx>();//交易支付明细
         String nowdate ="";
         String storeno ="";
+        String zkjine = "";
         //传入数据
         JSONObject jsonObj = JSONObject.parseObject(data);
         String code = jsonObj.getString("code"); //code值为0 表示数据正常
@@ -2031,6 +2032,7 @@ public class GetDataService {
                     }
                     nowdate= nowDate;
                     storeno =storeNo;
+                    zkjine=afterDiscountTotal.toString();
                     //基本数据封装进交易信息申请
                     Jyxxsq jyxxsq = new Jyxxsq();
                     jyxxsq.setDdh(orderNo);//订单编号 对应小票流水号
@@ -2048,6 +2050,7 @@ public class GetDataService {
                         rsMap.put("jyzfmxList", jyzfmxList);
                         rsMap.put("nowdate",nowdate);
                         rsMap.put("storeno",storeno);
+                        rsMap.put("zkjine",zkjine);
                         rsMap.put("msg","开票信息有误，请联系商家");
                         return rsMap;
                     }
@@ -2062,6 +2065,7 @@ public class GetDataService {
                         rsMap.put("jyzfmxList", jyzfmxList);
                         rsMap.put("nowdate",nowdate);
                         rsMap.put("storeno",storeno);
+                        rsMap.put("zkjine",zkjine);
                         return rsMap;
                     }
                     jyxxsq.setXfid(xf.getId());//销方id
@@ -2154,6 +2158,7 @@ public class GetDataService {
                                     rsMap.put("jyzfmxList", jyzfmxList);
                                     rsMap.put("nowdate",nowdate);
                                     rsMap.put("storeno",storeno);
+                                    rsMap.put("zkjine",zkjine);
                                     return rsMap;
                                 }
                                 jymxsq.setSpsl(spvo.getSl());
@@ -2200,6 +2205,7 @@ public class GetDataService {
                                     rsMap.put("jyzfmxList", jyzfmxList);
                                     rsMap.put("nowdate",nowdate);
                                     rsMap.put("storeno",storeno);
+                                    rsMap.put("zkjine",zkjine);
                                     return rsMap;
                                 }
                                 jymxsq2.setSpsl(spvo.getSl());
@@ -2240,6 +2246,7 @@ public class GetDataService {
                                     rsMap.put("jyzfmxList", jyzfmxList);
                                     rsMap.put("nowdate",nowdate);
                                     rsMap.put("storeno",storeno);
+                                    rsMap.put("zkjine",zkjine);
                                     return rsMap;
                                 }
                                 jymxsq1.setSpsl(spvo.getSl());
@@ -2288,7 +2295,6 @@ public class GetDataService {
                             jyzfmxList.add(jyzfmx);
                         }
                     }
-                //}
             }else {
                 String msg ="获取数据为空，请稍后再试！";
                 rsMap.put("msg",msg);
@@ -2298,6 +2304,7 @@ public class GetDataService {
             rsMap.put("jyzfmxList", jyzfmxList);
             rsMap.put("nowdate",nowdate);
             rsMap.put("storeno",storeno);
+            rsMap.put("zkjine",zkjine);
             return rsMap;
         }else {
             String msg = jsonObj.getString("msg");
@@ -2308,6 +2315,7 @@ public class GetDataService {
                 rsMap.put("jyzfmxList", jyzfmxList);
                 rsMap.put("nowdate",nowdate);
                 rsMap.put("storeno",storeno);
+                rsMap.put("zkjine",zkjine);
             }else {
                 msg = "获取数据失败，请重试！";
                 rsMap.put("msg", msg);
@@ -2316,6 +2324,7 @@ public class GetDataService {
                 rsMap.put("jyzfmxList", jyzfmxList);
                 rsMap.put("nowdate",nowdate);
                 rsMap.put("storeno",storeno);
+                rsMap.put("zkjine",zkjine);
             }
         }
         return rsMap;
