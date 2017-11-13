@@ -1955,12 +1955,12 @@ public class GetDataService {
                 List<Jyxxsq> jyxxsqList = (List) parmsMap.get("jyxxsqList");
                 List<Jymxsq> jymxsqList = (List) parmsMap.get("jymxsqList");
                 List<Jyzfmx> jyzfmxList = (List) parmsMap.get("jyzfmxList");
-                if(null!=jyxxsqList &&!"".equals(jyxxsqList)&& null!=jymxsqList && !"".equals(jymxsqList)){
+                /*if(null!=jyxxsqList &&!"".equals(jyxxsqList)&& null!=jymxsqList && !"".equals(jymxsqList)){
                     String msgss = checkOrderUtil.checkOrders(jyxxsqList,jymxsqList,jyzfmxList,gsdm,"");
                     if(null!=msgss&& !"".equals(msgss)){
                         parmsMap.put("msg",msgss);
                     }
-                }
+                }*/
             logger.info("-----封装好的数据"+JSON.toJSON(parmsMap));
         }catch (Exception e){
             logger.info("msg=" + e.getMessage());
