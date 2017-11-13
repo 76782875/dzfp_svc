@@ -469,15 +469,6 @@ public class GetDataService {
                     jyxxsq.setKpr(xf.getKpr());
                     jyxxsq.setSkr(xf.getSkr());
                     jyxxsq.setFhr(xf.getFhr());
-                    //测试
-    //                jyxxsq.setKpddm("bqw_01");
-    //                jyxxsq.setXfmc(xf.getXfmc());
-    //                jyxxsq.setXfsh("500102010003643");
-    //                jyxxsq.setXfdz(xf.getXfdz());
-    //                jyxxsq.setXfdh(xf.getXfdh());
-    //                jyxxsq.setXfyh(xf.getXfyh());
-    //                jyxxsq.setXfyhzh(xf.getXfyhzh());
-
                     jyxxsq.setKpddm(ClientNO);
                     jyxxsq.setXfmc(Name);
                     jyxxsq.setXfsh(Identifier);
@@ -495,6 +486,7 @@ public class GetDataService {
                     jyxxsq.setGsdm(gsdm);
                     jyxxsq.setSjly("1");
                     jyxxsq.setClztdm("00");
+                    jyxxsq.setQjzk(0d);
                     jyxxsqList.add(jyxxsq);
                     //三级节点--待开票交易明细商品信息
                     Element OrderDetails = (Element) xn.selectSingleNode("OrderDetails");
@@ -1776,6 +1768,8 @@ public class GetDataService {
                     jyxxsq.setGsdm(gsdm);
                     jyxxsq.setSjly("1");
                     jyxxsq.setClztdm("00");
+                    //全局折扣
+                    jyxxsq.setQjzk(0d);
                     jyxxsqList.add(jyxxsq);
                     JSONArray salelist = jo.getJSONArray("salelist");
                     if (null != salelist && salelist.size() > 0) {
