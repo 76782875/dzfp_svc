@@ -1989,7 +1989,7 @@ public class GetDataService {
         List<Jyzfmx> jyzfmxList = new ArrayList<Jyzfmx>();//交易支付明细
         String nowdate ="";
         String storeno ="";
-        String zkjine = "";
+        Double zkjine = 0d;
         //传入数据
         JSONObject jsonObj = JSONObject.parseObject(data);
         String code = jsonObj.getString("code"); //code值为0 表示数据正常
@@ -2032,7 +2032,7 @@ public class GetDataService {
                     }
                     nowdate= nowDate;
                     storeno =storeNo;
-                    zkjine=afterDiscountTotal.toString();
+                    zkjine=afterDiscountTotal;
                     //基本数据封装进交易信息申请
                     Jyxxsq jyxxsq = new Jyxxsq();
                     jyxxsq.setDdh(orderNo);//订单编号 对应小票流水号
