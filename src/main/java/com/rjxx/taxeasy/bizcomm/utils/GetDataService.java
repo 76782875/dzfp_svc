@@ -1792,7 +1792,7 @@ public class GetDataService {
                                 //String spdm = goodsid.replaceAll("\r\n");
                                 jymxsq.setSpdm(goodsid);
                             }
-                            System.out.println("获取salelist成功,数据商品税务附码gooid" + goodsid);
+                            logger.info("获取salelist成功,数据商品税务附码gooid" + goodsid);
                             //获取     	商品名称
                             String goodsname = "";
                             if (null != saleData.getString("goodsname") && !saleData.getString("goodsname").equals("")) {
