@@ -289,7 +289,7 @@ public class CheckOrderUtil {
                     if (ProductCode == null) {
                         result += "订单号为" + ddh + "的订单,第"+ j+1 + "行的商品税收分类编码为空!\r\n";
                     } else if (ProductCode.length() != 19) {
-                        result += "订单号为" + ddh + "的订单,第"+ j+1 + "行,商品名称为"+ProductName+"的商品税收分类编码维护不正确，请联系商户!\r\n";
+                        result += "订单号为" + ddh + "的订单,商品名称为:"+ProductName+"（gooid ："+ProductCode+"）的商品税收分类编码维护不正确，请联系商户!\r\n";
                     }
                     // 发票行性质
                     String RowType = (String) jymxsq.getFphxz();
@@ -383,6 +383,9 @@ public class CheckOrderUtil {
                 }
             }
             BigDecimal bd2 = new BigDecimal(jyxxsq.getJshj().toString());
+            if(jyxxsq.getQjzk()==null){
+                jyxxsq.setQjzk(0d);
+            }
             BigDecimal qjzk = new BigDecimal(jyxxsq.getQjzk().toString());
             if (bd2.setScale(2, BigDecimal.ROUND_HALF_UP).subtract(jshj.setScale(2, BigDecimal.ROUND_HALF_UP)).doubleValue() != 0.0) {
                 result += "订单号为" + ddh + "的订单TotalAmount，Amount，TaxAmount计算校验不通过\r\n";
