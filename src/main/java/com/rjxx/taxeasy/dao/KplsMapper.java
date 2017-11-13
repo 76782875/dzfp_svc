@@ -155,5 +155,7 @@ public interface KplsMapper {
     List<Kpls> findKplsBySerialOrder(Map params);
     //重新生成PDF
     List<Fpcxvo> findPdf(Pagination pagination);
+
+    List<Kpls> findFphc(Map parms);
 }
 

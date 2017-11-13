@@ -323,5 +323,9 @@ public class KplsService {
     public List<Kpls> findKplsBySerialOrder(Map params) {
         return kplsMapper.findKplsBySerialOrder(params);
     }
+
+    public List<Kpls> findFphc(Map parms) {
+        return kplsMapper.findFphc(parms);
+    }
 }
 

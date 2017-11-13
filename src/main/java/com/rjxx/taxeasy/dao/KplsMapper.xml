@@ -1312,7 +1312,18 @@
             and djh = #{djh}
         </if>
     </select>
-
+    <select id="findFphc" parameterType="map" resultType="kpls">
+        SELECT
+        *
+        FROM
+        t_kpls
+        WHERE
+        gsdm = 'cmsc'
+        AND lrsj &lt; date '20171113'
+        AND fpczlxdm = '11'
+        AND fpztdm = '00'
+        AND jshj &gt; 0
+    </select>
     <select id="findAll" parameterType="map" resultType="kpls">
         select * from t_kpls where yxbz = '1' and pdfurl is not null
         <if test="djh != null and djh != ''">
