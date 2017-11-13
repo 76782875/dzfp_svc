@@ -2110,11 +2110,11 @@ public class GetDataService {
                                 name = goodsna.replaceAll("\n", "");
                             }
                             BigDecimal quantity = null;//数量
-                            if (null != saleData.getBigDecimal("quantity") && !saleData.getBigDecimal("quantity").equals("")) {
+                            if (null != saleData.getBigDecimal("quantity") && saleData.getBigDecimal("quantity").compareTo(BigDecimal.ZERO)!=0) {
                                 quantity = saleData.getBigDecimal("quantity");
                             }
                             BigDecimal unitPrice = null;//单价
-                            if (null != saleData.getBigDecimal("unitPrice") && !saleData.getBigDecimal("unitPrice").equals("")) {
+                            if (null != saleData.getBigDecimal("unitPrice") && saleData.getBigDecimal("unitPrice").compareTo(BigDecimal.ZERO)!=0) {
                                 unitPrice = saleData.getBigDecimal("unitPrice");
                             }
                             BigDecimal priceDiscounts = null;
