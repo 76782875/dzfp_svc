@@ -1987,6 +1987,7 @@ public class GetDataService {
         List<Jyxxsq> jyxxsqList = new ArrayList();//交易信息申请
         List<Jymxsq> jymxsqList = new ArrayList();//交易明细申请
         List<Jyzfmx> jyzfmxList = new ArrayList<Jyzfmx>();//交易支付明细
+        String nowdate ="";
         //传入数据
         JSONObject jsonObj = JSONObject.parseObject(data);
         String code = jsonObj.getString("code"); //code值为0 表示数据正常
@@ -2023,6 +2024,11 @@ public class GetDataService {
                     if (null != jo.getString("remark") && !jo.getString("remark").equals("")) {
                         remark = jo.getString("remark").toString();
                     }
+                    String nowDate = null;
+                    if (null != jo.getString("nowDate") && !jo.getString("nowDate").equals("")) {
+                        nowDate = jo.getString("nowDate").toString();
+                    }
+                    nowdate= nowDate;
                     //基本数据封装进交易信息申请
                     Jyxxsq jyxxsq = new Jyxxsq();
                     jyxxsq.setDdh(orderNo);//订单编号 对应小票流水号
@@ -2038,6 +2044,7 @@ public class GetDataService {
                         rsMap.put("jyxxsqList", jyxxsqList);
                         rsMap.put("jymxsqList", jymxsqList);
                         rsMap.put("jyzfmxList", jyzfmxList);
+                        rsMap.put("nowdate",nowdate);
                         rsMap.put("msg","开票信息有误，请联系商家");
                         return rsMap;
                     }
@@ -2050,6 +2057,7 @@ public class GetDataService {
                         rsMap.put("jyxxsqList", jyxxsqList);
                         rsMap.put("jymxsqList", jymxsqList);
                         rsMap.put("jyzfmxList", jyzfmxList);
+                        rsMap.put("nowdate",nowdate);
                         return rsMap;
                     }
                     jyxxsq.setXfid(xf.getId());//销方id
@@ -2140,6 +2148,7 @@ public class GetDataService {
                                     rsMap.put("jyxxsqList", jyxxsqList);
                                     rsMap.put("jymxsqList", jymxsqList);
                                     rsMap.put("jyzfmxList", jyzfmxList);
+                                    rsMap.put("nowdate",nowdate);
                                     return rsMap;
                                 }
                                 jymxsq.setSpsl(spvo.getSl());
@@ -2184,6 +2193,7 @@ public class GetDataService {
                                     rsMap.put("jyxxsqList", jyxxsqList);
                                     rsMap.put("jymxsqList", jymxsqList);
                                     rsMap.put("jyzfmxList", jyzfmxList);
+                                    rsMap.put("nowdate",nowdate);
                                     return rsMap;
                                 }
                                 jymxsq2.setSpsl(spvo.getSl());
@@ -2222,6 +2232,7 @@ public class GetDataService {
                                     rsMap.put("jyxxsqList", jyxxsqList);
                                     rsMap.put("jymxsqList", jymxsqList);
                                     rsMap.put("jyzfmxList", jyzfmxList);
+                                    rsMap.put("nowdate",nowdate);
                                     return rsMap;
                                 }
                                 jymxsq1.setSpsl(spvo.getSl());
@@ -2278,6 +2289,7 @@ public class GetDataService {
             rsMap.put("jyxxsqList", jyxxsqList);
             rsMap.put("jymxsqList", jymxsqList);
             rsMap.put("jyzfmxList", jyzfmxList);
+            rsMap.put("nowdate",nowdate);
             return rsMap;
         }else {
             String msg = jsonObj.getString("msg");
@@ -2286,12 +2298,14 @@ public class GetDataService {
                 rsMap.put("jyxxsqList", jyxxsqList);
                 rsMap.put("jymxsqList", jymxsqList);
                 rsMap.put("jyzfmxList", jyzfmxList);
+                rsMap.put("nowdate",nowdate);
             }else {
                 msg = "获取数据失败，请重试！";
                 rsMap.put("msg", msg);
                 rsMap.put("jyxxsqList", jyxxsqList);
                 rsMap.put("jymxsqList", jymxsqList);
                 rsMap.put("jyzfmxList", jyzfmxList);
+                rsMap.put("nowdate",nowdate);
             }
         }
         return rsMap;
