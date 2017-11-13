@@ -1952,15 +1952,15 @@ public class GetDataService {
             //解析返回数据
             parmsMap=interpretForGVC(gsdm,response,orderNo);
             String msg = (String) parmsMap.get("msg");
-            if(msg==null) {
                 List<Jyxxsq> jyxxsqList = (List) parmsMap.get("jyxxsqList");
                 List<Jymxsq> jymxsqList = (List) parmsMap.get("jymxsqList");
                 List<Jyzfmx> jyzfmxList = (List) parmsMap.get("jyzfmxList");
-                /*String error = checkOrderUtil.checkOrders(jyxxsqList,jymxsqList,jyzfmxList,gsdm,"");
-                if(null!=error && !"".equals(error)){
-                    parmsMap.put("msg",error);
-                }*/
-            }
+                if(null!=jyxxsqList &&!"".equals(jyxxsqList)&& null!=jymxsqList && !"".equals(jymxsqList)){
+                    String msgss = checkOrderUtil.checkOrders(jyxxsqList,jymxsqList,jyzfmxList,gsdm,"");
+                    if(null!=msgss&& !"".equals(msgss)){
+                        parmsMap.put("msg",msgss);
+                    }
+                }
             logger.info("-----封装好的数据"+JSON.toJSON(parmsMap));
         }catch (Exception e){
             logger.info("msg=" + e.getMessage());
