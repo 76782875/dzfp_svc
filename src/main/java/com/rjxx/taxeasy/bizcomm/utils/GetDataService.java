@@ -1147,6 +1147,7 @@ public class GetDataService {
                 jyxxsq.setGsdm(gsdm);
                 jyxxsq.setSjly("1");
                 jyxxsq.setClztdm("00");
+                jyxxsq.setQjzk(0d);
                 jyxxsqList.add(jyxxsq);
                 Element OrderDetails = (Element) xn.selectSingleNode("OrderDetails");
                 List<Element> orderDetailsList = (List<Element>) OrderDetails.elements("ProductItem");
