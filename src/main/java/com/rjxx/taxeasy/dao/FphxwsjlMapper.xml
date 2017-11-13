@@ -12,9 +12,15 @@
     </select>
 
     <select id="findAllByParams" parameterType="map" resultType="fphxwsjl">
-        select * from t_fphxwsjl where yxbz = '1'
-        <if test="orderBy != null">
-            order by ${orderBy}
+        select * from t_fphxwsjl where
+        <if test="gsdm != null">
+           gsdm= #{gsdm}
+        </if>
+        <if test="returnCode != null">
+         and   returnCode= #{returnCode}
+        </if>
+        <if test="rqq != null and rqq !='' and rqz != null and rqz !=''">
+            and startDate between str_to_date(#{rqq},'%Y-%m-%d') and str_to_date(#{rqz},'%Y-%m-%d')
         </if>
     </select>
 

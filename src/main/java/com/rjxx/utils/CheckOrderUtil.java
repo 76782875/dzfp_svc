@@ -277,18 +277,19 @@ public class CheckOrderUtil {
                     } else {
                         result += "明细数据订单号不能为空;";
                     }
-                    String ProductCode = (String) jymxsq.getSpdm();
-                    if (ProductCode == null) {
-                        result += "订单号为" + ddh + "的订单,第"+ j+1 + "行的商品税收分类编码为空!\r\n";
-                    } else if (ProductCode.length() != 19) {
-                        result += "订单号为" + ddh + "的订单,第"+ j+1 + "行的商品税收分类编码维护不正确，请联系商户!\r\n;";
-                    }
                     // 商品名称
                     String ProductName = (String) jymxsq.getSpmc();
                     if (ProductName == null) {
                         result += "订单号为" + ddh + "的订单，第"+ j+1 + "行的商品名称为空！\r\n";
                     } else if (ProductName.length() > 50) {
                         result += "订单号为" + ddh + "的订单，第"+ j+1 + "行的商品名称维护不正确，请联系商户！\r\n";
+                    }
+                    //商品税收分类编码
+                    String ProductCode = (String) jymxsq.getSpdm();
+                    if (ProductCode == null) {
+                        result += "订单号为" + ddh + "的订单,第"+ j+1 + "行的商品税收分类编码为空!\r\n";
+                    } else if (ProductCode.length() != 19) {
+                        result += "订单号为" + ddh + "的订单,第"+ j+1 + "行,商品名称为"+ProductName+"的商品税收分类编码维护不正确，请联系商户!\r\n;";
                     }
                     // 发票行性质
                     String RowType = (String) jymxsq.getFphxz();
@@ -382,6 +383,7 @@ public class CheckOrderUtil {
                 }
             }
             BigDecimal bd2 = new BigDecimal(jyxxsq.getJshj().toString());
+            BigDecimal qjzk = new BigDecimal(jyxxsq.getQjzk().toString());
             if (bd2.setScale(2, BigDecimal.ROUND_HALF_UP).subtract(jshj.setScale(2, BigDecimal.ROUND_HALF_UP)).doubleValue() != 0.0) {
                 result += "订单号为" + ddh + "的订单TotalAmount，Amount，TaxAmount计算校验不通过\r\n";
             }
@@ -403,13 +405,13 @@ public class CheckOrderUtil {
                         jshj2 = jshj2.add(zfje);
                     }
                 }
-                Cszb cszb = cszbservice.getSpbmbbh(gsdm, jymxsq.getXfid(), jyxxsq.getSkpid(), "sfsfcl");
-                if (null == cszb || cszb.getCsz().equals("否")) {
-                    //交易支付明细合计！=价税合计并且交易支付明细合计舍分！=价税合计
-                    if (jshj2.compareTo(bd2) !=0 && jshj2.setScale(1, BigDecimal.ROUND_DOWN).compareTo(bd2) !=0) {
+                /*Cszb cszb = cszbservice.getSpbmbbh(gsdm, jymxsq.getXfid(), jyxxsq.getSkpid(), "sfsfcl");
+                if (null == cszb || cszb.getCsz().equals("否")) {*/
+                    //交易支付明细合计！=价税合计合计舍分
+                    if (jshj2.compareTo(bd2.subtract(qjzk)) !=0 && bd2.subtract(qjzk).setScale(1, BigDecimal.ROUND_DOWN).compareTo(jshj2) !=0) {
                         result += "订单号为" + ddh + "的订单,商品单价合计与总金额不等;\r\n";
                     }
-                }
+                //}
 
                 params.put("zffsList", zffsdmList);
                 List<Zffs> zffsList = zffsService.findAllByParams(params);

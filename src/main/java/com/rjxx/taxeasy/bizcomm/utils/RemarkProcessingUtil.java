@@ -42,7 +42,7 @@ public class RemarkProcessingUtil {
 						for (int t = 0; t < zffsVoList.size(); t++) {
 							ZffsVo zffsVo = zffsVoList.get(t);
 							ZffsVo zffsVo2 = new ZffsVo();//避免传入有相同的zffsdm
-							if (zffsVo.getZffsDm().equals(jyzfmx.getZffsDm())) {
+							if (null !=zffsVo.getBzclfsDm() && !zffsVo.getBzclfsDm().equals("") && zffsVo.getZffsDm().equals(jyzfmx.getZffsDm())) {
 								zffsVo2.setZffsDm(zffsVo.getZffsDm());
 								zffsVo2.setZfje(String.valueOf(jyzfmx.getZfje()));
 								zffsVo2.setZffsMc(zffsVo.getZffsMc());
