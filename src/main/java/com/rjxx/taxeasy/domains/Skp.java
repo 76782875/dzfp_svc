@@ -1,5 +1,6 @@
 package com.rjxx.taxeasy.domains;
 
+import java.sql.Time;
 import java.util.Date;
 import javax.persistence.*;
 import com.rjxx.comm.json.JsonDatetimeFormat;
@@ -190,6 +191,28 @@ public class Skp implements Serializable {
 
 	@Column(name = "wrzs")
 	protected String wrzs;
+
+	@Column(name = "kpqssj")
+	protected Time kpqssj;
+
+	@Column(name = "kpjssj")
+	protected Time kpjssj;
+
+	public Time getKpqssj() {
+		return kpqssj;
+	}
+
+	public void setKpqssj(Time kpqssj) {
+		this.kpqssj = kpqssj;
+	}
+
+	public Time getKpjssj() {
+		return kpjssj;
+	}
+
+	public void setKpjssj(Time kpjssj) {
+		this.kpjssj = kpjssj;
+	}
 
 	public String getSkph() {
 		return skph;
