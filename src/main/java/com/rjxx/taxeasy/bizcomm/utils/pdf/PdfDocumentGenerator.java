@@ -354,11 +354,11 @@ public class PdfDocumentGenerator {
             in_request.setSkr(skr);
             in_request.setFhr(fhr);
             // in_request.setRemark(ir.getRemark());
-            in_request.setXfdz(xfdz);
-            in_request.setXfyh(xfyh);
-            in_request.setXfyhzh(xfyhzh);
+            in_request.setXfdz(xfdz==null?"":xfdz);
+            in_request.setXfyh(xfyh==null?"":xfyh);
+            in_request.setXfyhzh(xfyhzh==null?"":xfyhzh);
             in_request.setXfmc(kpls.getXfmc());
-            in_request.setXfdh(xfdh);
+            in_request.setXfdh(xfdh==null?"":xfdh);
 
             //处理购方销方字体大小
             in_request.setGfmcSize(getGfxxXfxxFontSize(in_request.getGfmc()));
@@ -574,10 +574,11 @@ public class PdfDocumentGenerator {
 
             map.put("outputFile", serverUrl + outputFile_AbsolutePath);
             map.put("signData", signData);
+            return true;
         }catch (Exception e){
             logger.error("生成pdf出现异常：" + kpls.getKplsh(), e);
+            return false;
         }
-        return true;
     }
     public static void main(String[] args) throws Exception {
         DecimalFormat df = new DecimalFormat("######0.000000");

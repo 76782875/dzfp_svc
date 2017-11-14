@@ -237,52 +237,6 @@ public class WeixinUtils {
         return auth_url;
     }
 
-    public static void main(String[] args) {
-        //Map msp = new HashMap();
-       // WeixinUtils weixinUtils = new WeixinUtils();
-        //System.out.println(""+in);
-        //解析xml
-           /* String data="<?xml version=\"1.0\" encoding=\"utf-8\"?>"
-                + "<xml>"
-                + "<ToUserName>1111</ToUserName>"
-                + "<FromUserName></FromUserName>"
-                + "<CreateTime>1475134700</CreateTime>"
-                + "<MsgType>event</MsgType>"
-                + "<Event>user_authorize_invoice</Event>"
-                + "<SuccOrderId>1231453222001122</SuccOrderId>"
-                + "<FailOrderId></FailOrderId>"
-                + "<AppId>wx9abc729e2b4637ee</AppId>"
-                + "<Source>web</Source>"
-                + "</xml>";
-        Document xmlDoc = null;
-        try {
-            xmlDoc = DocumentHelper.parseText(data);
-            Element rootElt = xmlDoc.getRootElement();
-            System.out.println("根节点：" + rootElt.getName());
-            List<Element> childElements = rootElt.elements();
-            String SuccOrderIdValue = "";
-            String FailOrderIdValue = "";
-            for (Element e:childElements){
-                    if(e.getName().equals("SuccOrderId")&&null!=e.getName()){
-                        SuccOrderIdValue = e.getText();
-                        System.out.println("成功的订单id"+SuccOrderIdValue);
-                    }
-                    if(e.getName().equals("FailOrderId")&&null!=e.getName()){
-                        FailOrderIdValue=e.getText();
-                        System.out.println("失败的订单id"+FailOrderIdValue);
-                    }
-            }
-            if(""!=SuccOrderIdValue&&null!=SuccOrderIdValue){
-                System.out.println("拿到成功的订单id了");
-            }
-            if(""!=FailOrderIdValue&&null!=FailOrderIdValue){
-                System.out.println("拿到失败的订单id了");
-            }
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }*/
-    }
 
     /**
      * 主动查询order_id授权状态
@@ -445,7 +399,7 @@ public class WeixinUtils {
         biz_field.put("show_bank_type", 1);
         biz_field.put("show_bank_no", 1);
         biz_field.put("require_tax_no", 1);
-        biz_field.put("require_addr", 1);
+        biz_field.put("require_addr", 0);
         biz_field.put("custom_field", custom_field2);
         biz_field.put("is_require", 1);
 

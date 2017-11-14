@@ -1952,15 +1952,15 @@ public class GetDataService {
             //解析返回数据
             parmsMap=interpretForGVC(gsdm,response,orderNo);
             String msg = (String) parmsMap.get("msg");
-            if(msg==null) {
                 List<Jyxxsq> jyxxsqList = (List) parmsMap.get("jyxxsqList");
                 List<Jymxsq> jymxsqList = (List) parmsMap.get("jymxsqList");
                 List<Jyzfmx> jyzfmxList = (List) parmsMap.get("jyzfmxList");
-                /*String error = checkOrderUtil.checkOrders(jyxxsqList,jymxsqList,jyzfmxList,gsdm,"");
-                if(null!=error && !"".equals(error)){
-                    parmsMap.put("msg",error);
+                /*if(null!=jyxxsqList &&!"".equals(jyxxsqList)&& null!=jymxsqList && !"".equals(jymxsqList)){
+                    String msgss = checkOrderUtil.checkOrders(jyxxsqList,jymxsqList,jyzfmxList,gsdm,"");
+                    if(null!=msgss&& !"".equals(msgss)){
+                        parmsMap.put("msg",msgss);
+                    }
                 }*/
-            }
             logger.info("-----封装好的数据"+JSON.toJSON(parmsMap));
         }catch (Exception e){
             logger.info("msg=" + e.getMessage());
@@ -1987,6 +1987,11 @@ public class GetDataService {
         List<Jyxxsq> jyxxsqList = new ArrayList();//交易信息申请
         List<Jymxsq> jymxsqList = new ArrayList();//交易明细申请
         List<Jyzfmx> jyzfmxList = new ArrayList<Jyzfmx>();//交易支付明细
+        String nowdate ="";
+        String storeno ="";
+        Double zkjine = 0d;
+        String kpqssj="";
+        String kpjssj="";
         //传入数据
         JSONObject jsonObj = JSONObject.parseObject(data);
         String code = jsonObj.getString("code"); //code值为0 表示数据正常
@@ -2023,23 +2028,41 @@ public class GetDataService {
                     if (null != jo.getString("remark") && !jo.getString("remark").equals("")) {
                         remark = jo.getString("remark").toString();
                     }
+                    String nowDate = null;
+                    if (null != jo.getString("nowDate") && !jo.getString("nowDate").equals("")) {
+                        nowDate = jo.getString("nowDate").toString();
+                    }
+                    nowdate= nowDate;
+                    storeno =storeNo;
+                    zkjine=afterDiscountTotal;
                     //基本数据封装进交易信息申请
                     Jyxxsq jyxxsq = new Jyxxsq();
                     jyxxsq.setDdh(orderNo);//订单编号 对应小票流水号
                     jyxxsq.setTqm(orderNo);// 提取码  对应购物小票流水号
                     jyxxsq.setJylsh("JY" + new SimpleDateFormat("yyyyMMddHHmmssSS").format(new Date()));//交易流水号
+//                    jyxxsq.setKpddm(storeNo);
                     jyxxsq.setKpddm("gvc_01");
-                    //根据公司代码、开票点代码查询税控盘
-                    Map skpmap = new HashMap();
+                //根据公司代码、开票点代码查询税控盘
+                Map skpmap = new HashMap();
                     skpmap.put("gsdm", gsdm);
+//                    skpmap.put("kpddm", storeNo);
                     skpmap.put("kpddm", "gvc_01");
                     Skp skpdata = skpService.findOneByParams(skpmap);
                     if(skpdata==null){
                         rsMap.put("jyxxsqList", jyxxsqList);
                         rsMap.put("jymxsqList", jymxsqList);
                         rsMap.put("jyzfmxList", jyzfmxList);
+                        rsMap.put("nowdate",nowdate);
+                        rsMap.put("storeno",storeno);
+                        rsMap.put("zkjine",zkjine);
                         rsMap.put("msg","开票信息有误，请联系商家");
                         return rsMap;
+                    }
+                    if(skpdata.getKpqssj()!=null){
+                        kpqssj =skpdata.getKpqssj().toString();
+                    }
+                    if(skpdata.getKpjssj()!=null){
+                        kpjssj =skpdata.getKpjssj().toString();
                     }
                     //根据销方id  查询
                     Xf x = new Xf();
@@ -2050,6 +2073,11 @@ public class GetDataService {
                         rsMap.put("jyxxsqList", jyxxsqList);
                         rsMap.put("jymxsqList", jymxsqList);
                         rsMap.put("jyzfmxList", jyzfmxList);
+                        rsMap.put("nowdate",nowdate);
+                        rsMap.put("storeno",storeno);
+                        rsMap.put("zkjine",zkjine);
+                        rsMap.put("kpqssj",kpqssj);
+                        rsMap.put("kpjssj",kpjssj);
                         return rsMap;
                     }
                     jyxxsq.setXfid(xf.getId());//销方id
@@ -2094,11 +2122,11 @@ public class GetDataService {
                                 name = goodsna.replaceAll("\n", "");
                             }
                             BigDecimal quantity = null;//数量
-                            if (null != saleData.getBigDecimal("quantity") && !saleData.getBigDecimal("quantity").equals("")) {
+                            if (null != saleData.getBigDecimal("quantity") && saleData.getBigDecimal("quantity").compareTo(BigDecimal.ZERO)!=0) {
                                 quantity = saleData.getBigDecimal("quantity");
                             }
                             BigDecimal unitPrice = null;//单价
-                            if (null != saleData.getBigDecimal("unitPrice") && !saleData.getBigDecimal("unitPrice").equals("")) {
+                            if (null != saleData.getBigDecimal("unitPrice") && saleData.getBigDecimal("unitPrice").compareTo(BigDecimal.ZERO)!=0) {
                                 unitPrice = saleData.getBigDecimal("unitPrice");
                             }
                             BigDecimal priceDiscounts = null;
@@ -2140,6 +2168,11 @@ public class GetDataService {
                                     rsMap.put("jyxxsqList", jyxxsqList);
                                     rsMap.put("jymxsqList", jymxsqList);
                                     rsMap.put("jyzfmxList", jyzfmxList);
+                                    rsMap.put("nowdate",nowdate);
+                                    rsMap.put("storeno",storeno);
+                                    rsMap.put("zkjine",zkjine);
+                                    rsMap.put("kpqssj",kpqssj);
+                                    rsMap.put("kpjssj",kpjssj);
                                     return rsMap;
                                 }
                                 jymxsq.setSpsl(spvo.getSl());
@@ -2184,6 +2217,11 @@ public class GetDataService {
                                     rsMap.put("jyxxsqList", jyxxsqList);
                                     rsMap.put("jymxsqList", jymxsqList);
                                     rsMap.put("jyzfmxList", jyzfmxList);
+                                    rsMap.put("nowdate",nowdate);
+                                    rsMap.put("storeno",storeno);
+                                    rsMap.put("zkjine",zkjine);
+                                    rsMap.put("kpqssj",kpqssj);
+                                    rsMap.put("kpjssj",kpjssj);
                                     return rsMap;
                                 }
                                 jymxsq2.setSpsl(spvo.getSl());
@@ -2222,6 +2260,11 @@ public class GetDataService {
                                     rsMap.put("jyxxsqList", jyxxsqList);
                                     rsMap.put("jymxsqList", jymxsqList);
                                     rsMap.put("jyzfmxList", jyzfmxList);
+                                    rsMap.put("nowdate",nowdate);
+                                    rsMap.put("storeno",storeno);
+                                    rsMap.put("zkjine",zkjine);
+                                    rsMap.put("kpqssj",kpqssj);
+                                    rsMap.put("kpjssj",kpjssj);
                                     return rsMap;
                                 }
                                 jymxsq1.setSpsl(spvo.getSl());
@@ -2270,7 +2313,6 @@ public class GetDataService {
                             jyzfmxList.add(jyzfmx);
                         }
                     }
-                //}
             }else {
                 String msg ="获取数据为空，请稍后再试！";
                 rsMap.put("msg",msg);
@@ -2278,6 +2320,11 @@ public class GetDataService {
             rsMap.put("jyxxsqList", jyxxsqList);
             rsMap.put("jymxsqList", jymxsqList);
             rsMap.put("jyzfmxList", jyzfmxList);
+            rsMap.put("nowdate",nowdate);
+            rsMap.put("storeno",storeno);
+            rsMap.put("zkjine",zkjine);
+            rsMap.put("kpqssj",kpqssj);
+            rsMap.put("kpjssj",kpjssj);
             return rsMap;
         }else {
             String msg = jsonObj.getString("msg");
@@ -2286,12 +2333,22 @@ public class GetDataService {
                 rsMap.put("jyxxsqList", jyxxsqList);
                 rsMap.put("jymxsqList", jymxsqList);
                 rsMap.put("jyzfmxList", jyzfmxList);
+                rsMap.put("nowdate",nowdate);
+                rsMap.put("storeno",storeno);
+                rsMap.put("zkjine",zkjine);
+                rsMap.put("kpqssj",kpqssj);
+                rsMap.put("kpjssj",kpjssj);
             }else {
                 msg = "获取数据失败，请重试！";
                 rsMap.put("msg", msg);
                 rsMap.put("jyxxsqList", jyxxsqList);
                 rsMap.put("jymxsqList", jymxsqList);
                 rsMap.put("jyzfmxList", jyzfmxList);
+                rsMap.put("nowdate",nowdate);
+                rsMap.put("storeno",storeno);
+                rsMap.put("zkjine",zkjine);
+                rsMap.put("kpqssj",kpqssj);
+                rsMap.put("kpjssj",kpjssj);
             }
         }
         return rsMap;

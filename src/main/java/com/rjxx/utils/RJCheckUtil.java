@@ -3,6 +3,7 @@ package com.rjxx.utils;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -207,7 +208,7 @@ public class RJCheckUtil {
             e.printStackTrace();
         }
         StringBuilder haveSign=getSb(map, args);
-        haveSign.append("si=" + sign);
+        haveSign.append("si=" + sign.toLowerCase());
         byte[] bytes = Base64.encodeBase64(haveSign.toString().getBytes());
         return new String(bytes);
     }
@@ -240,21 +241,24 @@ public class RJCheckUtil {
      * 以下所有方法为白盒测试时候使用，不涉及业务
      */
         //生成Q
-//    public static void main(String[] args) {
-//        //一茶一坐
-////       String key = "3f7626939b146cc47c31daf43edc42bd";
-//        String key="42709f25722653a5d7b5b8dde426f494";
-//        //德克士
-////        String key = "dbd4ae1c59837510b70411e20f3a84f9";
-//        Map map = new HashMap();
-//        map.put("A0", String.valueOf(System.currentTimeMillis()));
-//        map.put("A1", new SimpleDateFormat("yyyyMMddHHmmss").format(new java.util.Date()));
-//        map.put("A2", "0.11,0.12");
-//        map.put("A3", "shn");
-//        map.put("A4", "1,1");
-//        String result = getQForAll(key, map,"on","ot","pr","sn","sp");
-//        System.out.println(result);
-//    }
+    public static void main(String[] args) {
+        //一茶一坐
+//       String key = "3f7626939b146cc47c31daf43edc42bd";
+        String key="3a0fcda27307672fe09033b2690f32b3";
+        //德克士
+//        String key = "dbd4ae1c59837510b70411e20f3a84f9";
+        Map map = new HashMap();
+        //map.put("A0","201511082001755");
+        //map.put("A1","20161110093916");
+        map.put("A0","201511082001751");
+        map.put("A1","20161110093916");
+        map.put("A2", "1.1");
+        map.put("A3", "2001");
+       // map.put("A4", "1,1");
+        String result = getQForAll(key, map,"on","ot","pr","sn");
+        //String result = getQForAll(key, map,"on");
+        System.out.println(result);
+    }
 
     //测试验签
 //    public static void main(String[] args) {
@@ -276,10 +280,10 @@ public class RJCheckUtil {
 //        System.out.println(result);
 //    }
 
-    public static void main(String[] args) {
-        String key = "93ffcaa146a08087a8f9ee73a15fcfa0";
-        String data = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><Request><Order><OrderNo>ubm004</OrderNo><TotalAmount>1000</TotalAmount><ExtractedCode>ubm0041000</ExtractedCode></Order></Request>";
-        System.out.println(decodeXml(key, data, "123"));
-    }
+//    public static void main(String[] args) {
+//        String key = "93ffcaa146a08087a8f9ee73a15fcfa0";
+//        String data = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><Request><Order><OrderNo>ubm004</OrderNo><TotalAmount>1000</TotalAmount><ExtractedCode>ubm0041000</ExtractedCode></Order></Request>";
+//        System.out.println(decodeXml(key, data, "123"));
+//    }
 
 }
