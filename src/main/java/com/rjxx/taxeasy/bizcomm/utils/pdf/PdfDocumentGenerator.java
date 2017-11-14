@@ -574,10 +574,11 @@ public class PdfDocumentGenerator {
 
             map.put("outputFile", serverUrl + outputFile_AbsolutePath);
             map.put("signData", signData);
+            return true;
         }catch (Exception e){
             logger.error("生成pdf出现异常：" + kpls.getKplsh(), e);
+            return false;
         }
-        return true;
     }
     public static void main(String[] args) throws Exception {
         DecimalFormat df = new DecimalFormat("######0.000000");

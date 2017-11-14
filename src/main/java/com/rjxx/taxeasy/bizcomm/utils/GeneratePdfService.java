@@ -302,8 +302,8 @@ public class GeneratePdfService {
             dc.updateFlag(jyls, "92");
             dc.saveLog(djh, "21", "1", "PdfDocumentGenerator：GeneratPDF", "生成pdf失败,服务异常",
                     1, jyls.getXfsh(), jyls.getJylsh());
-            dc.updateKplsFpzt(kpls, "开具成功，但生成pdf失败,服务异常", "05");
-            logger.info("------2、生成pdf出现异常：-------" + kplsh, e);
+            dc.updateKplsFpzt(kpls, "开具成功,部分服务异常", "05");
+            logger.info("------2、开具成功,部分服务出现异常：-------" + kplsh, e);
             throw new RuntimeException(e);
         }
     }
@@ -833,8 +833,8 @@ public class GeneratePdfService {
             InvoiceItems2 invoiceItems=new InvoiceItems2();
             List<InvoiceItem2> invoiceItemList=new ArrayList<>();
             boolean f=true;
-            for(int i=0;i<kplsList.size();i++){
-                Kpls kpls2=kplsList.get(i);
+           // for(int i=0;i<kplsList.size();i++){
+                Kpls kpls2=kpls;
                 if(kpls2.getFpztdm().equals("00")||kpls2.getFpztdm().equals("05")){
                     InvoiceItem2 invoiceItem=new InvoiceItem2();
                     if(kpls2.getFpztdm().equals("00")){
@@ -856,12 +856,12 @@ public class GeneratePdfService {
                     invoiceItemList.add(invoiceItem);
                 }else{
                     f=false;
-                    break;
+                   // break;
                 }
-            }
-            if(invoiceItemList.size()!=kplsList.size()){
+           // }
+            /*if(invoiceItemList.size()!=kplsList.size()){
                 f=false;
-            }
+            }*/
             invoiceItems.setCount(invoiceItemList.size());
             invoiceItems.setInvoiceItem(invoiceItemList);
             returnData.setInvoiceItems(invoiceItems);
