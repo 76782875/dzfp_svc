@@ -72,7 +72,7 @@ public class DiscountDealUtil {
 			jshj = jyxxsq.getJshj();
 			hsbz = jyxxsq.getHsbz();
 			zkzje = getShePontsPrice(zkzje,jyxxsq);//判断是否需要做舍分处理
-			if(jyxxsq.getQjzk()>0 && hsbz.equals("1")){ //若果全局折扣不为0，调用新的处理折扣方法
+			if((null !=jyxxsq.getQjzk() && !jyxxsq.getQjzk().equals("") && jyxxsq.getQjzk()>0) && hsbz.equals("1")){ //若果全局折扣不为0，调用新的处理折扣方法
 				//jymxsqClTmpList = dealDiscount2(jymxsqList, jyxxsq.getQjzk() ,zkzje,hsbz);
 				jymxsqClTmpList = discount2UnitDealUtil.dealDiscount(jymxsqList, jyxxsq.getQjzk() ,zkzje);
 			}else{
