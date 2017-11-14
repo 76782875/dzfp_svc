@@ -469,6 +469,10 @@ public class PdfDocumentGenerator {
                         fpPdfMxInfo.setSl("免税");
                         fpPdfMxInfo.setSe("***");
                         freeDutyFlag = true;
+                    }else if("1".equals(t_kpspmx.getYhzcbs()) && "2".equals(t_kpspmx.getLslbz()) && "不征税".equals(t_kpspmx.getYhzcmc())){
+                        fpPdfMxInfo.setSl("不征税");
+                        fpPdfMxInfo.setSe("***");
+                        freeDutyFlag = true;
                     }
                     //处理商品名称字体大小
                     fpPdfMxInfo.setSpmcSize(getSpmcFontSize(fpPdfMxInfo.getSpmc()));

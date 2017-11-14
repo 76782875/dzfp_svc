@@ -86,44 +86,20 @@ public class FpclService {
         List<Jyspmx> list = jymxService.findAllByParams(jyspmx);
         //保存开票流水
         Kpls kpls = saveKp(jyls1, list, dybz);
-        //jyls1.setClztdm("02");
         jyls1.setClztdm("40");
         jylsService.save(jyls1);
-        skService.callService(kpls.getKplsh());
+        Cszb cszb = cszbService.getSpbmbbh(kpls.getGsdm(), kpls.getXfid(), kpls.getSkpid(), "kpfs");
+        if(cszb != null && cszb.getCsz().equals("01")){
+            skService.callService(kpls.getKplsh());
+        }
+        if(cszb != null && cszb.getCsz().equals("03")){
+            if(!kpls.getFpzldm().equals("12")){
+                skService.callService(kpls.getKplsh());
+            }else{
+                skService.SkServerKP(kpls.getKplsh());
+            }
+        }
         return true;
-/*		Jyls jyls1 = jylsService.findOne(djh);
-        Jyspmx jyspmx = new Jyspmx();
-		jyspmx.setDjh(djh);
-		List<Jyspmx> list = jymxService.findAllByParams(jyspmx);
-		//保存开票流水
-  		//jyls1.setClztdm("02");
- 		if (csz==1) {
- 			Kpls kpls = saveKp(jyls1, list, dybz,"14");
- 			jyls1.setClztdm("40");
- 	 		jylsService.save(jyls1);
- 			InvoiceResponse response = skService.callService(kpls.getKplsh());
- 			return response;
-		}else{
-			Kpls kpls = saveKp(jyls1, list, dybz,"04");
- 			jyls1.setClztdm("40");
- 	 		jylsService.save(jyls1);
-		}
- 		return new InvoiceResponse();*/
-/*
-        if ("0000".equals(response.getReturnCode())) {
-		}else{
-			kpls.setFpztdm("04");
-			Map<String, Object> params = new HashMap<>();
-			params.put("kplsh", kpls.getKplsh());
-			List<Kpspmx> list2 = kpspmxService.findMxNewList(params);
-			kpspmxService.deleteAll(list2);
-			kplsService.delete(kpls);
-			jyls1.setClztdm("00");
-	 		jylsService.save(jyls1);
-			dc.saveLog(djh, "92", "1", "", "调用开票接口失败"+response.getReturnMessage(), 2, jyls1.getXfsh(), jyls1.getJylsh());
-			return response;
-		}
-         response.setReturnCode("0000");*/
     }
 
     //全部开票

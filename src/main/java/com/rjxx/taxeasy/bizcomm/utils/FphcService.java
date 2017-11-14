@@ -323,7 +323,7 @@ public class FphcService {
 					skService.callService(kpls2.getKplsh());
 				}
 				if(cszb != null && cszb.getCsz().equals("03")){
-					if(kpls2.getGsdm().equals("Family")&&kpls2.getFpzldm().equals("02")){
+					if(!kpls2.getFpzldm().equals("12")){
 						skService.callService(kpls2.getKplsh());
 					}else{
 						skService.SkServerKP(kpls2.getKplsh());
