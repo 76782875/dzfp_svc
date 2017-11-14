@@ -449,7 +449,7 @@ public class InvoiceSplitUtils {
 
 						BigDecimal cfje = sub(spje, ccje).setScale(2, BigDecimal.ROUND_HALF_UP);// 拆分金额
 						
-						BigDecimal cfbl = div(spje, cfje).setScale(2, BigDecimal.ROUND_HALF_UP);// 拆分比例
+						BigDecimal cfbl = div(spje, cfje);// 拆分比例
 						/**
 						 * 按商品整数来分票
 						 */
@@ -542,13 +542,22 @@ public class InvoiceSplitUtils {
 								if(null == jyspmx.getSps() || jyspmx.getSps().equals("")||(!jyspmx.getSps().equals("")&&jyspmx.getSps().doubleValue() ==0)){
 									
 								}else{
-									cfsm = (null==cfsm?BigDecimal.ZERO:cfsm);
-									cfjyspmxtmp.setSps(sub(jyspmx.getSps(),cfsm).setScale(6, BigDecimal.ROUND_HALF_UP));
-									cfjyspmxtmp.setSpdj(div(cfjyspmxtmp.getSpje(),cfjyspmxtmp.getSps()).setScale(15, BigDecimal.ROUND_HALF_UP));
+									if(cfjyspmxtmp.getSpje().doubleValue()>0d){
+										cfsm = (null==cfsm?BigDecimal.ZERO:cfsm);
+										cfjyspmxtmp.setSps(sub(jyspmx.getSps(),cfsm).setScale(6, BigDecimal.ROUND_HALF_UP));
+										cfjyspmxtmp.setSpdj(div(cfjyspmxtmp.getSpje(),cfjyspmxtmp.getSps()).setScale(15, BigDecimal.ROUND_HALF_UP));
+									}
 								}
 								
 							}
-							cfjyspmxtmp = reSeparatePrice(cfjyspmxtmp);//剩余下一条再做价税分离
+							//如果分票刚刚好分完最后一条数据，则剩余list清除
+							if(cfjyspmxtmp.getSpje().doubleValue()<=0d){
+								jyspmxsResult.remove(j);
+								continue;
+							}else{
+								cfjyspmxtmp = reSeparatePrice(cfjyspmxtmp);//剩余下一条再做价税分离
+							}
+
 						}
 					}
 				}
