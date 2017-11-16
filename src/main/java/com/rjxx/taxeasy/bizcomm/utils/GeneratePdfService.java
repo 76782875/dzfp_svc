@@ -165,6 +165,18 @@ public class GeneratePdfService {
                         Map returnMap = this.httpPost(returnmessage, kpls);
                         logger.info("返回报文" + JSON.toJSONString(returnMap));
                     }
+                    if(kpls.getGsdm().equals("fwk")){
+                        returnmessage = this.CreateReturnMessage3(kpls.getKplsh());
+                        logger.info("回写报文" + returnmessage);
+                        if (returnmessage != null && !"".equals(returnmessage)) {
+                            String ss= HttpUtils.netWebService(url,"CallBack",returnmessage,gsxx.getAppKey(),gsxx.getSecretKey());
+                            String fwkReturnMessageStr=fwkReturnMessage(kpls);
+                            logger.info("----------sap回写报文----------" + fwkReturnMessageStr);
+                            String Data= HttpUtils.doPostSoap1_2("https://my337109.sapbydesign.com/sap/bc/srt/scs/sap/yyb40eysay_managegoldentaxinvo?sap-vhost=my337109.sapbydesign.com", fwkReturnMessageStr, null,"wendy","Welcome9");
+                            logger.info("----------fwk平台回写返回报文--------" + ss);
+                            logger.info("----------sap回写返回报文----------" + Data);
+                        }
+                    }
                 }
                 //发送email
                 if ("1".equals(jyls.getSffsyj()) && jyls.getGfemail() != null && !"".equals(jyls.getGfemail())) {
@@ -329,7 +341,33 @@ public class GeneratePdfService {
         System.out.println(s);
 
     }
-
+    public String   fwkReturnMessage(Kpls kpls) {
+        SimpleDateFormat sim = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        String result="Succeed";
+        if(kpls.getFpczlxdm().equals("12")){
+            result="CancelSucceed";
+        }
+        String ss="\n" +
+                "<soap:Envelope xmlns:soap=\"http://www.w3.org/2003/05/soap-envelope\" xmlns:glob=\"http://sap.com/xi/SAPGlobal20/Global\">\n" +
+                "   <soap:Header/>\n" +
+                "   <soap:Body>\n" +
+                "      <glob:GoldenTaxGoldenTaxCreateRequest_sync>\n" +
+                "         <BasicMessageHeader></BasicMessageHeader>\n" +
+                "         <GoldenTax>\n" +
+                "            <CutInvID>"+kpls.getJylsh()+"</CutInvID>\n" +
+                "            <GoldenTaxID>"+kpls.getFphm()+"</GoldenTaxID>\n" +
+                "            <GoldenTaxDate>\n" +
+                "               <StartDateTime>"+sim.format(kpls.getKprq())+"</StartDateTime>\n" +
+                "               <EndDateTime>"+sim.format(kpls.getKprq())+"</EndDateTime>\n" +
+                "            </GoldenTaxDate>\n" +
+                "            <GoldenTaxResult>"+result+"</GoldenTaxResult>\n" +
+                "            <GoldenTaxCode>"+kpls.getFpdm()+"</GoldenTaxCode>\n" +
+                "         </GoldenTax>\n" +
+                "      </glob:GoldenTaxGoldenTaxCreateRequest_sync>\n" +
+                "   </soap:Body>\n" +
+                "</soap:Envelope>";
+        return ss;
+    }
     public String CreateReturnMessage(Integer kplsh) {
 
         String Message="";

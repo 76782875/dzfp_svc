@@ -14,4 +14,6 @@ public class QCCConstants {
     public static final String GET_QCC_GSXX = "http://i.yjapi.com/ECICreditCode/GetCreditCode";
     //企查查 获取纳税人识别号(包含账户信息)
     public static final String GET_QCC_GSXX_NEW = "http://i.yjapi.com/ECICreditCode/GetCreditCodeNew";
+    //企查查 企业关键字模糊查询
+    public static final String GET_QCC_SEARCH = "http://i.yjapi.com/ECIV4/Search";
 }
