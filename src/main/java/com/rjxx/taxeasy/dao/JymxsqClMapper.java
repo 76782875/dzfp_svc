@@ -30,5 +30,8 @@ public interface JymxsqClMapper {
     public List<JymxsqCl> findBySqlshList(List<Integer> sqlshList);
 
     public void addJymxsqClBatch(List<JymxsqCl> jymxsqCls);
+
+    public List<JymxsqCl> findAllByParams2(Map params);
+
 }
 
