@@ -21,15 +21,15 @@
     </select>
 
       <select id="findAllByParams" parameterType="map" resultType="jymxsq">
-        select * from t_jymxsq where 1=1 and yxbz = '1'
+        select * from t_jymxsq_cl where 1=1 and yxbz = '1'
         <if test="sqlsh != null and sqlsh !=''">
            and  sqlsh = #{sqlsh}
         </if>
-        order by spmxxh asc
+        order by spmxxh asc,fphxz desc
     </select>
 
     <select id="findByPage" parameterType="pagination" resultType="jymxsq">
-        select * from t_jymxsq where 1=1
+        select * from t_jymxsq_cl where 1=1
         <if test="params.sqlsh != null">
           and   sqlsh = #{params.sqlsh}
         </if>
