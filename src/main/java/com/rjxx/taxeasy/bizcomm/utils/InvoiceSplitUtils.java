@@ -274,6 +274,10 @@ public class InvoiceSplitUtils {
 						BigDecimal cfzje = cfje ;// 分配后剩下的金额（明细）
 
 						BigDecimal cfzse = mul(cfzje,jyspmx.getSpsl()).setScale(2, BigDecimal.ROUND_HALF_UP);
+
+						BigDecimal syspje =BigDecimal.ZERO;
+						BigDecimal syjshj =BigDecimal.ZERO;
+
 						for (int j = 0; j < zkAndbzkList.size(); j++) {
 
 							JyspmxDecimal2 cfjyspmxtmp = zkAndbzkList.get(j);
@@ -368,12 +372,12 @@ public class InvoiceSplitUtils {
 
 							if(j==zkAndbzkList.size()-1){
 								cfje = cfzje;
-								cfse = cfzse;
+								cfse = mul(cfje,spsl).setScale(2, BigDecimal.ROUND_HALF_UP);
 							}else{
 								cfzje = sub(cfzje,cfje).setScale(2, BigDecimal.ROUND_HALF_UP);
 								//cfse = div(spse, cfbl,2);// 拆分税额
 								//存在误差，改用je*sl
-								cfzse = sub(cfzse,cfse).setScale(2, BigDecimal.ROUND_HALF_UP);
+								//cfzse = mul(cfzje,spsl).setScale(2, BigDecimal.ROUND_HALF_UP);
 							}
 
 							// ccjyspmx = jyspmx;//超出金额对象
@@ -405,8 +409,8 @@ public class InvoiceSplitUtils {
 							cfjyspmx.setKce(jyspmx.getKce());
 							cfjyspmx.setLslbz(jyspmx.getLslbz());
 							splitKpspmxs.add(cfjyspmx);
-							spje = sub(spje,cfje);//拆分出来的商品金额
-							spjshj = sub(spjshj,cfjshj);//拆分出来的价税合计
+							//spje = sub(spje,cfje);//拆分出来的商品金额
+							//spjshj = sub(spjshj,cfjshj);//拆分出来的价税合计
 							cfjyspmxtmp.setSpje(sub(cfjyspmxtmp.getSpje(),cfje).setScale(2, BigDecimal.ROUND_HALF_UP));
 							if (null != spdj && !"".equals(spdj) && null != spsm && !"".equals(spsm) && s_fphxz.equals("2")) {
 							   cfsm = (null==cfsm?BigDecimal.ZERO:cfsm);
@@ -415,16 +419,20 @@ public class InvoiceSplitUtils {
 							}
 							cfjyspmxtmp.setSpse(sub(cfjyspmxtmp.getSpse(),cfse).setScale(2, BigDecimal.ROUND_HALF_UP));
 							cfjyspmxtmp.setJshj(sub(cfjyspmxtmp.getJshj(),cfjshj).setScale(2, BigDecimal.ROUND_HALF_UP));
-							//cfjyspmxtmp = reSeparatePrice(cfjyspmxtmp);//剩余下一条再做价税分离（20171120折扣行重新价税分离造成金额变化）
+							cfjyspmxtmp = reSeparatePrice(cfjyspmxtmp);//剩余下一条再做价税分离（20171120折扣行重新价税分离造成金额变化）
+
+							syspje = add(syspje,cfjyspmxtmp.getSpje()).setScale(2, BigDecimal.ROUND_HALF_UP);
+							syjshj= add(syjshj,cfjyspmxtmp.getJshj()).setScale(2, BigDecimal.ROUND_HALF_UP);
+
 						}
 
 						//jyspmxsResult.remove(jyspmx);
 						for(int j=0;j<jyspmxsResult.size();j++){
 							JyspmxDecimal2 cfjyspmxtmp = jyspmxsResult.get(j);
 							if(cfjyspmxtmp.getSpmxxh()==jyspmx.getSpmxxh() && cfjyspmxtmp.getsqlsh()==jyspmx.getsqlsh()){
-								cfjyspmxtmp.setSpje(spje.setScale(2, BigDecimal.ROUND_HALF_UP));
-								cfjyspmxtmp.setJshj(spjshj.setScale(2, BigDecimal.ROUND_HALF_UP));
-								cfjyspmxtmp.setSpse(sub(spjshj,spje).setScale(2, BigDecimal.ROUND_HALF_UP));					
+								cfjyspmxtmp.setSpje(syspje.setScale(2, BigDecimal.ROUND_HALF_UP));
+								cfjyspmxtmp.setJshj(syjshj.setScale(2, BigDecimal.ROUND_HALF_UP));
+								cfjyspmxtmp.setSpse(sub(syjshj,syspje).setScale(2, BigDecimal.ROUND_HALF_UP));
 								if(null == jyspmx.getSps() || jyspmx.getSps().equals("")||(null != jyspmx.getSps() && !jyspmx.getSps().equals("")&&jyspmx.getSps().doubleValue() ==0) ||jyspmx.getFphxz().equals("1")){
 									
 								}else{
