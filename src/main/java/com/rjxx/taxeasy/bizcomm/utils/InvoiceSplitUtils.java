@@ -165,7 +165,7 @@ public class InvoiceSplitUtils {
 	 *            分票金额
 	 * @param mxsl
 	 *            明细数量
-	 * @param sfqz
+	 * @param qzfp
 	 *            是否强制分票
 	 * @param spzsfp
 	 *            是否按着商品整数分票
@@ -270,7 +270,10 @@ public class InvoiceSplitUtils {
 															// 当前行商品拆分出留在当前发票金额
 						BigDecimal cfbl = div(spje, cfje);// 拆分比例
 						BigDecimal cfsm = BigDecimal.ZERO;
-						
+
+						BigDecimal cfzje = cfje ;// 分配后剩下的金额（明细）
+
+						BigDecimal cfzse = mul(cfzje,jyspmx.getSpsl()).setScale(2, BigDecimal.ROUND_HALF_UP);
 						for (int j = 0; j < zkAndbzkList.size(); j++) {
 
 							JyspmxDecimal2 cfjyspmxtmp = zkAndbzkList.get(j);
@@ -301,11 +304,10 @@ public class InvoiceSplitUtils {
 							spsm = cfjyspmxtmp.getSps();// 原商品数量
 
 							cfsm = div(spsm, cfbl);// 拆分数量,保留6位解决误差
+
 							cfje = div(cfjyspmxtmp.getSpje(), cfbl,2);// 拆分金额
-							
-							//cfse = div(spse, cfbl,2);// 拆分税额
-							//存在误差，改用je*sl
 							cfse = mul(cfje,spsl).setScale(2, BigDecimal.ROUND_HALF_UP);
+
 							cfjshj = add(cfje, cfse).setScale(2, BigDecimal.ROUND_HALF_UP);
 							//cfjshj = div(cfjyspmxtmp.getJshj(),cfbl,2);
 							//cfse = sub(cfjshj,cfje).setScale(2, BigDecimal.ROUND_HALF_UP);
@@ -364,6 +366,16 @@ public class InvoiceSplitUtils {
 								//ccje = add(ccje,sub(cfjyspmxtmp.getSpje(),cfje));
 							}
 
+							if(j==zkAndbzkList.size()-1){
+								cfje = cfzje;
+								cfse = cfzse;
+							}else{
+								cfzje = sub(cfzje,cfje).setScale(2, BigDecimal.ROUND_HALF_UP);
+								//cfse = div(spse, cfbl,2);// 拆分税额
+								//存在误差，改用je*sl
+								cfzse = sub(cfzse,cfse).setScale(2, BigDecimal.ROUND_HALF_UP);
+							}
+
 							// ccjyspmx = jyspmx;//超出金额对象
 							cfjyspmx.setFphxz(s_fphxz);
 							cfjyspmx.setSqlsh(sqlsh);
@@ -403,7 +415,7 @@ public class InvoiceSplitUtils {
 							}
 							cfjyspmxtmp.setSpse(sub(cfjyspmxtmp.getSpse(),cfse).setScale(2, BigDecimal.ROUND_HALF_UP));
 							cfjyspmxtmp.setJshj(sub(cfjyspmxtmp.getJshj(),cfjshj).setScale(2, BigDecimal.ROUND_HALF_UP));
-							cfjyspmxtmp = reSeparatePrice(cfjyspmxtmp);//剩余下一条再做价税分离
+							//cfjyspmxtmp = reSeparatePrice(cfjyspmxtmp);//剩余下一条再做价税分离（20171120折扣行重新价税分离造成金额变化）
 						}
 
 						//jyspmxsResult.remove(jyspmx);
@@ -599,7 +611,7 @@ public class InvoiceSplitUtils {
 	 *            分票金额
 	 * @param mxsl
 	 *            明细数量
-	 * @param sfqz
+	 * @param qzfp
 	 *            是否强制分票
 	 * @param spzsfp
 	 *            是否按着商品整数分票
@@ -1515,7 +1527,7 @@ public class InvoiceSplitUtils {
 	/**
 	 * 再次根据行上的价税合计处理金额和税额。
 	 *
-	 * @param jyspmxs
+	 * @param jyspmx
 	 *  
 	 * @return jyspmxs
 	 */
