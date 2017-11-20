@@ -8,6 +8,9 @@
         <if test="gsdm != null">
             and gsdm = #{gsdm}
         </if>
+        <if test="ppdm != null">
+            and ppdm = #{ppdm}
+        </if>
         <if test="orderBy != null">
             order by ${orderBy}
         </if>
