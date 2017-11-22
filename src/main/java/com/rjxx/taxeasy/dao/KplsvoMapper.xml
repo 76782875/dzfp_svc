@@ -157,25 +157,43 @@ and fphm is not null) t
     </select>
     
     <select id="findYypl" parameterType="map" resultType="cxtjvo">
-           select count(*) fpsl,t.kpny from 
-       (select substring(kprq,1,7) kpny,fpzldm from t_kpls
-       where yxbz='1' and fpztdm='00' and fphm is not null
-       and kprq is not null
-       <if test="gsdm !=null">
-          and gsdm = #{gsdm}
-       </if>
-       <if test="xfid !=null">
-          and xfid = #{xfid}
-       </if>
-       <if test="skpid !=null and skpid !=''">
-          and skpid = #{skpid}
-       </if>
-       
-        ) t where 1=1
+        SELECT
+        count(1) fpsl,sum(a.jshj) jshj,
+        case when substring(a.kprq, 1, 7) is null then '0000-00' ELSE substring(a.kprq, 1, 7) end kpny,
+        case when a.fpzldm is null then '00' else a.fpzldm end fpzldm,
+        t.fpzlmc
+        FROM
+        t_kpls a,t_fpzl t
+        WHERE
+        a.yxbz = '1'
+        AND a.fpztdm = '00'
+        and a.fpzldm = t.fpzldm
+        AND a.fphm IS NOT NULL
+        <if test="gsdm !=null">
+            and a.gsdm = #{gsdm}
+        </if>
+        <if test="xfid !=null">
+            and a.xfid = #{xfid}
+        </if>
+        <if test="skpid !=null and skpid !=''">
+            and a.skpid = #{skpid}
+        </if>
         <if test="kprqq !=null and kprqq !='' and kprqz !=null and kprqz !=''">
-            and t.kpny &gt;=#{kprqq} and t.kpny  &lt;= #{kprqz}
-         </if>
-        group by t.kpny
+            AND a.kprq >= STR_TO_DATE(
+            concat(#{kprqq}, '-01'),
+            "%Y-%m-%d"
+            )
+            AND a.kprq &lt; date_add(
+            STR_TO_DATE(
+            concat(#{kprqz}, '-01'),
+            "%Y-%m-%d"
+            ),
+            INTERVAL 1 MONTH
+            )
+        </if>
+        GROUP BY
+        substring(a.kprq, 1, 7),a.fpzldm
+        WITH ROLLUP
     </select>
     
     <select id="findYtql" parameterType="map" resultType="cxtjvo">
