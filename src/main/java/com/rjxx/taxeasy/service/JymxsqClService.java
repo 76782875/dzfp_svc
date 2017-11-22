@@ -67,5 +67,10 @@ public class JymxsqClService {
     public void addJymxsqClBatch(List<JymxsqCl> jymxsqCls){
     	jymxsqClMapper.addJymxsqClBatch(jymxsqCls);
     }
+
+    public List<JymxsqCl> findAllByParams2(Map params) {
+        return jymxsqClMapper.findAllByParams2(params);
+    }
+
 }
 

@@ -223,11 +223,11 @@ public class PdfDocumentGenerator {
         }
         try {
             int dataLength = spmc.getBytes("gbk").length;
-            if (dataLength <= 32) {
+            if (dataLength <= 26) {
                 return 9;
-            } else if (dataLength > 32 && dataLength <= 36) {
+            } else if (dataLength > 26 && dataLength <= 30) {
                 return 8;
-            } else if (dataLength > 36 && dataLength <= 42) {
+            } else if (dataLength > 30 && dataLength <= 36) {
                 return 7;
             } else {
                 return 6;

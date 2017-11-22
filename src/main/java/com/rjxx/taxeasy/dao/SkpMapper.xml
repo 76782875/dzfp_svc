@@ -108,6 +108,9 @@
 		<if test="gsdm != null and gsdm != ''">
 			and gsdm = #{gsdm}
 		</if>
+		<if test="pid != null and pid != ''">
+			and pid = #{pid}
+		</if>
 	</select>
 	<select id="findBySql" parameterType="skp" resultType="skp">
 		select * from t_skp where yxbz = '1'
