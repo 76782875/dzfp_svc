@@ -1090,7 +1090,12 @@ public class FpclService {
                     kpls.setKpddm(jyxxsq.getKpddm());
                     kplsService.save(kpls);
                     saveKpspmx(kpls, list2);
-                    skService.callService(kpls.getKplsh());
+                    if(kpls.getFpzldm().equals("12")){
+                         kpls.setFpztdm("04");
+                         kplsService.save(kpls);
+                    }else{
+                         skService.callService(kpls.getKplsh());
+                    }
                     result.add(kpls.getSerialorder());
                 } else if (kpfs.equals("02")) {//组件
                     //保存开票流水
