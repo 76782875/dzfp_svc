@@ -33,7 +33,11 @@ public interface JyxxsqMapper {
     public List<JyxxsqVO> findByPage(Pagination pagination);
     
     public List<Jyxxsq> findByPage1(Pagination pagination);
-    
+
+    public List<JyxxsqVO> findByPage2(Map params);
+
+    public Integer findtotal(Map params);
+
     public Xf findXfExistByKpd(Map params);
 
     public void saveJyxxsq(Jyxxsq jyxxsq);

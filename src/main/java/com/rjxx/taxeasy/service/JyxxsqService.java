@@ -114,7 +114,17 @@ public class JyxxsqService {
     public void updateGfxx(Map params){
     	jyxxsqMapper.updateGfxx(params);
 	}
-    /**
+
+	public List<JyxxsqVO> findByPage2(Map params) {
+		return jyxxsqMapper.findByPage2(params);
+	}
+
+	public Integer findtotal(Map params) {
+		return jyxxsqMapper.findtotal(params);
+	}
+
+
+	/**
 	 * 删除交易流水，包括明细
 	 *
 	 * @param sqlshList
