@@ -410,7 +410,7 @@ public class GeneratePdfService {
                 "         <GoldenTax>\n" +
                 "            <CutInvID>"+kpls.getJylsh()+"</CutInvID>\n" +
                 "            <GoldenTaxID>"+kpls.getFphm()+"</GoldenTaxID>\n" +
-                "            <GoldenTaxDate>"+sim.format(kpls.getKprq())+"</GoldenTaxDate>"+
+                "            <GoldenTaxDate>"+sim.format(kpls.getKprq())+"</GoldenTaxDate>\n"+
                 "            <GoldenTaxResult>"+result+"</GoldenTaxResult>\n" +
                 "            <GoldenTaxCode>"+kpls.getFpdm()+"</GoldenTaxCode>\n" +
                 "         </GoldenTax>\n" +
