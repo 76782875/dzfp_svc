@@ -150,55 +150,122 @@
 		LIMIT 1
 	</select>
 
-    <select id="findBykplscxPage" parameterType="pagination" resultType="jyxxsqVO">
-       select a.*,b.clztmc AS clztmc,c.fpczlxmc as fpczlxmc,d.fpzlmc as fpzlmc  from  (((`t_jyxxsq` `a` join `t_clzt` `b`) join `t_fpczlx` `c`) join `t_fpzl` `d`) where ((`a`.`clztdm` = `b`.`clztdm`) and (`a`.`fpczlxdm` = `c`.`fpczlxdm`) and (`a`.`fpzldm` = `d`.`fpzldm`))
-         and  a.yxbz='1' 
-         
-        <if test="params.gsdm !=null and params.gsdm !=''">
-			and a.gsdm = #{params.gsdm}
-		</if> 
-         <if test="params.xfsh != null and params.xfsh != ''" >
-            and xfsh = #{params.xfsh}
-        </if>
-        <if test="params.xfs !=null">
-			<foreach collection="params.xfs" open=" and (a.xfid in ("
-				separator="," close=")" item="item" index="index">
-				#{params.xfs[${index}].id}
+    <select id="findBykplscxPage" parameterType="map" resultType="jyxxsqVO">
+		SELECT
+		a.sqlsh,a.jylsh,a.ddh,a.jshj,a.gfmc,a.ddrq,d.fpzlmc,a.tqm,a.sjly,a.ztbz
+		FROM
+		t_jyxxsq a
+		JOIN (
+		SELECT
+		t.sqlsh
+		FROM
+		t_jyxxsq t
+		WHERE
+		t.yxbz = '1'
+		<if test="gsdm !=null and gsdm !=''">
+			and t.gsdm = #{gsdm}
+		</if>
+		<if test="xfs !=null">
+			<foreach collection="xfs" open=" and (t.xfid in ("
+					 separator="," close=")" item="item" index="index">
+				#{xfs[${index}].id}
 			</foreach>
-			or a.xfid is null)
+			or t.xfid is null)
 		</if>
-		<if test="params.skps !=null">
-			<foreach collection="params.skps" open=" and (a.skpid in ("
-				separator="," close=")" item="item" index="index">
-				#{params.skps[${index}].id}
+		<if test="skps !=null">
+			<foreach collection="skps" open=" and (t.skpid in ("
+					 separator="," close=")" item="item" index="index">
+				#{skps[${index}].id}
 			</foreach>
-			or a.skpid is null)
+			or t.skpid is null)
 		</if>
-		<if test="params.ddh !=null and params.ddh !=''">
-			and a.ddh like concat('%',#{params.ddh},'%')
+		<if test="ddh !=null and ddh !=''">
+			and t.ddh = #{ddh}
 		</if>
-        <if test="params.fpzldm !=null and params.fpzldm !=''" >
-			and a.fpzldm= #{params.fpzldm}
+		<if test="fpzldm !=null and fpzldm !=''" >
+			and t.fpzldm= #{fpzldm}
 		</if>
-		<if test="params.xfsh !=null and params.xfsh !=''" >
-			and a.xfsh = #{params.xfsh}
+		<if test="xfsh !=null and xfsh !=''" >
+			and t.xfsh = #{xfsh}
 		</if>
-		<if test="params.jylsh !=null and params.jylsh !=''">
-			and a.jylsh = #{params.jylsh}
+		<if test="jylsh !=null and jylsh !=''">
+			and t.jylsh = #{jylsh}
 		</if>
-		
-		<if test="params.gfmc !=null and params.gfmc !=''">
-			and a.gfmc like concat('%',#{params.gfmc},'%')
+
+		<if test="gfmc !=null and gfmc !=''">
+			and t.gfmc like concat('%',#{gfmc},'%')
 		</if>
-		<if test="params.rqq !=null and params.rqq != ''">
-			and a.ddrq &gt;= #{params.rqq}
+		<if test="rqq !=null and rqq != ''">
+			and t.ddrq &gt;= #{rqq}
 		</if>
-		<if test="params.rqz !=null and params.rqz != ''">
-			and a.ddrq &lt;
-			date_add(str_to_date(#{params.rqz},'%Y-%m-%d'),INTERVAL 1 day)
+		<if test="rqz !=null and rqz != ''">
+			and t.ddrq &lt;
+			date_add(str_to_date(#{rqz},'%Y-%m-%d'),INTERVAL 1 day)
 		</if>
-		order by a.ddrq desc
+		ORDER BY t.sqlsh desc
+		LIMIT #{start},#{length}) b ON a.sqlsh = b.sqlsh
+		LEFT JOIN t_fpzl d on a.fpzldm = d.fpzldm
+		-- LEFT JOIN t_fpczlx e on a.fpczlxdm = e.fpczlxdm
+		-- LEFT JOIN t_clzt c on a.clztdm = c.clztdm;
     </select>
+
+	<select id="findBykplscxtotal" parameterType="map" resultType="int">
+		SELECT
+		count(a.sqlsh)
+		FROM
+		t_jyxxsq a
+		JOIN (
+		SELECT
+		t.sqlsh
+		FROM
+		t_jyxxsq t
+		WHERE
+		t.yxbz = '1'
+		<if test="gsdm !=null and gsdm !=''">
+			and t.gsdm = #{gsdm}
+		</if>
+		<if test="xfs !=null">
+			<foreach collection="xfs" open=" and (t.xfid in ("
+					 separator="," close=")" item="item" index="index">
+				#{xfs[${index}].id}
+			</foreach>
+			or t.xfid is null)
+		</if>
+		<if test="skps !=null">
+			<foreach collection="skps" open=" and (t.skpid in ("
+					 separator="," close=")" item="item" index="index">
+				#{skps[${index}].id}
+			</foreach>
+			or t.skpid is null)
+		</if>
+		<if test="ddh !=null and ddh !=''">
+			and t.ddh = #{ddh}
+		</if>
+		<if test="fpzldm !=null and fpzldm !=''" >
+			and t.fpzldm= #{fpzldm}
+		</if>
+		<if test="xfsh !=null and xfsh !=''" >
+			and t.xfsh = #{xfsh}
+		</if>
+		<if test="jylsh !=null and jylsh !=''">
+			and t.jylsh = #{jylsh}
+		</if>
+
+		<if test="gfmc !=null and gfmc !=''">
+			and t.gfmc like concat('%',#{gfmc},'%')
+		</if>
+		<if test="rqq !=null and rqq != ''">
+			and t.ddrq &gt;= #{rqq}
+		</if>
+		<if test="rqz !=null and rqz != ''">
+			and t.ddrq &lt;
+			date_add(str_to_date(#{rqz},'%Y-%m-%d'),INTERVAL 1 day)
+		</if>
+		ORDER BY t.sqlsh desc) b ON a.sqlsh = b.sqlsh
+		LEFT JOIN t_fpzl d on a.fpzldm = d.fpzldm
+		-- LEFT JOIN t_fpczlx e on a.fpczlxdm = e.fpczlxdm
+		-- LEFT JOIN t_clzt c on a.clztdm = c.clztdm;
+	</select>
     
 	<select id="findByPage" parameterType="pagination" resultType="jyxxsqVO">
 		select DISTINCT a.* from t_jyxxsq a , t_jymxsq b WHERE a.sqlsh=b.sqlsh

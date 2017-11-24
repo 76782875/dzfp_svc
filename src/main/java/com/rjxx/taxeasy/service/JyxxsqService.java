@@ -304,9 +304,13 @@ public class JyxxsqService {
 		return mx;
 	}
 
-	public List<JyxxsqVO> findBykplscxPage(Pagination pagination) {
+	public List<JyxxsqVO> findBykplscxPage(Map params) {
 		// TODO Auto-generated method stub
-		 return jyxxsqMapper.findBykplscxPage(pagination);
+		 return jyxxsqMapper.findBykplscxPage(params);
+	}
+
+	public Integer findBykplscxtotal(Map params){
+		return jyxxsqMapper.findBykplscxtotal(params);
 	}
 
 	public Skp findskpExistByXfid(Map tt) {

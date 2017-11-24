@@ -50,7 +50,10 @@ public interface JyxxsqMapper {
     
     public List<JyxxsqVO> findYscByPage(Pagination pagination);
 
-	public List<JyxxsqVO> findBykplscxPage(Pagination pagination);
+	public List<JyxxsqVO> findBykplscxPage( Map params);
+
+    public Integer findBykplscxtotal(Map params);
+
 
     Xf findXfExistByXfsh(Map params);
 
