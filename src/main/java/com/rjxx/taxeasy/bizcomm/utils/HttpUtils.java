@@ -2,6 +2,8 @@ package com.rjxx.taxeasy.bizcomm.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rjxx.taxeasy.domains.Fphxwsjl;
+import com.rjxx.taxeasy.service.FphxwsjlService;
 import com.rjxx.utils.SignUtils;
 import com.rjxx.utils.XmlJaxbUtils;
 import org.apache.commons.codec.binary.Base64;
@@ -19,6 +21,7 @@ import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +30,7 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,6 +39,7 @@ import java.util.Map;
  */
 @Service
 public class HttpUtils {
+
 
 
     private  static Logger logger = LoggerFactory.getLogger(HttpUtils.class);
