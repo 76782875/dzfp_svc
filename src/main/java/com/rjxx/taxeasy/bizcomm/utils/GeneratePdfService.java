@@ -342,7 +342,7 @@ public class GeneratePdfService {
 
     }
     public String   fwkReturnMessage(Kpls kpls) {
-        SimpleDateFormat sim = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        SimpleDateFormat sim = new SimpleDateFormat("yyyy-MM-dd");
         String result="Succeed";
         if(kpls.getFpczlxdm().equals("12")){
             result="CancelSucceed";
@@ -356,9 +356,7 @@ public class GeneratePdfService {
                 "         <GoldenTax>\n" +
                 "            <CutInvID>"+kpls.getJylsh()+"</CutInvID>\n" +
                 "            <GoldenTaxID>"+kpls.getFphm()+"</GoldenTaxID>\n" +
-                "            <GoldenTaxDate>\n" +
-                "               <StartDateTime>"+sim.format(kpls.getKprq())+"</StartDateTime>\n" +
-                "               <EndDateTime>"+sim.format(kpls.getKprq())+"</EndDateTime>\n" +
+                "            <GoldenTaxDate>\n" +sim.format(kpls.getKprq()) +
                 "            </GoldenTaxDate>\n" +
                 "            <GoldenTaxResult>"+result+"</GoldenTaxResult>\n" +
                 "            <GoldenTaxCode>"+kpls.getFpdm()+"</GoldenTaxCode>\n" +
