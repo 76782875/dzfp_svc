@@ -183,7 +183,15 @@ public class ImputationCardUtil {
 					return false;
 				}else{
 					try {
-						alipayUtils.syncInvoiceAlipay(jyxxsq.getOpenid(),kpls,kpspmxList,pp.getAliMShortName(),pp.getAliSubMShortName());
+						String alipay = alipayUtils.syncInvoiceAlipay(jyxxsq.getOpenid(), kpls, kpspmxList, pp.getAliMShortName(), pp.getAliSubMShortName());
+						if(alipay!=null){
+							boolean b = wechatFpxxImpl.InFpxxDate(jyxxsq.getDdh(), "5");
+							if(b){
+								return true;
+							}else {
+								return false;
+							}
+						}
 					} catch (Exception e) {
 						e.printStackTrace();
 						return false;
@@ -199,7 +207,12 @@ public class ImputationCardUtil {
 				if(null == result){
 					return false;
 				}else{
-					return true;
+					boolean b = wechatFpxxImpl.InFpxxDate(jyxxsq.getDdh(), "4");
+					if(b){
+						return true;
+					}else {
+						return false;
+					}
 				}
 			}else{
 				return false;
