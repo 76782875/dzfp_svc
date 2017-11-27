@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class Gdjlvo implements Serializable{
 	protected String xfmc;
+	protected String xfsh;
 	protected String qsrq;
 	protected String zzrq;
 	protected String zt;
@@ -60,4 +61,11 @@ public class Gdjlvo implements Serializable{
 		this.wjsl = wjsl;
 	}
 
+	public String getXfsh() {
+		return xfsh;
+	}
+
+	public void setXfsh(String xfsh) {
+		this.xfsh = xfsh;
+	}
 }

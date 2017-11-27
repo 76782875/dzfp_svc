@@ -56,7 +56,7 @@ public class CszbService {
         return cszbMapper.findByPage(pagination);
     }
     
-    //去商品编码版本号
+    //其实是根据公司代码，销方id，和skp表id,取该csm的值
     public Cszb getSpbmbbh(String gsdm,Integer xfid,Integer kpdid,String csm){
     	Map params = new HashMap<>();
 		params.put("gsdm", gsdm);

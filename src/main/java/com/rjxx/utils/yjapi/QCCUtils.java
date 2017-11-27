@@ -1,13 +1,16 @@
 package com.rjxx.utils.yjapi;
 
 import com.alibaba.fastjson.JSON;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.rjxx.utils.weixin.HttpClientUtil;
 import com.rjxx.utils.weixin.WeixinUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,19 +33,18 @@ public class QCCUtils {
             map.put("dtype","json");
             map.put("keyWord",keyWord);
             String response = HttpClientUtil.doGet(QCCConstants.GET_QCC_GSXX, map);
-            logger.info("返回值------------" + response);
+            logger.debug("返回值------------" + response);
             if(response!=null){
-                ObjectMapper jsonparer = new ObjectMapper();// 初始化解析json格式的对象
-                Map resultmap = jsonparer.readValue(response, Map.class);
-                String Status = (String)resultmap.get("Status");
-                String Message = (String)resultmap.get("Message");
-                if("200".equals(Status)){
-                    String Result = (String)resultmap.get("Result");
-                    if(Result!=null){
-                        resultMap=Result;
+                JSONObject jsonObject = JSON.parseObject(response);
+                String status= jsonObject.getString("Status");
+                String message = jsonObject.getString("Message");
+                if("200".equals(status)){
+                    JSONObject result = jsonObject.getJSONObject("Result");
+                    if(result!=null){
+                        resultMap=result.toJSONString();
                     }
                 }else {
-                    resultMap=Message;
+                    resultMap=message;
                 }
             }
         }catch (Exception e){
@@ -65,19 +67,18 @@ public class QCCUtils {
             map.put("dtype","json");
             map.put("keyWord",keyWord);
             String response = HttpClientUtil.doGet(QCCConstants.GET_QCC_GSXX_NEW, map);
-            logger.info("返回值------------" + response);
+            logger.debug("返回值------------" + response);
             if(response!=null){
-                ObjectMapper jsonparer = new ObjectMapper();// 初始化解析json格式的对象
-                Map resultmap = jsonparer.readValue(response, Map.class);
-                String Status = (String)resultmap.get("Status");
-                String Message = (String) resultmap.get("Message");
-                if("200".equals(Status)){
-                    String Result = (String) resultmap.get("Result");
-                    if(Result!=null){
-                        resultMap=Result;
+                JSONObject jsonObject = JSON.parseObject(response);
+                String status= jsonObject.getString("Status");
+                String message = jsonObject.getString("Message");
+                if("200".equals(status)){
+                    JSONObject result = jsonObject.getJSONObject("Result");
+                    if(result!=null){
+                        resultMap= result.toJSONString();
                     }
                 }else {
-                    resultMap=Message;
+                    resultMap=message;
                 }
             }
         }catch (Exception e){
@@ -94,6 +95,7 @@ public class QCCUtils {
      */
     public static String getQccSearch(String keyWord){
         String resultMap=null;
+        List nameList = new ArrayList<>();
         try {
             Map map = new HashMap();
             map.put("key","f2c9da96b3fa45f6bce3637e2a3e6c74");
@@ -103,19 +105,22 @@ public class QCCUtils {
             map.put("pageIndex","1");
             map.put("dtype","json");
             String response = HttpClientUtil.doGet(QCCConstants.GET_QCC_SEARCH, map);
-            logger.info("返回值------------" + response);
+            logger.debug("返回值------------" + response);
             if(response!=null){
-                ObjectMapper jsonparer = new ObjectMapper();// 初始化解析json格式的对象
-                Map resultmap = jsonparer.readValue(response, Map.class);
-                String Status = (String)resultmap.get("Status");
-                String Message = (String)resultmap.get("Message");
-                if("200".equals(Status)){
-                    String Result = (String)resultmap.get("Result");
-                    if(Result!=null){
-                        resultMap=Result;
+                JSONObject jsonObject = JSON.parseObject(response);
+                String status= jsonObject.getString("Status");
+                String message = jsonObject.getString("Message");
+                if("200".equals(status)){
+                    JSONArray resultList = jsonObject.getJSONArray("Result");
+                    if(resultList!=null){
+                        for(int i=0;i<resultList.size();i++){
+                            JSONObject object= (JSONObject) resultList.get(i);
+                            nameList.add(object.getString("Name"));
+                        }
+                        resultMap = JSON.toJSONString(nameList);
                     }
                 }else {
-                    resultMap=Message;
+                    resultMap=message;
                 }
             }
         }catch (Exception e){
@@ -126,7 +131,7 @@ public class QCCUtils {
     }
 
     public static void main(String[] args) {
-        String search = getQccSearch("容津");
-        System.out.println(JSON.toJSONString(search));
+        String search = getQccGsxxNew("上海容津信息技术有限公司");
+        System.out.println(search);
     }
 }
