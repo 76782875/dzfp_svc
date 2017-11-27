@@ -1,9 +1,14 @@
 package com.rjxx.taxeasy.domains;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.rjxx.comm.json.JsonDatetimeFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Date;
 
 /**
  * Created by wangyahui on 2017/8/17 0017
@@ -44,6 +49,38 @@ public class WxFpxx {
 
     @Column(name = "count")
     private int count;
+
+    /**
+     * 录入时间 系统时间
+     */
+    @Column(name="lrsj")
+    @JsonSerialize(using = JsonDatetimeFormat.class)
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    protected Date lrsj;
+
+    /**
+     * 修改时间
+     */
+    @Column(name="xgsj")
+    @JsonSerialize(using = JsonDatetimeFormat.class)
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    protected Date xgsj;
+
+    /**
+     * 微信插卡时间
+     */
+    @Column(name="wxcksj")
+    @JsonSerialize(using = JsonDatetimeFormat.class)
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    protected Date wxcksj;
+
+    /**
+     * 发票管家插卡时间
+     */
+    @Column(name="fpgjcksj")
+    @JsonSerialize(using = JsonDatetimeFormat.class)
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    protected Date fpgjcksj;
 
     public String getOrderNo() {
         return orderNo;
@@ -107,6 +144,10 @@ public class WxFpxx {
                 ", kplsh='" + kplsh + '\'' +
                 ", weixinOderno='" + weixinOderno + '\'' +
                 ", count=" + count +
+                ", lrsj=" + lrsj +
+                ", xgsj=" + xgsj +
+                ", wxcksj=" + wxcksj +
+                ", fpgjcksj=" + fpgjcksj +
                 '}';
     }
 
@@ -148,5 +189,37 @@ public class WxFpxx {
 
     public void setCount(int count) {
         this.count = count;
+    }
+
+    public Date getLrsj() {
+        return lrsj;
+    }
+
+    public void setLrsj(Date lrsj) {
+        this.lrsj = lrsj;
+    }
+
+    public Date getXgsj() {
+        return xgsj;
+    }
+
+    public void setXgsj(Date xgsj) {
+        this.xgsj = xgsj;
+    }
+
+    public Date getWxcksj() {
+        return wxcksj;
+    }
+
+    public void setWxcksj(Date wxcksj) {
+        this.wxcksj = wxcksj;
+    }
+
+    public Date getFpgjcksj() {
+        return fpgjcksj;
+    }
+
+    public void setFpgjcksj(Date fpgjcksj) {
+        this.fpgjcksj = fpgjcksj;
     }
 }

@@ -33,7 +33,11 @@ public interface JyxxsqMapper {
     public List<JyxxsqVO> findByPage(Pagination pagination);
     
     public List<Jyxxsq> findByPage1(Pagination pagination);
-    
+
+    public List<JyxxsqVO> findByPage2(Map params);
+
+    public Integer findtotal(Map params);
+
     public Xf findXfExistByKpd(Map params);
 
     public void saveJyxxsq(Jyxxsq jyxxsq);
@@ -46,7 +50,10 @@ public interface JyxxsqMapper {
     
     public List<JyxxsqVO> findYscByPage(Pagination pagination);
 
-	public List<JyxxsqVO> findBykplscxPage(Pagination pagination);
+	public List<JyxxsqVO> findBykplscxPage( Map params);
+
+    public Integer findBykplscxtotal(Map params);
+
 
     Xf findXfExistByXfsh(Map params);
 

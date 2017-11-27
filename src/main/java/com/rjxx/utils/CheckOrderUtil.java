@@ -306,7 +306,9 @@ public class CheckOrderUtil {
 					 */
                     // 商品金额
                     String Amount = String.valueOf(jymxsq.getSpje());
-                    if (Amount == null) {
+                    if( Amount.equals("0") || Amount.equals("0.00")){
+                        result += "订单号为" + ddh + "的订单,第"+ j+1+"行的商品金额为0\r\n";
+                    } else if (Amount == null) {
                         result += "订单号为" + ddh + "的订单,第"+ j+1+"行的商品金额为空\r\n";
                     } else if (!Amount.matches("^\\-?[0-9]{0,15}+(.[0-9]{0,2})?$")) {
                         result += "订单号为" + ddh + "的订单，第"+ j+1+"行的商品金额格式不正确！\r\n";

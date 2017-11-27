@@ -1,5 +1,7 @@
 package com.rjxx.taxeasy.bizcomm.utils;
 
+
+
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
@@ -19,7 +21,7 @@ public class FtpUtil {
      * @param username FTP登录账号
      * @param password FTP登录密码
      * @param basePath FTP服务器基础目录
-     * @param filePath FTP服务器文件存放路径。例如分日期存放：/2015/01/01。文件的路径为basePath+filePath
+     * @param filePath FTP服务器文件存放路径。例如分日期存放：/2017/11/20。文件的路径为basePath+filePath
      * @param filename 上传到FTP服务器上的文件名
      * @param input 输入流
      * @return 成功返回true，否则返回false

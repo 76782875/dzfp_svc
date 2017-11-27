@@ -282,7 +282,7 @@
         FROM
         t_kpls kp
         join t_jyls jy on jy.djh = kp.djh
-        WHERE 1=1
+        WHERE kp.yxbz = '1'
         <if test="gsdm !=null and gsdm !=''">
             and kp.gsdm = #{gsdm}
         </if>
@@ -303,6 +303,9 @@
         <if test="ddh != null and ddh !=''">
             and jy.ddh = #{ddh}
         </if>
+        <if test="khh != null and khh !=''">
+            and jy.khh = #{khh}
+        </if>
         <if test="fphm != null and fphm !=''">
             and kp.fphm = #{fphm}
         </if>
@@ -311,6 +314,9 @@
         </if>
         <if test="sk != null and sk !=''">
             and kp.skpid = #{sk}
+        </if>
+        <if test="fpzldm != null and fpzldm !=''">
+            and kp.fpzldm = #{fpzldm}
         </if>
         <if test="kprqq != null and kprqq !='' and kprqz != null and kprqz !=''">
             and kp.lrsj between #{kprqq} and

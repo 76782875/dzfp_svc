@@ -114,7 +114,17 @@ public class JyxxsqService {
     public void updateGfxx(Map params){
     	jyxxsqMapper.updateGfxx(params);
 	}
-    /**
+
+	public List<JyxxsqVO> findByPage2(Map params) {
+		return jyxxsqMapper.findByPage2(params);
+	}
+
+	public Integer findtotal(Map params) {
+		return jyxxsqMapper.findtotal(params);
+	}
+
+
+	/**
 	 * 删除交易流水，包括明细
 	 *
 	 * @param sqlshList
@@ -294,9 +304,13 @@ public class JyxxsqService {
 		return mx;
 	}
 
-	public List<JyxxsqVO> findBykplscxPage(Pagination pagination) {
+	public List<JyxxsqVO> findBykplscxPage(Map params) {
 		// TODO Auto-generated method stub
-		 return jyxxsqMapper.findBykplscxPage(pagination);
+		 return jyxxsqMapper.findBykplscxPage(params);
+	}
+
+	public Integer findBykplscxtotal(Map params){
+		return jyxxsqMapper.findBykplscxtotal(params);
 	}
 
 	public Skp findskpExistByXfid(Map tt) {
