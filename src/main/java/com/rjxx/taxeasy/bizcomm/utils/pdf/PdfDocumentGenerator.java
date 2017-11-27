@@ -2,10 +2,10 @@ package com.rjxx.taxeasy.bizcomm.utils.pdf;
 
 import com.itextpdf.text.pdf.BaseFont;
 import com.rjxx.taxeasy.bizcomm.utils.DataOperate;
-import com.rjxx.taxeasy.domains.Jyls;
-import com.rjxx.taxeasy.domains.Kpls;
-import com.rjxx.taxeasy.domains.Kppmxx;
-import com.rjxx.taxeasy.domains.Kpspmx;
+import com.rjxx.taxeasy.bizcomm.utils.PasswordConfig;
+import com.rjxx.taxeasy.bizcomm.utils.SFtpUtil;
+import com.rjxx.taxeasy.domains.*;
+import com.rjxx.taxeasy.service.CszbService;
 import com.rjxx.taxeasy.service.KppmxxService;
 import com.rjxx.utils.*;
 import org.apache.commons.codec.binary.Base64;
@@ -34,6 +34,8 @@ public class PdfDocumentGenerator {
     private KppmxxService kppmxxService;
     @Autowired
     private DataOperate dataOperate;
+    @Autowired
+    private CszbService cszbService;
 
     @Value("${pdf.save-path:}")
     private String pdfSavePath;
@@ -547,8 +549,12 @@ public class PdfDocumentGenerator {
                 String pdfUrl = (String) map.get("pdfUrl");
                 outputFile_AbsolutePath = pdfUrl.replace(serverUrl, "");
             } else {
-                outputFile_AbsolutePath = xfsh + "/"
-                        + dateString + "/" + UUID.randomUUID().toString() + ".pdf";
+                if(kpls.getGsdm().equals("afb")){
+                    outputFile_AbsolutePath = xfsh +"/" + kpls.getJylsh()+ ".pdf";
+                }else{
+                    outputFile_AbsolutePath = xfsh + "/"
+                            + dateString + "/" + UUID.randomUUID().toString() + ".pdf";
+                }
             }
             outputFile = tempPath + outputFile_AbsolutePath;
             String signImagePath = ResourceLoader.getPath("config/images") + "/"+"sign.png";
@@ -559,7 +565,12 @@ public class PdfDocumentGenerator {
             //pdf生成jpg文件
             //先生成带章的pdf
             String template2 = "config/templates/invoice2.html";
-            String tmpPdfPath = tempPath + xfsh + "/" + dateString + "/" + UUID.randomUUID().toString() + "_tmp.pdf";
+            String tmpPdfPath=null;
+            if(kpls.getGsdm().equals("afb")){
+                tmpPdfPath = tempPath + xfsh  + "/" + kpls.getJylsh() + "_tmp.pdf";
+            }else{
+                 tmpPdfPath = tempPath + xfsh + "/" + dateString + "/" + UUID.randomUUID().toString() + "_tmp.pdf";
+            }
             generate(map, template2, in_request, tmpPdfPath);
 
             int pos = outputFile.lastIndexOf(".");
@@ -573,10 +584,16 @@ public class PdfDocumentGenerator {
             //由于javasafeengine的使用jar过老，替换新的生成摘要信息的方法,2016-09-18，以pdf是否有图片签章为区别
             //String signData = SafeEngine.Sign(outputFile, jyls);
             String keyStorePath = ResourceLoader.getPath("config/keys") + "/tydzfp.jks";
-            String sAlias = "1tydzfp";//私钥别名；  Rjxx1234 sKeyPin私钥密码
-            String signData = CertificateUtils.signFileToBase64(outputFile, keyStorePath, sAlias, "Rjxx1234");
-
+            String sAlias = PasswordConfig.PDF_SIGNUSER;//私钥别名；  Rjxx1234 sKeyPin私钥密码
+            String signData = CertificateUtils.signFileToBase64(outputFile, keyStorePath, sAlias, PasswordConfig.PDF_SIGNPASSWORD);
             map.put("outputFile", serverUrl + outputFile_AbsolutePath);
+            logger.info("------pdf路径-------"+serverUrl);
+            logger.info("------pdf路径-------"+serverUrl + outputFile_AbsolutePath);
+            Cszb cszb = cszbService.getSpbmbbh(kpls.getGsdm(), kpls.getXfid(), null, "sfuploadftp");
+            if(cszb.getCsz().equals("是")){
+                FileInputStream in=new FileInputStream(new File(outputFile));
+                SFtpUtil.uploadFile(PasswordConfig.FTP_URL,PasswordConfig.FTP_PORT,PasswordConfig.FTP_USERNAME,PasswordConfig.FTP_PASSWORD,PasswordConfig.FTP_BASEPATH,PasswordConfig.FTP_FILEPATH,kpls.getJylsh()+".pdf",in);
+            }
             map.put("signData", signData);
             return true;
         }catch (Exception e){
