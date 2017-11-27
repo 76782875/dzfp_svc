@@ -21,6 +21,8 @@ public class wechatFpxxServiceImpl {
     @Autowired
     private WxfpxxJpaDao wxfpxxJpaDao;
 
+
+
     /**
      * 对上传给微信的订单号进行count
      * @param orderNo
@@ -181,4 +183,31 @@ public class wechatFpxxServiceImpl {
         }
         return true;
     }
+
+    /**
+     * 添加微信和支付宝插卡时间
+     * @param orderNo
+     * @param sjly
+     * @return
+     */
+    public boolean InFpxxDate(String orderNo,String sjly){
+                if(orderNo==null || sjly == null){
+                    return false;
+                }
+                WxFpxx wxFpxx = wxfpxxJpaDao.selsetByOrderNo(orderNo);
+                if(wxFpxx==null){
+                    return false;
+                }else {
+                    if (sjly.equals("4")) {
+                        logger.info("微信插卡时间"+new Date());
+                        wxFpxx.setWxcksj(new Date());
+                        wxfpxxJpaDao.save(wxFpxx);
+                    } else if (sjly.equals("5")) {
+                        logger.info("发票管家插卡时间"+new Date());
+                        wxFpxx.setFpgjcksj(new Date());
+                        wxfpxxJpaDao.save(wxFpxx);
+                    }
+                }
+                return true;
+            }
 }
