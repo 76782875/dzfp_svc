@@ -30,6 +30,7 @@ public class InvoiceQueryUtil {
         params.put("khh",khh);
         params.put("fpzt","00");
         params.put("fpczlx","11");
+        params.put("fpzldm","12");
         list = kplsService.findAllByParams2(params);
         return list;
     }
@@ -46,6 +47,7 @@ public class InvoiceQueryUtil {
         params.put("ddh",ddh);
         params.put("fpzt","00");
         params.put("fpczlx","11");
+        params.put("fpzldm","12");
         list = kplsService.findAllByParams2(params);
         return list;
     }
