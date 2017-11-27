@@ -65,6 +65,9 @@ public class GeneratePdfService {
     private SendalEmail se;
 
     @Autowired
+    private MailService mailService;
+
+    @Autowired
     private SaveMessage saveMsg;
 
     @Autowired
@@ -235,7 +238,13 @@ public class GeneratePdfService {
                         csmap.put("ewm", "data:image/jpeg;base64,"+imgbase64string);
                         String content = getYjnr.getFpkjYj(csmap, yjmbcontent);
                         try {
-                            se.sendEmail(String.valueOf(kpls.getDjh()), kpls.getGsdm(), kpls.getGfemail(), "发票开具成功发送邮件", String.valueOf(kpls.getDjh()), content, "电子发票");
+                            if(kpls.getGsdm().equals("afb")){
+                                String [] to=new String[1];
+                                to[0]=kpls.getGfemail();
+                                mailService.sendSimpleMail(to,"电子发票",content);
+                            }else{
+                                se.sendEmail(String.valueOf(kpls.getDjh()), kpls.getGsdm(), kpls.getGfemail(), "发票开具成功发送邮件", String.valueOf(kpls.getDjh()), content, "电子发票");
+                            }
                         } catch (Exception e) {
                             e.printStackTrace();
                             System.out.println("邮件发送失败" + e.getMessage());
