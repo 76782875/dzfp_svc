@@ -452,12 +452,19 @@ public class GetDataService {
                         rsMap.put("jyxxsqList", jyxxsqList);
                         rsMap.put("jymxsqList", jymxsqList);
                         rsMap.put("jyzfmxList", jyzfmxList);
-                        rsMap.put("error","9003:开票信息有误，请联系商家");
+                        rsMap.put("error","9003:销方信息未维护，请联系商家");
                         return rsMap;
                     }
                     Map params=new HashMap();
                     params.put("xfid",xf.getId());
                     Skp skp=skpService.findOneByParams(params);
+                    if(skp==null){
+                        rsMap.put("jyxxsqList", jyxxsqList);
+                        rsMap.put("jymxsqList", jymxsqList);
+                        rsMap.put("jyzfmxList", jyzfmxList);
+                        rsMap.put("error", "开票点信息未维护，请联系商家!");
+                        return rsMap;
+                    }
                     jyxxsq.setXfid(xf.getId());
                     jyxxsq.setJylsh(ExtractCode);
                     //测试
@@ -617,7 +624,7 @@ public class GetDataService {
                                 rsMap.put("jyxxsqList", jyxxsqList);
                                 rsMap.put("jymxsqList", jymxsqList);
                                 rsMap.put("jyzfmxList", jyzfmxList);
-                                rsMap.put("error", "开票信息有误，请联系商家!");
+                                rsMap.put("error", "商品信息未维护，请联系商家!");
                                 return rsMap;
                             }
                             jymxsq.setSpdm(spvo.getSpbm());
@@ -1729,7 +1736,7 @@ public class GetDataService {
                         rsMap.put("jyxxsqList", jyxxsqList);
                         rsMap.put("jymxsqList", jymxsqList);
                         rsMap.put("jyzfmxList", jyzfmxList);
-                        rsMap.put("msg","开票信息有误，请联系商家");
+                        rsMap.put("msg","开票点信息未维护，请联系商家");
                         return rsMap;
                     }
                     //根据销方id  查询
@@ -1737,7 +1744,7 @@ public class GetDataService {
                     x.setId(skpdata.getXfid());
                     Xf xf = xfService.findOneByParams(x);
                     if(xf==null){
-                        rsMap.put("msg","开票信息有误，请联系商家");
+                        rsMap.put("msg","销方信息未维护，请联系商家");
                         rsMap.put("jyxxsqList", jyxxsqList);
                         rsMap.put("jymxsqList", jymxsqList);
                         rsMap.put("jyzfmxList", jyzfmxList);
@@ -2055,7 +2062,7 @@ public class GetDataService {
                         rsMap.put("nowdate",nowdate);
                         rsMap.put("storeno",storeno);
                         rsMap.put("zkjine",zkjine);
-                        rsMap.put("msg","开票信息有误，请联系商家");
+                        rsMap.put("msg","开票点信息未维护，请联系商家！");
                         return rsMap;
                     }
                     if(skpdata.getKpqssj()!=null){
@@ -2069,7 +2076,7 @@ public class GetDataService {
                     x.setId(skpdata.getXfid());
                     Xf xf = xfService.findOneByParams(x);
                     if(xf==null){
-                        rsMap.put("msg","开票信息有误，请联系商家");
+                        rsMap.put("msg","销方信息未维护，请联系商家！");
                         rsMap.put("jyxxsqList", jyxxsqList);
                         rsMap.put("jymxsqList", jymxsqList);
                         rsMap.put("jyzfmxList", jyzfmxList);
@@ -2164,7 +2171,7 @@ public class GetDataService {
                                 }
                                 Spvo spvo = spvoService.findOneSpvo(mapoo);
                                 if (spvo == null) {
-                                    rsMap.put("msg","开票信息有误，请联系商家");
+                                    rsMap.put("msg","商品信息未维护，请联系商家！");
                                     rsMap.put("jyxxsqList", jyxxsqList);
                                     rsMap.put("jymxsqList", jymxsqList);
                                     rsMap.put("jyzfmxList", jyzfmxList);
@@ -2213,7 +2220,7 @@ public class GetDataService {
                                 }
                                 Spvo spvo = spvoService.findOneSpvo(mapoo);
                                 if (spvo == null) {
-                                    rsMap.put("msg","开票信息有误，请联系商家");
+                                    rsMap.put("msg","商品信息未维护，请联系商家！");
                                     rsMap.put("jyxxsqList", jyxxsqList);
                                     rsMap.put("jymxsqList", jymxsqList);
                                     rsMap.put("jyzfmxList", jyzfmxList);
@@ -2256,7 +2263,7 @@ public class GetDataService {
                                 //已开具金额  = 0
                                 jymxsq1.setYkjje(0d);
                                 if (spvo == null) {
-                                    rsMap.put("msg","开票信息有误，请联系商家");
+                                    rsMap.put("msg","商品信息未维护，请联系商家！");
                                     rsMap.put("jyxxsqList", jyxxsqList);
                                     rsMap.put("jymxsqList", jymxsqList);
                                     rsMap.put("jyzfmxList", jyzfmxList);

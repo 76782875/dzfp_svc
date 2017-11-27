@@ -8,10 +8,13 @@ import com.rjxx.taxeasy.domains.*;
 import com.rjxx.taxeasy.service.*;
 import com.rjxx.taxeasy.vo.messageParams;
 import com.rjxx.taxeasy.vo.smsEnvelopes;
+import com.rjxx.utils.SignUtils;
 import com.rjxx.utils.StringUtils;
 import com.rjxx.utils.XmlJaxbUtils;
 import org.apache.commons.codec.binary.*;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.cxf.endpoint.Client;
+import org.apache.cxf.jaxws.endpoint.dynamic.JaxWsDynamicClientFactory;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -169,12 +172,23 @@ public class GeneratePdfService {
                         returnmessage = this.CreateReturnMessage3(kpls.getKplsh());
                         logger.info("回写报文" + returnmessage);
                         if (returnmessage != null && !"".equals(returnmessage)) {
-                            String ss= HttpUtils.netWebService(url,"CallBack",returnmessage,gsxx.getAppKey(),gsxx.getSecretKey());
+                            String ss= this.netWebService(url,"CallBack",returnmessage,gsxx.getAppKey(),gsxx.getSecretKey());
                             String fwkReturnMessageStr=fwkReturnMessage(kpls);
                             logger.info("----------sap回写报文----------" + fwkReturnMessageStr);
                             String Data= HttpUtils.doPostSoap1_2("https://my337109.sapbydesign.com/sap/bc/srt/scs/sap/yyb40eysay_managegoldentaxinvo?sap-vhost=my337109.sapbydesign.com", fwkReturnMessageStr, null,"wendy","Welcome9");
                             logger.info("----------fwk平台回写返回报文--------" + ss);
                             logger.info("----------sap回写返回报文----------" + Data);
+                            Fphxwsjl fphxwsjl=new Fphxwsjl();
+                            fphxwsjl.setGsdm("fwk");
+                            fphxwsjl.setEnddate(new Date());
+                            fphxwsjl.setReturncode("0000");
+                            fphxwsjl.setStartdate(new Date());
+                            fphxwsjl.setSecretKey("");
+                            fphxwsjl.setSign("");
+                            fphxwsjl.setWsurl(url);
+                            fphxwsjl.setReturncontent(ss);
+                            fphxwsjl.setReturnmessage(Data);
+                            fphxwsjlService.save(fphxwsjl);
                         }
                     }
                 }
@@ -341,8 +355,48 @@ public class GeneratePdfService {
         System.out.println(s);
 
     }
+    /**
+     * .net webService
+     * @param url
+     * @param methodName
+     * @param QueryData
+     * @param AppId
+     * @param key
+     * @return
+     */
+    public String netWebService (String url,String methodName,String QueryData,String AppId,String key){
+        String result="";
+        try {
+            logger.info("----------发送的报文------"+QueryData);
+            JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+            Client client = dcf.createClient(url);
+            String sign= SignUtils.getSign(QueryData,key);
+            Object[] objects = client.invoke(methodName, AppId,QueryData,sign);
+            //输出调用结果
+            result = objects[0].toString();
+            logger.info("----------接收返回值------"+result.toString());
+            Map resultMap=new HashMap();
+            resultMap = handerReturnMes(result.toString());
+            String returnCode=resultMap.get("ReturnCode").toString();
+            String ReturnMessage=resultMap.get("ReturnMessage").toString();
+            Fphxwsjl fphxwsjl=new Fphxwsjl();
+            fphxwsjl.setGsdm("fwk");
+            fphxwsjl.setEnddate(new Date());
+            fphxwsjl.setReturncode(returnCode);
+            fphxwsjl.setStartdate(new Date());
+            fphxwsjl.setSecretKey(key);
+            fphxwsjl.setSign(sign);
+            fphxwsjl.setWsurl(url);
+            fphxwsjl.setReturncontent(QueryData);
+            fphxwsjl.setReturnmessage(ReturnMessage);
+            fphxwsjlService.save(fphxwsjl);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
     public String   fwkReturnMessage(Kpls kpls) {
-        SimpleDateFormat sim = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        SimpleDateFormat sim = new SimpleDateFormat("yyyy-MM-dd");
         String result="Succeed";
         if(kpls.getFpczlxdm().equals("12")){
             result="CancelSucceed";
@@ -356,10 +410,7 @@ public class GeneratePdfService {
                 "         <GoldenTax>\n" +
                 "            <CutInvID>"+kpls.getJylsh()+"</CutInvID>\n" +
                 "            <GoldenTaxID>"+kpls.getFphm()+"</GoldenTaxID>\n" +
-                "            <GoldenTaxDate>\n" +
-                "               <StartDateTime>"+sim.format(kpls.getKprq())+"</StartDateTime>\n" +
-                "               <EndDateTime>"+sim.format(kpls.getKprq())+"</EndDateTime>\n" +
-                "            </GoldenTaxDate>\n" +
+                "            <GoldenTaxDate>"+sim.format(kpls.getKprq())+"</GoldenTaxDate>\n"+
                 "            <GoldenTaxResult>"+result+"</GoldenTaxResult>\n" +
                 "            <GoldenTaxCode>"+kpls.getFpdm()+"</GoldenTaxCode>\n" +
                 "         </GoldenTax>\n" +
