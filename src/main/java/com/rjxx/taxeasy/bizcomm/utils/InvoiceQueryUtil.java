@@ -36,15 +36,32 @@ public class InvoiceQueryUtil {
     }
 
     /**
+     *  @param gsdm,tqm
+     * @return list
+     * 通过客户号，公司代码获取发票信息list
+     */
+    public List<Fpcxvo> getInvoiceListBytqm(String gsdm,String tqm){
+        List<Fpcxvo> list = new ArrayList<Fpcxvo>();
+        Map params = new HashMap<String,Object>();
+        params.put("gsdm",gsdm);
+        params.put("khh",tqm);
+        params.put("fpzt","00");
+        params.put("fpczlx","11");
+        params.put("fpzldm","12");
+        list = kplsService.findAllByParams2(params);
+        return list;
+    }
+
+    /**
      *  @param gsdm,ddh
      * @return list
      * 通过订单号，公司代码获取发票信息list
      */
-    public List<Fpcxvo> getInvoiceListByDdh(String gsdm,String ddh){
+    public List<Fpcxvo> getInvoiceListByDjh(String gsdm,String djh){
         List<Fpcxvo> list = new ArrayList<Fpcxvo>();
         Map params = new HashMap<String,Object>();
         params.put("gsdm",gsdm);
-        params.put("ddh",ddh);
+        params.put("djh",djh);
         params.put("fpzt","00");
         params.put("fpczlx","11");
         params.put("fpzldm","12");
