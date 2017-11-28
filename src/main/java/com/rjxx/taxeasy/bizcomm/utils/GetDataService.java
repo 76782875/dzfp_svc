@@ -2047,13 +2047,13 @@ public class GetDataService {
                     jyxxsq.setDdh(orderNo);//订单编号 对应小票流水号
                     jyxxsq.setTqm(orderNo);// 提取码  对应购物小票流水号
                     jyxxsq.setJylsh("JY" + new SimpleDateFormat("yyyyMMddHHmmssSS").format(new Date()));//交易流水号
-//                    jyxxsq.setKpddm(storeNo);
-                    jyxxsq.setKpddm("gvc_01");
+                    jyxxsq.setKpddm(storeNo);
+//                    jyxxsq.setKpddm("gvc_01");
                 //根据公司代码、开票点代码查询税控盘
                 Map skpmap = new HashMap();
                     skpmap.put("gsdm", gsdm);
-//                    skpmap.put("kpddm", storeNo);
-                    skpmap.put("kpddm", "gvc_01");
+                    skpmap.put("kpddm", storeNo);
+//                    skpmap.put("kpddm", "gvc_01");
                     Skp skpdata = skpService.findOneByParams(skpmap);
                     if(skpdata==null){
                         rsMap.put("jyxxsqList", jyxxsqList);
