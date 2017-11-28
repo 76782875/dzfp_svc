@@ -73,7 +73,7 @@ public class wechatFpxxServiceImpl {
                         WxFpxx wFpxx = new WxFpxx();
                         wFpxx.setTqm(tqm);
                         wFpxx.setGsdm(gsdm);
-                        wFpxx.setOrderNo(tqm);
+                        wFpxx.setOrderNo(orderNo);
                         wFpxx.setQ(q);
                         wFpxx.setWxtype(wxType);//1:申请开票 2、领取发票
                         wFpxx.setOpenId(opendid);
@@ -84,7 +84,7 @@ public class wechatFpxxServiceImpl {
                         WxFpxx aFpxx = new WxFpxx();
                         aFpxx.setTqm(tqm);
                         aFpxx.setGsdm(gsdm);
-                        aFpxx.setOrderNo(tqm);
+                        aFpxx.setOrderNo(orderNo);
                         aFpxx.setQ(q);
                         aFpxx.setUserid(userId);
                         aFpxx.setLrsj(new Date());
@@ -97,7 +97,7 @@ public class wechatFpxxServiceImpl {
                         wxFpxx.setGsdm(gsdm);
                         wxFpxx.setQ(q);
                         wxFpxx.setOpenId(opendid);
-                        wxFpxx.setOrderNo(tqm);
+                        wxFpxx.setOrderNo(orderNo);
                         wxFpxx.setWxtype(wxType);//1:申请开票2：领取发票
                         wxFpxx.setXgsj(new Date());
                         if(wxFpxx.getCode()!=null||!"".equals(wxFpxx.getCode())){
@@ -110,7 +110,7 @@ public class wechatFpxxServiceImpl {
                         wxFpxx.setGsdm(gsdm);
                         wxFpxx.setQ(q);
                         wxFpxx.setUserid(userId);
-                        wxFpxx.setOrderNo(tqm);
+                        wxFpxx.setOrderNo(orderNo);
                         wxFpxx.setXgsj(new Date());
                         if(wxFpxx.getCode()!=null||!"".equals(wxFpxx.getCode())){
                             String notNullCode= wxFpxx.getCode();
@@ -127,7 +127,7 @@ public class wechatFpxxServiceImpl {
                         WxFpxx wFpxx = new WxFpxx();
                         wFpxx.setTqm(tqm);
                         wFpxx.setGsdm(gsdm);
-                        wFpxx.setOrderNo(tqm);
+                        wFpxx.setOrderNo(orderNo);
                         wFpxx.setQ(q);
                         wFpxx.setWxtype(wxType);//1:申请开票 2、领取发票
                         wFpxx.setOpenId(opendid);
@@ -139,7 +139,7 @@ public class wechatFpxxServiceImpl {
                         WxFpxx aFpxx = new WxFpxx();
                         aFpxx.setTqm(tqm);
                         aFpxx.setGsdm(gsdm);
-                        aFpxx.setOrderNo(tqm);
+                        aFpxx.setOrderNo(orderNo);
                         aFpxx.setQ(q);
                         aFpxx.setUserid(userId);
                         aFpxx.setKplsh(kplsh);
@@ -153,7 +153,7 @@ public class wechatFpxxServiceImpl {
                         wxFpxx.setGsdm(gsdm);
                         wxFpxx.setQ(q);
                         wxFpxx.setOpenId(opendid);
-                        wxFpxx.setOrderNo(tqm);
+                        wxFpxx.setOrderNo(orderNo);
                         wxFpxx.setWxtype(wxType);//1:申请开票2：领取发票
                         wxFpxx.setKplsh(kplsh);
                         wxFpxx.setXgsj(new Date());
@@ -167,7 +167,7 @@ public class wechatFpxxServiceImpl {
                         wxFpxx.setGsdm(gsdm);
                         wxFpxx.setQ(q);
                         wxFpxx.setUserid(userId);
-                        wxFpxx.setOrderNo(tqm);
+                        wxFpxx.setOrderNo(orderNo);
                         wxFpxx.setKplsh(kplsh);
                         wxFpxx.setXgsj(new Date());
                         if(wxFpxx.getCode()!=null||!"".equals(wxFpxx.getCode())){
