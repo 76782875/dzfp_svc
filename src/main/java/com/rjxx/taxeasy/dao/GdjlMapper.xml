@@ -19,9 +19,12 @@
     </select>
 
     <select id="findByPage" parameterType="pagination" resultType="gdjlvo">
-        select a.*,b.xfmc,c.yhmc from t_gdjl a,t_xf b,t_yh c where a.xfid = b.id and a.lrry=c.id and a.yxbz='1' and b.yxbz='1'
+        select a.*,b.xfmc,b.xfsh from t_gdjl a,t_xf b where a.xfid = b.id  and a.yxbz='1' and b.yxbz='1'
         <if test="params.gsdm != null and params.gsdm !=''">
-           and a.gsdm =  #{params.gsdm}
+        and a.gsdm =  #{params.gsdm}
+        </if>
+        <if test="params.xfid != null and params.xfid !=''">
+            and a.xfid =  #{params.xfid}
         </if>
         order by a.lrsj desc
     </select>

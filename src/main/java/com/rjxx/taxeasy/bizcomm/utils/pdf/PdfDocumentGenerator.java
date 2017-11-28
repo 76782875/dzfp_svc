@@ -589,7 +589,7 @@ public class PdfDocumentGenerator {
             map.put("outputFile", serverUrl + outputFile_AbsolutePath);
             logger.info("------pdf路径-------"+serverUrl);
             logger.info("------pdf路径-------"+serverUrl + outputFile_AbsolutePath);
-            Cszb cszb = cszbService.getSpbmbbh(kpls.getGsdm(), kpls.getXfid(), null, "sfuploadftp");
+            Cszb cszb = cszbService.getSpbmbbh(kpls.getGsdm(), kpls.getXfid(), kpls.getSkpid(), "sfuploadftp");
             if(cszb.getCsz().equals("是")){
                 FileInputStream in=new FileInputStream(new File(outputFile));
                 SFtpUtil.uploadFile(PasswordConfig.FTP_URL,PasswordConfig.FTP_PORT,PasswordConfig.FTP_USERNAME,PasswordConfig.FTP_PASSWORD,PasswordConfig.FTP_BASEPATH,PasswordConfig.FTP_FILEPATH,kpls.getJylsh()+".pdf",in);

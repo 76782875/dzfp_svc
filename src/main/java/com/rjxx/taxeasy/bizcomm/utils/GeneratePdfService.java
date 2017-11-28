@@ -65,6 +65,9 @@ public class GeneratePdfService {
     private SendalEmail se;
 
     @Autowired
+    private MailService mailService;
+
+    @Autowired
     private SaveMessage saveMsg;
 
     @Autowired
@@ -161,12 +164,19 @@ public class GeneratePdfService {
                     } else if (kpls.getFpzldm().equals("12") && kpls.getGsdm().equals("mcake")) {
                         returnmessage = this.CreateReturnMessage(kpls.getKplsh());
 
+                    }else {
+                        returnmessage = this.CreateReturnMessage(kpls.getKplsh());
                     }
                     //输出调用结果
                     logger.info("回写报文" + returnmessage);
                     if (returnmessage != null && !"".equals(returnmessage)) {
-                        Map returnMap = this.httpPost(returnmessage, kpls);
-                        logger.info("返回报文" + JSON.toJSONString(returnMap));
+                        if(kpls.getGsdm().equals("afb")){
+                            Map returnMap = this.httpPostNoSign(returnmessage, kpls);
+                            logger.info("返回报文" + JSON.toJSONString(returnMap));
+                        }else{
+                            Map returnMap = this.httpPost(returnmessage, kpls);
+                            logger.info("返回报文" + JSON.toJSONString(returnMap));
+                        }
                     }
                     if(kpls.getGsdm().equals("fwk")){
                         returnmessage = this.CreateReturnMessage3(kpls.getKplsh());
@@ -235,7 +245,13 @@ public class GeneratePdfService {
                         csmap.put("ewm", "data:image/jpeg;base64,"+imgbase64string);
                         String content = getYjnr.getFpkjYj(csmap, yjmbcontent);
                         try {
-                            se.sendEmail(String.valueOf(kpls.getDjh()), kpls.getGsdm(), kpls.getGfemail(), "发票开具成功发送邮件", String.valueOf(kpls.getDjh()), content, "电子发票");
+                            if(kpls.getGsdm().equals("afb")){
+                                String [] to=new String[1];
+                                to[0]=kpls.getGfemail();
+                                mailService.sendHtmlMail(kpls.getGfemail(),"电子发票",content);
+                            }else{
+                                se.sendEmail(String.valueOf(kpls.getDjh()), kpls.getGsdm(), kpls.getGfemail(), "发票开具成功发送邮件", String.valueOf(kpls.getDjh()), content, "电子发票");
+                            }
                         } catch (Exception e) {
                             e.printStackTrace();
                             System.out.println("邮件发送失败" + e.getMessage());
@@ -332,6 +348,76 @@ public class GeneratePdfService {
             logger.info("------2、开具成功,部分服务出现异常：-------" + kplsh, e);
             throw new RuntimeException(e);
         }
+    }
+
+    private Map httpPostNoSign(String returnmessage, Kpls kpls) {
+        Map parms=new HashMap();
+        parms.put("gsdm",kpls.getGsdm());
+        Gsxx gsxx=gsxxService.findOneByParams(parms);
+        //String url="https://vrapi.fvt.tujia.com/Invoice/CallBack";
+        String url=gsxx.getCallbackurl();
+        String strMessage = "";
+        BufferedReader reader = null;
+        StringBuffer buffer = new StringBuffer();
+        Map resultMap = null;
+        if(!("").equals(url)&&url!=null){
+            HttpPost httpPost = new HttpPost(url);
+            CloseableHttpResponse response = null;
+            RequestConfig requestConfig = RequestConfig.custom().
+                    setSocketTimeout(120*1000).setConnectionRequestTimeout(120*1000).setConnectTimeout(120*1000).build();
+            CloseableHttpClient httpClient = HttpClients.custom()
+                    .setDefaultRequestConfig(requestConfig)
+                    .build();
+            //httpPost.setConfig(requestConfig);
+            httpPost.addHeader("Content-Type", "application/json");
+            try {
+                Map nvps = new HashMap();
+                nvps.put("invoiceData", returnmessage);
+                StringEntity requestEntity = new StringEntity(JSON.toJSONString(nvps), "utf-8");
+                logger.info("-------数据-----"+JSON.toJSONString(nvps));
+                httpPost.setEntity(requestEntity);
+                response = httpClient.execute(httpPost, new BasicHttpContext());
+                if (response.getStatusLine().getStatusCode() != 200) {
+                    System.out.println("request url failed, http code=" + response.getStatusLine().getStatusCode()
+                            + ", url=" + url);
+                    return null;
+                }
+                HttpEntity entity = response.getEntity();
+                if (entity != null) {
+                    reader = new BufferedReader(new InputStreamReader(entity.getContent(), "utf-8"));
+                    while ((strMessage = reader.readLine()) != null) {
+                        buffer.append(strMessage);
+                    }
+                }
+                System.out.println("接收返回值:" + buffer.toString());
+                resultMap = handerReturnMes(buffer.toString());
+                String returnCode=resultMap.get("ReturnCode").toString();
+                String ReturnMessage=resultMap.get("ReturnMessage").toString();
+                Fphxwsjl fphxwsjl=new Fphxwsjl();
+                fphxwsjl.setGsdm(kpls.getGsdm());
+                fphxwsjl.setEnddate(new Date());
+                fphxwsjl.setReturncode(returnCode);
+                fphxwsjl.setStartdate(new Date());
+                fphxwsjl.setSecretKey(gsxx.getSecretKey());
+                fphxwsjl.setSign("");
+                fphxwsjl.setWsurl(gsxx.getCallbackurl());
+                fphxwsjl.setReturncontent(returnmessage);
+                fphxwsjl.setReturnmessage(ReturnMessage);
+                fphxwsjlService.save(fphxwsjl);
+            } catch (IOException e) {
+                System.out.println("request url=" + url + ", exception, msg=" + e.getMessage());
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (response != null) try {
+                    response.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return resultMap;
     }
 
     public static void main(String[] args) {
