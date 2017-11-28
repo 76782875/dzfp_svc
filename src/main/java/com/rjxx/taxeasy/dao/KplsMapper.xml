@@ -11,6 +11,9 @@
         <if test="jylsh != null and jylsh != ''">
             and jylsh = #{jylsh}
         </if>
+        <if test="djh != null and djh != ''">
+            and djh = #{djh}
+        </if>
         <if test="fpzldm != null and fpzldm != ''">
             and fpzldm = #{fpzldm}
         </if>
@@ -210,11 +213,14 @@
         a.fphm,
         a.kprq,
         a.pdfurl,
+        a.kprq,
         a.fpztdm,
         a.errorReason,
         c.fpzlmc,
         d.fpczlxmc,
         e.djh,
+        e.tqm,
+        e.khh,
         e.jylsh,
         e.jylssj,
         e.ddh,
@@ -305,6 +311,12 @@
         </if>
         <if test="khh != null and khh !=''">
             and jy.khh = #{khh}
+        </if>
+        <if test="tqm != null and tqm !=''">
+            and jy.tqm = #{tqm}
+        </if>
+        <if test="djh != null and djh !=''">
+            and kp.djh = #{djh}
         </if>
         <if test="fphm != null and fphm !=''">
             and kp.fphm = #{fphm}
