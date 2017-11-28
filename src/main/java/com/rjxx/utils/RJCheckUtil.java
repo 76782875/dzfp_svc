@@ -3,7 +3,6 @@ package com.rjxx.utils;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,57 +12,6 @@ import java.util.Map;
  * Created by wangyahui on 2017/8/11 0011
  */
 public class RJCheckUtil {
-
-    //一茶一坐验签（仅供一茶一坐使用）
-    public static Boolean checkMD5(String key,String q){
-        try {
-            Map map  =decode(q);
-            if(map==null){
-                return false;
-            }
-            String orderNo = map.get("orderNo").toString();
-            String orderTime = map.get("orderTime").toString();
-            String price = map.get("price").toString();
-            String storeNo = map.get("storeNo").toString();
-            String sign = map.get("sign").toString();
-            String dbs = "on="+orderNo+"&ot="+orderTime+"&pr="+price+"&sn="+storeNo+"&key="+key;
-            String MD5dbs = "";
-            try {
-                MD5dbs = MD5Util.generatePassword(dbs);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            if(!sign.equalsIgnoreCase(MD5dbs)){
-                return false;
-            }
-            return true;
-        } catch(Exception e){
-            return false;
-        }
-    }
-
-    //一茶一坐解析（仅供一茶一坐使用）
-    public static Map decode(String q){
-        try {
-            byte[] bytes = Base64.decodeBase64(q);
-            String paramsUrl = new String(bytes);
-            String[] paramsArray = paramsUrl.split("&");
-            String orderNo = paramsArray[0].substring(paramsArray[0].lastIndexOf("=") + 1);//订单号
-            String orderTime = paramsArray[1].substring(paramsArray[1].lastIndexOf("=") + 1);//订单时间
-            String price = paramsArray[2].substring(paramsArray[2].lastIndexOf("=") + 1);//价格
-            String storeNo = paramsArray[3].substring(paramsArray[3].lastIndexOf("=") + 1);//门店号
-            String sign = paramsArray[4].substring(paramsArray[4].lastIndexOf("=") + 1);//签名
-            Map<String, String> map = new HashMap<>();
-            map.put("orderNo", orderNo);
-            map.put("orderTime", orderTime);
-            map.put("price", price);
-            map.put("storeNo", storeNo);
-            map.put("sign", sign);
-            return map;
-        } catch(Exception e){
-            return null;
-        }
-    }
 
     //全家验签（仅供全家使用）
     public static Boolean check2MD5(String key,String q){
@@ -240,50 +188,25 @@ public class RJCheckUtil {
     /**
      * 以下所有方法为白盒测试时候使用，不涉及业务
      */
-        //生成Q
+    //生成Q
     public static void main(String[] args) {
-        //一茶一坐
-//       String key = "3f7626939b146cc47c31daf43edc42bd";
-        String key="3a0fcda27307672fe09033b2690f32b3";
-        //德克士
-//        String key = "dbd4ae1c59837510b70411e20f3a84f9";
+        //公司信息的key
+        String key="11ff63acd50adaa562d577f3981507f0";
         Map map = new HashMap();
-        //map.put("A0","201511082001755");
-        //map.put("A1","20161110093916");
-        map.put("A0","201511082001751");
-        map.put("A1","20161110093916");
-        map.put("A2", "1.1");
-        map.put("A3", "2001");
-       // map.put("A4", "1,1");
-        String result = getQForAll(key, map,"on","ot","pr","sn");
-        //String result = getQForAll(key, map,"on");
+        //订单号
+        map.put("A0","orderNo01");
+        //订单时间
+        map.put("A1","20171128120203");
+        //金额
+        map.put("A2", "1");
+        //门店号
+        map.put("A3", "03021005");
+        //商品代码(如果没有请注释)
+        map.put("A4", "1");
+        String result = getQForAll(key, map,"on","ot","pr","sn"
+        //如果没有商品代码请注释
+        ,"sp"
+        );
         System.out.println(result);
     }
-
-    //测试验签
-//    public static void main(String[] args) {
-//        Boolean b =RJCheckUtil.checkMD5ForAll("3f7626939b146cc47c31daf43edc42bd",
-//                "b249MTUwNTI2Njg1NTIyMSZvdD0yMDE3MDkxMzA5NDA1NSZwcj0wLjEmc249c2huJnNwPTEyMzQ1Njc4OTEyMzQ1Njc4OTAmc2k9RTRGNkY3MThFNEI2ODY2RTJFNDVERUQ5MTk4NDk1QzY=");
-//        System.out.println(b);
-//    }
-
-    //客户示例方法
-//    public static void main(String[] args) {
-//        Map map = new HashMap();
-//        String key = "3f7626939b146cc47c31daf43edc42bd";
-//        map.put("A0", "abcdefghijklmn");
-//        map.put("A1", "20170912114830");
-//        map.put("A2", "100");
-//        map.put("A3", "sh001");
-//        map.put("A4", "1234567891234567890");
-//        String result = getQForAll(key, map,"on","ot","pr","sn","sp");
-//        System.out.println(result);
-//    }
-
-//    public static void main(String[] args) {
-//        String key = "93ffcaa146a08087a8f9ee73a15fcfa0";
-//        String data = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><Request><Order><OrderNo>ubm004</OrderNo><TotalAmount>1000</TotalAmount><ExtractedCode>ubm0041000</ExtractedCode></Order></Request>";
-//        System.out.println(decodeXml(key, data, "123"));
-//    }
-
 }
