@@ -248,7 +248,8 @@ public class GeneratePdfService {
                             if(kpls.getGsdm().equals("afb")){
                                 String [] to=new String[1];
                                 to[0]=kpls.getGfemail();
-                                mailService.sendHtmlMail(kpls.getGfemail(),"电子发票",content);
+                                String filePath=(String)map.get("BaseFilePath");
+                                mailService.sendAttachmentsMail(to,"电子发票",content,filePath);
                             }else{
                                 se.sendEmail(String.valueOf(kpls.getDjh()), kpls.getGsdm(), kpls.getGfemail(), "发票开具成功发送邮件", String.valueOf(kpls.getDjh()), content, "电子发票");
                             }
