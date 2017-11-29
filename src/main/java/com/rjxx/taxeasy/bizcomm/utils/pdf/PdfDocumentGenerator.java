@@ -595,6 +595,7 @@ public class PdfDocumentGenerator {
                 SFtpUtil.uploadFile(PasswordConfig.FTP_URL,PasswordConfig.FTP_PORT,PasswordConfig.FTP_USERNAME,PasswordConfig.FTP_PASSWORD,PasswordConfig.FTP_BASEPATH,PasswordConfig.FTP_FILEPATH,kpls.getJylsh()+".pdf",in);
             }
             map.put("signData", signData);
+            map.put("BaseFilePath",outputFile);
             return true;
         }catch (Exception e){
             logger.error("生成pdf出现异常：" + kpls.getKplsh(), e);

@@ -196,7 +196,9 @@ public class WeixinUtils {
         String redirect_url ="";
         if(gsdm.equals("dicos")){
             redirect_url = WeiXinConstants.DICOS_REDIRECT_URL;
-        }else {
+        }else if(gsdm.equals("gvc")){
+            redirect_url = WeiXinConstants.GVC_REDIRECT_URL;
+        }else  {
             redirect_url = WeiXinConstants.SUCCESS_REDIRECT_URL;
         }
         Map nvps = new HashMap();
