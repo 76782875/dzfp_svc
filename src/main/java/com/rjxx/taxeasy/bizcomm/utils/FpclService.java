@@ -48,8 +48,6 @@ public class FpclService {
     @Autowired
     private JylsService jylsService;
     @Autowired
-    private FpgzService fpgzService;
-    @Autowired
     private SkService skService;
     @Autowired
     private SkpService skpService;
