@@ -158,7 +158,7 @@ public class FphcService {
 				kpls2.setXgsj(jyls1.getXgsj());
 				kpls2.setSkpid(jyls1.getSkpid());
 				kpls2.setLrry(yhid);
-				kpls2.setSerialorder(jyls1.getJylsh()+jyls1.getDdh());
+				kpls2.setSerialorder(jyls1.getJylsh()+jyls1.getDdh()+jyls1.getGsdm());
 				kpls2.setXgry(yhid);
 				kpls2.setKpddm(kpls.getKpddm());
 				kpls2.setHztzdh(hztzdh);
