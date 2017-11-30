@@ -54,6 +54,8 @@ public class FphcService {
 				param3.put("kplsh", kplsh);
 				List<Kpls> kplsList = kplsService.printSingle(param3);
 				Kpls kpls = kplsList.get(0);
+				kpls.setFpztdm("02");
+				kplsService.save(kpls);
 				djh = kpls.getDjh();
 				Map param4 = new HashMap<>();
 				param4.put("djh", djh);
@@ -345,9 +347,9 @@ public class FphcService {
 		Jyxxsq jyxxsq = new Jyxxsq();
 		String jylsh = "JY" + new SimpleDateFormat("yyyyMMddHHmmssSS").format(new Date());
 		jyxxsq.setKpddm(kpls.getKpddm());
-		jyxxsq.setJylsh(tqm);
+		jyxxsq.setJylsh(jyls.getJylsh());
 		jyxxsq.setSjly("0");
-		jyxxsq.setDdh(tqm);
+		jyxxsq.setDdh(jyls.getDdh());
 		jyxxsq.setGflxr(kpls.getGflxr());
 		jyxxsq.setGfyb(kpls.getGfyb());
 		jyxxsq.setBz(kpls.getBz());
