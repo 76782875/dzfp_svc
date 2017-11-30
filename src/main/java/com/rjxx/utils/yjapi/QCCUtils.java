@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.rjxx.taxeasy.dao.QccJpaDao;
-import com.rjxx.taxeasy.dao.QympkJpaDao;
 import com.rjxx.taxeasy.domains.Qcc;
 import com.rjxx.utils.weixin.HttpClientUtil;
 import com.rjxx.utils.weixin.WeixinUtils;
@@ -14,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -132,9 +130,15 @@ public class QCCUtils {
                 if("200".equals(status)){
                     JSONArray resultList = jsonObject.getJSONArray("Result");
                     if(resultList!=null){
+                        List<Qcc> qccs = new ArrayList<>();
                         for(int i=0;i<resultList.size();i++){
                             JSONObject object= (JSONObject) resultList.get(i);
-                            nameList.add(object.getString("Name")+"|"+object.getString("CreditCode"));
+                            Map insertMap = new HashMap();
+                            insertMap.put("label", object.getString("Name") + "|" + object.getString("CreditCode"));
+                            insertMap.put("value", object.getString("Name"));
+                            nameList.add(insertMap);
+
+                            //保存信息
                             try {
                                 Qcc qcc = new Qcc();
                                 qcc.setGsmc(object.getString("Name"));
@@ -147,11 +151,12 @@ public class QCCUtils {
                                 qcc.setQyzch(object.getString("No"));
                                 qcc.setNsrsbh(object.getString("CreditCode"));
                                 qcc.setLrsj(new Date());
-                                qccJpaDao.save(qcc);
-                            } catch (ParseException e) {
+                                qccs.add(qcc);
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
                         }
+                        qccJpaDao.save(qccs);
                         resultMap = JSON.toJSONString(nameList);
                     }
                 }else {
