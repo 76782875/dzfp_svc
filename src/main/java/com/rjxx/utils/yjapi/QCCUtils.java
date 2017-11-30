@@ -135,6 +135,7 @@ public class QCCUtils {
                         for(int i=0;i<resultList.size();i++){
                             JSONObject object= (JSONObject) resultList.get(i);
                             nameList.add(object.getString("Name"));
+                            nameList.add(object.getString("CreditCode"));
                             try {
                                 Qcc qcc = new Qcc();
                                 qcc.setGsmc(object.getString("Name"));
