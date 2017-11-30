@@ -23,6 +23,9 @@ public class SkService {
     @Value("${sk_server_url:}")
     private String skServerUrl;
 
+    @Value("${skkp_server_url:}")
+    private String skkpServerUrl;
+
     /**
      * 调用税控服务开票
      *
@@ -49,11 +52,11 @@ public class SkService {
      */
     public InvoiceResponse ReCreatePdf(int kplsh) throws Exception {
 
-        if (StringUtils.isBlank(skServerUrl)) {
-            return InvoiceResponseUtils.responseError("skServerUrl为空");
+        if (StringUtils.isBlank(skkpServerUrl)) {
+            return InvoiceResponseUtils.responseError("skkpServerUrl为空");
         }
         String encryptStr = encryptSkServerParameter(kplsh + "");
-        String url = skServerUrl + "/invoice/ReCreatePdf";
+        String url = skkpServerUrl + "/invoice/ReCreatePdf";
         Map<String, String> map = new HashMap<>();
         map.put("p", encryptStr);
         String result = HttpUtils.doPost(url, map);
@@ -68,11 +71,11 @@ public class SkService {
      */
     public InvoiceResponse SkServerKP(int kplsh) throws Exception {
 
-        if (StringUtils.isBlank(skServerUrl)) {
-            return InvoiceResponseUtils.responseError("skServerUrl为空");
+        if (StringUtils.isBlank(skkpServerUrl)) {
+            return InvoiceResponseUtils.responseError("skkpServerUrl为空");
         }
         String encryptStr = encryptSkServerParameter(kplsh + "");
-        String url = skServerUrl + "/invoice/SkServerKP";
+        String url = skkpServerUrl + "/invoice/SkServerKP";
         Map<String, String> map = new HashMap<>();
         map.put("p", encryptStr);
         String result = HttpUtils.doPost(url, map);
