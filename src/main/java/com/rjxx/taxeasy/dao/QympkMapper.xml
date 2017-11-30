@@ -24,10 +24,20 @@
 		<if test="nsrsbh !=null and nsrsbh !=''">
 			and nsrsbh = #{nsrsbh}
 		</if>
-        order by id
+        order by lrsj DESC
     </select>
-    
-    
+
+	<select id="findAll" parameterType="map" resultType="qympk">
+		select * from t_qympk where yxbz = '1'
+
+		<if test="dwmc !=null and dwmc !=''">
+			and dwmc =#{dwmc}
+		</if>
+		<if test="nsrsbh !=null and nsrsbh !=''">
+			and nsrsbh = #{nsrsbh}
+		</if>
+		order by lrsj DESC
+	</select>
     
 
     <select id="findByPage" parameterType="pagination" resultType="qympk">
@@ -47,6 +57,11 @@
 		
         order by nsrsbh
     </select>
+
+	<insert id="saveQympk" parameterType="qympk" useGeneratedKeys="true">
+		replace into t_qympk(dwmc,nsrsbh,frmc,clrq,qyzt,qyzch,yxbz,lrsj) VALUES (#{dwmc}, #{nsrsbh}, #{frmc}, #{clrq},
+		#{qyzt}, #{qyzch}, #{yxbz}, #{lrsj})
+	</insert>
 
 </mapper>
 
