@@ -1530,6 +1530,21 @@ AND djh =#{djh}
          </if>
          limit 100
     </select>
-
+    <select id="findBySerialorder" parameterType="map" resultType="kpls">
+        select * from t_kpls where yxbz = '1' AND fpczlxdm = '11'
+        AND fpztdm = '00' and pdfurl is not null
+        <if test="djh != null and djh != ''">
+            and djh = #{djh}
+        </if>
+        <if test="serialorder !=null and serialorder !=''">
+            and serialorder = #{serialorder}
+        </if>
+        <if test="gsdm !=null and gsdm !=''">
+            and gsdm = #{gsdm}
+        </if>
+        <if test="jylsh !=null and jylsh !=''">
+            and jylsh = #{jylsh}
+        </if>
+    </select>
 </mapper>
 

@@ -205,6 +205,12 @@ public class KplsService {
     public List<Kpls> findAll(Map params) {
         return kplsMapper.findAll(params);
     }
+
+    public List<Kpls> findBySerialorder(Map params) {
+        return kplsMapper.findBySerialorder(params);
+    }
+
+
     public List<Kpls> findAllKpInfo(Map params) {
         return kplsMapper.findAllKpInfo(params);
     }

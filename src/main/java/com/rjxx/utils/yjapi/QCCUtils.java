@@ -161,7 +161,9 @@ public class QCCUtils {
                         QccTask qccTask = new QccTask();
                         qccTask.setQympkService(qympkService);
                         qccTask.setQympkList(qympkList);
-                        qccTask.run();
+                        Thread thread = new Thread(qccTask);
+                        thread.start();
+//                        qccTask.run();
                         //qccJpaDao.save(qccs);
                         resultMap = JSON.toJSONString(nameList);
                     }
