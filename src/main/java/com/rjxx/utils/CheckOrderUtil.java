@@ -388,6 +388,9 @@ public class CheckOrderUtil {
             if(jyxxsq.getQjzk()==null){
                 jyxxsq.setQjzk(0d);
             }
+            if(jyxxsq.getJshj().toString().equals("0") ||jyxxsq.getJshj().toString().equals("0.00")){
+                result += "订单号为" + ddh + "的订单TotalAmount不能为0\r\n";
+            }
             BigDecimal qjzk = new BigDecimal(jyxxsq.getQjzk().toString());
             if (bd2.setScale(2, BigDecimal.ROUND_HALF_UP).subtract(jshj.setScale(2, BigDecimal.ROUND_HALF_UP)).doubleValue() != 0.0) {
                 result += "订单号为" + ddh + "的订单TotalAmount，Amount，TaxAmount计算校验不通过\r\n";
