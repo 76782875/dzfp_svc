@@ -11,14 +11,11 @@ import java.util.List;
  */
 public interface XfJpaDao extends CrudRepository<Xf,Integer> {
 
-//    @Query(nativeQuery = true, value = "select * from t_xf where gsdm=?1 and yxbz='1'")
-//    Xf findOneByGsdm(String gsdm);
-
     @Query(nativeQuery = true, value = "select * from t_xf where id=?1 and yxbz='1'")
     Xf findOneById(Integer id);
 
     @Query(nativeQuery = true, value = "select * from t_xf where xfsh=?1 and yxbz='1'")
-    Xf findOneByXfsh(String xfsh);
+    List<Xf> findOneByXfsh(String xfsh);
 
     @Query(nativeQuery = true, value = "select * from t_xf where gsdm=?1 and yxbz='1'")
     List<Xf> findAllByGsdm(String gsdm);

@@ -22,10 +22,10 @@ public interface KplsJpaDao extends CrudRepository<Kpls, Integer> {
     @Query(nativeQuery = true,value = "select * from t_kpls where djh=?1 and yxbz='1'")
     Kpls findOneByDjh(Integer djh);
 
-    @Query(nativeQuery = true, value = "select * from t_kpls where xfsh=?2 and DATE_FORMAT(lrsj,'%Y%m')=?1 and yxbz='1'")
+    @Query(nativeQuery = true, value = "select count(1) from t_kpls where xfsh=?2 and DATE_FORMAT(lrsj,'%Y%m')=?1 and yxbz='1'")
     Integer countByLrsj(String date, String taxno);
 
-    @Query(nativeQuery = true, value = "select * from t_kpls where xfsh=?2 and DATE_FORMAT(lrsj,'%Y%m%d')=?1 and yxbz='1'")
+    @Query(nativeQuery = true, value = "select count(1) from t_kpls where xfsh=?2 and DATE_FORMAT(lrsj,'%Y%m%d')=?1 and yxbz='1'")
     Integer countByLrsjDay(String date, String taxno);
 }
 
