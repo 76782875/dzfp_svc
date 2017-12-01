@@ -266,6 +266,8 @@ public class Fpcxvo implements Serializable {
 	protected Integer skpid;
 	protected String kpdmc;
 
+	protected String gfsjrdz;
+
 	public Integer getKplsh() {
 		return kplsh;
 	}
@@ -910,5 +912,13 @@ public class Fpcxvo implements Serializable {
 
 	public void setSpse(Double spse) {
 		this.spse = spse;
+	}
+
+	public String getGfsjrdz() {
+		return gfsjrdz;
+	}
+
+	public void setGfsjrdz(String gfsjrdz) {
+		this.gfsjrdz = gfsjrdz;
 	}
 }
