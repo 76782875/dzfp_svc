@@ -140,7 +140,7 @@ public class QCCUtils {
                             JSONObject object= (JSONObject) resultList.get(i);
                             Map insertMap = new HashMap();
                             if(!object.getString("Name").equals("")&&!object.getString("CreditCode").equals("")){
-                                insertMap.put("label", object.getString("Name") + "|" + object.getString("CreditCode"));
+                                insertMap.put("label", object.getString("Name") + "(" + object.getString("CreditCode")+")");
                                 insertMap.put("value", object.getString("Name"));
                                 nameList.add(insertMap);
                                 Qympk qympk = new Qympk();
