@@ -185,7 +185,7 @@ public class GeneratePdfService {
                             String ss= this.netWebService(url,"CallBack",returnmessage,gsxx.getAppKey(),gsxx.getSecretKey());
                             String fwkReturnMessageStr=fwkReturnMessage(kpls);
                             logger.info("----------sap回写报文----------" + fwkReturnMessageStr);
-                            String Data= HttpUtils.doPostSoap1_2("https://my337109.sapbydesign.com/sap/bc/srt/scs/sap/yyb40eysay_managegoldentaxinvo?sap-vhost=my337109.sapbydesign.com", fwkReturnMessageStr, null,"wendy","Welcome9");
+                            String Data= HttpUtils.doPostSoap1_2(gsxx.getSapcallbackurl(), fwkReturnMessageStr, null,"Wendy","Welcome9");
                             logger.info("----------fwk平台回写返回报文--------" + ss);
                             logger.info("----------sap回写返回报文----------" + Data);
                             Fphxwsjl fphxwsjl=new Fphxwsjl();
@@ -302,7 +302,7 @@ public class GeneratePdfService {
                                             Map smsEnvelopesMap=new HashMap();
                                             smsEnvelopesMap.put("smsEnvelopes",mblist);
                                             logger.info("-----短信模板-------"+JSON.toJSONString(smsEnvelopesMap));
-                                            HttpUtils.HttpPost_Basic("http://qa.m.vorwerk.com.cn/msgcenter/message/sms",JSON.toJSONString(smsEnvelopesMap));
+                                            HttpUtils.HttpPost_Basic(gsxx.getMessageurl(),JSON.toJSONString(smsEnvelopesMap));
                                         }else{
                                         saveMsg.saveMessage(jyls.getGsdm(), djh, sjhm, rep, "SMS_34725005", "泰易电子发票");
                                         Map param3 = new HashMap<>();
@@ -314,7 +314,6 @@ public class GeneratePdfService {
                                         e.printStackTrace();
                                         System.out.println("发送短信失败" + e.getMessage());
                                     }
-
                                 }
                             } else {
                                 Map param1 = new HashMap<>();
