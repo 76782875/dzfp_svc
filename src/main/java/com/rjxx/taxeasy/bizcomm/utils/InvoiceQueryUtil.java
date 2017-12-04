@@ -44,7 +44,7 @@ public class InvoiceQueryUtil {
         List<Fpcxvo> list = new ArrayList<Fpcxvo>();
         Map params = new HashMap<String,Object>();
         params.put("gsdm",gsdm);
-        params.put("khh",tqm);
+        params.put("tqm",tqm);
         params.put("fpzt","00");
         params.put("fpczlx","11");
         params.put("fpzldm","12");
