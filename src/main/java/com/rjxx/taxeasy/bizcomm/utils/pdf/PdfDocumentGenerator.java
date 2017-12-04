@@ -539,7 +539,13 @@ public class PdfDocumentGenerator {
             imgbase64string = imgbase64string.replaceAll("\r\n", "");
             in_request.setBase64Image(imgbase64string);
             // classpath 中模板路径
+
             String template = "config/templates/invoice2.html";
+            //发票种类为纸票且设置生成纸票pdf再生成
+            Cszb cszbTmp = cszbService.getSpbmbbh(kpls.getGsdm(),kpls.getXfid(),kpls.getSkpid(),"zpsfscpdf");
+            if(cszbTmp.getCsz().equals("是") && kpls.getFpzldm().equals("01")){
+                template = "config/templates/invoice_zp.html";
+            }
             //PdfDocumentGenerator pdfGenerator = new PdfDocumentGenerator();
             // 生成pdf
             generate(map, template, in_request, outputFile);
@@ -565,6 +571,9 @@ public class PdfDocumentGenerator {
             //pdf生成jpg文件
             //先生成带章的pdf
             String template2 = "config/templates/invoice2.html";
+            if(cszbTmp.getCsz().equals("是") && kpls.getFpzldm().equals("01")){
+                template2 = "config/templates/invoice_zp.html";
+            }
             String tmpPdfPath=null;
             if(kpls.getGsdm().equals("afb")){
                 tmpPdfPath = tempPath + xfsh  + "/" + kpls.getJylsh() + "_tmp.pdf";
