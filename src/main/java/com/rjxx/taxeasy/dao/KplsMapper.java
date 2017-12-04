@@ -30,6 +30,8 @@ public interface KplsMapper {
 
     public List<Fpcxvo> findAllByParams2(Map params);
 
+    public List<Fpcxvo> findFpListByParams(Map params);
+
     public List<Fpcxvo> findByPage(Pagination pagination);
 
     public List<Fpcxvo> findByPage2(Map map);

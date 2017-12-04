@@ -94,6 +94,9 @@ public class KplsService {
 
     public List<Fpcxvo> findAllByParams2(Map params){ return kplsMapper.findAllByParams2(params);}
 
+    public List<Fpcxvo> findFpListByParams(Map params){ return kplsMapper.findFpListByParams(params);}
+
+
     public List<Fpcxvo> findByPage(Pagination pagination) {
         return kplsMapper.findByPage(pagination);
     }
