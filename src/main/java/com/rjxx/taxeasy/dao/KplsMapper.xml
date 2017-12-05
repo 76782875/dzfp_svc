@@ -384,7 +384,13 @@
         GROUP_CONCAT(a.fphm) fphm,
         max(a.kprq) kprq,
         GROUP_CONCAT(a.pdfurl) pdfurl,
-        max(a.gfmc) gfmc
+        max(a.gfmc) gfmc,
+        max(a.serialorder) serialorder,
+        GROUP_CONCAT(a.jshj) price,
+        max(b.khh) khh,
+        max(b.tqm) tqm,
+        max(a.gsdm) gsdm,
+        max(a.kplsh) kplsh
         FROM
         t_kpls a join t_jyls b on a.djh =b.djh
         LEFT JOIN t_fpzl c ON c.fpzldm = a.fpzldm
