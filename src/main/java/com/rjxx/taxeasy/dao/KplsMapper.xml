@@ -390,7 +390,8 @@
         max(b.khh) khh,
         max(b.tqm) tqm,
         max(a.gsdm) gsdm,
-        max(a.kplsh) kplsh
+        max(a.kplsh) kplsh,
+        max(a.kprq) kprq2
         FROM
         t_kpls a join t_jyls b on a.djh =b.djh
         LEFT JOIN t_fpzl c ON c.fpzldm = a.fpzldm
