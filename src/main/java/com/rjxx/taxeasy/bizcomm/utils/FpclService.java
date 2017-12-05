@@ -80,7 +80,7 @@ public class FpclService {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    public boolean kpcl1(Integer djh, String dybz) throws Exception {
+    public boolean kpcl1(Integer djh, String dybz,boolean first) throws Exception {
         Jyls jyls1 = jylsService.findOne(djh);
         Jyspmx jyspmx = new Jyspmx();
         jyspmx.setDjh(djh);
@@ -91,7 +91,12 @@ public class FpclService {
         jylsService.save(jyls1);
         Cszb cszb = cszbService.getSpbmbbh(kpls.getGsdm(), kpls.getXfid(), kpls.getSkpid(), "kpfs");
         if(cszb != null && cszb.getCsz().equals("01")){
-            skService.callService(kpls.getKplsh());
+            if(first){
+                skService.callService(kpls.getKplsh());
+            }else{
+                kpls.setFpztdm("04");
+                kplsService.save(kpls);
+            }
         }
         if(cszb != null && cszb.getCsz().equals("03")){
             if(!kpls.getFpzldm().equals("12")){
@@ -896,7 +901,8 @@ public class FpclService {
     public List<Object> zjkp(List<Jyxxsq> list, String kpfs) throws Exception {
         List<Object> result = new ArrayList<>();
         boolean sfqzfp = false;
-        for (Jyxxsq jyxxsq : list) {
+        for (int j=0;j<list.size();j++) {
+            Jyxxsq jyxxsq=list.get(j);
             // 转换明细
             Map<String, Object> params1 = new HashMap<>();
             params1.put("sqlsh", jyxxsq.getSqlsh());
@@ -964,17 +970,16 @@ public class FpclService {
                 jyxxsqService.save(jyxxsq);
                 List<Jyspmx> list2 = saveKpspmx(jyls, fpJyspmxList);
                 if (kpfs.equals("01")) {
-
                     //保存开票流水
                     Kpls kpls = saveKpls(jyls, list2, jyxxsq.getSfdy(), kpfs);
                     kpls.setKpddm(jyxxsq.getKpddm());
                     kplsService.save(kpls);
                     saveKpspmx(kpls, list2);
-                    if(kpls.getFpzldm().equals("12")){
-                         kpls.setFpztdm("04");
-                         kplsService.save(kpls);
+                    if(j==0){
+                        skService.callService(kpls.getKplsh());
                     }else{
-                         skService.callService(kpls.getKplsh());
+                        kpls.setFpztdm("04");
+                        kplsService.save(kpls);
                     }
                     result.add(kpls.getSerialorder());
                 } else if (kpfs.equals("02")) {//组件
@@ -1061,6 +1066,7 @@ public class FpclService {
         jyls1.setSqlsh(jyxxsq.getSqlsh());
         jyls1.setKhh(jyxxsq.getKhh());
         jyls1.setGfsjh(jyxxsq.getGfsjh());
+        jyls1.setGfsjrdz(jyxxsq.getGfsjrdz());
         jylsService.save(jyls1);
         return jyls1;
     }

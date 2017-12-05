@@ -201,10 +201,12 @@ public class wechatFpxxServiceImpl {
                     if (sjly.equals("4")) {
                         logger.info("微信插卡时间"+new Date());
                         wxFpxx.setWxcksj(new Date());
+                        wxFpxx.setXgsj(new Date());
                         wxfpxxJpaDao.save(wxFpxx);
                     } else if (sjly.equals("5")) {
                         logger.info("发票管家插卡时间"+new Date());
                         wxFpxx.setFpgjcksj(new Date());
+                        wxFpxx.setXgsj(new Date());
                         wxfpxxJpaDao.save(wxFpxx);
                     }
                 }

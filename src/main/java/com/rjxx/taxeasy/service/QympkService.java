@@ -1,7 +1,6 @@
 package com.rjxx.taxeasy.service;
 
 import com.rjxx.comm.mybatis.Pagination;
-import com.rjxx.taxeasy.dao.QympkJpaDao;
 import com.rjxx.taxeasy.dao.QympkMapper;
 import com.rjxx.taxeasy.domains.Qympk;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +19,13 @@ import java.util.Map;
 @Service
 public class QympkService {
 
-    @Autowired
-    private QympkJpaDao qympkJpaDao;
+   /* @Autowired
+    private QympkJpaDao qympkJpaDao;*/
 
     @Autowired
     private QympkMapper qympkMapper;
 
-    public Qympk findOne(int id) {
+    /*public Qympk findOne(int id) {
         return qympkJpaDao.findOne(id);
     }
 
@@ -36,7 +35,7 @@ public class QympkService {
 
     public void save(List<Qympk> qympkList) {
         qympkJpaDao.save(qympkList);
-    }
+    }*/
 
     public Qympk findOneByParams(Map params) {
         return qympkMapper.findOneByParams(params);
@@ -46,9 +45,16 @@ public class QympkService {
         return qympkMapper.findAllByParams(params);
     }
 
+    public List<Qympk> findAll(Map params) {
+        return qympkMapper.findAll(params);
+    }
+
     public List<Qympk> findByPage(Pagination pagination) {
         return qympkMapper.findByPage(pagination);
     }
 
+    public void saveQympk(Qympk qympk){
+        qympkMapper.saveQympk(qympk);
+    }
 }
 

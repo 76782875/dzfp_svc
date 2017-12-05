@@ -54,6 +54,10 @@ public class Fpcxvo implements Serializable {
 	protected String fpztdm;
 	protected String kpddm;
 	protected String kpcount;
+	protected String serialorder;
+	protected String price;
+	protected String khh;
+
 	/**
 	 * 交易流水时间 业务系统或电商平台生成。
 	 */
@@ -265,6 +269,8 @@ public class Fpcxvo implements Serializable {
 	@Column(name = "skpid")
 	protected Integer skpid;
 	protected String kpdmc;
+
+	protected String gfsjrdz;
 
 	public Integer getKplsh() {
 		return kplsh;
@@ -910,5 +916,37 @@ public class Fpcxvo implements Serializable {
 
 	public void setSpse(Double spse) {
 		this.spse = spse;
+	}
+
+	public String getGfsjrdz() {
+		return gfsjrdz;
+	}
+
+	public void setGfsjrdz(String gfsjrdz) {
+		this.gfsjrdz = gfsjrdz;
+	}
+
+	public String getSerialorder() {
+		return serialorder;
+	}
+
+	public void setSerialorder(String serialorder) {
+		this.serialorder = serialorder;
+	}
+
+	public String getPrice() {
+		return price;
+	}
+
+	public void setPrice(String price) {
+		this.price = price;
+	}
+
+	public String getKhh() {
+		return khh;
+	}
+
+	public void setKhh(String khh) {
+		this.khh = khh;
 	}
 }

@@ -328,7 +328,11 @@ public class Jyls  implements Serializable {
  */ 
 @Column(name="khh")
 	protected String khh;
-
+	/**
+	 * 购方收件人地址
+	 */
+	@Column(name="gfsjrdz")
+    protected  String gfsjrdz;
 
 	public Integer getDjh(){
 		return djh;
@@ -746,5 +750,12 @@ public class Jyls  implements Serializable {
 		this.khh=khh;
 	}
 
+	public String getGfsjrdz() {
+		return gfsjrdz;
+	}
+
+	public void setGfsjrdz(String gfsjrdz) {
+		this.gfsjrdz = gfsjrdz;
+	}
 }
 

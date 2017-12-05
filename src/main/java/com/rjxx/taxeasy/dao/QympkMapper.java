@@ -17,11 +17,15 @@ import java.util.Map;
 @MybatisRepository
 public interface QympkMapper {
 
-    public Qympk findOneByParams(Map params);
+     Qympk findOneByParams(Map params);
 
-    public List<Qympk> findAllByParams(Map params);
+     List<Qympk> findAllByParams(Map params);
 
-    public List<Qympk> findByPage(Pagination pagination);
+     List<Qympk> findAll(Map params);
+
+     List<Qympk> findByPage(Pagination pagination);
+
+     void saveQympk(Qympk qympk);
 
 }
 

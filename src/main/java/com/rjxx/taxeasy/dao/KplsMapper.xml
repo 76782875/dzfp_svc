@@ -375,6 +375,90 @@
         a.kplsh  DESC
     </select>
 
+
+    <select id="findFpListByParams" parameterType="map" resultType="fpcxvo">
+        SELECT
+        SUM(a.jshj) jshj,
+        a.jylsh,
+        GROUP_CONCAT(a.fpdm) fpdm,
+        GROUP_CONCAT(a.fphm) fphm,
+        max(a.kprq) kprq,
+        GROUP_CONCAT(a.pdfurl) pdfurl,
+        max(a.gfmc) gfmc,
+        max(a.serialorder) serialorder,
+        GROUP_CONCAT(a.jshj) price,
+        max(b.khh) khh,
+        max(b.tqm) tqm,
+        max(a.gsdm) gsdm,
+        max(a.kplsh) kplsh
+        FROM
+        t_kpls a join t_jyls b on a.djh =b.djh
+        LEFT JOIN t_fpzl c ON c.fpzldm = a.fpzldm
+        LEFT JOIN t_fpczlx d ON d.fpczlxdm = a.fpczlxdm
+        LEFT JOIN t_fpzt f ON f.fpztdm = a.fpztdm
+        where a.yxbz ='1'
+        and a.fpztdm not in('02','01')
+        <if test="gsdm !=null and gsdm !=''">
+            and a.gsdm = #{gsdm}
+        </if>
+        <if test="xfid !=null and xfid !=''">
+            and (a.xfid in
+            <foreach collection="xfid" item="item" index="index" open="("
+                     separator="," close=")">#{xfid[${index}]}
+            </foreach>
+            or a.xfid is null)
+        </if>
+        <if test="skpid !=null and skpid !=''">
+            and (a.skpid in
+            <foreach collection="skpid" item="item" index="index" open="("
+                     separator="," close=")">#{skpid[${index}]}
+            </foreach>
+            or a.skpid is null)
+        </if>
+        <if test="ddh != null and ddh !=''">
+            and b.ddh = #{ddh}
+        </if>
+        <if test="khh != null and khh !=''">
+            and b.khh = #{khh}
+        </if>
+        <if test="tqm != null and tqm !=''">
+            and b.tqm = #{tqm}
+        </if>
+        <if test="djh != null and djh !=''">
+            and b.djh = #{djh}
+        </if>
+        <if test="fphm != null and fphm !=''">
+            and a.fphm = #{fphm}
+        </if>
+        <if test="xfsh != null and xfsh !=''">
+            and a.xfsh = #{xfsh}
+        </if>
+        <if test="sk != null and sk !=''">
+            and a.skpid = #{sk}
+        </if>
+        <if test="fpzldm != null and fpzldm !=''">
+            and a.fpzldm = #{fpzldm}
+        </if>
+        <if test="kprqq != null and kprqq !='' and kprqz != null and kprqz !=''">
+            and a.lrsj between #{kprqq} and
+            date_add(str_to_date(#{kprqz},'%Y-%m-%d'),INTERVAL 1 day)
+        </if>
+
+        <if test="gfmc != null and gfmc != ''">
+            and a.gfmc like CONCAT('%',#{gfmc},'%')
+        </if>
+        <if test="fpdm != null and fpdm !=''">
+            and a.fpdm = #{fpdm}
+        </if>
+        <if test="fpzt != null and fpzt !=''">
+            and a.fpztdm = #{fpzt}
+        </if>
+        <if test="fpczlx != null and fpczlx !=''">
+            and a.fpczlxdm = #{fpczlx}
+        </if>
+        GROUP BY a.jylsh HAVING max(a.fpztdm) = min(a.fpztdm) and  max(a.fpztdm) ='00'
+    </select>
+
     <select id="findByPage" parameterType="pagination" resultType="fpcxvo">
         SELECT a.jshj,a.hjje,a.hjse, a.kplsh, a.fpdm,a.fphm,a.kprq,a.pdfurl,a.fpztdm,a.errorReason, b.fpzlmc,c.fpczlxmc,e.djh,
         e.jylsh,
@@ -553,6 +637,7 @@
             e.xgsj,
             e.xgry,
             e.gfsjr,
+            e.gfsjrdz,
             e.gsdm,
             e.tqm,
             e.skpid,
@@ -1529,6 +1614,21 @@ AND djh =#{djh}
          </if>
          limit 100
     </select>
-
+    <select id="findBySerialorder" parameterType="map" resultType="kpls">
+        select * from t_kpls where yxbz = '1' AND fpczlxdm = '11'
+        AND fpztdm = '00' and pdfurl is not null
+        <if test="djh != null and djh != ''">
+            and djh = #{djh}
+        </if>
+        <if test="serialorder !=null and serialorder !=''">
+            and serialorder = #{serialorder}
+        </if>
+        <if test="gsdm !=null and gsdm !=''">
+            and gsdm = #{gsdm}
+        </if>
+        <if test="jylsh !=null and jylsh !=''">
+            and jylsh = #{jylsh}
+        </if>
+    </select>
 </mapper>
 

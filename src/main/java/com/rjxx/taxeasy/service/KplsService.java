@@ -94,6 +94,9 @@ public class KplsService {
 
     public List<Fpcxvo> findAllByParams2(Map params){ return kplsMapper.findAllByParams2(params);}
 
+    public List<Fpcxvo> findFpListByParams(Map params){ return kplsMapper.findFpListByParams(params);}
+
+
     public List<Fpcxvo> findByPage(Pagination pagination) {
         return kplsMapper.findByPage(pagination);
     }
@@ -205,6 +208,12 @@ public class KplsService {
     public List<Kpls> findAll(Map params) {
         return kplsMapper.findAll(params);
     }
+
+    public List<Kpls> findBySerialorder(Map params) {
+        return kplsMapper.findBySerialorder(params);
+    }
+
+
     public List<Kpls> findAllKpInfo(Map params) {
         return kplsMapper.findAllKpInfo(params);
     }

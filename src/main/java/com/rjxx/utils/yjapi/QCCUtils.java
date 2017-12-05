@@ -5,6 +5,8 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.rjxx.taxeasy.dao.QccJpaDao;
 import com.rjxx.taxeasy.domains.Qcc;
+import com.rjxx.taxeasy.domains.Qympk;
+import com.rjxx.taxeasy.service.QympkService;
 import com.rjxx.utils.weixin.HttpClientUtil;
 import com.rjxx.utils.weixin.WeixinUtils;
 import org.slf4j.Logger;
@@ -25,6 +27,9 @@ public class QCCUtils {
 
     @Autowired
     private QccJpaDao qccJpaDao;
+
+    @Autowired
+    private QympkService qympkService;
 
     /**
      * 企查查--获取纳税人识别号
@@ -130,33 +135,36 @@ public class QCCUtils {
                 if("200".equals(status)){
                     JSONArray resultList = jsonObject.getJSONArray("Result");
                     if(resultList!=null){
-                        List<Qcc> qccs = new ArrayList<>();
+                        List<Qympk> qympkList = new ArrayList<>();
                         for(int i=0;i<resultList.size();i++){
                             JSONObject object= (JSONObject) resultList.get(i);
                             Map insertMap = new HashMap();
-                            insertMap.put("label", object.getString("Name") + "|" + object.getString("CreditCode"));
-                            insertMap.put("value", object.getString("Name"));
-                            nameList.add(insertMap);
-
-                            //保存信息
-                            try {
-                                Qcc qcc = new Qcc();
-                                qcc.setGsmc(object.getString("Name"));
-                                qcc.setFrmc(object.getString("OperName"));
+                            if(!object.getString("Name").equals("")&&!object.getString("CreditCode").equals("")){
+                                insertMap.put("label", object.getString("Name") + "(" + object.getString("CreditCode")+")");
+                                insertMap.put("value", object.getString("Name"));
+                                nameList.add(insertMap);
+                                Qympk qympk = new Qympk();
+                                qympk.setDwmc(object.getString("Name"));
+                                qympk.setFrmc(object.getString("OperName"));
                                 String startDate = object.getString("StartDate");
                                 DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                                 Date clrq = df.parse(startDate);
-                                qcc.setClrq(clrq);
-                                qcc.setQyzt(object.getString("Status"));
-                                qcc.setQyzch(object.getString("No"));
-                                qcc.setNsrsbh(object.getString("CreditCode"));
-                                qcc.setLrsj(new Date());
-                                qccs.add(qcc);
-                            } catch (Exception e) {
-                                e.printStackTrace();
+                                qympk.setClrq(clrq);
+                                qympk.setQyzt(object.getString("Status"));
+                                qympk.setQyzch(object.getString("No"));
+                                qympk.setNsrsbh(object.getString("CreditCode"));
+                                qympk.setLrsj(new Date());
+                                qympkList.add(qympk);
                             }
+
                         }
-                        qccJpaDao.save(qccs);
+                        QccTask qccTask = new QccTask();
+                        qccTask.setQympkService(qympkService);
+                        qccTask.setQympkList(qympkList);
+                        Thread thread = new Thread(qccTask);
+                        thread.start();
+//                        qccTask.run();
+                        //qccJpaDao.save(qccs);
                         resultMap = JSON.toJSONString(nameList);
                     }
                 }else {

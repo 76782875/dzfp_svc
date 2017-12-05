@@ -10,10 +10,9 @@ public class IOhelper {
     //往文件写入字符串
     public static void wirteString(String path, String context) {
         try {
-            //append为true往尾追加，flase往头追加
-            FileWriter fw = new FileWriter(path, false);
+            FileWriter fw = new FileWriter(path, true);
             BufferedWriter bw = new BufferedWriter(fw);
-            bw.write(context + "\r\n");// 往已有的文件上添加字符串
+            bw.write(context+"\n");// 往已有的文件上添加字符串
             bw.close();
             fw.close();
         } catch (IOException e) {

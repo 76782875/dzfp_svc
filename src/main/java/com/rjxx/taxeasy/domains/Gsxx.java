@@ -106,6 +106,12 @@ protected Integer kpnum;
 	@Column(name="yjmb_dm")
 	protected Integer yjmbDm;
 
+	@Column(name="messageurl")
+	protected String messageurl;
+
+	@Column(name="sapcallbackurl")
+	protected String sapcallbackurl;
+
 	public String getWsUrl() {
 	return wsUrl;
 }
@@ -248,6 +254,22 @@ public void setWsUrl(String wsUrl) {
 
 	public void setCallbackurl(String callbackurl) {
 		this.callbackurl = callbackurl;
+	}
+
+	public String getMessageurl() {
+		return messageurl;
+	}
+
+	public void setMessageurl(String messageurl) {
+		this.messageurl = messageurl;
+	}
+
+	public String getSapcallbackurl() {
+		return sapcallbackurl;
+	}
+
+	public void setSapcallbackurl(String sapcallbackurl) {
+		this.sapcallbackurl = sapcallbackurl;
 	}
 }
 

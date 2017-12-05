@@ -1,9 +1,6 @@
 package com.rjxx.taxeasy.domains;
 
 import java.util.Date;
-import javax.persistence.*;
-import org.hibernate.annotations.GenericGenerator;
-import com.rjxx.comm.json.JsonDateFormat;
 import com.rjxx.comm.json.JsonDatetimeFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 import java.io.Serializable;
@@ -15,81 +12,116 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
  * Sat Apr 01 17:29:38 CST 2017
  * @ZhangBing
  */ 
-@Entity
-@Table(name="t_qympk")
+//@Entity
+//@Table(name="t_qympk")
 public class Qympk  implements Serializable {
 
-/**
- * 企业名片库号
- */ 
-@Id
-@GeneratedValue(strategy=GenerationType.IDENTITY)
-	protected Integer id;
+
+	/**
+	 * 企业名片库号
+	 */
+	/*@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	protected Integer id;*/
 
 /**
  * 公司代码
  */ 
-@Column(name="gsdm")
+//@Column(name="gsdm")
 	protected String gsdm;
 
 /**
  * 单位名称
  */ 
-@Column(name="dwmc")
+//@Column(name="dwmc")
 	protected String dwmc;
 
 /**
  * 纳税人识别号
  */ 
-@Column(name="nsrsbh")
+//@Column(name="nsrsbh")
 	protected String nsrsbh;
+
+	/**
+	 * 法人名称
+	 */
+//	@Column(name="frmc")
+	protected String frmc;
+
+	/**
+	 * 企业类型
+	 */
+//	@Column(name="qylx")
+	protected String qylx;
+
+	/**
+	 * 企业状态
+	 */
+//	@Column(name="qyzt")
+	protected String qyzt;
+
 
 /**
  * 注册地址
  */ 
-@Column(name="zcdz")
+//@Column(name="zcdz")
 	protected String zcdz;
 
 /**
  * 注册电话
  */ 
-@Column(name="zcdh")
+//@Column(name="zcdh")
 	protected String zcdh;
 
 /**
  * 开户银行
  */ 
-@Column(name="khyh")
+//@Column(name="khyh")
 	protected String khyh;
 
 /**
  * 银行账号
  */ 
-@Column(name="yhzh")
+//@Column(name="yhzh")
 	protected String yhzh;
+
+	/**
+	 * 成立日期
+	 */
+//	@Column(name="clrq")
+	@JsonSerialize(using = JsonDatetimeFormat.class)
+	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	protected Date clrq;
+
+
+	/**
+	 * 企业注册号
+	 */
+//	@Column(name="qyzch")
+	protected String qyzch;
 
 /**
  * 有效标志
  */ 
-@Column(name="yxbz")
+//@Column(name="yxbz")
 	protected String yxbz;
 
 /**
  * 录入人员
  */ 
-@Column(name="lrry")
+//@Column(name="lrry")
 	protected Integer lrry;
 
 /**
  * 修改人员
  */ 
-@Column(name="xgry")
+//@Column(name="xgry")
 	protected Integer xgry;
 
 /**
  * 录入时间
  */ 
-@Column(name="lrsj")
+//@Column(name="lrsj")
 @JsonSerialize(using = JsonDatetimeFormat.class)
 @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	protected Date lrsj;
@@ -97,7 +129,7 @@ public class Qympk  implements Serializable {
 /**
  * 修改时间
  */ 
-@Column(name="xgsj")
+//@Column(name="xgsj")
 @JsonSerialize(using = JsonDatetimeFormat.class)
 @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	protected Date xgsj;
@@ -105,46 +137,66 @@ public class Qympk  implements Serializable {
 /**
  * 销方id
  */ 
-@Column(name="xfid")
+//@Column(name="xfid")
 	protected Integer xfid;
 
 /**
  * 购方信息id
  */ 
-@Column(name="gfxxid")
+//@Column(name="gfxxid")
 	protected Integer gfxxid;
 
 /**
  * 联系人
  */ 
-@Column(name="lxr")
+//@Column(name="lxr")
 	protected String lxr;
 
 /**
  * 联系电话
  */ 
-@Column(name="lxdh")
+//@Column(name="lxdh")
 	protected String lxdh;
 
 /**
  * 邮寄地址
  */ 
-@Column(name="yjdz")
+//@Column(name="yjdz")
 	protected String yjdz;
 
 /**
  * email地址
  */ 
-@Column(name="email")
+//@Column(name="email")
 	protected String email;
 
-
-	public Integer getId(){
-		return id;
-	}
-
-	public void setId(Integer id){
-		this.id=id;
+	@Override
+	public String toString() {
+		return "Qympk{" +
+				"gsdm='" + gsdm + '\'' +
+				", dwmc='" + dwmc + '\'' +
+				", nsrsbh='" + nsrsbh + '\'' +
+				", frmc='" + frmc + '\'' +
+				", qylx='" + qylx + '\'' +
+				", qyzt='" + qyzt + '\'' +
+				", zcdz='" + zcdz + '\'' +
+				", zcdh='" + zcdh + '\'' +
+				", khyh='" + khyh + '\'' +
+				", yhzh='" + yhzh + '\'' +
+				", clrq=" + clrq +
+				", qyzch='" + qyzch + '\'' +
+				", yxbz='" + yxbz + '\'' +
+				", lrry=" + lrry +
+				", xgry=" + xgry +
+				", lrsj=" + lrsj +
+				", xgsj=" + xgsj +
+				", xfid=" + xfid +
+				", gfxxid=" + gfxxid +
+				", lxr='" + lxr + '\'' +
+				", lxdh='" + lxdh + '\'' +
+				", yjdz='" + yjdz + '\'' +
+				", email='" + email + '\'' +
+				'}';
 	}
 
 	public String getGsdm(){
@@ -291,5 +343,44 @@ public class Qympk  implements Serializable {
 		this.email=email;
 	}
 
+	public String getFrmc() {
+		return frmc;
+	}
+
+	public void setFrmc(String frmc) {
+		this.frmc = frmc;
+	}
+
+	public String getQylx() {
+		return qylx;
+	}
+
+	public void setQylx(String qylx) {
+		this.qylx = qylx;
+	}
+
+	public String getQyzt() {
+		return qyzt;
+	}
+
+	public void setQyzt(String qyzt) {
+		this.qyzt = qyzt;
+	}
+
+	public Date getClrq() {
+		return clrq;
+	}
+
+	public void setClrq(Date clrq) {
+		this.clrq = clrq;
+	}
+
+	public String getQyzch() {
+		return qyzch;
+	}
+
+	public void setQyzch(String qyzch) {
+		this.qyzch = qyzch;
+	}
 }
 
