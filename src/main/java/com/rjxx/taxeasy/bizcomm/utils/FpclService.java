@@ -1277,10 +1277,12 @@ public class FpclService {
             String result2 = TemplateUtils.generateContent(templateName, params2);
             System.out.println(result2);
             logger.debug("封装传开票通的报文" + result2);
-            Map parms = new HashMap();
-            parms.put("gsdm", kplsVO5.getGsdm());
-            Gsxx gsxx = gsxxService.findOneByParams(parms);
-            String url = gsxx.getWsUrl();
+            //调用税控服务器url弃用公司信息表中的ws_url字段，选用csb表所设置的参数。
+            //Map parms = new HashMap();
+            //parms.put("gsdm", kplsVO5.getGsdm());
+            //Gsxx gsxx = gsxxService.findOneByParams(parms);
+            Cszb cszb2 = cszbService.getSpbmbbh(kpls.getGsdm(), kpls.getXfid(), kpls.getSkpid(), "skurl");
+            String url = cszb2.getCsz();
             resultMap = DzfphttpPost(result2, url, kplsVO5.getDjh() + "$" + kplsVO5.getKplsh(), kplsVO5.getXfsh(),
                     kplsVO5.getJylsh());
             String serialorder = this.updateKpls(resultMap);

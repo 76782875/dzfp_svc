@@ -5,13 +5,13 @@
 
     <select id="findOneByParams" parameterType="map" resultType="tqmtq">
         select * from t_tqmtq where yxbz = '1'
-        <if test="gsdm != null">
+        <if test="gsdm != null and gsdm != ''">
             and gsdm = #{gsdm}
         </if>
-         <if test="tqm != null">
+         <if test="tqm != null and tqm != ''">
             and ddh = #{tqm}
         </if>
-         <if test="je != null">
+         <if test="je != null and je != ''">
             and zje = #{je}
         </if>
         limit 1

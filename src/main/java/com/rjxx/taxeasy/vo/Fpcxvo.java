@@ -57,6 +57,7 @@ public class Fpcxvo implements Serializable {
 	protected String serialorder;
 	protected String price;
 	protected String khh;
+	protected String kprq2;
 
 	/**
 	 * 交易流水时间 业务系统或电商平台生成。
@@ -948,5 +949,13 @@ public class Fpcxvo implements Serializable {
 
 	public void setKhh(String khh) {
 		this.khh = khh;
+	}
+
+	public String getKprq2() {
+		return kprq2;
+	}
+
+	public void setKprq2(String kprq2) {
+		this.kprq2 = kprq2;
 	}
 }
