@@ -661,7 +661,7 @@
             FROM
             t_kpls kp
             join t_jyls jy on jy.djh = kp.djh
-            WHERE 1=1
+            WHERE kp.yxbz ='1'
         <if test="gsdm !=null and gsdm !=''">
             and kp.gsdm = #{gsdm}
         </if>
@@ -709,7 +709,7 @@
             and kp.printflag = #{printflag}
         </if>
         <if test="gfmc != null and gfmc !=''">
-            and kp.gfmc like CONCAT('%',#{gfmc},'%')
+            and kp.gfmc like CONCAT(#{gfmc},'%')
         </if>
         <if test="fpdm != null and fpdm !=''">
             and kp.fpdm = #{fpdm}
@@ -767,7 +767,7 @@
         FROM
         t_kpls kp
         join t_jyls jy on jy.djh = kp.djh
-        WHERE 1=1
+        WHERE kp.yxbz ='1'
         <if test="gsdm !=null and gsdm !=''">
             and kp.gsdm = #{gsdm}
         </if>
@@ -816,7 +816,7 @@
             and kp.printflag = #{printflag}
         </if>
         <if test="gfmc != null and gfmc !=''">
-            and kp.gfmc like CONCAT('%',#{gfmc},'%')
+            and kp.gfmc like CONCAT(#{gfmc},'%')
         </if>
         <if test="fpdm != null and fpdm !=''">
             and kp.fpdm = #{fpdm}
