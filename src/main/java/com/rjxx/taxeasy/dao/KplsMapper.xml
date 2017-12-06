@@ -675,6 +675,9 @@
         <if test="xfid2 !=null and xfid2 !=''">
             and kp.xfid = #{xfid2}
         </if>
+        <if test="lrry !=null and lrry !=''">
+            and kp.lrry = #{lrry}
+        </if>
         <if test="skpid !=null and skpid !=''">
             and (kp.skpid in
             <foreach collection="skpid" item="item" index="index" open="("
@@ -777,6 +780,9 @@
         </if>
         <if test="xfid2 !=null and xfid2 !=''">
             and kp.xfid = #{xfid2}
+        </if>
+        <if test="lrry !=null and lrry !=''">
+            and kp.lrry = #{lrry}
         </if>
         <if test="skpid !=null and skpid !=''">
             and (kp.skpid in
