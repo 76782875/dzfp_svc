@@ -594,7 +594,8 @@
 
 	<update id="updateGfxx" parameterType="map">
 	  UPDATE t_jyxxsq set gfsh=#{gfsh},gfmc=#{gfmc},gfemail=#{email},gfdh=#{gfdh},gfdz=#{gfdz},sffsyj=#{sffsyj},
-	  gfyh=#{gfyh},gfyhzh=#{gfyhzh},sjly=#{sjly},openid=#{openid},gflx=#{gflx} where gsdm=#{gsdm} and tqm=#{tqm}
+	  gfyh=#{gfyh},gfyhzh=#{gfyhzh},sjly=#{sjly},openid=#{openid},
+	  gflx=#{gflx},sjly=#{sjly},openid=#{openid},gflx=#{gflx} where gsdm=#{gsdm} and tqm=#{tqm}
 	</update>
 </mapper>
 
