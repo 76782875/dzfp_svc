@@ -1281,7 +1281,7 @@ public class FpclService {
             //Map parms = new HashMap();
             //parms.put("gsdm", kplsVO5.getGsdm());
             //Gsxx gsxx = gsxxService.findOneByParams(parms);
-            Cszb cszb2 = cszbService.getSpbmbbh(kpls.getGsdm(), kpls.getXfid(), kpls.getSkpid(), "spbmbbh");
+            Cszb cszb2 = cszbService.getSpbmbbh(kpls.getGsdm(), kpls.getXfid(), kpls.getSkpid(), "skurl");
             String url = cszb2.getCsz();
             resultMap = DzfphttpPost(result2, url, kplsVO5.getDjh() + "$" + kplsVO5.getKplsh(), kplsVO5.getXfsh(),
                     kplsVO5.getJylsh());
