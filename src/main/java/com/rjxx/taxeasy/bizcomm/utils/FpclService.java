@@ -702,6 +702,7 @@ public class FpclService {
     int i=2;
     public Map DzfphttpPost(String sendMes, String url, String key, String xfsh, String jylsh) throws Exception {
         i--;
+        logger.info("--------i的值-----------"+i);
         HttpPost httpPost = new HttpPost(url);
         CloseableHttpResponse response = null;
         CloseableHttpClient httpClient = HttpClients.createDefault();
@@ -749,6 +750,7 @@ public class FpclService {
             int str = kplsh.indexOf("$");
             if (str != -1) {
                 kplsh = kplsh.substring(0, str);
+                System.out.println("传入开票流水号:" + kplsh);
             }
             Kpls kpls=kplsService.findOne(Integer.parseInt(kplsh));
             if(i!=0) {
