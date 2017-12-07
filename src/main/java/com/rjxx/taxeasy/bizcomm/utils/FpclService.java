@@ -753,6 +753,7 @@ public class FpclService {
             Kpls kpls=kplsService.findOne(Integer.parseInt(kplsh));
             if (kpls.getGsdm().equals("wills")) {
                     if(j==1) {
+                        logger.info("-------递归次数--------"+j);
                         this.DzfphttpPost(sendMes, url, key, xfsh, jylsh,j);
                     }
             }
