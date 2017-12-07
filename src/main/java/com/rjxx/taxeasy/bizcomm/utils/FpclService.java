@@ -746,7 +746,7 @@ public class FpclService {
                             "(服务端)发送服务器失败" + resultMap.get("RETURNMSG").toString(), 2, xfsh, jylsh);
                 }
             }
-            int str = key.indexOf("$");
+            int str = kplsh.indexOf("$");
             if (str != -1) {
                 kplsh = key.substring(0, str);
             }
