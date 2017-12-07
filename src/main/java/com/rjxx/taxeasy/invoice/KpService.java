@@ -34,17 +34,10 @@ public class KpService {
 
     /**
      * 交易数据上传service
-     *
-     * @param AppId
-     * @param Sign
-     * @param Operation
-     * @param OrderData
-     * @return
      */
-    public String uploadOrderData(final String AppId, final String Sign, final String Operation,
-                                  final String OrderData) {
+    public String uploadOrderData(String gsdm, Map map, String Operation) {
         try {
-            String result = dealOrder(AppId, Sign, Operation, OrderData);
+            String result = dealOrder(gsdm, map, Operation);
             return result;
         } catch (Exception e) {
             e.printStackTrace();
@@ -54,36 +47,16 @@ public class KpService {
 
     /**
      * 处理上传的交易信息
-     *
-     * @param AppId
-     * @param Sign
-     * @param Operation
-     * @param OrderData
-     * @return
      */
-    public String dealOrder(String AppId, String Sign, String Operation, String OrderData) {
-        String result = "";
-        Map tempMap = new HashMap();
-        tempMap.put("appkey", AppId);
-        Gsxx gsxxBean = gsxxservice.findOneByParams(tempMap);
-        if (gsxxBean == null) {
-            return ResponeseUtils.error("公司信息未找到:" + AppId + "," + Sign);
-        }
-        // 校验数据是否被篡改过
-        String key = gsxxBean.getSecretKey();
-        String signSourceData = "data=" + OrderData + "&key=" + key;
-        String newSign = DigestUtils.md5Hex(signSourceData);
-        if (!Sign.equals(newSign)) {
-            return ResponeseUtils.error("签名不通过");
-        }
-        String gsdm = gsxxBean.getGsdm();
-         if (Operation.equals("01")) {
-            return dealOrder01.execute(gsdm, OrderData, Operation);
+    public String dealOrder(String gsdm, Map map, String Operation) {
+        if (Operation.equals("01")) {
+            return dealOrder01.execute(gsdm, map, Operation);
         } else if (Operation.equals("02")) {
-            return dealOrder02.execute(gsdm, OrderData, Operation);
+            return dealOrder02.execute(gsdm, map, Operation);
         } else if (Operation.equals("04")) {
-            return dealOrder04.execute(gsdm, OrderData, Operation);
+            return dealOrder04.execute(gsdm, map,Operation);
+        } else {
+            return ResponeseUtils.error("未知的操作方式");
         }
-        return result;
     }
 }
