@@ -737,7 +737,7 @@ public class FpclService {
                 if (pos != -1) {
                     key = key.substring(0, pos);
                 }
-                if (resultMap.get("RETURNCODE").equals("0")) {
+                if (resultMap.get("RETURNCODE").equals("0000")) {
                     dataOperate.saveLog(Integer.valueOf(key), "91", "1", "Send:send",
                             "(服务端)发送服务器成功" + resultMap.get("RETURNMSG").toString(), 2, xfsh, jylsh);
                 } else {
@@ -751,11 +751,13 @@ public class FpclService {
                 System.out.println("传入开票流水号:" + kplsh);
             }
             Kpls kpls=kplsService.findOne(Integer.parseInt(kplsh));
-            if (kpls.getGsdm().equals("wills")) {
-                    if(j==1) {
-                        logger.info("-------递归次数--------"+j);
-                        this.DzfphttpPost(sendMes, url, key, xfsh, jylsh,j);
+            if (resultMap.get("RETURNCODE").equals("0000")) {
+                if (kpls.getGsdm().equals("wills")) {
+                    if (j == 1) {
+                        logger.info("-------递归次数--------" + j);
+                        this.DzfphttpPost(sendMes, url, key, xfsh, jylsh, j);
                     }
+                }
             }
         } catch (IOException e) {
             int pos = key.indexOf("$");
