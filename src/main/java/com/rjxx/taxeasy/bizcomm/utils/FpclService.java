@@ -699,10 +699,10 @@ public class FpclService {
      * @return
      * @throws Exception
      */
-    int i=2;
+    int x=2;
     public Map DzfphttpPost(String sendMes, String url, String key, String xfsh, String jylsh) throws Exception {
-        i--;
-        logger.info("--------i的值-----------"+i);
+        x--;
+        logger.info("--------i的值-----------"+x);
         HttpPost httpPost = new HttpPost(url);
         CloseableHttpResponse response = null;
         CloseableHttpClient httpClient = HttpClients.createDefault();
@@ -749,11 +749,11 @@ public class FpclService {
             }
             int str = kplsh.indexOf("$");
             if (str != -1) {
-                kplsh = kplsh.substring(0, str);
+                kplsh = kplsh.substring(str+1);
                 System.out.println("传入开票流水号:" + kplsh);
             }
             Kpls kpls=kplsService.findOne(Integer.parseInt(kplsh));
-            if(i!=0) {
+            if(x!=0) {
                 if (kpls.getGsdm().equals("wills")) {
                     this.DzfphttpPost(sendMes, url, key, xfsh, jylsh);
                 }
