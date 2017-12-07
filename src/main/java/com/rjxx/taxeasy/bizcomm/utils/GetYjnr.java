@@ -3,6 +3,7 @@ package com.rjxx.taxeasy.bizcomm.utils;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * 取得邮件内容
@@ -20,12 +21,17 @@ public class GetYjnr {
             if(key.equals("pdfurls")){
                 List<String> pdfUrlList=(List<String>)entry.getValue();
                 for (String pdfUrl : pdfUrlList) {
-                    pdf+= "<a href='" + pdfUrl + "'>" + null2Wz(pdfUrl) + "</a><br>";
+                    pdf+= "<a href='" + pdfUrl + "'>" + null2Wz(pdfUrl) + "</a><br/>";
                 }
                 content=content.replace(key,pdf);
             }else if(key.equals("infoUrl")){
                 String infoUrl = entry.getValue().toString();
-               String info = "<a href='" + infoUrl + "'>" + null2Wz(infoUrl) + "</a><br>";
+                String info="";
+                if(infoUrl.equals("")){
+                    info="";
+                }else {
+                    info = "电子发票详情页面:<br/><a href='" + infoUrl + "'>" + null2Wz(infoUrl) + "</a><br/>";
+                }
                 content=content.replace(key,info);
             }else {
                 String value=(String)entry.getValue();

@@ -233,13 +233,15 @@ public class GeneratePdfService {
                         Yjmb yjmb = yjmbService.findOne(yjmbDm);
                         String yjmbcontent = yjmb.getYjmbNr();
                         String q="";
+                        String infoUrl="";
                         List<Fpcxvo> fpcxvos = invoiceQueryUtil.getInvoiceListByDdh(gsxx.getGsdm(), jyls.getDdh());
                         if(fpcxvos.get(0).getTqm()!=null && !fpcxvos.get(0).getTqm().equals("")){
                             q=fpcxvos.get(0).getTqm();
+                            infoUrl="http://fpjtest.datarj.com/einv/info?g="+gsxx.getGsdm()+"&q="+q;
                         }else if(fpcxvos.get(0).getKhh()!=null&&!fpcxvos.get(0).getKhh().equals("")){
                             q=fpcxvos.get(0).getKhh();
+                            infoUrl="http://fpjtest.datarj.com/einv/info?g="+gsxx.getGsdm()+"&q="+q;
                         }
-                        String infoUrl="http://fpjtest.datarj.com/einv/info?g="+gsxx.getGsdm()+"&q="+q;
                         Map csmap = new HashMap();
                         csmap.put("ddh", jyls.getDdh());
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
