@@ -712,7 +712,7 @@ public class FpclService {
         String strMessage = "";
         BufferedReader reader = null;
         String kplsh=null;
-        key=kplsh;
+        kplsh=key;
         StringBuffer buffer = new StringBuffer();
         Map resultMap = null;
         try {
@@ -748,7 +748,7 @@ public class FpclService {
             }
             int str = kplsh.indexOf("$");
             if (str != -1) {
-                kplsh = key.substring(0, str);
+                kplsh = kplsh.substring(0, str);
             }
             Kpls kpls=kplsService.findOne(Integer.parseInt(kplsh));
             if(i!=0) {
