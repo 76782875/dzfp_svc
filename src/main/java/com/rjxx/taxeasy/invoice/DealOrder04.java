@@ -23,7 +23,7 @@ import java.util.*;
  */
 
 @Service("dealOrder04-svc")
-public class DealOrder04 implements IDealOrder{
+public class DealOrder04 implements SVCDealOrder{
     @Autowired
     private SkpService skpservice;
     @Autowired
@@ -48,32 +48,30 @@ public class DealOrder04 implements IDealOrder{
     private GsxxService gsxxService;
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
-    @Override
-    public String execute(String gsdm, String orderData, String Operation) {
 
-            Map inputMap = dealOperation04(gsdm, orderData);
-            logger.info("++++++++数据++++++++++"+orderData);
-            Double TotalAmount = Double.parseDouble(String.valueOf(inputMap.get("TotalAmount")));//价税合计
-            String CNDNCode = String.valueOf(inputMap.get("CNDNCode"));//原发票代码
-            String CNDNNo = String.valueOf(inputMap.get("CNDNNo"));//原发票号码
-            String InvType = String.valueOf(inputMap.get("InvType"));//发票种类
-            String SerialNumber=null;
+    @Override
+    public String execute(String gsdm,Map mp,String operation) {
+        Kphc kphc = (Kphc) mp.get("kphc");
+        Double TotalAmount = kphc.getTotalAmount();//价税合计
+        String CNDNCode =kphc.getCNDNCode();
+        String CNDNNo = kphc.getCNDNNo();//原发票号码
+        String InvType = kphc.getInvType();//发票种类
+        String SerialNumber=null;
             String ServiceType=null;
             String OrderNumber=null;
             String CNNoticeNo=null;
             if(gsdm.equals("Family")){
-                String ExtractCode = String.valueOf(inputMap.get("ExtractCode"));//发票种类
+                String ExtractCode = kphc.getExtractCode();//发票种类
                 ServiceType="1";//全家写死是1
                 SerialNumber = ExtractCode;//全家tqm作为交易流水号
                 OrderNumber=ExtractCode;
             }else{
-                String clientNO = String.valueOf(inputMap.get("ClientNO"));//开票点编号
-                ServiceType = String.valueOf(inputMap.get("ServiceType"));//发票业务类型
-                SerialNumber = String.valueOf(inputMap.get("SerialNumber"));//序列号
-                OrderNumber=String.valueOf(inputMap.get("OrderNumber"));//订单号
-                CNNoticeNo = String.valueOf(inputMap.get("CNNoticeNo"));//专票红字通知单号
+                String clientNO = kphc.getClientNO();//开票点编号
+                ServiceType = kphc.getServiceType();//发票业务类型
+                SerialNumber = kphc.getSerialNumber();//序列号
+                OrderNumber=kphc.getOrderNumber();//订单号
+                CNNoticeNo = kphc.getCNNoticeNo();//专票红字通知单号
             }
-//            Result04 result04 = new Result04();
         DefaultResult result04 = new DefaultResult();
         try {
             Kpls parms = new Kpls();

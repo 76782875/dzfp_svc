@@ -699,7 +699,9 @@ public class FpclService {
      * @return
      * @throws Exception
      */
+    int i=2;
     public Map DzfphttpPost(String sendMes, String url, String key, String xfsh, String jylsh) throws Exception {
+        i--;
         HttpPost httpPost = new HttpPost(url);
         CloseableHttpResponse response = null;
         CloseableHttpClient httpClient = HttpClients.createDefault();
@@ -740,6 +742,17 @@ public class FpclService {
                 } else {
                     dataOperate.saveLog(Integer.valueOf(key), "92", "1", "Send:send",
                             "(服务端)发送服务器失败" + resultMap.get("RETURNMSG").toString(), 2, xfsh, jylsh);
+                }
+            }
+            int str = key.indexOf("$");
+            String kplsh=null;
+            if (str != -1) {
+                kplsh = key.substring(0, str);
+            }
+            Kpls kpls=kplsService.findOne(Integer.parseInt(kplsh));
+            if(i!=0) {
+                if (kpls.getGsdm().equals("wills")) {
+                    this.DzfphttpPost(sendMes, url, key, xfsh, jylsh);
                 }
             }
         } catch (IOException e) {

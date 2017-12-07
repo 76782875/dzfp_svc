@@ -27,7 +27,7 @@ import java.util.*;
  * Created by Administrator on 2017-05-18.
  */
 @Service("dealOrder01-svc")
-public class DealOrder01 implements IDealOrder {
+public class DealOrder01 implements SVCDealOrder {
 
 
     @Autowired
@@ -63,9 +63,9 @@ public class DealOrder01 implements IDealOrder {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    public String execute(String gsdm, String OrderData, String Operation) {
+    public String execute(String gsdm, Map map, String Operation) {
         String result = "";
-        Map map = dealOperation01(gsdm, OrderData);
+//        Map map = dealOperation01(gsdm, OrderData);
         List<Jyxxsq> jyxxsqList = (List) map.get("jyxxsqList");
         DefaultResult defaultResult = new DefaultResult();
         // 处理一些必须由平台抽取的数据

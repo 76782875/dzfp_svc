@@ -17,6 +17,18 @@
         limit 1
     </select>
 
+    <select id="findDefaultOneByParams" parameterType="map" resultType="roles">
+        select * from roles where yxbz = '1'
+        and lrry is null
+        <if test="name != null">
+            and name = #{name}
+        </if>
+        <if test="id != null">
+            and id != #{id}
+        </if>
+        limit 1
+    </select>
+
     <select id="findAllByParams" parameterType="map" resultType="roles">
         select * from roles where yxbz = '1' and lrry in (select id from t_yh where gsdm = #{gsdm})
         <if test="orderBy != null">
