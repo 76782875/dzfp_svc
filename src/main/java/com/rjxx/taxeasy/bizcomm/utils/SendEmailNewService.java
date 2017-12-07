@@ -49,7 +49,7 @@ public class SendEmailNewService {
             sb.append("<a href='" + pdfUrl + "'>" + null2Wz(pdfUrl) + "</a><br>");
         }
         sb.append("请及时下载您的发票。<br><br>");
-        sb.append("提示:苹果浏览器无法显示发票章,只能下载pdf显示<br>");
+        /*sb.append("提示:苹果浏览器无法显示发票章,只能下载pdf显示<br>");*/
         sb.append("<br/><br/>");
         sb.append(xfmc);
         sb.append("<br/>");
