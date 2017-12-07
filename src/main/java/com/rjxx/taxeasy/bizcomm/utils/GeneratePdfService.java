@@ -199,8 +199,8 @@ public class GeneratePdfService {
                             fphxwsjl.setStartdate(new Date());
                             fphxwsjl.setSecretKey("");
                             fphxwsjl.setSign("");
-                            fphxwsjl.setWsurl(url);
-                            fphxwsjl.setReturncontent(ss);
+                            fphxwsjl.setWsurl(gsxx.getSapcallbackurl());
+                            fphxwsjl.setReturncontent(fwkReturnMessageStr);
                             fphxwsjl.setReturnmessage(Data);
                             fphxwsjlService.save(fphxwsjl);
                         }
