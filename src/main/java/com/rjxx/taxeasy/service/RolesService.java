@@ -54,5 +54,10 @@ public class RolesService {
     public List<Roles> findBySql(Map params) {
         return rolesMapper.findBySql(params);
     }
+
+    public Roles findDefaultOneByParams(Map params) {
+        return rolesMapper.findDefaultOneByParams(params);
+    }
+
 }
 

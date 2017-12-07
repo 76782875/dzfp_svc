@@ -25,5 +25,7 @@ public interface RolesMapper {
     public List<RolesVo> findByPage(Pagination pagination);
     public List<Roles> findBySql(Map params);
 
+    public Roles findDefaultOneByParams(Map params);
+
 }
 
