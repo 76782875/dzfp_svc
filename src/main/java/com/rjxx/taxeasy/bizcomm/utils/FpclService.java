@@ -711,6 +711,8 @@ public class FpclService {
         httpPost.addHeader("Content-Type", "text/xml");
         String strMessage = "";
         BufferedReader reader = null;
+        String kplsh=null;
+        key=kplsh;
         StringBuffer buffer = new StringBuffer();
         Map resultMap = null;
         try {
@@ -745,7 +747,6 @@ public class FpclService {
                 }
             }
             int str = key.indexOf("$");
-            String kplsh=null;
             if (str != -1) {
                 kplsh = key.substring(0, str);
             }
