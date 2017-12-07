@@ -699,10 +699,8 @@ public class FpclService {
      * @return
      * @throws Exception
      */
-    int x=2;
-    public Map DzfphttpPost(String sendMes, String url, String key, String xfsh, String jylsh) throws Exception {
-        x--;
-        logger.info("--------i的值-----------"+x);
+    public Map DzfphttpPost(String sendMes, String url, String key, String xfsh, String jylsh,int j) throws Exception {
+        j--;
         HttpPost httpPost = new HttpPost(url);
         CloseableHttpResponse response = null;
         CloseableHttpClient httpClient = HttpClients.createDefault();
@@ -753,10 +751,10 @@ public class FpclService {
                 System.out.println("传入开票流水号:" + kplsh);
             }
             Kpls kpls=kplsService.findOne(Integer.parseInt(kplsh));
-            if(x!=0) {
-                if (kpls.getGsdm().equals("wills")) {
-                    this.DzfphttpPost(sendMes, url, key, xfsh, jylsh);
-                }
+            if (kpls.getGsdm().equals("wills")) {
+                    if(j==1) {
+                        this.DzfphttpPost(sendMes, url, key, xfsh, jylsh,j);
+                    }
             }
         } catch (IOException e) {
             int pos = key.indexOf("$");
@@ -1299,8 +1297,9 @@ public class FpclService {
             //Gsxx gsxx = gsxxService.findOneByParams(parms);
             Cszb cszb2 = cszbService.getSpbmbbh(kpls.getGsdm(), kpls.getXfid(), kpls.getSkpid(), "skurl");
             String url = cszb2.getCsz();
+            int j=2;
             resultMap = DzfphttpPost(result2, url, kplsVO5.getDjh() + "$" + kplsVO5.getKplsh(), kplsVO5.getXfsh(),
-                    kplsVO5.getJylsh());
+                    kplsVO5.getJylsh(),j);
             String serialorder = this.updateKpls(resultMap);
             resultxml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
                     "<Responese>\n" +
