@@ -23,7 +23,11 @@ public class GetYjnr {
                     pdf+= "<a href='" + pdfUrl + "'>" + null2Wz(pdfUrl) + "</a><br>";
                 }
                 content=content.replace(key,pdf);
-            }else{
+            }else if(key.equals("infoUrl")){
+                String infoUrl = entry.getValue().toString();
+               String info = "<a href='" + infoUrl + "'>" + null2Wz(infoUrl) + "</a><br>";
+                content=content.replace(key,info);
+            }else {
                 String value=(String)entry.getValue();
                 content=content.replace(key,value);
             }
