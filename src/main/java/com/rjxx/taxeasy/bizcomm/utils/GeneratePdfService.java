@@ -6,6 +6,7 @@ import com.rjxx.taxeasy.bizcomm.utils.pdf.PdfDocumentGenerator;
 import com.rjxx.taxeasy.bizcomm.utils.pdf.TwoDimensionCode;
 import com.rjxx.taxeasy.domains.*;
 import com.rjxx.taxeasy.service.*;
+import com.rjxx.taxeasy.vo.Fpcxvo;
 import com.rjxx.taxeasy.vo.messageParams;
 import com.rjxx.taxeasy.vo.smsEnvelopes;
 import com.rjxx.utils.SignUtils;
@@ -82,6 +83,9 @@ public class GeneratePdfService {
 
     @Autowired
     private ImputationCardUtil imputationCardUtil;
+
+    @Autowired
+    private InvoiceQueryUtil invoiceQueryUtil;
 
     /**
      * 销方省份名称
@@ -228,12 +232,21 @@ public class GeneratePdfService {
                         Integer yjmbDm = gsxx.getYjmbDm();
                         Yjmb yjmb = yjmbService.findOne(yjmbDm);
                         String yjmbcontent = yjmb.getYjmbNr();
+                        String q="";
+                        List<Fpcxvo> fpcxvos = invoiceQueryUtil.getInvoiceListByDdh(gsxx.getGsdm(), jyls.getDdh());
+                        if(fpcxvos.get(0).getTqm()!=null && !fpcxvos.get(0).getTqm().equals("")){
+                            q=fpcxvos.get(0).getTqm();
+                        }else if(fpcxvos.get(0).getKhh()!=null&&!fpcxvos.get(0).getKhh().equals("")){
+                            q=fpcxvos.get(0).getKhh();
+                        }
+                        String infoUrl="http://fpjtest.datarj.com/einv/info?g="+gsxx.getGsdm()+"&q="+q;
                         Map csmap = new HashMap();
                         csmap.put("ddh", jyls.getDdh());
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
                         csmap.put("ddrq", sdf.format(jyxxsq.getDdrq()));
                         csmap.put("pdfurls", pdfUrlList);
                         csmap.put("xfmc", jyls.getXfmc());
+                        csmap.put("infoUrl",infoUrl);
                         SimpleDateFormat sdfw = new SimpleDateFormat("dd MMMM,yyyy",
                                 Locale.ENGLISH);
                         csmap.put("ywdqrq", sdfw.format(new Date()));
