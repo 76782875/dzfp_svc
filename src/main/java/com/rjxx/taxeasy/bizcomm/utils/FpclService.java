@@ -861,7 +861,9 @@ public class FpclService {
                 resultMap.put("FP_HM", child.elementText("FP_HM"));// 发票号码
                 resultMap.put("FP_MW", child.element("FP_MW").getText());// 发票密文
                 resultMap.put("JYM", child.element("JYM").getText());// 校验码
-                resultMap.put("EWM", child.element("EWM").getText());// 二维码
+                if(null!=child.element("EWM")){
+                    resultMap.put("EWM", child.element("EWM").getText());// 二维码
+                }
                 resultMap.put("JQBH", child.element("JQBH").getText());// 机器编号
                 resultMap.put("KPRQ", child.element("KPRQ").getText());
                 resultMap.put("RETURNCODE", child.elementText("RETURNCODE"));
@@ -1158,7 +1160,10 @@ public class FpclService {
                 String kprq = resultMap.get("KPRQ").toString();
                 String mwq = resultMap.get("FP_MW").toString();
                 String jym = resultMap.get("JYM").toString();
-                String ewm = resultMap.get("EWM").toString();
+                String ewm=null;
+                if(null!=resultMap.get("EWM")){
+                    ewm = resultMap.get("EWM").toString();
+                }
                 String jqbh = resultMap.get("JQBH").toString();
                 kpls.setFpdm(fpdm);
                 kpls.setFphm(fphm);
