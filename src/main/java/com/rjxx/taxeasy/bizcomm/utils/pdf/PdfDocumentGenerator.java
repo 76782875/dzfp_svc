@@ -591,7 +591,7 @@ public class PdfDocumentGenerator {
 
             //由于javasafeengine的使用jar过老，替换新的生成摘要信息的方法,2016-09-18，以pdf是否有图片签章为区别
             //String signData = SafeEngine.Sign(outputFile, jyls);
-            String keyStorePath = ResourceLoader.getPath("config/keys") + "/tydzfp.jks";
+            String keyStorePath = ResourceLoader.getPath(PasswordConfig.keyStorePath);
             String sAlias = PasswordConfig.PDF_SIGNUSER;//私钥别名；  Rjxx1234 sKeyPin私钥密码
             String signData = CertificateUtils.signFileToBase64(outputFile, keyStorePath, sAlias, PasswordConfig.PDF_SIGNPASSWORD);
             map.put("outputFile", serverUrl + outputFile_AbsolutePath);
