@@ -65,4 +65,10 @@ public class PasswordConfig {
         PDF_SIGNPASSWORD = pdf_signpassword;
     }
 
+    public static  String keyStorePath;//pdf证书路径
+
+    @Value("${pdf_keyStorePath}")
+    public void  setKeyStorePath(String pdf_keyStorePath){
+        keyStorePath=pdf_keyStorePath;
+    }
 }
