@@ -255,7 +255,7 @@ public class GeneratePdfService {
                         // 二维码生成部分
                         TwoDimensionCode handler = new TwoDimensionCode();
                         ByteArrayOutputStream output = new ByteArrayOutputStream();
-                        handler.encoderQRCode("http://fpjtest.datarj.com/einv/tq?q="+listkpls.get(0).getSerialorder(), output);// 二维码中数据的来源
+                        handler.encoderQRCode("http://fpj.datarj.com/einv/tq?q="+listkpls.get(0).getSerialorder(), output);// 二维码中数据的来源
                         String imgbase64string = org.apache.commons.codec.binary.Base64.encodeBase64String(output.toByteArray());
                         csmap.put("ewm", "data:image/jpeg;base64,"+imgbase64string);
                         String content = getYjnr.getFpkjYj(csmap, yjmbcontent);
