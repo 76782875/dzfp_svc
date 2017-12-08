@@ -51,7 +51,7 @@ public class DealOrder04 implements SVCDealOrder{
 
     @Override
     public String execute(String gsdm,Map mp,String operation) {
-        Kphc kphc = (Kphc) mp.get("kphc");
+        Kphc kphc = (Kphc) mp.get("Kphc");
         Double TotalAmount = kphc.getTotalAmount();//价税合计
         String CNDNCode =kphc.getCNDNCode();
         String CNDNNo = kphc.getCNDNNo();//原发票号码
