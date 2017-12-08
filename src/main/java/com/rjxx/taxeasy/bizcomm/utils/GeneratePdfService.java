@@ -30,6 +30,7 @@ import org.dom4j.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import sun.misc.BASE64Encoder;
 
@@ -86,7 +87,8 @@ public class GeneratePdfService {
 
     @Autowired
     private InvoiceQueryUtil invoiceQueryUtil;
-
+    @Value("${emailInfoUrl:}")
+    private String emailInfoUrl;
     /**
      * 销方省份名称
      */
@@ -237,10 +239,10 @@ public class GeneratePdfService {
                         List<Fpcxvo> fpcxvos = invoiceQueryUtil.getInvoiceListByDdh(gsxx.getGsdm(), jyls.getDdh());
                         if(fpcxvos.get(0).getTqm()!=null && !fpcxvos.get(0).getTqm().equals("")){
                             q=fpcxvos.get(0).getTqm();
-                            infoUrl="http://fpjtest.datarj.com/einv/info?g="+gsxx.getGsdm()+"&q="+q;
+                            infoUrl=emailInfoUrl+"g="+gsxx.getGsdm()+"&q="+q;
                         }else if(fpcxvos.get(0).getKhh()!=null&&!fpcxvos.get(0).getKhh().equals("")){
                             q=fpcxvos.get(0).getKhh();
-                            infoUrl="http://fpjtest.datarj.com/einv/info?g="+gsxx.getGsdm()+"&q="+q;
+                            infoUrl=emailInfoUrl+"g="+gsxx.getGsdm()+"&q="+q;
                         }
                         Map csmap = new HashMap();
                         csmap.put("ddh", jyls.getDdh());
