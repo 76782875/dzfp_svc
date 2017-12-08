@@ -4,6 +4,7 @@ import com.rjxx.taxeasy.domains.Jyls;
 import com.rjxx.taxeasy.service.JylsService;
 import com.rjxx.taxeasy.vo.Fpcxvo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -17,7 +18,8 @@ public class SendEmailNewService {
 
     @Autowired
     private InvoiceQueryUtil invoiceQueryUtil;
-
+    @Value("${emailInfoUrl:}")
+    private String emailInfoUrl;
     /**
      * A发送邮件的内容
      *
@@ -42,7 +44,7 @@ public class SendEmailNewService {
         sb.append("您的订单号码： ");
         sb.append(ddh).append("的电子发票已开具成功，<br>");
         sb.append(ddh).append("的发票详情页面：<br>");
-        String url ="http://fpj.datarj.com/einv/info?g="+gsdm+"&q="+q;
+        String url =emailInfoUrl+"g="+gsdm+"&q="+q;
         sb.append("<a href='" + url + "'>" + null2Wz(url) + "</a><br>");
         sb.append(ddh).append("电子发票下载地址：<br>");
         for (String pdfUrl : pdfUrlList) {
