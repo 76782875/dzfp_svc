@@ -66,6 +66,9 @@ public class WeiXinConstants {
     //光唯尚开票完成跳转url
     public static final String GVC_REDIRECT_URL ="http://fpj.datarj.com/einv/GV/witting11.html";
 
+    //一茶一坐营销等待页面
+    public static final String YCYZ_REDIRECT_URL ="http://fpjtest.datarj.com/einv/dicos/witting22.html";
+
     // 测试  发票模板发票详情url
     public  static final String testfpInfoURL ="http://fpjtest.datarj.com/einv/common/fpInfo";
     //正式
