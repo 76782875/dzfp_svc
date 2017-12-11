@@ -198,7 +198,10 @@ public class WeixinUtils {
             redirect_url = WeiXinConstants.DICOS_REDIRECT_URL;
         }else if(gsdm.equals("gvc")){
             redirect_url = WeiXinConstants.GVC_REDIRECT_URL;
-        }else  {
+        }else if(gsdm.equals("chamate")&&menDianId.equals("chamate_test")){
+            logger.info("进入一茶一坐测试开票----等待页面跳转");
+            redirect_url=WeiXinConstants.YCYZ_REDIRECT_URL;
+        }else {
             redirect_url = WeiXinConstants.SUCCESS_REDIRECT_URL;
         }
         Map nvps = new HashMap();
