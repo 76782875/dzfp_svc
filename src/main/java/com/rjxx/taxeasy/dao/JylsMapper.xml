@@ -242,7 +242,7 @@
    </update>
    
    <select id="findAllByJylsh" parameterType="map" resultType="jyls">
-        select * from t_jyls where yxbz = '1' where jylsh = #{jylsh}
+        select * from t_jyls where yxbz = '1' AND jylsh = #{jylsh}
     </select>
     
     <select id="findJylsFsdx" resultType="jyls">
