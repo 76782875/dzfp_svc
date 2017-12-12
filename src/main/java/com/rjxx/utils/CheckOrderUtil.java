@@ -379,7 +379,7 @@ public class CheckOrderUtil {
 
                     String ChargeTaxWay = jyxxsq.getZsfs();
                     String DeductAmount = String.valueOf(jymxsq.getKce());
-                    if (ChargeTaxWay.equals("2") && (null == DeductAmount || DeductAmount.equals(""))) {
+                    if (null !=ChargeTaxWay && ChargeTaxWay.equals("2") && (null == DeductAmount || DeductAmount.equals(""))) {
                         result += "订单号为" + ddh + "的订单DeductAmount不能为空!\r\n";
                     }
                 }
