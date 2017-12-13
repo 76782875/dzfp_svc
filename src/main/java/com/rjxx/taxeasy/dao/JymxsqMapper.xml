@@ -20,6 +20,17 @@
         limit 1
     </select>
 
+    <select id="findAllBySqlsh" parameterType="map" resultType="jymxsq">
+        select * from t_jymxsq where 1=1 and yxbz = '1'
+        <if test="sqlsh != null and sqlsh !=''">
+            and  sqlsh = #{sqlsh}
+        </if>
+        <if test="gsdm != null">
+            and gsdm =#{gsdm}
+        </if>
+        order by spmxxh asc,fphxz desc
+    </select>
+
       <select id="findAllByParams" parameterType="map" resultType="jymxsq">
         select * from t_jymxsq_cl where 1=1 and yxbz = '1'
         <if test="sqlsh != null and sqlsh !=''">

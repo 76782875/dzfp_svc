@@ -47,6 +47,9 @@ public class JymxsqService {
     public List<Jymxsq> findAllByParams(Map params) {
         return jymxsqMapper.findAllByParams(params);
     }
+    public List<Jymxsq> findAllBySqlsh(Map params) {
+        return jymxsqMapper.findAllBySqlsh(params);
+    }
     
     public List<Jymxsq> findAllByDdhs(Map params) {
         return jymxsqMapper.findAllByDdhs(params);

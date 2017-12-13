@@ -20,6 +20,8 @@ public interface JymxsqMapper {
     public Jymxsq findOneByParams(Map params);
 
     public List<Jymxsq> findAllByParams(Map params);
+
+     List<Jymxsq> findAllBySqlsh(Map params);
     
     public List<Jymxsq> findAllByDdhs(Map params);
 
