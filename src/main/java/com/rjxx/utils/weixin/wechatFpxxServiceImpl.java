@@ -74,7 +74,7 @@ public class wechatFpxxServiceImpl {
             Map map= new HashMap();
             map.put("gsdm",gsdm);
             Gsxx gsxx = gsxxService.findOneByGsdm(map);
-            if(gsxx.getXgsdm()!=null && "".equals(gsxx.getXgsdm())){
+            if(gsxx.getXgsdm()!=null && !"".equals(gsxx.getXgsdm())){
                 orderNo = gsxx.getXgsdm()+"-"+orderNo;
                 logger.info("新的订单编号11111111111---------为"+orderNo);
             }
