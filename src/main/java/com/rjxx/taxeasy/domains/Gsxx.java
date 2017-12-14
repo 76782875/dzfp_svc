@@ -112,6 +112,12 @@ protected Integer kpnum;
 	@Column(name="sapcallbackurl")
 	protected String sapcallbackurl;
 
+	/**
+	 * 新公司代码
+	 */
+	@Column(name="xgsdm")
+	protected String xgsdm;
+
 	public String getWsUrl() {
 	return wsUrl;
 }
@@ -270,6 +276,14 @@ public void setWsUrl(String wsUrl) {
 
 	public void setSapcallbackurl(String sapcallbackurl) {
 		this.sapcallbackurl = sapcallbackurl;
+	}
+
+	public String getXgsdm() {
+		return xgsdm;
+	}
+
+	public void setXgsdm(String xgsdm) {
+		this.xgsdm = xgsdm;
 	}
 }
 

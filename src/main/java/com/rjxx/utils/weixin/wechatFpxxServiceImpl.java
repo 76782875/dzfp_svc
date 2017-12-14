@@ -3,13 +3,17 @@ package com.rjxx.utils.weixin;
 import com.itextpdf.text.log.Logger;
 import com.itextpdf.text.log.LoggerFactory;
 import com.rjxx.taxeasy.dao.WxfpxxJpaDao;
+import com.rjxx.taxeasy.domains.Gsxx;
 import com.rjxx.taxeasy.domains.WxFpxx;
+import com.rjxx.taxeasy.service.GsxxService;
 import com.rjxx.utils.alipay.AlipayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2017-09-26.
@@ -21,6 +25,8 @@ public class wechatFpxxServiceImpl {
     @Autowired
     private WxfpxxJpaDao wxfpxxJpaDao;
 
+    @Autowired
+    private GsxxService gsxxService;
 
 
     /**
@@ -65,6 +71,14 @@ public class wechatFpxxServiceImpl {
                          String wxType,String opendid,String userId,String kplsh,HttpServletRequest request){
         if(null!= orderNo){
             WxFpxx wxFpxx = wxfpxxJpaDao.selsetByOrderNo(orderNo);
+            Map map= new HashMap();
+            map.put("gsdm",gsdm);
+            Gsxx gsxx = gsxxService.findOneByGsdm(map);
+            if(gsxx.getXgsdm()!=null && "".equals(gsxx.getXgsdm())){
+                orderNo = gsxx.getXgsdm()+"-"+orderNo;
+                logger.info("新的订单编号11111111111---------为"+orderNo);
+            }
+            logger.info("订单编号2222222222------------为"+orderNo);
             if(wxType!=null &&wxType.equals("1")){
                 // 申请发票
                 if(wxFpxx==null){
