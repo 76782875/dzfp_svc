@@ -689,7 +689,7 @@ public class FpclService {
     }
 
     /**
-     * 调用电子发票税控服务器
+     * 调用电子发票税控服务器https
      *
      * @param sendMes
      * @param url
