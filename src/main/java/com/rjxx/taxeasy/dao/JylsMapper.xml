@@ -103,6 +103,12 @@
    <update id="updateClzt" parameterType="map">
        update t_jyls set clztdm = #{clztdm},xgsj=#{xgsj} where djh = #{djh}
    </update>
+
+    <!--  更新处理状态 -->
+    <update id="updateClzt2" parameterType="map">
+        update t_jyls set clztdm = #{clztdm},xgsj=#{xgsj} where djh = #{djh} and
+        clztdm ='00'
+    </update>
    
    <select id="fptqcx" parameterType="pagination" resultType="fptqvo">
         select a.ddh,a.gfmc,a.jshj,b.tqsj,(case when locate('Windows', llqxx) > 0 THEN 'PC' when locate('Windows', llqxx) = 0 THEN '手机' end) as tqsb,

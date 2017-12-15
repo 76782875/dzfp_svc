@@ -87,8 +87,8 @@ public class FpclService {
         List<Jyspmx> list = jymxService.findAllByParams(jyspmx);
         //保存开票流水
         Kpls kpls = saveKp(jyls1, list, dybz);
-        jyls1.setClztdm("40");
-        jylsService.save(jyls1);
+        /*jyls1.setClztdm("40");
+        jylsService.save(jyls1);*/
         Cszb cszb = cszbService.getSpbmbbh(kpls.getGsdm(), kpls.getXfid(), kpls.getSkpid(), "kpfs");
         if(cszb != null && cszb.getCsz().equals("01")){
             if(first){
