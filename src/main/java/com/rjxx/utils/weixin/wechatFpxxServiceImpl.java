@@ -52,7 +52,7 @@ public class wechatFpxxServiceImpl {
             if(wxFpxx.getCount() == 0){
                 wxFpxx.setWeixinOderno(weixinOrderNo1);
                 wxfpxxJpaDao.save(wxFpxx);
-                return orderNo;
+                return weixinOrderNo1;
             }else {
                 weixinOrderno2 = weixinOrderNo1 +"-"+ wxFpxx.getCount();
                 wxFpxx.setWeixinOderno(weixinOrderno2);
