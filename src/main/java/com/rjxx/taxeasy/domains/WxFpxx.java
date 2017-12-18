@@ -4,10 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.rjxx.comm.json.JsonDatetimeFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -17,6 +14,9 @@ import java.util.Date;
 @Table(name="wx_fpxx")
 public class WxFpxx {
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    protected Integer id;
+
     @Column(name = "orderno")
     private String orderNo;
 
@@ -133,7 +133,8 @@ public class WxFpxx {
     @Override
     public String toString() {
         return "WxFpxx{" +
-                "orderNo='" + orderNo + '\'' +
+                "id=" + id +
+                ", orderNo='" + orderNo + '\'' +
                 ", openId='" + openId + '\'' +
                 ", userid='" + userid + '\'' +
                 ", q='" + q + '\'' +
@@ -221,5 +222,13 @@ public class WxFpxx {
 
     public void setFpgjcksj(Date fpgjcksj) {
         this.fpgjcksj = fpgjcksj;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

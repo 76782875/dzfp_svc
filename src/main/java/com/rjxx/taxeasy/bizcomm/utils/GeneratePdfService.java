@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.rjxx.comm.utils.ApplicationContextUtils;
 import com.rjxx.taxeasy.bizcomm.utils.pdf.PdfDocumentGenerator;
 import com.rjxx.taxeasy.bizcomm.utils.pdf.TwoDimensionCode;
+import com.rjxx.taxeasy.config.RabbitmqUtils;
 import com.rjxx.taxeasy.domains.*;
 import com.rjxx.taxeasy.service.*;
 import com.rjxx.taxeasy.vo.Fpcxvo;
@@ -87,6 +88,11 @@ public class GeneratePdfService {
 
     @Autowired
     private InvoiceQueryUtil invoiceQueryUtil;
+
+
+    @Autowired
+    private RabbitmqUtils rabbitmqSend;
+
     @Value("${emailInfoUrl:}")
     private String emailInfoUrl;
     /**
@@ -188,23 +194,28 @@ public class GeneratePdfService {
                         returnmessage = this.CreateReturnMessage3(kpls.getKplsh());
                         logger.info("回写报文" + returnmessage);
                         if (returnmessage != null && !"".equals(returnmessage)) {
-                            String ss= this.netWebService(url,"CallBack",returnmessage,gsxx.getAppKey(),gsxx.getSecretKey());
-                            String fwkReturnMessageStr=fwkReturnMessage(kpls);
-                            logger.info("----------sap回写报文----------" + fwkReturnMessageStr);
-                            String Data= HttpUtils.doPostSoap1_2(gsxx.getSapcallbackurl(), fwkReturnMessageStr, null,"Wendy","Welcome9");
-                            logger.info("----------fwk平台回写返回报文--------" + ss);
-                            logger.info("----------sap回写返回报文----------" + Data);
-                            Fphxwsjl fphxwsjl=new Fphxwsjl();
-                            fphxwsjl.setGsdm("fwk");
-                            fphxwsjl.setEnddate(new Date());
-                            fphxwsjl.setReturncode("0000");
-                            fphxwsjl.setStartdate(new Date());
-                            fphxwsjl.setSecretKey("");
-                            fphxwsjl.setSign("");
-                            fphxwsjl.setWsurl(gsxx.getSapcallbackurl());
-                            fphxwsjl.setReturncontent(fwkReturnMessageStr);
-                            fphxwsjl.setReturnmessage(Data);
-                            fphxwsjlService.save(fphxwsjl);
+                            try {
+                                String ss = this.netWebService(url, "CallBack", returnmessage, gsxx.getAppKey(), gsxx.getSecretKey());
+                                String fwkReturnMessageStr = fwkReturnMessage(kpls);
+                                logger.info("----------sap回写报文----------" + fwkReturnMessageStr);
+                                String Data = HttpUtils.doPostSoap1_2(gsxx.getSapcallbackurl(), fwkReturnMessageStr, null, "Wendy", "Welcome9");
+                                logger.info("----------fwk平台回写返回报文--------" + ss);
+                                logger.info("----------sap回写返回报文----------" + Data);
+                                Fphxwsjl fphxwsjl = new Fphxwsjl();
+                                fphxwsjl.setGsdm("fwk");
+                                fphxwsjl.setEnddate(new Date());
+                                fphxwsjl.setReturncode("0000");
+                                fphxwsjl.setStartdate(new Date());
+                                fphxwsjl.setSecretKey("");
+                                fphxwsjl.setSign("");
+                                fphxwsjl.setWsurl(gsxx.getSapcallbackurl());
+                                fphxwsjl.setReturncontent(fwkReturnMessageStr);
+                                fphxwsjl.setReturnmessage(Data);
+                                fphxwsjlService.save(fphxwsjl);
+                            }catch (Exception e){
+                                e.printStackTrace();
+                                rabbitmqSend.sendMsg("ErrorException_Callback", kpls.getFpzldm(), kpls.getKplsh() + "");
+                            }
                         }
                     }
                 }
@@ -878,69 +889,75 @@ public class GeneratePdfService {
         Map parms=new HashMap();
         parms.put("gsdm",kpls.getGsdm());
         Gsxx gsxx=gsxxService.findOneByParams(parms);
-        //String url="https://vrapi.fvt.tujia.com/Invoice/CallBack";
-        String url=gsxx.getCallbackurl();
-        String strMessage = "";
-        BufferedReader reader = null;
-        StringBuffer buffer = new StringBuffer();
         Map resultMap = null;
-        if(!("").equals(url)&&url!=null){
-            String Secret=getSign(sendMes,gsxx.getSecretKey());
-            logger.info("-----数据------"+sendMes+"-----key------"+gsxx.getSecretKey()+"-----签名-----"+Secret);
-            HttpPost httpPost = new HttpPost(url);
-            CloseableHttpResponse response = null;
-            RequestConfig requestConfig = RequestConfig.custom().
-                    setSocketTimeout(120*1000).setConnectionRequestTimeout(120*1000).setConnectTimeout(120*1000).build();
-            CloseableHttpClient httpClient = HttpClients.custom()
-                    .setDefaultRequestConfig(requestConfig)
-                    .build();
-            //httpPost.setConfig(requestConfig);
-            httpPost.addHeader("Content-Type", "application/json");
-            try {
-                Map nvps = new HashMap();
-                nvps.put("invoiceData", sendMes);
-                nvps.put("sign", Secret);
-                StringEntity requestEntity = new StringEntity(JSON.toJSONString(nvps), "utf-8");
-                logger.info("-------数据-----"+JSON.toJSONString(nvps));
-                httpPost.setEntity(requestEntity);
-                response = httpClient.execute(httpPost, new BasicHttpContext());
-                if (response.getStatusLine().getStatusCode() != 200) {
-                    System.out.println("request url failed, http code=" + response.getStatusLine().getStatusCode()
-                            + ", url=" + url);
-                    return null;
-                }
-                HttpEntity entity = response.getEntity();
-                if (entity != null) {
-                    reader = new BufferedReader(new InputStreamReader(entity.getContent(), "utf-8"));
-                    while ((strMessage = reader.readLine()) != null) {
-                        buffer.append(strMessage);
+        try {
+            //String url="https://vrapi.fvt.tujia.com/Invoice/CallBack";
+            String url = gsxx.getCallbackurl();
+            String strMessage = "";
+            BufferedReader reader = null;
+            StringBuffer buffer = new StringBuffer();
+
+            if (!("").equals(url) && url != null) {
+                String Secret = getSign(sendMes, gsxx.getSecretKey());
+                logger.info("-----数据------" + sendMes + "-----key------" + gsxx.getSecretKey() + "-----签名-----" + Secret);
+                HttpPost httpPost = new HttpPost(url);
+                CloseableHttpResponse response = null;
+                RequestConfig requestConfig = RequestConfig.custom().
+                        setSocketTimeout(120 * 1000).setConnectionRequestTimeout(120 * 1000).setConnectTimeout(120 * 1000).build();
+                CloseableHttpClient httpClient = HttpClients.custom()
+                        .setDefaultRequestConfig(requestConfig)
+                        .build();
+                //httpPost.setConfig(requestConfig);
+                httpPost.addHeader("Content-Type", "application/json");
+                try {
+                    Map nvps = new HashMap();
+                    nvps.put("invoiceData", sendMes);
+                    nvps.put("sign", Secret);
+                    StringEntity requestEntity = new StringEntity(JSON.toJSONString(nvps), "utf-8");
+                    logger.info("-------数据-----" + JSON.toJSONString(nvps));
+                    httpPost.setEntity(requestEntity);
+                    response = httpClient.execute(httpPost, new BasicHttpContext());
+                    if (response.getStatusLine().getStatusCode() != 200) {
+                        System.out.println("request url failed, http code=" + response.getStatusLine().getStatusCode()
+                                + ", url=" + url);
+                        return null;
+                    }
+                    HttpEntity entity = response.getEntity();
+                    if (entity != null) {
+                        reader = new BufferedReader(new InputStreamReader(entity.getContent(), "utf-8"));
+                        while ((strMessage = reader.readLine()) != null) {
+                            buffer.append(strMessage);
+                        }
+                    }
+                    System.out.println("接收返回值:" + buffer.toString());
+                    resultMap = handerReturnMes(buffer.toString());
+                    String returnCode = resultMap.get("ReturnCode").toString();
+                    String ReturnMessage = resultMap.get("ReturnMessage").toString();
+                    Fphxwsjl fphxwsjl = new Fphxwsjl();
+                    fphxwsjl.setGsdm(kpls.getGsdm());
+                    fphxwsjl.setEnddate(new Date());
+                    fphxwsjl.setReturncode(returnCode);
+                    fphxwsjl.setStartdate(new Date());
+                    fphxwsjl.setSecretKey(gsxx.getSecretKey());
+                    fphxwsjl.setSign(Secret);
+                    fphxwsjl.setWsurl(gsxx.getCallbackurl());
+                    fphxwsjl.setReturncontent(sendMes);
+                    fphxwsjl.setReturnmessage(ReturnMessage);
+                    fphxwsjlService.save(fphxwsjl);
+                } catch (IOException e) {
+                    System.out.println("request url=" + url + ", exception, msg=" + e.getMessage());
+                    e.printStackTrace();
+                } finally {
+                    if (response != null) try {
+                        response.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
                 }
-                System.out.println("接收返回值:" + buffer.toString());
-                resultMap = handerReturnMes(buffer.toString());
-                String returnCode=resultMap.get("ReturnCode").toString();
-                String ReturnMessage=resultMap.get("ReturnMessage").toString();
-                Fphxwsjl fphxwsjl=new Fphxwsjl();
-                fphxwsjl.setGsdm(kpls.getGsdm());
-                fphxwsjl.setEnddate(new Date());
-                fphxwsjl.setReturncode(returnCode);
-                fphxwsjl.setStartdate(new Date());
-                fphxwsjl.setSecretKey(gsxx.getSecretKey());
-                fphxwsjl.setSign(Secret);
-                fphxwsjl.setWsurl(gsxx.getCallbackurl());
-                fphxwsjl.setReturncontent(sendMes);
-                fphxwsjl.setReturnmessage(ReturnMessage);
-                fphxwsjlService.save(fphxwsjl);
-            } catch (IOException e) {
-                System.out.println("request url=" + url + ", exception, msg=" + e.getMessage());
-                e.printStackTrace();
-            } finally {
-                if (response != null) try {
-                    response.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
             }
+        }catch (Exception e){
+            e.printStackTrace();
+            rabbitmqSend.sendMsg("ErrorException_Callback", kpls.getFpzldm(), kpls.getKplsh() + "");
         }
         return resultMap;
     }

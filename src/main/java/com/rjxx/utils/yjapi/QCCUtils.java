@@ -3,8 +3,6 @@ package com.rjxx.utils.yjapi;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.rjxx.taxeasy.dao.QccJpaDao;
-import com.rjxx.taxeasy.domains.Qcc;
 import com.rjxx.taxeasy.domains.Qympk;
 import com.rjxx.taxeasy.service.QympkService;
 import com.rjxx.utils.weixin.HttpClientUtil;
@@ -25,8 +23,6 @@ import java.util.*;
 public class QCCUtils {
     private static Logger logger = LoggerFactory.getLogger(WeixinUtils.class);
 
-    @Autowired
-    private QccJpaDao qccJpaDao;
 
     @Autowired
     private QympkService qympkService;
@@ -86,17 +82,17 @@ public class QCCUtils {
                     JSONObject result = jsonObject.getJSONObject("Result");
                     if(result!=null){
                         logger.info("结果"+JSON.toJSONString(result));
-                        Qcc qcc = new Qcc();
-                        qcc.setGsmc(result.getString("Name"));//公司名称
-                        qcc.setNsrsbh(result.getString("CreditCode"));//税号
-                        qcc.setQylx(result.getString("EconKind"));//企业类型
-                        qcc.setQyzt(result.getString("Status"));//企业状态
-                        qcc.setDz(result.getString("Address"));//地址
-                        qcc.setDh(result.getString("Tel"));//电话
-                        qcc.setKhyh(result.getString("Bank"));//开户行
-                        qcc.setYhzh(result.getString("BankAccount"));//银行账号
-                        qcc.setLrsj(new Date());
-                        qccJpaDao.save(qcc);
+                        Qympk qympk = new Qympk();
+                        qympk.setDwmc(result.getString("Name"));//公司名称
+                        qympk.setNsrsbh(result.getString("CreditCode"));//税号
+                        qympk.setQylx(result.getString("EconKind"));//企业类型
+                        qympk.setQyzt(result.getString("Status"));//企业状态
+                        qympk.setZcdz(result.getString("Address"));//地址
+                        qympk.setZcdh(result.getString("Tel"));//电话
+                        qympk.setKhyh(result.getString("Bank"));//开户行
+                        qympk.setYhzh(result.getString("BankAccount"));//银行账号
+                        qympk.setLrsj(new Date());
+                        //qccJpaDao.save(qcc);
                         resultMap= result.toJSONString();
                     }
                 }else {

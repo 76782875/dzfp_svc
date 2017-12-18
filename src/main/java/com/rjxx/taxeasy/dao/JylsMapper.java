@@ -67,5 +67,8 @@ public interface JylsMapper {
     public List<Jyls> findAllJyls(Map params);
 
     List<Kpls> findBykhh(Map map);
+
+    public int updateClzt2(Map params);
+
 }
 

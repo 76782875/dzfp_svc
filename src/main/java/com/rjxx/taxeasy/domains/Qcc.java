@@ -1,3 +1,4 @@
+/*
 package com.rjxx.taxeasy.domains;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -7,9 +8,11 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import java.util.Date;
 
+*/
 /**
  * Created by Administrator on 2017-11-29.
- */
+ *//*
+
 @Entity
 @Table(name="t_qcc")
 public class Qcc {
@@ -220,3 +223,4 @@ public class Qcc {
         this.xgry = xgry;
     }
 }
+*/

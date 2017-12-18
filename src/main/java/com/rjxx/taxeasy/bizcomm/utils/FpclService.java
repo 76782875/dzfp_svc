@@ -87,8 +87,8 @@ public class FpclService {
         List<Jyspmx> list = jymxService.findAllByParams(jyspmx);
         //保存开票流水
         Kpls kpls = saveKp(jyls1, list, dybz);
-        jyls1.setClztdm("40");
-        jylsService.save(jyls1);
+        /*jyls1.setClztdm("40");
+        jylsService.save(jyls1);*/
         Cszb cszb = cszbService.getSpbmbbh(kpls.getGsdm(), kpls.getXfid(), kpls.getSkpid(), "kpfs");
         if(cszb != null && cszb.getCsz().equals("01")){
             if(first){
@@ -688,6 +688,98 @@ public class FpclService {
         return JSONObject.toJSONString(resultMap).toString();
     }
 
+    /**
+     * 调用电子发票税控服务器https
+     *
+     * @param sendMes
+     * @param url
+     * @param key
+     * @param xfsh
+     * @param jylsh
+     * @return
+     * @throws Exception
+     */
+    public Map DzfphttpsPost(String sendMes, String url, String key, String xfsh, String jylsh,int j) throws Exception {
+        j--;
+        HttpPost httpPost = new HttpPost(url);
+        CloseableHttpResponse response = null;
+        CloseableHttpClient httpClient = new SSLClient();
+        RequestConfig requestConfig = RequestConfig.custom().
+                setSocketTimeout(120 * 1000).setConnectionRequestTimeout(120 * 1000).setConnectTimeout(120 * 1000).build();
+        httpPost.setConfig(requestConfig);
+        httpPost.addHeader("Content-Type", "text/xml");
+        String strMessage = "";
+        BufferedReader reader = null;
+        String kplsh=null;
+        kplsh=key;
+        StringBuffer buffer = new StringBuffer();
+        Map resultMap = null;
+        try {
+            StringEntity requestEntity = new StringEntity(sendMes, "GBK");
+            httpPost.setEntity(requestEntity);
+            response = httpClient.execute(httpPost, new BasicHttpContext());
+            if (response.getStatusLine().getStatusCode() != 200) {
+                System.out.println("request url failed, http code=" + response.getStatusLine().getStatusCode()
+                        + ", url=" + url);
+                return null;
+            }
+            HttpEntity entity = response.getEntity();
+            if (entity != null) {
+                reader = new BufferedReader(new InputStreamReader(entity.getContent(), "gbk"));
+                while ((strMessage = reader.readLine()) != null) {
+                    buffer.append(strMessage);
+                }
+            }
+            System.out.println("接收返回值:" + buffer.toString());
+            resultMap = DzfphanderReturnMes(buffer.toString(), key);
+            if (null != resultMap && !resultMap.isEmpty()) {
+                int pos = key.indexOf("$");
+                if (pos != -1) {
+                    key = key.substring(0, pos);
+                }
+                if (resultMap.get("RETURNCODE").equals("0000")) {
+                    dataOperate.saveLog(Integer.valueOf(key), "91", "1", "Send:send",
+                            "(服务端)发送服务器成功" + resultMap.get("RETURNMSG").toString(), 2, xfsh, jylsh);
+                } else {
+                    dataOperate.saveLog(Integer.valueOf(key), "92", "1", "Send:send",
+                            "(服务端)发送服务器失败" + resultMap.get("RETURNMSG").toString(), 2, xfsh, jylsh);
+                }
+            }
+            int str = kplsh.indexOf("$");
+            if (str != -1) {
+                kplsh = kplsh.substring(str+1);
+                System.out.println("传入开票流水号:" + kplsh);
+            }
+            Kpls kpls=kplsService.findOne(Integer.parseInt(kplsh));
+            if (!resultMap.get("RETURNCODE").equals("0000")) {
+                if (kpls.getGsdm().equals("wills")) {
+                    if (j == 1) {
+                        logger.info("-------递归次数--------" + j);
+                        this.DzfphttpsPost(sendMes, url, key, xfsh, jylsh, j);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            int pos = key.indexOf("$");
+            if (pos != -1) {
+                key = key.substring(pos + 1);
+                System.out.println("传入开票流水号:" + key);
+            }
+            System.out.println("request url=" + url + ", exception, msg=" + e.getMessage());
+            e.printStackTrace();
+            if(e.getMessage().startsWith("Read")){
+                rabbitmqSend.sendMsg("ErrorException_Sk", "12", key + "");
+            }
+        } finally {
+            if (response != null) try {
+                response.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return resultMap;
+    }
     /**
      * 调用电子发票税控服务器
      *
@@ -1306,8 +1398,13 @@ public class FpclService {
             Cszb cszb2 = cszbService.getSpbmbbh(kpls.getGsdm(), kpls.getXfid(), kpls.getSkpid(), "skurl");
             String url = cszb2.getCsz();
             int j=2;
-            resultMap = DzfphttpPost(result2, url, kplsVO5.getDjh() + "$" + kplsVO5.getKplsh(), kplsVO5.getXfsh(),
-                    kplsVO5.getJylsh(),j);
+            if(kpls.getGsdm().equals("afb")) {
+                resultMap = DzfphttpsPost(result2, url, kplsVO5.getDjh() + "$" + kplsVO5.getKplsh(), kplsVO5.getXfsh(),
+                        kplsVO5.getJylsh(), j);
+            }else{
+                resultMap = DzfphttpPost(result2, url, kplsVO5.getDjh() + "$" + kplsVO5.getKplsh(), kplsVO5.getXfsh(),
+                        kplsVO5.getJylsh(), j);
+            }
             String serialorder = this.updateKpls(resultMap);
             resultxml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
                     "<Responese>\n" +

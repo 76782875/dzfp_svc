@@ -80,6 +80,11 @@ public class JylsService {
 		jylsMapper.updateClzt(params);
 	}
 
+	public int updateClzt2(Map params) {
+		return jylsMapper.updateClzt2(params);
+	}
+
+
 	public List<Fptqvo> fptqcx(Pagination pagination) {
 		return jylsMapper.fptqcx(pagination);
 	}
@@ -172,7 +177,7 @@ public class JylsService {
 	/**
 	 * 更新交易流水状态
 	 *
-	 * @param djhList
+	 * @param jylsList
 	 * @param clztdm
 	 */
 	public void doAllKp(List<Jyls> jylsList, String clztdm) {

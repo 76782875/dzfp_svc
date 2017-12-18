@@ -3,13 +3,17 @@ package com.rjxx.utils.weixin;
 import com.itextpdf.text.log.Logger;
 import com.itextpdf.text.log.LoggerFactory;
 import com.rjxx.taxeasy.dao.WxfpxxJpaDao;
+import com.rjxx.taxeasy.domains.Gsxx;
 import com.rjxx.taxeasy.domains.WxFpxx;
+import com.rjxx.taxeasy.service.GsxxService;
 import com.rjxx.utils.alipay.AlipayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2017-09-26.
@@ -21,6 +25,8 @@ public class wechatFpxxServiceImpl {
     @Autowired
     private WxfpxxJpaDao wxfpxxJpaDao;
 
+    @Autowired
+    private GsxxService gsxxService;
 
 
     /**
@@ -28,20 +34,30 @@ public class wechatFpxxServiceImpl {
      * @param orderNo
      * @return
      */
-    public String getweixinOrderNo(String orderNo){
-        WxFpxx wxFpxx = wxfpxxJpaDao.selsetByOrderNo(orderNo);
+    public String getweixinOrderNo(String orderNo,String gsdm){
+        WxFpxx wxFpxx = wxfpxxJpaDao.selsetByOrderNo(orderNo,gsdm);
+        String weixinOrderNo1 = "";
+        String weixinOrderno2 ="";
         if(null!=wxFpxx){
-            if(wxFpxx.getCount() == 0){
-                logger.info("没有进行过计数的"+orderNo);
-                wxFpxx.setWeixinOderno(orderNo);
-                wxfpxxJpaDao.save(wxFpxx);
-                return orderNo;
+            Map map= new HashMap();
+            map.put("gsdm",gsdm);
+            Gsxx gsxx = gsxxService.findOneByGsdm(map);
+
+            if(gsxx.getXgsdm()!=null && !"".equals(gsxx.getXgsdm())){
+                weixinOrderNo1 = gsxx.getXgsdm()+"-"+orderNo;
             }else {
-                logger.info("进行过计数的"+orderNo);
-                String weixinOrderno = orderNo +"-"+ wxFpxx.getCount();
-                wxFpxx.setWeixinOderno(weixinOrderno);
+                weixinOrderNo1 = orderNo;
+            }
+
+            if(wxFpxx.getCount() == 0){
+                wxFpxx.setWeixinOderno(weixinOrderNo1);
                 wxfpxxJpaDao.save(wxFpxx);
-                return weixinOrderno;
+                return weixinOrderNo1;
+            }else {
+                weixinOrderno2 = weixinOrderNo1 +"-"+ wxFpxx.getCount();
+                wxFpxx.setWeixinOderno(weixinOrderno2);
+                wxfpxxJpaDao.save(wxFpxx);
+                return weixinOrderno2;
             }
         }else {
             return  orderNo;
@@ -64,7 +80,7 @@ public class wechatFpxxServiceImpl {
     public boolean InFapxx( String tqm,String gsdm,String orderNo,String q,
                          String wxType,String opendid,String userId,String kplsh,HttpServletRequest request){
         if(null!= orderNo){
-            WxFpxx wxFpxx = wxfpxxJpaDao.selsetByOrderNo(orderNo);
+            WxFpxx wxFpxx = wxfpxxJpaDao.selsetByOrderNo(orderNo,gsdm);
             if(wxType!=null &&wxType.equals("1")){
                 // 申请发票
                 if(wxFpxx==null){
@@ -190,11 +206,11 @@ public class wechatFpxxServiceImpl {
      * @param sjly
      * @return
      */
-    public boolean InFpxxDate(String orderNo,String sjly){
+    public boolean InFpxxDate(String orderNo,String sjly,String gsdm){
                 if(orderNo==null || sjly == null){
                     return false;
                 }
-                WxFpxx wxFpxx = wxfpxxJpaDao.selsetByOrderNo(orderNo);
+                WxFpxx wxFpxx = wxfpxxJpaDao.selsetByOrderNo(orderNo,gsdm);
                 if(wxFpxx==null){
                     return false;
                 }else {

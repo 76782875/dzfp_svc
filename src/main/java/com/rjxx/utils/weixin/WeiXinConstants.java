@@ -75,4 +75,13 @@ public class WeiXinConstants {
     public  static final String fpInfoURL ="http://fpj.datarj.com/einv/common/fpInfo";
     //解码code  URL
     public  static final String decodeURL="https://api.weixin.qq.com/card/code/decrypt?access_token=";
+
+
+
+
+
+    /**************门店、卡券***************/
+
+    //创建门店url
+    public static final String CREAT_STORE_URL="http://api.weixin.qq.com/cgi-bin/poi/addpoi?access_token=";
 }
