@@ -148,7 +148,7 @@ public class ImputationCardUtil {
 					return true;
 
 				} else if (null!= jyxxsq.getSjly()&& jyxxsq.getSjly().equals("4")) { //数据来源4表示微信
-					String newDdh = wechatFpxxImpl.getweixinOrderNo(jyxxsq.getDdh());
+					String newDdh = wechatFpxxImpl.getweixinOrderNo(jyxxsq.getDdh(),jyxxsq.getGsdm());
 					String result = weixinUtils.fpInsertCardBox(newDdh, getPdf_file_url(pdf_file_url), kpspmxList, kpls);
 					//存入卡包失败
 					if (null == result) {
@@ -185,7 +185,7 @@ public class ImputationCardUtil {
 					try {
 						String alipay = alipayUtils.syncInvoiceAlipay(jyxxsq.getOpenid(), kpls, kpspmxList, pp.getAliMShortName(), pp.getAliSubMShortName());
 						if(alipay!=null){
-							boolean b = wechatFpxxImpl.InFpxxDate(jyxxsq.getDdh(), "5");
+							boolean b = wechatFpxxImpl.InFpxxDate(jyxxsq.getDdh(), "5",jyxxsq.getGsdm());
 							if(b){
 								return true;
 							}else {
@@ -201,13 +201,13 @@ public class ImputationCardUtil {
 			}else if(jyxxsq.getSjly()!=null && jyxxsq.getSjly().equals("4")){ //数据来源4表示微信
 				wechatFpxxServiceImpl imp = new wechatFpxxServiceImpl();
 				//WeixinUtils weinxinUtil = new WeixinUtils();
-				String newDdh = wechatFpxxImpl.getweixinOrderNo(jyxxsq.getDdh());
+				String newDdh = wechatFpxxImpl.getweixinOrderNo(jyxxsq.getDdh(),jyxxsq.getGsdm());
 				String result = weixinUtils.fpInsertCardBox(newDdh,getPdf_file_url(pdf_file_url),kpspmxList,kpls);
 				//存入卡包失败
 				if(null == result){
 					return false;
 				}else{
-					boolean b = wechatFpxxImpl.InFpxxDate(jyxxsq.getDdh(), "4");
+					boolean b = wechatFpxxImpl.InFpxxDate(jyxxsq.getDdh(), "4",jyxxsq.getGsdm());
 					if(b){
 						return true;
 					}else {

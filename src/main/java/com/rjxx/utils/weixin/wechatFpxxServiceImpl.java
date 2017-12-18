@@ -34,20 +34,30 @@ public class wechatFpxxServiceImpl {
      * @param orderNo
      * @return
      */
-    public String getweixinOrderNo(String orderNo){
-        WxFpxx wxFpxx = wxfpxxJpaDao.selsetByOrderNo(orderNo);
+    public String getweixinOrderNo(String orderNo,String gsdm){
+        WxFpxx wxFpxx = wxfpxxJpaDao.selsetByOrderNo(orderNo,gsdm);
+        String weixinOrderNo1 = "";
+        String weixinOrderno2 ="";
         if(null!=wxFpxx){
+            Map map= new HashMap();
+            map.put("gsdm",gsdm);
+            Gsxx gsxx = gsxxService.findOneByGsdm(map);
+
+            if(gsxx.getXgsdm()!=null && !"".equals(gsxx.getXgsdm())){
+                weixinOrderNo1 = gsxx.getXgsdm()+"-"+orderNo;
+            }else {
+                weixinOrderNo1 = orderNo;
+            }
+
             if(wxFpxx.getCount() == 0){
-                logger.info("没有进行过计数的"+orderNo);
-                wxFpxx.setWeixinOderno(orderNo);
+                wxFpxx.setWeixinOderno(weixinOrderNo1);
                 wxfpxxJpaDao.save(wxFpxx);
                 return orderNo;
             }else {
-                logger.info("进行过计数的"+orderNo);
-                String weixinOrderno = orderNo +"-"+ wxFpxx.getCount();
-                wxFpxx.setWeixinOderno(weixinOrderno);
+                weixinOrderno2 = weixinOrderNo1 +"-"+ wxFpxx.getCount();
+                wxFpxx.setWeixinOderno(weixinOrderno2);
                 wxfpxxJpaDao.save(wxFpxx);
-                return weixinOrderno;
+                return weixinOrderno2;
             }
         }else {
             return  orderNo;
@@ -70,15 +80,7 @@ public class wechatFpxxServiceImpl {
     public boolean InFapxx( String tqm,String gsdm,String orderNo,String q,
                          String wxType,String opendid,String userId,String kplsh,HttpServletRequest request){
         if(null!= orderNo){
-            WxFpxx wxFpxx = wxfpxxJpaDao.selsetByOrderNo(orderNo);
-            Map map= new HashMap();
-            map.put("gsdm",gsdm);
-            Gsxx gsxx = gsxxService.findOneByGsdm(map);
-            if(gsxx.getXgsdm()!=null && !"".equals(gsxx.getXgsdm())){
-                orderNo = gsxx.getXgsdm()+"-"+orderNo;
-                logger.info("新的订单编号11111111111---------为"+orderNo);
-            }
-            logger.info("订单编号2222222222------------为"+orderNo);
+            WxFpxx wxFpxx = wxfpxxJpaDao.selsetByOrderNo(orderNo,gsdm);
             if(wxType!=null &&wxType.equals("1")){
                 // 申请发票
                 if(wxFpxx==null){
@@ -204,11 +206,11 @@ public class wechatFpxxServiceImpl {
      * @param sjly
      * @return
      */
-    public boolean InFpxxDate(String orderNo,String sjly){
+    public boolean InFpxxDate(String orderNo,String sjly,String gsdm){
                 if(orderNo==null || sjly == null){
                     return false;
                 }
-                WxFpxx wxFpxx = wxfpxxJpaDao.selsetByOrderNo(orderNo);
+                WxFpxx wxFpxx = wxfpxxJpaDao.selsetByOrderNo(orderNo,gsdm);
                 if(wxFpxx==null){
                     return false;
                 }else {
