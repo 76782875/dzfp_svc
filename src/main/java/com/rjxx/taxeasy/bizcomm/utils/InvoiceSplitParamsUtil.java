@@ -42,109 +42,112 @@ public class InvoiceSplitParamsUtil {
      *
      */
       public Map<String,Object> getInvoiceSplitParams(Jyxxsq jyxxsq){
+
           Map<String,Object> result = new HashMap<String,Object>();
-          //取最大限额
-          double zdje = 999.99d;
-          double fpje = 999.99d;
-          int fphs1 = 8;//纸票分票行数
-          int fphs2 = 36;//电票分票行数
-          int fphs3 = 6;//卷票分票行数
-          String hsbz ="0"; //含税标志默认不含税
-          boolean flag = false;
-          boolean spzsfp = false;//是否按商品整数分票
-          boolean sfqzfp = false;//是否进行强制分票，强制分票含义：开票金额超分票金额未超开票限额，进行分票。
-          Map skpMap = new HashMap();
-          skpMap.put("kpddm", jyxxsq.getKpddm());
-          skpMap.put("gsdm", jyxxsq.getGsdm());
-          Skp skp = skpService.findOneByParams(skpMap);
-          Xf x = new Xf();
-          x.setGsdm(jyxxsq.getGsdm());
-          x.setXfsh(jyxxsq.getXfsh());
-          Xf xf = xfService.findOneByParams(x);
-          /**
-           * 取税控盘的开票限额
-           */
-          if (skp != null) {
-              if ("01".equals(jyxxsq.getFpzldm())) {
-                  zdje = skp.getZpmax();
-                  fpje = skp.getZpfz();
-              } else if ("02".equals(jyxxsq.getFpzldm())) {
-                  zdje = skp.getPpmax();
-                  fpje = skp.getPpfz();
-              } else if ("12".equals(jyxxsq.getFpzldm())) {
-                  zdje = skp.getDpmax();
-                  fpje = skp.getFpfz();
-              } else if ("03".equals(jyxxsq.getFpzldm())) {
-                  zdje = skp.getDpmax();
-                  fpje = skp.getFpfz();
+          try {
+              //取最大限额
+              double zdje = 999.99d;
+              double fpje = 999.99d;
+              int fphs1 = 8;//纸票分票行数
+              int fphs2 = 36;//电票分票行数
+              int fphs3 = 6;//卷票分票行数
+              String hsbz = "0"; //含税标志默认不含税
+              boolean flag = false;
+              boolean spzsfp = false;//是否按商品整数分票
+              boolean sfqzfp = false;//是否进行强制分票，强制分票含义：开票金额超分票金额未超开票限额，进行分票。
+              Map skpMap = new HashMap();
+              skpMap.put("kpddm", jyxxsq.getKpddm());
+              skpMap.put("gsdm", jyxxsq.getGsdm());
+              Skp skp = skpService.findOneByParams(skpMap);
+              Xf x = new Xf();
+              x.setGsdm(jyxxsq.getGsdm());
+              x.setXfsh(jyxxsq.getXfsh());
+              Xf xf = xfService.findOneByParams(x);
+              /**
+               * 取税控盘的开票限额
+               */
+              if (skp != null) {
+                  if ("01".equals(jyxxsq.getFpzldm())) {
+                      zdje = skp.getZpmax();
+                      fpje = skp.getZpfz();
+                  } else if ("02".equals(jyxxsq.getFpzldm())) {
+                      zdje = skp.getPpmax();
+                      fpje = skp.getPpfz();
+                  } else if ("12".equals(jyxxsq.getFpzldm())) {
+                      zdje = skp.getDpmax();
+                      fpje = skp.getFpfz();
+                  } else if ("03".equals(jyxxsq.getFpzldm())) {
+                      zdje = skp.getDpmax();
+                      fpje = skp.getFpfz();
+                  }
+                  flag = true;
               }
-              flag = true;
-          }
-          /**
-           * 如果取不到税控盘的限额，就取销方的限额
-           */
-          if (!flag) {
-              if ("01".equals(jyxxsq.getFpzldm())) {
-                  zdje = xf.getZpzdje();
-                  fpje = xf.getZpfpje();
-              } else if ("02".equals(jyxxsq.getFpzldm())) {
-                  zdje = xf.getPpzdje();
-                  fpje = xf.getPpfpje();
-              } else if ("12".equals(jyxxsq.getFpzldm())) {
-                  zdje = xf.getDzpzdje();
-                  fpje = xf.getDzpfpje();
-              } else if ("03".equals(jyxxsq.getFpzldm())) {
-                  zdje = xf.getDzpzdje();
-                  fpje = xf.getDzpfpje();
+              /**
+               * 如果取不到税控盘的限额，就取销方的限额
+               */
+              if (!flag) {
+                  if ("01".equals(jyxxsq.getFpzldm())) {
+                      zdje = xf.getZpzdje();
+                      fpje = xf.getZpfpje();
+                  } else if ("02".equals(jyxxsq.getFpzldm())) {
+                      zdje = xf.getPpzdje();
+                      fpje = xf.getPpfpje();
+                  } else if ("12".equals(jyxxsq.getFpzldm())) {
+                      zdje = xf.getDzpzdje();
+                      fpje = xf.getDzpfpje();
+                  } else if ("03".equals(jyxxsq.getFpzldm())) {
+                      zdje = xf.getDzpzdje();
+                      fpje = xf.getDzpfpje();
+                  }
               }
-          }
-          //获取纸票分票行数。系统默认为8行
-          Cszb cszb = cszbService.getSpbmbbh(jyxxsq.getGsdm(),jyxxsq.getXfid(),jyxxsq.getSkpid(),"zzphs");
-          if(null !=cszb && !cszb.equals("")){
-              fphs1 = Integer.valueOf(cszb.getCsz());
-          }
-          //获取电子票分票行数。系统默认36行
-          Cszb cszb2 = cszbService.getSpbmbbh(jyxxsq.getGsdm(),jyxxsq.getXfid(),jyxxsq.getSkpid(),"dzphs");
-          if(null !=cszb2 && !cszb2.equals("")){
-              fphs2 = Integer.valueOf(cszb2.getCsz());
-          }
-          //获取是否打印清单。系统默认不打印
-          Cszb cszb3 = cszbService.getSpbmbbh(jyxxsq.getGsdm(),jyxxsq.getXfid(),jyxxsq.getSkpid(),"sfdyqd");
-          String qdbz = "否";//清单标志
-          if(null !=cszb3 && !cszb3.equals("")){
-              qdbz = cszb3.getCsz();
-          }
-          /**
-           * 清单标志，行数无限大
-           */
-          if (jyxxsq.getSfdyqd() != null && jyxxsq.getSfdyqd().equals("1")) {
-              fphs1 = 99999;
-              fphs2 = 99999;
-          }else{
-              if(qdbz.equals("是")){
+              //获取纸票分票行数。系统默认为8行
+              Cszb cszb = cszbService.getSpbmbbh(jyxxsq.getGsdm(), jyxxsq.getXfid(), jyxxsq.getSkpid(), "zzphs");
+              if (null != cszb && !cszb.equals("")) {
+                  fphs1 = Integer.valueOf(cszb.getCsz());
+              }
+              //获取电子票分票行数。系统默认36行
+              Cszb cszb2 = cszbService.getSpbmbbh(jyxxsq.getGsdm(), jyxxsq.getXfid(), jyxxsq.getSkpid(), "dzphs");
+              if (null != cszb2 && !cszb2.equals("")) {
+                  fphs2 = Integer.valueOf(cszb2.getCsz());
+              }
+              //获取是否打印清单。系统默认不打印
+              Cszb cszb3 = cszbService.getSpbmbbh(jyxxsq.getGsdm(), jyxxsq.getXfid(), jyxxsq.getSkpid(), "sfdyqd");
+              String qdbz = "否";//清单标志
+              if (null != cszb3 && !cszb3.equals("")) {
+                  qdbz = cszb3.getCsz();
+              }
+              /**
+               * 清单标志，行数无限大
+               */
+              if (jyxxsq.getSfdyqd() != null && jyxxsq.getSfdyqd().equals("1")) {
                   fphs1 = 99999;
                   fphs2 = 99999;
+              } else {
+                  if (qdbz.equals("是")) {
+                      fphs1 = 99999;
+                      fphs2 = 99999;
+                  }
               }
+              //防止分票金额不设置
+              if (0 == fpje) {
+                  fpje = zdje;
+              }
+              //获取是否整数分票.系统默认否
+              Cszb cszb4 = cszbService.getSpbmbbh(jyxxsq.getGsdm(), jyxxsq.getXfid(), jyxxsq.getSkpid(), "sfzsfp");
+              if (null != cszb4 && !cszb4.equals("")) {
+                  spzsfp = cszb4.getCsz().equals("否") ? false : true;
+              }
+              result.put("fphs1", fphs1);
+              result.put("fphs2", fphs2);
+              result.put("fphs3", fphs3);
+              result.put("hsbz", hsbz);
+              result.put("spzsfp", spzsfp);
+              result.put("sfqzfp", sfqzfp);
+              result.put("zdje", zdje);
+              result.put("fpje", fpje);
+          }catch (Exception e){
+              e.printStackTrace();
           }
-          //防止分票金额不设置
-          if (0 == fpje) {
-              fpje = zdje;
-          }
-          //获取是否整数分票.系统默认否
-          Cszb cszb4 = cszbService.getSpbmbbh(jyxxsq.getGsdm(),jyxxsq.getXfid(),jyxxsq.getSkpid(),"sfzsfp");
-          if(null !=cszb4 && !cszb4.equals("")){
-              spzsfp = cszb4.getCsz().equals("否")?false:true;
-          }
-          result.put("fphs1",fphs1);
-          result.put("fphs2",fphs2);
-          result.put("fphs3",fphs3);
-          result.put("hsbz",hsbz);
-          result.put("spzsfp",spzsfp);
-          result.put("sfqzfp",sfqzfp);
-          result.put("zdje",zdje);
-          result.put("fpje",fpje);
-
           return result;
       }
-
 }
