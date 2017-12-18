@@ -1,6 +1,5 @@
 package com.rjxx.taxeasy.bizcomm.utils.pdf;
 
-import com.itextpdf.text.pdf.BaseFont;
 import com.rjxx.taxeasy.bizcomm.utils.DataOperate;
 import com.rjxx.taxeasy.bizcomm.utils.PasswordConfig;
 import com.rjxx.taxeasy.bizcomm.utils.SFtpUtil;
@@ -17,7 +16,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.xhtmlrenderer.layout.SharedContext;
-import org.xhtmlrenderer.pdf.ITextFontResolver;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -569,7 +567,7 @@ public class PdfDocumentGenerator {
 
             //pdf生成jpg文件
             //先生成带章的pdf
-            String template2 = "config/templates/invoice2.html";
+            /*String template2 = "config/templates/invoice2.html";
             if(kpls.getFpzldm().equals("01")){
                 template2 = "config/templates/invoice_zp.html";
             }
@@ -579,13 +577,13 @@ public class PdfDocumentGenerator {
             }else{
                  tmpPdfPath = tempPath + xfsh + "/" + dateString + "/" + UUID.randomUUID().toString() + "_tmp.pdf";
             }
-            generate(map, template2, in_request, tmpPdfPath);
+            generate(map, template2, in_request, tmpPdfPath);*/
 
             int pos = outputFile.lastIndexOf(".");
             String jpgFile = outputFile.substring(0, pos) + ".jpg";
-            ImgPdfUtils.changePdfToImg(new File(tmpPdfPath), jpgFile);
+            ImgPdfUtils.changePdfToImg(new File(outputFile), jpgFile);
             //删除原始pdf
-            new File(tmpPdfPath).delete();
+            //new File(sourcePdfPath).delete();
             System.err.println("pdf转换成jpg耗时time=" + (System.currentTimeMillis() - start)
                     / 1000);
 
