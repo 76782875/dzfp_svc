@@ -414,8 +414,12 @@ public class PdfDocumentGenerator {
                 }
             }
             String outputFile_AbsolutePath = null;
-            outputFile_AbsolutePath = xfsh + "/"
-                    + dateString + "/" + UUID.randomUUID().toString() + ".pdf";
+            if(kpls.getGsdm().equals("afb")){
+                outputFile_AbsolutePath = xfsh +"/" + UUID.randomUUID().toString()+ ".pdf";
+            }else {
+                outputFile_AbsolutePath = xfsh + "/"
+                        + dateString + "/" + UUID.randomUUID().toString() + ".pdf";
+            }
             String outputFile = tempPath + outputFile_AbsolutePath;
 
             // 发票明细部分
