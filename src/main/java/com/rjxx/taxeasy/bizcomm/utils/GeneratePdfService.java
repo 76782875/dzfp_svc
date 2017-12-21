@@ -378,7 +378,7 @@ public class GeneratePdfService {
         }
     }
 
-    private Map httpPostNoSign(String returnmessage, Kpls kpls) {
+    public Map httpPostNoSign(String returnmessage, Kpls kpls) {
         Map parms=new HashMap();
         parms.put("gsdm",kpls.getGsdm());
         Gsxx gsxx=gsxxService.findOneByParams(parms);
