@@ -17,4 +17,7 @@ public interface WxfpxxJpaDao extends CrudRepository<WxFpxx,String>{
 
     @Query(nativeQuery = true,value = "select * from wx_fpxx where weixinorderNo=?1")
     WxFpxx selectByWeiXinOrderNo(String weixinorderNo);
+
+    @Query(nativeQuery = true,value = "select * from wx_fpxx where authId=?1")
+    WxFpxx selectByAuthId(String authId);
 }

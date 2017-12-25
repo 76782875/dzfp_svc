@@ -50,6 +50,9 @@ public class WxFpxx {
     @Column(name = "count")
     private int count;
 
+    @Column(name = "authid")
+    private String authid;
+
     /**
      * 录入时间 系统时间
      */
@@ -130,28 +133,6 @@ public class WxFpxx {
         this.kplsh = kplsh;
     }
 
-    @Override
-    public String toString() {
-        return "WxFpxx{" +
-                "id=" + id +
-                ", orderNo='" + orderNo + '\'' +
-                ", openId='" + openId + '\'' +
-                ", userid='" + userid + '\'' +
-                ", q='" + q + '\'' +
-                ", tqm='" + tqm + '\'' +
-                ", gsdm='" + gsdm + '\'' +
-                ", code='" + code + '\'' +
-                ", wxtype='" + wxtype + '\'' +
-                ", kplsh='" + kplsh + '\'' +
-                ", weixinOderno='" + weixinOderno + '\'' +
-                ", count=" + count +
-                ", lrsj=" + lrsj +
-                ", xgsj=" + xgsj +
-                ", wxcksj=" + wxcksj +
-                ", fpgjcksj=" + fpgjcksj +
-                '}';
-    }
-
     public String getWxtype() {
         return wxtype;
     }
@@ -230,5 +211,36 @@ public class WxFpxx {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getAuthid() {
+        return authid;
+    }
+
+    public void setAuthid(String authid) {
+        this.authid = authid;
+    }
+
+    @Override
+    public String toString() {
+        return "WxFpxx{" +
+                "id=" + id +
+                ", orderNo='" + orderNo + '\'' +
+                ", openId='" + openId + '\'' +
+                ", userid='" + userid + '\'' +
+                ", q='" + q + '\'' +
+                ", tqm='" + tqm + '\'' +
+                ", gsdm='" + gsdm + '\'' +
+                ", code='" + code + '\'' +
+                ", wxtype='" + wxtype + '\'' +
+                ", kplsh='" + kplsh + '\'' +
+                ", weixinOderno='" + weixinOderno + '\'' +
+                ", count=" + count +
+                ", authid='" + authid + '\'' +
+                ", lrsj=" + lrsj +
+                ", xgsj=" + xgsj +
+                ", wxcksj=" + wxcksj +
+                ", fpgjcksj=" + fpgjcksj +
+                '}';
     }
 }
