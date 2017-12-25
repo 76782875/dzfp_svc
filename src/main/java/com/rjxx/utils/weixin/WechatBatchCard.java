@@ -84,6 +84,7 @@ public class WechatBatchCard {
             ObjectMapper jsonparer = new ObjectMapper();// 初始化解析json格式的对象
             try {
                 Map map = jsonparer.readValue(jsonStr3, Map.class);
+                logger.info("微信返回数据"+JSON.toJSONString(map));
                 int errcode = (int) map.get("errcode");
                 if (errcode == 0) {
                     String auth_url = (String) map.get("auth_url");
