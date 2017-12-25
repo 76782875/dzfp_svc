@@ -6,6 +6,7 @@ import com.rjxx.taxeasy.dao.WxfpxxJpaDao;
 import com.rjxx.taxeasy.domains.Kpls;
 import com.rjxx.taxeasy.domains.Kpspmx;
 import com.rjxx.taxeasy.domains.WxFpxx;
+import com.rjxx.taxeasy.service.KpspmxService;
 import com.rjxx.utils.StringUtils;
 import com.rjxx.utils.TimeUtil;
 import com.rjxx.utils.WeixinUtil;
@@ -27,6 +28,8 @@ public class WechatBatchCard {
 
     @Autowired
     private WxfpxxJpaDao wxfpxxJpaDao;
+    @Autowired
+    private KpspmxService kpspmxService;
 
     /**
      * 一次授权批量插卡--获取授权页链接
@@ -262,79 +265,57 @@ public class WechatBatchCard {
      * @param card_id
      * @param pdf_file_url
      * @param weiXinData
-     * @param kpspmxList
-     * @param kpls
+     * @param
+     * @param kplsList
      * @param access_token
      * @return
      */
-    public boolean batchDZFPInCard(String auth_id, String card_id, String pdf_file_url, Map weiXinData, List<Kpspmx> kpspmxList, Kpls kpls, String access_token) {
+    public boolean batchDZFPInCard(String auth_id, String card_id,
+                                   String pdf_file_url, Map weiXinData, List<Kpls> kplsList,
+                                   String access_token) {
         String appid = WeiXinConstants.APP_ID;
-        WeiXinInfo weiXinInfo = new WeiXinInfo();
         WeixinUtils weixinUtils = new WeixinUtils();
         Map sj = new HashMap();
-        Map batch_card_exts = new HashMap();// 发票列表具体内容
-        List<Map> info = new ArrayList<>();
-        Map invoice_user_data = new HashMap();
+        List batch_card_exts = new ArrayList();// 发票列表具体内容
         sj.put("auth_id", auth_id);   //授权id
         sj.put("card_id", card_id);     //发票模板id
         sj.put("appid", appid);         //容津APPid
         sj.put("batch_card_exts", batch_card_exts); // 发票列表具体内容
 
-        Map card_ext = new HashMap();//发票具体内容
-        batch_card_exts.put("card_ext", card_ext);//发票具体内容
-
-        List order_id = new ArrayList();//发票order_id列表
-        batch_card_exts.put("order_id",order_id);
-
-        card_ext.put("outer_str","");
-        card_ext.put("code","");
-        card_ext.put("nonce_str",System.currentTimeMillis()+"");
-
+        for (Kpls kpls : kplsList) {
+            Map card_ext = new HashMap();//发票具体内容
+            Map map = new HashMap();
+            map.put("card_ext", card_ext);//发票具体内容
+            map.put("order_id", kpls.getDjh());//订单号 list
+            batch_card_exts.add(map);
+        //}
+        WeiXinInfo weiXinInfo = new WeiXinInfo();
+        List<Map> info = new ArrayList<>();
+        Map invoice_user_data = new HashMap();
+        card_ext.put("nonce_str", System.currentTimeMillis() + "");
         Map user_card = new HashMap();//用户信息结构体
-        card_ext.put("user_card",user_card);
-
+        card_ext.put("user_card", user_card);
         user_card.put("invoice_user_data", invoice_user_data);//用户信息结构体
-
         weiXinInfo.setTitle((String) weiXinData.get("title"));//发票抬头    必填
-
-        BigDecimal bigjshj= new BigDecimal(kpls.getJshj().toString());
+        BigDecimal bigjshj = new BigDecimal(kpls.getJshj().toString());
         BigDecimal bigzh = bigjshj.multiply(new BigDecimal(100));
-        Double doujshj= new Double(bigzh.toString());
+        Double doujshj = new Double(bigzh.toString());
         weiXinInfo.setFee(doujshj);//卡包开票金额,价税合计  必填
-        //weiXinInfo.setFee(kpls.getJshj()*100);//卡包开票金额,价税合计  必填
-
         weiXinInfo.setBilling_time(String.valueOf(kpls.getKprq().getTime() / 1000));//开票时间  必填
         weiXinInfo.setBilling_no(kpls.getFpdm());//发票代码      必填
         weiXinInfo.setBilling_code(kpls.getFphm());//发票号码    必填
-
         BigDecimal bighjje = new BigDecimal(kpls.getHjje().toString());
         BigDecimal bigzzhjje = bighjje.multiply(new BigDecimal(100));
         Double douhjje = new Double(bigzzhjje.toString());
         weiXinInfo.setFee_without_tax(douhjje);//不含税金额  必填
-        //weiXinInfo.setFee_without_tax(kpls.getHjje()* 100);//不含税金额  必填
-
         BigDecimal bighjse = new BigDecimal(kpls.getHjse().toString());
         BigDecimal bigzzhjse = bighjse.multiply(new BigDecimal(100));
         Double douhjse = new Double(bigzzhjse.toString());
         weiXinInfo.setTax(douhjse);//税额        必填
-        // weiXinInfo.setTax(kpls.getHjse() * 100);//税额        必填
         weiXinInfo.setCheck_code(kpls.getJym());//校验码    必填
-//        weiXinInfo.setFee(20.00);//发票金额
-//        weiXinInfo.setTitle("测试");
-//        weiXinInfo.setBilling_time("1480342498");//发票开票时间
-//        weiXinInfo.setBilling_no("150003521088");//发票代码
-//        weiXinInfo.setBilling_code("36984009");//发票号码
-//        weiXinInfo.setFee_without_tax(10.00);//不含税金额
-//        weiXinInfo.setTax(11.00);//税额
-//        weiXinInfo.setCheck_code("737806869");
-//        weiXinInfo.setS_pdf_media_id("75542938824475128");
-//        Map ma = new HashMap();
-//        ma.put("name", "饼干");//商品名称 必填
-//        ma.put("num",2);//商品数量    必填
-//        ma.put("unit","包");//商品单位  必填
-//        ma.put("price",20);//商品单价 必填
-
-        //info.add(ma);
+        Map params2 = new HashMap();
+        params2.put("kplsh", kpls.getKplsh());
+        List<Kpspmx> kpspmxList = kpspmxService.findMxNewList(params2);
         if (kpspmxList.size() > 0) {
             for (Kpspmx kpspmx : kpspmxList) {
                 Map ma = new HashMap();
@@ -343,12 +324,11 @@ public class WechatBatchCard {
                 ma.put("unit", kpspmx.getSpdj());//商品单位  必填
                 ma.put("price", kpspmx.getSpdw());//商品单价 必填
                 info.add(ma);
-                //break;
             }
         }
         //上传PDF生成的一个发票s_media_id   关联发票PDF和发票卡券  必填
         String pdfUrl = kpls.getPdfurl();
-        String s_media_id_pdf = weixinUtils.creatPDF(pdfUrl, pdf_file_url,access_token);
+        String s_media_id_pdf = weixinUtils.creatPDF(pdfUrl, pdf_file_url, access_token);
         if (null != s_media_id_pdf && StringUtils.isNotBlank(s_media_id_pdf)) {
             weiXinInfo.setS_pdf_media_id(s_media_id_pdf);
         }
@@ -372,7 +352,8 @@ public class WechatBatchCard {
         invoice_user_data.put("remarks", weiXinInfo.getRemarks());
         invoice_user_data.put("cashier", weiXinInfo.getCashier());
         invoice_user_data.put("maker", weiXinInfo.getMaker());
-
+    }
+        logger.info("封装数据为"+JSON.toJSONString(sj));
         String URL = WeiXinConstants.dzfpInCard_url + access_token;
         String jsonStr = WeixinUtil.httpRequest(URL, "POST", JSON.toJSONString(sj));
         if (null != jsonStr) {
@@ -443,4 +424,7 @@ public class WechatBatchCard {
         return null;
     }
 
+    public static void main(String[] args) {
+
+    }
 }
