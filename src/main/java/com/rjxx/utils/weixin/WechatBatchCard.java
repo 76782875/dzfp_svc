@@ -356,7 +356,7 @@ public class WechatBatchCard {
             invoice_user_data.put("maker", weiXinInfo.getMaker());
         }
         logger.info("封装数据为"+JSON.toJSONString(sj));
-        String URL = WeiXinConstants.dzfpInCard_url + access_token;
+        String URL = WeiXinConstants.BATCH_DZFP_IN_CARD + access_token;
         String jsonStr = WeixinUtil.httpRequest(URL, "POST", JSON.toJSONString(sj));
         if (null != jsonStr) {
             ObjectMapper jsonparer = new ObjectMapper();// 初始化解析json格式的对象

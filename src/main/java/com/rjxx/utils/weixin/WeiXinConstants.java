@@ -84,7 +84,7 @@ public class WeiXinConstants {
     //拒绝开票
     public static final String BATCH_REFUSE_KP = "Https://api.weixin.qq.com/card/invoice/batchrejectinsert?access_token=";
     //将发票插入用户卡包
-    public static final String BATCH_DZFP_IN_CARD = "https://api.weixin.qq.com/card/invoice/insert?access_token=";
+    public static final String BATCH_DZFP_IN_CARD = "https://api.weixin.qq.com/card/invoice/batchinsert?access_token=";
     //查询插卡结果
     public static final String BATCH_IN_CARD_RESULT = "https://api.weixin.qq.com/card/invoice/ batchcheckinsertresult?access_token=";
 
