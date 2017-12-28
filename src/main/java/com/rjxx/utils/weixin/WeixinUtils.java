@@ -256,7 +256,8 @@ public class WeixinUtils {
         String s_pappid = weixinUtils.getSpappid(access_token);
 
         if(s_pappid == null){
-            return null;
+            resultMap.put("msg","72038");
+            return resultMap;
         }
         String URL = "https://api.weixin.qq.com/card/invoice/getauthdata?access_token=" + access_token;
         Map nvps = new HashMap();
@@ -349,15 +350,18 @@ public class WeixinUtils {
 
                 } else if (null != errcode && errcode==72038) {
                     logger.info("主动查询授权完成状态失败,订单" + order_id + "没有授权,错误代码" + errcode);
-                    System.out.println("主动查询授权完成状态失败,订单" + order_id + "没有授权,错误代码" + errcode);
-                    return null;
+                    //System.out.println("主动查询授权完成状态失败,订单" + order_id + "没有授权,错误代码" + errcode);
+                    resultMap.put("msg","72038");
+                    return resultMap;
                 }
 
             } catch (Exception e) {
                 e.printStackTrace();
+                resultMap.put("msg","72038");
+                return resultMap;
             }
         }
-        return null;
+        return resultMap;
     }
 
     /**
@@ -689,6 +693,9 @@ public class WeixinUtils {
             resultMap.put("addr",kpls.getGfdz());
             resultMap.put("phone",kpls.getGfdh());
             weiXinData = resultMap;
+        }else if(weiXinData!=null && weiXinData.get("msg").equals("72038")){
+            logger.info("没有授权,不插卡");
+            return null;
         }
         //公司简称 品牌t_pp kpddm->skp->pid->ppmc
         if (null == kpls.getSkpid()) {
