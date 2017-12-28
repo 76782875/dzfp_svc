@@ -769,8 +769,8 @@ public class WeixinUtils {
 
         BigDecimal bigjshj= new BigDecimal(kpls.getJshj().toString());
         BigDecimal bigzh = bigjshj.multiply(new BigDecimal(100));
-        Double doujshj= new Double(bigzh.toString());
-        weiXinInfo.setFee(doujshj);//卡包开票金额,价税合计  必填
+        //Double doujshj= new Double(bigzh.toString());
+        //weiXinInfo.setFee(doujshj);//卡包开票金额,价税合计  必填
         //weiXinInfo.setFee(kpls.getJshj()*100);//卡包开票金额,价税合计  必填
 
         logger.info("数据库开票录入时间----"+kpls.getKprq());
@@ -781,14 +781,14 @@ public class WeixinUtils {
 
         BigDecimal bighjje = new BigDecimal(kpls.getHjje().toString());
         BigDecimal bigzzhjje = bighjje.multiply(new BigDecimal(100));
-        Double douhjje = new Double(bigzzhjje.toString());
-        weiXinInfo.setFee_without_tax(douhjje);//不含税金额  必填
+        //Double douhjje = new Double(bigzzhjje.toString());
+        //weiXinInfo.setFee_without_tax(douhjje);//不含税金额  必填
         //weiXinInfo.setFee_without_tax(kpls.getHjje()* 100);//不含税金额  必填
 
         BigDecimal bighjse = new BigDecimal(kpls.getHjse().toString());
         BigDecimal bigzzhjse = bighjse.multiply(new BigDecimal(100));
-        Double douhjse = new Double(bigzzhjse.toString());
-        weiXinInfo.setTax(douhjse);//税额        必填
+        //Double douhjse = new Double(bigzzhjse.toString());
+        //weiXinInfo.setTax(douhjse);//税额        必填
         // weiXinInfo.setTax(kpls.getHjse() * 100);//税额        必填
         weiXinInfo.setCheck_code(kpls.getJym());//校验码    必填
 //        weiXinInfo.setFee(20.00);//发票金额
@@ -824,14 +824,14 @@ public class WeixinUtils {
         if (null != s_media_id_pdf && StringUtils.isNotBlank(s_media_id_pdf)) {
             weiXinInfo.setS_pdf_media_id(s_media_id_pdf);
         }
-        invoice_user_data.put("fee", weiXinInfo.getFee());
+        invoice_user_data.put("fee", bigzh.intValue());
         invoice_user_data.put("title", weiXinInfo.getTitle());
         invoice_user_data.put("billing_time", weiXinInfo.getBilling_time());
         invoice_user_data.put("billing_no", weiXinInfo.getBilling_no());
         invoice_user_data.put("billing_code", weiXinInfo.getBilling_code());
         invoice_user_data.put("info", info);
-        invoice_user_data.put("fee_without_tax", weiXinInfo.getFee_without_tax());
-        invoice_user_data.put("tax", weiXinInfo.getTax());
+        invoice_user_data.put("fee_without_tax", bigzzhjje.intValue());
+        invoice_user_data.put("tax", bigzzhjse.intValue());
         invoice_user_data.put("s_pdf_media_id", weiXinInfo.getS_pdf_media_id());
         invoice_user_data.put("s_trip_pdf_media_id", weiXinInfo.getS_trip_pdf_media_id());
         invoice_user_data.put("check_code", weiXinInfo.getCheck_code());
