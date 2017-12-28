@@ -10,11 +10,16 @@ import com.rjxx.taxeasy.service.KpspmxService;
 import com.rjxx.utils.StringUtils;
 import com.rjxx.utils.TimeUtil;
 import com.rjxx.utils.WeixinUtil;
+import org.dom4j.Document;
+import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -427,6 +432,39 @@ public class WechatBatchCard {
     }
 
     public static void main(String[] args) {
+
+    }
+
+    /**
+     * 解析微信推送消息xml
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    public Map<String, String> parseXml(HttpServletRequest request) throws Exception {
+        // 将解析结果存储在HashMap中
+        Map<String, String> map = new HashMap<String, String>();
+        // 从request中取得输入流
+        InputStream inputStream = request.getInputStream();
+        // 读取输入流
+        SAXReader reader = new SAXReader();
+        Document document = reader.read(inputStream);
+        String requestXml = document.asXML();
+        String subXml = requestXml.split(">")[0] + ">";
+        requestXml = requestXml.substring(subXml.length());
+        // 得到xml根元素
+        Element root = document.getRootElement();
+        // 得到根元素的全部子节点
+        List<Element> elementList = root.elements();
+        // 遍历全部子节点
+        for (Element e : elementList) {
+            map.put(e.getName(), e.getText());
+        }
+        map.put("requestXml", requestXml);
+        // 释放资源
+        inputStream.close();
+        inputStream = null;
+        return map;
 
     }
 }

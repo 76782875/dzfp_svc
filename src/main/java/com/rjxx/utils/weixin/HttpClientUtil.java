@@ -118,7 +118,7 @@ public class HttpClientUtil {
         return doPost(url, null);
     }
 
-    public static String doPostJson(String url, String json) {
+    public static String doPostXml(String url, String xml) {
         // 创建Httpclient对象
         CloseableHttpClient httpClient = HttpClients.createDefault();
         CloseableHttpResponse response = null;
@@ -127,7 +127,7 @@ public class HttpClientUtil {
             // 创建Http Post请求
             HttpPost httpPost = new HttpPost(url);
             // 创建请求内容
-            StringEntity entity = new StringEntity(json, ContentType.APPLICATION_JSON);
+            StringEntity entity = new StringEntity(xml, ContentType.APPLICATION_XML);
             httpPost.setEntity(entity);
             // 执行http请求
             response = httpClient.execute(httpPost);
