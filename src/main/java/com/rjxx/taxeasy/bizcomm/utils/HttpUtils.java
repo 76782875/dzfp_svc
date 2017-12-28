@@ -3,6 +3,7 @@ package com.rjxx.taxeasy.bizcomm.utils;
 import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rjxx.taxeasy.domains.Fphxwsjl;
+import com.rjxx.taxeasy.domains.Gsxx;
 import com.rjxx.taxeasy.service.FphxwsjlService;
 import com.rjxx.utils.SignUtils;
 import com.rjxx.utils.XmlJaxbUtils;
@@ -254,5 +255,66 @@ public class HttpUtils {
             e.printStackTrace();
         }
         return buffer.toString();
+    }
+    /**
+     * https使用SOAP1.2发送消息
+     *
+     * @param postUrl
+     * @param soapXml
+     * @param soapAction
+     * @return
+     */
+    public static String HttpsdoPostSoap1_2(String postUrl, String soapXml,
+                                       String soapAction,String username,String password) {
+        String retStr = "";
+        // 创建HttpClientBuilder
+        try {
+        HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
+        // HttpClient
+        CloseableHttpClient closeableHttpClient = new SSLClient();
+        HttpPost httpPost = new HttpPost(postUrl);
+        // 设置请求和传输超时时间
+        RequestConfig requestConfig = RequestConfig.custom()
+                .setSocketTimeout(socketTimeout)
+                .setConnectTimeout(connectTimeout).build();
+        httpPost.setConfig(requestConfig);
+
+            httpPost.setHeader("Content-Type",
+                    "application/soap+xml;charset=UTF-8");
+            httpPost.setHeader("SOAPAction", soapAction);
+            /*String authString = username + ":" + password;
+            byte[] authEncBytes = Base64.encodeBase64(authString.getBytes());
+            String authStringEnc = new String(authEncBytes);
+            httpPost.addHeader("Authorization",  "Basic " + authStringEnc);*/
+            StringEntity data = new StringEntity(soapXml,
+                    Charset.forName("UTF-8"));
+            httpPost.setEntity(data);
+            CloseableHttpResponse response = closeableHttpClient
+                    .execute(httpPost);
+            HttpEntity httpEntity = response.getEntity();
+            if (httpEntity != null) {
+                // 打印响应内容
+                retStr = EntityUtils.toString(httpEntity, "UTF-8");
+                System.out.println("response:" + retStr);
+            }
+            // 释放资源
+            closeableHttpClient.close();
+        } catch (Exception e) {
+            System.out.println("exception in doPostSoap1_2" + e);
+        }
+        return retStr;
+    }
+    public static void main(String[] args) {
+        /*String wsurl="https://192.9.250.216/webService/services/invoiceService?wsdl";
+        String xml="<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ser=\"http://service.rj.com\">\n" +
+                "   <soapenv:Header/>\n" +
+                "   <soapenv:Body>\n" +
+                "      <ser:CallService2>\n" +
+                "         <!--Optional:-->\n" +
+                "         <invoiceData>测试发士大夫士大夫士大夫</invoiceData>\n" +
+                "      </ser:CallService2>\n" +
+                "   </soapenv:Body>\n" +
+                "</soapenv:Envelope>";
+        HttpsdoPostSoap1_2(wsurl,xml,null,null,null);*/
     }
 }

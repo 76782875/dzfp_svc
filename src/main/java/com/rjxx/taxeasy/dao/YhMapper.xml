@@ -70,16 +70,59 @@
         </if>
     </select>
     <select id="findByPage" parameterType="pagination" resultType="yh">
-        select * from t_yh where yxbz = '1'
-         <if test="params.yhzh != null and params.yhzh != ''">
-            and dlyhid like concat('%',#{params.yhzh},'%')
+        SELECT
+        *
+        FROM
+        t_yh y
+        WHERE
+        y.yxbz = '1'
+        <if test="params.yhzh != null and params.yhzh != ''">
+            and y.dlyhid like concat('%',#{params.yhzh},'%')
         </if>
- 		<if test="params.yhmc != null and params.yhmc != ''">
-            and yhmc like concat('%',#{params.yhmc},'%')
+        <if test="params.yhmc != null and params.yhmc != ''">
+            and y.yhmc like concat('%',#{params.yhmc},'%')
+        </if>
+        AND EXISTS (
+        SELECT
+        1
+        FROM
+        t_xf a,
+        t_group d
+        WHERE
+        a.id = d.xfid
+        AND d.yxbz = '1'
+        AND a.yxbz = '1'
+        AND y.id = d.yhid
+        AND EXISTS (
+        SELECT
+        1
+        FROM
+        t_group b,
+        t_yh c
+        WHERE
+            b.yxbz = '1'
+        <if test="params.yhid != null and params.yhid != ''">
+            and c.id = #{params.yhid}
         </if>
         <if test="params.gsdm != null and params.gsdm != ''">
             and gsdm = #{params.gsdm}
         </if>
+        AND c.sup = '1'
+        AND a.gsdm = c.gsdm
+        AND b.yhid = c.id
+        AND c.yxbz = '1'
+        AND (
+        (
+        -- t_group xfid is null and skpid is null 赋予用户公司全部销方全部开票点权限
+        b.xfid IS NULL -- AND b.skpid IS NULL
+        )
+        OR (
+        -- t_group skpid is null 赋予销方全部开票点权限
+        a.id = b.xfid
+        )
+        )
+        )
+        )
     </select>
 
 </mapper>

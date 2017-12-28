@@ -730,7 +730,6 @@ public class FpclService {
                     buffer.append(strMessage);
                 }
             }
-            System.out.println("接收返回值:" + buffer.toString());
             resultMap = DzfphanderReturnMes(buffer.toString(), key);
             if (null != resultMap && !resultMap.isEmpty()) {
                 int pos = key.indexOf("$");
@@ -822,7 +821,6 @@ public class FpclService {
                     buffer.append(strMessage);
                 }
             }
-            System.out.println("接收返回值:" + buffer.toString());
             resultMap = DzfphanderReturnMes(buffer.toString(), key);
             if (null != resultMap && !resultMap.isEmpty()) {
                 int pos = key.indexOf("$");
@@ -1257,6 +1255,8 @@ public class FpclService {
                     ewm = resultMap.get("EWM").toString();
                 }
                 String jqbh = resultMap.get("JQBH").toString();
+                resultMap.remove("EWM");
+                logger.info("-------税控服务器返回报文----------"+JSON.toJSONString(resultMap));
                 kpls.setFpdm(fpdm);
                 kpls.setFphm(fphm);
                 kpls.setFpztdm("00");
@@ -1389,12 +1389,8 @@ public class FpclService {
              */
             String templateName = "skdzfp-xml.ftl";
             String result2 = TemplateUtils.generateContent(templateName, params2);
-            System.out.println(result2);
             logger.debug("封装传开票通的报文" + result2);
-            //调用税控服务器url弃用公司信息表中的ws_url字段，选用csb表所设置的参数。
-            //Map parms = new HashMap();
-            //parms.put("gsdm", kplsVO5.getGsdm());
-            //Gsxx gsxx = gsxxService.findOneByParams(parms);
+
             Cszb cszb2 = cszbService.getSpbmbbh(kpls.getGsdm(), kpls.getXfid(), kpls.getSkpid(), "skurl");
             String url = cszb2.getCsz();
             int j=2;

@@ -144,7 +144,7 @@ public class wechatFpxxServiceImpl {
                         wFpxx.setTqm(tqm);
                         wFpxx.setGsdm(gsdm);
                         wFpxx.setOrderNo(orderNo);
-                        wFpxx.setQ(q);
+                        //wFpxx.setQ(q);
                         wFpxx.setWxtype(wxType);//1:申请开票 2、领取发票
                         wFpxx.setOpenId(opendid);
                         wFpxx.setKplsh(kplsh);
@@ -156,7 +156,7 @@ public class wechatFpxxServiceImpl {
                         aFpxx.setTqm(tqm);
                         aFpxx.setGsdm(gsdm);
                         aFpxx.setOrderNo(orderNo);
-                        aFpxx.setQ(q);
+                        //aFpxx.setQ(q);
                         aFpxx.setUserid(userId);
                         aFpxx.setKplsh(kplsh);
                         aFpxx.setLrsj(new Date());

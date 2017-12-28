@@ -76,12 +76,26 @@ public class WeiXinConstants {
     //解码code  URL
     public  static final String decodeURL="https://api.weixin.qq.com/card/code/decrypt?access_token=";
 
-
-
-
+    /**************一次授 权批量插卡************************/
+    //获取授权链接
+    public static final String HQ_SQ_URL = "https://api.weixin.qq.com/card/invoice/bizbatchgetauthurl?access_token=";
+    //查询授权信息
+    public static final String BATCH_SQ_STATUS = "https://api.weixin.qq.com/card/invoice/bizbatchgetauthdata?access_token=";
+    //拒绝开票
+    public static final String BATCH_REFUSE_KP = "Https://api.weixin.qq.com/card/invoice/batchrejectinsert?access_token=";
+    //将发票插入用户卡包
+    public static final String BATCH_DZFP_IN_CARD = "https://api.weixin.qq.com/card/invoice/batchinsert?access_token=";
+    //查询插卡结果
+    public static final String BATCH_IN_CARD_RESULT = "https://api.weixin.qq.com/card/invoice/ batchcheckinsertresult?access_token=";
 
     /**************门店、卡券***************/
 
     //创建门店url
     public static final String CREAT_STORE_URL="http://api.weixin.qq.com/cgi-bin/poi/addpoi?access_token=";
+
+    //测试 开票平台标识
+    public static final String TEST_SPAPPID ="d3g4YzJhNGMyMjg5ZTEwZmZiX8ykqqY-ekKLnDj3KRTgmFqFkztdBlnQH_M6UiEz47RY";
+
+    //正式 容津公众号开票标识
+    public static final String RJXX_SPAPPID ="d3g5YWJjNzI5ZTJiNDYzN2VlX0PARqxCKGk0d1fanZfCN3KxU5K6C-9JRLhQXmLzcptB";
 }
