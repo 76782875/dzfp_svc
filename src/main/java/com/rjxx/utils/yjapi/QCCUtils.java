@@ -144,8 +144,10 @@ public class QCCUtils {
                                 qympk.setFrmc(object.getString("OperName"));
                                 String startDate = object.getString("StartDate");
                                 DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                                Date clrq = df.parse(startDate);
-                                qympk.setClrq(clrq);
+                                if(startDate != null && !startDate.equals("")){
+                                   Date clrq = df.parse(startDate);
+                                    qympk.setClrq(clrq);
+                                }
                                 qympk.setQyzt(object.getString("Status"));
                                 qympk.setQyzch(object.getString("No"));
                                 qympk.setNsrsbh(object.getString("CreditCode"));
