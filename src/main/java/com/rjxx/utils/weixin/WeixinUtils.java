@@ -348,9 +348,8 @@ public class WeixinUtils {
                         return resultMap;
                     }
 
-                } else if (null != errcode && errcode==72038) {
-                    logger.info("主动查询授权完成状态失败,订单" + order_id + "没有授权,错误代码" + errcode);
-                    //System.out.println("主动查询授权完成状态失败,订单" + order_id + "没有授权,错误代码" + errcode);
+                } else{
+                    logger.info( order_id + "授权状态"+errcode+",错误代码" + errcode);
                     resultMap.put("msg","72038");
                     return resultMap;
                 }
