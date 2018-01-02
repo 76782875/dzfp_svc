@@ -166,7 +166,7 @@ and fphm is not null) t
         t_kpls a,t_fpzl t
         WHERE
         a.yxbz = '1'
-        AND a.fpztdm = '00'
+        AND a.fpztdm in('00','02')
         and a.fpzldm = t.fpzldm
         AND a.fphm IS NOT NULL
         <if test="gsdm !=null">

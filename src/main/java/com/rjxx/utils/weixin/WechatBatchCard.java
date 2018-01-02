@@ -124,6 +124,10 @@ public class WechatBatchCard {
     public Map batchZDCXstatus(String auth_id, String access_token,String s_pappid) {
         Map resultMap = new HashMap();
         String URL = WeiXinConstants.BATCH_SQ_STATUS+access_token;
+        if(null == auth_id || s_pappid == null){
+            resultMap.put("msg","72038");
+            return resultMap;
+        }
         Map nvps = new HashMap();
         nvps.put("s_pappid", s_pappid);
         nvps.put("auth_id", auth_id);
@@ -206,15 +210,18 @@ public class WechatBatchCard {
                         return resultMap;
                     }
                 } else {
-                    System.out.println("主动查询授权完成状态失败,授权id" + auth_id + "没有授权,错误代码" + errcode);
-                    return null;
+                    logger.info( auth_id + "授权状态"+errcode+",错误代码" + errcode);
+                   resultMap.put("msg","72038");
+                   return resultMap;
                 }
 
             } catch (Exception e) {
                 e.printStackTrace();
+                resultMap.put("msg","72038");
+                return resultMap;
             }
         }
-        return null;
+        return resultMap;
     }
     /**
      * 拒绝开票
