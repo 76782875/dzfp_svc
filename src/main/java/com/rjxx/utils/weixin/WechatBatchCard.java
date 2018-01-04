@@ -151,7 +151,7 @@ public class WechatBatchCard {
                         return null;
                     }
                     //个人抬头
-                    if (null != user_auth_info.get("user_field")) {
+                    if (null != user_auth_info.get("user_field")&& !user_auth_info.get("user_field").equals("")) {
                         Map user_field = (Map) user_auth_info.get("user_field");
                         String title = (String) user_field.get("title");
                         String phone = (String) user_field.get("phone");
@@ -176,7 +176,7 @@ public class WechatBatchCard {
                         return resultMap;
                     }
                     //单位抬头
-                    if (null != user_auth_info.get("biz_field")) {
+                    if (null != user_auth_info.get("biz_field")&&!user_auth_info.get("biz_field").equals("")) {
                         Map biz_field = (Map) user_auth_info.get("biz_field");
                         String title = (String) biz_field.get("title");
                         String tax_no = (String) biz_field.get("tax_no");
