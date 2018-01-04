@@ -173,6 +173,7 @@ public class WechatBatchCard {
                         resultMap.put("key", key);
                         resultMap.put("value", value);
                         logger.info("封装之后的数据" + JSON.toJSONString(resultMap));
+                        resultMap.put("msg","0");
                         return resultMap;
                     }
                     //单位抬头
@@ -207,6 +208,7 @@ public class WechatBatchCard {
                             resultMap.put("email", value);
                         }
                         logger.info("封装之后的数据" + JSON.toJSONString(resultMap));
+                        resultMap.put("msg","0");
                         return resultMap;
                     }
                 } else {
@@ -221,6 +223,7 @@ public class WechatBatchCard {
                 return resultMap;
             }
         }
+        resultMap.put("msg","0");
         return resultMap;
     }
     /**

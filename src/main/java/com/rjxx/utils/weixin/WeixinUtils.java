@@ -307,6 +307,7 @@ public class WeixinUtils {
                         resultMap.put("email", email);//邮箱
                         resultMap.put("key", key);
                         resultMap.put("value", value);
+                        resultMap.put("msg","0");
                         return resultMap;
                     }
                     if (null != user_auth_info.get("biz_field")) {
@@ -345,6 +346,7 @@ public class WeixinUtils {
                             resultMap.put("email", value);
                         }
                         System.out.println("封装的数据" + resultMap.toString());
+                        resultMap.put("msg","0");
                         return resultMap;
                     }
 
@@ -360,6 +362,7 @@ public class WeixinUtils {
                 return resultMap;
             }
         }
+        resultMap.put("msg","0");
         return resultMap;
     }
 
