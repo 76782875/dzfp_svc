@@ -83,6 +83,25 @@ public class SkService {
         return response;
     }
     /**
+     * 税控服务器开票https
+     *
+     * @param kplsh
+     * @return
+     */
+    public InvoiceResponse SkServerKPhttps(int kplsh) throws Exception {
+
+        if (StringUtils.isBlank(skkpServerUrl)) {
+            return InvoiceResponseUtils.responseError("skkpServerUrl为空");
+        }
+        String encryptStr = encryptSkServerParameter(kplsh + "");
+        String url = skkpServerUrl + "/invoice/SkServerKP";
+        Map<String, String> map = new HashMap<>();
+        map.put("p", encryptStr);
+        String result = com.rjxx.taxeasy.bizcomm.utils.HttpUtils.Https_post(url,map);
+        InvoiceResponse response = XmlJaxbUtils.convertXmlStrToObject(InvoiceResponse.class, result);
+        return response;
+    }
+    /**
      * 获取发票代码发票号码
      *
      * @param kpdid

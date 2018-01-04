@@ -328,7 +328,12 @@ public class FphcService {
 					if(!kpls2.getFpzldm().equals("12")){
 						skService.callService(kpls2.getKplsh());
 					}else{
-						skService.SkServerKP(kpls2.getKplsh());
+						//skService.SkServerKP(kpls2.getKplsh());
+						if(kpls2.getGsdm().equals("afb")){
+							skService.SkServerKPhttps(kpls2.getKplsh());
+						}else{
+							skService.SkServerKP(kpls2.getKplsh());
+						}
 					}
 				}
 				response.setReturnCode("0000");

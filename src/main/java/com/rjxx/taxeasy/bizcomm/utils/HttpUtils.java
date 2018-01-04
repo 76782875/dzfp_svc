@@ -8,16 +8,20 @@ import com.rjxx.taxeasy.service.FphxwsjlService;
 import com.rjxx.utils.SignUtils;
 import com.rjxx.utils.XmlJaxbUtils;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.IOUtils;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.jaxws.endpoint.dynamic.JaxWsDynamicClientFactory;
 import org.apache.http.HttpEntity;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
@@ -31,9 +35,7 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.Charset;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by xlm on 2017/7/21.
@@ -255,6 +257,28 @@ public class HttpUtils {
             e.printStackTrace();
         }
         return buffer.toString();
+    }
+    public static String Https_post(String url,Map<String,String> data) throws Exception {
+
+            String result=null;
+        try{
+            List<NameValuePair> nameValuePairList = new ArrayList<>(data.size());
+            for (Map.Entry<String, String> entry : data.entrySet()) {
+                NameValuePair pair = new BasicNameValuePair(entry.getKey(), entry.getValue());
+                nameValuePairList.add(pair);
+            }
+            HttpPost httpPost = new HttpPost(url);
+            HttpEntity httpEntity = new UrlEncodedFormEntity(nameValuePairList);
+            httpPost.setEntity(httpEntity);
+            CloseableHttpClient httpClient = new SSLClient();
+            CloseableHttpResponse httpResponse = httpClient.execute(httpPost);
+            InputStream is = httpResponse.getEntity().getContent();
+            result = IOUtils.toString(is, "UTF-8");
+        }catch (IOException e){
+            logger.info("request url=" + url + ", exception, msg=" + e.getMessage());
+            e.printStackTrace();
+        }
+        return result;
     }
     /**
      * https使用SOAP1.2发送消息
