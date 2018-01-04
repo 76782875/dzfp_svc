@@ -261,6 +261,8 @@ public class HttpUtils {
     public static String Https_post(String url,Map<String,String> data) throws Exception {
 
             String result=null;
+            CloseableHttpResponse httpResponse=null;
+            CloseableHttpClient httpClient=null;
         try{
             List<NameValuePair> nameValuePairList = new ArrayList<>(data.size());
             for (Map.Entry<String, String> entry : data.entrySet()) {
@@ -270,13 +272,20 @@ public class HttpUtils {
             HttpPost httpPost = new HttpPost(url);
             HttpEntity httpEntity = new UrlEncodedFormEntity(nameValuePairList);
             httpPost.setEntity(httpEntity);
-            CloseableHttpClient httpClient = new SSLClient();
-            CloseableHttpResponse httpResponse = httpClient.execute(httpPost);
+            httpClient = new SSLClient();
+            httpResponse = httpClient.execute(httpPost);
             InputStream is = httpResponse.getEntity().getContent();
             result = IOUtils.toString(is, "UTF-8");
         }catch (IOException e){
             logger.info("request url=" + url + ", exception, msg=" + e.getMessage());
             e.printStackTrace();
+        } finally {
+            if (httpResponse != null) try {
+                httpResponse.close();
+                httpClient.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return result;
     }
