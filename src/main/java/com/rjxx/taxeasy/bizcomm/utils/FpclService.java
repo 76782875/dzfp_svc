@@ -102,7 +102,12 @@ public class FpclService {
             if(!kpls.getFpzldm().equals("12")){
                 skService.callService(kpls.getKplsh());
             }else{
-                skService.SkServerKP(kpls.getKplsh());
+                //skService.SkServerKP(kpls.getKplsh());
+                if(kpls.getGsdm().equals("afb")){
+                    skService.SkServerKPhttps(kpls.getKplsh());
+                }else{
+                    skService.SkServerKP(kpls.getKplsh());
+                }
             }
         }
         return true;
@@ -1107,7 +1112,12 @@ public class FpclService {
                     saveKpspmx(kpls, list2);
                     KplsVO5 kplsVO5 = new KplsVO5(kpls, jyxxsq);
                     result.add(kplsVO5);
-                    skService.SkServerKP(kpls.getKplsh());//税控开票
+                    //skService.SkServerKP(kpls.getKplsh());//税控开票
+                    if(kpls.getGsdm().equals("afb")){
+                        skService.SkServerKPhttps(kpls.getKplsh());
+                    }else{
+                        skService.SkServerKP(kpls.getKplsh());
+                    }
                 }
                 i++;
             }

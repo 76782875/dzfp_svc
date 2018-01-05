@@ -33,7 +33,7 @@ public class Pp implements Serializable {
      * 微信卡包logourl
      */
     @Column(name = "wechat_logo_url")
-    protected String wechatLogoUrl;
+    protected String wechatLogoUrl="http://mmbiz.qpic.cn/mmbiz_png/l249Gu1JJaJjZiauO138MD1d6dnglRlj1nPxqrRnWSCMvOoYxaOricVibjzXVP3obaD9kDjcqFsBic2NIiaykS1GV6A/0";
 
     public String getWechatLogoUrl() {
         return wechatLogoUrl;

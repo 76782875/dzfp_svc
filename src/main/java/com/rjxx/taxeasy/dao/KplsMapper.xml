@@ -697,7 +697,7 @@
             and kp.fphm = #{fphm}
         </if>
         <if test="kprqq != null and kprqq !='' and kprqz != null and kprqz !=''">
-            and kp.lrsj between #{kprqq} and
+            and kp.kprq between #{kprqq} and
             date_add(str_to_date(#{kprqz},'%Y-%m-%d'),INTERVAL 1 day)
         </if>
         <!--<if test="spmc != null and spmc != ''">
