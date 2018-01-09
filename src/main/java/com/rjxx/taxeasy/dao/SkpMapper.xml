@@ -23,6 +23,9 @@
 		<if test="kpdid != null and kpdid != ''">
 			and id = #{kpdid}
 		</if>
+		<if test="skph != null and skph != ''">
+			and skph = #{skph}
+		</if>
 		limit 1
 	</select>
 	<select id="findSkpbySkph" parameterType="map" resultType="skp">

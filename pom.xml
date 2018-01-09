@@ -163,6 +163,14 @@
             <artifactId>jsch</artifactId>
             <version>0.1.46</version>
         </dependency>
+        <dependency>
+            <groupId>com.caucho</groupId>
+            <artifactId>hessian</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com</groupId>
+            <artifactId>service</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
