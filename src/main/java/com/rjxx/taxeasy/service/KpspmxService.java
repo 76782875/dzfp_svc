@@ -49,6 +49,10 @@ public class KpspmxService {
         return kpspmxMapper.findAllByParams(params);
     }
 
+    public List<Kpspmxvo> findFphccxByParams(Map params) {
+        return kpspmxMapper.findFphccxByParams(params);
+    }
+
     public List<Kpspmx> findByPage(Pagination pagination) {
         return kpspmxMapper.findByPage(pagination);
     }

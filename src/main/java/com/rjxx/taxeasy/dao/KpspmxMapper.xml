@@ -16,6 +16,11 @@
         
     </select>
 
+    <select id="findFphccxByParams" parameterType="map" resultType="kpspmxvo">
+        select *,(spje+spse) jshj from v_kpspmx where kplsh = #{id}  order by spmxxh
+    </select>
+
+
     <select id="findByPage" parameterType="pagination" resultType="kpspmx">
         select * from t_kpspmx where yxbz = '1'
         <if test="params.orderBy != null">

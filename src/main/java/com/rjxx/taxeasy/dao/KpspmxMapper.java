@@ -22,6 +22,8 @@ public interface KpspmxMapper {
 
     public List<Kpspmxvo> findAllByParams(Map params);
 
+     List<Kpspmxvo> findFphccxByParams(Map params);
+
     public List<Kpspmx> findByPage(Pagination pagination);
     //红冲查询单个明细
     public Kpspmxvo findMxByParams(Map params);
