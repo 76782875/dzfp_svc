@@ -19,7 +19,7 @@
     </select>
 
     <select id="findAllByParam" parameterType="map" resultType="spbm">
-        select * from spbm where yxbz = '1' and ZZSSL is not null and zzssl != '';
+        select * from spbm where yxbz = '1' and hzx = '0'
         <if test="spbm != null">
             and spbm like concat('',#{spbm},'%')
         </if>
