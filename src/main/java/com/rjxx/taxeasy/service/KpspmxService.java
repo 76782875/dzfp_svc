@@ -84,12 +84,17 @@ public class KpspmxService {
     	kpspmxJpaDao.deleteAll();
 	}
    
-   public void delete(Kpspmx kpspmx) {
+    public void delete(Kpspmx kpspmx) {
 	   kpspmxJpaDao.delete(kpspmx.getId());
 	}
 
     public List<Kpspmxvo> findSkMxList(Map params) {
         return kpspmxMapper.findSkMxList(params);
     }
+
+    public List<Kpspmx> findMx2List(Map params){
+        return kpspmxMapper.findMx2List(params);
+    }
+
 }
 

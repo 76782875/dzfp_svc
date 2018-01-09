@@ -136,7 +136,7 @@ public class DataOperate {
         try {
         	Map<String, Object> params = new HashMap<>();
         	params.put("kplsh", kplsh);
-            t_kpspmxes = kpspmxSerivce.findMxList(params);
+            t_kpspmxes = kpspmxSerivce.findMx2List(params);
         } catch (Exception e) {
             e.printStackTrace();
         }
