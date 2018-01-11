@@ -338,8 +338,8 @@ public class WechatBatchCard {
                     Map ma = new HashMap();
                     ma.put("name", kpspmx.getSpmc());//商品名称 必填
                     ma.put("num", kpspmx.getSps());//商品数量    必填
-                    ma.put("unit", kpspmx.getSpdj());//商品单位  必填
-                    ma.put("price", kpspmx.getSpdw());//商品单价 必填
+                    ma.put("unit", kpspmx.getSpdw());//商品单位  必填
+                    ma.put("price", kpspmx.getSpdj());//商品单价 必填
                     info.add(ma);
                 }
             }
