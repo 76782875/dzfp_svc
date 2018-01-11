@@ -1356,6 +1356,7 @@ public class FpclService {
             params.put("kplsh", kplsVO5.getKplsh());
             List<Kpspmxvo> tmpList = kpspmxService.findSkMxList(params);
             Kpspmxvo kpspmxvo = new Kpspmxvo();
+            List<Kpspmxvo> kpspmxvoListNew=new ArrayList<>();
             for (int j = 0; j < tmpList.size(); j++) {
                 kpspmxvo = tmpList.get(j);
                 hjje = hjje + kpspmxvo.getSpje();
@@ -1369,6 +1370,7 @@ public class FpclService {
                     kpspmxvo.setSpdw(null);
                     kpspmxvo.setSpggxh(null);
                 }
+                kpspmxvoListNew.add(kpspmxvo);
             }
 
             Map params2 = new HashMap();
@@ -1394,8 +1396,8 @@ public class FpclService {
             String spbmbbh = cszb.getCsz();
             params.put("spbmbbh", spbmbbh);
             params2.put("kpls", kplsVO5);
-            params2.put("kpspmxList", tmpList);
-            params2.put("mxCount", tmpList.size());
+            params2.put("kpspmxList", kpspmxvoListNew);
+            params2.put("mxCount", kpspmxvoListNew.size());
             params2.put("hjje", hjje);
             params2.put("hjse", hjse);
             /**
