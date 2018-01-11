@@ -163,7 +163,7 @@ public class SkOperationService {
         sd=StringUtils.bytes2HexString(sd.getBytes("UTF-8"));
         System.out.println(sd);
 
-
-        //System.out.println(StringUtils.stringToAscii("ABC12345"));
+        System.out.println(StringUtils.stringToAscii("ABC12345"));
+        System.out.println(StringUtils.bytes2HexString("A1".getBytes("UTF-8"))+"20"+StringUtils.bytes2HexString("ABC12345".getBytes("UTF-8")));
     }
 }
