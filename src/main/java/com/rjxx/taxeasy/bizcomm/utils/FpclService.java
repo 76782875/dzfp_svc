@@ -1392,7 +1392,7 @@ public class FpclService {
                 kplx = "1";
             }
             params2.put("kplx", kplx);
-            Cszb cszb = cszbService.getSpbmbbh(kplsVO5.getGsdm(), kplsVO5.getXfid(), null, "spbmbbh");
+            Cszb cszb = cszbService.getSpbmbbh(kplsVO5.getGsdm(), kplsVO5.getXfid(), kplsVO5.getSkpid(), "spbmbbh");
             String spbmbbh = cszb.getCsz();
             params.put("spbmbbh", spbmbbh);
             params2.put("kpls", kplsVO5);
