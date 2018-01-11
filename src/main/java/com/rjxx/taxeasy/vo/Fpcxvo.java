@@ -1,15 +1,12 @@
 package com.rjxx.taxeasy.vo;
 
-import java.io.Serializable;
-import java.text.DecimalFormat;
-import java.util.Date;
-
-import javax.persistence.Column;
-
-import org.springframework.format.annotation.DateTimeFormat;
-
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.rjxx.comm.json.JsonDatetimeFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.persistence.Column;
+import java.io.Serializable;
+import java.util.Date;
 
 public class Fpcxvo implements Serializable {
 	protected Integer kplsh;
@@ -60,6 +57,8 @@ public class Fpcxvo implements Serializable {
 	protected String kprq2;
 	protected String orderNo;
 	protected String kplsh2;
+	protected String filename;
+
 
 	/**
 	 * 交易流水时间 业务系统或电商平台生成。
@@ -975,5 +974,13 @@ public class Fpcxvo implements Serializable {
 
 	public void setKplsh2(String kplsh2) {
 		this.kplsh2 = kplsh2;
+	}
+
+	public String getFilename() {
+		return filename;
+	}
+
+	public void setFilename(String filename) {
+		this.filename = filename;
 	}
 }

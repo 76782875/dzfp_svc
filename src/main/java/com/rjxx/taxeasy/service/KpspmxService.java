@@ -49,6 +49,10 @@ public class KpspmxService {
         return kpspmxMapper.findAllByParams(params);
     }
 
+    public List<Kpspmxvo> findFphccxByParams(Map params) {
+        return kpspmxMapper.findFphccxByParams(params);
+    }
+
     public List<Kpspmx> findByPage(Pagination pagination) {
         return kpspmxMapper.findByPage(pagination);
     }
@@ -84,12 +88,17 @@ public class KpspmxService {
     	kpspmxJpaDao.deleteAll();
 	}
    
-   public void delete(Kpspmx kpspmx) {
+    public void delete(Kpspmx kpspmx) {
 	   kpspmxJpaDao.delete(kpspmx.getId());
 	}
 
     public List<Kpspmxvo> findSkMxList(Map params) {
         return kpspmxMapper.findSkMxList(params);
     }
+
+    public List<Kpspmx> findMx2List(Map params){
+        return kpspmxMapper.findMx2List(params);
+    }
+
 }
 

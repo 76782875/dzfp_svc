@@ -12,9 +12,14 @@
     </select>
 
     <select id="findAllByParams" parameterType="map" resultType="kpspmxvo">
-        select *,(spje+spse) jshj from t_kpspmx where kplsh = #{id} and (khcje !=0 or khcje is null) order by spmxxh
+        select *,(spje+spse) jshj from v_kpspmx where kplsh = #{id} and (khcje !=0 or khcje is null) order by spmxxh
         
     </select>
+
+    <select id="findFphccxByParams" parameterType="map" resultType="kpspmxvo">
+        select *,(spje+spse) jshj from v_kpspmx where kplsh = #{id}  order by spmxxh
+    </select>
+
 
     <select id="findByPage" parameterType="pagination" resultType="kpspmx">
         select * from t_kpspmx where yxbz = '1'
@@ -38,6 +43,10 @@
   <select id="findMxList" parameterType="map" resultType="kpspmx">
        select * from t_kpspmx where kplsh = #{kplsh} order by spmxxh
   </select>
+    <!--  根据kplsh查询明细,拼接新的商品名称 -->
+    <select id="findMx2List" parameterType="map" resultType="kpspmx">
+        select * from v_kpspmx where kplsh = #{kplsh}
+    </select>
     <!--  根据kplsh查询明细 -->
     <select id="findSkMxList" parameterType="map" resultType="kpspmxvo">
         select * from t_kpspmx where kplsh = #{kplsh} order by spmxxh asc,fphxz desc
