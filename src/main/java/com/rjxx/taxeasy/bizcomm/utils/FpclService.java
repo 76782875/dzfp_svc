@@ -1365,6 +1365,10 @@ public class FpclService {
                     double f1 = b.setScale(6, BigDecimal.ROUND_HALF_UP).doubleValue();
                     kpspmxvo.setSpdj(f1);
                 }
+                if(kpspmxvo.getFphxz().equals("1")){
+                    kpspmxvo.setSpdw(null);
+                    kpspmxvo.setSpggxh(null);
+                }
             }
 
             Map params2 = new HashMap();

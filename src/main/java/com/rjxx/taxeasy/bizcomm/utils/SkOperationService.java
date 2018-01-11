@@ -11,10 +11,12 @@ import com.rjxx.taxeasy.domains.Fwqxx;
 import com.rjxx.taxeasy.domains.Skp;
 import com.rjxx.taxeasy.service.CszbService;
 import com.rjxx.taxeasy.service.SkpService;
+import com.rjxx.utils.StringUtils;
 import com.sk.common.utils.SResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -140,5 +142,28 @@ public class SkOperationService {
             e.printStackTrace();
         }
         return resultxml;
+    }
+
+    public static void main(String[] args) throws UnsupportedEncodingException {
+        String s="sdsddsf";
+        byte[] aa=s.getBytes("UTF-8");
+
+
+        String ad="{\"OpType\":3,\"PurchaserName\":\"桂 A12345\",\"PurchaserTaxId\":\"556677889900\",\"Remark\":\"编号 123456\",\"TotalTax\":23.5,\"TotalAmountWithTax\":175.5,\"Payee\":\"小张\",\"Drawee\":\"小李 \",\"Items\":[{\"ItemName\":\"95号汽油 \",\"UnitPriceWithoutTax\":100.0,\"Quantity\":1.0,\"AmountWithoutTax\":100.0,\"TaxRate\":0. 17,\"Tax\":17.0,\"UnitPriceWithTax\":117.0,\"AmountWithTax\":117.0},{\"ItemName\":\"90 号 柴油 \",\"UnitPriceWithoutTax\":50.0,\"Quantity\":1.0,\"AmountWithoutTax\":50.0,\"TaxRate\":0.17 ,\"Tax\":8.5,\"UnitPriceWithTax\":58.5,\"AmountWithTax\":58.5}],\"RequestTrackId\":1234}";
+        System.out.println(ad.getBytes("UTF-8").length);
+        ad=StringUtils.bytes2HexString(ad.getBytes("UTF-8"));
+
+        System.out.println(ad);
+
+        System.out.println(ad.getBytes("UTF-8").length);
+
+
+
+        String sd="A1";
+        sd=StringUtils.bytes2HexString(sd.getBytes("UTF-8"));
+        System.out.println(sd);
+
+
+        //System.out.println(StringUtils.stringToAscii("ABC12345"));
     }
 }

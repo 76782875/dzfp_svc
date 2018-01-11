@@ -38,6 +38,10 @@ public class SeperateInvoiceUtils {
             spsl = spsl.setScale(2,BigDecimal.ROUND_HALF_UP);
             BigDecimal jeWithoutTax = div(jshj, spsl.add(new BigDecimal(1))).setScale(6, BigDecimal.ROUND_HALF_UP);
             mx.setSpje(jeWithoutTax.doubleValue());// 商品金额不含税
+            if(mx.getFphxz().equals("1")){
+                mx.setSpdw(null);
+                mx.setSpggxh(null);
+            }
             finalList.add(mx);
         }
         return finalList;
