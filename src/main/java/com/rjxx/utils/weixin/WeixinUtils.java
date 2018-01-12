@@ -698,6 +698,16 @@ public class WeixinUtils {
         }else if(weiXinData!=null && weiXinData.get("msg").equals("72038")){
             logger.info("没有授权,不插卡");
             return null;
+        }else if(weiXinData!=null && weiXinData.get("msg").equals("0")){
+            Map resultMap = new HashMap();
+            resultMap.put("title",kpls.getGfmc());
+            resultMap.put("tax_no",kpls.getGfsh());
+            resultMap.put("email",kpls.getGfemail());
+            resultMap.put("bank_type",kpls.getGfyh());
+            resultMap.put("bank_no",kpls.getGfyhzh());
+            resultMap.put("addr",kpls.getGfdz());
+            resultMap.put("phone",kpls.getGfdh());
+            weiXinData = resultMap;
         }
         //公司简称 品牌t_pp kpddm->skp->pid->ppmc
         if (null == kpls.getSkpid()) {
