@@ -559,8 +559,15 @@ public class PdfDocumentGenerator {
                 if(kpls.getGsdm().equals("afb")){
                     outputFile_AbsolutePath = xfsh +"/" + kpls.getJylsh()+ ".pdf";
                 }else{
-                    outputFile_AbsolutePath = xfsh + "/"
-                            + dateString + "/" + UUID.randomUUID().toString() + ".pdf";
+                    Cszb cszb = cszbService.getSpbmbbh(kpls.getGsdm(), kpls.getXfid(), kpls.getSkpid(), "pdfnamerules");
+                    if(cszb.getCsz().equals("uuid")){
+                        outputFile_AbsolutePath = xfsh + "/"
+                                + dateString + "/" + UUID.randomUUID().toString() + ".pdf";
+                    }else{
+                        String pdfname=getPdfname(kpls,jyls,cszb.getCsz());
+                        outputFile_AbsolutePath = xfsh + "/"
+                                + dateString + "/" + pdfname + ".pdf";
+                    }
                 }
             }
             outputFile = tempPath + outputFile_AbsolutePath;
@@ -611,6 +618,21 @@ public class PdfDocumentGenerator {
             logger.error("生成pdf出现异常：" + kpls.getKplsh(), e);
             return false;
         }
+    }
+    public String getPdfname(Kpls kpls, Jyls jyls,String content){
+        Map<String,Object> csmap=new HashMap<String,Object>();
+        csmap.put("gfmc",kpls.getGfmc());
+        csmap.put("jylsh",kpls.getJylsh());
+        csmap.put("kplsh",kpls.getKplsh());
+        csmap.put("ddh",jyls.getDdh());
+        csmap.put("tqm",jyls.getTqm());
+        csmap.put("gfsh",kpls.getGfsh());
+        for (Map.Entry<String, Object> entry : csmap.entrySet()) {
+            String key=entry.getKey();
+            String value=(String)entry.getValue();
+            content=content.replace(key,value);
+        }
+        return content;
     }
     public static void main(String[] args) throws Exception {
         DecimalFormat df = new DecimalFormat("######0.000000");
