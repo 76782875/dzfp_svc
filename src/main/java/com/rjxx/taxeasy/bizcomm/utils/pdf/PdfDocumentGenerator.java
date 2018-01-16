@@ -621,12 +621,12 @@ public class PdfDocumentGenerator {
     }
     public String getPdfname(Kpls kpls, Jyls jyls,String content){
         Map<String,Object> csmap=new HashMap<String,Object>();
-        csmap.put("gfmc",kpls.getGfmc());
-        csmap.put("jylsh",kpls.getJylsh());
-        csmap.put("kplsh",kpls.getKplsh());
-        csmap.put("ddh",jyls.getDdh());
-        csmap.put("tqm",jyls.getTqm());
-        csmap.put("gfsh",kpls.getGfsh());
+        csmap.put("gfmc",kpls.getGfmc().toString());
+        csmap.put("jylsh",kpls.getJylsh().toString());
+        csmap.put("kplsh",kpls.getKplsh().toString());
+        csmap.put("ddh",jyls.getDdh().toString());
+        csmap.put("tqm",jyls.getTqm().toString());
+        csmap.put("gfsh",kpls.getGfsh().toString());
         for (Map.Entry<String, Object> entry : csmap.entrySet()) {
             String key=entry.getKey();
             String value=(String)entry.getValue();
