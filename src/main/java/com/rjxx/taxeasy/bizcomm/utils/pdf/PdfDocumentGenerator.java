@@ -621,6 +621,7 @@ public class PdfDocumentGenerator {
     }
     public String getPdfname(Kpls kpls, Jyls jyls,String content){
         Map<String,Object> csmap=new HashMap<String,Object>();
+        content=content+"_kplsh";
         csmap.put("gfmc",kpls.getGfmc().toString());
         csmap.put("jylsh",kpls.getJylsh().toString());
         csmap.put("kplsh",kpls.getKplsh().toString());
