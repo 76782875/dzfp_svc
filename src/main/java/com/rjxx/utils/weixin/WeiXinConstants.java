@@ -50,6 +50,8 @@ public class WeiXinConstants {
     //上传PDF地址
     public  static  final String CREAT_PDF_URL = "https://api.weixin.qq.com/card/invoice/platform/setpdf?access_token=";
 
+    //查询已上传PDF
+    public static final String QUERY_PDF_URL  ="https://api.weixin.qq.com/card/invoice/platform/getpdf?action=get_url&access_token=";
     //发票报销状态
     public  static  final String INVOICE_STATUS_INIT = "INVOICE_REIMBURSE_INIT";//发票初始状态，未锁定
     public  static  final String INVOICE_STATUS_LOCK = "INVOICE_REIMBURSE_LOCK";//发票已锁定
