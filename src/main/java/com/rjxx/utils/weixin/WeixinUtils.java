@@ -1104,4 +1104,34 @@ public class WeixinUtils {
         return code;
     }
 
+    public String queryPDF(String s_media_id,String access_token) {
+        String pdf_url = "";
+        if (null == s_media_id || s_media_id.equals("")) {
+            return null;
+        }
+        String URL = WeiXinConstants.QUERY_PDF_URL + access_token;
+        Map map = new HashMap();
+        map.put("s_media_id", s_media_id);
+        map.put("action","get_url");
+        logger.info("数据" + JSON.toJSONString(map));
+        String jsonStr = WeixinUtil.httpRequest(URL, "POST", JSON.toJSONString(map));
+        if (null != jsonStr) {
+            ObjectMapper jsonparer = new ObjectMapper();// 初始化解析json格式的对象
+            try {
+                Map maps = jsonparer.readValue(jsonStr, Map.class);
+                int errcode = (int) maps.get("errcode");
+                String errmsg = (String) maps.get("errmsg");
+                if (errcode == 0) {
+                    pdf_url = (String) maps.get("pdf_url");
+                    return pdf_url;
+                } else {
+                    return null;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
 }
