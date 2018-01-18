@@ -1422,9 +1422,9 @@ public class GetDataService {
                 //解析json获取token
                 parmsMap = interpretFirstForJson(gsdm, buffer.toString());
         }catch (Exception e){
-            System.out.println("request url=" + "" + ", exception, msg=" + e.getMessage());
+            logger.info("request url=" +zb1.getCsz()+ ", exception, msg=" + e.getMessage());
             e.printStackTrace();
-            e.printStackTrace();
+            return null;
         }
         return parmsMap;
     }
