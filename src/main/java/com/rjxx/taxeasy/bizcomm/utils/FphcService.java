@@ -72,12 +72,10 @@ public class FphcService {
 					}else{
 						jyls1.setJylsh(jylsh);
 					}
+				}else if(jyls.getGsdm().equals("afb")){
+					jyls1.setJylsh(jyls.getJylsh());
 				}else{
-					if(jyls.getGsdm().equals("afb")){
-						jyls1.setJylsh(kpls.getJylsh());
-					}else{
-						jyls1.setJylsh("JY" + new SimpleDateFormat("yyyyMMddHHmmssSS").format(new Date()));
-					}
+					jyls1.setJylsh("JY" + new SimpleDateFormat("yyyyMMddHHmmssSS").format(new Date()));
 				}
 				Map resultMap=Savejyxxsq(kplsh,"JY" + new SimpleDateFormat("yyyyMMddHHmmssSS").format(new Date()),jyls);
 				Jyxxsq jyxxsq=(Jyxxsq) resultMap.get("jyxxsq");
