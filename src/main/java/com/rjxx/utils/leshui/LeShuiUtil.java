@@ -51,6 +51,15 @@ public class LeShuiUtil {
         return token;
     }
 
+    /**
+     * i1 发票查验
+     *
+     * @invoiceCode 发票代码（长度10位或者12位）
+     * @invoiceNumber 发票号码（长度8位）
+     * @billTime 开票时间（时间格式必须为：2017-05-11，不支持其他格式）
+     * @checkCode 校验码（检验码后六位，增值税专用发票，增值税机动车发票可以不传）
+     * @invoiceAmount 开具金额、不含税价（增值税普通发票，增值税电子发票可以不传）
+     */
     public static String invoiceInfoForCom(String invoiceCode, String invoiceNumber, String billTime,
                               String checkCode, String invoiceAmount) {
         String url = GET_CHECK_CODE_NUM_URL;
@@ -65,6 +74,14 @@ public class LeShuiUtil {
         return result;
     }
 
+    /**
+     * i2 单张发票查询
+     *
+     * @uniqueId 唯一编码（20位），客户系统生成，规则："QBI"+"yyyyMMddhhmmss+001"
+     * @invoiceCode 发票代码
+     * @invoiceNo 发票号码
+     * @taxCode 纳税人识别号(一般为购方纳税人识别号，即客户系统公司纳税人识别号)
+     */
     public static String invoiceQuery(String uniqueId,String invoiceCode,String invoiceNo,
                                        String taxCode){
         String url = GET_INVOICE_SINGLE;
@@ -80,6 +97,15 @@ public class LeShuiUtil {
         return result;
     }
 
+    /**
+     * i3 发票信息批量查询
+     *
+     * @uniqueId 唯一编码（20位），客户系统生成，规则："QBI"+"yyyyMMddhhmmss+001"
+     * @startTime 开始时间
+     * @endTime 结束时间
+     * @taxCode 纳税人识别号(一般为购方纳税人识别号，即客户系统公司纳税人识别号)
+     * @pageNo 第几页
+     */
     public static String invoiceBatchQuery(String uniqueId,String startTime,String endTime,
                                        String taxCode,String pageNo){
         String url = GET_INVOICE_LIST;
@@ -97,6 +123,13 @@ public class LeShuiUtil {
         return result;
     }
 
+    /**
+     * i4 发票认证
+     *
+     * @batchId 唯一编码（20位），客户系统生成，规则："QBI"+"yyyyMMddhhmmss+001"
+     * @taxCode 纳税人识别号(一般为购方纳税人识别号，即客户系统公司纳税人识别号)
+     * @body 需要认证的发票信息 invoiceCode&invoiceNo
+     */
     public static String invoiceAuthorize(String batchId,String taxCode,
                                           List body){
         String url = GET_INVOICE_AUTH;
