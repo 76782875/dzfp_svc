@@ -286,7 +286,7 @@
         SELECT
         kp.kplsh
         FROM
-        t_kpls kp
+        t_kpls kp use index(idx_kpls_gskprq,idx_kpls_gslrsj)
         join t_jyls jy on jy.djh = kp.djh
         WHERE kp.yxbz = '1'
         <if test="gsdm !=null and gsdm !=''">
@@ -661,7 +661,7 @@
             SELECT
             kp.kplsh
             FROM
-            t_kpls kp
+            t_kpls kp use index(idx_kpls_gskprq,idx_kpls_gslrsj)
             join t_jyls jy on jy.djh = kp.djh
             WHERE kp.yxbz ='1'
         <if test="gsdm !=null and gsdm !=''">
@@ -767,7 +767,7 @@
         SELECT
         kp.kplsh
         FROM
-        t_kpls kp
+        t_kpls kp use index(idx_kpls_gskprq,idx_kpls_gslrsj)
         join t_jyls jy on jy.djh = kp.djh
         WHERE kp.yxbz ='1'
         <if test="gsdm !=null and gsdm !=''">
