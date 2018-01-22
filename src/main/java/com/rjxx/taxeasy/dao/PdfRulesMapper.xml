@@ -4,7 +4,7 @@
 <mapper namespace="com.rjxx.taxeasy.dao.PdfRulesMapper">
 
     <select id="findOneByParams" parameterType="map" resultType="pdfRules">
-        select * from PdfRules where yxbz = '1'
+        select * from pdf_rules where yxbz = '1'
         <if test="orderBy != null">
             order by ${orderBy}
         </if>
@@ -12,14 +12,14 @@
     </select>
 
     <select id="findAllByParams" parameterType="map" resultType="pdfRules">
-        select * from PdfRules where yxbz = '1'
+        select * from pdf_rules where yxbz = '1'
         <if test="orderBy != null">
             order by ${orderBy}
         </if>
     </select>
 
     <select id="findByPage" parameterType="pagination" resultType="pdfRules">
-        select * from PdfRules where yxbz = '1'
+        select * from pdf_rules where yxbz = '1'
         <if test="params.orderBy != null">
             order by ${params.orderBy}
         </if>
