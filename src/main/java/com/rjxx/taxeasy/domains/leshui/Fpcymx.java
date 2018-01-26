@@ -23,6 +23,7 @@ public class Fpcymx {
     private BigDecimal spje;
     private BigDecimal spsl;
     private BigDecimal spse;
+    private String qdhbz;
 
     public Integer getId() {
         return id;
@@ -110,5 +111,13 @@ public class Fpcymx {
 
     public void setSpse(BigDecimal spse) {
         this.spse = spse;
+    }
+
+    public String getQdhbz() {
+        return qdhbz;
+    }
+
+    public void setQdhbz(String qdhbz) {
+        this.qdhbz = qdhbz;
     }
 }

@@ -20,8 +20,12 @@ public class Fpcy {
   private String cyrq;
   private Integer cycs;
   private String resultcode;
+  private String resultmsg;
   private String returncode;
+  private String falsecode;
+  private String invoicename;
   private String fpzldm;
+  private String fpzlmc;
   private String xfsh;
   private String xfmc;
   private String xfdzdh;
@@ -308,5 +312,37 @@ public class Fpcy {
 
   public void setYxbz(String yxbz) {
     this.yxbz = yxbz;
+  }
+
+  public String getResultmsg() {
+    return resultmsg;
+  }
+
+  public void setResultmsg(String resultmsg) {
+    this.resultmsg = resultmsg;
+  }
+
+  public String getFalsecode() {
+    return falsecode;
+  }
+
+  public void setFalsecode(String falsecode) {
+    this.falsecode = falsecode;
+  }
+
+  public String getInvoicename() {
+    return invoicename;
+  }
+
+  public void setInvoicename(String invoicename) {
+    this.invoicename = invoicename;
+  }
+
+  public String getFpzlmc() {
+    return fpzlmc;
+  }
+
+  public void setFpzlmc(String fpzlmc) {
+    this.fpzlmc = fpzlmc;
   }
 }
