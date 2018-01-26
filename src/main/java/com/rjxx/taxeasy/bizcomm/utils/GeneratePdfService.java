@@ -279,7 +279,13 @@ public class GeneratePdfService {
                                 String filePath=(String)map.get("BaseFilePath");
                                 mailService.sendAttachmentsMail(to,"电子发票",content,filePath);
                             }else{
-                                se.sendEmail(String.valueOf(kpls.getDjh()), kpls.getGsdm(), kpls.getGfemail(), "发票开具成功发送邮件", String.valueOf(kpls.getDjh()), content, "电子发票");
+                                String gfEmailstr =kpls.getGfemail();// 购方email校验
+                                if(gfEmailstr!=null&&!"".equals(gfEmailstr.trim())){
+                                    String []gfEmailArray=gfEmailstr.split("，");
+                                    for(String gfEmail:gfEmailArray){
+                                        se.sendEmail(String.valueOf(kpls.getDjh()), kpls.getGsdm(),gfEmail , "发票开具成功发送邮件", String.valueOf(kpls.getDjh()), content, "电子发票");
+                                    }
+                                }
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
