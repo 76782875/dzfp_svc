@@ -250,7 +250,7 @@ public class JyxxsqService {
 	 * @param jyzfmxList
 	 */
 	@Transactional
-	public void saveAll(List<Jyxxsq> jyxxsqList, List<Jymxsq> jymxsqList,List<JymxsqCl> jymxsqClList,List<Jyzfmx> jyzfmxList) {
+	public void saveAll(List<Jyxxsq> jyxxsqList, List<Jymxsq> jymxsqList,List<JymxsqCl> jymxsqClList,List<Jyzfmx> jyzfmxList) throws Exception{
 		//jyxxsqJpaDao.save(jyxxsqList);
 		addJyxxsqBatch(jyxxsqList);
 		List<Jymxsq> mxList = new ArrayList<>();
