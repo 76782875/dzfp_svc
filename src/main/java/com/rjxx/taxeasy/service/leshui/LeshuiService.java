@@ -33,7 +33,7 @@ public class LeshuiService {
     private final static String INVOICE_QUERY_SUCCESS = "000";
 
     public String fpcyAndSave(String invoiceCode, String invoiceNumber, String billTime,
-                       String checkCode, String invoiceAmount,String sjly) {
+                       String checkCode, String invoiceAmount,String sjly,String gsdm) {
         //调发票查验接口
         String result = LeShuiUtil.invoiceInfoForCom(invoiceCode, invoiceNumber, billTime, checkCode, invoiceAmount);
         //解析返回值
@@ -57,6 +57,7 @@ public class LeshuiService {
             newFpcy.setInvoicename(invoiceName_r);
             newFpcy.setFalsecode(invoicefalseCode_r);
             newFpcy.setSjly(sjly);
+            newFpcy.setGsdm(gsdm);
             if (INVOICE_INFO_SUCCESS.equals(rtnCode_r)) {
                 newFpcy.setFpdm(invoiceCode);
                 newFpcy.setFphm(invoiceNumber);
@@ -137,6 +138,8 @@ public class LeshuiService {
                         mxs.add(fpcymx);
                     }
                 }
+            }else{
+                newFpcy.setFpzt("失败");
             }
             //保存主表
             Fpcy save = fpcyJpaDao.save(newFpcy);
@@ -188,6 +191,50 @@ public class LeshuiService {
     public void fpcj(String uniqueId, String invoiceCode, String invoiceNo,
                      String taxCode){
         String result = LeShuiUtil.invoiceQuery(uniqueId, invoiceCode, invoiceNo, taxCode);
+        JSONObject resultJson = JSON.parseObject(result);
+        JSONObject head = resultJson.getJSONObject("head");
+        String rtnMsg = head.getString("rtnMsg");
+        String rtnCode = head.getString("rtnCode");
+        JSONArray body = resultJson.getJSONArray("body");
+        for (int i = 0;i< body.size();i++){
+            JSONObject fpcx=(JSONObject) body.get(i);
+            String invoiceCode_r = fpcx.getString("invoiceCode");
+            String invoiceNo_r = fpcx.getString("invoiceNo");
+            String type = fpcx.getString("type");
+            String status = fpcx.getString("status");
+            String amount = fpcx.getString("amount");
+            String taxAmount = fpcx.getString("taxAmount");
+            String totalAmount = fpcx.getString("totalAmount");
+            String salerCompany = fpcx.getString("salerCompany");
+            String salerCode = fpcx.getString("salerCode");
+            String salerAddress = fpcx.getString("salerAddress");
+            String salerBankAccount = fpcx.getString("salerBankAccount");
+            String buyerCompany = fpcx.getString("buyerCompany");
+            String buyerCode = fpcx.getString("buyerCode");
+            String buyerAddress = fpcx.getString("buyerAddress");
+            String buyerBankAccount = fpcx.getString("buyerBankAccount");
+            String createDate = fpcx.getString("createDate");
+            String verifyCode = fpcx.getString("verifyCode");
+            String machineCode = fpcx.getString("machineCode");
+            String invoicesStatus = fpcx.getString("invoicesStatus");
+            String isAuth = fpcx.getString("isAuth");
+            String authTime = fpcx.getString("authTime");
+            String authType = fpcx.getString("authType");
+            String remark = fpcx.getString("remark");
+            JSONArray goods = fpcx.getJSONArray("goods");
+            for (int j=0;j<goods.size();j++){
+                JSONObject good = (JSONObject) goods.get(j);
+                String goodName = good.getString("goodName");
+                String unit = good.getString("unit");
+                String rate = good.getString("rate");
+                String taxAmountLine = good.getString("taxAmount");
+                String amountLine = good.getString("amount");
+                String price = good.getString("price");
+                String model = good.getString("model");
+                String count = good.getString("count");
+                String lineNum = good.getString("lineNum");
+            }
+        }
 
     }
     public void fpcjBatch(String uniqueId, String startTime, String endTime,
