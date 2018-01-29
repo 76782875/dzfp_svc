@@ -1322,7 +1322,7 @@ public class FpclService {
                 taskExecutor.execute(pdfTask);
                 //generatePdfService.generatePdf(kplsh);
             } else {
-                if(returnmsg.equals("09D103:发票领购信息已用完")||returnmsg.equals("00F103:Socket连接有误")){
+                if(returnmsg.equals("00F103:Socket连接有误")){
                     rabbitmqSend.sendMsg("ErrorException_Sk", kpls.getFpzldm(), kpls.getKplsh() + "");
                 }
                 kpls.setFpztdm("05");
