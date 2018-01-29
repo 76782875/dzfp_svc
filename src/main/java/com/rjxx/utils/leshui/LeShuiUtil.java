@@ -3,6 +3,7 @@ package com.rjxx.utils.leshui;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.rjxx.utils.weixin.HttpClientUtil;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.List;
@@ -11,9 +12,10 @@ import java.util.Map;
 /**
  * Created by wangyahui on 2018/1/4 0004.
  */
+@Component
 public class LeShuiUtil {
-    private final static String LESHUIAPPID="f4404ef078794782b0c55d8ede20de3a";
-    private final static String LESHUISECRET="c25fe890-9b39-41ff-bb9c-a6bcef4f6f5c";
+    private final static String LESHUIAPPID = "f4404ef078794782b0c55d8ede20de3a";
+    private final static String LESHUISECRET = "c25fe890-9b39-41ff-bb9c-a6bcef4f6f5c";
     /**
      * 获取token
      */
@@ -61,7 +63,7 @@ public class LeShuiUtil {
      * @invoiceAmount 开具金额、不含税价（增值税普通发票，增值税电子发票可以不传）
      */
     public static String invoiceInfoForCom(String invoiceCode, String invoiceNumber, String billTime,
-                              String checkCode, String invoiceAmount) {
+                                           String checkCode, String invoiceAmount) {
         String url = GET_CHECK_CODE_NUM_URL;
         Map map = new HashMap();
         map.put("invoiceCode", invoiceCode);
@@ -82,8 +84,8 @@ public class LeShuiUtil {
      * @invoiceNo 发票号码
      * @taxCode 纳税人识别号(一般为购方纳税人识别号，即客户系统公司纳税人识别号)
      */
-    public static String invoiceQuery(String uniqueId,String invoiceCode,String invoiceNo,
-                                       String taxCode){
+    public static String invoiceQuery(String uniqueId, String invoiceCode, String invoiceNo,
+                                      String taxCode) {
         String url = GET_INVOICE_SINGLE;
         Map map = new HashMap();
         map.put("uniqueId", uniqueId);
@@ -106,8 +108,8 @@ public class LeShuiUtil {
      * @taxCode 纳税人识别号(一般为购方纳税人识别号，即客户系统公司纳税人识别号)
      * @pageNo 第几页
      */
-    public static String invoiceBatchQuery(String uniqueId,String startTime,String endTime,
-                                       String taxCode,String pageNo){
+    public static String invoiceBatchQuery(String uniqueId, String startTime, String endTime,
+                                           String taxCode, String pageNo) {
         String url = GET_INVOICE_LIST;
         Map map = new HashMap();
         map.put("uniqueId", uniqueId);
@@ -130,8 +132,8 @@ public class LeShuiUtil {
      * @taxCode 纳税人识别号(一般为购方纳税人识别号，即客户系统公司纳税人识别号)
      * @body 需要认证的发票信息 invoiceCode&invoiceNo
      */
-    public static String invoiceAuthorize(String batchId,String taxCode,
-                                          List body){
+    public static String invoiceAuthorize(String batchId, String taxCode,
+                                          List body) {
         String url = GET_INVOICE_AUTH;
         Map param = new HashMap();
         Map head = new HashMap();

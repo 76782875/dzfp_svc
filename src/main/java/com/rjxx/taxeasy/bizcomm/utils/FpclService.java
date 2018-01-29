@@ -845,7 +845,7 @@ public class FpclService {
                 kplsh = kplsh.substring(str+1);
                 System.out.println("传入开票流水号:" + kplsh);
             }
-            Kpls kpls=kplsService.findOne(Integer.parseInt(kplsh));
+       /*     Kpls kpls=kplsService.findOne(Integer.parseInt(kplsh));
             if (!resultMap.get("RETURNCODE").equals("0000")) {
                 if (kpls.getGsdm().equals("wills")) {
                     if (j == 1) {
@@ -853,7 +853,7 @@ public class FpclService {
                         this.DzfphttpPost(sendMes, url, key, xfsh, jylsh, j);
                     }
                 }
-            }
+            }*/
         } catch (IOException e) {
             int pos = key.indexOf("$");
             if (pos != -1) {
@@ -1322,7 +1322,7 @@ public class FpclService {
                 taskExecutor.execute(pdfTask);
                 //generatePdfService.generatePdf(kplsh);
             } else {
-                if(returnmsg.equals("09D103:发票领购信息已用完")||returnmsg.equals("00F103:Socket连接有误")){
+                if(returnmsg.equals("00F103:Socket连接有误")){
                     rabbitmqSend.sendMsg("ErrorException_Sk", kpls.getFpzldm(), kpls.getKplsh() + "");
                 }
                 kpls.setFpztdm("05");
