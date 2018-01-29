@@ -5,9 +5,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.rjxx.utils.weixin.HttpClientUtil;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by wangyahui on 2018/1/4 0004.
@@ -84,11 +83,15 @@ public class LeShuiUtil {
      * @invoiceNo 发票号码
      * @taxCode 纳税人识别号(一般为购方纳税人识别号，即客户系统公司纳税人识别号)
      */
-    public static String invoiceQuery(String uniqueId, String invoiceCode, String invoiceNo,
+    public static String invoiceQuery(String invoiceCode, String invoiceNo,
                                       String taxCode) {
         String url = GET_INVOICE_SINGLE;
         Map map = new HashMap();
-        map.put("uniqueId", uniqueId);
+        map.put("uniqueId", "QBI"+new SimpleDateFormat("yyyyMMddhhmmss")
+                .format(new Date())
+                +new Random().nextInt(9)
+                +new Random().nextInt(9)
+                +getRandomLetter());
         map.put("invoiceCode", invoiceCode);
         map.put("invoiceNo", invoiceNo);
         map.put("taxCode", taxCode);
@@ -108,11 +111,15 @@ public class LeShuiUtil {
      * @taxCode 纳税人识别号(一般为购方纳税人识别号，即客户系统公司纳税人识别号)
      * @pageNo 第几页
      */
-    public static String invoiceBatchQuery(String uniqueId, String startTime, String endTime,
+    public static String invoiceBatchQuery(String startTime, String endTime,
                                            String taxCode, String pageNo) {
         String url = GET_INVOICE_LIST;
         Map map = new HashMap();
-        map.put("uniqueId", uniqueId);
+        map.put("uniqueId", "QBI"+new SimpleDateFormat("yyyyMMddhhmmss")
+                .format(new Date())
+                +new Random().nextInt(9)
+                +new Random().nextInt(9)
+                +getRandomLetter());
         map.put("startTime", startTime);
         map.put("endTime", endTime);
         map.put("taxCode", taxCode);
@@ -132,12 +139,16 @@ public class LeShuiUtil {
      * @taxCode 纳税人识别号(一般为购方纳税人识别号，即客户系统公司纳税人识别号)
      * @body 需要认证的发票信息 invoiceCode&invoiceNo
      */
-    public static String invoiceAuthorize(String batchId, String taxCode,
+    public static String invoiceAuthorize(String taxCode,
                                           List body) {
         String url = GET_INVOICE_AUTH;
         Map param = new HashMap();
         Map head = new HashMap();
-        head.put("batchId", batchId);
+        head.put("batchId", "QBI"+new SimpleDateFormat("yyyyMMddhhmmss")
+                .format(new Date())
+                +new Random().nextInt(9)
+                +new Random().nextInt(9)
+                +getRandomLetter());
         head.put("taxCode", taxCode);
         param.put("head", head);
         param.put("body", body);
@@ -145,5 +156,10 @@ public class LeShuiUtil {
         String json = JSON.toJSONString(param);
         String result = HttpClientUtil.doPostJson(url, json);
         return result;
+    }
+
+    public static char getRandomLetter(){
+        String chars = "abcdefghijklmnopqrstuvwxyz";
+        return chars.charAt(new Random().nextInt(26));
     }
 }
