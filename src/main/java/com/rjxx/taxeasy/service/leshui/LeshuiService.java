@@ -33,7 +33,7 @@ public class LeshuiService {
     private final static String INVOICE_QUERY_SUCCESS = "000";
 
     public String fpcyAndSave(String invoiceCode, String invoiceNumber, String billTime,
-                       String checkCode, String invoiceAmount) {
+                       String checkCode, String invoiceAmount,String sjly) {
         //调发票查验接口
         String result = LeShuiUtil.invoiceInfoForCom(invoiceCode, invoiceNumber, billTime, checkCode, invoiceAmount);
         //解析返回值
@@ -56,6 +56,7 @@ public class LeshuiService {
             newFpcy.setResultmsg(resultMsg_r);
             newFpcy.setInvoicename(invoiceName_r);
             newFpcy.setFalsecode(invoicefalseCode_r);
+            newFpcy.setSjly(sjly);
             if (INVOICE_INFO_SUCCESS.equals(rtnCode_r)) {
                 newFpcy.setFpdm(invoiceCode);
                 newFpcy.setFphm(invoiceNumber);
@@ -162,6 +163,7 @@ public class LeshuiService {
             OldFpcy.setResultmsg(resultMsg_r);
             OldFpcy.setInvoicename(invoiceName_r);
             OldFpcy.setFalsecode(invoicefalseCode_r);
+            OldFpcy.setSjly(sjly);
             if (INVOICE_INFO_SUCCESS.equals(rtnCode_r)) {
                 if (invoiceResult_r != null) {
                     String voidMark_r = invoiceResult_r.getString("voidMark");//作废标志，0：正常，1：作废
@@ -180,5 +182,16 @@ public class LeshuiService {
             fpcyjlJpaDao.save(fpcyjl);
         }
         return result;
+    }
+
+
+    public void fpcj(String uniqueId, String invoiceCode, String invoiceNo,
+                     String taxCode){
+        String result = LeShuiUtil.invoiceQuery(uniqueId, invoiceCode, invoiceNo, taxCode);
+
+    }
+    public void fpcjBatch(String uniqueId, String startTime, String endTime,
+                          String taxCode, String pageNo){
+        String result = LeShuiUtil.invoiceBatchQuery(uniqueId, startTime, endTime, taxCode, pageNo);
     }
 }
