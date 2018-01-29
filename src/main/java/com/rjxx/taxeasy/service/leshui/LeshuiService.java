@@ -58,6 +58,7 @@ public class LeshuiService {
             newFpcy.setFalsecode(invoicefalseCode_r);
             newFpcy.setSjly(sjly);
             newFpcy.setGsdm(gsdm);
+            newFpcy.setYxbz("1");
             if (INVOICE_INFO_SUCCESS.equals(rtnCode_r)) {
                 newFpcy.setFpdm(invoiceCode);
                 newFpcy.setFphm(invoiceNumber);
@@ -167,6 +168,7 @@ public class LeshuiService {
             OldFpcy.setInvoicename(invoiceName_r);
             OldFpcy.setFalsecode(invoicefalseCode_r);
             OldFpcy.setSjly(sjly);
+            OldFpcy.setYxbz("1");
             if (INVOICE_INFO_SUCCESS.equals(rtnCode_r)) {
                 if (invoiceResult_r != null) {
                     String voidMark_r = invoiceResult_r.getString("voidMark");//作废标志，0：正常，1：作废
@@ -188,9 +190,9 @@ public class LeshuiService {
     }
 
 
-    public void fpcj(String uniqueId, String invoiceCode, String invoiceNo,
+    public void fpcx(String invoiceCode, String invoiceNo,
                      String taxCode){
-        String result = LeShuiUtil.invoiceQuery(uniqueId, invoiceCode, invoiceNo, taxCode);
+        String result = LeShuiUtil.invoiceQuery(invoiceCode, invoiceNo, taxCode);
         JSONObject resultJson = JSON.parseObject(result);
         JSONObject head = resultJson.getJSONObject("head");
         String rtnMsg = head.getString("rtnMsg");
@@ -237,8 +239,8 @@ public class LeshuiService {
         }
 
     }
-    public void fpcjBatch(String uniqueId, String startTime, String endTime,
+    public void fpcxBatch(String startTime, String endTime,
                           String taxCode, String pageNo){
-        String result = LeShuiUtil.invoiceBatchQuery(uniqueId, startTime, endTime, taxCode, pageNo);
+        String result = LeShuiUtil.invoiceBatchQuery(startTime, endTime, taxCode, pageNo);
     }
 }
