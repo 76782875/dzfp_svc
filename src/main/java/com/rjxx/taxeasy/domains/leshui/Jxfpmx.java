@@ -1,8 +1,14 @@
 package com.rjxx.taxeasy.domains.leshui;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.math.BigDecimal;
-
+@Entity(name = "t_jxfpmx")
 public class Jxfpmx {
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
   private Integer fplsh;
   private Integer spmxxh;
