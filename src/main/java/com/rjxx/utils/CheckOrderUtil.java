@@ -533,8 +533,8 @@ public class CheckOrderUtil {
         String result = null;
         try {
             result = new String(str.getBytes("gb2312"),"iso-8859-1");
-        } catch (UnsupportedEncodingException e) {
-            return  result.length();
+        } catch (Exception e) {
+            return  str.length();
         }
         return result.length();
     }
