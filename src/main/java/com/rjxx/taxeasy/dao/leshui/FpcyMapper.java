@@ -12,4 +12,6 @@ import java.util.List;
 @MybatisRepository
 public interface FpcyMapper {
     public List<Fpcy> findByPage(Pagination pagination);
+
+
 }

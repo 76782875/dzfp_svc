@@ -10,4 +10,6 @@ import org.springframework.data.jpa.repository.Query;
 public interface FpcyJpaDao extends JpaRepository<Fpcy,Integer> {
     @Query(nativeQuery = true,value = "select * from t_fpcy where fpdm=?1 and fphm=?2 and yxbz ='1' ")
     Fpcy findOneByFpdmAndFphm(String fpdm, String fphm);
+
+
 }

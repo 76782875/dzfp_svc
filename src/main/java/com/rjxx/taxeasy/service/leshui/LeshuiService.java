@@ -158,6 +158,7 @@ public class LeshuiService {
             fpcyjl.setCycs(save.getCycs());
             fpcyjl.setCyrq(save.getCyrq());
             fpcyjl.setFpzt(save.getFpzt());
+            fpcyjl.setGsdm(gsdm);
             fpcyjlJpaDao.save(fpcyjl);
 
             //库中如果有记录
@@ -184,6 +185,7 @@ public class LeshuiService {
             fpcyjl.setCycs(save.getCycs());
             fpcyjl.setCyrq(save.getCyrq());
             fpcyjl.setFpzt(save.getFpzt());
+            fpcyjl.setGsdm(gsdm);
             fpcyjlJpaDao.save(fpcyjl);
         }
         return result;
@@ -242,5 +244,14 @@ public class LeshuiService {
     public void fpcxBatch(String startTime, String endTime,
                           String taxCode, String pageNo){
         String result = LeShuiUtil.invoiceBatchQuery(startTime, endTime, taxCode, pageNo);
+        JSONObject resultJson = JSON.parseObject(result);
+        JSONObject head = resultJson.getJSONObject("head");
+        String rtnMsg = head.getString("rtnMsg");
+        String rtnCode = head.getString("rtnCode");
+        JSONObject body = resultJson.getJSONObject("body");
+        String pageNo_r = body.getString("pageNo");
+        String pageSize = body.getString("pageSize");
+        String totalSum = body.getString("totalSum");
+        JSONArray invoices = body.getJSONArray("invoices");
     }
 }

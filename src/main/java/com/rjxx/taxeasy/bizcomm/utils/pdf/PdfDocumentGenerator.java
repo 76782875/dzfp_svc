@@ -620,20 +620,24 @@ public class PdfDocumentGenerator {
         }
     }
     public String getPdfname(Kpls kpls, Jyls jyls,String content){
-        Map<String,Object> csmap=new HashMap<String,Object>();
-        content=content+"_kplsh";
-        csmap.put("gfmc",kpls.getGfmc().toString());
-        csmap.put("jylsh",kpls.getJylsh().toString());
-        csmap.put("kplsh",kpls.getKplsh().toString());
-        csmap.put("ddh",jyls.getDdh().toString());
-        csmap.put("tqm",jyls.getTqm().toString());
-        csmap.put("gfsh",kpls.getGfsh().toString());
-        csmap.put("ddrq",new SimpleDateFormat("yyyyMMdd").format(jyls.getJylssj()));
-        csmap.put("kprq",new SimpleDateFormat("yyyyMMdd").format(kpls.getKprq()));
-        for (Map.Entry<String, Object> entry : csmap.entrySet()) {
-            String key=entry.getKey();
-            String value=(String)entry.getValue();
-            content=content.replace(key,value);
+        try {
+            Map<String,Object> csmap=new HashMap<String,Object>();
+            content=content+"_kplsh";
+            csmap.put("gfmc",kpls.getGfmc().toString());
+            csmap.put("jylsh",kpls.getJylsh().toString());
+            csmap.put("kplsh",kpls.getKplsh().toString());
+            csmap.put("ddh",jyls.getDdh()==null?"N":jyls.getDdh().toString());
+            csmap.put("tqm",jyls.getTqm()==null?"N":jyls.getTqm().toString());
+            csmap.put("gfsh",kpls.getGfsh()==null?"N":kpls.getGfsh().toString());
+            csmap.put("ddrq",new SimpleDateFormat("yyyyMMdd").format(jyls.getJylssj()));
+            csmap.put("kprq",new SimpleDateFormat("yyyyMMdd").format(kpls.getKprq()));
+            for (Map.Entry<String, Object> entry : csmap.entrySet()) {
+                String key=entry.getKey();
+                String value=(String)entry.getValue();
+                content=content.replace(key,value);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
         return content;
     }
