@@ -1116,7 +1116,12 @@ public class FpclService {
                     if(kpls.getGsdm().equals("afb")){
                         skService.SkServerKPhttps(kpls.getKplsh());
                     }else{
-                        skService.SkServerKP(kpls.getKplsh());
+                        try {
+                            skService.SkServerKP(kpls.getKplsh());
+                        }catch (Exception e){
+                             e.printStackTrace();
+                            rabbitmqSend.sendMsg("ErrorException_Sk", kpls.getFpzldm(), kpls.getKplsh() + "");
+                        }
                     }
                 }
                 i++;
