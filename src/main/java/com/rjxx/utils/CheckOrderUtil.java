@@ -210,6 +210,14 @@ public class CheckOrderUtil {
                     Skp skp = jyxxsqService.findskpExistByXfid(tt);
                     if (null == skp || skp.equals("")) {
                         result += "该销方" + xf.getXfsh() + ":对应的" + kpddm + "不存在!;";
+                    }else{
+                        if(fpzldm.equals("01") && (null == skp.getZpmax() ||skp.getZpmax().equals(""))){
+                            result += "开具专票(InvType为01)时，该开票点(" + kpddm + "),没有进行维护开票专票限额;";
+                        }else if(fpzldm.equals("02") && (null == skp.getPpmax() ||skp.getPpmax().equals(""))){
+                            result += "开具普票(InvType为02)时，该开票点(" + kpddm + "),没有进行维护普票开票限额;";
+                        }else if(fpzldm.equals("12") && (null == skp.getDpmax() ||skp.getDpmax().equals(""))){
+                            result += "开具电票(InvType为12)时，该开票点(" + kpddm + "),没有进行维护电票开票限额;";
+                        }
                     }
                 }
             }
