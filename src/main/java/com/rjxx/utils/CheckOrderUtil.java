@@ -8,6 +8,7 @@ import javafx.print.PageOrientation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -98,7 +99,7 @@ public class CheckOrderUtil {
                 String buyerName = jyxxsq.getGfmc();
                 if (null == buyerName || buyerName.equals("")) {
                     result += ddh + ":购方名称(Name)不能为空;";
-                } else if (buyerName.length() > 100) {
+                } else if (characterLength(buyerName) > 100) {
                     result += ddh + ":购方名称(Name)太长;";
                 }
             }
@@ -524,7 +525,19 @@ public class CheckOrderUtil {
         return flag;
     }
 
-
+    /**
+     * 计算中英文字符的长度。
+     *  String.getBytes("gb2312"),"iso-8859-1"
+     * */
+    public  static int characterLength(String str){
+        String result = null;
+        try {
+            result = new String(str.getBytes("gb2312"),"iso-8859-1");
+        } catch (Exception e) {
+            return  str.length();
+        }
+        return result.length();
+    }
     public static void main(String[] args) {
 
         String buyerIdentifier = "91310101MA1FW0008P";
@@ -553,7 +566,7 @@ public class CheckOrderUtil {
 
         }
 
-        System.out.print(result);
+        System.out.print(characterLength("开票点管理1234ABC：:"));
 
     }
 }

@@ -71,15 +71,22 @@ public class SkService {
      */
     public InvoiceResponse SkServerKP(int kplsh) throws Exception {
 
-        if (StringUtils.isBlank(skkpServerUrl)) {
-            return InvoiceResponseUtils.responseError("skkpServerUrl为空");
+        InvoiceResponse response=null;
+        try{
+            if (StringUtils.isBlank(skkpServerUrl)) {
+                return InvoiceResponseUtils.responseError("skkpServerUrl为空");
+            }
+            String encryptStr = encryptSkServerParameter(kplsh + "");
+            String url = skkpServerUrl + "/invoice/SkServerKP";
+            Map<String, String> map = new HashMap<>();
+            map.put("p", encryptStr);
+            String result = HttpUtils.doPost(url, map);
+            if(result!=null){
+                response= XmlJaxbUtils.convertXmlStrToObject(InvoiceResponse.class, result);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        String encryptStr = encryptSkServerParameter(kplsh + "");
-        String url = skkpServerUrl + "/invoice/SkServerKP";
-        Map<String, String> map = new HashMap<>();
-        map.put("p", encryptStr);
-        String result = HttpUtils.doPost(url, map);
-        InvoiceResponse response = XmlJaxbUtils.convertXmlStrToObject(InvoiceResponse.class, result);
         return response;
     }
     /**
