@@ -456,6 +456,7 @@ public class LeshuiService {
                             jxfpmx.setFplsh(fplsh);
                         }
                         jxfpmxJpaDao.save(jxfpmxList);
+                        //存在
                     }else{
                         oldJxfpxx.setUniqueid(uniqueId);
                         oldJxfpxx.setGsdm(gsdm);
@@ -496,15 +497,25 @@ public class LeshuiService {
         for(InvoiceAuth auth:body){
             String fpdm = auth.getFpdm();
             String fphm = auth.getFphm();
-            Jxfpxx jxfpxx = new Jxfpxx();
-            jxfpxx.setFpdm(fpdm);
-            jxfpxx.setFphm(fphm);
-            jxfpxx.setBatchid(batchId);
-            jxfpxx.setRzresultcode(resultCode);
-            jxfpxx.setRzresultmsg(resultMsg);
-            jxfpxx.setRzreturncode(rtnCode);
-            jxfpxx.setRzreturnmsg(rtnMsg);
-            jxfpxxJpaDao.save(jxfpxx);
+            Jxfpxx oldJxfpxx = jxfpxxJpaDao.findByFpdmAndFphm(fpdm, fphm);
+            if(oldJxfpxx==null){
+                Jxfpxx jxfpxx = new Jxfpxx();
+                jxfpxx.setFpdm(fpdm);
+                jxfpxx.setFphm(fphm);
+                jxfpxx.setBatchid(batchId);
+                jxfpxx.setRzresultcode(resultCode);
+                jxfpxx.setRzresultmsg(resultMsg);
+                jxfpxx.setRzreturncode(rtnCode);
+                jxfpxx.setRzreturnmsg(rtnMsg);
+                jxfpxxJpaDao.save(jxfpxx);
+            }else{
+                oldJxfpxx.setBatchid(batchId);
+                oldJxfpxx.setRzresultcode(resultCode);
+                oldJxfpxx.setRzresultmsg(resultMsg);
+                oldJxfpxx.setRzreturncode(rtnCode);
+                oldJxfpxx.setRzreturnmsg(rtnMsg);
+                jxfpxxJpaDao.save(oldJxfpxx);
+            }
         }
         return result;
     }
