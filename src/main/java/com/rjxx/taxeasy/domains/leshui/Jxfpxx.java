@@ -31,8 +31,8 @@ public class Jxfpxx {
   private String jqm;
   private String bz;
   private String qdbz;//暂无
-  private String gxbz;//勾选
-  private String rzbz;
+  private String gxbz = "0";//勾选
+  private String rzbz = "0";
   private String rzlx;
   private String rzsj;
   private String lrsj;
@@ -43,41 +43,14 @@ public class Jxfpxx {
   private String gsdm;
   private String jym;
   private String sfsp;
-  private String rzresultcode;
-  private String rzresultmsg;
-  private String rzreturncode;
-  private String rzreturnmsg;
+  private String rzzt;
 
-  public String getRzresultcode() {
-    return rzresultcode;
+  public String getRzzt() {
+    return rzzt;
   }
 
-  public void setRzresultcode(String rzresultcode) {
-    this.rzresultcode = rzresultcode;
-  }
-
-  public String getRzresultmsg() {
-    return rzresultmsg;
-  }
-
-  public void setRzresultmsg(String rzresultmsg) {
-    this.rzresultmsg = rzresultmsg;
-  }
-
-  public String getRzreturncode() {
-    return rzreturncode;
-  }
-
-  public void setRzreturncode(String rzreturncode) {
-    this.rzreturncode = rzreturncode;
-  }
-
-  public String getRzreturnmsg() {
-    return rzreturnmsg;
-  }
-
-  public void setRzreturnmsg(String rzreturnmsg) {
-    this.rzreturnmsg = rzreturnmsg;
+  public void setRzzt(String rzzt) {
+    this.rzzt = rzzt;
   }
 
   public String getSfsp() {

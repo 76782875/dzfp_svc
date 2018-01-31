@@ -111,7 +111,7 @@ public class LeShuiUtil {
      * @pageNo 第几页
      */
     public static String invoiceBatchQuery(String uniqueId,String startTime, String endTime,
-                                           String taxCode, String pageNo) {
+                                           String taxCode, Integer pageNo) {
         String url = GET_INVOICE_LIST;
         Map map = new HashMap();
         map.put("uniqueId", uniqueId);
