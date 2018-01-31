@@ -12,4 +12,7 @@ import java.util.List;
 public interface JxfpxxJpaDao extends JpaRepository<Jxfpxx,Integer>{
     @Query(nativeQuery = true,value = "select * from t_jxfpxx where fpdm=?1 and fphm=?2 and yxbz='1' ")
     Jxfpxx findByFpdmAndFphm(String fpdm, String fphm);
+
+    @Query(nativeQuery = true,value = "select * from t_jxfpxx where gfsh=?1 and gsdm=?2 and yxbz='1' ")
+    List<Jxfpxx> findByGfshAndGsdm(String gfsh, String gsdm);
 }

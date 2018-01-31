@@ -19,9 +19,9 @@
 	</select>
 
 	<select id="findByPage" parameterType="pagination" resultType="jxfpxx">
-		select * from t_jxfpxx where yxbz = '1'
-		<if test="params.xfsh != null and params.xfsh != ''">
-			and xfsh like concat('%',#{params.xfsh},'%')
+		select * from t_jxfpxx where yxbz = '1' and  rzbz = 'N'  and gxbz = '0'
+		<if test="params.gfsh != null and params.gfsh != ''">
+			and gfsh = #{params.gfsh}
 		</if>
 		<if test="params.fpzldm != null and params.fpzldm != ''">
 			and fpzldm =#{params.fpzldm}
