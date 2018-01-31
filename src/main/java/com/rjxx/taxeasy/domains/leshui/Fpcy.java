@@ -19,11 +19,6 @@ public class Fpcy {
   private String jym;
   private String cyrq;
   private Integer cycs;
-  private String resultcode;
-  private String resultmsg;
-  private String returncode;
-  private String falsecode;
-  private String invoicename;
   private String fpzldm;
   private String fpzlmc;
   private String xfsh;
@@ -104,22 +99,6 @@ public class Fpcy {
 
   public void setCycs(Integer cycs) {
     this.cycs = cycs;
-  }
-
-  public String getResultcode() {
-    return resultcode;
-  }
-
-  public void setResultcode(String resultcode) {
-    this.resultcode = resultcode;
-  }
-
-  public String getReturncode() {
-    return returncode;
-  }
-
-  public void setReturncode(String returncode) {
-    this.returncode = returncode;
   }
 
   public String getFpzldm() {
@@ -314,30 +293,6 @@ public class Fpcy {
     this.yxbz = yxbz;
   }
 
-  public String getResultmsg() {
-    return resultmsg;
-  }
-
-  public void setResultmsg(String resultmsg) {
-    this.resultmsg = resultmsg;
-  }
-
-  public String getFalsecode() {
-    return falsecode;
-  }
-
-  public void setFalsecode(String falsecode) {
-    this.falsecode = falsecode;
-  }
-
-  public String getInvoicename() {
-    return invoicename;
-  }
-
-  public void setInvoicename(String invoicename) {
-    this.invoicename = invoicename;
-  }
-
   public String getFpzlmc() {
     return fpzlmc;
   }
@@ -345,4 +300,5 @@ public class Fpcy {
   public void setFpzlmc(String fpzlmc) {
     this.fpzlmc = fpzlmc;
   }
+
 }
