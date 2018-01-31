@@ -48,7 +48,7 @@ public class LeshuiService {
      * @param gsdm          公司代码
      * @return 乐税接口返回数据
      */
-    public String fpcyAndSave(String invoiceCode, String invoiceNumber, String billTime,
+    public String fpcy(String invoiceCode, String invoiceNumber, String billTime,
                               String checkCode, String invoiceAmount, String sjly, String gsdm) {
         //调发票查验接口
         String result = LeShuiUtil.invoiceInfoForCom(invoiceCode, invoiceNumber, billTime, checkCode, invoiceAmount);
@@ -61,17 +61,21 @@ public class LeshuiService {
         JSONObject invoiceResult_r = resultJson.getJSONObject(" invoiceResult");//发票主体信息
         String invoicefalseCode_r = resultJson.getString("invoicefalseCode");//错误码;
 
+        //创建记录表对象
+        Fpcyjl fpcyjl = new Fpcyjl();
+        fpcyjl.setInvoicename(invoiceName_r);
+        fpcyjl.setFalsecode(invoicefalseCode_r);
+        fpcyjl.setResultcode(resultCode_r);
+        fpcyjl.setResultmsg(resultMsg_r);
+        fpcyjl.setReturncode(rtnCode_r);
+        fpcyjl.setGsdm(gsdm);
+
         Fpcy oldFpcy = fpcyJpaDao.findOneByFpdmAndFphm(invoiceCode, invoiceNumber);
         //如果库中没有记录
         if (oldFpcy == null) {
             //保存结果
             Fpcy newFpcy = new Fpcy();
             List<Fpcymx> mxs = new ArrayList<>();
-            newFpcy.setReturncode(rtnCode_r);
-            newFpcy.setResultcode(resultCode_r);
-            newFpcy.setResultmsg(resultMsg_r);
-            newFpcy.setInvoicename(invoiceName_r);
-            newFpcy.setFalsecode(invoicefalseCode_r);
             newFpcy.setSjly(sjly);
             newFpcy.setGsdm(gsdm);
             newFpcy.setYxbz("1");
@@ -128,7 +132,7 @@ public class LeshuiService {
                     newFpcy.setKprq(billingTime_r);
                     newFpcy.setFpzldm(invoiceTypeCode_r);
                     newFpcy.setFpzlmc(invoiceTypeName_r);
-                    //机动车票无此字段
+
                     JSONArray invoiceDetailData_r = invoiceResult_r.getJSONArray("invoiceDetailData");//发票明细
                     for (int i = 0; i < invoiceDetailData_r.size(); i++) {
                         Fpcymx fpcymx = new Fpcymx();
@@ -159,8 +163,8 @@ public class LeshuiService {
                 newFpcy.setFpzt("失败");
             }
             //保存主表
-            Fpcy save = fpcyJpaDao.save(newFpcy);
-            Integer fpcyid = save.getId();
+            Fpcy newSave = fpcyJpaDao.save(newFpcy);
+            Integer fpcyid = newSave.getId();
             //保存明细表
             if (mxs != null && mxs.size() > 0) {
                 for (Fpcymx fpcymx : mxs) {
@@ -169,21 +173,13 @@ public class LeshuiService {
             }
             fpcymxJpaDao.save(mxs);
             //保存记录表
-            Fpcyjl fpcyjl = new Fpcyjl();
             fpcyjl.setFpcyid(fpcyid);
-            fpcyjl.setCycs(save.getCycs());
-            fpcyjl.setCyrq(save.getCyrq());
-            fpcyjl.setFpzt(save.getFpzt());
-            fpcyjl.setGsdm(gsdm);
-            fpcyjlJpaDao.save(fpcyjl);
+            fpcyjl.setCycs(newSave.getCycs());
+            fpcyjl.setCyrq(newSave.getCyrq());
+            fpcyjl.setFpzt(newSave.getFpzt());
 
             //库中如果有记录
         } else {
-            oldFpcy.setReturncode(rtnCode_r);
-            oldFpcy.setResultcode(resultCode_r);
-            oldFpcy.setResultmsg(resultMsg_r);
-            oldFpcy.setInvoicename(invoiceName_r);
-            oldFpcy.setFalsecode(invoicefalseCode_r);
             oldFpcy.setSjly(sjly);
             oldFpcy.setYxbz("1");
             if (INVOICE_INFO_SUCCESS.equals(rtnCode_r)) {
@@ -194,16 +190,14 @@ public class LeshuiService {
                     oldFpcy.setCycs(checkNum_r);
                 }
             }
-            Fpcy save = fpcyJpaDao.save(oldFpcy);
+            Fpcy oldSave = fpcyJpaDao.save(oldFpcy);
             //保存记录表
-            Fpcyjl fpcyjl = new Fpcyjl();
-            fpcyjl.setFpcyid(save.getId());
-            fpcyjl.setCycs(save.getCycs());
-            fpcyjl.setCyrq(save.getCyrq());
-            fpcyjl.setFpzt(save.getFpzt());
-            fpcyjl.setGsdm(gsdm);
-            fpcyjlJpaDao.save(fpcyjl);
+            fpcyjl.setFpcyid(oldSave.getId());
+            fpcyjl.setCycs(oldSave.getCycs());
+            fpcyjl.setCyrq(oldSave.getCyrq());
+            fpcyjl.setFpzt(oldSave.getFpzt());
         }
+        fpcyjlJpaDao.save(fpcyjl);
         return result;
     }
 
@@ -231,16 +225,26 @@ public class LeshuiService {
         String rtnMsg = head.getString("rtnMsg");
         String rtnCode = head.getString("rtnCode");
         JSONObject body = resultJson.getJSONObject("body");
-        //查询库中是否已有
+
+        //创建记录表对象
+        Fpcxjl fpcxjl = new Fpcxjl();
+        fpcxjl.setGsdm(gsdm);
+        fpcxjl.setRtncode(rtnCode);
+        fpcxjl.setRtnmsg(rtnMsg);
+
+        //查询库中是否已有，如果没有，则插入主表与明细
         Jxfpxx oldJxfpxx = jxfpxxJpaDao.findByFpdmAndFphm(invoiceCode, invoiceNo);
         if (oldJxfpxx == null) {
+            List<Jxfpmx> jxfpmxList = new ArrayList<>();
+            Jxfpxx newJxfpxx = new Jxfpxx();
+            newJxfpxx.setGsdm(gsdm);
+            newJxfpxx.setYxbz("1");
+            newJxfpxx.setUniqueid(uniqueId);
+            newJxfpxx.setFphm(invoiceNo);
+            newJxfpxx.setFpdm(invoiceCode);
+            newJxfpxx.setGfsh(taxCode);
             //如果返回成功
             if (INVOICE_QUERY_SUCCESS.equals(rtnCode)) {
-                List<Jxfpmx> jxfpmxList = new ArrayList<>();
-                Jxfpxx newJxfpxx = new Jxfpxx();
-                newJxfpxx.setGsdm(gsdm);
-                newJxfpxx.setYxbz("1");
-                newJxfpxx.setUniqueid(uniqueId);
                 String invoiceCode_r = body.getString("invoiceCode");
                 String invoiceNo_r = body.getString("invoiceNo");
                 String type = body.getString("type");
@@ -311,16 +315,24 @@ public class LeshuiService {
                     jxfpmx.setSpmxxh(j + 1);
                     jxfpmxList.add(jxfpmx);
                 }
-                Jxfpxx save = jxfpxxJpaDao.save(newJxfpxx);
-                Integer fplsh = save.getFplsh();
-                //保存明细
+            }
+            Jxfpxx newSave = jxfpxxJpaDao.save(newJxfpxx);
+            Integer fplsh = newSave.getFplsh();
+            //保存明细
+            if(jxfpmxList!=null && jxfpmxList.size()>0){
                 for (Jxfpmx jxfpmx : jxfpmxList) {
                     jxfpmx.setFplsh(fplsh);
                 }
-                jxfpmxJpaDao.save(jxfpmxList);
             }
-            //如果库中存在
+            jxfpmxJpaDao.save(jxfpmxList);
+            fpcxjl.setFplsh(fplsh);
+            fpcxjl.setFpzt(newSave.getFpzt());
+            fpcxjl.setRzbz(newSave.getRzbz());
+            fpcxjl.setRzlx(newSave.getRzlx());
+            fpcxjl.setRzsj(newSave.getRzsj());
+            //如果库中存在,更新主表
         } else {
+            fpcxjl.setFplsh(oldJxfpxx.getFplsh());
             if (INVOICE_QUERY_SUCCESS.equals(rtnCode)) {
                 oldJxfpxx.setUniqueid(uniqueId);
                 oldJxfpxx.setGsdm(gsdm);
@@ -334,6 +346,10 @@ public class LeshuiService {
                 String authTime = body.getString("authTime");
                 oldJxfpxx.setRzsj(authTime);
                 jxfpxxJpaDao.save(oldJxfpxx);
+                fpcxjl.setFpzt(invoicesStatus);
+                fpcxjl.setRzbz(isAuth);
+                fpcxjl.setRzlx(authType);
+                fpcxjl.setRzsj(authTime);
             }
         }
         return result;
