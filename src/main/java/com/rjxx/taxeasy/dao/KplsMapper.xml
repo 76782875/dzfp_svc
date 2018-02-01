@@ -333,6 +333,10 @@
         <if test="fpzldm != null and fpzldm !=''">
             and kp.fpzldm = #{fpzldm}
         </if>
+        <if test="kprqq2 != null and kprqq2 !='' and kprqz2 != null and kprqz2 !=''">
+            and kp.kprq between #{kprqq2} and
+            date_add(str_to_date(#{kprqz2},'%Y-%m-%d'),INTERVAL 1 day)
+        </if>
         <if test="kprqq != null and kprqq !='' and kprqz != null and kprqz !=''">
             and kp.lrsj between #{kprqq} and
             date_add(str_to_date(#{kprqz},'%Y-%m-%d'),INTERVAL 1 day)
@@ -352,6 +356,9 @@
         </if>
         <if test="fpdm != null and fpdm !=''">
             and kp.fpdm = #{fpdm}
+        </if>
+        <if test="lrry !=null and lrry !=''">
+            and kp.lrry = #{lrry}
         </if>
         <if test="fpzt != null and fpzt !=''">
             and kp.fpztdm = #{fpzt}
