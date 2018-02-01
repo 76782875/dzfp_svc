@@ -862,9 +862,7 @@ public class FpclService {
             }
             System.out.println("request url=" + url + ", exception, msg=" + e.getMessage());
             e.printStackTrace();
-            if(e.getMessage().startsWith("Read")){
-                rabbitmqSend.sendMsg("ErrorException_Sk", "12", key + "");
-            }
+            rabbitmqSend.sendMsg("ErrorException_Sk", "12", key + "");
         } finally {
             if (response != null) try {
                 response.close();
