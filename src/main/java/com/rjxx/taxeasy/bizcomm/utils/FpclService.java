@@ -1324,14 +1324,15 @@ public class FpclService {
                 }
                 kpls.setJylsh(jyls.getJylsh());
                 kplsService.save(kpls);
-                //此处生成PDF
-                PdfTask pdfTask=new PdfTask();
-                pdfTask.setKplsh(kpls.getKplsh());
-                if (taskExecutor == null) {
-                    taskExecutor = ApplicationContextUtils.getBean(ThreadPoolTaskExecutor.class);
+                if(null==kpls.getPdfurl()){
+                    //此处生成PDF
+                    PdfTask pdfTask=new PdfTask();
+                    pdfTask.setKplsh(kpls.getKplsh());
+                    if (taskExecutor == null) {
+                        taskExecutor = ApplicationContextUtils.getBean(ThreadPoolTaskExecutor.class);
+                    }
+                    taskExecutor.execute(pdfTask);
                 }
-                taskExecutor.execute(pdfTask);
-                //generatePdfService.generatePdf(kplsh);
             } else {
                 if(returnmsg.equals("00F103:Socket连接有误")){
                     rabbitmqSend.sendMsg("ErrorException_Sk", kpls.getFpzldm(), kpls.getKplsh() + "");
