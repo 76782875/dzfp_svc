@@ -73,8 +73,8 @@ public class HttpUtils {
             String methodName = "UploadOrderData";
             HTTPConduit conduit = (HTTPConduit) client.getConduit();
             HTTPClientPolicy policy = new HTTPClientPolicy();
-            policy.setConnectionTimeout(120000); //连接超时时间
-            policy.setReceiveTimeout(120000);//请求超时时间.
+            policy.setConnectionTimeout(180000); //连接超时时间
+            policy.setReceiveTimeout(180000);//请求超时时间.
             conduit.setClient(policy);
             String sign= SignUtils.getSign(QueryData,key);
             Object[] objects = client.invoke(methodName, AppId, sign, "01", QueryData);
