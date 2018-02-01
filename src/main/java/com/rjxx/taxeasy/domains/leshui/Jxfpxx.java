@@ -5,6 +5,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.math.BigDecimal;
+import java.sql.Date;
+
 @Entity(name = "t_jxfpxx")
 public class Jxfpxx {
   @Id
@@ -14,7 +16,7 @@ public class Jxfpxx {
   private String batchid;
   private String fpdm;
   private String fphm;
-  private String kprq;
+  private Date kprq;
   private String fpzldm;
   private String fpzt;
   private String xfsh;
@@ -34,11 +36,11 @@ public class Jxfpxx {
   private String gxbz = "0";//勾选
   private String rzbz = "0";
   private String rzlx;
-  private String rzsj;
-  private String lrsj;
-  private String gxsj;
+  private Date rzsj;
+  private Date lrsj;
+  private Date gxsj;
   private Integer lrry;
-  private String xgsj;
+  private Date xgsj;
   private Integer xgry;
   private String yxbz;
   private String gsdm;
@@ -126,13 +128,6 @@ public class Jxfpxx {
     this.fphm = fphm;
   }
 
-  public String getKprq() {
-    return kprq;
-  }
-
-  public void setKprq(String kprq) {
-    this.kprq = kprq;
-  }
 
   public String getFpzldm() {
     return fpzldm;
@@ -278,21 +273,6 @@ public class Jxfpxx {
     this.rzlx = rzlx;
   }
 
-  public String getRzsj() {
-    return rzsj;
-  }
-
-  public void setRzsj(String rzsj) {
-    this.rzsj = rzsj;
-  }
-
-  public String getLrsj() {
-    return lrsj;
-  }
-
-  public void setLrsj(String lrsj) {
-    this.lrsj = lrsj;
-  }
 
   public Integer getLrry() {
     return lrry;
@@ -302,13 +282,7 @@ public class Jxfpxx {
     this.lrry = lrry;
   }
 
-  public String getXgsj() {
-    return xgsj;
-  }
 
-  public void setXgsj(String xgsj) {
-    this.xgsj = xgsj;
-  }
 
   public Integer getXgry() {
     return xgry;
@@ -326,11 +300,43 @@ public class Jxfpxx {
     this.yxbz = yxbz;
   }
 
-  public String getGxsj() {
+  public Date getKprq() {
+    return kprq;
+  }
+
+  public void setKprq(Date kprq) {
+    this.kprq = kprq;
+  }
+
+  public Date getRzsj() {
+    return rzsj;
+  }
+
+  public void setRzsj(Date rzsj) {
+    this.rzsj = rzsj;
+  }
+
+  public Date getLrsj() {
+    return lrsj;
+  }
+
+  public void setLrsj(Date lrsj) {
+    this.lrsj = lrsj;
+  }
+
+  public Date getGxsj() {
     return gxsj;
   }
 
-  public void setGxsj(String gxsj) {
+  public void setGxsj(Date gxsj) {
     this.gxsj = gxsj;
+  }
+
+  public Date getXgsj() {
+    return xgsj;
+  }
+
+  public void setXgsj(Date xgsj) {
+    this.xgsj = xgsj;
   }
 }
