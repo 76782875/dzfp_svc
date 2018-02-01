@@ -12,6 +12,7 @@ import java.util.List;
 @MybatisRepository
 public interface JxfpxxMapper {
     public List<Jxfpxx> findByPage(Pagination pagination);
+    public List<Jxfpxx> findQrgxByPage(Pagination pagination);
 
 
 }

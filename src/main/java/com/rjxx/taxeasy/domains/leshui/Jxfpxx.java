@@ -36,6 +36,7 @@ public class Jxfpxx {
   private String rzlx;
   private String rzsj;
   private String lrsj;
+  private String gxsj;
   private Integer lrry;
   private String xgsj;
   private Integer xgry;
@@ -323,5 +324,13 @@ public class Jxfpxx {
 
   public void setYxbz(String yxbz) {
     this.yxbz = yxbz;
+  }
+
+  public String getGxsj() {
+    return gxsj;
+  }
+
+  public void setGxsj(String gxsj) {
+    this.gxsj = gxsj;
   }
 }
