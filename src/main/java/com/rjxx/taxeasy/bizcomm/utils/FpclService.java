@@ -868,6 +868,7 @@ public class FpclService {
         } finally {
             if (response != null) try {
                 response.close();
+                httpClient.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -1090,7 +1091,12 @@ public class FpclService {
                     kplsService.save(kpls);
                     saveKpspmx(kpls, list2);
                     if(j==0){
-                        skService.callService(kpls.getKplsh());
+                        try{
+                            skService.callService(kpls.getKplsh());
+                        }catch(Exception e){
+                            e.printStackTrace();
+                            rabbitmqSend.sendMsg("ErrorException_Sk", kpls.getFpzldm(), kpls.getKplsh() + "");
+                        }
                     }else{
                         kpls.setFpztdm("04");
                         kplsService.save(kpls);
