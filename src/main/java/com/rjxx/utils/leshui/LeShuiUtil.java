@@ -6,11 +6,7 @@ import com.rjxx.taxeasy.domains.leshui.InvoiceAuth;
 import com.rjxx.utils.weixin.HttpClientUtil;
 import org.springframework.stereotype.Component;
 
-import java.sql.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Created by wangyahui on 2018/1/4 0004.

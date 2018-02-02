@@ -284,12 +284,12 @@ public class LeshuiService {
                 String buyerCode = body.getString("buyerCode");
                 String buyerAddress = body.getString("buyerAddress");
                 String buyerBankAccount = body.getString("buyerBankAccount");
-                java.sql.Date createDate = body.getSqlDate("createDate");
+                Date createDate = body.getDate("createDate");
                 String verifyCode = body.getString("verifyCode");
                 String machineCode = body.getString("machineCode");
                 String invoicesStatus = body.getString("invoicesStatus");
                 String isAuth = body.getString("isAuth");
-                java.sql.Date authTime = body.getSqlDate("authTime");
+                Date authTime = body.getDate("authTime");
                 String authType = body.getString("authType");
                 String remark = body.getString("remark");
                 newJxfpxx.setBz(remark);
@@ -369,7 +369,7 @@ public class LeshuiService {
                 String invoicesStatus = body.getString("invoicesStatus");
                 String isAuth = body.getString("isAuth");
                 String authType = body.getString("authType");
-                java.sql.Date authTime = body.getSqlDate("authTime");
+                Date authTime = body.getDate("authTime");
                 oldJxfpxx.setRzbz(isAuth);
                 oldJxfpxx.setRzlx(authType);
                 oldJxfpxx.setRzsj(authTime);
@@ -398,7 +398,7 @@ public class LeshuiService {
      * @param taxCode   税号
      * @return 本次业务记录的状态
      */
-    public String fpcxBatch(java.sql.Date startTime, java.sql.Date endTime,
+    public String fpcxBatch(Date startTime, Date endTime,
                             String taxCode, String gsdm, Integer gfid) {
         //创建业务记录对象
         Jxywjl jxywjl = new Jxywjl();
@@ -482,12 +482,12 @@ public class LeshuiService {
                         String buyerCode = fpcxBatch.getString("buyerCode");
                         String buyerAddress = fpcxBatch.getString("buyerAddress");
                         String buyerBankAccount = fpcxBatch.getString("buyerBankAccount");
-                        java.sql.Date createDate = fpcxBatch.getSqlDate("createDate");
+                        Date createDate = fpcxBatch.getDate("createDate");
                         String verifyCode = fpcxBatch.getString("verifyCode");
                         String machineCode = fpcxBatch.getString("machineCode");
                         String invoicesStatus = fpcxBatch.getString("invoicesStatus");
                         String isAuth = fpcxBatch.getString("isAuth");
-                        java.sql.Date authTime = fpcxBatch.getSqlDate("authTime");
+                        Date authTime = fpcxBatch.getDate("authTime");
                         String authType = fpcxBatch.getString("authType");
                         String remark = fpcxBatch.getString("remark");
                         JSONArray goods = fpcxBatch.getJSONArray("goods");
@@ -576,7 +576,7 @@ public class LeshuiService {
                             oldJxfpxx.setFpzt(body.getString("invoicesStatus"));
                             oldJxfpxx.setRzbz(body.getString("isAuth"));
                             oldJxfpxx.setRzlx(body.getString("authType"));
-                            oldJxfpxx.setRzsj(body.getSqlDate("authTime"));
+                            oldJxfpxx.setRzsj(body.getDate("authTime"));
                             jxfpxxJpaDao.save(oldJxfpxx);
                             jxhdjl.setFplsh(oldJxfpxx.getFplsh());
                         }

@@ -5,7 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.util.Date;
 
 @Entity(name = "t_jxfpxx")
 public class Jxfpxx {
