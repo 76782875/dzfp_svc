@@ -407,6 +407,7 @@ public class LeshuiService {
         jxywjl.setGfid(gfid);
         jxywjl.setKssj(startTime);
         jxywjl.setJssj(endTime);
+        jxywjl.setLrsj(new Date());
         Jxywjl saveJxywjl = jxywjlJpaDao.save(jxywjl);
 
         //总页数(调用次数)初始化
@@ -434,15 +435,17 @@ public class LeshuiService {
             Integer totalSum = body.getInteger("totalSum");
             JSONArray invoices = body.getJSONArray("invoices");
             //获取总页数除以每页数量的余数
-            Integer ys = totalSum % pageSize;
-            if(ys!=0){
-                countPage = (totalSum / pageSize) + 1;
-            }else{
-                countPage = totalSum / pageSize;
-            }
-            //如果当前页数超过总页数，跳出循环
-            if(pageNo_r>countPage){
-                break;
+            if(totalSum!=0){
+                Integer ys = totalSum % pageSize;
+                if(ys!=0){
+                    countPage = (totalSum / pageSize) + 1;
+                }else{
+                    countPage = totalSum / pageSize;
+                }
+                //如果当前页数超过总页数，跳出循环
+                if(pageNo_r>countPage){
+                    break;
+                }
             }
             //创建调用记录对象
             Jxdyjl jxdyjl = new Jxdyjl();
@@ -592,9 +595,9 @@ public class LeshuiService {
             }
         }
         //根据成功次数与总页数的关系来更新业务记录表的状态
-        if(successNum==countPage){
+        if(successNum==countPage && countPage!=0){
             saveJxywjl.setZt("0000");
-        }else if(successNum==0){
+        }else if(successNum==0 || countPage==0){
             saveJxywjl.setZt("9999");
         }else{
             saveJxywjl.setZt("5555");
