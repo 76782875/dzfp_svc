@@ -6,6 +6,7 @@ import com.rjxx.taxeasy.domains.leshui.InvoiceAuth;
 import com.rjxx.utils.weixin.HttpClientUtil;
 import org.springframework.stereotype.Component;
 
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -110,7 +111,7 @@ public class LeShuiUtil {
      * @taxCode 纳税人识别号(一般为购方纳税人识别号，即客户系统公司纳税人识别号)
      * @pageNo 第几页
      */
-    public static String invoiceBatchQuery(String uniqueId,String startTime, String endTime,
+    public static String invoiceBatchQuery(String uniqueId, Date startTime, Date endTime,
                                            String taxCode, Integer pageNo) {
         String url = GET_INVOICE_LIST;
         Map map = new HashMap();
