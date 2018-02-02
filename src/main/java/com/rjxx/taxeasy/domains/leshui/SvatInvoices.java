@@ -1,5 +1,7 @@
 package com.rjxx.taxeasy.domains.leshui;
 
+import java.util.Date;
+
 public class SvatInvoices{
     private String invoiceCode;
     private String invoiceNo;
@@ -20,7 +22,7 @@ public class SvatInvoices{
     private String invoicesStatus;
     private String machineCode;
     private String isAuth;
-    private String authTime;
+    private Date authTime;
     private String remark;
     private String authType;
     private SvatGoods[] goods;
@@ -177,14 +179,6 @@ public class SvatInvoices{
         this.isAuth = isAuth;
     }
 
-    public String getAuthTime() {
-        return authTime;
-    }
-
-    public void setAuthTime(String authTime) {
-        this.authTime = authTime;
-    }
-
     public String getRemark() {
         return remark;
     }
@@ -207,5 +201,13 @@ public class SvatInvoices{
 
     public void setGoods(SvatGoods[] goods) {
         this.goods = goods;
+    }
+
+    public Date getAuthTime() {
+        return authTime;
+    }
+
+    public void setAuthTime(Date authTime) {
+        this.authTime = authTime;
     }
 }
