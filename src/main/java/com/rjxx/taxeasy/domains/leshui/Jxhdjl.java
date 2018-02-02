@@ -27,6 +27,42 @@ public class Jxhdjl {
   private String rzbz;
   private String rzlx;
   private Date rzsj;
+  private String uniqueid;
+  private String taxcode;
+    private String batchid;
+  private String rzmsg;
+
+  public String getUniqueid() {
+    return uniqueid;
+  }
+
+  public void setUniqueid(String uniqueid) {
+    this.uniqueid = uniqueid;
+  }
+
+  public String getTaxcode() {
+    return taxcode;
+  }
+
+  public void setTaxcode(String taxcode) {
+    this.taxcode = taxcode;
+  }
+
+  public String getBatchid() {
+    return batchid;
+  }
+
+  public void setBatchid(String batchid) {
+    this.batchid = batchid;
+  }
+
+  public String getRzmsg() {
+    return rzmsg;
+  }
+
+  public void setRzmsg(String rzmsg) {
+    this.rzmsg = rzmsg;
+  }
 
   public Integer getId() {
     return id;

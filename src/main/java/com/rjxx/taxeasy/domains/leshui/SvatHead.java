@@ -3,7 +3,7 @@ package com.rjxx.taxeasy.domains.leshui;
 public class SvatHead{
     private String uniqueId;
     private String taxCode;
-    private String totalSum;
+    private Integer totalSum;
 
     public String getUniqueId() {
         return uniqueId;
@@ -21,11 +21,11 @@ public class SvatHead{
         this.taxCode = taxCode;
     }
 
-    public String getTotalSum() {
+    public Integer getTotalSum() {
         return totalSum;
     }
 
-    public void setTotalSum(String totalSum) {
+    public void setTotalSum(Integer totalSum) {
         this.totalSum = totalSum;
     }
 }

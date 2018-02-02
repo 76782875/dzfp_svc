@@ -405,6 +405,8 @@ public class LeshuiService {
         jxywjl.setYwlx(2);//1.单张发票查询 2.批量查询 3.发票认证 4.发票查询回调 5.认证结果回调
         jxywjl.setGsdm(gsdm);
         jxywjl.setGfid(gfid);
+        jxywjl.setKssj(startTime);
+        jxywjl.setJssj(endTime);
         Jxywjl saveJxywjl = jxywjlJpaDao.save(jxywjl);
 
         //总页数(调用次数)初始化
@@ -414,7 +416,7 @@ public class LeshuiService {
         int successNum=0;
 
         //开启死循环
-        for(int num=1;num<-1;num++){
+        for(int num=1;num>0;num++){
             String uniqueId = "QBI" + new SimpleDateFormat("yyyyMMddhhmmss")
                     .format(new Date())
                     + new Random().nextInt(9)
