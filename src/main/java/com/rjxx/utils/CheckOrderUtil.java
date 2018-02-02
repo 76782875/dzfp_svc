@@ -306,7 +306,7 @@ public class CheckOrderUtil {
                         params.put("spbm", ProductCode);
                         List<Spbm> spbmList = spbmService.findAllByParam(params);
                         if(spbmList.isEmpty()){
-                            result += "订单号为" + ddh + "的订单,第"+ (j+1) + "行的商品税收分类编码(ProductCode)"+ProductCode+"不是最明细列!\r\n";
+                            result += "订单号为" + ddh + "的订单,第"+ (j+1) + "行的商品("+ProductName+")对应商品税收分类编码(ProductCode)"+ProductCode+"不是最明细列!\r\n";
                         }
                     }
                     // 发票行性质
