@@ -434,19 +434,6 @@ public class LeshuiService {
             Integer pageSize = body.getInteger("pageSize");
             Integer totalSum = body.getInteger("totalSum");
             JSONArray invoices = body.getJSONArray("invoices");
-            //获取总页数除以每页数量的余数
-            if(totalSum!=0){
-                Integer ys = totalSum % pageSize;
-                if(ys!=0){
-                    countPage = (totalSum / pageSize) + 1;
-                }else{
-                    countPage = totalSum / pageSize;
-                }
-                //如果当前页数超过总页数，跳出循环
-                if(pageNo_r>countPage){
-                    break;
-                }
-            }
             //创建调用记录对象
             Jxdyjl jxdyjl = new Jxdyjl();
             jxdyjl.setDyxh(num);
@@ -464,8 +451,24 @@ public class LeshuiService {
                 jxdyjl.setZt("9999");
             }
             jxdyjl.setYwid(saveJxywjl.getId());
-            Jxdyjl saveJxdyjl = jxdyjlJpaDao.save(jxdyjl);
+            //获取总页数除以每页数量的余数
+            if(totalSum!=0){
+                Integer ys = totalSum % pageSize;
+                if(ys!=0){
+                    countPage = (totalSum / pageSize) + 1;
+                }else{
+                    countPage = totalSum / pageSize;
+                }
+                //如果当前页数超过总页数，跳出循环
+                if(pageNo_r>countPage){
+                    break;
+                }
+            }else{
+                jxdyjlJpaDao.save(jxdyjl);
+                break;
+            }
 
+            Jxdyjl saveJxdyjl = jxdyjlJpaDao.save(jxdyjl);
             //成功
             if(INVOICE_QUERY_SUCCESS.equals(rtnCode)){
                 //如果发票信息不为空
