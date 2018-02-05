@@ -1,10 +1,12 @@
 package com.rjxx.taxeasy.domains.leshui;
 
+import java.util.Date;
+
 public class AuthBody{
     private String invoiceCode;
     private String invoiceNo;
     private String status;
-    private String authorizeTime;
+    private Date authorizeTime;
     private String message;
 
     public String getInvoiceCode() {
@@ -31,11 +33,12 @@ public class AuthBody{
         this.status = status;
     }
 
-    public String getAuthorizeTime() {
+
+    public Date getAuthorizeTime() {
         return authorizeTime;
     }
 
-    public void setAuthorizeTime(String authorizeTime) {
+    public void setAuthorizeTime(Date authorizeTime) {
         this.authorizeTime = authorizeTime;
     }
 

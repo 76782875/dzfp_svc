@@ -11,6 +11,8 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.jaxws.endpoint.dynamic.JaxWsDynamicClientFactory;
+import org.apache.cxf.transport.http.HTTPConduit;
+import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.config.RequestConfig;
@@ -69,6 +71,11 @@ public class HttpUtils {
             JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
             Client client = dcf.createClient(URLUtils.WS_URL);
             String methodName = "UploadOrderData";
+            HTTPConduit conduit = (HTTPConduit) client.getConduit();
+            HTTPClientPolicy policy = new HTTPClientPolicy();
+            policy.setConnectionTimeout(180000); //连接超时时间
+            policy.setReceiveTimeout(180000);//请求超时时间.
+            conduit.setClient(policy);
             String sign= SignUtils.getSign(QueryData,key);
             Object[] objects = client.invoke(methodName, AppId, sign, "01", QueryData);
             //输出调用结果

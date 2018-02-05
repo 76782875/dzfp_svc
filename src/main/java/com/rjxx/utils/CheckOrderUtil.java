@@ -171,7 +171,7 @@ public class CheckOrderUtil {
             // email
             String Email = (String) jyxxsq.getGfemail();
             if (Email != null && !Email.equals("") && !Email
-                    .matches("^([a-z0-9A-Z]+[-|\\_.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$")) {
+                    .matches("^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$")) {
                 result += ddh + ":购方邮箱(Email)格式有误;";
             }
             // 提取码校验
@@ -210,6 +210,14 @@ public class CheckOrderUtil {
                     Skp skp = jyxxsqService.findskpExistByXfid(tt);
                     if (null == skp || skp.equals("")) {
                         result += "该销方" + xf.getXfsh() + ":对应的" + kpddm + "不存在!;";
+                    }else{
+                        if(fpzldm.equals("01") && (null == skp.getZpmax() ||skp.getZpmax().equals(""))){
+                            result += "开具专票(InvType为01)时，该开票点(" + kpddm + "),没有进行维护开票专票限额;";
+                        }else if(fpzldm.equals("02") && (null == skp.getPpmax() ||skp.getPpmax().equals(""))){
+                            result += "开具普票(InvType为02)时，该开票点(" + kpddm + "),没有进行维护普票开票限额;";
+                        }else if(fpzldm.equals("12") && (null == skp.getDpmax() ||skp.getDpmax().equals(""))){
+                            result += "开具电票(InvType为12)时，该开票点(" + kpddm + "),没有进行维护电票开票限额;";
+                        }
                     }
                 }
             }
@@ -298,7 +306,7 @@ public class CheckOrderUtil {
                         params.put("spbm", ProductCode);
                         List<Spbm> spbmList = spbmService.findAllByParam(params);
                         if(spbmList.isEmpty()){
-                            result += "订单号为" + ddh + "的订单,第"+ (j+1) + "行的商品税收分类编码(ProductCode)"+ProductCode+"不是最明细列!\r\n";
+                            result += "订单号为" + ddh + "的订单,第"+ (j+1) + "行的商品("+ProductName+")对应商品税收分类编码(ProductCode)"+ProductCode+"不是最明细列!\r\n";
                         }
                     }
                     // 发票行性质

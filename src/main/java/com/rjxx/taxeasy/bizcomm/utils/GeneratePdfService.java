@@ -446,6 +446,7 @@ public class GeneratePdfService {
             } finally {
                 if (response != null) try {
                     response.close();
+                    httpClient.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

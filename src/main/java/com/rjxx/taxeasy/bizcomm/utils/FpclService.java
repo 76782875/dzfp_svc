@@ -862,12 +862,11 @@ public class FpclService {
             }
             System.out.println("request url=" + url + ", exception, msg=" + e.getMessage());
             e.printStackTrace();
-            if(e.getMessage().startsWith("Read")){
-                rabbitmqSend.sendMsg("ErrorException_Sk", "12", key + "");
-            }
+            rabbitmqSend.sendMsg("ErrorException_Sk", "12", key + "");
         } finally {
             if (response != null) try {
                 response.close();
+                httpClient.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -1090,7 +1089,12 @@ public class FpclService {
                     kplsService.save(kpls);
                     saveKpspmx(kpls, list2);
                     if(j==0){
-                        skService.callService(kpls.getKplsh());
+                        try{
+                            skService.callService(kpls.getKplsh());
+                        }catch(Exception e){
+                            e.printStackTrace();
+                            rabbitmqSend.sendMsg("ErrorException_Sk", kpls.getFpzldm(), kpls.getKplsh() + "");
+                        }
                     }else{
                         kpls.setFpztdm("04");
                         kplsService.save(kpls);
@@ -1318,14 +1322,15 @@ public class FpclService {
                 }
                 kpls.setJylsh(jyls.getJylsh());
                 kplsService.save(kpls);
-                //此处生成PDF
-                PdfTask pdfTask=new PdfTask();
-                pdfTask.setKplsh(kpls.getKplsh());
-                if (taskExecutor == null) {
-                    taskExecutor = ApplicationContextUtils.getBean(ThreadPoolTaskExecutor.class);
+                if(null==kpls.getPdfurl()){
+                    //此处生成PDF
+                    PdfTask pdfTask=new PdfTask();
+                    pdfTask.setKplsh(kpls.getKplsh());
+                    if (taskExecutor == null) {
+                        taskExecutor = ApplicationContextUtils.getBean(ThreadPoolTaskExecutor.class);
+                    }
+                    taskExecutor.execute(pdfTask);
                 }
-                taskExecutor.execute(pdfTask);
-                //generatePdfService.generatePdf(kplsh);
             } else {
                 if(returnmsg.equals("00F103:Socket连接有误")){
                     rabbitmqSend.sendMsg("ErrorException_Sk", kpls.getFpzldm(), kpls.getKplsh() + "");

@@ -20,6 +20,51 @@ public class Fpcyjl {
   private String lrry;
   private String bxry;
   private String gsdm;
+  private String resultcode;
+  private String resultmsg;
+  private String returncode;
+  private String falsecode;
+  private String invoicename;
+
+  public String getResultcode() {
+    return resultcode;
+  }
+
+  public void setResultcode(String resultcode) {
+    this.resultcode = resultcode;
+  }
+
+  public String getResultmsg() {
+    return resultmsg;
+  }
+
+  public void setResultmsg(String resultmsg) {
+    this.resultmsg = resultmsg;
+  }
+
+  public String getReturncode() {
+    return returncode;
+  }
+
+  public void setReturncode(String returncode) {
+    this.returncode = returncode;
+  }
+
+  public String getFalsecode() {
+    return falsecode;
+  }
+
+  public void setFalsecode(String falsecode) {
+    this.falsecode = falsecode;
+  }
+
+  public String getInvoicename() {
+    return invoicename;
+  }
+
+  public void setInvoicename(String invoicename) {
+    this.invoicename = invoicename;
+  }
 
   public Integer getId() {
     return id;

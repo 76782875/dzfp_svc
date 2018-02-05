@@ -20,8 +20,8 @@
 
 	<select id="findByPage" parameterType="pagination" resultType="fpcy">
 		select * from t_fpcy where yxbz = '1'
-		<if test="params.xfsh != null and params.xfsh != ''">
-			and xfsh like concat('%',#{params.xfsh},'%')
+		<if test="params.gfsh != null and params.gfsh != ''">
+			and gfsh  =#{params.gfsh}
 		</if>
 		<if test="params.fpzldm != null and params.fpzldm != ''">
 			and fpzldm =#{params.fpzldm}

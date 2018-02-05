@@ -5,28 +5,24 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.math.BigDecimal;
-/**
- * Created by wangyahui on 2018/1/25 0025
- */
-@Entity(name = "t_fpcy")
-public class Fpcy {
+import java.util.Date;
+
+@Entity(name = "t_jxfpxx")
+public class Jxfpxx {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer id;
+  private Integer fplsh;
+  private String uniqueid;
+  private String batchid;
   private String fpdm;
   private String fphm;
-  private String kprq;
-  private String jym;
-  private String cyrq;
-  private Integer cycs;
+  private Date kprq;
   private String fpzldm;
-  private String fpzlmc;
+  private String fpzt;
   private String xfsh;
   private String xfmc;
   private String xfdzdh;
   private String xfyhyhzh;
-  private String gsdm;
-  private Integer gfid;
   private String gfsh;
   private String gfmc;
   private String gfdzdh;
@@ -36,21 +32,84 @@ public class Fpcy {
   private BigDecimal hjse;
   private String jqm;
   private String bz;
-  private String qdbz;
-  private String fpzt;
-  private String sjly;
-  private String lrsj;
+  private String qdbz;//暂无
+  private String gxbz = "0";//勾选
+  private String rzbz = "0";
+  private String rzlx;
+  private Date rzsj;
+  private Date lrsj;
+  private Date gxsj;
   private Integer lrry;
-  private String xgsj;
+  private Date xgsj;
   private Integer xgry;
   private String yxbz;
+  private String gsdm;
+  private String jym;
+  private String sfsp;
+  private String rzzt;
 
-  public Integer getId() {
-    return id;
+  public String getRzzt() {
+    return rzzt;
   }
 
-  public void setId(Integer id) {
-    this.id = id;
+  public void setRzzt(String rzzt) {
+    this.rzzt = rzzt;
+  }
+
+  public String getSfsp() {
+    return sfsp;
+  }
+
+  public void setSfsp(String sfsp) {
+    this.sfsp = sfsp;
+  }
+
+  public String getJym() {
+    return jym;
+  }
+
+  public void setJym(String jym) {
+    this.jym = jym;
+  }
+
+  public String getGsdm() {
+    return gsdm;
+  }
+
+  public void setGsdm(String gsdm) {
+    this.gsdm = gsdm;
+  }
+
+  public String getFpzt() {
+    return fpzt;
+  }
+
+  public void setFpzt(String fpzt) {
+    this.fpzt = fpzt;
+  }
+
+  public Integer getFplsh() {
+    return fplsh;
+  }
+
+  public void setFplsh(Integer fplsh) {
+    this.fplsh = fplsh;
+  }
+
+  public String getUniqueid() {
+    return uniqueid;
+  }
+
+  public void setUniqueid(String uniqueid) {
+    this.uniqueid = uniqueid;
+  }
+
+  public String getBatchid() {
+    return batchid;
+  }
+
+  public void setBatchid(String batchid) {
+    this.batchid = batchid;
   }
 
   public String getFpdm() {
@@ -69,37 +128,6 @@ public class Fpcy {
     this.fphm = fphm;
   }
 
-  public String getKprq() {
-    return kprq;
-  }
-
-  public void setKprq(String kprq) {
-    this.kprq = kprq;
-  }
-
-  public String getJym() {
-    return jym;
-  }
-
-  public void setJym(String jym) {
-    this.jym = jym;
-  }
-
-  public String getCyrq() {
-    return cyrq;
-  }
-
-  public void setCyrq(String cyrq) {
-    this.cyrq = cyrq;
-  }
-
-  public Integer getCycs() {
-    return cycs;
-  }
-
-  public void setCycs(Integer cycs) {
-    this.cycs = cycs;
-  }
 
   public String getFpzldm() {
     return fpzldm;
@@ -139,22 +167,6 @@ public class Fpcy {
 
   public void setXfyhyhzh(String xfyhyhzh) {
     this.xfyhyhzh = xfyhyhzh;
-  }
-
-  public String getGsdm() {
-    return gsdm;
-  }
-
-  public void setGsdm(String gsdm) {
-    this.gsdm = gsdm;
-  }
-
-  public Integer getGfid() {
-    return gfid;
-  }
-
-  public void setGfid(Integer gfid) {
-    this.gfid = gfid;
   }
 
   public String getGfsh() {
@@ -237,29 +249,30 @@ public class Fpcy {
     this.qdbz = qdbz;
   }
 
-  public String getFpzt() {
-    return fpzt;
+  public String getGxbz() {
+    return gxbz;
   }
 
-  public void setFpzt(String fpzt) {
-    this.fpzt = fpzt;
+  public void setGxbz(String gxbz) {
+    this.gxbz = gxbz;
   }
 
-  public String getSjly() {
-    return sjly;
+  public String getRzbz() {
+    return rzbz;
   }
 
-  public void setSjly(String sjly) {
-    this.sjly = sjly;
+  public void setRzbz(String rzbz) {
+    this.rzbz = rzbz;
   }
 
-  public String getLrsj() {
-    return lrsj;
+  public String getRzlx() {
+    return rzlx;
   }
 
-  public void setLrsj(String lrsj) {
-    this.lrsj = lrsj;
+  public void setRzlx(String rzlx) {
+    this.rzlx = rzlx;
   }
+
 
   public Integer getLrry() {
     return lrry;
@@ -269,13 +282,7 @@ public class Fpcy {
     this.lrry = lrry;
   }
 
-  public String getXgsj() {
-    return xgsj;
-  }
 
-  public void setXgsj(String xgsj) {
-    this.xgsj = xgsj;
-  }
 
   public Integer getXgry() {
     return xgry;
@@ -293,12 +300,43 @@ public class Fpcy {
     this.yxbz = yxbz;
   }
 
-  public String getFpzlmc() {
-    return fpzlmc;
+  public Date getKprq() {
+    return kprq;
   }
 
-  public void setFpzlmc(String fpzlmc) {
-    this.fpzlmc = fpzlmc;
+  public void setKprq(Date kprq) {
+    this.kprq = kprq;
   }
 
+  public Date getRzsj() {
+    return rzsj;
+  }
+
+  public void setRzsj(Date rzsj) {
+    this.rzsj = rzsj;
+  }
+
+  public Date getLrsj() {
+    return lrsj;
+  }
+
+  public void setLrsj(Date lrsj) {
+    this.lrsj = lrsj;
+  }
+
+  public Date getGxsj() {
+    return gxsj;
+  }
+
+  public void setGxsj(Date gxsj) {
+    this.gxsj = gxsj;
+  }
+
+  public Date getXgsj() {
+    return xgsj;
+  }
+
+  public void setXgsj(Date xgsj) {
+    this.xgsj = xgsj;
+  }
 }
