@@ -154,7 +154,7 @@ public class LeshuiService {
                         String isBillLine = o.getString("isBillLine");//是否是清单行
                         BigDecimal price = o.getBigDecimal("price");//单价
                         BigDecimal tax = o.getBigDecimal("tax");//税额
-                        BigDecimal taxRate = o.getBigDecimal("taxRate");//税率
+                        String taxRate = o.getString("taxRate");//税率
                         String goodserviceName = o.getString("goodserviceName");//货劳务名称
                         BigDecimal sum = o.getBigDecimal("sum");//金额
                         BigDecimal number = o.getBigDecimal("number");//数量
@@ -164,7 +164,9 @@ public class LeshuiService {
                         fpcymx.setSpmc(goodserviceName);
                         fpcymx.setSps(number);
                         fpcymx.setSpje(sum);
-                        fpcymx.setSpsl(taxRate);
+                        String stringTaxRate = taxRate.replaceAll("%", "");
+                        BigDecimal rate = new BigDecimal(stringTaxRate);
+                        fpcymx.setSpsl(rate.divide(new BigDecimal("100")));
                         fpcymx.setSpse(tax);
                         fpcymx.setSpmxxh(i + 1);
                         fpcymx.setQdhbz(isBillLine);
