@@ -434,6 +434,7 @@ public class LeshuiService {
             Integer pageSize = body.getInteger("pageSize");
             Integer totalSum = body.getInteger("totalSum");
             JSONArray invoices = body.getJSONArray("invoices");
+
             //创建调用记录对象
             Jxdyjl jxdyjl = new Jxdyjl();
             jxdyjl.setDyxh(num);
@@ -451,6 +452,18 @@ public class LeshuiService {
                 jxdyjl.setZt("9999");
             }
             jxdyjl.setYwid(saveJxywjl.getId());
+            Jxdyjl saveJxdyjl=jxdyjlJpaDao.save(jxdyjl);
+
+            //创建回调记录对象
+            Jxhdjl jxhdjl = new Jxhdjl();
+            jxhdjl.setGsdm(gsdm);
+            jxhdjl.setRtncode(rtnCode);
+            jxhdjl.setRtnmsg(rtnMsg);
+            jxhdjl.setTotalsum(totalSum);
+            jxhdjl.setPagesize(pageSize);
+            jxhdjl.setPageno(pageNo_r);
+            jxhdjl.setDyid(saveJxdyjl.getId());
+
             //获取总页数除以每页数量的余数
             if(totalSum!=0){
                 Integer ys = totalSum % pageSize;
@@ -464,11 +477,10 @@ public class LeshuiService {
                     break;
                 }
             }else{
-                jxdyjlJpaDao.save(jxdyjl);
+                jxhdjlJpaDao.save(jxhdjl);
                 break;
             }
 
-            Jxdyjl saveJxdyjl = jxdyjlJpaDao.save(jxdyjl);
             //成功
             if(INVOICE_QUERY_SUCCESS.equals(rtnCode)){
                 //如果发票信息不为空
@@ -525,15 +537,6 @@ public class LeshuiService {
                             jxfpmxList.add(jxfpmx);
                         }
 
-                        //创建回调记录对象
-                        Jxhdjl jxhdjl = new Jxhdjl();
-                        jxhdjl.setDyid(saveJxdyjl.getId());
-                        jxhdjl.setGsdm(gsdm);
-                        jxhdjl.setRtncode(rtnCode);
-                        jxhdjl.setRtnmsg(rtnMsg);
-                        jxhdjl.setTotalsum(totalSum);
-                        jxhdjl.setPagesize(pageSize);
-                        jxhdjl.setPageno(pageNo_r);
                         jxhdjl.setFpzt(invoicesStatus);
                         jxhdjl.setRzsj(authTime);
                         jxhdjl.setRzlx(authType);
@@ -591,6 +594,7 @@ public class LeshuiService {
                         jxhdjlJpaDao.save(jxhdjl);
                     }
                 }else{
+                    //如果返回是成功，但是没有明细，更新掉原来的成功为失败
                     saveJxdyjl.setZt("9999");
                     jxdyjlJpaDao.save(saveJxdyjl);
                     throw new RuntimeException("调用成功但未获取到发票信息");
