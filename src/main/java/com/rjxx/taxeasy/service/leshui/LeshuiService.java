@@ -649,6 +649,10 @@ public class LeshuiService {
             Jxdymxjl jxdymxjl = new Jxdymxjl();
             String fpdm = auth.getFpdm();
             String fphm = auth.getFphm();
+            Jxfpxx jxfpxx = jxfpxxJpaDao.findByFpdmAndFphm(fpdm, fphm);
+            jxfpxx.setRzzt("2");//已发送乐税
+            //更新
+            jxfpxxJpaDao.save(jxfpxx);
             jxdymxjl.setInvoceno(fphm);
             jxdymxjl.setInvoicecode(fpdm);
             jxdymxjls.add(jxdymxjl);
