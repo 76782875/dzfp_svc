@@ -66,7 +66,8 @@ public class LeshuiService {
         String resultCode_r = resultJson.getString("resultCode");//查询发票状态码
         String resultMsg_r = resultJson.getString("resultMsg");//查验结果
         String invoiceName_r = resultJson.getString("invoiceName");//发票名称
-        JSONObject invoiceResult_r = resultJson.getJSONObject(" invoiceResult");//发票主体信息
+        String invoiceResultString = resultJson.getString("invoiceResult");//发票主体信息
+        JSONObject invoiceResult_r = JSON.parseObject(invoiceResultString);
         String invoicefalseCode_r = resultJson.getString("invoicefalseCode");//错误码;
 
         //创建记录表对象
