@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.rjxx.taxeasy.dao.leshui.*;
 import com.rjxx.taxeasy.domains.leshui.*;
 import com.rjxx.utils.leshui.LeShuiUtil;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -93,7 +94,9 @@ public class LeshuiService {
                 newFpcy.setFphm(invoiceNumber);
                 newFpcy.setJym(checkCode);
                 newFpcy.setKprq(billTime);
-                newFpcy.setHjje(new BigDecimal(invoiceAmount));
+                if(StringUtils.isNotBlank(invoiceAmount)){
+                    newFpcy.setHjje(new BigDecimal(invoiceAmount));
+                }
                 if (invoiceResult_r != null) {
                     String invoiceDataCode_r = invoiceResult_r.getString("invoiceDataCode");//发票代码
                     String invoiceNumber_r = invoiceResult_r.getString("invoiceNumber");//发票号码
