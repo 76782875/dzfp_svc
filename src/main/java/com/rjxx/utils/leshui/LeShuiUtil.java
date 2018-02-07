@@ -61,7 +61,7 @@ public class LeShuiUtil {
      * @checkCode 校验码（检验码后六位，增值税专用发票，增值税机动车发票可以不传）
      * @invoiceAmount 开具金额、不含税价（增值税普通发票，增值税电子发票可以不传）
      */
-    public static String invoiceInfoForCom(String invoiceCode, String invoiceNumber, String billTime,
+    public static String invoiceInfoForCom(String invoiceCode, String invoiceNumber, Date billTime,
                                            String checkCode, String invoiceAmount) {
         String url = GET_CHECK_CODE_NUM_URL;
         Map map = new HashMap();

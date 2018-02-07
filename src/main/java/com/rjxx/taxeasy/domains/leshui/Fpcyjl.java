@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.Date;
+
 /**
  * Created by wangyahui on 2018/1/25 0025
  */
@@ -14,7 +16,7 @@ public class Fpcyjl {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
   private Integer fpcyid;
-  private String cyrq;
+  private Date cyrq;
   private Integer cycs;
   private String fpzt;
   private String lrry;
@@ -82,14 +84,6 @@ public class Fpcyjl {
     this.fpcyid = fpcyid;
   }
 
-  public String getCyrq() {
-    return cyrq;
-  }
-
-  public void setCyrq(String cyrq) {
-    this.cyrq = cyrq;
-  }
-
   public Integer getCycs() {
     return cycs;
   }
@@ -128,5 +122,13 @@ public class Fpcyjl {
 
   public void setGsdm(String gsdm) {
     this.gsdm = gsdm;
+  }
+
+  public Date getCyrq() {
+    return cyrq;
+  }
+
+  public void setCyrq(Date cyrq) {
+    this.cyrq = cyrq;
   }
 }

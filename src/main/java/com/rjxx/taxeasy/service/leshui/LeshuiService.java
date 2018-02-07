@@ -57,19 +57,19 @@ public class LeshuiService {
      * @param gsdm          公司代码
      * @return 乐税接口返回数据
      */
-    public String fpcy(String invoiceCode, String invoiceNumber, String billTime,
-                              String checkCode, String invoiceAmount, String sjly, String gsdm) {
+    public String fpcy(String invoiceCode, String invoiceNumber, Date billTime,
+                              String checkCode, String invoiceAmount, String sjly, String gsdm,String bxry) {
         //调发票查验接口
         String result = LeShuiUtil.invoiceInfoForCom(invoiceCode, invoiceNumber, billTime, checkCode, invoiceAmount);
         //解析返回值
         JSONObject resultJson = JSON.parseObject(result);
-        String rtnCode_r = resultJson.getString("RtnCode").trim();//服务器是否正常标志
-        String resultCode_r = resultJson.getString("resultCode").trim();//查询发票状态码
-        String resultMsg_r = resultJson.getString("resultMsg").trim();//查验结果
-        String invoiceName_r = resultJson.getString("invoiceName").trim();//发票名称
+        String rtnCode_r = resultJson.getString("RtnCode");//服务器是否正常标志
+        String resultCode_r = resultJson.getString("resultCode");//查询发票状态码
+        String resultMsg_r = resultJson.getString("resultMsg");//查验结果
+        String invoiceName_r = resultJson.getString("invoiceName");//发票名称
         String invoiceResultString = resultJson.getString("invoiceResult");//发票主体信息
         JSONObject invoiceResult_r = JSON.parseObject(invoiceResultString);
-        String invoicefalseCode_r = resultJson.getString("invoicefalseCode").trim();//错误码;
+        String invoicefalseCode_r = resultJson.getString("invoicefalseCode");//错误码;
 
         //创建记录表对象
         Fpcyjl fpcyjl = new Fpcyjl();
@@ -79,6 +79,7 @@ public class LeshuiService {
         fpcyjl.setResultmsg(resultMsg_r);
         fpcyjl.setReturncode(rtnCode_r);
         fpcyjl.setGsdm(gsdm);
+        fpcyjl.setBxry(bxry);
 
         Fpcy oldFpcy = fpcyJpaDao.findOneByFpdmAndFphm(invoiceCode, invoiceNumber);
         //如果库中没有记录
@@ -102,8 +103,8 @@ public class LeshuiService {
                     String invoiceNumber_r = invoiceResult_r.getString("invoiceNumber").trim();//发票号码
                     String invoiceTypeName_r = invoiceResult_r.getString("invoiceTypeName").trim();//发票类型名称
                     String invoiceTypeCode_r = invoiceResult_r.getString("invoiceTypeCode").trim();//发票类型  01:增值税专票,02:货物运输业增值税专用发票,04:增值税普通发票,03:机动车销售统一发票,10:电子发票,11:卷式普通发票,20:国税,30:地税
-                    String billingTime_r = invoiceResult_r.getString("billingTime").trim();//开票时间
-                    String checkDate_r = invoiceResult_r.getString("checkDate").trim();//查询时间
+                    Date billingTime_r = invoiceResult_r.getDate("billingTime");//开票时间
+                    Date checkDate_r = invoiceResult_r.getDate("checkDate");//查询时间
                     String checkCode_r = invoiceResult_r.getString("checkCode").trim();// 校验码
                     String taxDiskCode_r = invoiceResult_r.getString("taxDiskCode").trim();//机器码
                     String purchaserName_r = invoiceResult_r.getString("purchaserName").trim();//购方名称
