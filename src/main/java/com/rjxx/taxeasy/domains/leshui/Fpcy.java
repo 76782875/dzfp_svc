@@ -5,6 +5,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.math.BigDecimal;
+import java.util.Date;
+
 /**
  * Created by wangyahui on 2018/1/25 0025
  */
@@ -15,9 +17,9 @@ public class Fpcy {
   private Integer id;
   private String fpdm;
   private String fphm;
-  private String kprq;
+  private Date kprq;
   private String jym;
-  private String cyrq;
+  private Date cyrq;
   private Integer cycs;
   private String fpzldm;
   private String fpzlmc;
@@ -39,9 +41,9 @@ public class Fpcy {
   private String qdbz;
   private String fpzt;
   private String sjly;
-  private String lrsj;
+  private Date lrsj;
   private Integer lrry;
-  private String xgsj;
+  private Date xgsj;
   private Integer xgry;
   private String yxbz;
 
@@ -69,14 +71,6 @@ public class Fpcy {
     this.fphm = fphm;
   }
 
-  public String getKprq() {
-    return kprq;
-  }
-
-  public void setKprq(String kprq) {
-    this.kprq = kprq;
-  }
-
   public String getJym() {
     return jym;
   }
@@ -85,13 +79,6 @@ public class Fpcy {
     this.jym = jym;
   }
 
-  public String getCyrq() {
-    return cyrq;
-  }
-
-  public void setCyrq(String cyrq) {
-    this.cyrq = cyrq;
-  }
 
   public Integer getCycs() {
     return cycs;
@@ -225,6 +212,38 @@ public class Fpcy {
     return bz;
   }
 
+  public Date getKprq() {
+    return kprq;
+  }
+
+  public void setKprq(Date kprq) {
+    this.kprq = kprq;
+  }
+
+  public Date getCyrq() {
+    return cyrq;
+  }
+
+  public void setCyrq(Date cyrq) {
+    this.cyrq = cyrq;
+  }
+
+  public Date getLrsj() {
+    return lrsj;
+  }
+
+  public void setLrsj(Date lrsj) {
+    this.lrsj = lrsj;
+  }
+
+  public Date getXgsj() {
+    return xgsj;
+  }
+
+  public void setXgsj(Date xgsj) {
+    this.xgsj = xgsj;
+  }
+
   public void setBz(String bz) {
     this.bz = bz;
   }
@@ -253,28 +272,12 @@ public class Fpcy {
     this.sjly = sjly;
   }
 
-  public String getLrsj() {
-    return lrsj;
-  }
-
-  public void setLrsj(String lrsj) {
-    this.lrsj = lrsj;
-  }
-
   public Integer getLrry() {
     return lrry;
   }
 
   public void setLrry(Integer lrry) {
     this.lrry = lrry;
-  }
-
-  public String getXgsj() {
-    return xgsj;
-  }
-
-  public void setXgsj(String xgsj) {
-    this.xgsj = xgsj;
   }
 
   public Integer getXgry() {

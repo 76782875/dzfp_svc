@@ -167,15 +167,13 @@ public class GeneratePdfService {
                 //String url="https://vrapi.fvt.tujia.com/Invoice/CallBack";
                 String url = gsxx.getCallbackurl();
                 if (!("").equals(url) && url != null) {
-
-                    logger.info("回写报文" + this.CreateReturnMessage2(kpls.getKplsh()));
                     String returnmessage = "";
                     if (kpls.getFpzldm().equals("12") && kpls.getGsdm().equals("Family")) {
                         returnmessage = this.CreateReturnMessage2(kpls.getKplsh());
-
                     } else if (kpls.getFpzldm().equals("12") && kpls.getGsdm().equals("mcake")) {
                         returnmessage = this.CreateReturnMessage(kpls.getKplsh());
-
+                    }else if (kpls.getFpzldm().equals("12") && kpls.getGsdm().equals("fwk")) {
+                        returnmessage = this.CreateReturnMessage3(kpls.getKplsh());
                     }else {
                         returnmessage = this.CreateReturnMessage(kpls.getKplsh());
                     }
@@ -185,15 +183,7 @@ public class GeneratePdfService {
                         if(kpls.getGsdm().equals("afb")){
                             Map returnMap = this.httpPostNoSign(returnmessage, kpls);
                             logger.info("返回报文" + JSON.toJSONString(returnMap));
-                        }else{
-                            Map returnMap = this.httpPost(returnmessage, kpls);
-                            logger.info("返回报文" + JSON.toJSONString(returnMap));
-                        }
-                    }
-                    if(kpls.getGsdm().equals("fwk")){
-                        returnmessage = this.CreateReturnMessage3(kpls.getKplsh());
-                        logger.info("回写报文" + returnmessage);
-                        if (returnmessage != null && !"".equals(returnmessage)) {
+                        }if(kpls.getGsdm().equals("fwk")){
                             try {
                                 String ss = this.netWebService(url, "CallBack", returnmessage, gsxx.getAppKey(), gsxx.getSecretKey());
                                 String fwkReturnMessageStr = fwkReturnMessage(kpls);
@@ -216,6 +206,9 @@ public class GeneratePdfService {
                                 e.printStackTrace();
                                 rabbitmqSend.sendMsg("ErrorException_Callback", kpls.getFpzldm(), kpls.getKplsh() + "");
                             }
+                        } else{
+                            Map returnMap = this.httpPost(returnmessage, kpls);
+                            logger.info("返回报文" + JSON.toJSONString(returnMap));
                         }
                     }
                 }
