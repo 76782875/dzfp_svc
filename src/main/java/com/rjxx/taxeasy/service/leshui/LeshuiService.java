@@ -213,8 +213,11 @@ public class LeshuiService {
                 if (invoiceResult_r != null) {
                     String voidMark_r = invoiceResult_r.getString("voidMark");//作废标志，0：正常，1：作废
                     Integer checkNum_r = invoiceResult_r.getInteger("checkNum");//查询次数
+                    Date checkDate_r = invoiceResult_r.getDate("checkDate");//查询时间
+                    oldFpcy.setCyrq(checkDate_r);
                     oldFpcy.setFpzt(voidMark_r);
                     oldFpcy.setCycs(checkNum_r);
+
                 }
             }
             Fpcy oldSave = fpcyJpaDao.save(oldFpcy);
