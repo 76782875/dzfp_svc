@@ -149,9 +149,9 @@ public class LeshuiService {
                     for (int i = 0; i < invoiceDetailData_r.size(); i++) {
                         Fpcymx fpcymx = new Fpcymx();
                         JSONObject o = (JSONObject) invoiceDetailData_r.get(i);
-                        String unit = o.getString("unit");//单位
-                        String model = o.getString("model");//型号
-                        String isBillLine = o.getString("isBillLine");//是否是清单行
+                        String unit = o.getString("unit").trim();//单位
+                        String model = o.getString("model").trim();//型号
+                        String isBillLine = o.getString("isBillLine").trim();//是否是清单行
                         String price = o.getString("price").trim();//单价
                         BigDecimal tax = o.getBigDecimal("tax");//税额
                         String taxRate = o.getString("taxRate").trim();//税率
@@ -172,7 +172,7 @@ public class LeshuiService {
                             fpcymx.setSps(new BigDecimal(number));
                         }
                         fpcymx.setSpje(sum);
-                        if(StringUtils.isBlank(taxRate)){
+                        if(StringUtils.isNotBlank(taxRate)){
                             String stringTaxRate = taxRate.replaceAll("%", "");
                             BigDecimal rate = new BigDecimal(stringTaxRate);
                             fpcymx.setSpsl(rate.divide(new BigDecimal("100")));
