@@ -60,7 +60,7 @@ public class LeshuiService {
     public String fpcy(String invoiceCode, String invoiceNumber, Date billTime,
                               String checkCode, String invoiceAmount, String sjly, String gsdm,String bxry) {
         //调发票查验接口
-        String result = LeShuiUtil.invoiceInfoForCom(invoiceCode, invoiceNumber, billTime, checkCode, invoiceAmount);
+        String result = LeShuiUtil.invoiceInfoForCom(invoiceCode, invoiceNumber, new SimpleDateFormat("yyyyMMdd").format(billTime), checkCode, invoiceAmount);
         //解析返回值
         JSONObject resultJson = JSON.parseObject(result);
         String rtnCode_r = resultJson.getString("RtnCode");//服务器是否正常标志
