@@ -31,6 +31,8 @@ public class FpcyVo implements Serializable {
 
     protected String fpzt;
 
+    protected String cyrq;
+
     public Integer getId() {
         return id;
     }
@@ -117,5 +119,13 @@ public class FpcyVo implements Serializable {
 
     public void setCycsTotal(Integer cycsTotal) {
         this.cycsTotal = cycsTotal;
+    }
+
+    public String getCyrq() {
+        return cyrq;
+    }
+
+    public void setCyrq(String cyrq) {
+        this.cyrq = cyrq;
     }
 }
