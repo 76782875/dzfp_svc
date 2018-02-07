@@ -23,6 +23,13 @@
 		<if test="params.gfsh != null and params.gfsh != ''">
 			and gfsh  =#{params.gfsh}
 		</if>
+		<if test="params.gfs !=null">
+			<foreach collection="params.gfs" open=" and (gfsh in ("
+					 separator="," close=")" item="item" index="index">
+				#{params.gfs[${index}].xfsh}
+			</foreach>
+			or gfsh is null)
+		</if>
 		<if test="params.fpzldm != null and params.fpzldm != ''">
 			and fpzldm =#{params.fpzldm}
 		</if>
