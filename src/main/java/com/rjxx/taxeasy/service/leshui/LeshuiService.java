@@ -63,13 +63,13 @@ public class LeshuiService {
         String result = LeShuiUtil.invoiceInfoForCom(invoiceCode, invoiceNumber, billTime, checkCode, invoiceAmount);
         //解析返回值
         JSONObject resultJson = JSON.parseObject(result);
-        String rtnCode_r = resultJson.getString("RtnCode");//服务器是否正常标志
-        String resultCode_r = resultJson.getString("resultCode");//查询发票状态码
-        String resultMsg_r = resultJson.getString("resultMsg");//查验结果
-        String invoiceName_r = resultJson.getString("invoiceName");//发票名称
+        String rtnCode_r = resultJson.getString("RtnCode").trim();//服务器是否正常标志
+        String resultCode_r = resultJson.getString("resultCode").trim();//查询发票状态码
+        String resultMsg_r = resultJson.getString("resultMsg").trim();//查验结果
+        String invoiceName_r = resultJson.getString("invoiceName").trim();//发票名称
         String invoiceResultString = resultJson.getString("invoiceResult");//发票主体信息
         JSONObject invoiceResult_r = JSON.parseObject(invoiceResultString);
-        String invoicefalseCode_r = resultJson.getString("invoicefalseCode");//错误码;
+        String invoicefalseCode_r = resultJson.getString("invoicefalseCode").trim();//错误码;
 
         //创建记录表对象
         Fpcyjl fpcyjl = new Fpcyjl();
@@ -98,28 +98,28 @@ public class LeshuiService {
                     newFpcy.setHjje(new BigDecimal(invoiceAmount));
                 }
                 if (invoiceResult_r != null) {
-                    String invoiceDataCode_r = invoiceResult_r.getString("invoiceDataCode");//发票代码
-                    String invoiceNumber_r = invoiceResult_r.getString("invoiceNumber");//发票号码
-                    String invoiceTypeName_r = invoiceResult_r.getString("invoiceTypeName");//发票类型名称
-                    String invoiceTypeCode_r = invoiceResult_r.getString("invoiceTypeCode");//发票类型  01:增值税专票,02:货物运输业增值税专用发票,04:增值税普通发票,03:机动车销售统一发票,10:电子发票,11:卷式普通发票,20:国税,30:地税
-                    String billingTime_r = invoiceResult_r.getString("billingTime");//开票时间
-                    String checkDate_r = invoiceResult_r.getString("checkDate");//查询时间
-                    String checkCode_r = invoiceResult_r.getString("checkCode");// 校验码
-                    String taxDiskCode_r = invoiceResult_r.getString("taxDiskCode");//机器码
-                    String purchaserName_r = invoiceResult_r.getString("purchaserName");//购方名称
-                    String taxpayerNumber_r = invoiceResult_r.getString("taxpayerNumber");//购方识别号
-                    String taxpayerBankAccount_r = invoiceResult_r.getString("taxpayerBankAccount");//购方银行账号
-                    String taxpayerAddressOrId_r = invoiceResult_r.getString("taxpayerAddressOrId");//购方地址，电话
-                    String salesName_r = invoiceResult_r.getString("salesName");//销方名称
-                    String salesTaxpayerNum_r = invoiceResult_r.getString("salesTaxpayerNum");//销方纳税人识别号
-                    String salesTaxpayerBankAccount_r = invoiceResult_r.getString("salesTaxpayerBankAccount");//销方银行，账号
-                    String salesTaxpayerAddress_r = invoiceResult_r.getString("salesTaxpayerAddress");//销方地址，电话
+                    String invoiceDataCode_r = invoiceResult_r.getString("invoiceDataCode").trim();//发票代码
+                    String invoiceNumber_r = invoiceResult_r.getString("invoiceNumber").trim();//发票号码
+                    String invoiceTypeName_r = invoiceResult_r.getString("invoiceTypeName").trim();//发票类型名称
+                    String invoiceTypeCode_r = invoiceResult_r.getString("invoiceTypeCode").trim();//发票类型  01:增值税专票,02:货物运输业增值税专用发票,04:增值税普通发票,03:机动车销售统一发票,10:电子发票,11:卷式普通发票,20:国税,30:地税
+                    String billingTime_r = invoiceResult_r.getString("billingTime").trim();//开票时间
+                    String checkDate_r = invoiceResult_r.getString("checkDate").trim();//查询时间
+                    String checkCode_r = invoiceResult_r.getString("checkCode").trim();// 校验码
+                    String taxDiskCode_r = invoiceResult_r.getString("taxDiskCode").trim();//机器码
+                    String purchaserName_r = invoiceResult_r.getString("purchaserName").trim();//购方名称
+                    String taxpayerNumber_r = invoiceResult_r.getString("taxpayerNumber").trim();//购方识别号
+                    String taxpayerBankAccount_r = invoiceResult_r.getString("taxpayerBankAccount").trim();//购方银行账号
+                    String taxpayerAddressOrId_r = invoiceResult_r.getString("taxpayerAddressOrId").trim();//购方地址，电话
+                    String salesName_r = invoiceResult_r.getString("salesName").trim();//销方名称
+                    String salesTaxpayerNum_r = invoiceResult_r.getString("salesTaxpayerNum").trim();//销方纳税人识别号
+                    String salesTaxpayerBankAccount_r = invoiceResult_r.getString("salesTaxpayerBankAccount").trim();//销方银行，账号
+                    String salesTaxpayerAddress_r = invoiceResult_r.getString("salesTaxpayerAddress").trim();//销方地址，电话
                     BigDecimal totalTaxSum_r = invoiceResult_r.getBigDecimal("totalTaxSum");//价税合计
                     BigDecimal totalTaxNum_r = invoiceResult_r.getBigDecimal("totalTaxNum");//税额
                     BigDecimal totalAmount_r = invoiceResult_r.getBigDecimal("totalAmount");//不含税价（金额）
-                    String invoiceRemarks_r = invoiceResult_r.getString("invoiceRemarks");//备注
-                    String isBillMark_r = invoiceResult_r.getString("isBillMark");//是否为清单票，Y：是，N：否
-                    String voidMark_r = invoiceResult_r.getString("voidMark");//作废标志，0：正常，1：作废
+                    String invoiceRemarks_r = invoiceResult_r.getString("invoiceRemarks").trim();//备注
+                    String isBillMark_r = invoiceResult_r.getString("isBillMark").trim();//是否为清单票，Y：是，N：否
+                    String voidMark_r = invoiceResult_r.getString("voidMark").trim();//作废标志，0：正常，1：作废
                     Integer checkNum_r = invoiceResult_r.getInteger("checkNum");//查询次数
                     newFpcy.setCycs(checkNum_r);
                     newFpcy.setFpzt(voidMark_r);
