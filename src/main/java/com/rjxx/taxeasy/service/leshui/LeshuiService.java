@@ -152,27 +152,27 @@ public class LeshuiService {
                         String unit = o.getString("unit");//单位
                         String model = o.getString("model");//型号
                         String isBillLine = o.getString("isBillLine");//是否是清单行
-                        String price = o.getString("price");//单价
+                        String price = o.getString("price").trim();//单价
                         BigDecimal tax = o.getBigDecimal("tax");//税额
-                        String taxRate = o.getString("taxRate");//税率
+                        String taxRate = o.getString("taxRate").trim();//税率
                         String goodserviceName = o.getString("goodserviceName");//货劳务名称
                         BigDecimal sum = o.getBigDecimal("sum");//金额
-                        String number = o.getString("number");//数量
+                        String number = o.getString("number").trim();//数量
                         fpcymx.setSpdw(unit);
-                        if(StringUtils.isNotBlank(price) || "0".equals(price)){
+                        if(StringUtils.isBlank(price) || "0".equals(price)){
                             fpcymx.setSpdj(null);
                         }else{
                             fpcymx.setSpdj(new BigDecimal(price));
                         }
                         fpcymx.setSpggxh(model);
                         fpcymx.setSpmc(goodserviceName);
-                        if(StringUtils.isNotBlank(number) || "0".equals(number)){
+                        if(StringUtils.isBlank(number) || "0".equals(number)){
                             fpcymx.setSps(null);
                         }else{
                             fpcymx.setSps(new BigDecimal(number));
                         }
                         fpcymx.setSpje(sum);
-                        if(StringUtils.isNotBlank(taxRate)){
+                        if(StringUtils.isBlank(taxRate)){
                             String stringTaxRate = taxRate.replaceAll("%", "");
                             BigDecimal rate = new BigDecimal(stringTaxRate);
                             fpcymx.setSpsl(rate.divide(new BigDecimal("100")));
