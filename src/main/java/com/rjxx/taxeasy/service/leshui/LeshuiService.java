@@ -539,18 +539,35 @@ public class LeshuiService {
                         for (int j = 0; j < goods.size(); j++) {
                             Jxfpmx jxfpmx = new Jxfpmx();
                             JSONObject good = (JSONObject) goods.get(j);
-                            String goodName = good.getString("goodName");
-                            String unit = good.getString("unit");
-                            BigDecimal rate = good.getBigDecimal("rate");
+                            String goodName = good.getString("goodName").trim();
+                            String unit = good.getString("unit").trim();
+                            String rate = good.getString("rate").trim();
                             BigDecimal taxAmountLine = good.getBigDecimal("taxAmount");
                             BigDecimal amountLine = good.getBigDecimal("amount");
-                            BigDecimal price = good.getBigDecimal("price");
-                            String model = good.getString("model");
-                            BigDecimal count = good.getBigDecimal("count");
-                            String lineNum = good.getString("lineNum");
-                            jxfpmx.setSpsl(rate);
-                            jxfpmx.setSps(count);
-                            jxfpmx.setSpdj(price);
+                            String  price = good.getString("price");
+                            String model = good.getString("model").trim();
+                            String count = good.getString("count");
+                            String lineNum = good.getString("lineNum").trim();
+                            //税率
+                            if(StringUtils.isNotBlank(rate)){
+                                String stringTaxRate = rate.replaceAll("%", "");
+                                BigDecimal sl = new BigDecimal(stringTaxRate);
+                                jxfpmx.setSpsl(sl.divide(new BigDecimal("100")));
+                            }else{
+                                jxfpmx.setSpsl(null);
+                            }
+                            //单价
+                            if(StringUtils.isBlank(price) || "0".equals(price)){
+                                jxfpmx.setSpdj(null);
+                            }else{
+                                jxfpmx.setSpdj(new BigDecimal(price));
+                            }
+                            //数量
+                            if(StringUtils.isBlank(count) || "0".equals(count)){
+                                jxfpmx.setSps(null);
+                            }else{
+                                jxfpmx.setSps(new BigDecimal(count));
+                            }
                             jxfpmx.setSpdw(unit);
                             jxfpmx.setSpggxh(model);
                             jxfpmx.setSpje(amountLine);
