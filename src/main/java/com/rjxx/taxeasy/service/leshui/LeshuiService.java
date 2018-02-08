@@ -488,13 +488,17 @@ public class LeshuiService {
             jxhdjl.setPageno(pageNo_r);
             jxhdjl.setDyid(saveJxdyjl.getId());
 
-            //获取总页数除以每页数量的余数
+            //获取总数除以每页数量的余数
             if(totalSum!=0){
-                Integer ys = totalSum % pageSize;
-                if(ys!=0){
-                    countPage = (totalSum / pageSize) + 1;
+                if(totalSum>pageSize){
+                    Integer ys = totalSum % pageSize;
+                    if(ys!=0){
+                        countPage = (totalSum / pageSize) + 1;
+                    }else{
+                        countPage = totalSum / pageSize;
+                    }
                 }else{
-                    countPage = totalSum / pageSize;
+                    countPage = 1;
                 }
                 //如果当前页数超过总页数，跳出循环
                 if(pageNo_r>countPage){
@@ -544,9 +548,9 @@ public class LeshuiService {
                             String rate = good.getString("rate").trim();
                             BigDecimal taxAmountLine = good.getBigDecimal("taxAmount");
                             BigDecimal amountLine = good.getBigDecimal("amount");
-                            String  price = good.getString("price");
+                            String  price = good.getString("price").trim();
                             String model = good.getString("model").trim();
-                            String count = good.getString("count");
+                            String count = good.getString("count").trim();
                             String lineNum = good.getString("lineNum").trim();
                             //税率
                             if(StringUtils.isNotBlank(rate)){
@@ -587,6 +591,7 @@ public class LeshuiService {
                         Jxfpxx oldJxfpxx = jxfpxxJpaDao.findByFpdmAndFphm(invoiceCode, invoiceNo);
                         if(oldJxfpxx==null){
                             Jxfpxx newJxfpxx = new Jxfpxx();
+                            newJxfpxx.setLrsj(new Date());
                             newJxfpxx.setGsdm(gsdm);
                             newJxfpxx.setYxbz("1");
                             newJxfpxx.setUniqueid(uniqueId);
