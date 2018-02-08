@@ -607,7 +607,7 @@ public class LeshuiService {
                             newJxfpxx.setGfdzdh(buyerAddress);
                             newJxfpxx.setGfsh(buyerCode);
                             newJxfpxx.setGfmc(buyerCompany);
-                            newJxfpxx.setXfdzdh(salerBankAccount);
+                            newJxfpxx.setXfyhyhzh(salerBankAccount);
                             newJxfpxx.setXfdzdh(salerAddress);
                             newJxfpxx.setXfsh(salerCode);
                             newJxfpxx.setXfmc(salerCompany);
