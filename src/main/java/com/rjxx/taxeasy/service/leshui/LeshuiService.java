@@ -465,6 +465,7 @@ public class LeshuiService {
 
             //创建调用记录对象
             Jxdyjl jxdyjl = new Jxdyjl();
+            jxdyjl.setLrsj(new Date());
             jxdyjl.setDyxh(num);
             jxdyjl.setMxbz(0);//明细标志 0没有 1有
             jxdyjl.setGsdm(gsdm);
@@ -484,6 +485,7 @@ public class LeshuiService {
 
             //创建回调记录对象
             Jxhdjl jxhdjl = new Jxhdjl();
+            jxhdjl.setLrsj(new Date());
             jxhdjl.setGsdm(gsdm);
             jxhdjl.setRtncode(rtnCode);
             jxhdjl.setRtnmsg(rtnMsg);
