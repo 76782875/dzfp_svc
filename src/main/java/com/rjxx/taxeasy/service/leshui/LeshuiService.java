@@ -45,6 +45,8 @@ public class LeshuiService {
     private final static String INVOICE_INFO_SUCCESS = "00";
     private final static String INVOICE_QUERY_SUCCESS = "000";
 
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
     /**
      * 发票查验
      *
@@ -446,7 +448,7 @@ public class LeshuiService {
                     + new Random().nextInt(9)
                     + LeShuiUtil.getRandomLetter();
             //调接口
-            String result = LeShuiUtil.invoiceBatchQuery(uniqueId, startTime, endTime, taxCode, num);
+            String result = LeShuiUtil.invoiceBatchQuery(uniqueId, sdf.format(startTime), sdf.format(endTime), taxCode, num);
             JSONObject resultJson = JSON.parseObject(result);
             JSONObject head = resultJson.getJSONObject("head");
             String rtnMsg = head.getString("rtnMsg");
