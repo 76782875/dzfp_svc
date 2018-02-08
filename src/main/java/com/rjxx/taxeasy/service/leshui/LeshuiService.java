@@ -442,6 +442,10 @@ public class LeshuiService {
 
         //开启死循环
         for(int num=1;num>0;num++){
+            //如果当前页数超过总页数而且不是第一次，跳出循环
+            if(num>countPage && countPage!=0){
+                break;
+            }
             String uniqueId = "QBI" + new SimpleDateFormat("yyyyMMddhhmmss")
                     .format(new Date())
                     + new Random().nextInt(9)
@@ -499,10 +503,6 @@ public class LeshuiService {
                     }
                 }else{
                     countPage = 1;
-                }
-                //如果当前页数超过总页数，跳出循环
-                if(pageNo_r>countPage){
-                    break;
                 }
             }else{
                 jxhdjlJpaDao.save(jxhdjl);
