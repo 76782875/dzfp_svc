@@ -246,7 +246,7 @@ public class LeshuiService {
     public String fpcx(String invoiceCode, String invoiceNo,
                        String taxCode, String gsdm,Integer gfid) {
         //调单张发票查询接口
-        String uniqueId = "QBI" + new SimpleDateFormat("yyyyMMddhhmmss")
+        String uniqueId = "QBI" + new SimpleDateFormat("yyyyMMddHHmmss")
                 .format(new Date())
                 + new Random().nextInt(9)
                 + new Random().nextInt(9)
@@ -263,8 +263,10 @@ public class LeshuiService {
         jxywjl.setYwlx(1);//1.单张发票查询 2.批量查询 3.发票认证 4.发票查询回调 5.认证结果回调
         jxywjl.setGsdm(gsdm);
         jxywjl.setGfid(gfid);
+        jxywjl.setLrsj(new Date());
         //创建调用记录对象
         Jxdyjl jxdyjl = new Jxdyjl();
+        jxdyjl.setLrsj(new Date());
         jxdyjl.setDyxh(1);
         jxdyjl.setMxbz(0);//明细标志 0没有 1有
         jxdyjl.setGsdm(gsdm);
@@ -274,6 +276,7 @@ public class LeshuiService {
         jxdyjl.setTaxcode(taxCode);
         //创建回调记录对象
         Jxhdjl jxhdjl = new Jxhdjl();
+        jxhdjl.setLrsj(new Date());
         jxhdjl.setGsdm(gsdm);
         jxhdjl.setRtncode(rtnCode);
         jxhdjl.setRtnmsg(rtnMsg);
@@ -342,18 +345,35 @@ public class LeshuiService {
                 for (int j = 0; j < goods.size(); j++) {
                     Jxfpmx jxfpmx = new Jxfpmx();
                     JSONObject good = (JSONObject) goods.get(j);
-                    String goodName = good.getString("goodName");
-                    String unit = good.getString("unit");
-                    BigDecimal rate = good.getBigDecimal("rate");
+                    String goodName = good.getString("goodName").trim();
+                    String unit = good.getString("unit").trim();
+                    String rate = good.getString("rate").trim();
                     BigDecimal taxAmountLine = good.getBigDecimal("taxAmount");
                     BigDecimal amountLine = good.getBigDecimal("amount");
-                    BigDecimal price = good.getBigDecimal("price");
-                    String model = good.getString("model");
-                    BigDecimal count = good.getBigDecimal("count");
-                    String lineNum = good.getString("lineNum");
-                    jxfpmx.setSpsl(rate);
-                    jxfpmx.setSps(count);
-                    jxfpmx.setSpdj(price);
+                    String price = good.getString("price").trim();
+                    String model = good.getString("model").trim();
+                    String count = good.getString("count").trim();
+                    String lineNum = good.getString("lineNum").trim();
+                    //税率
+                    if(StringUtils.isNotBlank(rate)){
+                        String stringTaxRate = rate.replaceAll("%", "");
+                        BigDecimal sl = new BigDecimal(stringTaxRate);
+                        jxfpmx.setSpsl(sl.divide(new BigDecimal("100")));
+                    }else{
+                        jxfpmx.setSpsl(null);
+                    }
+                    //单价
+                    if(StringUtils.isBlank(price) || "0".equals(price)){
+                        jxfpmx.setSpdj(null);
+                    }else{
+                        jxfpmx.setSpdj(new BigDecimal(price));
+                    }
+                    //数量
+                    if(StringUtils.isBlank(count) || "0".equals(count)){
+                        jxfpmx.setSps(null);
+                    }else{
+                        jxfpmx.setSps(new BigDecimal(count));
+                    }
                     jxfpmx.setSpdw(unit);
                     jxfpmx.setSpggxh(model);
                     jxfpmx.setSpje(amountLine);
@@ -402,6 +422,11 @@ public class LeshuiService {
                 jxhdjl.setRzbz(isAuth);
                 jxhdjl.setRzlx(authType);
                 jxhdjl.setRzsj(authTime);
+                jxdyjl.setZt("0000");
+                jxywjl.setZt("0000");
+            }else{
+                jxdyjl.setZt("9999");
+                jxywjl.setZt("9999");
             }
             //更新
             jxfpxxJpaDao.save(oldJxfpxx);
@@ -446,7 +471,7 @@ public class LeshuiService {
             if(num>countPage && countPage!=0){
                 break;
             }
-            String uniqueId = "QBI" + new SimpleDateFormat("yyyyMMddhhmmss")
+            String uniqueId = "QBI" + new SimpleDateFormat("yyyyMMddHHmmss")
                     .format(new Date())
                     + new Random().nextInt(9)
                     + new Random().nextInt(9)
@@ -669,7 +694,7 @@ public class LeshuiService {
      */
     public String fprz(String taxCode,
                      List<InvoiceAuth> body,Integer gfid,String gsdm){
-        String batchId = "QBI" + new SimpleDateFormat("yyyyMMddhhmmss")
+        String batchId = "QBI" + new SimpleDateFormat("yyyyMMddHHmmss")
                 .format(new Date())
                 + new Random().nextInt(9)
                 + new Random().nextInt(9)

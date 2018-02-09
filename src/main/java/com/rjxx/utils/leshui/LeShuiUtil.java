@@ -93,6 +93,7 @@ public class LeShuiUtil {
         map.put("taxCode", taxCode);
         Map param = new HashMap();
         param.put("head", map);
+        param.put("token", getToken());
         String json = JSON.toJSONString(param);
         String result = HttpClientUtil.doPostJson(url, json);
         return result;
