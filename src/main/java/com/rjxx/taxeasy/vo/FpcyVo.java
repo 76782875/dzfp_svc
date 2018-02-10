@@ -33,6 +33,10 @@ public class FpcyVo implements Serializable {
 
     protected String cyrq;
 
+    protected String resultMsg;
+
+    protected String lrsj;
+
     public Integer getId() {
         return id;
     }
@@ -127,5 +131,22 @@ public class FpcyVo implements Serializable {
 
     public void setCyrq(String cyrq) {
         this.cyrq = cyrq;
+    }
+
+    public String getResultMsg() {
+
+        return resultMsg;
+    }
+
+    public void setResultMsg(String resultMsg) {
+        this.resultMsg = resultMsg;
+    }
+
+    public String getLrsj() {
+        return lrsj;
+    }
+
+    public void setLrsj(String lrsj) {
+        this.lrsj = lrsj;
     }
 }

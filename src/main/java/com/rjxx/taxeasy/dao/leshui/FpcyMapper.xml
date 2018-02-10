@@ -19,7 +19,7 @@
 	</select>
 
 	<select id="findByPage" parameterType="pagination" resultType="fpcy">
-		select * from t_fpcy where yxbz = '1'
+		select * from t_fpcy where yxbz = '1' and fpzt is not NULL
 		<if test="params.gfsh != null and params.gfsh != ''">
 			and gfsh  =#{params.gfsh}
 		</if>
