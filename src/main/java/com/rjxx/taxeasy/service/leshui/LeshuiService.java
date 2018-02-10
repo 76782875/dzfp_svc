@@ -97,6 +97,7 @@ public class LeshuiService {
             Fpcy newFpcy = new Fpcy();
             List<Fpcymx> mxs = new ArrayList<>();
             newFpcy.setLrsj(new Date());
+            newFpcy.setXgsj(newFpcy.getLrsj());
             newFpcy.setSjly(sjly);
             newFpcy.setGsdm(gsdm);
             newFpcy.setYxbz("1");
@@ -197,11 +198,11 @@ public class LeshuiService {
                     }
                 }else{
                     fpcyjl.setFpzt("9");
-                    newFpcy.setFphm("9");
+//                    newFpcy.setFphm("9");
                 }
             }else{
                 fpcyjl.setFpzt("9");
-                newFpcy.setFphm("9");
+//                newFpcy.setFphm("9");
             }
             //保存主表
             Fpcy newSave = fpcyJpaDao.save(newFpcy);
@@ -221,11 +222,7 @@ public class LeshuiService {
 
             //库中如果有记录
         } else {
-            oldFpcy.setXgsj(new Date());
             List<Fpcymx> mxs = new ArrayList<>();
-            oldFpcy.setLrsj(new Date());
-            oldFpcy.setSjly(sjly);
-            oldFpcy.setGsdm(gsdm);
             if (INVOICE_INFO_SUCCESS.equals(rtnCode_r)) {
                 if (invoiceResult_r != null) {
                     String invoiceDataCode_r = invoiceResult_r.getString("invoiceDataCode").trim();//发票代码
@@ -251,6 +248,9 @@ public class LeshuiService {
                     String isBillMark_r = invoiceResult_r.getString("isBillMark").trim();//是否为清单票，Y：是，N：否
                     String voidMark_r = invoiceResult_r.getString("voidMark").trim();//作废标志，0：正常，1：作废
                     Integer checkNum_r = invoiceResult_r.getInteger("checkNum");//查询次数
+                    oldFpcy.setSjly(sjly);
+                    oldFpcy.setGsdm(gsdm);
+                    oldFpcy.setXgsj(new Date());
                     oldFpcy.setCycs(checkNum_r);
                     oldFpcy.setFpzt(voidMark_r);
                     oldFpcy.setQdbz(isBillMark_r);
@@ -318,11 +318,11 @@ public class LeshuiService {
                     fpcyjl.setCyrq(checkDate_r);
                     fpcyjl.setFpzt(voidMark_r);
                 }else{
-                    oldFpcy.setFpzt("9");
+//                    oldFpcy.setFpzt("9");
                     fpcyjl.setFpzt("9");
                 }
             }else{
-                oldFpcy.setFpzt("9");
+//                oldFpcy.setFpzt("9");
                 fpcyjl.setFpzt("9");
             }
             fpcyjl.setFpcyid(oldFpcy.getId());
@@ -397,6 +397,7 @@ public class LeshuiService {
             List<Jxfpmx> jxfpmxList = new ArrayList<>();
             Jxfpxx newJxfpxx = new Jxfpxx();
             newJxfpxx.setLrsj(new Date());
+            newJxfpxx.setXgsj(newJxfpxx.getLrsj());
             newJxfpxx.setUniqueid(uniqueId);
             newJxfpxx.setGsdm(gsdm);
             newJxfpxx.setYxbz("1");
@@ -500,7 +501,7 @@ public class LeshuiService {
                 jxhdjl.setRzlx(authType);
                 jxhdjl.setRzsj(authTime);
             }else{
-                newJxfpxx.setFpzt("9");
+//                newJxfpxx.setFpzt("9");
                 jxhdjl.setFpzt("9");
                 jxywjl.setZt("9999");
                 jxdyjl.setZt("9999");
@@ -519,9 +520,6 @@ public class LeshuiService {
             //如果库中存在,更新主表
         } else {
             List<Jxfpmx> jxfpmxList = new ArrayList<>();
-            oldJxfpxx.setGsdm(gsdm);
-            oldJxfpxx.setXgsj(new Date());
-            oldJxfpxx.setUniqueid(uniqueId);
             if (INVOICE_QUERY_SUCCESS.equals(rtnCode)) {
                 jxywjl.setZt("0000");//0000 成功 9999失败 5555部分成功
                 jxdyjl.setZt("0000");
@@ -548,6 +546,9 @@ public class LeshuiService {
                 Date authTime = body.getDate("authTime");
                 String authType = body.getString("authType");
                 String remark = body.getString("remark");
+                oldJxfpxx.setGsdm(gsdm);
+                oldJxfpxx.setXgsj(new Date());
+                oldJxfpxx.setUniqueid(uniqueId);
                 oldJxfpxx.setBz(remark);
                 oldJxfpxx.setRzlx(authType);
                 oldJxfpxx.setRzsj(authTime);
@@ -617,7 +618,7 @@ public class LeshuiService {
                 jxhdjl.setRzlx(authType);
                 jxhdjl.setRzsj(authTime);
             }else{
-                oldJxfpxx.setFpzt("9");
+//                oldJxfpxx.setFpzt("9");
                 jxhdjl.setFpzt("9");
                 jxdyjl.setZt("9999");
                 jxywjl.setZt("9999");
@@ -825,6 +826,7 @@ public class LeshuiService {
                         if(oldJxfpxx==null){
                             Jxfpxx newJxfpxx = new Jxfpxx();
                             newJxfpxx.setLrsj(new Date());
+                            newJxfpxx.setXgsj(newJxfpxx.getLrsj());
                             newJxfpxx.setUniqueid(uniqueId);
                             newJxfpxx.setGsdm(gsdm);
                             newJxfpxx.setYxbz("1");
