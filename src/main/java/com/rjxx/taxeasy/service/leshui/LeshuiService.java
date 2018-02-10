@@ -105,6 +105,7 @@ public class LeshuiService {
             newFpcy.setFphm(invoiceNumber);
             newFpcy.setJym(checkCode);
             newFpcy.setKprq(billTime);
+            newFpcy.setBxry(bxry);
             if(StringUtils.isNotBlank(invoiceAmount)){
                 newFpcy.setHjje(new BigDecimal(invoiceAmount));
             }
@@ -248,6 +249,9 @@ public class LeshuiService {
                     String isBillMark_r = invoiceResult_r.getString("isBillMark").trim();//是否为清单票，Y：是，N：否
                     String voidMark_r = invoiceResult_r.getString("voidMark").trim();//作废标志，0：正常，1：作废
                     Integer checkNum_r = invoiceResult_r.getInteger("checkNum");//查询次数
+                    if(StringUtils.isNotBlank(bxry)){
+                        oldFpcy.setBxry(bxry);
+                    }
                     oldFpcy.setSjly(sjly);
                     oldFpcy.setGsdm(gsdm);
                     oldFpcy.setXgsj(new Date());
