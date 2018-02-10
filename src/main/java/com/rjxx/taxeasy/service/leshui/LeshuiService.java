@@ -321,10 +321,14 @@ public class LeshuiService {
             fpcyJpaDao.save(oldFpcy);
             //保存明细表
             if (mxs != null && mxs.size() > 0) {
-                for (Fpcymx fpcymx : mxs) {
-                    fpcymx.setFpcyid(oldFpcy.getId());
+                //如果库中没有
+                List<Fpcymx> mxlist=fpcymxJpaDao.findOneByFpcyId(oldFpcy.getId());
+                if(mxlist==null && mxlist.size()==0){
+                    for (Fpcymx fpcymx : mxs) {
+                        fpcymx.setFpcyid(oldFpcy.getId());
+                    }
+                    fpcymxJpaDao.save(mxs);
                 }
-                fpcymxJpaDao.save(mxs);
             }
         }
         fpcyjlJpaDao.save(fpcyjl);
@@ -612,10 +616,14 @@ public class LeshuiService {
             jxfpxxJpaDao.save(oldJxfpxx);
             //保存明细
             if(jxfpmxList!=null && jxfpmxList.size()>0){
-                for (Jxfpmx jxfpmx : jxfpmxList) {
-                    jxfpmx.setFplsh(oldJxfpxx.getFplsh());
+                //如果库中没有
+                List<Jxfpmx> mxlist=jxfpmxJpaDao.findOneByFplsh(oldJxfpxx.getFplsh());
+                if(mxlist==null && mxlist.size()==0){
+                    for (Jxfpmx jxfpmx : jxfpmxList) {
+                        jxfpmx.setFplsh(oldJxfpxx.getFplsh());
+                    }
+                    jxfpmxJpaDao.save(jxfpmxList);
                 }
-                jxfpmxJpaDao.save(jxfpmxList);
             }
             jxhdjl.setFplsh(oldJxfpxx.getFplsh());
         }
@@ -868,10 +876,13 @@ public class LeshuiService {
                             oldJxfpxx.setFpdm(invoiceCode);
                             oldJxfpxx.setFphm(invoiceNo);
                             //保存明细
-                            for (Jxfpmx jxfpmx : jxfpmxList) {
-                                jxfpmx.setFplsh(oldJxfpxx.getFplsh());
+                            List<Jxfpmx> mxlist=jxfpmxJpaDao.findOneByFplsh(oldJxfpxx.getFplsh());
+                            if(mxlist==null&&mxlist.size()==0){
+                                for (Jxfpmx jxfpmx : jxfpmxList) {
+                                    jxfpmx.setFplsh(oldJxfpxx.getFplsh());
+                                }
+                                jxfpmxJpaDao.save(jxfpmxList);
                             }
-                            jxfpmxJpaDao.save(jxfpmxList);
                             jxfpxxJpaDao.save(oldJxfpxx);
                             jxhdjl.setFplsh(oldJxfpxx.getFplsh());
                         }
