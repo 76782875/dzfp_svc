@@ -75,11 +75,18 @@ public class LeshuiService {
 
         //创建记录表对象
         Fpcyjl fpcyjl = new Fpcyjl();
+        fpcyjl.setLrsj(new Date());
         fpcyjl.setInvoicename(invoiceName_r);
         fpcyjl.setFalsecode(invoicefalseCode_r);
         fpcyjl.setResultcode(resultCode_r);
         fpcyjl.setResultmsg(resultMsg_r);
         fpcyjl.setReturncode(rtnCode_r);
+        fpcyjl.setInvoicecode(invoiceCode);
+        fpcyjl.setInvoicenumber(invoiceNumber);
+        fpcyjl.setBilltime(billTime);
+        fpcyjl.setCheckcode(checkCode);
+        fpcyjl.setInvoiceamount(invoiceAmount);
+        fpcyjl.setSjly(sjly);
         fpcyjl.setGsdm(gsdm);
         fpcyjl.setBxry(bxry);
 
@@ -89,17 +96,18 @@ public class LeshuiService {
             //保存结果
             Fpcy newFpcy = new Fpcy();
             List<Fpcymx> mxs = new ArrayList<>();
+            newFpcy.setLrsj(new Date());
             newFpcy.setSjly(sjly);
             newFpcy.setGsdm(gsdm);
             newFpcy.setYxbz("1");
+            newFpcy.setFpdm(invoiceCode);
+            newFpcy.setFphm(invoiceNumber);
+            newFpcy.setJym(checkCode);
+            newFpcy.setKprq(billTime);
+            if(StringUtils.isNotBlank(invoiceAmount)){
+                newFpcy.setHjje(new BigDecimal(invoiceAmount));
+            }
             if (INVOICE_INFO_SUCCESS.equals(rtnCode_r)) {
-                newFpcy.setFpdm(invoiceCode);
-                newFpcy.setFphm(invoiceNumber);
-                newFpcy.setJym(checkCode);
-                newFpcy.setKprq(billTime);
-                if(StringUtils.isNotBlank(invoiceAmount)){
-                    newFpcy.setHjje(new BigDecimal(invoiceAmount));
-                }
                 if (invoiceResult_r != null) {
                     String invoiceDataCode_r = invoiceResult_r.getString("invoiceDataCode").trim();//发票代码
                     String invoiceNumber_r = invoiceResult_r.getString("invoiceNumber").trim();//发票号码
@@ -188,8 +196,6 @@ public class LeshuiService {
                         mxs.add(fpcymx);
                     }
                 }
-            } else {
-                newFpcy.setFpzt("失败");
             }
             //保存主表
             Fpcy newSave = fpcyJpaDao.save(newFpcy);
@@ -199,8 +205,8 @@ public class LeshuiService {
                 for (Fpcymx fpcymx : mxs) {
                     fpcymx.setFpcyid(fpcyid);
                 }
+                fpcymxJpaDao.save(mxs);
             }
-            fpcymxJpaDao.save(mxs);
             //保存记录表
             fpcyjl.setFpcyid(fpcyid);
             fpcyjl.setCycs(newSave.getCycs());
@@ -209,25 +215,117 @@ public class LeshuiService {
 
             //库中如果有记录
         } else {
+            oldFpcy.setXgsj(new Date());
+            List<Fpcymx> mxs = new ArrayList<>();
+            oldFpcy.setLrsj(new Date());
             oldFpcy.setSjly(sjly);
-            oldFpcy.setYxbz("1");
+            oldFpcy.setGsdm(gsdm);
             if (INVOICE_INFO_SUCCESS.equals(rtnCode_r)) {
                 if (invoiceResult_r != null) {
-                    String voidMark_r = invoiceResult_r.getString("voidMark");//作废标志，0：正常，1：作废
-                    Integer checkNum_r = invoiceResult_r.getInteger("checkNum");//查询次数
+                    String invoiceDataCode_r = invoiceResult_r.getString("invoiceDataCode").trim();//发票代码
+                    String invoiceNumber_r = invoiceResult_r.getString("invoiceNumber").trim();//发票号码
+                    String invoiceTypeName_r = invoiceResult_r.getString("invoiceTypeName").trim();//发票类型名称
+                    String invoiceTypeCode_r = invoiceResult_r.getString("invoiceTypeCode").trim();//发票类型  01:增值税专票,02:货物运输业增值税专用发票,04:增值税普通发票,03:机动车销售统一发票,10:电子发票,11:卷式普通发票,20:国税,30:地税
+                    Date billingTime_r = invoiceResult_r.getDate("billingTime");//开票时间
                     Date checkDate_r = invoiceResult_r.getDate("checkDate");//查询时间
-                    oldFpcy.setCyrq(checkDate_r);
-                    oldFpcy.setFpzt(voidMark_r);
+                    String checkCode_r = invoiceResult_r.getString("checkCode").trim();// 校验码
+                    String taxDiskCode_r = invoiceResult_r.getString("taxDiskCode").trim();//机器码
+                    String purchaserName_r = invoiceResult_r.getString("purchaserName").trim();//购方名称
+                    String taxpayerNumber_r = invoiceResult_r.getString("taxpayerNumber").trim();//购方识别号
+                    String taxpayerBankAccount_r = invoiceResult_r.getString("taxpayerBankAccount").trim();//购方银行账号
+                    String taxpayerAddressOrId_r = invoiceResult_r.getString("taxpayerAddressOrId").trim();//购方地址，电话
+                    String salesName_r = invoiceResult_r.getString("salesName").trim();//销方名称
+                    String salesTaxpayerNum_r = invoiceResult_r.getString("salesTaxpayerNum").trim();//销方纳税人识别号
+                    String salesTaxpayerBankAccount_r = invoiceResult_r.getString("salesTaxpayerBankAccount").trim();//销方银行，账号
+                    String salesTaxpayerAddress_r = invoiceResult_r.getString("salesTaxpayerAddress").trim();//销方地址，电话
+                    BigDecimal totalTaxSum_r = invoiceResult_r.getBigDecimal("totalTaxSum");//价税合计
+                    BigDecimal totalTaxNum_r = invoiceResult_r.getBigDecimal("totalTaxNum");//税额
+                    BigDecimal totalAmount_r = invoiceResult_r.getBigDecimal("totalAmount");//不含税价（金额）
+                    String invoiceRemarks_r = invoiceResult_r.getString("invoiceRemarks").trim();//备注
+                    String isBillMark_r = invoiceResult_r.getString("isBillMark").trim();//是否为清单票，Y：是，N：否
+                    String voidMark_r = invoiceResult_r.getString("voidMark").trim();//作废标志，0：正常，1：作废
+                    Integer checkNum_r = invoiceResult_r.getInteger("checkNum");//查询次数
                     oldFpcy.setCycs(checkNum_r);
+                    oldFpcy.setFpzt(voidMark_r);
+                    oldFpcy.setQdbz(isBillMark_r);
+                    oldFpcy.setBz(invoiceRemarks_r);
+                    oldFpcy.setHjje(totalAmount_r);
+                    oldFpcy.setHjse(totalTaxNum_r);
+                    oldFpcy.setJshj(totalTaxSum_r);
+                    oldFpcy.setXfdzdh(salesTaxpayerAddress_r);
+                    oldFpcy.setXfyhyhzh(salesTaxpayerBankAccount_r);
+                    oldFpcy.setXfsh(salesTaxpayerNum_r);
+                    oldFpcy.setXfmc(salesName_r);
+                    oldFpcy.setGfdzdh(taxpayerAddressOrId_r);
+                    oldFpcy.setGfyhyhzh(taxpayerBankAccount_r);
+                    oldFpcy.setGfsh(taxpayerNumber_r);
+                    oldFpcy.setGfmc(purchaserName_r);
+                    oldFpcy.setJqm(taxDiskCode_r);
+                    oldFpcy.setCyrq(checkDate_r);
+                    oldFpcy.setFpdm(invoiceDataCode_r);
+                    oldFpcy.setFphm(invoiceNumber_r);
+                    oldFpcy.setJym(checkCode_r);
+                    oldFpcy.setKprq(billingTime_r);
+                    oldFpcy.setFpzldm(invoiceTypeCode_r);
+                    oldFpcy.setFpzlmc(invoiceTypeName_r);
 
+                    JSONArray invoiceDetailData_r = invoiceResult_r.getJSONArray("invoiceDetailData");//发票明细
+                    for (int i = 0; i < invoiceDetailData_r.size(); i++) {
+                        Fpcymx fpcymx = new Fpcymx();
+                        JSONObject o = (JSONObject) invoiceDetailData_r.get(i);
+                        String unit = o.getString("unit").trim();//单位
+                        String model = o.getString("model").trim();//型号
+                        String isBillLine = o.getString("isBillLine").trim();//是否是清单行
+                        String price = o.getString("price").trim();//单价
+                        BigDecimal tax = o.getBigDecimal("tax");//税额
+                        String taxRate = o.getString("taxRate").trim();//税率
+                        String goodserviceName = o.getString("goodserviceName");//货劳务名称
+                        BigDecimal sum = o.getBigDecimal("sum");//金额
+                        String number = o.getString("number").trim();//数量
+                        fpcymx.setSpdw(unit);
+                        if(StringUtils.isBlank(price) || "0".equals(price)){
+                            fpcymx.setSpdj(null);
+                        }else{
+                            fpcymx.setSpdj(new BigDecimal(price));
+                        }
+                        fpcymx.setSpggxh(model);
+                        fpcymx.setSpmc(goodserviceName);
+                        if(StringUtils.isBlank(number) || "0".equals(number)){
+                            fpcymx.setSps(null);
+                        }else{
+                            fpcymx.setSps(new BigDecimal(number));
+                        }
+                        fpcymx.setSpje(sum);
+                        if(StringUtils.isNotBlank(taxRate)){
+                            String stringTaxRate = taxRate.replaceAll("%", "");
+                            BigDecimal rate = new BigDecimal(stringTaxRate);
+                            fpcymx.setSpsl(rate.divide(new BigDecimal("100")));
+                        }else{
+                            fpcymx.setSpsl(null);
+                        }
+                        fpcymx.setSpse(tax);
+                        fpcymx.setSpmxxh(i + 1);
+                        fpcymx.setQdhbz(isBillLine);
+                        mxs.add(fpcymx);
+                    }
+                    fpcyjl.setCycs(checkNum_r);
+                    fpcyjl.setCyrq(checkDate_r);
+                    fpcyjl.setFpzt(voidMark_r);
+                }else{
+                    oldFpcy.setFpzt("9");
                 }
+            }else{
+                oldFpcy.setFpzt("9");
             }
-            Fpcy oldSave = fpcyJpaDao.save(oldFpcy);
-            //保存记录表
-            fpcyjl.setFpcyid(oldSave.getId());
-            fpcyjl.setCycs(oldSave.getCycs());
-            fpcyjl.setCyrq(oldSave.getCyrq());
-            fpcyjl.setFpzt(oldSave.getFpzt());
+            fpcyjl.setFpcyid(oldFpcy.getId());
+            fpcyJpaDao.save(oldFpcy);
+            //保存明细表
+            if (mxs != null && mxs.size() > 0) {
+                for (Fpcymx fpcymx : mxs) {
+                    fpcymx.setFpcyid(oldFpcy.getId());
+                }
+                fpcymxJpaDao.save(mxs);
+            }
         }
         fpcyjlJpaDao.save(fpcyjl);
         return result;
@@ -286,9 +384,9 @@ public class LeshuiService {
         if (oldJxfpxx == null) {
             List<Jxfpmx> jxfpmxList = new ArrayList<>();
             Jxfpxx newJxfpxx = new Jxfpxx();
+            newJxfpxx.setLrsj(new Date());
             newJxfpxx.setGsdm(gsdm);
             newJxfpxx.setYxbz("1");
-            newJxfpxx.setUniqueid(uniqueId);
             newJxfpxx.setFphm(invoiceNo);
             newJxfpxx.setFpdm(invoiceCode);
             newJxfpxx.setGfsh(taxCode);
@@ -389,6 +487,7 @@ public class LeshuiService {
                 jxhdjl.setRzlx(authType);
                 jxhdjl.setRzsj(authTime);
             }else{
+                newJxfpxx.setFpzt("9");
                 jxywjl.setZt("9999");
                 jxdyjl.setZt("9999");
             }
@@ -405,31 +504,118 @@ public class LeshuiService {
 
             //如果库中存在,更新主表
         } else {
-            jxhdjl.setFplsh(oldJxfpxx.getFplsh());
-            oldJxfpxx.setUniqueid(uniqueId);
+            List<Jxfpmx> jxfpmxList = new ArrayList<>();
             oldJxfpxx.setGsdm(gsdm);
-            oldJxfpxx.setYxbz("1");
+            oldJxfpxx.setXgsj(new Date());
             if (INVOICE_QUERY_SUCCESS.equals(rtnCode)) {
+                jxywjl.setZt("0000");//0000 成功 9999失败 5555部分成功
+                jxdyjl.setZt("0000");
+                String invoiceCode_r = body.getString("invoiceCode");
+                String invoiceNo_r = body.getString("invoiceNo");
+                String type = body.getString("type");
+                String status = body.getString("status");
+                BigDecimal amount = body.getBigDecimal("amount");
+                BigDecimal taxAmount = body.getBigDecimal("taxAmount");
+                BigDecimal totalAmount = body.getBigDecimal("totalAmount");
+                String salerCompany = body.getString("salerCompany");
+                String salerCode = body.getString("salerCode");
+                String salerAddress = body.getString("salerAddress");
+                String salerBankAccount = body.getString("salerBankAccount");
+                String buyerCompany = body.getString("buyerCompany");
+                String buyerCode = body.getString("buyerCode");
+                String buyerAddress = body.getString("buyerAddress");
+                String buyerBankAccount = body.getString("buyerBankAccount");
+                Date createDate = body.getDate("createDate");
+                String verifyCode = body.getString("verifyCode");
+                String machineCode = body.getString("machineCode");
                 String invoicesStatus = body.getString("invoicesStatus");
                 String isAuth = body.getString("isAuth");
-                String authType = body.getString("authType");
                 Date authTime = body.getDate("authTime");
-                oldJxfpxx.setRzbz(isAuth);
+                String authType = body.getString("authType");
+                String remark = body.getString("remark");
+                oldJxfpxx.setBz(remark);
                 oldJxfpxx.setRzlx(authType);
                 oldJxfpxx.setRzsj(authTime);
+                oldJxfpxx.setRzbz(isAuth);
                 oldJxfpxx.setFpzt(invoicesStatus);
+                oldJxfpxx.setJqm(machineCode);
+                oldJxfpxx.setJym(verifyCode);
+                oldJxfpxx.setKprq(createDate);
+                oldJxfpxx.setGfyhyhzh(buyerBankAccount);
+                oldJxfpxx.setGfdzdh(buyerAddress);
+                oldJxfpxx.setGfsh(buyerCode);
+                oldJxfpxx.setGfmc(buyerCompany);
+                oldJxfpxx.setXfyhyhzh(salerBankAccount);
+                oldJxfpxx.setXfdzdh(salerAddress);
+                oldJxfpxx.setXfsh(salerCode);
+                oldJxfpxx.setXfmc(salerCompany);
+                oldJxfpxx.setJshj(totalAmount);
+                oldJxfpxx.setHjse(taxAmount);
+                oldJxfpxx.setHjje(amount);
+                oldJxfpxx.setFpzldm(type);
+                oldJxfpxx.setFpdm(invoiceCode_r);
+                oldJxfpxx.setFphm(invoiceNo_r);
+                JSONArray goods = body.getJSONArray("goods");
+                for (int j = 0; j < goods.size(); j++) {
+                    Jxfpmx jxfpmx = new Jxfpmx();
+                    JSONObject good = (JSONObject) goods.get(j);
+                    String goodName = good.getString("goodName").trim();
+                    String unit = good.getString("unit").trim();
+                    String rate = good.getString("rate").trim();
+                    BigDecimal taxAmountLine = good.getBigDecimal("taxAmount");
+                    BigDecimal amountLine = good.getBigDecimal("amount");
+                    String price = good.getString("price").trim();
+                    String model = good.getString("model").trim();
+                    String count = good.getString("count").trim();
+                    String lineNum = good.getString("lineNum").trim();
+                    //税率
+                    if(StringUtils.isNotBlank(rate)){
+                        String stringTaxRate = rate.replaceAll("%", "");
+                        BigDecimal sl = new BigDecimal(stringTaxRate);
+                        jxfpmx.setSpsl(sl.divide(new BigDecimal("100")));
+                    }else{
+                        jxfpmx.setSpsl(null);
+                    }
+                    //单价
+                    if(StringUtils.isBlank(price) || "0".equals(price)){
+                        jxfpmx.setSpdj(null);
+                    }else{
+                        jxfpmx.setSpdj(new BigDecimal(price));
+                    }
+                    //数量
+                    if(StringUtils.isBlank(count) || "0".equals(count)){
+                        jxfpmx.setSps(null);
+                    }else{
+                        jxfpmx.setSps(new BigDecimal(count));
+                    }
+                    jxfpmx.setSpdw(unit);
+                    jxfpmx.setSpggxh(model);
+                    jxfpmx.setSpje(amountLine);
+                    jxfpmx.setSpse(taxAmountLine);
+                    jxfpmx.setSpmc(goodName);
+                    jxfpmx.setHh(lineNum);
+                    jxfpmx.setSpmxxh(j + 1);
+                    jxfpmxList.add(jxfpmx);
+                }
                 jxhdjl.setFpzt(invoicesStatus);
                 jxhdjl.setRzbz(isAuth);
                 jxhdjl.setRzlx(authType);
                 jxhdjl.setRzsj(authTime);
-                jxdyjl.setZt("0000");
-                jxywjl.setZt("0000");
             }else{
+                oldJxfpxx.setFpzt("9");
                 jxdyjl.setZt("9999");
                 jxywjl.setZt("9999");
             }
             //更新
             jxfpxxJpaDao.save(oldJxfpxx);
+            //保存明细
+            if(jxfpmxList!=null && jxfpmxList.size()>0){
+                for (Jxfpmx jxfpmx : jxfpmxList) {
+                    jxfpmx.setFplsh(oldJxfpxx.getFplsh());
+                }
+                jxfpmxJpaDao.save(jxfpmxList);
+            }
+            jxhdjl.setFplsh(oldJxfpxx.getFplsh());
         }
         Jxywjl saveJxyw = jxywjlJpaDao.save(jxywjl);
         jxdyjl.setYwid(saveJxyw.getId());
@@ -451,12 +637,12 @@ public class LeshuiService {
                             String taxCode, String gsdm, Integer gfid) {
         //创建业务记录对象
         Jxywjl jxywjl = new Jxywjl();
+        jxywjl.setLrsj(new Date());
         jxywjl.setYwlx(2);//1.单张发票查询 2.批量查询 3.发票认证 4.发票查询回调 5.认证结果回调
         jxywjl.setGsdm(gsdm);
         jxywjl.setGfid(gfid);
         jxywjl.setKssj(startTime);
         jxywjl.setJssj(endTime);
-        jxywjl.setLrsj(new Date());
         Jxywjl saveJxywjl = jxywjlJpaDao.save(jxywjl);
 
         //总页数(调用次数)初始化
@@ -621,7 +807,6 @@ public class LeshuiService {
                             newJxfpxx.setLrsj(new Date());
                             newJxfpxx.setGsdm(gsdm);
                             newJxfpxx.setYxbz("1");
-                            newJxfpxx.setUniqueid(uniqueId);
                             newJxfpxx.setBz(remark);
                             newJxfpxx.setRzlx(authType);
                             newJxfpxx.setRzsj(authTime);
@@ -654,33 +839,57 @@ public class LeshuiService {
                             jxhdjl.setFplsh(fplsh);
                             //存在
                         }else{
-                            oldJxfpxx.setUniqueid(uniqueId);
+                            oldJxfpxx.setXgsj(new Date());
                             oldJxfpxx.setGsdm(gsdm);
-                            oldJxfpxx.setYxbz("1");
-                            oldJxfpxx.setFpzt(body.getString("invoicesStatus"));
-                            oldJxfpxx.setRzbz(body.getString("isAuth"));
-                            oldJxfpxx.setRzlx(body.getString("authType"));
-                            oldJxfpxx.setRzsj(body.getDate("authTime"));
+                            oldJxfpxx.setBz(remark);
+                            oldJxfpxx.setRzlx(authType);
+                            oldJxfpxx.setRzsj(authTime);
+                            oldJxfpxx.setRzbz(isAuth);
+                            oldJxfpxx.setFpzt(invoicesStatus);
+                            oldJxfpxx.setJqm(machineCode);
+                            oldJxfpxx.setJym(verifyCode);
+                            oldJxfpxx.setKprq(createDate);
+                            oldJxfpxx.setGfyhyhzh(buyerBankAccount);
+                            oldJxfpxx.setGfdzdh(buyerAddress);
+                            oldJxfpxx.setGfsh(buyerCode);
+                            oldJxfpxx.setGfmc(buyerCompany);
+                            oldJxfpxx.setXfyhyhzh(salerBankAccount);
+                            oldJxfpxx.setXfdzdh(salerAddress);
+                            oldJxfpxx.setXfsh(salerCode);
+                            oldJxfpxx.setXfmc(salerCompany);
+                            oldJxfpxx.setJshj(totalAmount);
+                            oldJxfpxx.setHjse(taxAmount);
+                            oldJxfpxx.setHjje(amount);
+                            oldJxfpxx.setFpzldm(type);
+                            oldJxfpxx.setFpdm(invoiceCode);
+                            oldJxfpxx.setFphm(invoiceNo);
+                            //保存明细
+                            for (Jxfpmx jxfpmx : jxfpmxList) {
+                                jxfpmx.setFplsh(oldJxfpxx.getFplsh());
+                            }
+                            jxfpmxJpaDao.save(jxfpmxList);
                             jxfpxxJpaDao.save(oldJxfpxx);
                             jxhdjl.setFplsh(oldJxfpxx.getFplsh());
                         }
-                        jxhdjlJpaDao.save(jxhdjl);
                     }
                 }else{
                     //如果返回是成功，但是没有明细，更新掉原来的成功为失败
-                    saveJxdyjl.setZt("9999");
+                    saveJxdyjl.setZt("4444");
+                    saveJxywjl.setZt("4444");
                     jxdyjlJpaDao.save(saveJxdyjl);
-                    throw new RuntimeException("调用成功但未获取到发票信息");
                 }
+                jxhdjlJpaDao.save(jxhdjl);
             }
         }
-        //根据成功次数与总页数的关系来更新业务记录表的状态
-        if(successNum==countPage && countPage!=0){
-            saveJxywjl.setZt("0000");
-        }else if(successNum==0 || countPage==0){
-            saveJxywjl.setZt("9999");
-        }else{
-            saveJxywjl.setZt("5555");
+        if(saveJxywjl.getZt()==null){
+            //根据成功次数与总页数的关系来更新业务记录表的状态
+            if(successNum==countPage && countPage!=0){
+                saveJxywjl.setZt("0000");
+            }else if(successNum==0 || countPage==0){
+                saveJxywjl.setZt("9999");
+            }else{
+                saveJxywjl.setZt("5555");
+            }
         }
         jxywjlJpaDao.save(saveJxywjl);
         return saveJxywjl.getZt();
@@ -719,7 +928,7 @@ public class LeshuiService {
         jxdyjl.setDyxh(1);
         jxdyjl.setBatchid(batchId);
         jxdyjl.setTaxcode(taxCode);
-        jxdyjl.setMxbz(1);
+        jxdyjl.setMxbz(1);//有调用明细
         List<Jxdymxjl> jxdymxjls = new ArrayList<>();
 
         for(InvoiceAuth auth:body){
@@ -742,7 +951,7 @@ public class LeshuiService {
         jxhdjl.setResultcode(resultCode);
         jxhdjl.setResultmsg(resultMsg);
 
-        if(!INVOICE_QUERY_SUCCESS.equals(rtnMsg) && resultCode!=null){
+        if(!INVOICE_QUERY_SUCCESS.equals(rtnCode) && resultCode!=null){
             jxywjl.setZt("9999");
             jxdyjl.setZt("9999");
         }else{
