@@ -385,6 +385,7 @@ public class LeshuiService {
             List<Jxfpmx> jxfpmxList = new ArrayList<>();
             Jxfpxx newJxfpxx = new Jxfpxx();
             newJxfpxx.setLrsj(new Date());
+            newJxfpxx.setUniqueid(uniqueId);
             newJxfpxx.setGsdm(gsdm);
             newJxfpxx.setYxbz("1");
             newJxfpxx.setFphm(invoiceNo);
@@ -507,6 +508,7 @@ public class LeshuiService {
             List<Jxfpmx> jxfpmxList = new ArrayList<>();
             oldJxfpxx.setGsdm(gsdm);
             oldJxfpxx.setXgsj(new Date());
+            oldJxfpxx.setUniqueid(uniqueId);
             if (INVOICE_QUERY_SUCCESS.equals(rtnCode)) {
                 jxywjl.setZt("0000");//0000 成功 9999失败 5555部分成功
                 jxdyjl.setZt("0000");
@@ -805,6 +807,7 @@ public class LeshuiService {
                         if(oldJxfpxx==null){
                             Jxfpxx newJxfpxx = new Jxfpxx();
                             newJxfpxx.setLrsj(new Date());
+                            newJxfpxx.setUniqueid(uniqueId);
                             newJxfpxx.setGsdm(gsdm);
                             newJxfpxx.setYxbz("1");
                             newJxfpxx.setBz(remark);
@@ -840,6 +843,7 @@ public class LeshuiService {
                             //存在
                         }else{
                             oldJxfpxx.setXgsj(new Date());
+                            oldJxfpxx.setUniqueid(uniqueId);
                             oldJxfpxx.setGsdm(gsdm);
                             oldJxfpxx.setBz(remark);
                             oldJxfpxx.setRzlx(authType);
