@@ -195,7 +195,13 @@ public class LeshuiService {
                         fpcymx.setQdhbz(isBillLine);
                         mxs.add(fpcymx);
                     }
+                }else{
+                    fpcyjl.setFpzt("9");
+                    newFpcy.setFphm("9");
                 }
+            }else{
+                fpcyjl.setFpzt("9");
+                newFpcy.setFphm("9");
             }
             //保存主表
             Fpcy newSave = fpcyJpaDao.save(newFpcy);
@@ -313,9 +319,11 @@ public class LeshuiService {
                     fpcyjl.setFpzt(voidMark_r);
                 }else{
                     oldFpcy.setFpzt("9");
+                    fpcyjl.setFpzt("9");
                 }
             }else{
                 oldFpcy.setFpzt("9");
+                fpcyjl.setFpzt("9");
             }
             fpcyjl.setFpcyid(oldFpcy.getId());
             fpcyJpaDao.save(oldFpcy);
@@ -493,6 +501,7 @@ public class LeshuiService {
                 jxhdjl.setRzsj(authTime);
             }else{
                 newJxfpxx.setFpzt("9");
+                jxhdjl.setFpzt("9");
                 jxywjl.setZt("9999");
                 jxdyjl.setZt("9999");
             }
@@ -609,6 +618,7 @@ public class LeshuiService {
                 jxhdjl.setRzsj(authTime);
             }else{
                 oldJxfpxx.setFpzt("9");
+                jxhdjl.setFpzt("9");
                 jxdyjl.setZt("9999");
                 jxywjl.setZt("9999");
             }
@@ -888,13 +898,16 @@ public class LeshuiService {
                         }
                     }
                 }else{
-                    //如果返回是成功，但是没有明细，更新掉原来的成功为失败
+                    //如果系统异常
                     saveJxdyjl.setZt("4444");
                     saveJxywjl.setZt("4444");
+                    jxhdjl.setFpzt("9");
                     jxdyjlJpaDao.save(saveJxdyjl);
                 }
-                jxhdjlJpaDao.save(jxhdjl);
+            }else{
+                jxhdjl.setFpzt("9");
             }
+            jxhdjlJpaDao.save(jxhdjl);
         }
         if(saveJxywjl.getZt()==null){
             //根据成功次数与总页数的关系来更新业务记录表的状态
@@ -969,6 +982,7 @@ public class LeshuiService {
         if(!INVOICE_QUERY_SUCCESS.equals(rtnCode) && resultCode!=null){
             jxywjl.setZt("9999");
             jxdyjl.setZt("9999");
+            jxhdjl.setFpzt("9");
         }else{
             jxywjl.setZt("0000");
             jxdyjl.setZt("0000");
