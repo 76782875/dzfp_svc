@@ -982,7 +982,6 @@ public class LeshuiService {
         if(!INVOICE_QUERY_SUCCESS.equals(rtnCode) && resultCode!=null){
             jxywjl.setZt("9999");
             jxdyjl.setZt("9999");
-            jxhdjl.setFpzt("9");
         }else{
             jxywjl.setZt("0000");
             jxdyjl.setZt("0000");
