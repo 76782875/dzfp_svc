@@ -46,6 +46,15 @@ public class Fpcy {
   private Date xgsj;
   private Integer xgry;
   private String yxbz;
+  private String bxry;
+
+  public String getBxry() {
+    return bxry;
+  }
+
+  public void setBxry(String bxry) {
+    this.bxry = bxry;
+  }
 
   public Integer getId() {
     return id;

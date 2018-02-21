@@ -93,6 +93,7 @@ public class LeShuiUtil {
         map.put("taxCode", taxCode);
         Map param = new HashMap();
         param.put("head", map);
+        param.put("token", getToken());
         String json = JSON.toJSONString(param);
         String result = HttpClientUtil.doPostJson(url, json);
         return result;
@@ -107,7 +108,7 @@ public class LeShuiUtil {
      * @taxCode 纳税人识别号(一般为购方纳税人识别号，即客户系统公司纳税人识别号)
      * @pageNo 第几页
      */
-    public static String invoiceBatchQuery(String uniqueId, Date startTime, Date endTime,
+    public static String invoiceBatchQuery(String uniqueId, String startTime, String endTime,
                                            String taxCode, Integer pageNo) {
         String url = GET_INVOICE_LIST;
         Map map = new HashMap();

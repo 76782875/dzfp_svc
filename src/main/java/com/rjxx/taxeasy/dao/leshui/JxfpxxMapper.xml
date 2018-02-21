@@ -19,7 +19,7 @@
 	</select>
 
 	<select id="findByPage" parameterType="pagination" resultType="jxfpxx">
-		select * from t_jxfpxx where yxbz = '1'   and gxbz = '0'
+		select * from t_jxfpxx where yxbz = '1'
 		<if test="params.gfsh != null and params.gfsh != ''">
 			and gfsh = #{params.gfsh}
 		</if>
@@ -48,7 +48,14 @@
 	</select>
 
 	<select id="findQrgxByPage" parameterType="pagination" resultType="jxfpxx">
-		select * from t_jxfpxx where yxbz = '1'  and gxbz = '1'
+		select * from t_jxfpxx where yxbz = '1'  and gxbz = '1' and rzbz='N'
+		<if test="params.gfs !=null">
+			<foreach collection="params.gfs" open=" and (gfsh in ("
+					 separator="," close=")" item="item" index="index">
+				#{params.gfs[${index}].xfsh}
+			</foreach>
+			or gfsh is null)
+		</if>
 		<if test="params.gfsh != null and params.gfsh != ''">
 			and gfsh = #{params.gfsh}
 		</if>

@@ -27,46 +27,13 @@ public class Fpcyjl {
   private String returncode;
   private String falsecode;
   private String invoicename;
-
-  public String getResultcode() {
-    return resultcode;
-  }
-
-  public void setResultcode(String resultcode) {
-    this.resultcode = resultcode;
-  }
-
-  public String getResultmsg() {
-    return resultmsg;
-  }
-
-  public void setResultmsg(String resultmsg) {
-    this.resultmsg = resultmsg;
-  }
-
-  public String getReturncode() {
-    return returncode;
-  }
-
-  public void setReturncode(String returncode) {
-    this.returncode = returncode;
-  }
-
-  public String getFalsecode() {
-    return falsecode;
-  }
-
-  public void setFalsecode(String falsecode) {
-    this.falsecode = falsecode;
-  }
-
-  public String getInvoicename() {
-    return invoicename;
-  }
-
-  public void setInvoicename(String invoicename) {
-    this.invoicename = invoicename;
-  }
+  private Date lrsj;
+  private String invoicecode;
+  private String invoicenumber;
+  private Date billtime;
+  private String checkcode;
+    private String invoiceamount;
+  private String sjly;
 
   public Integer getId() {
     return id;
@@ -82,6 +49,14 @@ public class Fpcyjl {
 
   public void setFpcyid(Integer fpcyid) {
     this.fpcyid = fpcyid;
+  }
+
+  public Date getCyrq() {
+    return cyrq;
+  }
+
+  public void setCyrq(Date cyrq) {
+    this.cyrq = cyrq;
   }
 
   public Integer getCycs() {
@@ -124,11 +99,99 @@ public class Fpcyjl {
     this.gsdm = gsdm;
   }
 
-  public Date getCyrq() {
-    return cyrq;
+  public String getResultcode() {
+    return resultcode;
   }
 
-  public void setCyrq(Date cyrq) {
-    this.cyrq = cyrq;
+  public void setResultcode(String resultcode) {
+    this.resultcode = resultcode;
+  }
+
+  public String getResultmsg() {
+    return resultmsg;
+  }
+
+  public void setResultmsg(String resultmsg) {
+    this.resultmsg = resultmsg;
+  }
+
+  public String getReturncode() {
+    return returncode;
+  }
+
+  public void setReturncode(String returncode) {
+    this.returncode = returncode;
+  }
+
+  public String getFalsecode() {
+    return falsecode;
+  }
+
+  public void setFalsecode(String falsecode) {
+    this.falsecode = falsecode;
+  }
+
+  public String getInvoicename() {
+    return invoicename;
+  }
+
+  public void setInvoicename(String invoicename) {
+    this.invoicename = invoicename;
+  }
+
+  public Date getLrsj() {
+    return lrsj;
+  }
+
+  public void setLrsj(Date lrsj) {
+    this.lrsj = lrsj;
+  }
+
+  public String getInvoicecode() {
+    return invoicecode;
+  }
+
+  public void setInvoicecode(String invoicecode) {
+    this.invoicecode = invoicecode;
+  }
+
+  public String getInvoicenumber() {
+    return invoicenumber;
+  }
+
+  public void setInvoicenumber(String invoicenumber) {
+    this.invoicenumber = invoicenumber;
+  }
+
+  public Date getBilltime() {
+    return billtime;
+  }
+
+  public void setBilltime(Date billtime) {
+    this.billtime = billtime;
+  }
+
+  public String getCheckcode() {
+    return checkcode;
+  }
+
+  public void setCheckcode(String checkcode) {
+    this.checkcode = checkcode;
+  }
+
+  public String getInvoiceamount() {
+    return invoiceamount;
+  }
+
+  public void setInvoiceamount(String invoiceamount) {
+    this.invoiceamount = invoiceamount;
+  }
+
+  public String getSjly() {
+    return sjly;
+  }
+
+  public void setSjly(String sjly) {
+    this.sjly = sjly;
   }
 }

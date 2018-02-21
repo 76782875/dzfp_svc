@@ -11,14 +11,17 @@ import java.util.List;
  */
 public interface FpcyjlJpaDao extends JpaRepository<Fpcyjl,Integer> {
 
-    @Query(nativeQuery = true,value = "select * from t_fpcy_jl where fpcyid=?1 and gsdm=?2 order by cyrq desc limit 1")
+    @Query(nativeQuery = true,value = "select * from t_fpcy_jl where fpcyid=?1 and gsdm=?2 order by lrsj desc limit 1")
     Fpcyjl findOneByFpcyIdAndGsdm(Integer fpcyid,String gsdm);
 
+    @Query(nativeQuery = true,value = "select * from t_fpcy_jl where fpcyid=?1 and gsdm=?2 and fpzt='0' order by lrsj desc limit 1")
+    Fpcyjl findLastSuccessLrsj(Integer fpcyid,String gsdm);
 
-    @Query(nativeQuery = true,value = "select * from t_fpcy_jl where fpcyid=?1  order by cyrq desc ")
-    List<Fpcyjl> findOneByFpcyId(Integer fpcyid);
 
-    @Query(nativeQuery = true,value = "select * from t_fpcy_jl where fpcyid=?1  order by cyrq desc limit 1 ")
+    @Query(nativeQuery = true,value = "select * from t_fpcy_jl where fpcyid=?1  order by lrsj ")
+    List<Fpcyjl> findByFpcyId(Integer fpcyid);
+
+    @Query(nativeQuery = true,value = "select * from t_fpcy_jl where fpcyid=?1  order by cyrq,id desc limit 1 ")
     Fpcyjl findOneBy1FpcyId(Integer fpcyid);
 
     @Query(nativeQuery = true,value = "select count(1) from t_fpcy_jl where fpcyid=?1 ")
