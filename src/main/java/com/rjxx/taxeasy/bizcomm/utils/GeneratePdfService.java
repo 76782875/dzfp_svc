@@ -241,12 +241,14 @@ public class GeneratePdfService {
                         String q="";
                         String infoUrl="";
                         List<Fpcxvo> fpcxvos = invoiceQueryUtil.getInvoiceListByDdh(gsxx.getGsdm(), jyls.getDdh());
-                        if(fpcxvos.get(0).getTqm()!=null && !fpcxvos.get(0).getTqm().equals("")){
-                            q=fpcxvos.get(0).getTqm();
-                            infoUrl=emailInfoUrl+"g="+gsxx.getGsdm()+"&q="+q;
-                        }else if(fpcxvos.get(0).getKhh()!=null&&!fpcxvos.get(0).getKhh().equals("")){
-                            q=fpcxvos.get(0).getKhh();
-                            infoUrl=emailInfoUrl+"g="+gsxx.getGsdm()+"&q="+q;
+                        if(fpcxvos !=null && !fpcxvos.isEmpty()){
+                            if(fpcxvos.get(0).getTqm()!=null && !fpcxvos.get(0).getTqm().equals("")){
+                                q=fpcxvos.get(0).getTqm();
+                                infoUrl=emailInfoUrl+"g="+gsxx.getGsdm()+"&q="+q;
+                            }else if(fpcxvos.get(0).getKhh()!=null&&!fpcxvos.get(0).getKhh().equals("")){
+                                q=fpcxvos.get(0).getKhh();
+                                infoUrl=emailInfoUrl+"g="+gsxx.getGsdm()+"&q="+q;
+                            }
                         }
                         Map csmap = new HashMap();
                         csmap.put("ddh", jyls.getDdh());
