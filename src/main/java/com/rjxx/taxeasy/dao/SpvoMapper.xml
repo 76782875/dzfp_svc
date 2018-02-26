@@ -44,6 +44,7 @@
         <if test="id != null">
             and id = #{id}
         </if>
+        limit 1
     </select>
     <select id="findAllOnPage" parameterType="pagination" resultType="spvo">
         select * from spvo where yxbz = '1'
