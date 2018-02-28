@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigInteger;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -181,7 +180,7 @@ public class QCCUtils {
         QCCUtils qccUtils = new QCCUtils();
 //        String search = qccUtils.getTycByName("上海容津信息");
 //        System.out.println(search);
-        String s = qccUtils.getTycById("1195166030", null);
+        String s = qccUtils.getTycById(null, "上海容津信息技术有限公司");
         System.out.println(s);
     }
 
@@ -211,8 +210,7 @@ public class QCCUtils {
                         name = name.replaceAll("[<em></em>]", "");
                         Long id = lists.getLong("id");
                         Map maps = new HashMap();
-                        maps.put("name",name);
-                        maps.put("id",id);
+                        maps.put("value",name);
                         list.add(maps);
                     }
 //                    System.out.println(JSON.toJSONString(list));
@@ -236,6 +234,7 @@ public class QCCUtils {
         try {
             Map map = new HashMap();
             map.put("id",id);
+            map.put("name",name);
             String response = HttpClientUtil.doGetHeader(QCCConstants.GET_TYC_BASEINFO, map,QCCConstants.TYC_TOKEN,"Authorization");
             logger.debug("返回值------------" + response);
             if(response!=null && !"".equals(response)){

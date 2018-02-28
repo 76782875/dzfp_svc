@@ -25,6 +25,23 @@ public class QCCController{
     public String getNames(@RequestParam("name")String name) {
         logger.info("输入的参数为："+name);
         String result =qccUtils.getQccSearch(name);
+//        String result = qccUtils.getTycByName(name);
+        logger.info("输出为："+result);
+        return result;
+    }
+
+    @RequestMapping(value = "/single", method = RequestMethod.POST)
+    public String getMsg(@RequestParam("name")String name){
+        logger.info("输入的参数为："+name);
+        String taxno = qccUtils.getTycById(null, name);
+        logger.info("输出为："+taxno);
+        return taxno;
+    }
+
+    @RequestMapping(value = "/list", method = RequestMethod.POST)
+    public String getName(@RequestParam("name")String name){
+        logger.info("输入的参数为："+name);
+        String result = qccUtils.getTycByName(name);
         logger.info("输出为："+result);
         return result;
     }
