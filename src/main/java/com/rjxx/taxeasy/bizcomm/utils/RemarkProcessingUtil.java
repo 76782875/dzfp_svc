@@ -1,10 +1,8 @@
 package com.rjxx.taxeasy.bizcomm.utils;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import com.rjxx.taxeasy.domains.Cszb;
 import com.rjxx.taxeasy.service.CszbService;
@@ -117,9 +115,15 @@ public class RemarkProcessingUtil {
 			for (int j = 0; j < attr.length; j++) {
 				if (attr[j].equals(field.getName())) {
 					try {
-						// System.out.println(field.getName() + ":" +
-						// field.get(obj));
-						attr[j] = String.valueOf(field.get(obj));
+						if (field.getGenericType().toString().equals(
+								"class java.util.Date")) {
+							SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+							String dateString = formatter.format(field.get(obj));
+							attr[j] = String.valueOf(dateString);
+						}else{
+							attr[j] = String.valueOf(field.get(obj));
+						}
+
 					} catch (Exception e) {
 						e.printStackTrace();
 						return "";
@@ -157,6 +161,7 @@ public class RemarkProcessingUtil {
     	tt.setZffsDm("01");
     	tt.setZffsMc("现金");
     	tt.setZfje("1000");
+    	tt.setLrsj(new Date());
     	Jyzfmx m = new Jyzfmx();
     	m.setZfje(1000.00);
     	/*Field fields[]=tt.getClass().getDeclaredFields();//获得对象所有属性
@@ -164,11 +169,11 @@ public class RemarkProcessingUtil {
         RemarkProcessingUtil util = new RemarkProcessingUtil();
 		String t="";
       try {
-		  t= util.getAndSetField(tt, "zffsMc$支付$zfje");
+		  t= util.getAndSetField(tt, "zffsMc$支付$lrsj");
 	  }catch (Exception e){
       	e.printStackTrace();
 	  }
 
-      System.out.println("123Q@###".substring(1));
+      System.out.println(t);
     }
 }
