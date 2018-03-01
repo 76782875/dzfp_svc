@@ -272,6 +272,11 @@ public class GeneratePdfService {
                                 String [] to=new String[1];
                                 to[0]=kpls.getGfemail();
                                 String filePath=(String)map.get("BaseFilePath");
+                                Cszb cszb = cszbService.getSpbmbbh(kpls.getGsdm(), kpls.getXfid(), kpls.getSkpid(), "sfuploadftp");
+                                if(cszb.getCsz().equals("是")){
+                                    FileInputStream in=new FileInputStream(new File(filePath));
+                                    SFtpUtil.uploadFile(PasswordConfig.FTP_URL,PasswordConfig.FTP_PORT,PasswordConfig.FTP_USERNAME,PasswordConfig.FTP_PASSWORD,PasswordConfig.FTP_BASEPATH,PasswordConfig.FTP_FILEPATH,kpls.getJylsh()+".pdf",in);
+                                }
                                 mailService.sendAttachmentsMail(to,"电子发票",content,filePath);
                             }else{
                                 String gfEmailstr =kpls.getGfemail();// 购方email校验
