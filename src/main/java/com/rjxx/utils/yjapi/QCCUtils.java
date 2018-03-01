@@ -178,7 +178,102 @@ public class QCCUtils {
 
     public static void main(String[] args) {
         QCCUtils qccUtils = new QCCUtils();
-        String search = qccUtils.getQccGsxxNew("上海容津信息技术有限公司");
-        System.out.println(search);
+//        String search = qccUtils.getTycByName("上海容津信息");
+//        System.out.println(search);
+        String s = qccUtils.getTycById(null, "上海容津信息技术有限公司");
+        System.out.println(s);
     }
+
+    /**
+     * 天眼查api --模糊查询
+     * @param word
+     * @return
+     */
+    public  String getTycByName(String word){
+        String result="";
+        try {
+            Map map = new HashMap();
+            map.put("word",word);
+            String response = HttpClientUtil.doGetHeader(QCCConstants.GET_TYC_SEARCH, map,QCCConstants.TYC_TOKEN,"Authorization");
+//            logger.debug("返回值------------" + response);
+            if(response!=null && !"".equals(response)){
+                JSONObject jsonObject = JSON.parseObject(response);
+                int error_code= jsonObject.getInteger("error_code");
+                String reason = jsonObject.getString("reason");
+                if(error_code==0 ){
+                    JSONObject resultList = jsonObject.getJSONObject("result");
+                    List list = new ArrayList();
+                    JSONArray resultListJSONArray = resultList.getJSONArray("items");
+                    for (int i = 0; i < resultListJSONArray.size(); i++) {
+                        JSONObject lists = resultListJSONArray.getJSONObject(i);
+                        String name = lists.getString("name");
+                        name = name.replaceAll("[<em></em>]", "");
+                        Long id = lists.getLong("id");
+                        Map maps = new HashMap();
+                        maps.put("value",name);
+                        list.add(maps);
+                    }
+//                    System.out.println(JSON.toJSONString(list));
+                    result=JSON.toJSONString(list);
+                    return result;
+                }else {
+                    result = reason;
+                }
+            }else {
+                result ="获取数据失败！";
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+
+    public  String getTycById(String id,String name){
+        String result="";
+        try {
+            Map map = new HashMap();
+            map.put("id",id);
+            map.put("name",name);
+            String response = HttpClientUtil.doGetHeader(QCCConstants.GET_TYC_BASEINFO, map,QCCConstants.TYC_TOKEN,"Authorization");
+            logger.debug("返回值------------" + response);
+            if(response!=null && !"".equals(response)){
+                JSONObject jsonObject = JSON.parseObject(response);
+                int error_code= jsonObject.getInteger("error_code");
+                String reason = jsonObject.getString("reason");
+                if(error_code==0 ){
+                    Qympk qympk = new Qympk();
+                    List<Qympk> qympkList = new ArrayList<>();
+                    JSONObject resultObject = jsonObject.getJSONObject("result");
+                    if(resultObject.getString("creditCode")==null || resultObject.getString("creditCode").equals("")){
+                      return null;
+                    }
+                    qympk.setNsrsbh( resultObject.getString("creditCode"));
+                    qympk.setDwmc(resultObject.getString("name"));
+                    qympk.setFrmc(resultObject.getString("legalPersonName"));
+                    qympk.setQylx(resultObject.getString("companyOrgType"));
+                    qympk.setQyzt(resultObject.getString("regStatus"));
+                    qympk.setZcdh(resultObject.getString("regLocation"));
+                    qympk.setQyzch(resultObject.getString("regNumber"));
+                    qympk.setLrsj(new Date());
+                    qympkList.add(qympk);
+                    QccTask qccTask = new QccTask();
+                    qccTask.setQympkService(qympkService);
+                    qccTask.setQympkList(qympkList);
+                    Thread thread = new Thread(qccTask);
+                    thread.start();
+                    result = resultObject.getString("creditCode");
+                    return result;
+                }else {
+                    result = reason;
+                }
+            }else {
+                result ="获取数据失败！";
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return result;
+    }
+
 }

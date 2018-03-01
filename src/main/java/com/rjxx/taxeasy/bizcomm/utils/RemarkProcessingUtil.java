@@ -1,11 +1,11 @@
 package com.rjxx.taxeasy.bizcomm.utils;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
+import com.rjxx.taxeasy.domains.Cszb;
+import com.rjxx.taxeasy.service.CszbService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,11 +19,48 @@ public class RemarkProcessingUtil {
     
 	@Autowired
 	private ZffsService zffsService;
-	
+	@Autowired
+	private CszbService cszbService;
+
+	/**
+	 * 根据参数设置处理备注
+	 */
+	public List<Jyxxsq> dealRemark(List<Jyxxsq> jyxxsqList, String gsdm) throws Exception{
+
+		if (null != jyxxsqList && !jyxxsqList.isEmpty()) {
+
+			Map<String, Object> params = new HashMap<String, Object>();
+			for (int i = 0; i < jyxxsqList.size(); i++) {
+				String bz = "";
+				Jyxxsq jyxxsq = jyxxsqList.get(i);
+				Cszb cszb = cszbService.getSpbmbbh(gsdm,jyxxsq.getXfid(),jyxxsq.getSkpid(),"bzmb");
+				if(null != cszb && null !=cszb.getCsz() && !cszb.getCsz().equals("")){
+					if(cszb.getCsz().startsWith("A")){
+						bz = getAndSetField(jyxxsq, cszb.getCsz()).substring(1)+";";
+						bz = bz +" "+ (null ==jyxxsq.getBz()?"":jyxxsq.getBz());
+					}else if(cszb.getCsz().startsWith("B")){
+						bz = getAndSetField(jyxxsq, cszb.getCsz()).substring(1)+";";
+						bz = (null ==jyxxsq.getBz()?"":jyxxsq.getBz())+" "+bz;
+					}else{
+						bz = getAndSetField(jyxxsq, cszb.getCsz())+";";
+						bz = (null ==jyxxsq.getBz()?"":jyxxsq.getBz())+" "+bz;
+					}
+
+				}else{
+					bz = (null ==jyxxsq.getBz()?"":jyxxsq.getBz());
+				}
+				jyxxsq.setBz(bz);
+			}
+		}
+
+		return jyxxsqList;
+	}
+
+
 	/**
 	 * 备注处理方式，按着t_zffs中维护的bzclfs_dm模板处理备注。
 	 */
-	public List<Jyxxsq> dealRemark(List<Jyxxsq> jyxxsqList, List<Jyzfmx> jyzfmxList, String gsdm) {
+	public List<Jyxxsq> dealZfRemark(List<Jyxxsq> jyxxsqList, List<Jyzfmx> jyzfmxList, String gsdm) throws Exception{
 
 		if (null != jyxxsqList && !jyxxsqList.isEmpty() && null != jyzfmxList && !jyzfmxList.isEmpty()) {
 			String bz = "";
@@ -64,11 +101,11 @@ public class RemarkProcessingUtil {
 	/**
 	 * java反射机制，用对象中的属性值替换字符串中对应的参数，实现赋值操作
 	 * 注：需要替换的参数字符串必须以$为分隔符
-	 * @param Object
-	 * @param String
+	 * @param obj
+	 * @param params
 	 * @return String
 	 */
-	public String getAndSetField(Object obj,/*Object obj2,*/ String params) {
+	public String getAndSetField(Object obj,/*Object obj2,*/ String params) throws Exception{
 		Field fields[] = obj.getClass().getDeclaredFields();// 获得对象所有属性
 		Field field = null;
 		String[] attr = params.split("\\$");
@@ -78,9 +115,15 @@ public class RemarkProcessingUtil {
 			for (int j = 0; j < attr.length; j++) {
 				if (attr[j].equals(field.getName())) {
 					try {
-						// System.out.println(field.getName() + ":" +
-						// field.get(obj));
-						attr[j] = String.valueOf(field.get(obj));
+						if (field.getGenericType().toString().equals(
+								"class java.util.Date")) {
+							SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+							String dateString = formatter.format(field.get(obj));
+							attr[j] = String.valueOf(dateString);
+						}else{
+							attr[j] = String.valueOf(field.get(obj));
+						}
+
 					} catch (Exception e) {
 						e.printStackTrace();
 						return "";
@@ -117,12 +160,20 @@ public class RemarkProcessingUtil {
     	ZffsVo tt = new ZffsVo();
     	tt.setZffsDm("01");
     	tt.setZffsMc("现金");
+    	tt.setZfje("1000");
+    	tt.setLrsj(new Date());
     	Jyzfmx m = new Jyzfmx();
     	m.setZfje(1000.00);
     	/*Field fields[]=tt.getClass().getDeclaredFields();//获得对象所有属性
     	System.out.println(fields[0].getName());*/
-      RemarkProcessingUtil util = new RemarkProcessingUtil();
-      String t = util.getAndSetField(tt, "zffsMc$支付$zfje");
+        RemarkProcessingUtil util = new RemarkProcessingUtil();
+		String t="";
+      try {
+		  t= util.getAndSetField(tt, "zffsMc$支付$lrsj");
+	  }catch (Exception e){
+      	e.printStackTrace();
+	  }
+
       System.out.println(t);
     }
 }
