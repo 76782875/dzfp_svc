@@ -1,5 +1,9 @@
 package com.rjxx.taxeasy.domains.leshui;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.rjxx.comm.json.JsonDatetimeFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,7 +20,11 @@ public class Jxfpxx {
   private String batchid;
   private String fpdm;
   private String fphm;
+
+  @JsonSerialize(using = JsonDatetimeFormat.class)
+  @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
   private Date kprq;
+
   private String fpzldm;
   private String fpzt;
   private String xfsh;
