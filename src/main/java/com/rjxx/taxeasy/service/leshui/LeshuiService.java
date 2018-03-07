@@ -953,12 +953,14 @@ public class LeshuiService {
 
         //创建业务记录对象
         Jxywjl jxywjl = new Jxywjl();
+        jxywjl.setLrsj(new Date());
         jxywjl.setYwlx(3);//1.单张发票查询 2.批量查询 3.发票认证 4.发票查询回调 5.认证结果回调
         jxywjl.setGsdm(gsdm);
         jxywjl.setGfid(gfid);
 
         //创建调用记录对象
         Jxdyjl jxdyjl = new Jxdyjl();
+        jxdyjl.setLrsj(new Date());
         jxdyjl.setDyxh(1);
         jxdyjl.setBatchid(batchId);
         jxdyjl.setTaxcode(taxCode);
@@ -980,12 +982,13 @@ public class LeshuiService {
 
         //创建回调记录对象
         Jxhdjl jxhdjl = new Jxhdjl();
+        jxhdjl.setLrsj(new Date());
         jxhdjl.setRtnmsg(rtnMsg);
         jxhdjl.setRtncode(rtnCode);
         jxhdjl.setResultcode(resultCode);
         jxhdjl.setResultmsg(resultMsg);
 
-        if(!INVOICE_QUERY_SUCCESS.equals(rtnCode) && resultCode!=null){
+        if(!INVOICE_QUERY_SUCCESS.equals(rtnCode)){
             jxywjl.setZt("9999");
             jxdyjl.setZt("9999");
         }else{
@@ -1000,6 +1003,7 @@ public class LeshuiService {
         }
         jxdymxjlJpaDao.save(jxdymxjls);
         jxhdjl.setDyid(saveJxdyjl.getId());
+        jxhdjlJpaDao.save(jxhdjl);
         return saveJxywjl.getZt();
     }
 }
