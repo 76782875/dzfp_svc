@@ -1,6 +1,7 @@
 package com.rjxx.taxeasy.bizcomm.utils;
 
 import com.alibaba.fastjson.JSON;
+import com.jcraft.jsch.JSchException;
 import com.rjxx.comm.utils.ApplicationContextUtils;
 import com.rjxx.taxeasy.bizcomm.utils.pdf.PdfDocumentGenerator;
 import com.rjxx.taxeasy.bizcomm.utils.pdf.TwoDimensionCode;
@@ -272,12 +273,16 @@ public class GeneratePdfService {
                                 String [] to=new String[1];
                                 to[0]=kpls.getGfemail();
                                 String filePath=(String)map.get("BaseFilePath");
+                                mailService.sendAttachmentsMail(to,"电子发票",content,filePath);
                                 Cszb cszb = cszbService.getSpbmbbh(kpls.getGsdm(), kpls.getXfid(), kpls.getSkpid(), "sfuploadftp");
                                 if(cszb.getCsz().equals("是")){
                                     FileInputStream in=new FileInputStream(new File(filePath));
-                                    SFtpUtil.uploadFile(PasswordConfig.FTP_URL,PasswordConfig.FTP_PORT,PasswordConfig.FTP_USERNAME,PasswordConfig.FTP_PASSWORD,PasswordConfig.FTP_BASEPATH,PasswordConfig.FTP_FILEPATH,kpls.getJylsh()+".pdf",in);
+                                    try{
+                                        SFtpUtil.uploadFile(PasswordConfig.FTP_URL,PasswordConfig.FTP_PORT,PasswordConfig.FTP_USERNAME,PasswordConfig.FTP_PASSWORD,PasswordConfig.FTP_BASEPATH,PasswordConfig.FTP_FILEPATH,kpls.getJylsh()+".pdf",in);
+                                    }catch (JSchException a){
+                                        this.generatePdf(kplsh);
+                                    }
                                 }
-                                mailService.sendAttachmentsMail(to,"电子发票",content,filePath);
                             }else{
                                 String gfEmailstr =kpls.getGfemail();// 购方email校验
                                 if(gfEmailstr!=null&&!"".equals(gfEmailstr.trim())){
