@@ -935,14 +935,14 @@ public class LeshuiService {
      * @param body 发票信息
      * @return 乐税接口返回数据
      */
-    public String fprz(String taxCode,
+    public String fprz(String taxCode,String period,
                      List<InvoiceAuth> body,Integer gfid,String gsdm){
         String batchId = "QBI" + new SimpleDateFormat("yyyyMMddHHmmss")
                 .format(new Date())
                 + new Random().nextInt(9)
                 + new Random().nextInt(9)
                 + LeShuiUtil.getRandomLetter();
-        String result = LeShuiUtil.invoiceAuthorize(batchId, taxCode, body);
+        String result = LeShuiUtil.invoiceAuthorize(batchId, taxCode,period,body);
         JSONObject resultJson = JSON.parseObject(result);
         JSONObject head = resultJson.getJSONObject("head");
         JSONObject body_r = resultJson.getJSONObject("body");
