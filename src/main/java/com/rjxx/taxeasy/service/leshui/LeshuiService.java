@@ -969,8 +969,8 @@ public class LeshuiService {
 
         for(InvoiceAuth auth:body){
             Jxdymxjl jxdymxjl = new Jxdymxjl();
-            String fpdm = auth.getFpdm();
-            String fphm = auth.getFphm();
+            String fpdm = auth.getInvoiceCode();
+            String fphm = auth.getInvoiceNo();
             Jxfpxx jxfpxx = jxfpxxJpaDao.findByFpdmAndFphm(fpdm, fphm);
             jxfpxx.setRzzt("2");//已发送乐税
             //更新
