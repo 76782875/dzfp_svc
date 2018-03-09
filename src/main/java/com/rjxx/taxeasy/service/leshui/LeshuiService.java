@@ -992,8 +992,13 @@ public class LeshuiService {
             jxywjl.setZt("9999");
             jxdyjl.setZt("9999");
         }else{
-            jxywjl.setZt("0000");
-            jxdyjl.setZt("0000");
+            if(resultCode==null){
+                jxywjl.setZt("0000");
+                jxdyjl.setZt("0000");
+            }else{
+                jxywjl.setZt("9999");
+                jxdyjl.setZt("9999");
+            }
         }
         Jxywjl saveJxywjl = jxywjlJpaDao.save(jxywjl);
         jxdyjl.setYwid(saveJxywjl.getId());
