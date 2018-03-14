@@ -63,6 +63,11 @@
         <if test="params.gsdm != null and params.gsdm != ''">
             and gsdm = #{params.gsdm}
         </if>
+        <if test="params.sylxList != null">
+            <foreach collection="params.sylxList" open=" and sylx in (" separator="," close=")" item="item" index="index">
+                #{params.sylxList[${index}]}
+            </foreach>
+        </if>
         <if test="params.orderBy != null">
             order by lrsj desc
         </if>
