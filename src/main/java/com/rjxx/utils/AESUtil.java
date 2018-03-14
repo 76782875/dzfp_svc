@@ -1,5 +1,7 @@
 package com.rjxx.utils;
 
+import com.alibaba.fastjson.JSON;
+
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
@@ -7,6 +9,8 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -81,6 +85,18 @@ public class AESUtil {
             sb.append(hex.toUpperCase());
         }
         return sb.toString();
+    }
+
+    public static String decode(String str){
+        Map result = new HashMap();
+        Integer size = RJCheckUtil.getSize(str, "=");
+        String[] paramsArray = str.split("&");
+        for (int i=0;i<size;i++){
+            String value= paramsArray[i].substring(paramsArray[i].lastIndexOf("=") + 1);
+            String key=paramsArray[i].substring(0, paramsArray[i].lastIndexOf("="));
+            result.put(key, value);
+        }
+        return JSON.toJSONString(result);
     }
 
     public static void main(String[] args) throws Exception {
