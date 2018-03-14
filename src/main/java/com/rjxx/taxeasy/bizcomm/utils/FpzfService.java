@@ -37,7 +37,7 @@ public class FpzfService {
 				savejyxxsq(kpls.getKplsh());
 				kpls.setFpczlxdm("14");//作废处理
 				kpls.setFpztdm("14");//作废走开票申请呢
-
+				kpls.setZfr(kpls.getKpr());
 				kplsService.save(kpls);
 				skService.voidInvoice(kpls.getKplsh());
 				response.setReturnCode("0000");

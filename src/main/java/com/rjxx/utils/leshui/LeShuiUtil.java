@@ -130,15 +130,17 @@ public class LeShuiUtil {
      *
      * @batchId 唯一编码（20位），客户系统生成，规则："QBI"+"yyyyMMddhhmmss+001"
      * @taxCode 纳税人识别号(一般为购方纳税人识别号，即客户系统公司纳税人识别号)
+     * @period 认证所属期"//格式：201801
      * @body 需要认证的发票信息 invoiceCode&invoiceNo
      */
-    public static String invoiceAuthorize(String batchId,String taxCode,
+    public static String invoiceAuthorize(String batchId,String taxCode,String period,
                                           List<InvoiceAuth> body) {
         String url = GET_INVOICE_AUTH;
         Map param = new HashMap();
         Map head = new HashMap();
         head.put("batchId", batchId);
         head.put("taxCode", taxCode);
+        head.put("period", period);
         param.put("head", head);
         param.put("body", body);
         param.put("token", getToken());

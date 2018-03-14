@@ -1859,7 +1859,22 @@ public class GetDataService {
                             //jymxsq.setKkjje(amount.doubleValue());
                             //已开具金额  = 0
                             jymxsq.setYkjje(0d);
-                            Map spbmMap = new HashMap();
+                            Map spbmMap=new HashMap();
+                            spbmMap.put("spbm",goodsid);
+                            spbmMap.put("gsdm",gsdm);
+                            vSpbm spbm=vSpbmService.findOneByParams(spbmMap);
+                            if(spbm!=null){
+                                if(Double.valueOf(taxrate.toString())>0){
+                                    jymxsq.setYhzcbs("0");
+                                    jymxsq.setLslbz("");
+                                    jymxsq.setYhzcmc("");
+                                }else{
+                                    jymxsq.setYhzcbs(spbm.getYhzcbs().toString());
+                                    jymxsq.setLslbz(spbm.getLslbz());
+                                    jymxsq.setYhzcmc(spbm.getYhzcmc());
+                                }
+                            }
+                           /* Map spbmMap = new HashMap();
                             spbmMap.put("spbm", goodsid);
                             spbmMap.put("gsdm", gsdm);
                             Spvo spvo = spvoService.findOneSpvo(spbmMap);
@@ -1867,7 +1882,7 @@ public class GetDataService {
                                 jymxsq.setYhzcbs(spvo.getYhzcbs());
                                 jymxsq.setLslbz(spvo.getLslbz());
                                 jymxsq.setYhzcmc(spvo.getYhzcmc());
-                            }
+                            }*/
                             jymxsq.setGsdm(gsdm);
                             jymxsq.setLrry(lrry);
                             jymxsq.setLrsj(new Date());

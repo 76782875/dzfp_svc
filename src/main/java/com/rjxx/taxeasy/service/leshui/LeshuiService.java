@@ -935,14 +935,14 @@ public class LeshuiService {
      * @param body 发票信息
      * @return 乐税接口返回数据
      */
-    public String fprz(String taxCode,
+    public String fprz(String taxCode,String period,
                      List<InvoiceAuth> body,Integer gfid,String gsdm){
         String batchId = "QBI" + new SimpleDateFormat("yyyyMMddHHmmss")
                 .format(new Date())
                 + new Random().nextInt(9)
                 + new Random().nextInt(9)
                 + LeShuiUtil.getRandomLetter();
-        String result = LeShuiUtil.invoiceAuthorize(batchId, taxCode, body);
+        String result = LeShuiUtil.invoiceAuthorize(batchId, taxCode,period,body);
         JSONObject resultJson = JSON.parseObject(result);
         JSONObject head = resultJson.getJSONObject("head");
         JSONObject body_r = resultJson.getJSONObject("body");
@@ -953,12 +953,14 @@ public class LeshuiService {
 
         //创建业务记录对象
         Jxywjl jxywjl = new Jxywjl();
+        jxywjl.setLrsj(new Date());
         jxywjl.setYwlx(3);//1.单张发票查询 2.批量查询 3.发票认证 4.发票查询回调 5.认证结果回调
         jxywjl.setGsdm(gsdm);
         jxywjl.setGfid(gfid);
 
         //创建调用记录对象
         Jxdyjl jxdyjl = new Jxdyjl();
+        jxdyjl.setLrsj(new Date());
         jxdyjl.setDyxh(1);
         jxdyjl.setBatchid(batchId);
         jxdyjl.setTaxcode(taxCode);
@@ -967,8 +969,8 @@ public class LeshuiService {
 
         for(InvoiceAuth auth:body){
             Jxdymxjl jxdymxjl = new Jxdymxjl();
-            String fpdm = auth.getFpdm();
-            String fphm = auth.getFphm();
+            String fpdm = auth.getInvoiceCode();
+            String fphm = auth.getInvoiceNo();
             Jxfpxx jxfpxx = jxfpxxJpaDao.findByFpdmAndFphm(fpdm, fphm);
             jxfpxx.setRzzt("2");//已发送乐税
             //更新
@@ -980,17 +982,23 @@ public class LeshuiService {
 
         //创建回调记录对象
         Jxhdjl jxhdjl = new Jxhdjl();
+        jxhdjl.setLrsj(new Date());
         jxhdjl.setRtnmsg(rtnMsg);
         jxhdjl.setRtncode(rtnCode);
         jxhdjl.setResultcode(resultCode);
         jxhdjl.setResultmsg(resultMsg);
 
-        if(!INVOICE_QUERY_SUCCESS.equals(rtnCode) && resultCode!=null){
+        if(!INVOICE_QUERY_SUCCESS.equals(rtnCode)){
             jxywjl.setZt("9999");
             jxdyjl.setZt("9999");
         }else{
-            jxywjl.setZt("0000");
-            jxdyjl.setZt("0000");
+            if(resultCode==null){
+                jxywjl.setZt("0000");
+                jxdyjl.setZt("0000");
+            }else{
+                jxywjl.setZt("9999");
+                jxdyjl.setZt("9999");
+            }
         }
         Jxywjl saveJxywjl = jxywjlJpaDao.save(jxywjl);
         jxdyjl.setYwid(saveJxywjl.getId());
@@ -1000,6 +1008,7 @@ public class LeshuiService {
         }
         jxdymxjlJpaDao.save(jxdymxjls);
         jxhdjl.setDyid(saveJxdyjl.getId());
+        jxhdjlJpaDao.save(jxhdjl);
         return saveJxywjl.getZt();
     }
 }

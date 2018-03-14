@@ -126,6 +126,8 @@ public class Spvo implements Serializable {
      */
     protected String lslbz;
 
+    private String sylx;
+
     public Integer getId() {
 		return id;
 	}
@@ -300,6 +302,14 @@ public class Spvo implements Serializable {
 
     public void setLslbz(String lslbz) {
         this.lslbz = lslbz;
+    }
+
+    public String getSylx() {
+        return sylx;
+    }
+
+    public void setSylx(String sylx) {
+        this.sylx = sylx;
     }
 }
 
