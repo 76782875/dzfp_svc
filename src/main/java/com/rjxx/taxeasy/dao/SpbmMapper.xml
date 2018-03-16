@@ -4,9 +4,9 @@
 <mapper namespace="com.rjxx.taxeasy.dao.SpbmMapper">
 
     <select id="findOneByParams" parameterType="map" resultType="spbm">
-        select * from spbm where yxbz = '1'
-        <if test="orderBy != null">
-            order by #{orderBy}
+        select * from spbm where yxbz = '1' and hzx = '0'
+        <if test="spbm != null">
+            and spbm = #{spbm}
         </if>
         limit 1
     </select>
