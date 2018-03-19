@@ -208,8 +208,13 @@ public class GeneratePdfService {
                                 rabbitmqSend.sendMsg("ErrorException_Callback", kpls.getFpzldm(), kpls.getKplsh() + "");
                             }
                         } else{
-                            Map returnMap = this.httpPost(returnmessage, kpls);
-                            logger.info("返回报文" + JSON.toJSONString(returnMap));
+                                try{
+                                    Map returnMap = this.httpPost(returnmessage, kpls);
+                                    logger.info("返回报文" + JSON.toJSONString(returnMap));
+                                }catch (Exception e){
+                                    e.printStackTrace();
+                                    rabbitmqSend.sendMsg("ErrorException_Callback", kpls.getFpzldm(), kpls.getKplsh() + "");
+                                }
                         }
                     }
                 }
@@ -969,7 +974,6 @@ public class GeneratePdfService {
             }
         }catch (Exception e){
             e.printStackTrace();
-            rabbitmqSend.sendMsg("ErrorException_Callback", kpls.getFpzldm(), kpls.getKplsh() + "");
         }
         return resultMap;
     }
