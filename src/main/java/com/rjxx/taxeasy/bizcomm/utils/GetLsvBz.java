@@ -41,7 +41,7 @@ public class GetLsvBz {
         if(spbmvo.getZzstsgl().equals("不征税")){
             yhzcMap.put("lslbz","2");
         }
-        if(sl==0&&(("").equals(spbmvo.getZzstsgl())||null==spbmvo.getZzstsgl())){
+        if(sl==0){
             yhzcMap.put("lslbz","3");
         }
 
