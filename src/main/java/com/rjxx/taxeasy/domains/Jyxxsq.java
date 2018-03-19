@@ -390,6 +390,11 @@ public class Jyxxsq  implements Serializable {
 	 */
 	@Column(name="qjzk")
 	protected Double qjzk;
+	/**
+	 * 销售渠道xsqd
+	 */
+	@Column(name="xsqd")
+	protected String xsqd;
 
 	public Double getQjzk() {
 		return qjzk;
@@ -886,6 +891,13 @@ public class Jyxxsq  implements Serializable {
 	public void setOpenid(String openid) {
 		this.openid = openid;
 	}
-	
+
+	public String getXsqd() {
+		return xsqd;
+	}
+
+	public void setXsqd(String xsqd) {
+		this.xsqd = xsqd;
+	}
 }
 
