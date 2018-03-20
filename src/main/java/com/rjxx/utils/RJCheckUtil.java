@@ -194,13 +194,13 @@ public class RJCheckUtil {
         String key="11ff63acd50adaa562d577f3981507f0";
         Map map = new HashMap();
         //订单号
-        map.put("A0","orderNo01");
+        map.put("A0","orderNo02");
         //订单时间
         map.put("A1","20171128120203");
         //金额
-        map.put("A2", "1");
+        map.put("A2", "10");
         //门店号
-        map.put("A3", "03021005");
+        map.put("A3", "03021011");
         //商品代码(如果没有请注释)
         map.put("A4", "1");
         String result = getQForAll(key, map,"on","ot","pr","sn"
