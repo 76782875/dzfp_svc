@@ -99,43 +99,8 @@ public class JkpzUtil {
     }
 
 
-    public String getInvType(String gsdm,Integer xfid,Integer kpdid){
-        Cszb cszb = cszbService.getSpbmbbh(gsdm, xfid, kpdid, "mrfpzl");
-        return  cszb.getCsz();
-    }
-
-    public String getInvoiceList(String gsdm,Integer xfid,Integer kpdid){
-        Cszb cszb = cszbService.getSpbmbbh(gsdm, xfid, kpdid, "sfdyqd");
-        return  cszb.getCsz();
-    }
-
-    public String getInvoiceSplit(String gsdm,Integer xfid,Integer kpdid){
-        Cszb cszb = cszbService.getSpbmbbh(gsdm, xfid, kpdid, "sfzdcf");
-        return  cszb.getCsz();
-    }
-
-    public String getInvoicePrint(String gsdm,Integer xfid,Integer kpdid){
-        Cszb cszb = cszbService.getSpbmbbh(gsdm, xfid, kpdid, "sfljdy");
-        return  cszb.getCsz();
-    }
-
-    public String getChargeTaxWay(String gsdm,Integer xfid,Integer kpdid){
-        Cszb cszb = cszbService.getSpbmbbh(gsdm, xfid, kpdid, "mrzsfs");
-        return  cszb.getCsz();
-    }
-
-    public String getTaxMark(String gsdm,Integer xfid,Integer kpdid){
-        Cszb cszb = cszbService.getSpbmbbh(gsdm, xfid, kpdid, "hsbz");
-        return  cszb.getCsz();
-    }
-
-    public String getRemark(String gsdm,Integer xfid,Integer kpdid){
-        Cszb cszb = cszbService.getSpbmbbh(gsdm, xfid, kpdid, "bzmb");
-        return  cszb.getCsz();
-    }
-
-    public String getVersion(String gsdm,Integer xfid,Integer kpdid){
-        Cszb cszb = cszbService.getSpbmbbh(gsdm, xfid, kpdid, "spbmbbh");
+    public String getCszb(String gsdm,Integer xfid,Integer kpdid,String csm){
+        Cszb cszb = cszbService.getSpbmbbh(gsdm, xfid, kpdid, csm);
         return  cszb.getCsz();
     }
 
