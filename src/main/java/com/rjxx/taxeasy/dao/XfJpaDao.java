@@ -24,6 +24,5 @@ public interface XfJpaDao extends CrudRepository<Xf,Integer> {
     Xf findOneByGsdm(String gsdm);
 
     @Query(nativeQuery = true, value = "select * from t_xf where xfsh=?1 and gsdm=?2 and yxbz='1'")
-    Xf findOneByXfsh1(String xfsh,String gsdm);
-
+    Xf findOneByXfshAndGsdm(String xfsh,String gsdm);
 }
