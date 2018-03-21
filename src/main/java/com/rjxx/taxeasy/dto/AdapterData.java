@@ -14,6 +14,8 @@ public class AdapterData {
     private String drawer;
     private String payee;
     private String reviewer;
+    private String datasource;
+    private String openid;
     private AdapterDataSeller seller;
     private AdapterDataOrder order;
 
@@ -81,6 +83,22 @@ public class AdapterData {
         this.order = order;
     }
 
+    public String getDatasource() {
+        return datasource;
+    }
+
+    public void setDatasource(String datasource) {
+        this.datasource = datasource;
+    }
+
+    public String getOpenid() {
+        return openid;
+    }
+
+    public void setOpenid(String openid) {
+        this.openid = openid;
+    }
+
     @Override
     public String toString() {
         return "AdapterData{" +
@@ -90,6 +108,8 @@ public class AdapterData {
                 ", drawer='" + drawer + '\'' +
                 ", payee='" + payee + '\'' +
                 ", reviewer='" + reviewer + '\'' +
+                ", datasource='" + datasource + '\'' +
+                ", openid='" + openid + '\'' +
                 ", seller=" + seller +
                 ", order=" + order +
                 '}';
