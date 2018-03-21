@@ -27,22 +27,22 @@ public class JkpzUtil {
 
     private  static Logger logger = LoggerFactory.getLogger(AlipayUtils.class);
 
-    public static char getRandomLetter(){
+    public  char getRandomLetter(){
         String chars = "abcdefghijklmnopqrstuvwxyz";
         return chars.charAt(new Random().nextInt(26));
     }
 
-    public static String setDefSeriaNum(){
+    public String setDefSeriaNum(){
         String seriaNum = "JYL"+System.currentTimeMillis()+getRandomLetter();
         return seriaNum;
     }
 
-    public static String setDefOrderNo(){
+    public String setDefOrderNo(){
         String orderNo = "DD"+System.currentTimeMillis()+getRandomLetter();
         return orderNo;
     }
 
-    public static Date setDefOrderDate(){
+    public Date setDefOrderDate(){
         return new Date();
     }
 
