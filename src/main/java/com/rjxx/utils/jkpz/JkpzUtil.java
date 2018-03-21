@@ -33,7 +33,7 @@ public class JkpzUtil {
     @Autowired
     private CszbService cszbService;
 
-    private  static Logger logger = LoggerFactory.getLogger(AlipayUtils.class);
+    private  static Logger logger = LoggerFactory.getLogger(JkpzUtil.class);
 
     public  char getRandomLetter(){
         String chars = "abcdefghijklmnopqrstuvwxyz";
@@ -41,7 +41,7 @@ public class JkpzUtil {
     }
 
     public String setDefSeriaNum(){
-        String seriaNum = "JYL"+System.currentTimeMillis()+getRandomLetter();
+        String seriaNum = "JY"+System.currentTimeMillis()+getRandomLetter();
         return seriaNum;
     }
 
