@@ -1,12 +1,14 @@
 package com.rjxx.utils.jkpz;
 
+import com.rjxx.taxeasy.bizcomm.utils.GetLsvBz;
 import com.rjxx.taxeasy.dao.SkpJpaDao;
 import com.rjxx.taxeasy.dao.XfJpaDao;
 import com.rjxx.taxeasy.domains.Cszb;
 import com.rjxx.taxeasy.domains.Skp;
 import com.rjxx.taxeasy.domains.Xf;
 import com.rjxx.taxeasy.service.CszbService;
-import com.rjxx.utils.alipay.AlipayUtils;
+import com.rjxx.taxeasy.service.SpvoService;
+import com.rjxx.taxeasy.vo.Spvo;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +34,10 @@ public class JkpzUtil {
     private SkpJpaDao skpJpaDao;
     @Autowired
     private CszbService cszbService;
+    @Autowired
+    private SpvoService spvoService;
+    @Autowired
+    private GetLsvBz getLsvBz;
 
     private  static Logger logger = LoggerFactory.getLogger(JkpzUtil.class);
 
@@ -141,4 +147,72 @@ public class JkpzUtil {
         }
         return map;
     }
+
+
+    public Spvo defaultSp(String gsdm, Integer xfid , Integer skpid, String csm){
+        Spvo spvo = new Spvo();
+        try{
+            Cszb cszb = cszbService.getSpbmbbh(gsdm,xfid,skpid,csm);
+            if(cszb != null){
+                String csz = cszb.getCsz();
+                Map param = new HashMap();
+                param.put("gsdm",gsdm);
+                param.put("spdm",cszb);
+                spvo = spvoService.findOneSpvo(param);
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return spvo;
+        }
+        return spvo;
+    }
+
+
+    public Spvo getSpByid(String gsdm, Integer xfid , Integer skpid, String spdm){
+        Spvo spvo = new Spvo();
+        try{
+                Map param = new HashMap();
+                param.put("gsdm",gsdm);
+                param.put("spdm",spdm);
+                spvo = spvoService.findOneSpvo(param);
+        }catch (Exception e){
+            e.printStackTrace();
+            return spvo;
+        }
+        return spvo;
+    }
+
+    public Spvo getSpByMc(String gsdm, Integer xfid , Integer skpid, String spmc){
+        Spvo spvo = new Spvo();
+        try{
+            Map param = new HashMap();
+            param.put("gsdm",gsdm);
+            param.put("spmc",spmc);
+            spvo = spvoService.findOneSpvo(param);
+        }catch (Exception e){
+            e.printStackTrace();
+            return spvo;
+        }
+        return spvo;
+    }
+
+    public Spvo getYhBySp(String spbm,String gsdm){
+        Spvo spvo = new Spvo();
+        try{
+            Map param = new HashMap();
+            param.put("gsdm",gsdm);
+            param.put("spbm",spbm);
+            spvo = spvoService.findOneSpvo(param);
+        }catch (Exception e){
+            e.printStackTrace();
+            return spvo;
+        }
+        return spvo;
+    }
+
+    public Map getYhByBmsl(String spbm,Double sl){
+        return getLsvBz.getLsvBz(sl,spbm);
+    }
+
 }
