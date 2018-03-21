@@ -56,7 +56,7 @@ public class JkpzUtil {
      * @return
      */
     public  Xf getXfBySh(String gsdm,String xfsh){
-        Xf xf = null;
+        Xf xf;
         if(StringUtils.isNotBlank(xfsh)){
             xf = xfJpaDao.findOneByXfshAndGsdm(gsdm,xfsh);
         }else{
@@ -68,12 +68,19 @@ public class JkpzUtil {
     /**
      * @param gsdm 公司代码
      * @param xfsh 销方税号
-     * 如果消息对象中没有clientNo,则认为该销方下只有一个开票点，
+     * 如果有开票点代码，则取开票点
+     * 如果没有开票点代码,则认为该销方下只有一个开票点，
      * 从公司代码和销方税号确定唯一销方，再去找唯一一个开票点，如果找到多个，抛错
      * @return
      */
-    public Skp defaultKpd(String gsdm,String xfsh){
-        Xf xf = xfJpaDao.findOneByXfshAndGsdm(gsdm,xfsh);
-        return skpJpaDao.findOneByGsdmAndXfsh(gsdm, xf.getId());
+    public Skp defaultKpd(String kpddm,String gsdm,String xfsh){
+        Skp skp;
+        if(StringUtils.isNotBlank(kpddm)){
+            skp = skpJpaDao.findOneByKpddmAndGsdm(kpddm, gsdm);
+        }else{
+            Xf xf = xfJpaDao.findOneByXfshAndGsdm(gsdm,xfsh);
+            skp = skpJpaDao.findOneByGsdmAndXfsh(gsdm, xf.getId());
+        }
+        return skp;
     }
 }
