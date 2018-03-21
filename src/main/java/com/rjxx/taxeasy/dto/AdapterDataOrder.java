@@ -20,8 +20,10 @@ public class AdapterDataOrder {
     private String taxMark;
     private String remark;
     private String extractedCode;
+    private BigDecimal totalDiscount;
     private AdapterDataOrderBuyer buyer;
     private List<AdapterDataOrderDetails> orderDetails;
+
 
     public String getOrderNo() {
         return orderNo;
@@ -119,6 +121,14 @@ public class AdapterDataOrder {
         this.orderDetails = orderDetails;
     }
 
+    public BigDecimal getTotalDiscount() {
+        return totalDiscount;
+    }
+
+    public void setTotalDiscount(BigDecimal totalDiscount) {
+        this.totalDiscount = totalDiscount;
+    }
+
     @Override
     public String toString() {
         return "AdapterDataOrder{" +
@@ -132,6 +142,7 @@ public class AdapterDataOrder {
                 ", taxMark='" + taxMark + '\'' +
                 ", remark='" + remark + '\'' +
                 ", extractedCode='" + extractedCode + '\'' +
+                ", totalDiscount=" + totalDiscount +
                 ", buyer=" + buyer +
                 ", orderDetails=" + orderDetails +
                 '}';

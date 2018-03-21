@@ -3,10 +3,8 @@ package com.rjxx.utils;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by wangyahui on 2017/8/11 0011
@@ -172,12 +170,12 @@ public class RJCheckUtil {
         return sb;
     }
 
-    public static String decodeXml(String key,String orderData,String sign){
+    public static String decodeXml(String key, String orderData, String sign){
         String signSourceData = "data=" + orderData + "&key=" + key;
         String newSign = DigestUtils.md5Hex(signSourceData);
         System.out.println(newSign);
         System.out.println("手输的"+sign);
-        System.out.println(newSign.equals(sign));
+        System.out.println(newSign.equalsIgnoreCase(sign));
         if (!sign.equalsIgnoreCase(newSign)) {
             return "0"; //失败
         }else{
@@ -194,15 +192,21 @@ public class RJCheckUtil {
         String key="11ff63acd50adaa562d577f3981507f0";
         Map map = new HashMap();
         //订单号
-        map.put("A0","orderNo02");
+        String on = System.currentTimeMillis() + "X";
         //订单时间
-        map.put("A1","20171128120203");
+        String ot = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
         //金额
-        map.put("A2", "10");
+        String pr = "10";
         //门店号
-        map.put("A3", "03021011");
-        //商品代码(如果没有请注释)
-        map.put("A4", "1");
+        String sn = "03021011";
+        //商品代码
+        String sp = "1";
+        map.put("A0",on);
+        map.put("A1",ot);
+        map.put("A2", pr);
+        map.put("A3", sn);
+        //如果没有商品代码请注释
+        map.put("A4", sp);
         String result = getQForAll(key, map,"on","ot","pr","sn"
         //如果没有商品代码请注释
         ,"sp"
