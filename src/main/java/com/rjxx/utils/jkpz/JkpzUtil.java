@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.Random;
@@ -18,6 +19,7 @@ import java.util.Random;
  * @date: 2018/3/20 17:08
  * @describe: 接口配置类
  */
+@Component
 public class JkpzUtil {
 
     @Autowired
