@@ -27,8 +27,8 @@ public class Jkpzdmb  implements Serializable {
 /**
  * 接口配置参数名（t_jkpzb.pzcsm）
  */ 
-@Column(name="jkpzcsm")
-	protected String jkpzcsm;
+@Column(name="pzbid")
+	protected Integer pzbid;
 
 /**
  * 获取参数值方法
@@ -57,12 +57,12 @@ public class Jkpzdmb  implements Serializable {
 		this.id=id;
 	}
 
-	public String getJkpzcsm(){
-		return jkpzcsm;
+	public Integer getPzbid() {
+		return pzbid;
 	}
 
-	public void setJkpzcsm(String jkpzcsm){
-		this.jkpzcsm=jkpzcsm;
+	public void setPzbid(Integer pzbid) {
+		this.pzbid = pzbid;
 	}
 
 	public String getCszff(){

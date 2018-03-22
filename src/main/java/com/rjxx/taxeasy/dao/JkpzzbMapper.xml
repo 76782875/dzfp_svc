@@ -26,10 +26,10 @@
     </select>
 
     <select id="findByMbId" parameterType="map" resultType="jkpzVo">
-        select a.*, b.pzcsm,c.csm
+        select a.*, b.pzcsm,c.csm,c.cszff
         from t_jkpzzb a,
-             t_jkpzb b,
-             t_jkpzdmb c
+        t_jkpzb b,
+        t_jkpzdmb c
         where a.pzbid = b.id AND  a.cszffid = c.id
         AND c.pzbid = b.id;
         <if test="mbid != null">

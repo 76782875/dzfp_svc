@@ -40,8 +40,8 @@ public class Jkpzzb  implements Serializable {
 /**
  * 获取接口参数方法（字典表）
  */ 
-@Column(name="cszff")
-	protected String cszff;
+@Column(name="cszffid")
+	protected Integer cszffid;
 
 /**
  * 录入人员
@@ -96,12 +96,12 @@ public class Jkpzzb  implements Serializable {
 		this.pzbid=pzbid;
 	}
 
-	public String getCszff(){
-		return cszff;
+	public Integer getCszffid() {
+		return cszffid;
 	}
 
-	public void setCszff(String cszff){
-		this.cszff=cszff;
+	public void setCszffid(Integer cszffid) {
+		this.cszffid = cszffid;
 	}
 
 	public Integer getLrry(){
