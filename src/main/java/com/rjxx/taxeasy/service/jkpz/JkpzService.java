@@ -1,6 +1,7 @@
 package com.rjxx.taxeasy.service.jkpz;
 
 import com.rjxx.taxeasy.dto.AdapterPost;
+import com.rjxx.utils.yjapi.Result;
 
 import java.util.Map;
 
@@ -12,5 +13,5 @@ import java.util.Map;
 
 public interface JkpzService {
 
-    Map jkpzInvoice(AdapterPost adapterPost);
+    Result jkpzInvoice(AdapterPost adapterPost);
 }

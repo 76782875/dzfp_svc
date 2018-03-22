@@ -13,6 +13,8 @@ import com.rjxx.taxeasy.vo.JkpzVo;
 import com.rjxx.utils.CheckOrderUtil;
 import com.rjxx.utils.StringUtils;
 import com.rjxx.utils.jkpz.JkpzUtil;
+import com.rjxx.utils.yjapi.Result;
+import com.rjxx.utils.yjapi.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -58,13 +60,11 @@ public class JkpzServiceImpl implements JkpzService {
      * @param adapterPost
      * @return
      */
-    public Map jkpzInvoice(AdapterPost adapterPost){
+    public Result jkpzInvoice(AdapterPost adapterPost){
 
         Map resultMap=new HashMap();
         if(adapterPost==null){
-            resultMap.put("ReturnCode","9999");
-            resultMap.put("ReturnMessage","参数错误");
-            return resultMap;
+            return ResultUtil.error("参数错误");
         }
         try {
             Jyxxsq jyxxsq = new Jyxxsq();
@@ -102,17 +102,13 @@ public class JkpzServiceImpl implements JkpzService {
             Skp skp = jkpzUtil.defaultKpd(adapterPost.getClientNo(), gsdm, adapterPost.getTaxNo());*/
             Cszb cszb = cszbService.getSpbmbbh(gsdm, xf.getId(), skp.getId(), "jkpzmbid");
             if(cszb==null){
-                resultMap.put("ReturnCode","9999");
-                resultMap.put("ReturnMessage","模板未配置");
-                return resultMap;
+                return ResultUtil.error("模板未配置");
             }
             logger.info("取到的模板--"+cszb.getCsz());
             //获取数据模板
             List<JkpzVo> jkpzzbList = jkpzzbService.findByMbId(Integer.getInteger(cszb.getCsz()));
             if(jkpzzbList.isEmpty()){
-                resultMap.put("ReturnCode","9999");
-                resultMap.put("ReturnMessage","模板设置有误！");
-                return resultMap;
+                return ResultUtil.error("模板设置有误");
             }
             String result ="";
             //反射 封装数据
@@ -129,9 +125,7 @@ public class JkpzServiceImpl implements JkpzService {
                 result += execute(jkpzVo.getCszff(), paraMap);
             }
             if(StringUtils.isNotBlank(result)){
-                resultMap.put("ReturnCode","9999");
-                resultMap.put("ReturnMessage",result);
-                return resultMap;
+                return ResultUtil.error(result);
             }
             //校验数据
             List<Jyxxsq> jyxxsqList = new ArrayList<>();
@@ -156,9 +150,7 @@ public class JkpzServiceImpl implements JkpzService {
             }
             String msg = checkOrderUtil.checkOrders(jyxxsqList,jymxsqList,jyzfmxList,gsdm,"");
             if(StringUtils.isNotBlank(msg)){
-                resultMap.put("ReturnCode","9999");
-                resultMap.put("ReturnMessage",msg);
-                return resultMap;
+                return ResultUtil.error(msg);
             }
             //开票
             Map kpMap = new HashMap();
@@ -171,7 +163,7 @@ public class JkpzServiceImpl implements JkpzService {
             resultMap.put("ReturnCode","9999");
             resultMap.put("ReturnMessage","系统错误");
         }
-        return resultMap;
+        return ResultUtil.success();
     }
 
     /**
