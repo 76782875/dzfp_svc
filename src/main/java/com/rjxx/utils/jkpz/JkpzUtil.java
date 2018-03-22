@@ -6,6 +6,8 @@ import com.rjxx.taxeasy.bizcomm.utils.RemarkProcessingUtil;
 import com.rjxx.taxeasy.dao.SkpJpaDao;
 import com.rjxx.taxeasy.dao.XfJpaDao;
 import com.rjxx.taxeasy.domains.*;
+import com.rjxx.taxeasy.dto.AdapterDataOrderDetails;
+import com.rjxx.taxeasy.dto.AdapterPost;
 import com.rjxx.taxeasy.service.CszbService;
 import com.rjxx.taxeasy.service.SpvoService;
 import com.rjxx.taxeasy.vo.JkpzVo;
@@ -15,10 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 /**
  * @author: zsq
@@ -139,23 +138,60 @@ public class JkpzUtil {
     }
 
 
-    public Spvo defaultSp(String gsdm, Integer xfid, Integer skpid, String csm) {
+    public String defaultSp(Map map){
+        Gsxx gsxx = (Gsxx)map.get("gsxx");
+        Xf xf = (Xf)map.get("xf");
+        Skp skp = (Skp)map.get("skp");
+        JkpzVo jkpzVo = (JkpzVo)map.get("jkpzVo");
         Spvo spvo = new Spvo();
-        try {
-            Cszb cszb = cszbService.getSpbmbbh(gsdm, xfid, skpid, csm);
-            if (cszb != null) {
+        AdapterPost adapterPost = (AdapterPost)map.get("adapterPost");
+        List<Jymxsq> jymxsqList = (List)map.get("jymxsqList");
+        Jyxxsq jyxxsq = (Jyxxsq)map.get("jyxxsq");
+        List<AdapterDataOrderDetails> details =null;
+        try{
+            details = adapterPost.getData().getOrder().getOrderDetails();
+        }catch (Exception e){
+            return "商品信息缺少金额，税额，价税合计标签";
+        }
+        try{
+            Cszb cszb = cszbService.getSpbmbbh(gsxx.getGsdm(),xf.getId(),skp.getId(),jkpzVo.getCsm());
+            if(cszb != null){
                 String csz = cszb.getCsz();
                 Map param = new HashMap();
-                param.put("gsdm", gsdm);
-                param.put("spdm", cszb);
+                param.put("gsdm",gsxx.getGsdm());
+                param.put("spdm",csz);
                 spvo = spvoService.findOneSpvo(param);
             }
+            int xh = 1;
+            for(int i=0;i<details.size();i++){
+                Jymxsq jymxsq  = new Jymxsq();
+                AdapterDataOrderDetails ads = details.get(i);
+                jymxsq.setDdh(jyxxsq.getDdh());
+                jymxsq.setSpmxxh(xh);
+                xh++;
+                jymxsq.setFphxz(ads.getRowType());
+                jymxsq.setSpdm(spvo.getSpbm());
+                jymxsq.setSpmc(spvo.getSpmc());
+                jymxsq.setSpggxh(spvo.getSpggxh());
+                jymxsq.setSpzxbm(spvo.getSpdm());
+                jymxsq.setSpdw(spvo.getSpdw());
+                jymxsq.setSps(ads.getQuantity());
+                jymxsq.setSpdj(ads.getUnitPrice());
+                jymxsq.setKce(ads.getDeductAmount());
+                jymxsq.setSpje(ads.getAmount());
+                jymxsq.setSpse(ads.getTaxAmount());
+                jymxsq.setJshj(ads.getMxTotalAmount());
+                jymxsq.setYkjje(0d);
+                jymxsq.setKkjje(ads.getMxTotalAmount());
+                jymxsq.setYxbz("1");
+                jymxsqList.add(jymxsq);
+            }
 
-        } catch (Exception e) {
+        }catch (Exception e){
             e.printStackTrace();
-            return spvo;
+            return "获取商品失败信息！";
         }
-        return spvo;
+        return null;
     }
 
 
