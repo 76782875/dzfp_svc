@@ -6,6 +6,7 @@ import com.rjxx.taxeasy.bizcomm.utils.RemarkProcessingUtil;
 import com.rjxx.taxeasy.dao.SkpJpaDao;
 import com.rjxx.taxeasy.dao.XfJpaDao;
 import com.rjxx.taxeasy.domains.*;
+import com.rjxx.taxeasy.dto.*;
 import com.rjxx.taxeasy.service.CszbService;
 import com.rjxx.taxeasy.service.SpvoService;
 import com.rjxx.taxeasy.vo.JkpzVo;
@@ -15,10 +16,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * @author: zsq
@@ -203,6 +203,114 @@ public class JkpzUtil {
 
     public Map getYhByBmsl(String spbm, Double sl) {
         return getLsvBz.getLsvBz(sl, spbm);
+    }
+
+    public String param(Map map){
+        String result ="";
+        try {
+            JkpzVo jkpzVo = (JkpzVo) map.get("jkpzVo");
+            AdapterPost adapterPost = (AdapterPost) map.get("adapterPost");
+            Xf xf = (Xf) map.get("xf");
+            Gsxx gsxx = (Gsxx) map.get("gsxx");
+            Jyxxsq jyxxsq = (Jyxxsq) map.get("jyxxsq");
+            List<Jymxsq> jymxsqList = (List<Jymxsq>) map.get("jymxsqList");
+            List<Jyzfmx> jyzfmxList = (List<Jyzfmx>) map.get("jyzfmxList");
+            String pzcsm = jkpzVo.getPzcsm();
+            AdapterData data = adapterPost.getData();
+            //订单
+            AdapterDataOrder order = adapterPost.getData().getOrder();
+            //销方
+            AdapterDataSeller seller = adapterPost.getData().getSeller();
+            //购方
+            AdapterDataOrderBuyer buyer = adapterPost.getData().getOrder().getBuyer();
+            //商品信息list
+            List<AdapterDataOrderDetails> orderDetailList = adapterPost.getData().getOrder().getOrderDetails();
+            //支付信息list
+            List<AdapterDataOrderPayments> paymentsList = adapterPost.getData().getOrder().getPayments();
+            switch (pzcsm){
+                case "serialNumber":
+                    jyxxsq.setJylsh(data.getSerialNumber());
+                    break;
+                case "orderNo":
+                    jyxxsq.setDdh(order.getOrderNo());
+                    break;
+                case "orderDate":
+                    jyxxsq.setDdrq(order.getOrderDate());
+                    break;
+                case "clientNo":
+                    jyxxsq.setKpddm(adapterPost.getClientNo());
+                    break;
+                case "invType":
+                    jyxxsq.setFpzldm(data.getInvType());
+                    break;
+                case "invoiceList":
+                    jyxxsq.setSfdyqd(order.getInvoiceList());
+                    break;
+                case "invoiceSplit":
+                    jyxxsq.setSfcp(order.getInvoiceSplit());
+                    break;
+                case "invoicePrint":
+                    jyxxsq.setSfdy(order.getInvoiceSfdy());
+                    break;
+                case "chargeTaxWay":
+                    jyxxsq.setZsfs(order.getChargeTaxWay());
+                    break;
+                case "taxMark":
+                    jyxxsq.setHsbz(order.getTaxMark());
+                    break;
+                case "remark":
+                    jyxxsq.setBz(order.getRemark());
+                    break;
+                case "version":
+                    break;
+                case "person":
+                    jyxxsq.setKpr(data.getDrawer());
+                    jyxxsq.setFhr(data.getReviewer());
+                    jyxxsq.setSkr(data.getPayee());
+                    break;
+                case "seller":
+                    jyxxsq.setXfid(xf.getId());
+                    jyxxsq.setXfsh(seller.getIdentifier());
+                    jyxxsq.setXfmc(seller.getName());
+                    jyxxsq.setXfyh(seller.getBank());
+                    jyxxsq.setXfyhzh(seller.getBankAcc());
+                    jyxxsq.setXfdz(seller.getAddress());
+                    jyxxsq.setXfdh(seller.getTelephoneNo());
+                    break;
+                case "items":
+
+                    break;
+                case "policyMsg":
+
+                    break;
+                case "payments":
+                    for (AdapterDataOrderPayments payments : paymentsList) {
+                        Jyzfmx jyzfmx = new Jyzfmx();
+                        jyzfmx.setGsdm(gsxx.getGsdm());
+                        jyzfmx.setZffsDm(payments.getPayCode());
+                        jyzfmx.setZfje(payments.getPayPrice());
+                        jyzfmxList.add(jyzfmx);
+                    }
+                    break;
+                case "buyer":
+                    jyxxsq.setGfsh(buyer.getIdentifier());
+                    jyxxsq.setGfmc(buyer.getName());
+                    jyxxsq.setGflx(buyer.getCustomerType());
+                    jyxxsq.setGfyh(buyer.getBank());
+                    jyxxsq.setGfyhzh(buyer.getBankAcc());
+                    jyxxsq.setGflxr(buyer.getRecipient());
+                    jyxxsq.setGfdz(buyer.getReciAddress());
+                    jyxxsq.setGfdh(buyer.getTelephoneNo());
+                    jyxxsq.setGfyb(buyer.getZip());
+                    jyxxsq.setGfemail(buyer.getEmail());
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            result="系统错误";
+            return result;
+        }
+        return null;
     }
 
 }
