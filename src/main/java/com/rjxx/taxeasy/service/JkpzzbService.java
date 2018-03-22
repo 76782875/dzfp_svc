@@ -4,6 +4,7 @@ import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.dao.JkpzzbJpaDao;
 import com.rjxx.taxeasy.dao.JkpzzbMapper;
 import com.rjxx.taxeasy.domains.Jkpzzb;
+import com.rjxx.taxeasy.vo.JkpzVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,5 +51,8 @@ public class JkpzzbService {
         return jkpzzbMapper.findByPage(pagination);
     }
 
+    public List<JkpzVo> findByMbId(Integer mbid){
+        return jkpzzbMapper.findByMbId(mbid);
+    }
 }
 

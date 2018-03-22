@@ -3,6 +3,7 @@ package com.rjxx.taxeasy.dao;
 import com.rjxx.comm.mybatis.MybatisRepository;
 import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.domains.Jkpzzb;
+import com.rjxx.taxeasy.vo.JkpzVo;
 
 import java.util.List;
 import java.util.Map;
@@ -22,6 +23,8 @@ public interface JkpzzbMapper {
     public List<Jkpzzb> findAllByParams(Map params);
 
     public List<Jkpzzb> findByPage(Pagination pagination);
+
+    List<JkpzVo> findByMbId(Integer mbid);
 
 }
 
