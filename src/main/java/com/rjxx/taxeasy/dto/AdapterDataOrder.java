@@ -22,8 +22,17 @@ public class AdapterDataOrder {
     private String extractedCode;
     private BigDecimal totalDiscount;
     private AdapterDataOrderBuyer buyer;
+    private List<AdapterDataOrderPayments> payments;
     private List<AdapterDataOrderDetails> orderDetails;
 
+
+    public List<AdapterDataOrderPayments> getPayments() {
+        return payments;
+    }
+
+    public void setPayments(List<AdapterDataOrderPayments> payments) {
+        this.payments = payments;
+    }
 
     public String getOrderNo() {
         return orderNo;
