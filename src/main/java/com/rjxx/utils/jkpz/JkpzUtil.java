@@ -11,6 +11,7 @@ import com.rjxx.taxeasy.service.CszbService;
 import com.rjxx.taxeasy.service.SpvoService;
 import com.rjxx.taxeasy.vo.JkpzVo;
 import com.rjxx.taxeasy.vo.Spvo;
+import com.rjxx.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,6 +82,9 @@ public class JkpzUtil {
     public String defaultKpd(Map map) {
         Skp skp = (Skp) map.get("skp");
         Jyxxsq jyxxsq = (Jyxxsq) map.get("jyxxsq");
+        if(StringUtils.isBlank(skp.getKpddm())){
+            return "缺少开票点代码";
+        }
         jyxxsq.setKpddm(skp.getKpddm());
         return null;
     }
@@ -132,7 +136,11 @@ public class JkpzUtil {
         Jyxxsq jyxxsq = (Jyxxsq) map.get("jyxxsq");
         jyxxsq.setSkr((String) xfxx.get("skr"));
         jyxxsq.setFhr((String) xfxx.get("fhr"));
-        jyxxsq.setKpr((String) xfxx.get("kpr"));
+        String kpr=(String) xfxx.get("kpr");
+        if(StringUtils.isBlank(kpr)){
+            return "缺少开票人信息";
+        }
+        jyxxsq.setKpr(kpr);
         return null;
     }
 
