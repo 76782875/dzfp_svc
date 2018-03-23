@@ -135,23 +135,23 @@ public class JkpzServiceImpl implements JkpzService {
             jyxxsq.setXgsj(new Date());
             jyxxsq.setLrry(1);
             jyxxsq.setXgry(1);
+            jyxxsq.setYxbz("1");
             jyxxsqList.add(jyxxsq);
-            if(!jyzfmxList.isEmpty()){
+            if(jyzfmxList!=null&&!jyzfmxList.isEmpty()){
                 for (Jyzfmx jyzfmx : jyzfmxList) {
                     jyzfmx.setLrsj(new Date());
                     jyzfmx.setXgsj(new Date());
                     jyzfmx.setLrry(1);
                     jyzfmx.setXgry(1);
-                    jyzfmxList.add(jyzfmx);
                 }
             }
-            if(!jymxsqList.isEmpty()){
+            if(jymxsqList!=null &&!jymxsqList.isEmpty()){
                 for (Jymxsq jymxsq : jymxsqList) {
                     jymxsq.setLrry(1);
                     jymxsq.setXgry(1);
                     jymxsq.setLrsj(new Date());
                     jymxsq.setXgsj(new Date());
-                    jymxsqList.add(jymxsq);
+                    jymxsq.setYxbz("1");
                 }
             }
             String msg = checkOrderUtil.checkOrders(jyxxsqList,jymxsqList,jyzfmxList,gsdm,"");
