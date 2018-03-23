@@ -104,7 +104,6 @@ public class JkpzServiceImpl implements JkpzService {
             if(cszb==null){
                 return ResultUtil.error("模板未配置");
             }
-//            logger.info("取到的模板--"+cszb.getCsz());
             //获取数据模板
             List<JkpzVo> jkpzzbList = jkpzzbService.findByMbId(Integer.getInteger(cszb.getCsz()));
             if(jkpzzbList.isEmpty()){
@@ -137,19 +136,23 @@ public class JkpzServiceImpl implements JkpzService {
             jyxxsq.setLrry(1);
             jyxxsq.setXgry(1);
             jyxxsqList.add(jyxxsq);
-            for (Jyzfmx jyzfmx : jyzfmxList) {
-                jyzfmx.setLrsj(new Date());
-                jyzfmx.setXgsj(new Date());
-                jyzfmx.setLrry(1);
-                jyzfmx.setXgry(1);
-                jyzfmxList.add(jyzfmx);
+            if(!jyzfmxList.isEmpty()){
+                for (Jyzfmx jyzfmx : jyzfmxList) {
+                    jyzfmx.setLrsj(new Date());
+                    jyzfmx.setXgsj(new Date());
+                    jyzfmx.setLrry(1);
+                    jyzfmx.setXgry(1);
+                    jyzfmxList.add(jyzfmx);
+                }
             }
-            for (Jymxsq jymxsq : jymxsqList) {
-                jymxsq.setLrry(1);
-                jymxsq.setXgry(1);
-                jymxsq.setLrsj(new Date());
-                jymxsq.setXgsj(new Date());
-                jymxsqList.add(jymxsq);
+            if(!jymxsqList.isEmpty()){
+                for (Jymxsq jymxsq : jymxsqList) {
+                    jymxsq.setLrry(1);
+                    jymxsq.setXgry(1);
+                    jymxsq.setLrsj(new Date());
+                    jymxsq.setXgsj(new Date());
+                    jymxsqList.add(jymxsq);
+                }
             }
             String msg = checkOrderUtil.checkOrders(jyxxsqList,jymxsqList,jyzfmxList,gsdm,"");
             if(StringUtils.isNotBlank(msg)){
@@ -163,8 +166,8 @@ public class JkpzServiceImpl implements JkpzService {
             String resu = kpService.dealOrder(gsdm, kpMap, "01");
         } catch (Exception e) {
             e.printStackTrace();
-            resultMap.put("ReturnCode","9999");
-            resultMap.put("ReturnMessage","系统错误");
+            return ResultUtil.error("系统错误");
+
         }
         return ResultUtil.success();
     }
@@ -180,6 +183,8 @@ public class JkpzServiceImpl implements JkpzService {
             result = (String) target.invoke(jkpzUtil,map);
         } catch (Exception e) {
             e.printStackTrace();
+            result="系统错误";
+            return  result;
         }
         return result;
     }
