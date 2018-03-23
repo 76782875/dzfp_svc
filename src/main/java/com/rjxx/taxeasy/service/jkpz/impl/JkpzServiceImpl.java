@@ -75,7 +75,7 @@ public class JkpzServiceImpl implements JkpzService {
             Gsxx gsxx = gsxxService.findOneByParams(map);
             String gsdm = gsxx.getGsdm();
             //处理销方
-            Xf xf = new Xf();
+            Xf xf;
             String xfsh = adapterPost.getTaxNo();
             try {
                 if(StringUtils.isNotBlank(xfsh)){
@@ -89,7 +89,7 @@ public class JkpzServiceImpl implements JkpzService {
             }
             //处理开票点
             String kpddm = adapterPost.getClientNo();
-            Skp skp = new Skp();
+            Skp skp;
             try {
                 if(StringUtils.isNotBlank(kpddm)){
                     skp = skpJpaDao.findOneByKpddmAndGsdm(kpddm, gsdm);
@@ -100,13 +100,11 @@ public class JkpzServiceImpl implements JkpzService {
                 e.printStackTrace();
                 return ResultUtil.error("获取开票点信息有误");
             }
-           /* Xf  xf  = jkpzUtil.getXfBySh(gsdm, adapterPost.getTaxNo());
-            Skp skp = jkpzUtil.defaultKpd(adapterPost.getClientNo(), gsdm, adapterPost.getTaxNo());*/
             Cszb cszb = cszbService.getSpbmbbh(gsdm, xf.getId(), skp.getId(), "jkpzmbid");
             if(cszb==null){
                 return ResultUtil.error("模板未配置");
             }
-            logger.info("取到的模板--"+cszb.getCsz());
+//            logger.info("取到的模板--"+cszb.getCsz());
             //获取数据模板
             List<JkpzVo> jkpzzbList = jkpzzbService.findByMbId(Integer.getInteger(cszb.getCsz()));
             if(jkpzzbList.isEmpty()){
