@@ -443,8 +443,8 @@ public class JkpzUtil {
                     for (AdapterDataOrderDetails orderDetails : orderDetailList) {
                         int spmxxh = 0;
                         spmxxh++;
-                        jymxsq.setDdh(jyxxsq.getDdh());
-                        jymxsq.setHsbz(jyxxsq.getHsbz());
+                        jymxsq.setDdh(order.getOrderNo());
+                        jymxsq.setHsbz(order.getTaxMark());
                         jymxsq.setSpmxxh(spmxxh);
                         jymxsq.setFphxz(orderDetails.getRowType());
                         jymxsq.setSpdm(orderDetails.getProductCode());
@@ -474,7 +474,7 @@ public class JkpzUtil {
                     for (AdapterDataOrderPayments payments : paymentsList) {
                         Jyzfmx jyzfmx = new Jyzfmx();
                         jyzfmx.setGsdm(gsxx.getGsdm());
-                        jyzfmx.setDdh(jyxxsq.getDdh());
+                        jyzfmx.setDdh(order.getOrderNo());
                         jyzfmx.setZffsDm(payments.getPayCode());
                         jyzfmx.setZfje(payments.getPayPrice());
                         jyzfmxList.add(jyzfmx);
