@@ -1,7 +1,10 @@
 package com.rjxx.taxeasy.service.jkpz.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.itextpdf.text.log.Logger;
 import com.itextpdf.text.log.LoggerFactory;
+import com.rjxx.taxeasy.bizcomm.utils.GetXmlUtil;
+import com.rjxx.taxeasy.bizcomm.utils.HttpUtils;
 import com.rjxx.taxeasy.dao.SkpJpaDao;
 import com.rjxx.taxeasy.dao.XfJpaDao;
 import com.rjxx.taxeasy.domains.*;
@@ -15,6 +18,8 @@ import com.rjxx.utils.StringUtils;
 import com.rjxx.utils.jkpz.JkpzUtil;
 import com.rjxx.utils.yjapi.Result;
 import com.rjxx.utils.yjapi.ResultUtil;
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -130,7 +135,12 @@ public class JkpzServiceImpl implements JkpzService {
                 //数据来源
                 if(adapterPost.getData().getDatasource()!=null){
                     jyxxsq.setSjly(adapterPost.getData().getDatasource());
+                }else {
+                    jyxxsq.setSjly("1");
                 }
+                jyxxsq.setYkpjshj(0d);
+                jyxxsq.setGsdm(gsdm);
+                jyxxsq.setFpczlxdm("11");
             }
             //反射 封装数据
             for (JkpzVo jkpzVo : jkpzzbList) {
@@ -153,16 +163,17 @@ public class JkpzServiceImpl implements JkpzService {
             }
             //校验数据
             List<Jyxxsq> jyxxsqList = new ArrayList<>();
-            jyxxsq.setLrsj(new Date());
-            jyxxsq.setXgsj(new Date());
+            Date date = new Date();
+            jyxxsq.setLrsj(date);
+            jyxxsq.setXgsj(date);
             jyxxsq.setLrry(1);
             jyxxsq.setXgry(1);
             jyxxsq.setYxbz("1");
             jyxxsqList.add(jyxxsq);
             if(jyzfmxList!=null&&!jyzfmxList.isEmpty()){
                 for (Jyzfmx jyzfmx : jyzfmxList) {
-                    jyzfmx.setLrsj(new Date());
-                    jyzfmx.setXgsj(new Date());
+                    jyzfmx.setLrsj(date);
+                    jyzfmx.setXgsj(date);
                     jyzfmx.setLrry(1);
                     jyzfmx.setXgry(1);
                 }
@@ -171,12 +182,15 @@ public class JkpzServiceImpl implements JkpzService {
                 for (Jymxsq jymxsq : jymxsqList) {
                     jymxsq.setLrry(1);
                     jymxsq.setXgry(1);
-                    jymxsq.setLrsj(new Date());
-                    jymxsq.setXgsj(new Date());
+                    jymxsq.setLrsj(date);
+                    jymxsq.setXgsj(date);
                     jymxsq.setYxbz("1");
                 }
             }
-            String msg = checkOrderUtil.checkOrders(jyxxsqList,jymxsqList,jyzfmxList,gsdm,"");
+            System.out.println(JSON.toJSONString(jyxxsqList));
+            System.out.println(JSON.toJSONString(jymxsqList));
+            System.out.println(JSON.toJSONString(jyzfmxList));
+            String msg = checkOrderUtil.checkAll(jyxxsqList,jymxsqList,jyzfmxList,gsdm,"");
             if(StringUtils.isNotBlank(msg)){
                 return ResultUtil.error(msg);
             }

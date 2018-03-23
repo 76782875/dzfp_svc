@@ -388,7 +388,6 @@ public class JkpzUtil {
             }
             //支付信息list
             List<AdapterDataOrderPayments> paymentsList = adapterPost.getData().getOrder().getPayments();
-            Jymxsq jymxsq = new Jymxsq();
             switch (pzcsm){
                 case "serialNumber":
                     jyxxsq.setJylsh(data.getSerialNumber());
@@ -440,9 +439,9 @@ public class JkpzUtil {
                     jyxxsq.setXfdh(seller.getTelephoneNo());
                     break;
                 case "items":
+                    int spmxxh = 1;
                     for (AdapterDataOrderDetails orderDetails : orderDetailList) {
-                        int spmxxh = 0;
-                        spmxxh++;
+                        Jymxsq jymxsq = new Jymxsq();
                         jymxsq.setDdh(order.getOrderNo());
                         jymxsq.setHsbz(order.getTaxMark());
                         jymxsq.setSpmxxh(spmxxh);
@@ -459,17 +458,27 @@ public class JkpzUtil {
                         jymxsq.setSpse(orderDetails.getTaxAmount());
                         jymxsq.setJshj(orderDetails.getMxTotalAmount());
                         jymxsq.setGsdm(gsxx.getGsdm());
-                        jymxsqList.add(jymxsq);
-                    }
-                    break;
-                case "policyMsg":
-                    for (AdapterDataOrderDetails orderDetails : orderDetailList) {
                         jymxsq.setYhzcbs(orderDetails.getPolicyMark());
                         jymxsq.setYhzcmc(orderDetails.getPolicyName());
                         jymxsq.setLslbz(orderDetails.getTaxRateMark());
+                        jymxsq.setKkjje(orderDetails.getMxTotalAmount());
+                        jymxsq.setYkjje(0d);
                         jymxsqList.add(jymxsq);
+                        spmxxh++;
                     }
                     break;
+               /* case "policyMsg":
+                    for (Jymxsq jymxsq : jymxsqList) {
+                        for (AdapterDataOrderDetails orderDetails : orderDetailList) {
+                            if(jymxsq.getSpdm().equals(orderDetails.getProductCode())){
+                                jymxsq.setYhzcbs(orderDetails.getPolicyMark());
+                                jymxsq.setYhzcmc(orderDetails.getPolicyName());
+                                jymxsq.setLslbz(orderDetails.getTaxRateMark());
+                            }
+                        }
+                        jymxsqList.add(jymxsq);
+                    }
+                    break;*/
                 case "payments":
                     for (AdapterDataOrderPayments payments : paymentsList) {
                         Jyzfmx jyzfmx = new Jyzfmx();
@@ -491,6 +500,9 @@ public class JkpzUtil {
                     jyxxsq.setGfdh(buyer.getTelephoneNo());
                     jyxxsq.setGfyb(buyer.getZip());
                     jyxxsq.setGfemail(buyer.getEmail());
+                    if(StringUtils.isNotBlank(buyer.getEmail())){
+                        jyxxsq.setSffsyj("1");
+                    }
                     break;
             }
         } catch (Exception e) {
