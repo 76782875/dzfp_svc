@@ -124,7 +124,10 @@ public class JkpzServiceImpl implements JkpzService {
                 paraMap.put("jyzfmxList", jyzfmxList);
                 paraMap.put("adapterPost", adapterPost);
                 paraMap.put("jkpzVo",jkpzVo);
-                result += execute(jkpzVo.getCszff(), paraMap);
+                String execute = execute(jkpzVo.getCszff(), paraMap);
+                if(StringUtils.isNotBlank(execute)){
+                    result +=execute;
+                }
             }
             if(StringUtils.isNotBlank(result)){
                 return ResultUtil.error(result);
