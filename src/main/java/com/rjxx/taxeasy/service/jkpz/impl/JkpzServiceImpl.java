@@ -110,6 +110,28 @@ public class JkpzServiceImpl implements JkpzService {
                 return ResultUtil.error("模板设置有误");
             }
             String result ="";
+            if(adapterPost.getData().getOrder()!=null){
+                //加税合计
+                if(adapterPost.getData().getOrder().getTotalAmount()==null){
+                    return ResultUtil.error("商品主信息金额有误");
+                }else {
+                    jyxxsq.setJshj(adapterPost.getData().getOrder().getTotalAmount());
+                }
+                //全局折扣
+                if(adapterPost.getData().getOrder().getTotalDiscount()!=null){
+                    jyxxsq.setQjzk(adapterPost.getData().getOrder().getTotalDiscount());
+                }else {
+                    jyxxsq.setQjzk(0d);
+                }
+                //提取码
+                if(adapterPost.getData().getOrder().getExtractedCode()!=null){
+                    jyxxsq.setTqm(adapterPost.getData().getOrder().getExtractedCode());
+                }
+                //数据来源
+                if(adapterPost.getData().getDatasource()!=null){
+                    jyxxsq.setSjly(adapterPost.getData().getDatasource());
+                }
+            }
             //反射 封装数据
             for (JkpzVo jkpzVo : jkpzzbList) {
                 Map paraMap = new HashMap();
@@ -183,8 +205,7 @@ public class JkpzServiceImpl implements JkpzService {
             result = (String) target.invoke(jkpzUtil,map);
         } catch (Exception e) {
             e.printStackTrace();
-            result="系统错误";
-            return  result;
+            result="数据封装错误";
         }
         return result;
     }
