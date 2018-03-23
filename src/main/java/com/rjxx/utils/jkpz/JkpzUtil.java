@@ -446,6 +446,7 @@ public class JkpzUtil {
                         jymxsq.setDdh(jyxxsq.getDdh());
                         jymxsq.setHsbz(jyxxsq.getHsbz());
                         jymxsq.setSpmxxh(spmxxh);
+                        jymxsq.setFphxz(orderDetails.getRowType());
                         jymxsq.setSpdm(orderDetails.getProductCode());
                         jymxsq.setSpmc(orderDetails.getProductName());
                         jymxsq.setSpggxh(orderDetails.getSpec());
