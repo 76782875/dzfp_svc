@@ -353,15 +353,39 @@ public class JkpzUtil {
             List<Jymxsq> jymxsqList = (List<Jymxsq>) map.get("jymxsqList");
             List<Jyzfmx> jyzfmxList = (List<Jyzfmx>) map.get("jyzfmxList");
             String pzcsm = jkpzVo.getPzcsm();
+            if(adapterPost.getTaxNo() == null || adapterPost.getClientNo()==null){
+                result="获取销方或开票点信息错误";
+                return result;
+            }
             AdapterData data = adapterPost.getData();
+            if(data == null){
+                result="获取主信息错误";
+                return result;
+            }
             //订单
             AdapterDataOrder order = adapterPost.getData().getOrder();
+            if(order==null){
+                result="获取订单信息错误";
+                return result;
+            }
             //销方
             AdapterDataSeller seller = adapterPost.getData().getSeller();
+            if(seller == null){
+                result="获取销方信息错误";
+                return result;
+            }
             //购方
             AdapterDataOrderBuyer buyer = adapterPost.getData().getOrder().getBuyer();
+            if(buyer==null){
+                result="获取购方信息错误";
+                return result;
+            }
             //商品信息list
             List<AdapterDataOrderDetails> orderDetailList = adapterPost.getData().getOrder().getOrderDetails();
+            if(orderDetailList.isEmpty()){
+                result="获取商品信息错误";
+                return result;
+            }
             //支付信息list
             List<AdapterDataOrderPayments> paymentsList = adapterPost.getData().getOrder().getPayments();
             Jymxsq jymxsq = new Jymxsq();
@@ -470,7 +494,7 @@ public class JkpzUtil {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            result="系统错误";
+            result="获取数据错误";
             return result;
         }
         return null;
