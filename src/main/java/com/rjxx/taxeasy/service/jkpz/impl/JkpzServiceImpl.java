@@ -79,12 +79,13 @@ public class JkpzServiceImpl implements JkpzService {
             String xfsh = adapterPost.getTaxNo();
             try {
                 if(StringUtils.isNotBlank(xfsh)){
-                    xf = xfJpaDao.findOneByXfshAndGsdm(gsdm,xfsh);
+                    xf = xfJpaDao.findOneByXfshAndGsdm(xfsh,gsdm);
                 }else{
                     xf=xfJpaDao.findOneByGsdm(gsdm);
                 }
             } catch (RuntimeException e) {
                 e.printStackTrace();
+                return ResultUtil.error("获取销方信息有误");
             }
             //处理开票点
             String kpddm = adapterPost.getClientNo();
@@ -97,6 +98,7 @@ public class JkpzServiceImpl implements JkpzService {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                return ResultUtil.error("获取开票点信息有误");
             }
            /* Xf  xf  = jkpzUtil.getXfBySh(gsdm, adapterPost.getTaxNo());
             Skp skp = jkpzUtil.defaultKpd(adapterPost.getClientNo(), gsdm, adapterPost.getTaxNo());*/
