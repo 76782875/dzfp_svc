@@ -47,7 +47,7 @@ public class JkpzUtil {
         return chars.charAt(new Random().nextInt(26));
     }
 
-    public String setDefSeriaNum(Map map) {
+    public String setDefSerialNum(Map map) {
         Jyxxsq jyxxsq = (Jyxxsq) map.get("jyxxsq");
         jyxxsq.setJylsh("JY" + System.currentTimeMillis() + getRandomLetter());
         return null;
@@ -97,34 +97,44 @@ public class JkpzUtil {
         JkpzVo jkpzVo= (JkpzVo) map.get("jkpzVo");
         Jyxxsq jyxxsq = (Jyxxsq) map.get("jyxxsq");
         String csm=jkpzVo.getCsm();
-        Cszb cszb = cszbService.getSpbmbbh(gsxx.getGsdm(), xf.getId(), skp.getId(), csm);
-        String value=cszb.getCsz();
-        switch (csm){
-            case "mrfpzldm":
-                jyxxsq.setFpzldm(value);
-                break;
-            case "sfdyqd":
-                jyxxsq.setSfdyqd(value);
-                break;
-            case "sfcp":
-                jyxxsq.setSfcp(value);
-                break;
-            case "sfdy":
-                jyxxsq.setSfdy(value);
-                break;
-            case "mrzsfs":
-                jyxxsq.setZsfs(value);
-                break;
-            case "hsbz":
-                jyxxsq.setHsbz(value);
-                break;
-            case "bzmb":
-                remarkProcessingUtil.dealRemark(jyxxsq,value);
-                break;
-            case "spbmbbh":
-                break;
-            default:
-                return "未知的参数";
+        try {
+            Cszb cszb = cszbService.getSpbmbbh(gsxx.getGsdm(), xf.getId(), skp.getId(), csm);
+            String value=cszb.getCsz();
+            switch (csm){
+                case "mrfpzldm":
+                    jyxxsq.setFpzldm(value);
+                    break;
+                case "sfdyqd":
+                    if(StringUtils.isNotBlank(value)&&value.equals("是")){
+                        jyxxsq.setSfdyqd("1");
+                    }else {
+                        jyxxsq.setSfdyqd("0");
+                    }
+//                    jyxxsq.setSfdyqd(value);
+                    break;
+                case "sfcp":
+                    jyxxsq.setSfcp(value);
+                    break;
+                case "sfdy":
+                    jyxxsq.setSfdy(value);
+                    break;
+                case "mrzsfs":
+                    jyxxsq.setZsfs(value);
+                    break;
+                case "hsbz":
+                    jyxxsq.setHsbz(value);
+                    break;
+                case "bzmb":
+                    remarkProcessingUtil.dealRemark(jyxxsq,value);
+                    break;
+                case "spbmbbh":
+                    break;
+                default:
+                    return "未知的参数";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return csm+"未知的参数";
         }
         return null;
     }

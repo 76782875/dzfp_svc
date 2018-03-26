@@ -187,9 +187,6 @@ public class JkpzServiceImpl implements JkpzService {
                     jymxsq.setYxbz("1");
                 }
             }
-            System.out.println(JSON.toJSONString(jyxxsqList));
-            System.out.println(JSON.toJSONString(jymxsqList));
-            System.out.println(JSON.toJSONString(jyzfmxList));
             String msg = checkOrderUtil.checkAll(jyxxsqList,jymxsqList,jyzfmxList,gsdm,"");
             if(StringUtils.isNotBlank(msg)){
                 return ResultUtil.error(msg);
@@ -215,11 +212,10 @@ public class JkpzServiceImpl implements JkpzService {
     public String execute(String methodName, Map map){
         String result ="";
         try {
-            Method target = jkpzUtil.getClass().getMethod(methodName,Map.class);
+            Method target = jkpzUtil.getClass().getDeclaredMethod(methodName,Map.class);
             result = (String) target.invoke(jkpzUtil,map);
         } catch (Exception e) {
             e.printStackTrace();
-            result="数据封装错误";
         }
         return result;
     }
