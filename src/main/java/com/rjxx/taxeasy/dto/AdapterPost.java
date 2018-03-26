@@ -11,6 +11,7 @@ public class AdapterPost {
     private String taxNo;
     private String clientNo;
     private String sign;
+    private String viewId;
     private AdapterData data;
 
     public String getAppId() {
@@ -51,5 +52,13 @@ public class AdapterPost {
 
     public void setData(AdapterData data) {
         this.data = data;
+    }
+
+    public String getViewId() {
+        return viewId;
+    }
+
+    public void setViewId(String viewId) {
+        this.viewId = viewId;
     }
 }
