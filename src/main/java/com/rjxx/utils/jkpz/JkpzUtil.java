@@ -196,6 +196,7 @@ public class JkpzUtil {
                 jymxsq.setSpdj(ads.getUnitPrice());
                 jymxsq.setKce(ads.getDeductAmount());
                 jymxsq.setSpje(ads.getAmount());
+                jymxsq.setSpsl(ads.getTaxRate());
                 jymxsq.setSpse(ads.getTaxAmount());
                 jymxsq.setJshj(ads.getMxTotalAmount());
                 jymxsq.setYkjje(0d);
@@ -246,6 +247,7 @@ public class JkpzUtil {
                 jymxsq.setSpdj(ads.getUnitPrice());
                 jymxsq.setKce(ads.getDeductAmount());
                 jymxsq.setSpje(ads.getAmount());
+                jymxsq.setSpsl(ads.getTaxRate());
                 jymxsq.setSpse(ads.getTaxAmount());
                 jymxsq.setJshj(ads.getMxTotalAmount());
                 jymxsq.setYkjje(0d);
@@ -295,6 +297,7 @@ public class JkpzUtil {
                 jymxsq.setSpdj(ads.getUnitPrice());
                 jymxsq.setKce(ads.getDeductAmount());
                 jymxsq.setSpje(ads.getAmount());
+                jymxsq.setSpsl(ads.getTaxRate());
                 jymxsq.setSpse(ads.getTaxAmount());
                 jymxsq.setJshj(ads.getMxTotalAmount());
                 jymxsq.setYkjje(0d);
@@ -493,7 +496,7 @@ public class JkpzUtil {
                     for (AdapterDataOrderPayments payments : paymentsList) {
                         Jyzfmx jyzfmx = new Jyzfmx();
                         jyzfmx.setGsdm(gsxx.getGsdm());
-                        jyzfmx.setDdh(order.getOrderNo());
+                        jyzfmx.setDdh(jyxxsq.getDdh());
                         jyzfmx.setZffsDm(payments.getPayCode());
                         jyzfmx.setZfje(payments.getPayPrice());
                         jyzfmxList.add(jyzfmx);
