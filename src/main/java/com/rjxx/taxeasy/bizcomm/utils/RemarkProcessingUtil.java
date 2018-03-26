@@ -1,18 +1,17 @@
 package com.rjxx.taxeasy.bizcomm.utils;
 
-import java.lang.reflect.Field;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
 import com.rjxx.taxeasy.domains.Cszb;
+import com.rjxx.taxeasy.domains.Jyxxsq;
+import com.rjxx.taxeasy.domains.Jyzfmx;
 import com.rjxx.taxeasy.service.CszbService;
+import com.rjxx.taxeasy.service.ZffsService;
+import com.rjxx.taxeasy.vo.ZffsVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.rjxx.taxeasy.domains.Jyxxsq;
-import com.rjxx.taxeasy.domains.Jyzfmx;
-import com.rjxx.taxeasy.service.ZffsService;
-import com.rjxx.taxeasy.vo.ZffsVo;
+import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 public class RemarkProcessingUtil {
@@ -55,6 +54,7 @@ public class RemarkProcessingUtil {
 
 		return jyxxsqList;
 	}
+
 
 
 	/**
@@ -105,7 +105,7 @@ public class RemarkProcessingUtil {
 	 * @param params
 	 * @return String
 	 */
-	public String getAndSetField(Object obj,/*Object obj2,*/ String params) throws Exception{
+	public String getAndSetField(Object obj,/*Object obj2,*/ String params) {
 		Field fields[] = obj.getClass().getDeclaredFields();// 获得对象所有属性
 		Field field = null;
 		String[] attr = params.split("\\$");
@@ -155,7 +155,28 @@ public class RemarkProcessingUtil {
 		}
 		return sb.toString();
 	}
-	
+
+
+	public String  dealRemark(Jyxxsq jyxxsq,String value){
+		String bz = "";
+		if( null !=value && !value.equals("")){
+			if(value.startsWith("A")){
+				bz = getAndSetField(jyxxsq, value).substring(1)+";";
+				bz = bz +" "+ (null ==jyxxsq.getBz()?"":jyxxsq.getBz());
+			}else if(value.startsWith("B")){
+				bz = getAndSetField(jyxxsq, value).substring(1)+";";
+				bz = (null ==jyxxsq.getBz()?"":jyxxsq.getBz())+" "+bz;
+			}else{
+				bz = getAndSetField(jyxxsq, value)+";";
+				bz = (null ==jyxxsq.getBz()?"":jyxxsq.getBz())+" "+bz;
+			}
+
+		}else{
+			bz = (null ==jyxxsq.getBz()?"":jyxxsq.getBz());
+		}
+		return bz;
+	}
+
     public static void main(String[] args) {
     	ZffsVo tt = new ZffsVo();
     	tt.setZffsDm("01");
