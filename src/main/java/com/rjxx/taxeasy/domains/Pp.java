@@ -102,6 +102,25 @@ public class Pp implements Serializable {
     @Column(name = "ali_sub_m_short_name")
     protected String aliSubMShortName;
 
+    private String ppheadcolor;
+    private String ppbodycolor;
+
+    public String getPpheadcolor() {
+        return ppheadcolor;
+    }
+
+    public void setPpheadcolor(String ppheadcolor) {
+        this.ppheadcolor = ppheadcolor;
+    }
+
+    public String getPpbodycolor() {
+        return ppbodycolor;
+    }
+
+    public void setPpbodycolor(String ppbodycolor) {
+        this.ppbodycolor = ppbodycolor;
+    }
+
     public Integer getId() {
         return id;
     }
