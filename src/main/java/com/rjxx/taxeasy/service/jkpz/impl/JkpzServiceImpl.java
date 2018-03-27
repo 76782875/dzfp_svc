@@ -11,6 +11,7 @@ import com.rjxx.taxeasy.dao.SkpJpaDao;
 import com.rjxx.taxeasy.dao.XfJpaDao;
 import com.rjxx.taxeasy.domains.*;
 import com.rjxx.taxeasy.dto.AdapterPost;
+import com.rjxx.taxeasy.dto.AdapterPostRedData;
 import com.rjxx.taxeasy.dto.AdapterRedData;
 import com.rjxx.taxeasy.invoice.KpService;
 import com.rjxx.taxeasy.service.*;
@@ -216,9 +217,10 @@ public class JkpzServiceImpl implements JkpzService {
             }
             //红冲
             if(reqType.equals("04")){
-                JSONObject jsondata = jsonObject.getJSONObject("data");
+                String adapterRedData = jsonObject.getString("data");
                 ObjectMapper mapper = new ObjectMapper();
-//                AdapterRedData redData =  mapper.readValue(jsondata, AdapterRedData.class);
+                AdapterRedData adapterPost = mapper.readValue(adapterRedData, AdapterRedData.class);
+
             }
 
 
