@@ -20,6 +20,9 @@
 
     <select id="findByPage" parameterType="pagination" resultType="jkmbb">
         select * from t_jkmbb where yxbz = '1'
+        <if test="gsdm != null">
+            and gsdm = #{gsdm}
+        </if>
         <if test="params.orderBy != null">
             order by ${params.orderBy}
         </if>

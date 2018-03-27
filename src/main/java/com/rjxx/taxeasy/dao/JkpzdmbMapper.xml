@@ -12,7 +12,10 @@
     </select>
 
     <select id="findAllByParams" parameterType="map" resultType="jkpzdmb">
-        select * from t_jkpzdmb where yxbz = '1'
+        select * from t_jkpzdmb WHERE 1=1
+        <if test="pzbid != null">
+            and pzbid = #{pzbid}
+        </if>
         <if test="orderBy != null">
             order by ${orderBy}
         </if>
