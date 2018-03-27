@@ -1,6 +1,6 @@
 package com.rjxx.taxeasy.dao;
 
-import com.rjxx.taxeasy.domains.Jkpzzb;
+import com.rjxx.taxeasy.domains.Jkmbzb;
 import org.springframework.data.repository.CrudRepository;
 
 /**
@@ -10,7 +10,7 @@ import org.springframework.data.repository.CrudRepository;
  *
  * @ZhangBing
  */ 
-public interface JkpzzbJpaDao extends CrudRepository<Jkpzzb, Integer> {
+public interface JkmbzbJpaDao extends CrudRepository<Jkmbzb, Integer> {
 
 }
 

@@ -2,7 +2,7 @@ package com.rjxx.taxeasy.dao;
 
 import com.rjxx.comm.mybatis.MybatisRepository;
 import com.rjxx.comm.mybatis.Pagination;
-import com.rjxx.taxeasy.domains.Jkpzzb;
+import com.rjxx.taxeasy.domains.Jkmbzb;
 import com.rjxx.taxeasy.vo.JkpzVo;
 
 import java.util.List;
@@ -16,13 +16,13 @@ import java.util.Map;
  * @ZhangBing
  */ 
 @MybatisRepository
-public interface JkpzzbMapper {
+public interface JkmbzbMapper {
 
-    public Jkpzzb findOneByParams(Map params);
+    public Jkmbzb findOneByParams(Map params);
 
-    public List<Jkpzzb> findAllByParams(Map params);
+    public List<Jkmbzb> findAllByParams(Map params);
 
-    public List<Jkpzzb> findByPage(Pagination pagination);
+    public List<Jkmbzb> findByPage(Pagination pagination);
 
     List<JkpzVo> findByMbId(Integer mbid);
 

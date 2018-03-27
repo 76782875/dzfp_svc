@@ -389,9 +389,12 @@ public class JkpzUtil {
             }
             //购方
             AdapterDataOrderBuyer buyer = adapterPost.getData().getOrder().getBuyer();
-            if(buyer==null){
-                result="获取购方信息错误";
-                return result;
+            //交易数据上传
+            if(adapterPost.getReqType()!=null && !adapterPost.getReqType().equals("02")){
+                if(buyer==null){
+                    result="获取购方信息错误";
+                    return result;
+                }
             }
             //商品信息list
             List<AdapterDataOrderDetails> orderDetailList = adapterPost.getData().getOrder().getOrderDetails();
@@ -503,18 +506,21 @@ public class JkpzUtil {
                     }
                     break;
                 case "buyer":
-                    jyxxsq.setGfsh(buyer.getIdentifier());
-                    jyxxsq.setGfmc(buyer.getName());
-                    jyxxsq.setGflx(buyer.getCustomerType());
-                    jyxxsq.setGfyh(buyer.getBank());
-                    jyxxsq.setGfyhzh(buyer.getBankAcc());
-                    jyxxsq.setGflxr(buyer.getRecipient());
-                    jyxxsq.setGfdz(buyer.getReciAddress());
-                    jyxxsq.setGfdh(buyer.getTelephoneNo());
-                    jyxxsq.setGfyb(buyer.getZip());
-                    jyxxsq.setGfemail(buyer.getEmail());
-                    if(StringUtils.isNotBlank(buyer.getEmail())){
-                        jyxxsq.setSffsyj("1");
+                    //02 交易数据上传不封装购方
+                    if(!adapterPost.getReqType().equals("02")){
+                        jyxxsq.setGfsh(buyer.getIdentifier());
+                        jyxxsq.setGfmc(buyer.getName());
+                        jyxxsq.setGflx(buyer.getCustomerType());
+                        jyxxsq.setGfyh(buyer.getBank());
+                        jyxxsq.setGfyhzh(buyer.getBankAcc());
+                        jyxxsq.setGflxr(buyer.getRecipient());
+                        jyxxsq.setGfdz(buyer.getReciAddress());
+                        jyxxsq.setGfdh(buyer.getTelephoneNo());
+                        jyxxsq.setGfyb(buyer.getZip());
+                        jyxxsq.setGfemail(buyer.getEmail());
+                        if(StringUtils.isNotBlank(buyer.getEmail())){
+                            jyxxsq.setSffsyj("1");
+                        }
                     }
                     break;
             }

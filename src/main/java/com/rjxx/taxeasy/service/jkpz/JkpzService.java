@@ -13,5 +13,5 @@ import java.util.Map;
 
 public interface JkpzService {
 
-    Result jkpzInvoice(AdapterPost adapterPost);
+    Result jkpzInvoice(String data);
 }

@@ -1,8 +1,12 @@
 package com.rjxx.utils;
 
+import com.alibaba.fastjson.JSON;
+import com.rjxx.taxeasy.dto.*;
+import com.rjxx.utils.weixin.HttpClientUtil;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
 
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -187,33 +191,72 @@ public class RJCheckUtil {
      * 以下所有方法为白盒测试时候使用，不涉及业务
      */
     //生成Q
-    public static void main(String[] args) {
-        //公司信息的key
-        String key="d8d66cd97983a8569b3f2aab19d7d5e7";
-        Map map = new HashMap();
-        //订单号
-        String on = System.currentTimeMillis() + "X";
-        //订单时间
-        String ot = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-        //金额
-        String pr = "10";
-        //门店号
-        String sn = "BF0074";
-        //商品代码
-        String sp = "1";
-        map.put("A0",on);
-        map.put("A1",ot);
-        map.put("A2", pr);
-        map.put("A3", sn);
-        //如果没有商品代码请注释
-        map.put("A4", sp);
-        String result = getQForAll(key, map,"on","ot","pr","sn"
-        //如果没有商品代码请注释
-        ,"sp"
-        );
-        System.out.println(result);
-    }
+//    public static void main(String[] args) {
+//        //公司信息的key
+//        String key="d8d66cd97983a8569b3f2aab19d7d5e7";
+//        Map map = new HashMap();
+//        //订单号
+//        String on = System.currentTimeMillis() + "X";
+//        //订单时间
+//        String ot = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+//        //金额
+//        String pr = "10";
+//        //门店号
+//        String sn = "BF0074";
+//        //商品代码
+//        String sp = "1";
+//        map.put("A0",on);
+//        map.put("A1",ot);
+//        map.put("A2", pr);
+//        map.put("A3", sn);
+//        //如果没有商品代码请注释
+//        map.put("A4", sp);
+//        System.out.println(JSON.toJSONString(map));
+//        String result = getQForAll(key, map,"on","ot","pr","sn"
+//        //如果没有商品代码请注释
+//        ,"sp"
+//        );
+//        System.out.println(result);
+//    }
 
+    public static void main(String[] args) throws UnsupportedEncodingException {
+        AdapterGet adapterGet = new AdapterGet();
+        adapterGet.setType("1");
+        adapterGet.setOn("20180326");
+        adapterGet.setOt("20180326180900");
+        adapterGet.setPr("10");
+        String dataJson = JSON.toJSONString(adapterGet);
+        String key = "fa19f6c4d0e4144e8115ed71b0e4c349";
+        String sign = DigestUtils.md5Hex("data=" + dataJson + "&key=" + key);
+        String str = "data=" + dataJson + "&si=" + sign;
+        String encode = Base64Util.encode(str);
+        System.out.println(encode);
+
+
+//        Map map1 = new HashMap();
+//        //订单号
+//        String on = System.currentTimeMillis() + "X";
+//        //订单时间
+//        String ot = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+//        //金额
+//        String pr = "10";
+//        //门店号
+//        String sn = "BF0074";
+//        //商品代码
+//        String sp = "1";
+//        map1.put("A0",on);
+//        map1.put("A1",ot);
+//        map1.put("A2", pr);
+//        map1.put("A3", sn);
+//        //如果没有商品代码请注释
+//        map1.put("A4", sp);
+//        System.out.println(JSON.toJSONString(map1));
+//        String result1 = getQForAll(key, map1,"on","ot","pr","sn"
+//        //如果没有商品代码请注释
+//        ,"sp"
+//        );
+//        System.out.println(result1);
+    }
 //    public static void main(String[] args) {
 //        AdapterPost post = new AdapterPost();
 //        AdapterData data = new AdapterData();

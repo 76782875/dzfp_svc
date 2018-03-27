@@ -1,6 +1,8 @@
 package com.rjxx.taxeasy.service.jkpz.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itextpdf.text.log.Logger;
 import com.itextpdf.text.log.LoggerFactory;
 import com.rjxx.taxeasy.bizcomm.utils.GetXmlUtil;
@@ -35,7 +37,7 @@ import java.util.*;
 public class JkpzServiceImpl implements JkpzService {
 
     @Autowired
-    private JkpzzbService jkpzzbService;
+    private JkmbzbService jkmbzbService;
 
     @Autowired
     private CszbService cszbService;
@@ -62,16 +64,16 @@ public class JkpzServiceImpl implements JkpzService {
 
     /**
      * 接口配置业务处理，封装数据
-     * @param adapterPost
+     * @param data
      * @return
      */
-    public Result jkpzInvoice(AdapterPost adapterPost){
-
-        Map resultMap=new HashMap();
-        if(adapterPost==null){
-            return ResultUtil.error("参数错误");
-        }
+    public Result jkpzInvoice(String data){
         try {
+            ObjectMapper mapper = new ObjectMapper();
+            AdapterPost adapterPost=mapper.readValue(data, AdapterPost.class);
+            if(adapterPost==null){
+                return ResultUtil.error("参数错误");
+            }
             Jyxxsq jyxxsq = new Jyxxsq();
             List<Jymxsq> jymxsqList = new ArrayList();
             List<Jyzfmx> jyzfmxList = new ArrayList();
@@ -110,8 +112,8 @@ public class JkpzServiceImpl implements JkpzService {
                 return ResultUtil.error("模板未配置");
             }
             //获取数据模板
-            List<JkpzVo> jkpzzbList = jkpzzbService.findByMbId(Integer.getInteger(cszb.getCsz()));
-            if(jkpzzbList.isEmpty()){
+            List<JkpzVo> jkmbzbList = jkmbzbService.findByMbId(Integer.getInteger(cszb.getCsz()));
+            if(jkmbzbList.isEmpty()){
                 return ResultUtil.error("模板设置有误");
             }
             String result ="";
@@ -143,7 +145,7 @@ public class JkpzServiceImpl implements JkpzService {
                 jyxxsq.setFpczlxdm("11");
             }
             //反射 封装数据
-            for (JkpzVo jkpzVo : jkpzzbList) {
+            for (JkpzVo jkpzVo : jkmbzbList) {
                 Map paraMap = new HashMap();
                 paraMap.put("gsxx", gsxx);
                 paraMap.put("xf", xf);
@@ -187,7 +189,13 @@ public class JkpzServiceImpl implements JkpzService {
                     jymxsq.setYxbz("1");
                 }
             }
-            String msg = checkOrderUtil.checkAll(jyxxsqList,jymxsqList,jyzfmxList,gsdm,"");
+            String msg ="";
+            if(adapterPost.getReqType().equals("02")){
+                msg = checkOrderUtil.checkOrders(jyxxsqList,jymxsqList,jyzfmxList,gsdm,"02");
+            }
+            if(adapterPost.getReqType().equals("01")){
+                msg = checkOrderUtil.checkAll(jyxxsqList,jymxsqList,jyzfmxList,gsdm,"01");
+            }
             if(StringUtils.isNotBlank(msg)){
                 return ResultUtil.error(msg);
             }

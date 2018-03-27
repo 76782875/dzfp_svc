@@ -2,21 +2,19 @@ package com.rjxx.taxeasy.domains;
 
 import java.util.Date;
 import javax.persistence.*;
-import org.hibernate.annotations.GenericGenerator;
-import com.rjxx.comm.json.JsonDateFormat;
 import com.rjxx.comm.json.JsonDatetimeFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 import java.io.Serializable;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 /**
- * t_jkpzzb 实体类
+ * t_jkmbzb 实体类
  * 由GenEntityMysql类自动生成
  * Tue Mar 20 16:08:46 CST 2018
  * @ZhangBing
  */ 
 @Entity
-@Table(name="t_jkpzzb")
-public class Jkpzzb  implements Serializable {
+@Table(name="t_jkmbzb")
+public class Jkmbzb  implements Serializable {
 
 /**
  * 主键id
