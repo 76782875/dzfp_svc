@@ -258,9 +258,10 @@ public class JkpzServiceImpl implements JkpzService {
                 }
                 return ResultUtil.success(result);
             }else {
-                result="不支持的请求类型";
+                result ="不支持的请求类型";
                 return ResultUtil.error(result);
             }
+
         } catch (Exception e) {
             e.printStackTrace();
             return ResultUtil.error("系统错误");

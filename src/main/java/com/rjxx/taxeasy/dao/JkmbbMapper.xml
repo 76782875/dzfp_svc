@@ -23,9 +23,6 @@
         <if test="params.gsdm != null">
             and gsdm = #{params.gsdm}
         </if>
-        <if test="params.mbmc != null and params.mbmc != ''">
-            and mbmc like concat('%',#{params.mbmc},'%')
-        </if>
         <if test="params.orderBy != null">
             order by ${params.orderBy}
         </if>
