@@ -19,7 +19,7 @@
     </select>
 
     <select id="findByPage" parameterType="pagination" resultType="jkmbbVo">
-            select a.*,b.* from t_jkmbb a LEFT JOIN t_gsxx b on a.gsdm = b.gsdm and a.yxbz= '1'
+            select a.*,b.gsmc from t_jkmbb a ,t_gsxx b WHERE a.gsdm = b.gsdm and a.yxbz= '1'
         <if test="params.gsdm != null">
             and a.gsdm = #{params.gsdm}
         </if>
