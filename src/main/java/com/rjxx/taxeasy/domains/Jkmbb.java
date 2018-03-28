@@ -9,67 +9,58 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.io.Serializable;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 /**
- * t_jkpzzb 实体类
+ * t_jkmbb 实体类
  * 由GenEntityMysql类自动生成
- * Tue Mar 20 16:08:46 CST 2018
+ * Tue Mar 27 10:48:49 CST 2018
  * @ZhangBing
  */ 
 @Entity
-@Table(name="t_jkpzzb")
-public class Jkpzzb  implements Serializable {
+@Table(name="t_jkmbb")
+public class Jkmbb  implements Serializable {
 
-/**
- * 主键id
- */ 
 @Id
 @GeneratedValue(strategy=GenerationType.IDENTITY)
 	protected Integer id;
 
 /**
- * 模板id
+ * 模板名称
  */ 
-@Column(name="mbid")
-	protected Integer mbid;
+@Column(name="mbmc")
+	protected String mbmc;
 
 /**
- * t_jkpzb表id
+ * 公司代码
  */ 
-@Column(name="pzbid")
-	protected Integer pzbid;
+@Column(name="gsdm")
+	protected String gsdm;
 
 /**
- * 获取接口参数方法（字典表）
+ * 模板描述
  */ 
-@Column(name="cszffid")
-	protected Integer cszffid;
+@Column(name="mbms")
+	protected String mbms;
 
 /**
- * 录入人员
+ * 有效标志
  */ 
-@Column(name="lrry")
-	protected Integer lrry;
+@Column(name="yxbz")
+	protected String yxbz;
 
-/**
- * 录入时间
- */ 
 @Column(name="lrsj")
 @JsonSerialize(using = JsonDatetimeFormat.class)
 @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	protected Date lrsj;
 
-/**
- * 修改人员
- */ 
-@Column(name="xgry")
-	protected Integer xgry;
+@Column(name="lrry")
+	protected Integer lrry;
 
-/**
- * 修改时间
- */ 
 @Column(name="xgsj")
 @JsonSerialize(using = JsonDatetimeFormat.class)
 @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	protected Date xgsj;
+
+@Column(name="xgry")
+	protected Integer xgry;
 
 
 	public Integer getId(){
@@ -80,36 +71,36 @@ public class Jkpzzb  implements Serializable {
 		this.id=id;
 	}
 
-	public Integer getMbid(){
-		return mbid;
+	public String getMbmc(){
+		return mbmc;
 	}
 
-	public void setMbid(Integer mbid){
-		this.mbid=mbid;
+	public void setMbmc(String mbmc){
+		this.mbmc=mbmc;
 	}
 
-	public Integer getPzbid(){
-		return pzbid;
+	public String getGsdm(){
+		return gsdm;
 	}
 
-	public void setPzbid(Integer pzbid){
-		this.pzbid=pzbid;
+	public void setGsdm(String gsdm){
+		this.gsdm=gsdm;
 	}
 
-	public Integer getCszffid() {
-		return cszffid;
+	public String getMbms(){
+		return mbms;
 	}
 
-	public void setCszffid(Integer cszffid) {
-		this.cszffid = cszffid;
+	public void setMbms(String mbms){
+		this.mbms=mbms;
 	}
 
-	public Integer getLrry(){
-		return lrry;
+	public String getYxbz(){
+		return yxbz;
 	}
 
-	public void setLrry(Integer lrry){
-		this.lrry=lrry;
+	public void setYxbz(String yxbz){
+		this.yxbz=yxbz;
 	}
 
 	public Date getLrsj(){
@@ -120,12 +111,12 @@ public class Jkpzzb  implements Serializable {
 		this.lrsj=lrsj;
 	}
 
-	public Integer getXgry(){
-		return xgry;
+	public Integer getLrry(){
+		return lrry;
 	}
 
-	public void setXgry(Integer xgry){
-		this.xgry=xgry;
+	public void setLrry(Integer lrry){
+		this.lrry=lrry;
 	}
 
 	public Date getXgsj(){
@@ -134,6 +125,14 @@ public class Jkpzzb  implements Serializable {
 
 	public void setXgsj(Date xgsj){
 		this.xgsj=xgsj;
+	}
+
+	public Integer getXgry(){
+		return xgry;
+	}
+
+	public void setXgry(Integer xgry){
+		this.xgry=xgry;
 	}
 
 }

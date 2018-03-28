@@ -12,6 +12,7 @@ public class AdapterPost {
     private String clientNo;
     private String sign;
     private String viewId;
+    private String reqType;
     private AdapterData data;
 
     public String getAppId() {
@@ -60,5 +61,13 @@ public class AdapterPost {
 
     public void setViewId(String viewId) {
         this.viewId = viewId;
+    }
+
+    public String getReqType() {
+        return reqType;
+    }
+
+    public void setReqType(String reqType) {
+        this.reqType = reqType;
     }
 }
