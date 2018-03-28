@@ -3,6 +3,7 @@ package com.rjxx.taxeasy.dao;
 import com.rjxx.comm.mybatis.MybatisRepository;
 import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.domains.Jkmbb;
+import com.rjxx.taxeasy.vo.JkmbbVo;
 
 import java.util.List;
 import java.util.Map;
@@ -23,7 +24,7 @@ public interface JkmbbMapper {
 
     public List<Jkmbb> findAllByParams(Map params);
 
-    public List<Jkmbb> findByPage(Pagination pagination);
+    public List<JkmbbVo> findByPage(Pagination pagination);
 
 }
 

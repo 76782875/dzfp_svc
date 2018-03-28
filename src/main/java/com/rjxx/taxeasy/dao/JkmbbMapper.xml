@@ -18,10 +18,10 @@
         </if>
     </select>
 
-    <select id="findByPage" parameterType="pagination" resultType="jkmbb">
-            select * from t_jkmbb where 1 = 1
+    <select id="findByPage" parameterType="pagination" resultType="jkmbbVo">
+            select a.*,b.* from t_jkmbb a LEFT JOIN t_gsxx b on a.gsdm = b.gsdm and a.yxbz= '1'
         <if test="params.gsdm != null">
-            and gsdm = #{params.gsdm}
+            and a.gsdm = #{params.gsdm}
         </if>
         <if test="params.orderBy != null">
             order by ${params.orderBy}

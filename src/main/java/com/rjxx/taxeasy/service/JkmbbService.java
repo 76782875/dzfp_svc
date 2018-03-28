@@ -4,6 +4,7 @@ import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.dao.JkmbbJpaDao;
 import com.rjxx.taxeasy.dao.JkmbbMapper;
 import com.rjxx.taxeasy.domains.Jkmbb;
+import com.rjxx.taxeasy.vo.JkmbbVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,7 +48,7 @@ public class JkmbbService {
         return jkmbbMapper.findAllByParams(params);
     }
 
-    public List<Jkmbb> findByPage(Pagination pagination) {
+    public List<JkmbbVo> findByPage(Pagination pagination) {
         return jkmbbMapper.findByPage(pagination);
     }
 
