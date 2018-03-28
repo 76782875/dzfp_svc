@@ -181,6 +181,24 @@ public class SkService {
     }
 
     /**
+     *
+     * 向税控socket服务发送数据
+     * @param
+     * @return
+     */
+    public String sendMessage(String  datajson) throws Exception{
+        if (StringUtils.isBlank(skServerUrl)) {
+            return "skServerUrl为空";
+        }
+        String encryptStr = encryptSkServerParameter(datajson + "");
+        String url = skServerUrl + "/invoice/sendMessage";
+        Map<String, String> map = new HashMap<>();
+        map.put("p", encryptStr);
+        String result = HttpUtils.doPost(url, map);
+        return result;
+    }
+
+    /**
      * 加密税控服务参数
      *
      * @param params
