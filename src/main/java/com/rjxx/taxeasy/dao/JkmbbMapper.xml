@@ -20,11 +20,11 @@
 
     <select id="findByPage" parameterType="pagination" resultType="jkmbb">
             select * from t_jkmbb where 1 = 1
-        <if test="gsdm != null">
-            and gsdm = #{gsdm}
+        <if test="params.gsdm != null">
+            and gsdm = #{params.gsdm}
         </if>
-        <if test="mbmc != null and mbmc != ''">
-            and mbmc like concat('%',#{mbmc},'%')
+        <if test="params.mbmc != null and params.mbmc != ''">
+            and mbmc like concat('%',#{params.mbmc},'%')
         </if>
         <if test="params.orderBy != null">
             order by ${params.orderBy}
