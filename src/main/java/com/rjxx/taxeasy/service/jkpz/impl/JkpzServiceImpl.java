@@ -13,7 +13,9 @@ import com.rjxx.taxeasy.domains.*;
 import com.rjxx.taxeasy.dto.AdapterPost;
 import com.rjxx.taxeasy.dto.AdapterPostRedData;
 import com.rjxx.taxeasy.dto.AdapterRedData;
+import com.rjxx.taxeasy.dto.AdapterRedInvoiceItem;
 import com.rjxx.taxeasy.invoice.KpService;
+import com.rjxx.taxeasy.invoice.Kphc;
 import com.rjxx.taxeasy.service.*;
 import com.rjxx.taxeasy.service.jkpz.JkpzService;
 import com.rjxx.taxeasy.vo.JkpzVo;
@@ -65,12 +67,13 @@ public class JkpzServiceImpl implements JkpzService {
     private Logger logger = LoggerFactory.getLogger(JkpzServiceImpl.class);
 
     /**
-     * 接口配置业务处理，封装数据
+     * 接口配置业务处理:发票开具、上传、红冲
      * @param data
      * @return
      */
     public Result jkpzInvoice(String data){
         try {
+            String result="";
             JSONObject jsonObject = JSONObject.parseObject(data);
             String reqType = jsonObject.getString("reqType");
             if(StringUtils.isBlank(reqType)){
@@ -125,7 +128,6 @@ public class JkpzServiceImpl implements JkpzService {
                 if(jkmbzbList.isEmpty()){
                     return ResultUtil.error("模板设置有误");
                 }
-                String result ="";
                 if(adapterPost.getData().getOrder()!=null){
                     //加税合计
                     if(adapterPost.getData().getOrder().getTotalAmount()==null){
@@ -213,22 +215,57 @@ public class JkpzServiceImpl implements JkpzService {
                 kpMap.put("jyxxsqList",jyxxsqList);
                 kpMap.put("jymxsqList",jymxsqList);
                 kpMap.put("jyzfmxList",jyzfmxList);
-                String resu = kpService.dealOrder(gsdm, kpMap, "01");
+                result = kpService.dealOrder(gsdm, kpMap, "01");
+                return ResultUtil.success(result);
             }
             //红冲
             if(reqType.equals("04")){
                 String adapterRedData = jsonObject.getString("data");
                 ObjectMapper mapper = new ObjectMapper();
-                AdapterRedData adapterPost = mapper.readValue(adapterRedData, AdapterRedData.class);
-
+                AdapterRedData adapterRedData1 = mapper.readValue(adapterRedData, AdapterRedData.class);
+                String appId = jsonObject.getString("appId");
+                Map map = new HashMap();
+                map.put("appkey",appId);
+                Gsxx gsxx = gsxxService.findOneByParams(map);
+                String gsdm = gsxx.getGsdm();
+                //发票明细
+                List<AdapterRedInvoiceItem> list = adapterRedData1.getInvoiceItem();
+                String invType = adapterRedData1.getInvType();
+                String serialNumber = adapterRedData1.getSerialNumber();
+//                String hcResult = "";
+                for (AdapterRedInvoiceItem item : list) {
+                    Kphc kphc= new Kphc();
+                    kphc.setSerialNumber(serialNumber);//序列号
+                    kphc.setTotalAmount(item.getTotalAmount());//加税合计
+                    kphc.setCNDNCode(item.getCndnCode());//原发票代码
+                    kphc.setCNDNNo(item.getCndnNo());//原发票号码
+                    kphc.setInvType(invType);//发票种类
+                    kphc.setCNNoticeNo(item.getCnnoticeNo());//专票红字通知单号
+                    kphc.setServiceType("1");
+                    if(invType.equals("01")){
+                        if(StringUtils.isBlank(item.getCnnoticeNo())){
+                            result ="发票种类为专票，红字通知单号不能为空！";
+                            break;
+                        }
+                    }
+                    //红冲
+                    Map HcMap = new HashMap();
+                    HcMap.put("Kphc",kphc);
+                    String hcResult = kpService.dealOrder(gsdm, HcMap, "04");
+                    if(StringUtils.isNotBlank(hcResult)){
+                        result += hcResult;
+                    }
+                }
+                return ResultUtil.success(result);
+            }else {
+                result="不支持的请求类型";
+                return ResultUtil.error(result);
             }
-
-
         } catch (Exception e) {
             e.printStackTrace();
             return ResultUtil.error("系统错误");
         }
-        return ResultUtil.success();
+//        return ResultUtil.success();
     }
 
     /**
