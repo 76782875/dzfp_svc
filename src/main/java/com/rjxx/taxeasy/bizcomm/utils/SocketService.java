@@ -30,8 +30,8 @@ import java.util.Map;
 /**
  * Created by 许黎明 on 2018/3/28.
  */
-@Service("skInvoiceService")
-public class SkInvoiceService {
+@Service
+public class SocketService {
 
     @Autowired
     private SkService skService;
