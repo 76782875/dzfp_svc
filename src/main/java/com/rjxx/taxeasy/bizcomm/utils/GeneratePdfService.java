@@ -285,6 +285,7 @@ public class GeneratePdfService {
                                     try{
                                         SFtpUtil.uploadFile(PasswordConfig.FTP_URL,PasswordConfig.FTP_PORT,PasswordConfig.FTP_USERNAME,PasswordConfig.FTP_PASSWORD,PasswordConfig.FTP_BASEPATH,PasswordConfig.FTP_FILEPATH,kpls.getJylsh()+".pdf",in);
                                     }catch (JSchException a){
+                                        a.printStackTrace();
                                         this.generatePdf(kplsh);
                                     }
                                 }
