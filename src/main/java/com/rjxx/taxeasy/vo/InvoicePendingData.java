@@ -4,13 +4,14 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 
 /**
  * Created by Administrator on 2017-03-21.
  */
 @XmlRootElement(name = "InvoicePendingData")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class InvoicePendingData {
+public class InvoicePendingData implements Serializable{
 
     @XmlElement(name = "Success")
     private String success;
