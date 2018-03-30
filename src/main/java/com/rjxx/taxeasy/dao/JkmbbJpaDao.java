@@ -1,6 +1,7 @@
 package com.rjxx.taxeasy.dao;
 
 import com.rjxx.taxeasy.domains.Jkmbb;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 /**
@@ -13,5 +14,7 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface JkmbbJpaDao extends CrudRepository<Jkmbb, Integer> {
 
+    @Query(nativeQuery = true,value = "select * from t_jkmbb where id=?1 and yxbz='1'")
+    Jkmbb findByid(Integer id);
 }
 
