@@ -1,5 +1,9 @@
 package com.rjxx.taxeasy.vo;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.rjxx.comm.json.JsonDatetimeFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 /**
@@ -14,8 +18,14 @@ public class JkpzVo {
 
     private String cszff;
 
+    private Integer cszffid;
+
+    private Integer pzbid;
+
     private String lrry;
 
+    @JsonSerialize(using = JsonDatetimeFormat.class)
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date lrsj;
 
     private String xgry;
@@ -106,5 +116,21 @@ public class JkpzVo {
 
     public void setCsm(String csm) {
         this.csm = csm;
+    }
+
+    public Integer getCszffid() {
+        return cszffid;
+    }
+
+    public void setCszffid(Integer cszffid) {
+        this.cszffid = cszffid;
+    }
+
+    public Integer getPzbid() {
+        return pzbid;
+    }
+
+    public void setPzbid(Integer pzbid) {
+        this.pzbid = pzbid;
     }
 }

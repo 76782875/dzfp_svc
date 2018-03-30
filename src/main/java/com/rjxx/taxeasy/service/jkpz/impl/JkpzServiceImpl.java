@@ -7,6 +7,7 @@ import com.itextpdf.text.log.Logger;
 import com.itextpdf.text.log.LoggerFactory;
 import com.rjxx.taxeasy.bizcomm.utils.GetXmlUtil;
 import com.rjxx.taxeasy.bizcomm.utils.HttpUtils;
+import com.rjxx.taxeasy.dao.JkmbzbJpaDao;
 import com.rjxx.taxeasy.dao.SkpJpaDao;
 import com.rjxx.taxeasy.dao.XfJpaDao;
 import com.rjxx.taxeasy.domains.*;
@@ -63,6 +64,9 @@ public class JkpzServiceImpl implements JkpzService {
 
     @Autowired
     private KpService kpService;
+
+    @Autowired
+    private JkmbzbJpaDao jkmbzbJpaDao;
 
     private Logger logger = LoggerFactory.getLogger(JkpzServiceImpl.class);
 
@@ -123,8 +127,10 @@ public class JkpzServiceImpl implements JkpzService {
                 if(cszb==null){
                     return ResultUtil.error("模板未配置");
                 }
+                Map map1 = new HashMap();
+                map1.put("mbid",Integer.getInteger(cszb.getCsz()));
                 //获取数据模板
-                List<JkpzVo> jkmbzbList = jkmbzbService.findByMbId(Integer.getInteger(cszb.getCsz()));
+                List<JkpzVo> jkmbzbList = jkmbzbService.findByMbId(map1);
                 if(jkmbzbList.isEmpty()){
                     return ResultUtil.error("模板设置有误");
                 }

@@ -22,9 +22,9 @@ public interface JkmbzbMapper {
 
     public List<Jkmbzb> findAllByParams(Map params);
 
-    public List<Jkmbzb> findByPage(Pagination pagination);
+    public List<JkpzVo> findByPage(Pagination pagination);
 
-    List<JkpzVo> findByMbId(Integer mbid);
+    List<JkpzVo> findByMbId(Map map);
 
 }
 

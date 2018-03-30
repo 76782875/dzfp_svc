@@ -47,12 +47,12 @@ public class JkmbzbService {
         return jkmbzbMapper.findAllByParams(params);
     }
 
-    public List<Jkmbzb> findByPage(Pagination pagination) {
+    public List<JkpzVo> findByPage(Pagination pagination) {
         return jkmbzbMapper.findByPage(pagination);
     }
 
-    public List<JkpzVo> findByMbId(Integer mbid){
-        return jkmbzbMapper.findByMbId(mbid);
+    public List<JkpzVo> findByMbId(Map map){
+        return jkmbzbMapper.findByMbId(map);
     }
 }
 

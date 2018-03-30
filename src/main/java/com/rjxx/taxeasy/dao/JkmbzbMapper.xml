@@ -18,20 +18,28 @@
         </if>
     </select>
 
-    <select id="findByPage" parameterType="pagination" resultType="jkmbzb">
-        select * from t_jkmbzb where yxbz = '1'
+    <select id="findByPage" parameterType="pagination" resultType="jkpzvo">
+        select a.*, b.pzcsm,c.csm,c.cszff,b.pzcsmc
+        from t_jkmbzb a,
+        t_jkpzb b,
+        t_jkpzdmb c
+        where a.pzbid = b.id AND  a.cszffid = c.id
+        AND c.pzbid = b.id
+        <if test="params.mbid != null and params.mbid != ''">
+            and   mbid = #{params.mbid}
+        </if>
         <if test="params.orderBy != null">
             order by ${params.orderBy}
         </if>
     </select>
 
     <select id="findByMbId" parameterType="map" resultType="jkpzVo">
-        select a.*, b.pzcsm,c.csm,c.cszff
+        select a.*, b.pzcsm,c.csm,c.cszff,b.pzcsmc
         from t_jkmbzb a,
         t_jkpzb b,
         t_jkpzdmb c
         where a.pzbid = b.id AND  a.cszffid = c.id
-        AND c.pzbid = b.id;
+        AND c.pzbid = b.id
         <if test="mbid != null">
             and a.mbid = #{mbid}
         </if>
