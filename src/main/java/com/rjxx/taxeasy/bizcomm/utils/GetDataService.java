@@ -684,7 +684,8 @@ public class GetDataService {
             parms.put("gsdm",gsdm);
             Gsxx gsxx=gsxxService.findOneByParams(parms);
             Map resultMap = null;
-            HttpPost httpPost = new HttpPost("http://103.13.247.68:6180/EinvoiceWeb/service/EInvoiceWS/QueryOrder");
+//            HttpPost httpPost = new HttpPost("http://103.13.247.68:6180/EinvoiceWebvoiceWeb/strMessageervice/EInvoiceWS/QueryOrder");
+            HttpPost httpPost = new HttpPost("http://172.16.0.221:6180/EinvoiceWeb/service/EInvoiceWS/QueryOrder");
             CloseableHttpResponse response = null;
             RequestConfig requestConfig = RequestConfig.custom().
                     setSocketTimeout(120*1000).setConnectionRequestTimeout(120*1000).setConnectTimeout(120*1000).build();
