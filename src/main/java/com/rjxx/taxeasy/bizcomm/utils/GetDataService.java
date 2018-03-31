@@ -36,7 +36,7 @@ import java.util.regex.Pattern;
 
 /**
  * Created by xlm on 2017/7/3.
- * 鑾峰彇鍏ㄥ锛岀豢鍦颁紭椴滄帴鍙ｆ彁渚涚殑鏁版嵁
+ * 获取全家，绿地优鲜接口提供的数据
  */
 @Service
 public class GetDataService {
@@ -72,7 +72,7 @@ public class GetDataService {
         String xml3 = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "\t\t\t\t<Responese>\n" +
                 "\t\t\t\t<ReturnCode>9002</ReturnCode>\n" +
-                "\t\t\t\t<ReturnMessage>鏈彁鍙栧埌浜ゆ槗鏁版嵁锛岃绋嶅悗鍐嶈瘯</ReturnMessage>\n" +
+                "\t\t\t\t<ReturnMessage>未提取到交易数据，请稍后再试</ReturnMessage>\n" +
                 "\t\t\t\t</Responese>\n";
             String xml1="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                     "<Responese>\n" +
@@ -86,10 +86,10 @@ public class GetDataService {
                     "\t<StoreNo></StoreNo>\n" +
                     "\t<Seller>\n" +
                     "\t\t<Identifier>9131000071785090X1</Identifier>\n" +
-                    "\t\t<Name>涓婃捣绂忔弧瀹朵究鍒╂湁闄愬叕鍙�</Name>\n" +
-                    "\t\t<Address>涓婃捣甯傛櫘闄�鍖虹湡鍖楄矾2167鍙蜂笂娴烽缚娴峰ぇ鍘﹀晢閾�2鏍�1灞�09鍙峰晢閾�</Address>\n" +
+                    "\t\t<Name>上海福满家便利有限公司</Name>\n" +
+                    "\t\t<Address>上海市普陀区真北路2167号上海鸿海大厦商铺2栋1层09号商铺</Address>\n" +
                     "\t\t<TelephoneNo>021-62723187</TelephoneNo>\n" +
-                    "\t\t<Bank>涓浗姘戠敓閾惰涓婃捣鍒嗚闄嗗鍢存敮琛�</Bank>\n" +
+                    "\t\t<Bank>中国民生银行上海分行陆家嘴支行</Bank>\n" +
                     "\t\t<BankAcc>0216014180000511\t</BankAcc>\n" +
                     "\t</Seller>\n" +
                     "\t\t<Orders>\n" +
@@ -108,7 +108,7 @@ public class GetDataService {
                     "\t\t\t\t<ProductItem>\n" +
                     "\t\t\t\t\t<VenderOwnCode></VenderOwnCode>\n" +
                     "\t\t\t\t\t<ProductCode>1030201030000000000</ProductCode>\n" +
-                    "\t\t\t\t\t<ProductName>楗煎共</ProductName>\n" +
+                    "\t\t\t\t\t<ProductName>饼干</ProductName>\n" +
                     "\t\t\t\t\t<RowType>0</RowType>\n" +
                     "\t\t\t\t\t<Spec></Spec>\n" +
                     "\t\t\t\t\t<Unit></Unit>\n" +
@@ -131,7 +131,7 @@ public class GetDataService {
         String xml2="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "\t\t\t\t<Responese>\n" +
                 "\t\t\t\t\t<ReturnCode>0000</ReturnCode>\n" +
-                "\t\t\t\t\t<ReturnMessage>鎴愬姛</ReturnMessage>\n" +
+                "\t\t\t\t\t<ReturnMessage>成功</ReturnMessage>\n" +
                 "\t\t\t\t\t<ReturnData>\n" +
                 "\t\t\t\t\t\t<ExtractCode>38355712</ExtractCode>\n" +
                 "\t\t\t\t\t\t<InvType>12</InvType>\n" +
@@ -158,10 +158,10 @@ public class GetDataService {
                 "\t\t\t\t\t\t\t\t<ProductItem>\n" +
                 "\t\t\t\t\t\t\t\t<VenderOwnCode>101211</VenderOwnCode>\n" +
                 "\t\t\t\t\t\t\t\t<ProductCode></ProductCode>\n" +
-                "\t\t\t\t\t\t\t\t<ProductName><![CDATA[搴峰涔� 骞肩姮绮椿鍔涘辜鐘彂鑲叉垚闀块厤鏂圭嫍绮�1.4kg]]></ProductName>\n" +
+                "\t\t\t\t\t\t\t\t<ProductName><![CDATA[康多乐 幼犬粮活力幼犬发育成长配方狗粮1.4kg]]></ProductName>\n" +
                 "\t\t\t\t\t\t\t\t<RowType>0</RowType>\n" +
                 "\t\t\t\t\t\t\t\t<Spec><![CDATA[]]></Spec>\n" +
-                "\t\t\t\t\t\t\t\t<Unit>浠�</Unit>\n" +
+                "\t\t\t\t\t\t\t\t<Unit>件</Unit>\n" +
                 "\t\t\t\t\t\t\t\t<Quantity>1</Quantity>\n" +
                 "\t\t\t\t\t\t\t\t<UnitPrice>33.80</UnitPrice>\n" +
                 "\t\t\t\t\t\t\t\t<Amount>33.8</Amount>\n" +
@@ -175,10 +175,10 @@ public class GetDataService {
                 "\t\t\t\t\t\t\t  </ProductItem><ProductItem>\n" +
                 "\t\t\t\t\t\t\t\t<VenderOwnCode>100126</VenderOwnCode>\n" +
                 "\t\t\t\t\t\t\t\t<ProductCode></ProductCode>\n" +
-                "\t\t\t\t\t\t\t\t<ProductName><![CDATA[娉曞浗鐨囧ROYAL CANIN 鎴愮姮绮嫍绮�8kg CC]]></ProductName>\n" +
+                "\t\t\t\t\t\t\t\t<ProductName><![CDATA[法国皇家ROYAL CANIN 成犬粮狗粮8kg CC]]></ProductName>\n" +
                 "\t\t\t\t\t\t\t\t<RowType>0</RowType>\n" +
                 "\t\t\t\t\t\t\t\t<Spec><![CDATA[]]></Spec>\n" +
-                "\t\t\t\t\t\t\t\t<Unit>浠�</Unit>\n" +
+                "\t\t\t\t\t\t\t\t<Unit>件</Unit>\n" +
                 "\t\t\t\t\t\t\t\t<Quantity>2</Quantity>\n" +
                 "\t\t\t\t\t\t\t\t<UnitPrice>166.00</UnitPrice>\n" +
                 "\t\t\t\t\t\t\t\t<Amount>332</Amount>\n" +
@@ -192,10 +192,10 @@ public class GetDataService {
                 "\t\t\t\t\t\t\t  </ProductItem><ProductItem>\n" +
                 "\t\t\t\t\t\t\t<VenderOwnCode>000000</VenderOwnCode>\n" +
                 "\t\t\t\t\t\t\t<ProductCode></ProductCode>\n" +
-                "\t\t\t\t\t\t\t<ProductName>杩愯緭鏈嶅姟</ProductName>\n" +
+                "\t\t\t\t\t\t\t<ProductName>运输服务</ProductName>\n" +
                 "\t\t\t\t\t\t\t<RowType>0</RowType>\n" +
                 "\t\t\t\t\t\t\t<Spec></Spec>\n" +
-                "\t\t\t\t\t\t\t<Unit>浠�</Unit>\n" +
+                "\t\t\t\t\t\t\t<Unit>件</Unit>\n" +
                 "\t\t\t\t\t\t\t<Quantity>1</Quantity>\n" +
                 "\t\t\t\t\t\t\t<UnitPrice>23.50</UnitPrice>\n" +
                 "\t\t\t\t\t\t\t<Amount>23.50</Amount>\n" +
@@ -209,10 +209,10 @@ public class GetDataService {
                 "\t\t\t\t\t\t   </ProductItem><ProductItem>\n" +
                 "\t\t\t\t\t\t\t\t\t\t<VenderOwnCode>3530401</VenderOwnCode>\n" +
                 "\t\t\t\t\t\t\t\t\t\t<ProductCode></ProductCode>\n" +
-                "\t\t\t\t\t\t\t\t\t\t<ProductName><![CDATA[闂芥睙 鐜荤拑姘存棌绠遍奔缂窰R3-580 MJ-560 58cm闀縘]></ProductName>\n" +
+                "\t\t\t\t\t\t\t\t\t\t<ProductName><![CDATA[闽江 玻璃水族箱鱼缸HR3-580 MJ-560 58cm长]]></ProductName>\n" +
                 "\t\t\t\t\t\t\t\t\t\t<RowType>2</RowType>\n" +
-                "\t\t\t\t\t\t\t\t\t\t<Spec><![CDATA[榛戣壊]]></Spec>\n" +
-                "\t\t\t\t\t\t\t\t\t\t<Unit>浠�</Unit>\n" +
+                "\t\t\t\t\t\t\t\t\t\t<Spec><![CDATA[黑色]]></Spec>\n" +
+                "\t\t\t\t\t\t\t\t\t\t<Unit>件</Unit>\n" +
                 "\t\t\t\t\t\t\t\t\t\t<Quantity>2</Quantity>\n" +
                 "\t\t\t\t\t\t\t\t\t\t<UnitPrice>249.00</UnitPrice>\n" +
                 "\t\t\t\t\t\t\t\t\t\t<Amount>498</Amount>\n" +
@@ -226,10 +226,10 @@ public class GetDataService {
                 "\t\t\t\t\t\t\t\t\t  </ProductItem><ProductItem>\n" +
                 "\t\t\t\t\t\t\t<VenderOwnCode>3530401</VenderOwnCode>\n" +
                 "\t\t\t\t\t\t\t<ProductCode></ProductCode>\n" +
-                "\t\t\t\t\t\t\t<ProductName><![CDATA[闂芥睙 鐜荤拑姘存棌绠遍奔缂窰R3-580 MJ-560 58cm闀縘]></ProductName>\n" +
+                "\t\t\t\t\t\t\t<ProductName><![CDATA[闽江 玻璃水族箱鱼缸HR3-580 MJ-560 58cm长]]></ProductName>\n" +
                 "\t\t\t\t\t\t\t<RowType>1</RowType>\n" +
                 "\t\t\t\t\t\t\t<Spec></Spec>\n" +
-                "\t\t\t\t\t\t\t<Unit>浠�</Unit>\n" +
+                "\t\t\t\t\t\t\t<Unit>件</Unit>\n" +
                 "\t\t\t\t\t\t\t<Quantity></Quantity>\n" +
                 "\t\t\t\t\t\t\t<UnitPrice></UnitPrice>\n" +
                 "\t\t\t\t\t\t\t<Amount>-7.30</Amount>\n" +
@@ -250,14 +250,14 @@ public class GetDataService {
     }
 
     /**
-     * 娉㈠缃�--璋冪敤鎺ュ彛鑾峰彇鏁版嵁
+     * 波奇网--调用接口获取数据
      * @param code
      * @param gsdm
      * @param url
      * @return
      */
     public Map getDataForBqw(String code,String gsdm,String url){
-        logger.info("鎷夊彇鏁版嵁鍙傛暟鍊糲ode"+code+"鍏徃浠ｇ爜"+gsdm+"url鍦板潃"+url);
+        logger.info("拉取数据参数值code"+code+"公司代码"+gsdm+"url地址"+url);
         Map parmsMap=new HashMap();
         Map parms=new HashMap();
         parms.put("gsdm",gsdm);
@@ -269,7 +269,7 @@ public class GetDataService {
             map.put("ExtractCode",code);
             map.put("sign",Secret);
             String response = HttpClientUtil.doPost(url, map);
-            logger.info("娉㈠缃�---鎺ユ敹杩斿洖鍊�:" + response);
+            logger.info("波奇网---接收返回值:" + response);
             parmsMap=interpretingForBqw(gsdm,response);
             String error = (String) parmsMap.get("error");
             if(error==null) {
@@ -288,7 +288,7 @@ public class GetDataService {
         return parmsMap;
     }
     /**
-     * 娉㈠缃�-- 瑙ｆ瀽鏁版嵁
+     * 波奇网-- 解析数据
      * @param gsdm
      * @param data
      * @return
@@ -322,112 +322,112 @@ public class GetDataService {
                 rsMap.put("jymxsqList", jymxsqList);
                 rsMap.put("jyzfmxList", jyzfmxList);
                 rsMap.put("error",ReturnCode+":"+ReturnMessage);
-                logger.info("------閿欒淇℃伅--------"+ReturnCode+":"+ReturnMessage);
+                logger.info("------错误信息--------"+ReturnCode+":"+ReturnMessage);
                 return rsMap;
             }
             Element ReturnData  = (Element) xmlDoc.selectSingleNode("Responese/ReturnData");
-            // 鎻愬彇鐮�
+            // 提取码
             String ExtractCode = "";
             if (null != ReturnData.selectSingleNode("ExtractCode")
                     && !ReturnData.selectSingleNode("ExtractCode").equals("")) {
                 ExtractCode = ReturnData.selectSingleNode("ExtractCode").getText();
             }
-            // 鍙戠エ绉嶇被
+            // 发票种类
             String InvType = "";
             if (null != ReturnData.selectSingleNode("InvType")
                     && !ReturnData.selectSingleNode("InvType").equals("")) {
                 InvType = ReturnData.selectSingleNode("InvType").getText();
             }
-            // 鍟嗗搧缂栫爜鐗堟湰鍙�
+            // 商品编码版本号
             String Spbmbbh = "";
             if (null != ReturnData.selectSingleNode("Spbmbbh")
                     && !ReturnData.selectSingleNode("Spbmbbh").equals("")) {
                 Spbmbbh = ReturnData.selectSingleNode("Spbmbbh").getText();
             }
-            // 寮�绁ㄧ偣缂栫爜
+            // 开票点编码
             String ClientNO = "";
             if (null != ReturnData.selectSingleNode("ClientNO")
                     && !ReturnData.selectSingleNode("ClientNO").equals("")) {
                 ClientNO = ReturnData.selectSingleNode("ClientNO").getText();
             }
 
-            //浜岀骇鑺傜偣--閿�鏂逛俊鎭�
+            //二级节点--销方信息
             Element Seller  = (Element) xmlDoc.selectSingleNode("Responese/ReturnData/Seller");
-            // 閿�鏂圭◣鍙�
+            // 销方税号
             String Identifier = "";
             if (null != Seller.selectSingleNode("Identifier")
                     && !Seller.selectSingleNode("Identifier").equals("")) {
                 Identifier = Seller.selectSingleNode("Identifier").getText();
             }
-            // 閿�鏂瑰悕绉�
+            // 销方名称
             String Name = "";
             if (null != Seller.selectSingleNode("Name")
                     && !Seller.selectSingleNode("Name").equals("")) {
                 Name = Seller.selectSingleNode("Name").getText();
             }
-            // 閿�鏂瑰湴鍧�
+            // 销方地址
             String Address = "";
             if (null != Seller.selectSingleNode("Address")
                     && !Seller.selectSingleNode("Address").equals("")) {
                 Address = Seller.selectSingleNode("Address").getText();
             }
-            // 閿�鏂圭數璇�
+            // 销方电话
             String TelephoneNo = "";
             if (null != Seller.selectSingleNode("TelephoneNo")
                     && !Seller.selectSingleNode("TelephoneNo").equals("")) {
                 TelephoneNo = Seller.selectSingleNode("TelephoneNo").getText();
             }
-            // 閿�鏂归摱琛�
+            // 销方银行
             String Bank = "";
             if (null != Seller.selectSingleNode("Bank")
                     && !Seller.selectSingleNode("Bank").equals("")) {
                 Bank = Seller.selectSingleNode("Bank").getText();
             }
-            // 閿�鏂归摱琛岃处鍙�
+            // 销方银行账号
             String BankAcc = "";
             if (null != Seller.selectSingleNode("BankAcc")
                     && !Seller.selectSingleNode("BankAcc").equals("")) {
                 BankAcc = Seller.selectSingleNode("BankAcc").getText();
             }
-            //浜岀骇鑺傜偣--寰呭紑绁ㄤ俊鎭�
+            //二级节点--待开票信息
             List<Element> xnList = xmlDoc.selectNodes("Responese/ReturnData/Orders");
             if (null != xnList && xnList.size() > 0) {
                 for (Element xn : xnList) {
                     Jyxxsq jyxxsq = new Jyxxsq();
-                    //涓夌骇鑺傜偣--寰呭紑绁ㄤ氦鏄撲富淇℃伅
+                    //三级节点--待开票交易主信息
                     Element orderMainMap = (Element) xn.selectSingleNode("OrderMain");
-                    // 璁㈠崟鍙�
+                    // 订单号
                     String orderNo = "";
                     if (null != orderMainMap.selectSingleNode("OrderNo")
                             && !orderMainMap.selectSingleNode("OrderNo").equals("")) {
                         orderNo = orderMainMap.selectSingleNode("OrderNo").getText();
                     }
-                    // 璁㈠崟鏃堕棿
+                    // 订单时间
                     String orderDate = "";
                     if (null != orderMainMap.selectSingleNode("OrderDate")
                             && !orderMainMap.selectSingleNode("OrderDate").equals("")) {
                         orderDate = orderMainMap.selectSingleNode("OrderDate").getText();
                     }
-                    // 寰佺◣鏂瑰紡
+                    // 征税方式
                     String chargeTaxWay = "";
                     if (null != orderMainMap.selectSingleNode("ChargeTaxWay")
                             && !orderMainMap.selectSingleNode("ChargeTaxWay").equals("")) {
                         chargeTaxWay = orderMainMap.selectSingleNode("ChargeTaxWay").getText();
                     }
-                    // 浠风◣鍚堣
+                    // 价税合计
                     String totalAmount = "";
                     if (null != orderMainMap.selectSingleNode("TotalAmount")
                             && !orderMainMap.selectSingleNode("TotalAmount").equals("")) {
                         totalAmount = orderMainMap.selectSingleNode("TotalAmount").getText();
                     }
-                    // 鍚◣鏍囧織
+                    // 含税标志
                     String taxMark = "";
                     if (null != orderMainMap.selectSingleNode("TaxMark")
                             && !orderMainMap.selectSingleNode("TaxMark").equals("")) {
                         taxMark = orderMainMap.selectSingleNode("TaxMark").getText();
                     }
 
-                    // 澶囨敞
+                    // 备注
                     String remark = "";
                     if (null != orderMainMap.selectSingleNode("Remark")
                             && !orderMainMap.selectSingleNode("Remark").equals("")) {
@@ -445,14 +445,14 @@ public class GetDataService {
                     Xf x = new Xf();
                     x.setGsdm(gsdm);
                     x.setXfsh(Identifier);
-                    //娴嬭瘯閿�鏂�
+                    //测试销方
                     //x.setXfsh("500102010003643");
                     Xf xf = xfService.findOneByParams(x);
                     if(null==xf){
                         rsMap.put("jyxxsqList", jyxxsqList);
                         rsMap.put("jymxsqList", jymxsqList);
                         rsMap.put("jyzfmxList", jyzfmxList);
-                        rsMap.put("error","9003:閿�鏂逛俊鎭湭缁存姢锛岃鑱旂郴鍟嗗");
+                        rsMap.put("error","9003:销方信息未维护，请联系商家");
                         return rsMap;
                     }
                     Map params=new HashMap();
@@ -462,12 +462,12 @@ public class GetDataService {
                         rsMap.put("jyxxsqList", jyxxsqList);
                         rsMap.put("jymxsqList", jymxsqList);
                         rsMap.put("jyzfmxList", jyzfmxList);
-                        rsMap.put("error", "寮�绁ㄧ偣淇℃伅鏈淮鎶わ紝璇疯仈绯诲晢瀹�!");
+                        rsMap.put("error", "开票点信息未维护，请联系商家!");
                         return rsMap;
                     }
                     jyxxsq.setXfid(xf.getId());
                     jyxxsq.setJylsh(ExtractCode);
-                    //娴嬭瘯
+                    //测试
                     jyxxsq.setJshj(Double.valueOf(totalAmount));
                     jyxxsq.setHsbz(taxMark);
                     jyxxsq.setBz(remark);
@@ -495,9 +495,9 @@ public class GetDataService {
                     jyxxsq.setClztdm("00");
                     jyxxsq.setQjzk(0d);
                     jyxxsqList.add(jyxxsq);
-                    //涓夌骇鑺傜偣--寰呭紑绁ㄤ氦鏄撴槑缁嗗晢鍝佷俊鎭�
+                    //三级节点--待开票交易明细商品信息
                     Element OrderDetails = (Element) xn.selectSingleNode("OrderDetails");
-                    //鍥涚骇鑺傜偣
+                    //四级节点
                     List<Element> orderDetailsList = (List<Element>) OrderDetails.elements("ProductItem");
                     if (null != orderDetailsList && orderDetailsList.size() > 0) {
                         int spmxxh = 0;
@@ -506,7 +506,7 @@ public class GetDataService {
                             // Map ProductItem = (Map) orderDetailsList.get(j);
                             spmxxh++;
 
-                            // 鍟嗗搧缂栫爜
+                            // 商品编码
                             String ProductCode = "";
                             if (null != orderDetails.selectSingleNode("ProductCode")
                                     && !orderDetails.selectSingleNode("ProductCode").equals("")) {
@@ -515,7 +515,7 @@ public class GetDataService {
 
                             jymxsq.setDdh(jyxxsq.getDdh());
                            // jymxsq.setSpdm(ProductCode);
-                            // 鍟嗗搧鍚嶇О
+                            // 商品名称
                             String ProductName = "";
                             if (null != orderDetails.selectSingleNode("ProductName")
                                     && !orderDetails.selectSingleNode("ProductName").equals("")) {
@@ -525,7 +525,7 @@ public class GetDataService {
                             jymxsq.setSpmc(ProductName);
                             jymxsq.setDdh(jyxxsq.getDdh());
                             jymxsq.setHsbz(jyxxsq.getHsbz());
-                            // 鍙戠エ琛屾�ц川
+                            // 发票行性质
                             String RowType = "";
                             if (null != orderDetails.selectSingleNode("RowType")
                                     && !orderDetails.selectSingleNode("RowType").equals("")) {
@@ -533,7 +533,7 @@ public class GetDataService {
                             }
 
                             jymxsq.setFphxz(RowType);
-                            // 鍟嗗搧瑙勬牸鍨嬪彿
+                            // 商品规格型号
                             String Spec = "";
                             if (null != orderDetails.selectSingleNode("Spec")
                                     && !orderDetails.selectSingleNode("Spec").equals("")) {
@@ -541,7 +541,7 @@ public class GetDataService {
                             }
 
                             jymxsq.setSpggxh(Spec);
-                            // 鍟嗗搧鍗曚綅
+                            // 商品单位
                             String Unit = "";
                             if (null != orderDetails.selectSingleNode("Unit")
                                     && !orderDetails.selectSingleNode("Unit").equals("")) {
@@ -549,21 +549,21 @@ public class GetDataService {
                             }
 
                             jymxsq.setSpdw(Unit);
-                            // 鍟嗗搧鏁伴噺
+                            // 商品数量
                             String Quantity = "";
                             if (null != orderDetails.selectSingleNode("Quantity")
                                     && !orderDetails.selectSingleNode("Quantity").equals("")) {
                                 Quantity = orderDetails.selectSingleNode("Quantity").getText();
                                 try{jymxsq.setSps(Double.valueOf(Quantity));}catch (Exception e){jymxsq.setSps(null);}
                             }
-                            // 鍟嗗搧鍗曚环
+                            // 商品单价
                             String UnitPrice = "";
                             if (null != orderDetails.selectSingleNode("UnitPrice")
                                     && !orderDetails.selectSingleNode("UnitPrice").equals("")) {
                                 UnitPrice = orderDetails.selectSingleNode("UnitPrice").getText();
                                 try{jymxsq.setSpdj(Double.valueOf(UnitPrice));}catch (Exception e){jymxsq.setSpdj(null);}
                             }
-                            // 鍟嗗搧閲戦
+                            // 商品金额
                             String Amount = "";
                             if (null != orderDetails.selectSingleNode("Amount")
                                     && !orderDetails.selectSingleNode("Amount").equals("")) {
@@ -571,7 +571,7 @@ public class GetDataService {
                                 try{jymxsq.setSpje(Double.valueOf(Amount));}catch (Exception e){jymxsq.setSpje(null);}
 
                             }
-                            // 鎵ｉ櫎閲戦
+                            // 扣除金额
                             String DeductAmount = "";
                             if (null != orderDetails.selectSingleNode("DeductAmount")
                                     && !orderDetails.selectSingleNode("DeductAmount").equals("")) {
@@ -579,14 +579,14 @@ public class GetDataService {
                                 jymxsq.setKce((null == DeductAmount || DeductAmount.equals("")) ? Double.valueOf("0.00")
                                         : Double.valueOf(DeductAmount));
                             }
-                            //鍟嗗搧绋庣巼
+                            //商品税率
                             String TaxRate = "";
                             if (null != orderDetails.selectSingleNode("TaxRate")
                                     && !orderDetails.selectSingleNode("TaxRate").equals("")) {
                                 TaxRate = orderDetails.selectSingleNode("TaxRate").getText();
                                 jymxsq.setSpsl(Double.valueOf(TaxRate));
                             }
-                            //鍟嗗搧绋庨
+                            //商品税额
                             String TaxAmount = "";
                             if (null != orderDetails.selectSingleNode("TaxAmount")
                                     && !orderDetails.selectSingleNode("TaxAmount").equals("")) {
@@ -595,20 +595,20 @@ public class GetDataService {
                                     jymxsq.setSpse(Double.valueOf(TaxAmount));
                                 }
                             }
-                            //浠风◣鍚堣
+                            //价税合计
                             String MxTotalAmount = "";
                             if (null != orderDetails.selectSingleNode("MxTotalAmount")
                                     && !orderDetails.selectSingleNode("MxTotalAmount").equals("")) {
                                 MxTotalAmount = orderDetails.selectSingleNode("MxTotalAmount").getText();
                                 jymxsq.setJshj(Double.valueOf(MxTotalAmount));
                             }
-                            //鍟嗗搧鏄庣粏搴忓彿
+                            //商品明细序号
                             jymxsq.setSpmxxh(spmxxh);
-                            //鍙紑鍏烽噾棰�
+                            //可开具金额
                             jymxsq.setKkjje(Double.valueOf(MxTotalAmount));
-                            //宸插紑鍏烽噾棰�
+                            //已开具金额
                             jymxsq.setYkjje(0d);
-                            //鍟嗗搧鑷缂栫爜
+                            //商品自行编码
                             String VenderOwnCode = "";
                             if (null != orderDetails.selectSingleNode("VenderOwnCode")
                                     && !orderDetails.selectSingleNode("VenderOwnCode").equals("")) {
@@ -624,26 +624,26 @@ public class GetDataService {
                                 rsMap.put("jyxxsqList", jyxxsqList);
                                 rsMap.put("jymxsqList", jymxsqList);
                                 rsMap.put("jyzfmxList", jyzfmxList);
-                                rsMap.put("error", "鍟嗗搧淇℃伅鏈淮鎶わ紝璇疯仈绯诲晢瀹�!");
+                                rsMap.put("error", "商品信息未维护，请联系商家!");
                                 return rsMap;
                             }
                             jymxsq.setSpdm(spvo.getSpbm());
                             jymxsq.setYhzcbs(spvo.getYhzcbs());
                             jymxsq.setLslbz(spvo.getLslbz());
                             jymxsq.setYhzcmc(spvo.getYhzcmc());
-                            //浼樻儬鏀跨瓥鏍囪瘑
+                            //优惠政策标识
                             String PolicyMark = "";
                             if (null != orderDetails.selectSingleNode("PolicyMark")
                                     && !orderDetails.selectSingleNode("PolicyMark").equals("")) {
                                 PolicyMark = orderDetails.selectSingleNode("PolicyMark").getText();
                             }
-                            //闆剁◣鐜囨爣蹇�
+                            //零税率标志
                             String TaxRateMark = "";
                             if (null != orderDetails.selectSingleNode("TaxRateMark")
                                     && !orderDetails.selectSingleNode("TaxRateMark").equals("")) {
                                 TaxRateMark = orderDetails.selectSingleNode("TaxRateMark").getText();
                             }
-                            //浼樻儬鏀跨瓥鍚嶇О
+                            //优惠政策名称
                             String PolicyName = "";
                             if (null != orderDetails.selectSingleNode("PolicyName")
                                     && !orderDetails.selectSingleNode("PolicyName").equals("")) {
@@ -670,7 +670,7 @@ public class GetDataService {
     }
 
     /**
-     * 鍏ㄥ--璋冪敤鎺ュ彛鑾峰彇鏁版嵁
+     * 全家--调用接口获取数据
      * @param ExtractCode
      * @param gsdm
      * @return
@@ -684,8 +684,7 @@ public class GetDataService {
             parms.put("gsdm",gsdm);
             Gsxx gsxx=gsxxService.findOneByParams(parms);
             Map resultMap = null;
-//            HttpPost httpPost = new HttpPost("http://103.13.247.68:6180/EinvoiceWeb/service/EInvoiceWS/QueryOrder");
-            HttpPost httpPost = new HttpPost("http://172.16.0.221:6180/EinvoiceWeb/service/EInvoiceWS/QueryOrder");
+            HttpPost httpPost = new HttpPost("http://103.13.247.68:6180/EinvoiceWeb/service/EInvoiceWS/QueryOrder");
             CloseableHttpResponse response = null;
             RequestConfig requestConfig = RequestConfig.custom().
                     setSocketTimeout(120*1000).setConnectionRequestTimeout(120*1000).setConnectTimeout(120*1000).build();
@@ -714,7 +713,7 @@ public class GetDataService {
                         buffer.append(strMessage);
                     }
                 }
-                System.out.println("鎺ユ敹杩斿洖鍊�:" + buffer.toString());
+                System.out.println("接收返回值:" + buffer.toString());
                 parmsMap=interpreting(gsdm,buffer.toString());
                 String error = (String) parmsMap.get("error");
                 if(error==null) {
@@ -734,7 +733,7 @@ public class GetDataService {
     }
 
     /**
-     * 鏍￠獙鏂规硶
+     * 校验方法
      * @param jyxxsqList
      * @param jymxsqList
      * @param jyzfmxList
@@ -764,54 +763,54 @@ public class GetDataService {
                     jyxxsq = jyxxsqList.get(i);
                     if (ddh != null && !ddh.equals("")) {
                         if (ddh.length() > 20) {
-                            result += "鏄庣粏鏁版嵁" + ddh + ":璁㈠崟鍙峰お闀�;";
+                            result += "明细数据" + ddh + ":订单号太长;";
                         }
                     } else {
-                        result += "鏄庣粏鏁版嵁璁㈠崟鍙蜂笉鑳戒负绌�;";
+                        result += "明细数据订单号不能为空;";
                     }
                     String ProductCode = (String) jymxsq.getSpdm();
                     if (ProductCode == null) {
-                        result += "璁㈠崟鍙蜂负" + ddh + "鐨勮鍗昉roductCode涓虹┖";
+                        result += "订单号为" + ddh + "的订单ProductCode为空";
                     } else if (ProductCode.length() != 19) {
-                        result += "璁㈠崟鍙蜂负" + ddh + "鐨勮鍗昉roductCode涓嶇瓑浜�19浣�;";
+                        result += "订单号为" + ddh + "的订单ProductCode不等于19位;";
                     }
-                    // 鍟嗗搧鍚嶇О
+                    // 商品名称
                     String ProductName = (String) jymxsq.getSpmc();
                     if (ProductName == null) {
-                        result += "璁㈠崟鍙蜂负" + ddh + "鐨勮鍗昉roductName涓虹┖锛�";
+                        result += "订单号为" + ddh + "的订单ProductName为空！";
                     } else if (ProductName.length() > 50) {
-                        result += "璁㈠崟鍙蜂负" + ddh + "鐨勮鍗昉roductName澶暱锛�";
+                        result += "订单号为" + ddh + "的订单ProductName太长！";
                     }
-                    // 鍙戠エ琛屾�ц川
+                    // 发票行性质
                     String RowType = (String) jymxsq.getFphxz();
                     if (RowType == null) {
-                        result += "璁㈠崟鍙蜂负" + ddh + "鐨勮鍗昍owType涓虹┖;";
+                        result += "订单号为" + ddh + "的订单RowType为空;";
                     } else if (!("0".equals(RowType) || "1".equals(RowType) || "2".equals(RowType))) {
-                        result += "璁㈠崟鍙蜂负" + ddh + "鐨勮鍗昍owType鍙兘濉啓0锛�1鎴�2;";
+                        result += "订单号为" + ddh + "的订单RowType只能填写0，1或2;";
                     }
 
 
-                    // 鍟嗗搧閲戦
+                    // 商品金额
                     String Amount = String.valueOf(jymxsq.getSpje());
                     if (Amount == null) {
-                        result += "璁㈠崟鍙蜂负" + ddh + "鐨勮鍗曞晢鍝丄mount涓虹┖;";
+                        result += "订单号为" + ddh + "的订单商品Amount为空;";
                     } else if (!Amount.matches("^\\-?[0-9]{0,15}+(.[0-9]{0,2})?$")) {
-                        result += "璁㈠崟鍙蜂负" + ddh + "鐨勮鍗旳mount鏍煎紡涓嶆纭紒";
+                        result += "订单号为" + ddh + "的订单Amount格式不正确！";
                     }
-                    // 鍟嗗搧绋庣巼
+                    // 商品税率
                     String TaxRate = String.valueOf(jymxsq.getSpsl());
                     if (TaxRate == null) {
-                        result = "璁㈠崟鍙蜂负" + ddh + "鐨勮鍗昑axRate涓虹┖;";
+                        result = "订单号为" + ddh + "的订单TaxRate为空;";
                     } else {
                         double taxRate = Double.valueOf(TaxRate);
                         if (!(taxRate == 0 || taxRate == 0.03 || taxRate == 0.04
                                 || taxRate == 0.06 || taxRate == 0.11 || taxRate == 0.13
                                 || taxRate == 0.17)) {
-                            result += "璁㈠崟鍙蜂负" + ddh + "鐨勮鍗昑axRate鏍煎紡鏈夎;";
+                            result += "订单号为" + ddh + "的订单TaxRate格式有误;";
                         }
                     }
                     if((jymxsq.getSpdj()==null&&jymxsq.getSps()!=null)||(jymxsq.getSps()==null&&jymxsq.getSpdj()!=null)){
-                        result += "璁㈠崟鍙蜂负" + ddh + "鐨勮鍗曠" + i+1+ "琛屽晢鍝佸崟浠凤紝鍟嗗搧鏁伴噺蹇呴』鍏ㄩ儴涓虹┖鎴栬�呭叏閮ㄤ笉涓虹┖锛�";
+                        result += "订单号为" + ddh + "的订单第" + i+1+ "行商品单价，商品数量必须全部为空或者全部不为空！";
                     }
                     if (jymxsq.getSpdj() != null && jymxsq.getSps() != null && jymxsq.getSpje() != null) {
                         double res = jymxsq.getSpdj() * jymxsq.getSps();
@@ -820,7 +819,7 @@ public class GetDataService {
                         BigDecimal big2 = new BigDecimal(jymxsq.getSpje());
                         big2 = big2.setScale(2, BigDecimal.ROUND_HALF_UP);
                         if (big1.compareTo(big2) != 0) {
-                            result += "璁㈠崟鍙蜂负" + ddh + "鐨勮鍗曠" + i+1+ "琛屽晢鍝佸崟浠凤紝鍟嗗搧鏁伴噺锛屽晢鍝侀噾棰濅箣闂寸殑璁＄畻鏍￠獙涓嶉�氳繃锛岃妫�鏌ワ紒";
+                            result += "订单号为" + ddh + "的订单第" + i+1+ "行商品单价，商品数量，商品金额之间的计算校验不通过，请检查！";
                         }
                     }
                     if(jymxsq.getSpdj() != null && jymxsq.getSps() != null && jymxsq.getSpje() != null){
@@ -829,20 +828,20 @@ public class GetDataService {
                         BigDecimal big1 = new BigDecimal(spdj);
                         BigDecimal big2 = new BigDecimal(sps);
                         if((big1.compareTo(new BigDecimal(0))==0)||(big2.compareTo(new BigDecimal(0))==0)){
-                            result += "璁㈠崟鍙蜂负" + ddh + "鐨勮鍗曠" + i+1+ "琛屽晢鍝佸崟浠锋垨鍟嗗搧鏁伴噺涓嶈兘涓洪浂锛�";
+                            result += "订单号为" + ddh + "的订单第" + i+1+ "行商品单价或商品数量不能为零！";
                         }
                     }
-                    // 鍟嗗搧绋庨
+                    // 商品税额
                     String TaxAmount = String.valueOf(jymxsq.getSpse());
                     if (TaxAmount != null && TaxAmount.equals("^\\-?[0-9]{0,15}+(.[0-9]{0,2})?$")) {
-                        result += "璁㈠崟鍙蜂负" + ddh + "鐨勮鍗曠" + i +1+ "鏉″晢鍝乀axAmount鏍煎紡涓嶆纭紒";
+                        result += "订单号为" + ddh + "的订单第" + i +1+ "条商品TaxAmount格式不正确！";
                     }
 
-                    // 鏍￠獙閲戦璇樊
+                    // 校验金额误差
                     String TaxMark = jyxxsq.getHsbz();
                     double je = Double.valueOf(Amount);
                     double se = 0;
-                    //鍚◣鏃讹紝蹇界暐绋庨
+                    //含税时，忽略税额
                     if (TaxMark.equals("0")) {
                         if (TaxAmount != null && !"".equals(TaxAmount)) {
                             se = Double.valueOf(TaxAmount);
@@ -850,7 +849,7 @@ public class GetDataService {
                     }
                     double sl = Double.valueOf(TaxRate);
                     if (TaxMark.equals("0") && je * sl - se >= 0.0625) {
-                        result += "璁㈠崟鍙蜂负" + ddh + "鐨勮鍗�(Amount锛孴axRate锛孴axAmount)涔嬮棿鐨勬牎楠屼笉閫氳繃";
+                        result += "订单号为" + ddh + "的订单(Amount，TaxRate，TaxAmount)之间的校验不通过";
                     }
 
                     BigDecimal bd = new BigDecimal(je);
@@ -860,47 +859,47 @@ public class GetDataService {
                     String ChargeTaxWay = jyxxsq.getZsfs();
                     String DeductAmount = String.valueOf(jymxsq.getKce());
                     if (ChargeTaxWay.equals("2") && (null == DeductAmount || DeductAmount.equals(""))) {
-                        result += "璁㈠崟鍙蜂负" + ddh + "鐨勮鍗旸eductAmount涓嶈兘涓虹┖";
+                        result += "订单号为" + ddh + "的订单DeductAmount不能为空";
                     }
                 }
             }
-            // 浠风◣鍚堣
+            // 价税合计
             Double  TotalAmount = jyxxsq.getJshj();
             if (TotalAmount == null) {
-                result += ddh + ":浠风◣鍚堣涓虹┖;";
+                result += ddh + ":价税合计为空;";
             }
-            // 璁㈠崟鍙�
+            // 订单号
             ddh = jyxxsq.getDdh();
             if (ddh != null && !ddh.equals("")) {
                 if (ddh.length() > 100) {
-                    result += "浜ゆ槗鏁版嵁" + ddh + ":璁㈠崟鍙峰お闀�;";
+                    result += "交易数据" + ddh + ":订单号太长;";
                 }
             } else {
-                result += "浜ゆ槗鏁版嵁璁㈠崟鍙蜂笉鑳戒负绌�;";
+                result += "交易数据订单号不能为空;";
             }
-            // 璁㈠崟鏃堕棿
+            // 订单时间
             SimpleDateFormat sim = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
             if (null != jyxxsq.getDdrq() && !jyxxsq.getDdrq().equals("")) {
                 String OrderDate = sim.format(jyxxsq.getDdrq());
                 Pattern p = Pattern.compile(
                         "^((\\d{2}(([02468][048])|([13579][26]))[\\-\\/\\s]?((((0?[13578])|(1[02]))[\\-\\/\\s]?((0?[1-9])|([1-2][0-9])|(3[01])))|(((0?[469])|(11))[\\-\\/\\s]?((0?[1-9])|([1-2][0-9])|(30)))|(0?2[\\-\\/\\s]?((0?[1-9])|([1-2][0-9])))))|(\\d{2}(([02468][1235679])|([13579][01345789]))[\\-\\/\\s]?((((0?[13578])|(1[02]))[\\-\\/\\s]?((0?[1-9])|([1-2][0-9])|(3[01])))|(((0?[469])|(11))[\\-\\/\\s]?((0?[1-9])|([1-2][0-9])|(30)))|(0?2[\\-\\/\\s]?((0?[1-9])|(1[0-9])|(2[0-8]))))))(\\s((([0-1][0-9])|(2?[0-3]))\\:([0-5]?[0-9])((\\s)|(\\:([0-5]?[0-9])))))?$");
                 if (OrderDate != null && !p.matcher(OrderDate).matches()) {
-                    result += ddh + ":璁㈠崟鏃堕棿鏍煎紡涓嶆纭�;";
+                    result += ddh + ":订单时间格式不正确;";
                 }
             }
             BigDecimal bd2 = new BigDecimal(jyxxsq.getJshj());
             if (bd2.setScale(2, BigDecimal.ROUND_HALF_UP).subtract(jshj.setScale(2, BigDecimal.ROUND_HALF_UP)).doubleValue() != 0.0) {
-                result += "璁㈠崟鍙蜂负" + ddh + "鐨勮鍗昑otalAmount锛孉mount锛孴axAmount璁＄畻鏍￠獙涓嶉�氳繃";
+                result += "订单号为" + ddh + "的订单TotalAmount，Amount，TaxAmount计算校验不通过";
             }
-            // 鎻愬彇鐮佹牎楠�
+            // 提取码校验
             String tqm = jyxxsq.getTqm();
             if (null !=tqm && !tqm.equals("")) {
                 tqmList.add(tqm);
             }
-            // 浜ゆ槗娴佹按鍙锋牎楠�
+            // 交易流水号校验
             String jylsh = jyxxsq.getJylsh();
             jylshList.add(jylsh);
-            // 涓�娆℃�ф牎楠屾彁鍙栫爜鍜屼氦鏄撴祦姘村彿鏄惁閲嶅涓婁紶锛屾瘡绗斾氦鏄撴祦姘村彿蹇呴』鍞竴锛屾彁鍙栫爜涔熷敮涓�,璁㈠崟鍙蜂篃蹇呴』鍞竴
+            // 一次性校验提取码和交易流水号是否重复上传，每笔交易流水号必须唯一，提取码也唯一,订单号也必须唯一
             if (null != tqmList && !tqmList.isEmpty()) {
                 tqmMap.put("tqmList", tqmList);
                 tqmMap.put("gsdm", gsdm);
@@ -908,7 +907,7 @@ public class GetDataService {
                 if (null != t1 && !t1.isEmpty()) {
                     for (int a = 0; a < t1.size(); a++) {
                         Jyxxsq jy1 = (Jyxxsq) t1.get(a);
-                        result += "鎻愬彇鐮�" + jy1.getTqm() + "宸插瓨鍦�;";
+                        result += "提取码" + jy1.getTqm() + "已存在;";
                     }
                 }
             }
@@ -918,7 +917,7 @@ public class GetDataService {
             if (null != t2 && !t2.isEmpty()) {
                 for (int b = 0; b < t2.size(); b++) {
                     Jyxxsq jy2 = (Jyxxsq) t2.get(b);
-                    result += "浜ゆ槗娴佹按鍙�" + jy2.getJylsh() + "宸插瓨鍦�;";
+                    result += "交易流水号" + jy2.getJylsh() + "已存在;";
                 }
             }
             if (null != jyzfmxList && !jyzfmxList.isEmpty()) {
@@ -928,7 +927,7 @@ public class GetDataService {
                 params.put("kpfsList", kpfsList);
                 List<Zffs> zffsList = zffsService.findAllByParams(params);
                 if(null == zffsList ||zffsList.isEmpty()){
-                    result += "璇峰幓骞冲彴鏀粯鏂瑰紡绠＄悊缁存姢瀵瑰簲鐨勬敮浠樻柟寮�;";
+                    result += "请去平台支付方式管理维护对应的支付方式;";
                 }
                 String flag ="0";
                 for (int j = 0; j < jyzfmxList.size(); j++) {
@@ -941,7 +940,7 @@ public class GetDataService {
                             }
                         }
                         if(flag.equals("0")){
-                            result += "璁㈠崟鍙蜂负" + ddh + "鐨勮鍗�,鏀粯鏂瑰紡浠ｇ爜"+jyzfmx.getZffsDm()+"鏈湪骞冲彴缁存姢;";
+                            result += "订单号为" + ddh + "的订单,支付方式代码"+jyzfmx.getZffsDm()+"未在平台维护;";
                         }
                     }
                     ddh2 = jyzfmx.getDdh();
@@ -951,14 +950,14 @@ public class GetDataService {
                     }
                 }
                 if (jshj2.compareTo(bd2) !=0) {
-                    result += "璁㈠崟鍙蜂负" + ddh + "鐨勮鍗昉ayPrice鍚堣涓嶵otalAmount涓嶇瓑;";
+                    result += "订单号为" + ddh + "的订单PayPrice合计与TotalAmount不等;";
                 }
             }
         }
         return result;
     }
     /**
-     * 鍏ㄥ -- 瑙ｆ瀽鏁版嵁
+     * 全家 -- 解析数据
      * @param gsdm
      * @param data
      * @return
@@ -990,72 +989,72 @@ public class GetDataService {
             rsMap.put("jymxsqList", jymxsqList);
             rsMap.put("jyzfmxList", jyzfmxList);
             rsMap.put("error",ReturnCode+":"+ReturnMessage);
-            logger.info("------閿欒淇℃伅--------"+ReturnCode+":"+ReturnMessage);
+            logger.info("------错误信息--------"+ReturnCode+":"+ReturnMessage);
             return rsMap;
         }
         Element ReturnData  = (Element) xmlDoc.selectSingleNode("Responese/ReturnData");
-        // 鎻愬彇鐮�
+        // 提取码
         String ExtractCode = "";
         if (null != ReturnData.selectSingleNode("ExtractCode")
                 && !ReturnData.selectSingleNode("ExtractCode").equals("")) {
             ExtractCode = ReturnData.selectSingleNode("ExtractCode").getText();
         }
-        // 浼氬憳鍙�
+        // 会员号
         String MemberID = "";
         if (null != ReturnData.selectSingleNode("MemberID")
                 && !ReturnData.selectSingleNode("MemberID").equals("")) {
             MemberID = ReturnData.selectSingleNode("MemberID").getText();
         }
-        // 鍙戠エ绉嶇被
+        // 发票种类
         String InvType = "";
         if (null != ReturnData.selectSingleNode("InvType")
                 && !ReturnData.selectSingleNode("InvType").equals("")) {
             InvType = ReturnData.selectSingleNode("InvType").getText();
         }
-        // 鍟嗗搧缂栫爜鐗堟湰鍙�
+        // 商品编码版本号
         String Spbmbbh = "";
         if (null != ReturnData.selectSingleNode("Spbmbbh")
                 && !ReturnData.selectSingleNode("Spbmbbh").equals("")) {
             Spbmbbh = ReturnData.selectSingleNode("Spbmbbh").getText();
         }
-        // 闂ㄥ簵鍙�
+        // 门店号
         String StoreNo = "";
         if (null != ReturnData.selectSingleNode("StoreNo")
                 && !ReturnData.selectSingleNode("StoreNo").equals("")) {
             StoreNo = ReturnData.selectSingleNode("StoreNo").getText();
         }
         Element Seller  = (Element) xmlDoc.selectSingleNode("Responese/ReturnData/Seller");
-        // 閿�鏂圭◣鍙�
+        // 销方税号
         String Identifier = "";
         if (null != Seller.selectSingleNode("Identifier")
                 && !Seller.selectSingleNode("Identifier").equals("")) {
             Identifier = Seller.selectSingleNode("Identifier").getText();
         }
-        // 閿�鏂瑰悕绉�
+        // 销方名称
         String Name = "";
         if (null != Seller.selectSingleNode("Name")
                 && !Seller.selectSingleNode("Name").equals("")) {
             Name = Seller.selectSingleNode("Name").getText();
         }
-        // 閿�鏂瑰湴鍧�
+        // 销方地址
         String Address = "";
         if (null != Seller.selectSingleNode("Address")
                 && !Seller.selectSingleNode("Address").equals("")) {
             Address = Seller.selectSingleNode("Address").getText();
         }
-        // 閿�鏂圭數璇�
+        // 销方电话
         String TelephoneNo = "";
         if (null != Seller.selectSingleNode("TelephoneNo")
                 && !Seller.selectSingleNode("TelephoneNo").equals("")) {
             TelephoneNo = Seller.selectSingleNode("TelephoneNo").getText();
         }
-        // 閿�鏂归摱琛�
+        // 销方银行
         String Bank = "";
         if (null != Seller.selectSingleNode("Bank")
                 && !Seller.selectSingleNode("Bank").equals("")) {
             Bank = Seller.selectSingleNode("Bank").getText();
         }
-        // 閿�鏂归摱琛岃处鍙�
+        // 销方银行账号
         String BankAcc = "";
         if (null != Seller.selectSingleNode("BankAcc")
                 && !Seller.selectSingleNode("BankAcc").equals("")) {
@@ -1066,38 +1065,38 @@ public class GetDataService {
             for (Element xn : xnList) {
                 Jyxxsq jyxxsq = new Jyxxsq();
                 Element orderMainMap = (Element) xn.selectSingleNode("OrderMain");
-                // 璁㈠崟鍙�
+                // 订单号
                 String orderNo = "";
                 if (null != orderMainMap.selectSingleNode("OrderNo")
                         && !orderMainMap.selectSingleNode("OrderNo").equals("")) {
                     orderNo = orderMainMap.selectSingleNode("OrderNo").getText();
                 }
-                // 璁㈠崟鏃堕棿
+                // 订单时间
                 String orderDate = "";
                 if (null != orderMainMap.selectSingleNode("OrderDate")
                         && !orderMainMap.selectSingleNode("OrderDate").equals("")) {
                     orderDate = orderMainMap.selectSingleNode("OrderDate").getText();
                 }
-                // 寰佺◣鏂瑰紡
+                // 征税方式
                 String chargeTaxWay = "";
                 if (null != orderMainMap.selectSingleNode("ChargeTaxWay")
                         && !orderMainMap.selectSingleNode("ChargeTaxWay").equals("")) {
                     chargeTaxWay = orderMainMap.selectSingleNode("ChargeTaxWay").getText();
                 }
-                // 浠风◣鍚堣
+                // 价税合计
                 String totalAmount = "";
                 if (null != orderMainMap.selectSingleNode("TotalAmount")
                         && !orderMainMap.selectSingleNode("TotalAmount").equals("")) {
                     totalAmount = orderMainMap.selectSingleNode("TotalAmount").getText();
                 }
-                // 鍚◣鏍囧織
+                // 含税标志
                 String taxMark = "";
                 if (null != orderMainMap.selectSingleNode("TaxMark")
                         && !orderMainMap.selectSingleNode("TaxMark").equals("")) {
                     taxMark = orderMainMap.selectSingleNode("TaxMark").getText();
                 }
 
-                // 澶囨敞
+                // 备注
                 String remark = "";
                 if (null != orderMainMap.selectSingleNode("Remark")
                         && !orderMainMap.selectSingleNode("Remark").equals("")) {
@@ -1120,8 +1119,8 @@ public class GetDataService {
                     rsMap.put("jyxxsqList", jyxxsqList);
                     rsMap.put("jymxsqList", jymxsqList);
                     rsMap.put("jyzfmxList", jyzfmxList);
-                    rsMap.put("error","9003:寮�绁ㄤ俊鎭湁璇紝璇疯仈绯诲晢瀹�");
-                    logger.info("------閿欒淇℃伅--------"+"9003:寮�绁ㄤ俊鎭湁璇紝璇疯仈绯诲晢瀹�");
+                    rsMap.put("error","9003:开票信息有误，请联系商家");
+                    logger.info("------错误信息--------"+"9003:开票信息有误，请联系商家");
                     return rsMap;
                 }
                 Map params=new HashMap();
@@ -1165,7 +1164,7 @@ public class GetDataService {
                         Jymxsq jymxsq = new Jymxsq();
                         // Map ProductItem = (Map) orderDetailsList.get(j);
                         spmxxh++;
-                        // 鍟嗗搧缂栫爜
+                        // 商品编码
                         String ProductCode = "";
                         if (null != orderDetails.selectSingleNode("ProductCode")
                                 && !orderDetails.selectSingleNode("ProductCode").equals("")) {
@@ -1175,13 +1174,13 @@ public class GetDataService {
                             rsMap.put("jyxxsqList", jyxxsqList);
                             rsMap.put("jymxsqList", jymxsqList);
                             rsMap.put("jyzfmxList", jyzfmxList);
-                            rsMap.put("error","9003:寮�绁ㄤ俊鎭湁璇紝璇疯仈绯诲晢瀹�");
-                            logger.info("------閿欒淇℃伅--------"+"9003:寮�绁ㄤ俊鎭湁璇紝璇疯仈绯诲晢瀹�");
+                            rsMap.put("error","9003:开票信息有误，请联系商家");
+                            logger.info("------错误信息--------"+"9003:开票信息有误，请联系商家");
                             return rsMap;
                         }
                         jymxsq.setDdh(jyxxsq.getDdh());
                         jymxsq.setSpdm(ProductCode);
-                        // 鍟嗗搧鍚嶇О
+                        // 商品名称
                         String ProductName = "";
                         if (null != orderDetails.selectSingleNode("ProductName")
                                 && !orderDetails.selectSingleNode("ProductName").equals("")) {
@@ -1191,7 +1190,7 @@ public class GetDataService {
                         jymxsq.setSpmc(ProductName);
                         jymxsq.setDdh(jyxxsq.getDdh());
                         jymxsq.setHsbz(jyxxsq.getHsbz());
-                        // 鍙戠エ琛屾�ц川
+                        // 发票行性质
                         String RowType = "";
                         if (null != orderDetails.selectSingleNode("RowType")
                                 && !orderDetails.selectSingleNode("RowType").equals("")) {
@@ -1199,7 +1198,7 @@ public class GetDataService {
                         }
 
                         jymxsq.setFphxz(RowType);
-                        // 鍟嗗搧瑙勬牸鍨嬪彿
+                        // 商品规格型号
                         String Spec = "";
                         if (null != orderDetails.selectSingleNode("Spec")
                                 && !orderDetails.selectSingleNode("Spec").equals("")) {
@@ -1207,7 +1206,7 @@ public class GetDataService {
                         }
 
                         jymxsq.setSpggxh(Spec);
-                        // 鍟嗗搧鍗曚綅
+                        // 商品单位
                         String Unit = "";
                         if (null != orderDetails.selectSingleNode("Unit")
                                 && !orderDetails.selectSingleNode("Unit").equals("")) {
@@ -1215,7 +1214,7 @@ public class GetDataService {
                         }
 
                         jymxsq.setSpdw(Unit);
-                        // 鍟嗗搧鏁伴噺
+                        // 商品数量
                         String Quantity = "";
                         if (null != orderDetails.selectSingleNode("Quantity")
                                 && !orderDetails.selectSingleNode("Quantity").equals("")) {
@@ -1223,7 +1222,7 @@ public class GetDataService {
                             try{jymxsq.setSps(Double.valueOf(Quantity));}catch (Exception e){jymxsq.setSps(null);}
                         }
 
-                        // 鍟嗗搧鍗曚环
+                        // 商品单价
                         String UnitPrice = "";
                         if (null != orderDetails.selectSingleNode("UnitPrice")
                                 && !orderDetails.selectSingleNode("UnitPrice").equals("")) {
@@ -1231,7 +1230,7 @@ public class GetDataService {
                             try{jymxsq.setSpdj(Double.valueOf(UnitPrice));}catch (Exception e){jymxsq.setSpdj(null);}
                         }
 
-                        // 鍟嗗搧閲戦
+                        // 商品金额
                         String Amount = "";
                         if (null != orderDetails.selectSingleNode("Amount")
                                 && !orderDetails.selectSingleNode("Amount").equals("")) {
@@ -1240,7 +1239,7 @@ public class GetDataService {
 
                         }
 
-                        // 鎵ｉ櫎閲戦
+                        // 扣除金额
                         String DeductAmount = "";
                         if (null != orderDetails.selectSingleNode("DeductAmount")
                                 && !orderDetails.selectSingleNode("DeductAmount").equals("")) {
@@ -1248,14 +1247,14 @@ public class GetDataService {
                             jymxsq.setKce((null == DeductAmount || DeductAmount.equals("")) ? Double.valueOf("0.00")
                                     : Double.valueOf(DeductAmount));
                         }
-                        //鍟嗗搧绋庣巼
+                        //商品税率
                         String TaxRate = "";
                         if (null != orderDetails.selectSingleNode("TaxRate")
                                 && !orderDetails.selectSingleNode("TaxRate").equals("")) {
                             TaxRate = orderDetails.selectSingleNode("TaxRate").getText();
                             jymxsq.setSpsl(Double.valueOf(TaxRate));
                         }
-                        //鍟嗗搧绋庨
+                        //商品税额
                         String TaxAmount = "";
                         if (null != orderDetails.selectSingleNode("TaxAmount")
                                 && !orderDetails.selectSingleNode("TaxAmount").equals("")) {
@@ -1264,20 +1263,20 @@ public class GetDataService {
                                 jymxsq.setSpse(Double.valueOf(TaxAmount));
                             }
                         }
-                        //浠风◣鍚堣
+                        //价税合计
                         String MxTotalAmount = "";
                         if (null != orderDetails.selectSingleNode("MxTotalAmount")
                                 && !orderDetails.selectSingleNode("MxTotalAmount").equals("")) {
                             MxTotalAmount = orderDetails.selectSingleNode("MxTotalAmount").getText();
                             jymxsq.setJshj(Double.valueOf(MxTotalAmount));
                         }
-                        //鍟嗗搧鏄庣粏搴忓彿
+                        //商品明细序号
                         jymxsq.setSpmxxh(spmxxh);
-                        //鍙紑鍏烽噾棰�
+                        //可开具金额
                         jymxsq.setKkjje(Double.valueOf(MxTotalAmount));
-                        //宸插紑鍏烽噾棰�
+                        //已开具金额
                         jymxsq.setYkjje(0d);
-                        //鍟嗗搧鑷缂栫爜
+                        //商品自行编码
                         String VenderOwnCode = "";
                         if (null != orderDetails.selectSingleNode("VenderOwnCode")
                                 && !orderDetails.selectSingleNode("VenderOwnCode").equals("")) {
@@ -1299,19 +1298,19 @@ public class GetDataService {
                                 jymxsq.setYhzcmc(spbm.getYhzcmc());
                             }
                         }
-                        //浼樻儬鏀跨瓥鏍囪瘑
+                        //优惠政策标识
                         String PolicyMark = "";
                         if (null != orderDetails.selectSingleNode("PolicyMark")
                                 && !orderDetails.selectSingleNode("PolicyMark").equals("")) {
                             PolicyMark = orderDetails.selectSingleNode("PolicyMark").getText();
                         }
-                        //闆剁◣鐜囨爣蹇�
+                        //零税率标志
                         String TaxRateMark = "";
                         if (null != orderDetails.selectSingleNode("TaxRateMark")
                                 && !orderDetails.selectSingleNode("TaxRateMark").equals("")) {
                             TaxRateMark = orderDetails.selectSingleNode("TaxRateMark").getText();
                         }
-                        //浼樻儬鏀跨瓥鍚嶇О
+                        //优惠政策名称
                         String PolicyName = "";
                         if (null != orderDetails.selectSingleNode("PolicyName")
                                 && !orderDetails.selectSingleNode("PolicyName").equals("")) {
@@ -1326,7 +1325,7 @@ public class GetDataService {
                         jymxsqList.add(jymxsq);
                     }
                 }
-                // 鑾峰彇鍙傛暟涓搴旂殑鏀粯淇℃伅
+                // 获取参数中对应的支付信息
 
                 /*Element payments = (Element) xn.selectSingleNode("Payments");
                 if (null != payments && !payments.equals("")) {
@@ -1334,21 +1333,21 @@ public class GetDataService {
                     if (null != paymentItemList && paymentItemList.size() > 0) {
                         for (Element PaymentItem : paymentItemList) {
                             Jyzfmx jyzfmx = new Jyzfmx();
-                            //鏀粯鏂瑰紡浠ｇ爜
+                            //支付方式代码
                             String zffsDm = "";
                             if (null != PaymentItem.selectSingleNode("PayCode")
                                     && !PaymentItem.selectSingleNode("PayCode").equals("")) {
                                 zffsDm = PaymentItem.selectSingleNode("PayCode").getText();
                                 jyzfmx.setZffsDm(zffsDm);
                             }
-                            //鏀粯鎬婚噾棰�
+                            //支付总金额
                             String zfje = "";
                             if (null != PaymentItem.selectSingleNode("PayPrice")
                                     && !PaymentItem.selectSingleNode("PayPrice").equals("")) {
                                 zfje = PaymentItem.selectSingleNode("PayPrice").getText();
                                 jyzfmx.setZfje(Double.valueOf(zfje));
                             }
-                            //鏀粯搴忓垪鍙�
+                            //支付序列号
                             String PayNumber = "";
                             if (null != PaymentItem.selectSingleNode("PayNumber")
                                     && !PaymentItem.selectSingleNode("PayNumber").equals("")) {
@@ -1375,7 +1374,7 @@ public class GetDataService {
     }
 
     /**
-     * 缁垮湴浼橀矞--鑾峰彇楠岀鎺ュ彛
+     * 绿地优鲜--获取验签接口
      * @param ExtractCode
      * @param gsdm
      * @return
@@ -1388,7 +1387,7 @@ public class GetDataService {
             StringBuffer buffer = new StringBuffer();
             Map parms=new HashMap();
             parms.put("gsdm",gsdm);
-            //鏌ヨ鍙傛暟鎬昏〃url
+            //查询参数总表url
             Cszb zb1 = cszbService.getSpbmbbh(gsdm, null,null, "shhqtokenurl");
             Map resultMap = null;
             HttpPost httpPost = new HttpPost(zb1.getCsz());
@@ -1401,7 +1400,7 @@ public class GetDataService {
             //httpPost.setConfig(requestConfig);
             httpPost.addHeader("Accept", "application/json");
             httpPost.addHeader("Authorization","Basic aWZpZWxkOmlmaWVsZDEyMzQ=");
-            //浼犻�掓暟鎹獙璇佺爜涓簀son鏍煎紡
+            //传递数据验证码为json格式
              //Map nvps = new HashMap();
             try {
                 //nvps.put("Authorization", "Basic aWZpZWxkOmlmaWVsZDEyMzQ=");
@@ -1419,8 +1418,8 @@ public class GetDataService {
                         buffer.append(strMessage);
                     }
                 }
-                System.out.println("鎺ユ敹杩斿洖鍊�:" + buffer.toString());
-                //瑙ｆ瀽json鑾峰彇token
+                System.out.println("接收返回值:" + buffer.toString());
+                //解析json获取token
                 parmsMap = interpretFirstForJson(gsdm, buffer.toString());
         }catch (Exception e){
             logger.info("request url=" +zb1.getCsz()+ ", exception, msg=" + e.getMessage());
@@ -1431,7 +1430,7 @@ public class GetDataService {
     }
 
     /**
-     * 缁垮湴浼橀矞 --璋冪敤鎺ュ彛鑾峰彇鑾峰彇鏁版嵁
+     * 绿地优鲜 --调用接口获取获取数据
      * @param ExtractCode
      * @param gsdm
      * @param token
@@ -1446,7 +1445,7 @@ public class GetDataService {
         Map parms=new HashMap();
         parms.put("gsdm",gsdm);
 
-        //鏌ヨ鍙傛暟鎬昏〃绗簩娆rl
+        //查询参数总表第二次url
         Cszb zb2 = cszbService.getSpbmbbh(gsdm, null,null, "sfhhurl");
         String uri = zb2.getCsz()+"?access_token="+token;
         //String uri = zb2.getCsz();
@@ -1462,7 +1461,7 @@ public class GetDataService {
                 .build();
         //httpPost.setConfig(requestConfig);
         httpPost.addHeader("Content-Type", "application/json");
-        //浼犻�掓暟鎹獙璇佺爜涓簀son鏍煎紡
+        //传递数据验证码为json格式
         Map nvps = new HashMap();
         try {
             nvps.put("channel","rongjin");
@@ -1482,8 +1481,8 @@ public class GetDataService {
                     buffer.append(strMessage);
                 }
             }
-            System.out.println("鎺ユ敹杩斿洖鍊�:" + buffer.toString());
-            //瑙ｆ瀽json鑾峰彇璐墿灏忕エ鏁版嵁 灏佽鏁版嵁
+            System.out.println("接收返回值:" + buffer.toString());
+            //解析json获取购物小票数据 封装数据
             parmsMap = interpretSecForJson(gsdm, buffer.toString(),ExtractCode);
             List<Jyxxsq> jyxxsqList = (List) parmsMap.get("jyxxsqList");
             List<Jymxsq> jymxsqList = (List) parmsMap.get("jymxsqList");
@@ -1509,7 +1508,7 @@ public class GetDataService {
                 "      \"tradeTime\": \"20:00:00\",\n" +
                 "      \"voidbillno\":\"\",\n" +
                 "      \"shopid\": \"001\" ,\n" +
-                "      \"shopname\": \"XXXX搴梊",\n" +
+                "      \"shopname\": \"XXXX店\",\n" +
                 "      \"posid\": \"004\",\n" +
                 "      \"listno\": \"23096\",\n" +
                 "      \"cardno\": \"77777777\",\n" +
@@ -1517,25 +1516,25 @@ public class GetDataService {
                 "      \"addcodev\": \"V1.0.0\",\n" +
                 "      \"salelist\":[{\n" +
                 "          \"goodsid\": \"1\",\n" +
-                "          \"goodsname\": \"鍙箰\",\n" +
+                "          \"goodsname\": \"可乐\",\n" +
                 "          \"qty\": 1.000,\n" +
                 "          \"amount\": 10.00,\n" +
                 "          \"discamount\": 0.00\n" +
                 "      },\n" +
                 "      {\n" +
                 "          \"goodsid\": \"2\",\n" +
-                "          \"goodsname\": \"闆ⅶ\",\n" +
+                "          \"goodsname\": \"雪碧\",\n" +
                 "          \"qty\": 1.000,\n" +
                 "          \"amount\": 10.00,\n" +
                 "          \"discamount\": 0.00\n" +
                 "      }],\n" +
                 "      \"paylist\":[{\n" +
-                "          \"paytype\": \"鐜伴噾\",\n" +
+                "          \"paytype\": \"现金\",\n" +
                 "          \"payamount\": 20.00,\n" +
                 "          \"cardno\":\"\"\n" +
                 "      },\n" +
                 "      {\n" +
-                "          \"paytype\": \"浼氬憳鍗",\n" +
+                "          \"paytype\": \"会员卡\",\n" +
                 "          \"payamount\": 0.00,\n" +
                 "          \"cardno\":\"77777777\"\n" +
                 "      }]\n" +
@@ -1558,7 +1557,7 @@ public class GetDataService {
                 "            \"unitPrice\": 999,\n" +
                 "            \"quantity\": 1,\n" +
                 "            \"priceDiscounts\": 0,\n" +
-                "            \"name\": \"HOYA閲戠骇闀滅墖\",\n" +
+                "            \"name\": \"HOYA金级镜片\",\n" +
                 "            \"afterDiscountPrice\": 999\n" +
                 "        }\n" +
                 "    ],\n" +
@@ -1566,12 +1565,12 @@ public class GetDataService {
                 "        {\n" +
                 "            \"pay_amout\": \"248.0\",\n" +
                 "            \"pay_code\": \"PT_06\",\n" +
-                "            \"pay_name\": \"宸嶅悍鍗"\n" +
+                "            \"pay_name\": \"巍康卡\"\n" +
                 "        },\n" +
                 "        {\n" +
                 "            \"pay_amout\": \"1103.2\",\n" +
                 "            \"pay_code\": \"PT_15\",\n" +
-                "            \"pay_name\": \"鍥藉唴閾惰鍗"\n" +
+                "            \"pay_name\": \"国内银行卡\"\n" +
                 "        }\n" +
                 "    ],\n" +
                 "    \"orderDate\": \"2017-10-17 22:10:09.0\",\n" +
@@ -1586,7 +1585,7 @@ public class GetDataService {
         }
     }
     /**
-     * 缁垮湴浼橀矞--瑙ｆ瀽json鏁版嵁,鑾峰彇token
+     * 绿地优鲜--解析json数据,获取token
      * @param gsdm
      * @param data
      * @return
@@ -1595,34 +1594,34 @@ public class GetDataService {
     public Map interpretFirstForJson(String gsdm,String data)throws Exception {
 
         Map resultMap=new HashMap();
-        //浼犲叆鏁版嵁
+        //传入数据
         JSONObject jsonObj = JSONObject.parseObject(data);
-        //鑾峰彇accessToken
+        //获取accessToken
         String accessToken ="";
         if (null!=jsonObj.getString("access_token")&&!jsonObj.getString("access_token").equals("")){
             accessToken =  jsonObj.get("access_token").toString();
         }
-        //鑾峰彇	token绫诲瀷
+        //获取	token类型
         String tokenType ="";
         if (null!=jsonObj.getString("token_type")&&!jsonObj.getString("token_type").equals("")){
             tokenType =  jsonObj.get("token_type").toString();
         }
-        //鑾峰彇
+        //获取
         String refreshToken ="";
         if (null!=jsonObj.getString("refresh_token")&&!jsonObj.getString("refresh_token").equals("")){
             refreshToken =  jsonObj.get("refresh_token").toString();
         }
-        //鑾峰彇杩囨湡鏃堕棿
+        //获取过期时间
         Integer expiresIn =null;
         if (null!=jsonObj.getInteger("expires_in")&&!jsonObj.getInteger("expires_in").equals("")){
             expiresIn =   jsonObj.getInteger("expires_in");
         }
-        //鑾峰彇鏉冮檺
+        //获取权限
         String scope ="";
         if (null!=jsonObj.getString("scope")&&!jsonObj.getString("scope").equals("")){
             scope =  jsonObj.getString("scope").toString();
         }
-        //鑾峰彇缁勭粐
+        //获取组织
         String organization ="";
         if (null!=jsonObj.getString("organization")&&!jsonObj.getString("organization").equals("")){
             organization =  jsonObj.getString("organization").toString();
@@ -1636,7 +1635,7 @@ public class GetDataService {
     }
 
     /**
-     * 缁垮湴浼橀矞--瑙ｆ瀽json鏁版嵁,灏佽
+     * 绿地优鲜--解析json数据,封装
      * @param gsdm
      * @param data
      * @return
@@ -1646,89 +1645,89 @@ public class GetDataService {
 
         Map rsMap = new HashMap();
         Map params1 = new HashMap();
-        params1.put("gsdm", gsdm);//鍏徃浠ｇ爜
+        params1.put("gsdm", gsdm);//公司代码
         Yh yh = yhService.findOneByParams(params1);
         int lrry = yh.getId();
-        List<Jyxxsq> jyxxsqList = new ArrayList();//浜ゆ槗淇℃伅鐢宠
-        List<Jymxsq> jymxsqList = new ArrayList();//浜ゆ槗鏄庣粏鐢宠
-        List<Jyzfmx> jyzfmxList = new ArrayList<Jyzfmx>();//浜ゆ槗鏀粯鏄庣粏
-        //浼犲叆鏁版嵁
+        List<Jyxxsq> jyxxsqList = new ArrayList();//交易信息申请
+        List<Jymxsq> jymxsqList = new ArrayList();//交易明细申请
+        List<Jyzfmx> jyzfmxList = new ArrayList<Jyzfmx>();//交易支付明细
+        //传入数据
         JSONObject jsonObj = JSONObject.parseObject(data);
-        String code = jsonObj.getString("code"); //code鍊间负0 琛ㄧず鏁版嵁姝ｅ父
-        //鏍规嵁data鑾峰彇璐墿灏忕エ淇℃伅
+        String code = jsonObj.getString("code"); //code值为0 表示数据正常
+        //根据data获取购物小票信息
         if(null!=code&&code.equals("0")) {
             JSONArray jsondata = jsonObj.getJSONArray("data");
             if (jsondata.size() > 0) {
-                //System.out.println("杩涘叆data鏁版嵁");
+                //System.out.println("进入data数据");
                 for (int i = 0; i < jsondata.size(); i++) {
-                    //鍩烘湰淇℃伅鑾峰彇
+                    //基本信息获取
                     JSONObject jo = jsondata.getJSONObject(i);
-                    //鑾峰彇璐墿灏忕エ鍙�(ld)
+                    //获取购物小票号(ld)
                     String ExtractCode = "";
                     if (null != jo.getString("billno") && !jo.getString("billno").equals("")) {
                         ExtractCode = jo.getString("billno").toString();
                     }
-                    //鑾峰彇鍙戠敓鏃ユ湡
+                    //获取发生日期
                     Date tradeDate = null;
                     if (null != jo.getDate("tradedate") && !jo.getDate("tradedate").equals("")) {
                         tradeDate = jo.getDate("tradedate");
                     }
-                    //System.out.println("鑾峰彇鍙戠敓鏃ユ湡"+tradeDate);
-                    //鑾峰彇鍙戠敓鏃堕棿
+                    //System.out.println("获取发生日期"+tradeDate);
+                    //获取发生时间
                     String tradeTime = "";
                     if (null != jo.getString("tradetime") && !jo.getString("tradetime").equals("")) {
                         tradeTime = jo.getString("tradetime").toString();
                     }
-                    //鑾峰彇	閫�璐ф椂锛屽師璐墿灏忕エ鍙�
+                    //获取	退货时，原购物小票号
                     String voidbillno = "";
                     if (null != jo.getString("voidbillno") && !jo.getString("voidbillno").equals("")) {
                         voidbillno = jo.getString("voidbillno").toString();
                     }
-                    //鑾峰彇		闂ㄥ簵缂栫爜
+                    //获取		门店编码
                     String shopid = "";
                     if (null != jo.getString("shopid") && !jo.getString("shopid").equals("")) {
                         shopid = jo.getString("shopid").toString();
                     }
-                    //鑾峰彇		闂ㄥ簵鍚嶇О
+                    //获取		门店名称
                     String shopname = "";
                     if (null != jo.getString("shopname") && !jo.getString("shopname").equals("")) {
                         shopname = jo.getString("shopname").toString();
                     }
-                    //鑾峰彇		鏀堕摱鏈哄彿
+                    //获取		收银机号
                     String posid = "";
                     if (null != jo.getString("posid") && !jo.getString("posid").equals("")) {
                         posid = jo.getString("posid").toString();
                     }
-                    //鑾峰彇		灏忕エ娴佹按鍙�
+                    //获取		小票流水号
                     Integer listno = null;
                     if (null != jo.getInteger("listno") && !jo.getInteger("listno").equals("")) {
                         listno = jo.getInteger("listno");
                     }
-                    //鑾峰彇		浼氬憳鍗″彿(ld)
+                    //获取		会员卡号(ld)
                     String MemberID = "";
                     if (null != jo.getString("cardno") && !jo.getString("cardno").equals("")) {
                         MemberID = jo.getString("cardno").toString();
                     }
-                    //鑾峰彇		椤鹃搴斾粯鎬婚噾棰�
+                    //获取		顾额应付总金额
                     Double payamount = null;
                     if (null != jo.getDouble("payamount") && !jo.getDouble("payamount").equals("")) {
                         payamount = jo.getDouble("payamount");
                     }
-                    //鑾峰彇		闄勭爜鐗堟湰
+                    //获取		附码版本
                     String addcodev = "";
                     if (null != jo.getString("addcodev") && !jo.getString("addcodev").equals("")) {
                         addcodev = jo.getString("addcodev").toString();
                     }
-                    //鍩烘湰鏁版嵁灏佽杩涗氦鏄撲俊鎭敵璇�
+                    //基本数据封装进交易信息申请
                     Jyxxsq jyxxsq = new Jyxxsq();
-                    jyxxsq.setDdh(ExtractCode);//璁㈠崟缂栧彿 瀵瑰簲灏忕エ娴佹按鍙�
-                    jyxxsq.setTqm(tqm);// 鎻愬彇鐮�  瀵瑰簲璐墿灏忕エ娴佹按鍙�
-                    jyxxsq.setJylsh("JY" + new SimpleDateFormat("yyyyMMddHHmmssSS").format(new Date()));//浜ゆ槗娴佹按鍙�
+                    jyxxsq.setDdh(ExtractCode);//订单编号 对应小票流水号
+                    jyxxsq.setTqm(tqm);// 提取码  对应购物小票流水号
+                    jyxxsq.setJylsh("JY" + new SimpleDateFormat("yyyyMMddHHmmssSS").format(new Date()));//交易流水号
                     //String kpddm = "A" + tqm.substring(0, 3);
                     String kpddm=tqm.substring(0,3);
                     jyxxsq.setKpddm(kpddm);
-                    logger.info("寮�绁ㄧ偣浠ｇ爜涓�----" + jyxxsq.getKpddm());
-                    //鏍规嵁鍏徃浠ｇ爜銆佸紑绁ㄧ偣浠ｇ爜鏌ヨ绋庢帶鐩�
+                    logger.info("开票点代码为----" + jyxxsq.getKpddm());
+                    //根据公司代码、开票点代码查询税控盘
                     Map skpmap = new HashMap();
                     skpmap.put("gsdm", gsdm);
                     skpmap.put("kpddm", kpddm);
@@ -1737,26 +1736,26 @@ public class GetDataService {
                         rsMap.put("jyxxsqList", jyxxsqList);
                         rsMap.put("jymxsqList", jymxsqList);
                         rsMap.put("jyzfmxList", jyzfmxList);
-                        rsMap.put("msg","寮�绁ㄧ偣淇℃伅鏈淮鎶わ紝璇疯仈绯诲晢瀹�");
+                        rsMap.put("msg","开票点信息未维护，请联系商家");
                         return rsMap;
                     }
-                    //鏍规嵁閿�鏂筰d  鏌ヨ
+                    //根据销方id  查询
                     Xf x = new Xf();
                     x.setId(skpdata.getXfid());
                     Xf xf = xfService.findOneByParams(x);
                     if(xf==null){
-                        rsMap.put("msg","閿�鏂逛俊鎭湭缁存姢锛岃鑱旂郴鍟嗗");
+                        rsMap.put("msg","销方信息未维护，请联系商家");
                         rsMap.put("jyxxsqList", jyxxsqList);
                         rsMap.put("jymxsqList", jymxsqList);
                         rsMap.put("jyzfmxList", jyzfmxList);
                         return rsMap;
                     }
-                    jyxxsq.setXfid(xf.getId());//閿�鏂筰d
-                    jyxxsq.setFpzldm("12"); //鍙戠エ绉嶇被
-                    jyxxsq.setJshj(Double.valueOf(payamount));//浠风◣鍚堣
-                    jyxxsq.setHsbz("1");//鍚◣鏍囧織 1鍚◣
-                    jyxxsq.setBz("");//澶囨敞
-                    jyxxsq.setZsfs("");//寰佺◣鏂瑰紡
+                    jyxxsq.setXfid(xf.getId());//销方id
+                    jyxxsq.setFpzldm("12"); //发票种类
+                    jyxxsq.setJshj(Double.valueOf(payamount));//价税合计
+                    jyxxsq.setHsbz("1");//含税标志 1含税
+                    jyxxsq.setBz("");//备注
+                    jyxxsq.setZsfs("");//征税方式
                     jyxxsq.setKpr(xf.getKpr());
                     jyxxsq.setSkr(xf.getSkr());
                     jyxxsq.setFhr(xf.getFhr());
@@ -1777,46 +1776,46 @@ public class GetDataService {
                     jyxxsq.setGsdm(gsdm);
                     jyxxsq.setSjly("1");
                     jyxxsq.setClztdm("00");
-                    //鍏ㄥ眬鎶樻墸
+                    //全局折扣
                     jyxxsq.setQjzk(0d);
                     jyxxsqList.add(jyxxsq);
                     JSONArray salelist = jo.getJSONArray("salelist");
                     if (null != salelist && salelist.size() > 0) {
-                        //鍟嗗搧鏄庣粏鑾峰彇
+                        //商品明细获取
                         int spmxxh = 0;
                         for (int s = 0; s < salelist.size(); s++) {
 
                             Jymxsq jymxsq = new Jymxsq();
                             JSONObject saleData = salelist.getJSONObject(s);
-                            //鑾峰彇     鍟嗗搧绋庡姟闄勭爜
+                            //获取     商品税务附码
                             String goodsid = "";
                             if (null != saleData.getString("goodsid") && !saleData.getString("goodsid").equals("")) {
                                 goodsid = saleData.getString("goodsid").toString();
                                 //String spdm = goodsid.replaceAll("\r\n");
                                 jymxsq.setSpdm(goodsid);
                             }
-                            logger.info("鑾峰彇salelist鎴愬姛,鏁版嵁鍟嗗搧绋庡姟闄勭爜gooid" + goodsid);
-                            //鑾峰彇     	鍟嗗搧鍚嶇О
+                            logger.info("获取salelist成功,数据商品税务附码gooid" + goodsid);
+                            //获取     	商品名称
                             String goodsname = "";
                             if (null != saleData.getString("goodsname") && !saleData.getString("goodsname").equals("")) {
                                 String goodsna = saleData.getString("goodsname").toString();
                                 goodsname = goodsna.replaceAll("\n", "");
                                 jymxsq.setSpmc(goodsname.trim());
                             }
-                            //鑾峰彇     	鏁伴噺锛岃礋鏁颁负閫�璐ф暟閲�
+                            //获取     	数量，负数为退货数量
                             Double qty = null;
                             if (null != saleData.getDouble("qty") && !saleData.getDouble("qty").equals("")) {
                                 qty = saleData.getDouble("qty");
-                                jymxsq.setSps(Double.valueOf(qty));//鍟嗗搧鏁伴噺
+                                jymxsq.setSps(Double.valueOf(qty));//商品数量
                             }
 
-                            //鑾峰彇      椤惧搴斾粯閲戦锛岃礋鏁颁负閫�璐ч噾棰�
+                            //获取      顾客应付金额，负数为退货金额
                             BigDecimal amount = null;
                             if (null != saleData.getBigDecimal("amount") && !saleData.getBigDecimal("amount").equals("")) {
                                 amount = saleData.getBigDecimal("amount");
                             }
 
-                            //鑾峰彇      閿�鍞◣鐜�
+                            //获取      销售税率
                             BigDecimal taxrate = null;
                             if (null != saleData.getBigDecimal("taxrate") && !saleData.getBigDecimal("taxrate").equals("")) {
                                 BigDecimal taxrates = saleData.getBigDecimal("taxrate");
@@ -1825,40 +1824,40 @@ public class GetDataService {
                                 } else {
                                     taxrate = taxrates;
                                 }
-                                jymxsq.setSpsl(taxrate.doubleValue());// 鍟嗗搧绋庣巼
+                                jymxsq.setSpsl(taxrate.doubleValue());// 商品税率
                             }
 
-                            //鑾峰彇     	瀹為檯鍗曚环,椤惧搴斾粯閲戦 / 鏁伴噺
+                            //获取     	实际单价,顾客应付金额 / 数量
                             Double price = null;
                             if (null != saleData.getDouble("price") && !saleData.getDouble("price").equals("")) {
                                 price = saleData.getDouble("price");
-                                jymxsq.setSpdj(price);//鍟嗗搧鍗曚环
+                                jymxsq.setSpdj(price);//商品单价
                             }
-                            //鑾峰彇      	淇冮攢閲戦
+                            //获取      	促销金额
                             Double discamount = null;
                             if (null != saleData.getDouble("discamount") && !saleData.getDouble("discamount").equals("")) {
                                 discamount = saleData.getDouble("discamount");
                             }
-                            //鍟嗗搧鏄庣粏 灏佽杩涗氦鏄撴槑缁嗙敵璇�
+                            //商品明细 封装进交易明细申请
                             spmxxh++;
-                            jymxsq.setSpmxxh(spmxxh);//鍟嗗搧鏄庣粏搴忓彿
-                            jymxsq.setDdh(jyxxsq.getDdh());//璁㈠崟鍙�
+                            jymxsq.setSpmxxh(spmxxh);//商品明细序号
+                            jymxsq.setDdh(jyxxsq.getDdh());//订单号
                             jymxsq.setHsbz(jyxxsq.getHsbz());
-                            jymxsq.setFphxz("0");//鍙戠エ琛屾�ц川 0锛氭甯歌
-                            //jymxsq.setSpggxh("");//鍟嗗搧瑙勬牸鍨嬪彿
-                            //jymxsq.setSpdw("");//鍟嗗搧鍗曚綅
-                            //璁＄畻涓嶅惈绋庨噾棰�
+                            jymxsq.setFphxz("0");//发票行性质 0：正常行
+                            //jymxsq.setSpggxh("");//商品规格型号
+                            //jymxsq.setSpdw("");//商品单位
+                            //计算不含税金额
                             BigDecimal big = new BigDecimal("1");
                             //BigDecimal bhsamount =   amount.divide(big.add(taxrate));
                             BigDecimal bhsamount = InvoiceSplitUtils.div(amount, big.add(taxrate), 6);
-                            jymxsq.setSpje(amount.doubleValue());//鍟嗗搧閲戦
-                            //璁＄畻鍟嗗搧绋庨
+                            jymxsq.setSpje(amount.doubleValue());//商品金额
+                            //计算商品税额
                             BigDecimal spseAmount = bhsamount.multiply(taxrate);
                             //jymxsq.setSpse(spseAmount.doubleValue());
-                            jymxsq.setJshj(amount.doubleValue());//绋庝环鍚堣涓虹豢鍦颁紶杩涚殑閲戦
-                            //鍙紑鍏烽噾棰�  = amount
+                            jymxsq.setJshj(amount.doubleValue());//税价合计为绿地传进的金额
+                            //可开具金额  = amount
                             //jymxsq.setKkjje(amount.doubleValue());
-                            //宸插紑鍏烽噾棰�  = 0
+                            //已开具金额  = 0
                             jymxsq.setYkjje(0d);
                             Map spbmMap=new HashMap();
                             spbmMap.put("spbm",goodsid);
@@ -1898,28 +1897,28 @@ public class GetDataService {
                     Double bkkjje = 0.00;
                     JSONArray paylist = jo.getJSONArray("paylist");
                     if (null != paylist && paylist.size() > 0) {
-                        // 鑾峰彇鏀粯鏄庣粏
+                        // 获取支付明细
                         for (int p = 0; p < paylist.size(); p++) {
                             Jyzfmx jyzfmx = new Jyzfmx();
                             JSONObject payData = paylist.getJSONObject(p);
-                            //鑾峰彇     鏀粯鏂瑰紡浠ｇ爜
+                            //获取     支付方式代码
                             String paytype = "";
                             if (null != payData.getString("paytype") && !payData.getString("paytype").equals("")) {
                                 paytype = payData.getString("paytype");
                                 jyzfmx.setZffsDm(paytype);
                             }
-                            //鑾峰彇     椤惧鏀粯鏂瑰紡鏀粯瀹為檯閲戦锛岃礋鏁颁负閫�娆�
+                            //获取     顾客支付方式支付实际金额，负数为退款
                             Double zfje = null;
                             if (null != payData.getDouble("payamount") && !payData.getDouble("payamount").equals("")) {
                                 zfje = payData.getDouble("payamount");
-                                jyzfmx.setZfje(Double.valueOf(zfje));//鏀粯閲戦
+                                jyzfmx.setZfje(Double.valueOf(zfje));//支付金额
                             }
-                            //鑾峰彇     鏀粯鏂瑰紡鏄偍鍊煎崱鎴栦細鍛樺崱鏃讹紝璁板綍鍗″彿
+                            //获取     支付方式是储值卡或会员卡时，记录卡号
                             String paycardno = "";
                             if (null != payData.getString("cardno") && !payData.getString("cardno").equals("")) {
                                 paycardno = payData.getString("cardno").toString();
                             }
-                            //鏀粯鏄庣粏灏佽浜ゆ槗鏀粯鏄庣粏
+                            //支付明细封装交易支付明细
                             jyzfmx.setGsdm(gsdm);
                             jyzfmx.setDdh(jyxxsq.getDdh());
                             jyzfmx.setLrry(lrry);
@@ -1931,7 +1930,7 @@ public class GetDataService {
                     }
                 }
             }else {
-                String msg ="鑾峰彇鏁版嵁涓虹┖锛岃绋嶅悗鍐嶈瘯锛�";
+                String msg ="获取数据为空，请稍后再试！";
                 rsMap.put("msg",msg);
             }
             rsMap.put("jyxxsqList", jyxxsqList);
@@ -1946,7 +1945,7 @@ public class GetDataService {
                 rsMap.put("jymxsqList", jymxsqList);
                 rsMap.put("jyzfmxList", jyzfmxList);
             }else {
-                 msg = "鑾峰彇鏁版嵁澶辫触锛岃閲嶈瘯锛�";
+                 msg = "获取数据失败，请重试！";
                 rsMap.put("msg", msg);
                 rsMap.put("jyxxsqList", jyxxsqList);
                 rsMap.put("jymxsqList", jymxsqList);
@@ -1957,7 +1956,7 @@ public class GetDataService {
     }
 
     /**
-     * 鍏夊敮灏�--璋冪敤鎺ュ彛鑾峰彇鏁版嵁
+     * 光唯尚--调用接口获取数据
      * @param orderNo
      * @param gsdm
      * @param url
@@ -1969,10 +1968,10 @@ public class GetDataService {
             Map map = new HashMap();
             map.put("orderNo",orderNo);
             //map.put("gsdm",gsdm);
-            logger.info("鍏夊敮灏�---浼犲叆鍙傛暟"+JSON.toJSONString(map));
+            logger.info("光唯尚---传入参数"+JSON.toJSONString(map));
             String response = HttpClientUtil.doGet(url, map);
-            logger.info("鍏夊敮灏�---鎺ユ敹杩斿洖鍊�:" + response);
-            //瑙ｆ瀽杩斿洖鏁版嵁
+            logger.info("光唯尚---接收返回值:" + response);
+            //解析返回数据
             parmsMap=interpretForGVC(gsdm,response,orderNo);
             String msg = (String) parmsMap.get("msg");
                 List<Jyxxsq> jyxxsqList = (List) parmsMap.get("jyxxsqList");
@@ -1984,7 +1983,7 @@ public class GetDataService {
                         parmsMap.put("msg",msgss);
                     }
                 }*/
-            logger.info("-----灏佽濂界殑鏁版嵁"+JSON.toJSON(parmsMap));
+            logger.info("-----封装好的数据"+JSON.toJSON(parmsMap));
         }catch (Exception e){
             logger.info("msg=" + e.getMessage());
             e.printStackTrace();
@@ -1993,7 +1992,7 @@ public class GetDataService {
     }
 
     /**
-     * 鍏夊敮灏�--瑙ｆ瀽鏁版嵁骞跺皝瑁�
+     * 光唯尚--解析数据并封装
      * @param gsdm
      * @param data
      * @param orderNo
@@ -2004,20 +2003,20 @@ public class GetDataService {
 
         Map rsMap = new HashMap();
         Map params1 = new HashMap();
-        params1.put("gsdm", gsdm);//鍏徃浠ｇ爜
+        params1.put("gsdm", gsdm);//公司代码
         Yh yh = yhService.findOneByParams(params1);
         int lrry = yh.getId();
-        List<Jyxxsq> jyxxsqList = new ArrayList();//浜ゆ槗淇℃伅鐢宠
-        List<Jymxsq> jymxsqList = new ArrayList();//浜ゆ槗鏄庣粏鐢宠
-        List<Jyzfmx> jyzfmxList = new ArrayList<Jyzfmx>();//浜ゆ槗鏀粯鏄庣粏
+        List<Jyxxsq> jyxxsqList = new ArrayList();//交易信息申请
+        List<Jymxsq> jymxsqList = new ArrayList();//交易明细申请
+        List<Jyzfmx> jyzfmxList = new ArrayList<Jyzfmx>();//交易支付明细
         String nowdate ="";
         String storeno ="";
         Double zkjine = 0d;
         String kpqssj="";
         String kpjssj="";
-        //浼犲叆鏁版嵁
+        //传入数据
         JSONObject jsonObj = JSONObject.parseObject(data);
-        String code = jsonObj.getString("code"); //code鍊间负0 琛ㄧず鏁版嵁姝ｅ父
+        String code = jsonObj.getString("code"); //code值为0 表示数据正常
         if(null!=code&&code.equals("0000")) {
             JSONObject jsondata = jsonObj.getJSONObject("data");
             if (jsondata!=null) {
@@ -2058,14 +2057,14 @@ public class GetDataService {
                     nowdate= nowDate;
                     storeno =storeNo;
                     zkjine=afterDiscountTotal;
-                    //鍩烘湰鏁版嵁灏佽杩涗氦鏄撲俊鎭敵璇�
+                    //基本数据封装进交易信息申请
                     Jyxxsq jyxxsq = new Jyxxsq();
-                    jyxxsq.setDdh(orderNo);//璁㈠崟缂栧彿 瀵瑰簲灏忕エ娴佹按鍙�
-                    jyxxsq.setTqm(orderNo);// 鎻愬彇鐮�  瀵瑰簲璐墿灏忕エ娴佹按鍙�
-                    jyxxsq.setJylsh("JY" + new SimpleDateFormat("yyyyMMddHHmmssSS").format(new Date()));//浜ゆ槗娴佹按鍙�
+                    jyxxsq.setDdh(orderNo);//订单编号 对应小票流水号
+                    jyxxsq.setTqm(orderNo);// 提取码  对应购物小票流水号
+                    jyxxsq.setJylsh("JY" + new SimpleDateFormat("yyyyMMddHHmmssSS").format(new Date()));//交易流水号
                     jyxxsq.setKpddm(storeNo);
 //                    jyxxsq.setKpddm("gvc_01");
-                //鏍规嵁鍏徃浠ｇ爜銆佸紑绁ㄧ偣浠ｇ爜鏌ヨ绋庢帶鐩�
+                //根据公司代码、开票点代码查询税控盘
                 Map skpmap = new HashMap();
                     skpmap.put("gsdm", gsdm);
                     skpmap.put("kpddm", storeNo);
@@ -2078,7 +2077,7 @@ public class GetDataService {
                         rsMap.put("nowdate",nowdate);
                         rsMap.put("storeno",storeno);
                         rsMap.put("zkjine",zkjine);
-                        rsMap.put("msg","寮�绁ㄧ偣淇℃伅鏈淮鎶わ紝璇疯仈绯诲晢瀹讹紒");
+                        rsMap.put("msg","开票点信息未维护，请联系商家！");
                         return rsMap;
                     }
                     if(skpdata.getKpqssj()!=null){
@@ -2087,12 +2086,12 @@ public class GetDataService {
                     if(skpdata.getKpjssj()!=null){
                         kpjssj =skpdata.getKpjssj().toString();
                     }
-                    //鏍规嵁閿�鏂筰d  鏌ヨ
+                    //根据销方id  查询
                     Xf x = new Xf();
                     x.setId(skpdata.getXfid());
                     Xf xf = xfService.findOneByParams(x);
                     if(xf==null){
-                        rsMap.put("msg","閿�鏂逛俊鎭湭缁存姢锛岃鑱旂郴鍟嗗锛�");
+                        rsMap.put("msg","销方信息未维护，请联系商家！");
                         rsMap.put("jyxxsqList", jyxxsqList);
                         rsMap.put("jymxsqList", jymxsqList);
                         rsMap.put("jyzfmxList", jyzfmxList);
@@ -2103,13 +2102,13 @@ public class GetDataService {
                         rsMap.put("kpjssj",kpjssj);
                         return rsMap;
                     }
-                    jyxxsq.setXfid(xf.getId());//閿�鏂筰d
-                    jyxxsq.setFpzldm("12"); //鍙戠エ绉嶇被
-                    jyxxsq.setJshj(Double.valueOf(total));//浠风◣鍚堣
-                    //鍏ㄥ眬鎶樻墸
+                    jyxxsq.setXfid(xf.getId());//销方id
+                    jyxxsq.setFpzldm("12"); //发票种类
+                    jyxxsq.setJshj(Double.valueOf(total));//价税合计
+                    //全局折扣
                     jyxxsq.setQjzk(Double.valueOf(totalDiscounts));
-                    jyxxsq.setHsbz("1");//鍚◣鏍囧織 1鍚◣
-                    jyxxsq.setZsfs("");//寰佺◣鏂瑰紡
+                    jyxxsq.setHsbz("1");//含税标志 1含税
+                    jyxxsq.setZsfs("");//征税方式
                     jyxxsq.setKpr(xf.getKpr());
                     jyxxsq.setSkr(xf.getSkr());
                     jyxxsq.setFhr(xf.getFhr());
@@ -2134,21 +2133,21 @@ public class GetDataService {
                     jyxxsqList.add(jyxxsq);
                     JSONArray salelist = jo.getJSONArray("details");
                     if (null != salelist && salelist.size() > 0) {
-                        //鍟嗗搧鏄庣粏鑾峰彇
+                        //商品明细获取
                         int spmxxh = 1;
                         for (int s = 0; s < salelist.size(); s++) {
 
                             JSONObject saleData = salelist.getJSONObject(s);
-                            String name = "";//鍚嶇О
+                            String name = "";//名称
                             if (null != saleData.getString("name") && !saleData.getString("name").equals("")) {
                                 String goodsna = saleData.getString("name").toString();
                                 name = goodsna.replaceAll("\n", "");
                             }
-                            BigDecimal quantity = null;//鏁伴噺
+                            BigDecimal quantity = null;//数量
                             if (null != saleData.getBigDecimal("quantity") && saleData.getBigDecimal("quantity").compareTo(BigDecimal.ZERO)!=0) {
                                 quantity = saleData.getBigDecimal("quantity");
                             }
-                            BigDecimal unitPrice = null;//鍗曚环
+                            BigDecimal unitPrice = null;//单价
                             if (null != saleData.getBigDecimal("unitPrice") && saleData.getBigDecimal("unitPrice").compareTo(BigDecimal.ZERO)!=0) {
                                 unitPrice = saleData.getBigDecimal("unitPrice");
                             }
@@ -2161,13 +2160,13 @@ public class GetDataService {
                                 afterDiscountPrice = saleData.getBigDecimal("afterDiscountPrice");
                             }
 
-                            //鍟嗗搧鏄庣粏 灏佽杩涗氦鏄撴槑缁嗙敵璇�
+                            //商品明细 封装进交易明细申请
                             Cszb cszb = cszbService.getSpbmbbh("gvc",xf.getId(), skpdata.getId(), "dyspbmb");
                             int b = priceDiscounts.compareTo(new BigDecimal("0"));
                             if(b==0){
                                 Jymxsq jymxsq = new Jymxsq();
                                 jymxsq.setSpmc(name.trim());
-                                jymxsq.setFphxz("0");//鍙戠エ琛屾�ц川 0锛氭甯歌
+                                jymxsq.setFphxz("0");//发票行性质 0：正常行
                                 jymxsq.setSpmc(name);
                                 jymxsq.setSpdj(new Double(unitPrice.toString()));
                                 jymxsq.setSps(new Double(quantity.toString()));
@@ -2175,9 +2174,9 @@ public class GetDataService {
                                 Double zchSpje = new Double(zch.toString());
                                 jymxsq.setSpje(zchSpje);
                                 jymxsq.setJshj(zchSpje);
-                                jymxsq.setSpmxxh(spmxxh);//鍟嗗搧鏄庣粏搴忓彿
+                                jymxsq.setSpmxxh(spmxxh);//商品明细序号
                                 spmxxh++;
-                                jymxsq.setDdh(jyxxsq.getDdh());//璁㈠崟鍙�
+                                jymxsq.setDdh(jyxxsq.getDdh());//订单号
                                 jymxsq.setHsbz(jyxxsq.getHsbz());
                                 jymxsq.setYkjje(0d);
                                 Map mapoo = new HashMap();
@@ -2187,7 +2186,7 @@ public class GetDataService {
                                 }
                                 Spvo spvo = spvoService.findOneSpvo(mapoo);
                                 if (spvo == null) {
-                                    rsMap.put("msg","鍟嗗搧淇℃伅鏈淮鎶わ紝璇疯仈绯诲晢瀹讹紒");
+                                    rsMap.put("msg","商品信息未维护，请联系商家！");
                                     rsMap.put("jyxxsqList", jyxxsqList);
                                     rsMap.put("jymxsqList", jymxsqList);
                                     rsMap.put("jyzfmxList", jyzfmxList);
@@ -2212,22 +2211,22 @@ public class GetDataService {
                                 jymxsq.setYxbz("1");
                                 jymxsqList.add(jymxsq);
                             }else {
-                                Jymxsq jymxsq2 = new Jymxsq(); //琚姌鎵ｈ
+                                Jymxsq jymxsq2 = new Jymxsq(); //被折扣行
                                 jymxsq2.setSpmc(name.trim());
-                                jymxsq2.setFphxz("2");//鍙戠エ琛屾�ц川 2锛氳鎶樻墸琛�
+                                jymxsq2.setFphxz("2");//发票行性质 2：被折扣行
                                 jymxsq2.setHsbz(jyxxsq.getHsbz());
                                 jymxsq2.setSpdj(new Double(unitPrice.toString()));
                                 jymxsq2.setSps(new Double(quantity.toString()));
-                                //璁＄畻琚姌鎵ｈ  鍗曚环涔樹互鏁伴噺
+                                //计算被折扣行  单价乘以数量
                                 BigDecimal bzkh = unitPrice.multiply(quantity);
                                 Double spje2 = new Double(bzkh.toString());
-                                jymxsq2.setSpje(spje2);//鍟嗗搧閲戦
-                                //璁＄畻鍟嗗搧绋庨
-                                jymxsq2.setJshj(spje2);//绋庝环鍚堣
-                                jymxsq2.setSpmxxh(spmxxh);//鍟嗗搧鏄庣粏搴忓彿
+                                jymxsq2.setSpje(spje2);//商品金额
+                                //计算商品税额
+                                jymxsq2.setJshj(spje2);//税价合计
+                                jymxsq2.setSpmxxh(spmxxh);//商品明细序号
                                 spmxxh++;
-                                jymxsq2.setDdh(jyxxsq.getDdh());//璁㈠崟鍙�
-                                //宸插紑鍏烽噾棰�  = 0
+                                jymxsq2.setDdh(jyxxsq.getDdh());//订单号
+                                //已开具金额  = 0
                                 jymxsq2.setYkjje(0d);
                                 Map mapoo = new HashMap();
                                 mapoo.put("gsdm", "gvc");
@@ -2236,7 +2235,7 @@ public class GetDataService {
                                 }
                                 Spvo spvo = spvoService.findOneSpvo(mapoo);
                                 if (spvo == null) {
-                                    rsMap.put("msg","鍟嗗搧淇℃伅鏈淮鎶わ紝璇疯仈绯诲晢瀹讹紒");
+                                    rsMap.put("msg","商品信息未维护，请联系商家！");
                                     rsMap.put("jyxxsqList", jyxxsqList);
                                     rsMap.put("jymxsqList", jymxsqList);
                                     rsMap.put("jyzfmxList", jyzfmxList);
@@ -2261,7 +2260,7 @@ public class GetDataService {
                                 jymxsq2.setYxbz("1");
                                 jymxsqList.add(jymxsq2);
 
-                                //鎶樻墸琛�
+                                //折扣行
                                 Jymxsq jymxsq1 = new Jymxsq();
                                 jymxsq1.setSpmc(name.trim());
                                 jymxsq1.setFphxz("1");
@@ -2269,17 +2268,17 @@ public class GetDataService {
                                 //jymxsq1.setSps(new Double(quantity.toString()));
                                 BigDecimal zkh = priceDiscounts.multiply(new BigDecimal(-1));
                                 Double spje1 = new Double(zkh.toString());
-                                jymxsq1.setSpje(spje1);//鍟嗗搧閲戦
-                                //璁＄畻鍟嗗搧绋庨
-                                jymxsq1.setJshj(spje1);//绋庝环鍚堣
-                                jymxsq1.setSpmxxh(spmxxh);//鍟嗗搧鏄庣粏搴忓彿
+                                jymxsq1.setSpje(spje1);//商品金额
+                                //计算商品税额
+                                jymxsq1.setJshj(spje1);//税价合计
+                                jymxsq1.setSpmxxh(spmxxh);//商品明细序号
                                 spmxxh++;
-                                jymxsq1.setDdh(jyxxsq.getDdh());//璁㈠崟鍙�
+                                jymxsq1.setDdh(jyxxsq.getDdh());//订单号
                                 jymxsq1.setHsbz(jyxxsq.getHsbz());
-                                //宸插紑鍏烽噾棰�  = 0
+                                //已开具金额  = 0
                                 jymxsq1.setYkjje(0d);
                                 if (spvo == null) {
-                                    rsMap.put("msg","鍟嗗搧淇℃伅鏈淮鎶わ紝璇疯仈绯诲晢瀹讹紒");
+                                    rsMap.put("msg","商品信息未维护，请联系商家！");
                                     rsMap.put("jyxxsqList", jyxxsqList);
                                     rsMap.put("jymxsqList", jymxsqList);
                                     rsMap.put("jyzfmxList", jyzfmxList);
@@ -2308,7 +2307,7 @@ public class GetDataService {
                     }
                     JSONArray paylist = jo.getJSONArray("payment");
                     if (null != paylist && paylist.size() > 0) {
-                        // 鑾峰彇鏀粯鏄庣粏
+                        // 获取支付明细
                         for (int p = 0; p < paylist.size(); p++) {
                             Jyzfmx jyzfmx = new Jyzfmx();
                             JSONObject payData = paylist.getJSONObject(p);
@@ -2320,13 +2319,13 @@ public class GetDataService {
                             Double pay_amount = null;
                             if (null != payData.getDouble("pay_amount") && !payData.getDouble("pay_amount").equals("")) {
                                 pay_amount = payData.getDouble("pay_amount");
-                                jyzfmx.setZfje(pay_amount);//鏀粯閲戦
+                                jyzfmx.setZfje(pay_amount);//支付金额
                             }
                             String pay_name = "";
                             if (null != payData.getString("pay_name") && !payData.getString("pay_name").equals("")) {
                                 pay_name = payData.getString("pay_name").toString();
                             }
-                            //鏀粯鏄庣粏灏佽浜ゆ槗鏀粯鏄庣粏
+                            //支付明细封装交易支付明细
                             jyzfmx.setGsdm(gsdm);
                             jyzfmx.setDdh(jyxxsq.getDdh());
                             jyzfmx.setLrry(lrry);
@@ -2337,7 +2336,7 @@ public class GetDataService {
                         }
                     }
             }else {
-                String msg ="鑾峰彇鏁版嵁涓虹┖锛岃绋嶅悗鍐嶈瘯锛�";
+                String msg ="获取数据为空，请稍后再试！";
                 rsMap.put("msg",msg);
             }
             rsMap.put("jyxxsqList", jyxxsqList);
@@ -2362,7 +2361,7 @@ public class GetDataService {
                 rsMap.put("kpqssj",kpqssj);
                 rsMap.put("kpjssj",kpjssj);
             }else {
-                msg = "鑾峰彇鏁版嵁澶辫触锛岃閲嶈瘯锛�";
+                msg = "获取数据失败，请重试！";
                 rsMap.put("msg", msg);
                 rsMap.put("jyxxsqList", jyxxsqList);
                 rsMap.put("jymxsqList", jymxsqList);
