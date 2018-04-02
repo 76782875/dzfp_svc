@@ -218,6 +218,12 @@ public class Kpls  implements Serializable {
 	protected Integer hzkpxh;
 
 /**
+ * 征收方式
+ */
+@Column(name="zsfs")
+protected String zsfs;
+
+/**
  * 所属月份
  */ 
 @Column(name="ssyf")
@@ -986,5 +992,12 @@ public class Kpls  implements Serializable {
 		this.serialorder=serialorder;
 	}
 
+	public String getZsfs() {
+		return zsfs;
+	}
+
+	public void setZsfs(String zsfs) {
+		this.zsfs = zsfs;
+	}
 }
 

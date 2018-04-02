@@ -275,6 +275,7 @@ public class CheckOrderUtil {
             BigDecimal ajshj;
             BigDecimal jshj = new BigDecimal("0");
             BigDecimal jshj2 = new BigDecimal("0");
+            boolean zsfs = false;
             for (int j = 0; j < jymxsqList.size(); j++) {
                 jymxsq = (Jymxsq) jymxsqList.get(j);
                 ddh = jymxsq.getDdh();
@@ -378,6 +379,7 @@ public class CheckOrderUtil {
                     // 校验金额误差
                     String TaxMark = jyxxsq.getHsbz();
                     Double je = Double.valueOf(Amount);
+                    String ChargeTaxWay = jyxxsq.getZsfs();
                     Double se = 0d;
                     //含税时，忽略税额
                     if (TaxMark.equals("0")) {
@@ -386,7 +388,7 @@ public class CheckOrderUtil {
                         }
                     }
                     double sl = Double.valueOf(TaxRate);
-                    if (TaxMark.equals("0") && je * sl - se >= 0.0625) {
+                    if (!ChargeTaxWay.equals("2") && TaxMark.equals("0") && je * sl - se >= 0.0625) {
                         result += "订单号为" + ddh + "的订单不含税时，商品金额(Amount)乘以商品税率(TaxRate)不等于税额(TaxAmount)!\r\n";
                     }
 
@@ -395,12 +397,31 @@ public class CheckOrderUtil {
                     ajshj = bd.add(bd1);
                     jshj = jshj.add(ajshj);
 
-                    String ChargeTaxWay = jyxxsq.getZsfs();
                     String DeductAmount = String.valueOf(jymxsq.getKce());
-                    if (null !=ChargeTaxWay && ChargeTaxWay.equals("2") && (null == DeductAmount || DeductAmount.equals(""))) {
+                    if(null !=ChargeTaxWay && ChargeTaxWay.equals("2")){
+                        zsfs = true;
+                        if(jymxsq.getKce().compareTo(jymxsq.getJshj())>=0){
+                            result += "订单号为" + ddh + "的订单,扣除额(DeductAmount)不能大于或等于含税销售额（MxTotalAmount）!\r\n";
+                        }
+                        if(TaxMark.equals("0")){
+                            double kce = DeductAmount ==null?0d:Double.valueOf(DeductAmount);
+                            if((je-kce)*sl!=se){
+                                result += "订单号为" + ddh + "的订单,扣除额(DeductAmount)必须满足（Amount-DeductAmount）*TaxRate=TaxAmount!\r\n";
+                            }
+                        }
+                    }
+                    if (null !=ChargeTaxWay && ChargeTaxWay.equals("2") && (null == DeductAmount || DeductAmount.equals("0.0") || DeductAmount.equals(""))) {
                         result += "订单号为" + ddh + "的订单,扣除额(DeductAmount)不能为空!\r\n";
                     }
+                    if(null !=ChargeTaxWay && !ChargeTaxWay.equals("2")){
+                        if(null != DeductAmount && !DeductAmount.equals("0.0") && !DeductAmount.equals("") && !DeductAmount.equals("null")){
+                            result += "订单号为" + ddh + "的订单,征收方式(ChargeTaxWay)不等于2时，扣除额(DeductAmount)必须为空!\r\n";
+                        }
+                    }
                 }
+            }
+            if(zsfs == true && jymxsqList.size()>1){
+                result += "订单号为" + ddh + "的订单,差额征收（ChargeTaxWay=2）只能有一条商品!\r\n";
             }
             BigDecimal bd2 = new BigDecimal(jyxxsq.getJshj().toString());
             if(jyxxsq.getQjzk()==null){
