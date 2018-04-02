@@ -1,5 +1,7 @@
 package com.rjxx.taxeasy.vo;
 
+import java.util.List;
+
 /**
  * @author: zsq
  * @date: 2018/3/28 19:36
@@ -9,7 +11,7 @@ public class JkpzTreeXFVo {
     private String title;
     private String type;
     private String selectedStatus;
-    private JkpzTreeSkpVo products;
+    private List<JkpzTreeSkpVo> products;
     private  JkpzTreeAttr attr;
 
     public String getTitle() {
@@ -36,11 +38,11 @@ public class JkpzTreeXFVo {
         this.selectedStatus = selectedStatus;
     }
 
-    public JkpzTreeSkpVo getProducts() {
+    public List<JkpzTreeSkpVo> getProducts() {
         return products;
     }
 
-    public void setProducts(JkpzTreeSkpVo products) {
+    public void setProducts(List<JkpzTreeSkpVo> products) {
         this.products = products;
     }
 
