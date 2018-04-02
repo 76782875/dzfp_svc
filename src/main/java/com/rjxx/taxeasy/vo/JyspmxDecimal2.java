@@ -97,7 +97,7 @@ public class  JyspmxDecimal2  {
      * 扣除额
      */
     @Column(name = "kce")
-    protected Double kce;
+    protected BigDecimal kce;
 
     /**
      * 优惠政策标识
@@ -117,11 +117,11 @@ public class  JyspmxDecimal2  {
     @Column(name = "lslbz")
     protected String lslbz;
 
-    public Double getKce() {
+    public BigDecimal getKce() {
 		return kce;
 	}
 
-	public void setKce(Double kce) {
+	public void setKce(BigDecimal kce) {
 		this.kce = kce;
 	}
 

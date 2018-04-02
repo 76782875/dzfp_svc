@@ -1,5 +1,6 @@
 package com.rjxx.taxeasy.vo;
 
+
 import java.sql.Timestamp;
 
 public class FpcljlVo {
@@ -12,6 +13,7 @@ public class FpcljlVo {
       private String spdw;
       private Double sps;
       private Double spdj;
+	  private Double kce;
       private Double spje;
       private Double spsl;
       private Double spse;
@@ -246,11 +248,20 @@ public class FpcljlVo {
 	public void setSjts(Integer sjts) {
 		this.sjts = sjts;
 	}
+
+	public Double getKce() {
+		return kce;
+	}
+
+	public void setKce(Double kce) {
+		this.kce = kce;
+	}
+
 	public FpcljlVo(Integer djh, Integer spmxxh, String spdm, String spmc, String spggxh, String spdw, Double sps,
-			Double spdj, Double spje, Double spsl, Double spse, Double jshj, Double ykphj, Integer hzkpxh,
-			Timestamp lrsj, Integer lrry, Timestamp xgsj, Integer xgry, Integer fpnum, Long kpsqh, String fphxz,
-			String kpddm, String gfsh, String gfmc, String gfdz, String clxh, String jylsh, Integer clmxxh,
-			Integer xfid, String fpzldm, String ztbz, Integer sphbbz,String gsdm) {
+					Double spdj, Double spje, Double spsl, Double spse, Double jshj, Double ykphj, Integer hzkpxh,
+					Timestamp lrsj, Integer lrry, Timestamp xgsj, Integer xgry, Integer fpnum, Long kpsqh, String fphxz,
+					String kpddm, String gfsh, String gfmc, String gfdz, String clxh, String jylsh, Integer clmxxh,
+					Integer xfid, String fpzldm, String ztbz, Integer sphbbz, String gsdm) {
 		super();
 		this.djh = djh;
 		this.spmxxh = spmxxh;
@@ -327,6 +338,48 @@ public class FpcljlVo {
 		this.sphbbz = sphbbz;
 		this.gsdm = gsdm;
 
+	}
+
+	public FpcljlVo(Integer djh, Integer spmxxh, String spdm, String spmc, String spggxh, String spdw, Double sps,
+					Double spdj, Double spje, Double spsl, Double spse, Double jshj, Double ykphj, Integer hzkpxh,
+					Timestamp lrsj, Integer lrry, Timestamp xgsj, Integer xgry, Integer fpnum, Long kpsqh, String fphxz,
+					String kpddm, String gfsh, String gfmc, String gfdz, String clxh, String jylsh, Integer clmxxh,
+					Integer xfid, String fpzldm, String ztbz, Integer sphbbz, String gsdm,Double kce) {
+		super();
+		this.djh = djh;
+		this.spmxxh = spmxxh;
+		this.spdm = spdm;
+		this.spmc = spmc;
+		this.spggxh = spggxh;
+		this.spdw = spdw;
+		this.sps = sps;
+		this.spdj = spdj;
+		this.spje = spje;
+		this.spsl = spsl;
+		this.spse = spse;
+		this.jshj = jshj;
+		this.ykphj = ykphj;
+		this.hzkpxh = hzkpxh;
+		this.lrsj = lrsj;
+		this.lrry = lrry;
+		this.xgsj = xgsj;
+		this.xgry = xgry;
+		this.fpnum = fpnum;
+		this.kpsqh = kpsqh;
+		this.fphxz = fphxz;
+		this.kpddm = kpddm;
+		this.gfsh = gfsh;
+		this.gfmc = gfmc;
+		this.gfdz = gfdz;
+		this.clxh = clxh;
+		this.jylsh = jylsh;
+		this.clmxxh = clmxxh;
+		this.xfid = xfid;
+		this.fpzldm = fpzldm;
+		this.ztbz = ztbz;
+		this.sphbbz = sphbbz;
+		this.gsdm = gsdm;
+		this.kce = kce;
 	}
 
 }

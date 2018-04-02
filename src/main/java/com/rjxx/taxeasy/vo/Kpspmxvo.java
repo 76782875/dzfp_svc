@@ -20,6 +20,7 @@ public class Kpspmxvo implements Serializable{
 	protected Double spsl;
 	protected Double spse;
 	protected Double jshj;
+	protected Double kce;
 	protected String fphm;
 	protected String fpdm;
 	protected Double khcje;
@@ -182,5 +183,13 @@ public class Kpspmxvo implements Serializable{
 
 	public void setLslbz(String lslbz) {
 		this.lslbz = lslbz;
+	}
+
+	public Double getKce() {
+		return kce;
+	}
+
+	public void setKce(Double kce) {
+		this.kce = kce;
 	}
 }
