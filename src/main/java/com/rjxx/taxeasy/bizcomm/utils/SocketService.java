@@ -188,7 +188,7 @@ public class SocketService {
             }
             Map map=new HashMap();
             map.put("kpdid",kpdid);
-            map.put("SendCommand",SendCommand.Invoice);
+            map.put("SendCommand",SendSkCommand.Invoice);
             map.put("content",content);
             map.put("lsh",lsh);
             map.put("wait",wait);
@@ -355,7 +355,7 @@ public class SocketService {
                 }
                 Map map=new HashMap();
                 map.put("kpdid",kpdid);
-                map.put("SendCommand",SendCommand.VoidInvoice);
+                map.put("SendCommand",SendSkCommand.VoidInvoice);
                 map.put("content",content);
                 map.put("lsh",commandId);
                 map.put("wait",wait);
