@@ -7,6 +7,7 @@ import com.itextpdf.text.log.Logger;
 import com.itextpdf.text.log.LoggerFactory;
 import com.rjxx.taxeasy.bizcomm.utils.GetXmlUtil;
 import com.rjxx.taxeasy.bizcomm.utils.HttpUtils;
+import com.rjxx.taxeasy.dao.JkmbzbJpaDao;
 import com.rjxx.taxeasy.dao.SkpJpaDao;
 import com.rjxx.taxeasy.dao.XfJpaDao;
 import com.rjxx.taxeasy.domains.*;
@@ -14,6 +15,7 @@ import com.rjxx.taxeasy.dto.AdapterPost;
 import com.rjxx.taxeasy.dto.AdapterPostRedData;
 import com.rjxx.taxeasy.dto.AdapterRedData;
 import com.rjxx.taxeasy.dto.AdapterRedInvoiceItem;
+import com.rjxx.taxeasy.invoice.DefaultResult;
 import com.rjxx.taxeasy.invoice.KpService;
 import com.rjxx.taxeasy.invoice.Kphc;
 import com.rjxx.taxeasy.service.*;
@@ -21,6 +23,7 @@ import com.rjxx.taxeasy.service.jkpz.JkpzService;
 import com.rjxx.taxeasy.vo.JkpzVo;
 import com.rjxx.utils.CheckOrderUtil;
 import com.rjxx.utils.StringUtils;
+import com.rjxx.utils.XmlJaxbUtils;
 import com.rjxx.utils.jkpz.JkpzUtil;
 import com.rjxx.utils.yjapi.Result;
 import com.rjxx.utils.yjapi.ResultUtil;
@@ -63,6 +66,9 @@ public class JkpzServiceImpl implements JkpzService {
 
     @Autowired
     private KpService kpService;
+
+    @Autowired
+    private JkmbzbJpaDao jkmbzbJpaDao;
 
     private Logger logger = LoggerFactory.getLogger(JkpzServiceImpl.class);
 
@@ -123,8 +129,11 @@ public class JkpzServiceImpl implements JkpzService {
                 if(cszb==null){
                     return ResultUtil.error("模板未配置");
                 }
+                Map map1 = new HashMap();
+                map1.put("mbid",cszb.getCsz());
+                logger.info(JSON.toJSONString(map1));
                 //获取数据模板
-                List<JkpzVo> jkmbzbList = jkmbzbService.findByMbId(Integer.getInteger(cszb.getCsz()));
+                List<JkpzVo> jkmbzbList = jkmbzbService.findByMbId(map1);
                 if(jkmbzbList.isEmpty()){
                     return ResultUtil.error("模板设置有误");
                 }
@@ -215,8 +224,13 @@ public class JkpzServiceImpl implements JkpzService {
                 kpMap.put("jyxxsqList",jyxxsqList);
                 kpMap.put("jymxsqList",jymxsqList);
                 kpMap.put("jyzfmxList",jyzfmxList);
-                result = kpService.dealOrder(gsdm, kpMap, "01");
-                return ResultUtil.success(result);
+                String kpresult = kpService.uploadOrderData(gsdm, kpMap, "01");
+                DefaultResult defaultResult = XmlJaxbUtils.convertXmlStrToObject(DefaultResult.class, kpresult);
+                if(defaultResult.getReturnCode().equals("0000")){
+                    return ResultUtil.success(defaultResult.getReturnMessage());
+                }else {
+                    return ResultUtil.error(defaultResult.getReturnMessage());
+                }
             }
             //红冲
             if(reqType.equals("04")){
@@ -251,10 +265,14 @@ public class JkpzServiceImpl implements JkpzService {
                     //红冲
                     Map HcMap = new HashMap();
                     HcMap.put("Kphc",kphc);
-                    String hcResult = kpService.dealOrder(gsdm, HcMap, "04");
-                    if(StringUtils.isNotBlank(hcResult)){
-                        result += hcResult;
+                    String hcResult = kpService.uploadOrderData(gsdm, HcMap, "04");
+                    DefaultResult defaultResult = XmlJaxbUtils.convertXmlStrToObject(DefaultResult.class, hcResult);
+                    if(!defaultResult.getReturnCode().equals("0000")){
+                       result += defaultResult.getReturnMessage();
                     }
+                }
+                if(StringUtils.isNotBlank(result)){
+                    return ResultUtil.error(result);
                 }
                 return ResultUtil.success(result);
             }else {

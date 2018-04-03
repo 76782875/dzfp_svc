@@ -522,6 +522,7 @@ public class FpclService {
         kpls.setGfyhzh(jyls.getGfyhzh());
         kpls.setGfemail(jyls.getGfemail());
         kpls.setGflxr(jyls.getGflxr());
+        kpls.setZsfs(jyls.getZsfs());
         kpls.setFhr(jyls.getFhr());
         kpls.setKpr(jyls.getKpr());
         kpls.setSkr(jyls.getSkr());
@@ -1047,12 +1048,11 @@ public class FpclService {
                 }
             } else {
                 if (jyxxsq.getFpzldm().equals("12")) {
-                    InvoiceSplitUtils.splitInvoices((List) mapResult.get("jymxsqs"), (Map) mapResult.get("zkAndbzk"), new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs2, sfqzfp, spzsfp, 0, splitKpspmxs);
+                    InvoiceSplitUtils.splitInvoices((List) mapResult.get("jymxsqs"), (Map) mapResult.get("zkAndbzk"), new BigDecimal(Double.valueOf(zdje)),jyxxsq.getZsfs(), new BigDecimal(fpje), fphs2, sfqzfp, false, 0, splitKpspmxs);
                 } else if (jyxxsq.getFpzldm().equals("03")) {//卷票
-                    InvoiceSplitUtils.splitInvoices((List) mapResult.get("jymxsqs"), (Map) mapResult.get("zkAndbzk"), new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs3, sfqzfp, spzsfp, 0, splitKpspmxs);
-
+                    InvoiceSplitUtils.splitInvoices((List) mapResult.get("jymxsqs"), (Map) mapResult.get("zkAndbzk"), new BigDecimal(Double.valueOf(zdje)), jyxxsq.getZsfs(),new BigDecimal(fpje), fphs3, sfqzfp, spzsfp, 0, splitKpspmxs);
                 } else {
-                    InvoiceSplitUtils.splitInvoices((List) mapResult.get("jymxsqs"), (Map) mapResult.get("zkAndbzk"), new BigDecimal(Double.valueOf(zdje)), new BigDecimal(fpje), fphs1, sfqzfp, false, 0, splitKpspmxs);
+                    InvoiceSplitUtils.splitInvoices((List) mapResult.get("jymxsqs"), (Map) mapResult.get("zkAndbzk"), new BigDecimal(Double.valueOf(zdje)),jyxxsq.getZsfs(), new BigDecimal(fpje), fphs1, sfqzfp, spzsfp, 0, splitKpspmxs);
                 }
             }
             //如果分票失败，继续往下执行。
@@ -1171,6 +1171,7 @@ public class FpclService {
         jyls1.setSkr(jyxxsq.getSkr());
         jyls1.setKpr(jyxxsq.getKpr());
         jyls1.setFhr(jyxxsq.getFhr());
+        jyls1.setZsfs(jyxxsq.getZsfs());
         jyls1.setSsyf(jyxxsq.getSsyf());
         jyls1.setSffsyj(jyxxsq.getSffsyj());
         jyls1.setYfpdm(null);
@@ -1361,6 +1362,7 @@ public class FpclService {
             List resultList = new ArrayList();
             double hjje = 0.00;
             double hjse = 0.00;
+            double kce = 0.00;
             //获取对应开票商品明细信息
             Map params = new HashMap();
             params.put("kplsh", kplsVO5.getKplsh());
@@ -1371,6 +1373,7 @@ public class FpclService {
                 kpspmxvo = tmpList.get(j);
                 hjje = hjje + kpspmxvo.getSpje();
                 hjse = hjse + kpspmxvo.getSpse();
+                kce = kce +kpspmxvo.getKce();
                 if (kpspmxvo.getSpdj() != null) {
                     BigDecimal b = new BigDecimal(kpspmxvo.getSpdj());
                     double f1 = b.setScale(6, BigDecimal.ROUND_HALF_UP).doubleValue();
@@ -1405,11 +1408,13 @@ public class FpclService {
             Cszb cszb = cszbService.getSpbmbbh(kplsVO5.getGsdm(), kplsVO5.getXfid(), kplsVO5.getSkpid(), "spbmbbh");
             String spbmbbh = cszb.getCsz();
             params2.put("spbmbbh", spbmbbh);
+            params2.put("zsfs",jyxxsq.getZsfs());
             params2.put("kpls", kplsVO5);
             params2.put("kpspmxList", kpspmxvoListNew);
             params2.put("mxCount", kpspmxvoListNew.size());
             params2.put("hjje", hjje);
             params2.put("hjse", hjse);
+            params2.put("kce", kce);
             /**
              * 模板名称，电子票税控服务器报文
              */

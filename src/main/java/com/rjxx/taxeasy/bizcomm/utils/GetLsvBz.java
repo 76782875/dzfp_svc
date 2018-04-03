@@ -24,7 +24,7 @@ public class GetLsvBz {
         Map spbmMap=new HashMap();
         spbmMap.put("spbm",spbm);
         Spbm spbmvo=spbmService.findOneByParams(spbmMap);
-        if(("").equals(spbmvo.getZzstsgl())||null==spbmvo.getZzstsgl()||sl>0){
+        if(null==spbmvo.getZzstsgl()||("").equals(spbmvo.getZzstsgl())||sl>0){
             yhzcMap.put("yhzcbs","0");
         }else{
             yhzcMap.put("yhzcbs","1");

@@ -196,7 +196,7 @@ public class JkpzUtil {
                 jymxsq.setSpdj(ads.getUnitPrice());
                 jymxsq.setKce(ads.getDeductAmount());
                 jymxsq.setSpje(ads.getAmount());
-                jymxsq.setSpsl(ads.getTaxRate());
+                jymxsq.setSpsl(ads.getTaxRate()==null?spvo.getSl():ads.getTaxRate());
                 jymxsq.setSpse(ads.getTaxAmount());
                 jymxsq.setJshj(ads.getMxTotalAmount());
                 jymxsq.setYkjje(0d);
@@ -212,28 +212,30 @@ public class JkpzUtil {
         return null;
     }
 
-
-    public String getSpByid(Map map) {
-        Spvo spvo = new Spvo();
+    public String getSpByDm(Map map){
         Gsxx gsxx = (Gsxx)map.get("gsxx");
+        Xf xf = (Xf)map.get("xf");
+        Skp skp = (Skp)map.get("skp");
+        JkpzVo jkpzVo = (JkpzVo)map.get("jkpzVo");
+        Spvo spvo = new Spvo();
         AdapterPost adapterPost = (AdapterPost)map.get("adapterPost");
         List<Jymxsq> jymxsqList = (List)map.get("jymxsqList");
-        List<AdapterDataOrderDetails> details =null;
         Jyxxsq jyxxsq = (Jyxxsq)map.get("jyxxsq");
+        List<AdapterDataOrderDetails> details =null;
         try{
             details = adapterPost.getData().getOrder().getOrderDetails();
         }catch (Exception e){
             return "商品信息缺少金额，税额，价税合计标签";
         }
-        try {
+        try{
             int xh = 1;
             for(int i=0;i<details.size();i++){
-                AdapterDataOrderDetails ads = details.get(i);
-                Jymxsq jymxsq  = new Jymxsq();
                 Map param = new HashMap();
-                param.put("gsdm", gsxx.getGsdm());
-                param.put("spdm", ads.getVenderOwnCode());
+                param.put("gsdm",gsxx.getGsdm());
+                param.put("spdm",details.get(i).getVenderOwnCode());
                 spvo = spvoService.findOneSpvo(param);
+                Jymxsq jymxsq  = new Jymxsq();
+                AdapterDataOrderDetails ads = details.get(i);
                 jymxsq.setDdh(jyxxsq.getDdh());
                 jymxsq.setSpmxxh(xh);
                 xh++;
@@ -247,7 +249,7 @@ public class JkpzUtil {
                 jymxsq.setSpdj(ads.getUnitPrice());
                 jymxsq.setKce(ads.getDeductAmount());
                 jymxsq.setSpje(ads.getAmount());
-                jymxsq.setSpsl(ads.getTaxRate());
+                jymxsq.setSpsl(ads.getTaxRate()==null?spvo.getSl():ads.getTaxRate());
                 jymxsq.setSpse(ads.getTaxAmount());
                 jymxsq.setJshj(ads.getMxTotalAmount());
                 jymxsq.setYkjje(0d);
@@ -255,12 +257,62 @@ public class JkpzUtil {
                 jymxsq.setYxbz("1");
                 jymxsqList.add(jymxsq);
             }
-        } catch (Exception e) {
+
+        }catch (Exception e){
             e.printStackTrace();
-            return "获取商品信息错误";
+            return "获取商品失败信息！";
         }
         return null;
     }
+
+//    public String getSpByid(Map map) {
+//        Spvo spvo = new Spvo();
+//        Gsxx gsxx = (Gsxx)map.get("gsxx");
+//        AdapterPost adapterPost = (AdapterPost)map.get("adapterPost");
+//        List<Jymxsq> jymxsqList = (List)map.get("jymxsqList");
+//        List<AdapterDataOrderDetails> details =null;
+//        Jyxxsq jyxxsq = (Jyxxsq)map.get("jyxxsq");
+//        try{
+//            details = adapterPost.getData().getOrder().getOrderDetails();
+//        }catch (Exception e){
+//            return "商品信息缺少金额，税额，价税合计标签";
+//        }
+//        try {
+//            int xh = 1;
+//            for(int i=0;i<details.size();i++){
+//                AdapterDataOrderDetails ads = details.get(i);
+//                Jymxsq jymxsq  = new Jymxsq();
+//                Map param = new HashMap();
+//                param.put("gsdm", gsxx.getGsdm());
+//                param.put("spdm", ads.getVenderOwnCode());
+//                spvo = spvoService.findOneSpvo(param);
+//                jymxsq.setDdh(jyxxsq.getDdh());
+//                jymxsq.setSpmxxh(xh);
+//                xh++;
+//                jymxsq.setFphxz(ads.getRowType());
+//                jymxsq.setSpdm(spvo.getSpbm());
+//                jymxsq.setSpmc(spvo.getSpmc());
+//                jymxsq.setSpggxh(spvo.getSpggxh());
+//                jymxsq.setSpzxbm(spvo.getSpdm());
+//                jymxsq.setSpdw(spvo.getSpdw());
+//                jymxsq.setSps(ads.getQuantity());
+//                jymxsq.setSpdj(ads.getUnitPrice());
+//                jymxsq.setKce(ads.getDeductAmount());
+//                jymxsq.setSpje(ads.getAmount());
+//                jymxsq.setSpsl(ads.getTaxRate());
+//                jymxsq.setSpse(ads.getTaxAmount());
+//                jymxsq.setJshj(ads.getMxTotalAmount());
+//                jymxsq.setYkjje(0d);
+//                jymxsq.setKkjje(ads.getMxTotalAmount());
+//                jymxsq.setYxbz("1");
+//                jymxsqList.add(jymxsq);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return "获取商品信息错误";
+//        }
+//        return null;
+//    }
 
     public String getSpByMc(Map map) {
         Gsxx gsxx = (Gsxx)map.get("gsxx");
@@ -297,7 +349,7 @@ public class JkpzUtil {
                 jymxsq.setSpdj(ads.getUnitPrice());
                 jymxsq.setKce(ads.getDeductAmount());
                 jymxsq.setSpje(ads.getAmount());
-                jymxsq.setSpsl(ads.getTaxRate());
+                jymxsq.setSpsl(ads.getTaxRate()==null?spvo.getSl():ads.getTaxRate());
                 jymxsq.setSpse(ads.getTaxAmount());
                 jymxsq.setJshj(ads.getMxTotalAmount());
                 jymxsq.setYkjje(0d);
@@ -518,6 +570,7 @@ public class JkpzUtil {
                         jyxxsq.setGfdh(buyer.getTelephoneNo());
                         jyxxsq.setGfyb(buyer.getZip());
                         jyxxsq.setGfemail(buyer.getEmail());
+                        jyxxsq.setKhh(buyer.getMemberId());//客户号
                         if(StringUtils.isNotBlank(buyer.getEmail())){
                             jyxxsq.setSffsyj("1");
                         }

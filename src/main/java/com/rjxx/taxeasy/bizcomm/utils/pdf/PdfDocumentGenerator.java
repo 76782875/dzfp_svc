@@ -371,8 +371,7 @@ public class PdfDocumentGenerator {
             in_request.setXfsh(xfsh);
             in_request.setYfpdm((String) map.get("FP_DM"));
             in_request.setYfphm((String) map.get("FP_HM"));
-            String bz = kpls.getBz() == null ? "" : kpls.getBz();
-            bz = bz.replaceAll("\\n", "<br/>");
+
 //        if ("12".equals(jyls.getFpczlxdm()) || "13".equals(jyls.getFpczlxdm())) {
 //            if (StringUtils.isBlank(bz)) {
 //                bz = "对应正数发票代码:" + jyls.getYfpdm() + "号码:" + jyls.getYfphm();
@@ -381,7 +380,7 @@ public class PdfDocumentGenerator {
 //            }
 //
 //        }
-            in_request.setBz(bz);
+
             Date kprq = kpls.getKprq();
             SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
             String dateString = formatter.format(kprq);
@@ -441,6 +440,7 @@ public class PdfDocumentGenerator {
             //免税标志
             boolean freeDutyFlag = false;
             // 商品明细信息 已处理数据小于1的情况
+            double kce = 0d;
             if (!"af".equals(gsdm)) {
                 for (int i = 0; i < t_kpspmxes.size(); i++) {
                     Kpspmx t_kpspmx = t_kpspmxes.get(i);
@@ -478,7 +478,10 @@ public class PdfDocumentGenerator {
                         fpPdfMxInfo.setSe("***");
                         freeDutyFlag = true;
                     }
-                    //处理商品名称字体大小
+                    if(null != kpls.getZsfs() && kpls.getZsfs().equals("2")){
+                        fpPdfMxInfo.setSl("***");
+                        kce = kce + t_kpspmx.getKce();
+                    }                    //处理商品名称字体大小
                     fpPdfMxInfo.setSpmcSize(getSpmcFontSize(fpPdfMxInfo.getSpmc()));
                     //处理规格型号字体大小
                     fpPdfMxInfo.setSpggxhSize(getSpggxhFontSize(fpPdfMxInfo.getSpggxh()));
@@ -512,6 +515,12 @@ public class PdfDocumentGenerator {
                 pdfMxList.add(fpPdfMxInfo);
                 /*****************************/
             }
+            String bz = kpls.getBz() == null ? "" : kpls.getBz();
+            if(null != kpls.getZsfs() && kpls.getZsfs().equals("2")){
+                bz = "差额征税："+kce+"。"+bz;
+            }
+            bz = bz.replaceAll("\\n", "<br/>");
+            in_request.setBz(bz);
             in_request.setJyspmxls(pdfMxList);
             // 二维码生成部分
             String qrcode = (String) map.get("EWM");

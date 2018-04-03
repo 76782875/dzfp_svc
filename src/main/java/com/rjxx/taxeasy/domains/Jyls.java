@@ -209,6 +209,13 @@ public class Jyls  implements Serializable {
 	protected String fhr;
 
 /**
+  * 征收方式
+  */
+@Column(name="zsfs")
+protected String zsfs;
+
+
+/**
  * 所属月份
  */ 
 @Column(name="ssyf")
@@ -756,6 +763,14 @@ public class Jyls  implements Serializable {
 
 	public void setGfsjrdz(String gfsjrdz) {
 		this.gfsjrdz = gfsjrdz;
+	}
+
+	public String getZsfs() {
+		return zsfs;
+	}
+
+	public void setZsfs(String zsfs) {
+		this.zsfs = zsfs;
 	}
 }
 
