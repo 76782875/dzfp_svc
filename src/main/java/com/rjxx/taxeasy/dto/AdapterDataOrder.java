@@ -20,6 +20,7 @@ public class AdapterDataOrder {
     private String taxMark;
     private String remark;
     private String extractedCode;
+    private String customerNo;//客户号
     private Double totalDiscount;
     private AdapterDataOrderBuyer buyer;
     private List<AdapterDataOrderPayments> payments;
@@ -135,5 +136,13 @@ public class AdapterDataOrder {
 
     public void setOrderDetails(List<AdapterDataOrderDetails> orderDetails) {
         this.orderDetails = orderDetails;
+    }
+
+    public String getCustomerNo() {
+        return customerNo;
+    }
+
+    public void setCustomerNo(String customerNo) {
+        this.customerNo = customerNo;
     }
 }

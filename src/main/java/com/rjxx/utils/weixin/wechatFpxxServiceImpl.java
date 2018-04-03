@@ -200,6 +200,137 @@ public class wechatFpxxServiceImpl {
         return true;
     }
 
+    public boolean InFapxx( String tqm,String gsdm,String orderNo,String q,
+                            String wxType,String opendid,String userId,String kplsh,HttpServletRequest request,String apitype){
+        if(null!= orderNo){
+            WxFpxx wxFpxx = wxfpxxJpaDao.selsetByOrderNo(orderNo,gsdm);
+            if(wxType!=null &&wxType.equals("1")){
+                // 申请发票
+                if(wxFpxx==null){
+                    if(WeixinUtils.isWeiXinBrowser(request)){
+                        //微信
+                        WxFpxx wFpxx = new WxFpxx();
+                        wFpxx.setTqm(tqm);
+                        wFpxx.setGsdm(gsdm);
+                        wFpxx.setOrderNo(orderNo);
+                        wFpxx.setQ(q);
+                        wFpxx.setWxtype(wxType);//1:申请开票 2、领取发票
+                        wFpxx.setOpenId(opendid);
+                        wFpxx.setLrsj(new Date());
+                        wFpxx.setApitype(apitype);
+                        wxfpxxJpaDao.save(wFpxx);
+                    }else if(AlipayUtils.isAlipayBrowser(request)){
+                        //支付宝
+                        WxFpxx aFpxx = new WxFpxx();
+                        aFpxx.setTqm(tqm);
+                        aFpxx.setGsdm(gsdm);
+                        aFpxx.setOrderNo(orderNo);
+                        aFpxx.setQ(q);
+                        aFpxx.setUserid(userId);
+                        aFpxx.setLrsj(new Date());
+                        aFpxx.setApitype(apitype);
+                        wxfpxxJpaDao.save(aFpxx);
+                    }
+                }else {
+                    //第二次以上扫描
+                    if(WeixinUtils.isWeiXinBrowser(request)){
+                        wxFpxx.setTqm(tqm);
+                        wxFpxx.setGsdm(gsdm);
+                        wxFpxx.setQ(q);
+                        wxFpxx.setOpenId(opendid);
+                        wxFpxx.setOrderNo(orderNo);
+                        wxFpxx.setWxtype(wxType);//1:申请开票2：领取发票
+                        wxFpxx.setXgsj(new Date());
+                        wxFpxx.setApitype(apitype);
+                        if(wxFpxx.getCode()!=null||!"".equals(wxFpxx.getCode())){
+                            String notNullCode= wxFpxx.getCode();
+                            wxFpxx.setCode(notNullCode);
+                        }
+                        wxfpxxJpaDao.save(wxFpxx);
+                    }else if(AlipayUtils.isAlipayBrowser(request)){
+                        wxFpxx.setTqm(tqm);
+                        wxFpxx.setGsdm(gsdm);
+                        wxFpxx.setQ(q);
+                        wxFpxx.setUserid(userId);
+                        wxFpxx.setOrderNo(orderNo);
+                        wxFpxx.setXgsj(new Date());
+                        wxFpxx.setApitype(apitype);
+                        if(wxFpxx.getCode()!=null||!"".equals(wxFpxx.getCode())){
+                            String notNullCode= wxFpxx.getCode();
+                            wxFpxx.setCode(notNullCode);
+                        }
+                        wxfpxxJpaDao.save(wxFpxx);
+                    }
+                }
+            }else if(null!=wxType && wxType.equals("2")){
+                //第一次扫描
+                if(wxFpxx==null){
+                    if(WeixinUtils.isWeiXinBrowser(request)){
+                        //微信
+                        WxFpxx wFpxx = new WxFpxx();
+                        wFpxx.setTqm(tqm);
+                        wFpxx.setGsdm(gsdm);
+                        wFpxx.setOrderNo(orderNo);
+                        //wFpxx.setQ(q);
+                        wFpxx.setWxtype(wxType);//1:申请开票 2、领取发票
+                        wFpxx.setOpenId(opendid);
+                        wFpxx.setKplsh(kplsh);
+                        wFpxx.setLrsj(new Date());
+                        wFpxx.setApitype(apitype);
+                        wxfpxxJpaDao.save(wFpxx);
+                    }else if(AlipayUtils.isAlipayBrowser(request)){
+                        //支付宝
+                        WxFpxx aFpxx = new WxFpxx();
+                        aFpxx.setTqm(tqm);
+                        aFpxx.setGsdm(gsdm);
+                        aFpxx.setOrderNo(orderNo);
+                        //aFpxx.setQ(q);
+                        aFpxx.setUserid(userId);
+                        aFpxx.setKplsh(kplsh);
+                        aFpxx.setLrsj(new Date());
+                        aFpxx.setApitype(apitype);
+                        wxfpxxJpaDao.save(aFpxx);
+                    }
+                }else {
+                    //第二次以上扫描
+                    if(WeixinUtils.isWeiXinBrowser(request)){
+                        wxFpxx.setTqm(tqm);
+                        wxFpxx.setGsdm(gsdm);
+                        wxFpxx.setQ(q);
+                        wxFpxx.setOpenId(opendid);
+                        wxFpxx.setOrderNo(orderNo);
+                        wxFpxx.setWxtype(wxType);//1:申请开票2：领取发票
+                        wxFpxx.setKplsh(kplsh);
+                        wxFpxx.setXgsj(new Date());
+                        wxFpxx.setApitype(apitype);
+                        if(wxFpxx.getCode()!=null||!"".equals(wxFpxx.getCode())){
+                            String notNullCode= wxFpxx.getCode();
+                            wxFpxx.setCode(notNullCode);
+                        }
+                        wxfpxxJpaDao.save(wxFpxx);
+                    }else if(AlipayUtils.isAlipayBrowser(request)){
+                        wxFpxx.setTqm(tqm);
+                        wxFpxx.setGsdm(gsdm);
+                        wxFpxx.setQ(q);
+                        wxFpxx.setUserid(userId);
+                        wxFpxx.setOrderNo(orderNo);
+                        wxFpxx.setKplsh(kplsh);
+                        wxFpxx.setXgsj(new Date());
+                        wxFpxx.setApitype(apitype);
+                        if(wxFpxx.getCode()!=null||!"".equals(wxFpxx.getCode())){
+                            String notNullCode= wxFpxx.getCode();
+                            wxFpxx.setCode(notNullCode);
+                        }
+                        wxfpxxJpaDao.save(wxFpxx);
+                    }
+                }
+            }
+        }else {
+            return false;
+        }
+        return true;
+    }
+
     /**
      * 添加微信和支付宝插卡时间
      * @param orderNo

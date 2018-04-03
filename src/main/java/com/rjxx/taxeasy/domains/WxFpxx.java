@@ -85,6 +85,11 @@ public class WxFpxx {
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     protected Date fpgjcksj;
 
+    /**
+     * 1.获取抬头 2.离线开票 3.抽数据开票
+     */
+    private String apitype;
+
     public String getOrderNo() {
         return orderNo;
     }
@@ -221,6 +226,14 @@ public class WxFpxx {
         this.authid = authid;
     }
 
+    public String getApitype() {
+        return apitype;
+    }
+
+    public void setApitype(String apitype) {
+        this.apitype = apitype;
+    }
+
     @Override
     public String toString() {
         return "WxFpxx{" +
@@ -241,6 +254,7 @@ public class WxFpxx {
                 ", xgsj=" + xgsj +
                 ", wxcksj=" + wxcksj +
                 ", fpgjcksj=" + fpgjcksj +
+                ", apitype='" + apitype + '\'' +
                 '}';
     }
 }
