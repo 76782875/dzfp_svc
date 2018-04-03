@@ -15,6 +15,7 @@ import com.rjxx.taxeasy.dto.AdapterPost;
 import com.rjxx.taxeasy.dto.AdapterPostRedData;
 import com.rjxx.taxeasy.dto.AdapterRedData;
 import com.rjxx.taxeasy.dto.AdapterRedInvoiceItem;
+import com.rjxx.taxeasy.invoice.DefaultResult;
 import com.rjxx.taxeasy.invoice.KpService;
 import com.rjxx.taxeasy.invoice.Kphc;
 import com.rjxx.taxeasy.service.*;
@@ -22,6 +23,7 @@ import com.rjxx.taxeasy.service.jkpz.JkpzService;
 import com.rjxx.taxeasy.vo.JkpzVo;
 import com.rjxx.utils.CheckOrderUtil;
 import com.rjxx.utils.StringUtils;
+import com.rjxx.utils.XmlJaxbUtils;
 import com.rjxx.utils.jkpz.JkpzUtil;
 import com.rjxx.utils.yjapi.Result;
 import com.rjxx.utils.yjapi.ResultUtil;
@@ -221,8 +223,13 @@ public class JkpzServiceImpl implements JkpzService {
                 kpMap.put("jyxxsqList",jyxxsqList);
                 kpMap.put("jymxsqList",jymxsqList);
                 kpMap.put("jyzfmxList",jyzfmxList);
-                result = kpService.dealOrder(gsdm, kpMap, "01");
-                return ResultUtil.success(result);
+                String kpresult = kpService.uploadOrderData(gsdm, kpMap, "01");
+                DefaultResult defaultResult = XmlJaxbUtils.convertXmlStrToObject(DefaultResult.class, kpresult);
+                if(defaultResult.getReturnCode().equals("0000")){
+                    return ResultUtil.success(defaultResult.getReturnMessage());
+                }else {
+                    return ResultUtil.error(defaultResult.getReturnMessage());
+                }
             }
             //红冲
             if(reqType.equals("04")){
@@ -257,9 +264,12 @@ public class JkpzServiceImpl implements JkpzService {
                     //红冲
                     Map HcMap = new HashMap();
                     HcMap.put("Kphc",kphc);
-                    String hcResult = kpService.dealOrder(gsdm, HcMap, "04");
-                    if(StringUtils.isNotBlank(hcResult)){
-                        result += hcResult;
+                    String hcResult = kpService.uploadOrderData(gsdm, HcMap, "04");
+                    DefaultResult defaultResult = XmlJaxbUtils.convertXmlStrToObject(DefaultResult.class, hcResult);
+                    if(defaultResult.getReturnCode().equals("0000")){
+                        return ResultUtil.success(defaultResult.getReturnMessage());
+                    }else {
+                        return ResultUtil.error(defaultResult.getReturnMessage());
                     }
                 }
                 return ResultUtil.success(result);

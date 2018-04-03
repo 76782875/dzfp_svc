@@ -1,6 +1,6 @@
 package com.rjxx.taxeasy.vo;
 
-import java.util.List;
+import java.util.Map;
 
 /**
  * @author: zsq
@@ -8,49 +8,39 @@ import java.util.List;
  * @describe:
  */
 public class JkpzTreeXFVo {
-    private String title;
-    private String type;
-    private String selectedStatus;
-    private List<JkpzTreeSkpVo> products;
-    private  JkpzTreeAttr attr;
-
-    public String getTitle() {
-        return title;
+    private String id;
+    private String text;
+    private String parent;
+    private Map state;
+    public String getId() {
+        return id;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getType() {
-        return type;
+    public String getText() {
+        return text;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setText(String text) {
+        this.text = text;
     }
 
-    public String getSelectedStatus() {
-        return selectedStatus;
+    public String getParent() {
+        return parent;
     }
 
-    public void setSelectedStatus(String selectedStatus) {
-        this.selectedStatus = selectedStatus;
+    public void setParent(String parent) {
+        this.parent = parent;
     }
 
-    public List<JkpzTreeSkpVo> getProducts() {
-        return products;
+    public Map getState() {
+        return state;
     }
 
-    public void setProducts(List<JkpzTreeSkpVo> products) {
-        this.products = products;
-    }
-
-    public JkpzTreeAttr getAttr() {
-        return attr;
-    }
-
-    public void setAttr(JkpzTreeAttr attr) {
-        this.attr = attr;
+    public void setState(Map state) {
+        this.state = state;
     }
 }
