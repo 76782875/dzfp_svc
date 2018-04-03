@@ -12,6 +12,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class ReturnData3 {
     private  OperationItem3 OperationItem;
 
+    private  Seller Seller;
+
+    private  Buyer Buyer;
+
     private  InvoiceItems3  InvoiceItems;
 
     public OperationItem3 getOperationItem() {
@@ -28,5 +32,21 @@ public class ReturnData3 {
 
     public void setInvoiceItems(InvoiceItems3 invoiceItems) {
         InvoiceItems = invoiceItems;
+    }
+
+    public com.rjxx.taxeasy.domains.Seller getSeller() {
+        return Seller;
+    }
+
+    public void setSeller(com.rjxx.taxeasy.domains.Seller seller) {
+        Seller = seller;
+    }
+
+    public com.rjxx.taxeasy.domains.Buyer getBuyer() {
+        return Buyer;
+    }
+
+    public void setBuyer(com.rjxx.taxeasy.domains.Buyer buyer) {
+        Buyer = buyer;
     }
 }

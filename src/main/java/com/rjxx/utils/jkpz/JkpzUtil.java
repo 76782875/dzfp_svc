@@ -196,7 +196,7 @@ public class JkpzUtil {
                 jymxsq.setSpdj(ads.getUnitPrice());
                 jymxsq.setKce(ads.getDeductAmount());
                 jymxsq.setSpje(ads.getAmount());
-                jymxsq.setSpsl(ads.getTaxRate());
+                jymxsq.setSpsl(ads.getTaxRate()==null?spvo.getSl():ads.getTaxRate());
                 jymxsq.setSpse(ads.getTaxAmount());
                 jymxsq.setJshj(ads.getMxTotalAmount());
                 jymxsq.setYkjje(0d);

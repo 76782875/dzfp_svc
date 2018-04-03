@@ -173,7 +173,7 @@ public class GeneratePdfService {
                         returnmessage = this.CreateReturnMessage2(kpls.getKplsh());
                     } else if (kpls.getFpzldm().equals("12") && kpls.getGsdm().equals("mcake")) {
                         returnmessage = this.CreateReturnMessage(kpls.getKplsh());
-                    }else if (kpls.getFpzldm().equals("12") && kpls.getGsdm().equals("fwk")) {
+                    }else if (kpls.getFpzldm().equals("12") && (kpls.getGsdm().equals("fwk")||kpls.getGsdm().equals("bqw"))) {
                         returnmessage = this.CreateReturnMessage3(kpls.getKplsh());
                     }else {
                         returnmessage = this.CreateReturnMessage(kpls.getKplsh());
@@ -394,6 +394,8 @@ public class GeneratePdfService {
             throw new RuntimeException(e);
         }
     }
+
+
 
     public Map httpPostNoSign(String returnmessage, Kpls kpls) {
         Map parms=new HashMap();
@@ -737,11 +739,31 @@ public class GeneratePdfService {
         List<Kpls> kplsList=kplsService.findKplsBySerialOrder(params);
         if(kpls.getFpczlxdm().equals("11")){
             ReturnData3 returnData=new ReturnData3();
+            if(kpls.getGsdm().equals("bqw")){
+                Buyer buyer=new Buyer();
+                buyer.setIdentifier(kpls.getGfsh());
+                buyer.setName(kpls.getGfmc());
+                buyer.setAddress(kpls.getGfdz());
+                buyer.setTelephoneNo(kpls.getGfdh());
+                buyer.setBank(kpls.getGfyh());
+                buyer.setBankAcc(kpls.getGfyhzh());
+                Seller seller=new Seller();
+                seller.setIdentifier(kpls.getXfsh());
+                seller.setName(kpls.getXfmc());
+                seller.setAddress(kpls.getXfdz());
+                seller.setTelephoneNo(kpls.getXfdh());
+                seller.setBank(kpls.getXfyh());
+                seller.setBankAcc(kpls.getXfyhzh());
+                returnData.setBuyer(buyer);
+                returnData.setSeller(seller);
+            }
             OperationItem3 operationItem=new OperationItem3();
             operationItem.setSerialNumber(kpls.getJylsh());
             operationItem.setOrderNumber(ddh);
             operationItem.setOperationType(kpls.getFpczlxdm());
-            operationItem.setBuyerID(jyls.getBz());
+            if(kpls.getGsdm().equals("fwk")){
+                operationItem.setBuyerID(jyls.getBz());
+            }
             InvoiceItems3 invoiceItems=new InvoiceItems3();
             List<InvoiceItem3> invoiceItemList=new ArrayList<>();
             boolean f=true;
