@@ -19,6 +19,15 @@ public class AdapterDataOrderBuyer {
     private String recipient;
     private String reciAddress;
     private String zip;
+    private String memberId;//客户号
+
+    public String getMemberId() {
+        return memberId;
+    }
+
+    public void setMemberId(String memberId) {
+        this.memberId = memberId;
+    }
 
     public String getCustomerType() {
         return customerType;
