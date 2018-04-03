@@ -130,7 +130,8 @@ public class JkpzServiceImpl implements JkpzService {
                     return ResultUtil.error("模板未配置");
                 }
                 Map map1 = new HashMap();
-                map1.put("mbid",Integer.getInteger(cszb.getCsz()));
+                map1.put("mbid",cszb.getCsz());
+                logger.info(JSON.toJSONString(map1));
                 //获取数据模板
                 List<JkpzVo> jkmbzbList = jkmbzbService.findByMbId(map1);
                 if(jkmbzbList.isEmpty()){
