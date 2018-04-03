@@ -265,54 +265,54 @@ public class JkpzUtil {
         return null;
     }
 
-    public String getSpByid(Map map) {
-        Spvo spvo = new Spvo();
-        Gsxx gsxx = (Gsxx)map.get("gsxx");
-        AdapterPost adapterPost = (AdapterPost)map.get("adapterPost");
-        List<Jymxsq> jymxsqList = (List)map.get("jymxsqList");
-        List<AdapterDataOrderDetails> details =null;
-        Jyxxsq jyxxsq = (Jyxxsq)map.get("jyxxsq");
-        try{
-            details = adapterPost.getData().getOrder().getOrderDetails();
-        }catch (Exception e){
-            return "商品信息缺少金额，税额，价税合计标签";
-        }
-        try {
-            int xh = 1;
-            for(int i=0;i<details.size();i++){
-                AdapterDataOrderDetails ads = details.get(i);
-                Jymxsq jymxsq  = new Jymxsq();
-                Map param = new HashMap();
-                param.put("gsdm", gsxx.getGsdm());
-                param.put("spdm", ads.getVenderOwnCode());
-                spvo = spvoService.findOneSpvo(param);
-                jymxsq.setDdh(jyxxsq.getDdh());
-                jymxsq.setSpmxxh(xh);
-                xh++;
-                jymxsq.setFphxz(ads.getRowType());
-                jymxsq.setSpdm(spvo.getSpbm());
-                jymxsq.setSpmc(spvo.getSpmc());
-                jymxsq.setSpggxh(spvo.getSpggxh());
-                jymxsq.setSpzxbm(spvo.getSpdm());
-                jymxsq.setSpdw(spvo.getSpdw());
-                jymxsq.setSps(ads.getQuantity());
-                jymxsq.setSpdj(ads.getUnitPrice());
-                jymxsq.setKce(ads.getDeductAmount());
-                jymxsq.setSpje(ads.getAmount());
-                jymxsq.setSpsl(ads.getTaxRate());
-                jymxsq.setSpse(ads.getTaxAmount());
-                jymxsq.setJshj(ads.getMxTotalAmount());
-                jymxsq.setYkjje(0d);
-                jymxsq.setKkjje(ads.getMxTotalAmount());
-                jymxsq.setYxbz("1");
-                jymxsqList.add(jymxsq);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "获取商品信息错误";
-        }
-        return null;
-    }
+//    public String getSpByid(Map map) {
+//        Spvo spvo = new Spvo();
+//        Gsxx gsxx = (Gsxx)map.get("gsxx");
+//        AdapterPost adapterPost = (AdapterPost)map.get("adapterPost");
+//        List<Jymxsq> jymxsqList = (List)map.get("jymxsqList");
+//        List<AdapterDataOrderDetails> details =null;
+//        Jyxxsq jyxxsq = (Jyxxsq)map.get("jyxxsq");
+//        try{
+//            details = adapterPost.getData().getOrder().getOrderDetails();
+//        }catch (Exception e){
+//            return "商品信息缺少金额，税额，价税合计标签";
+//        }
+//        try {
+//            int xh = 1;
+//            for(int i=0;i<details.size();i++){
+//                AdapterDataOrderDetails ads = details.get(i);
+//                Jymxsq jymxsq  = new Jymxsq();
+//                Map param = new HashMap();
+//                param.put("gsdm", gsxx.getGsdm());
+//                param.put("spdm", ads.getVenderOwnCode());
+//                spvo = spvoService.findOneSpvo(param);
+//                jymxsq.setDdh(jyxxsq.getDdh());
+//                jymxsq.setSpmxxh(xh);
+//                xh++;
+//                jymxsq.setFphxz(ads.getRowType());
+//                jymxsq.setSpdm(spvo.getSpbm());
+//                jymxsq.setSpmc(spvo.getSpmc());
+//                jymxsq.setSpggxh(spvo.getSpggxh());
+//                jymxsq.setSpzxbm(spvo.getSpdm());
+//                jymxsq.setSpdw(spvo.getSpdw());
+//                jymxsq.setSps(ads.getQuantity());
+//                jymxsq.setSpdj(ads.getUnitPrice());
+//                jymxsq.setKce(ads.getDeductAmount());
+//                jymxsq.setSpje(ads.getAmount());
+//                jymxsq.setSpsl(ads.getTaxRate());
+//                jymxsq.setSpse(ads.getTaxAmount());
+//                jymxsq.setJshj(ads.getMxTotalAmount());
+//                jymxsq.setYkjje(0d);
+//                jymxsq.setKkjje(ads.getMxTotalAmount());
+//                jymxsq.setYxbz("1");
+//                jymxsqList.add(jymxsq);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return "获取商品信息错误";
+//        }
+//        return null;
+//    }
 
     public String getSpByMc(Map map) {
         Gsxx gsxx = (Gsxx)map.get("gsxx");
