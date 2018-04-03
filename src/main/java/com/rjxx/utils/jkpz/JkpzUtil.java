@@ -570,6 +570,7 @@ public class JkpzUtil {
                         jyxxsq.setGfdh(buyer.getTelephoneNo());
                         jyxxsq.setGfyb(buyer.getZip());
                         jyxxsq.setGfemail(buyer.getEmail());
+                        jyxxsq.setKhh(buyer.getMemberId());//客户号
                         if(StringUtils.isNotBlank(buyer.getEmail())){
                             jyxxsq.setSffsyj("1");
                         }
