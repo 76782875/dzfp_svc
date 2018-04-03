@@ -266,11 +266,12 @@ public class JkpzServiceImpl implements JkpzService {
                     HcMap.put("Kphc",kphc);
                     String hcResult = kpService.uploadOrderData(gsdm, HcMap, "04");
                     DefaultResult defaultResult = XmlJaxbUtils.convertXmlStrToObject(DefaultResult.class, hcResult);
-                    if(defaultResult.getReturnCode().equals("0000")){
-                        return ResultUtil.success(defaultResult.getReturnMessage());
-                    }else {
-                        return ResultUtil.error(defaultResult.getReturnMessage());
+                    if(!defaultResult.getReturnCode().equals("0000")){
+                       result += defaultResult.getReturnMessage();
                     }
+                }
+                if(StringUtils.isNotBlank(result)){
+                    return ResultUtil.error(result);
                 }
                 return ResultUtil.success(result);
             }else {
