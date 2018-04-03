@@ -478,7 +478,7 @@ public class PdfDocumentGenerator {
                         fpPdfMxInfo.setSe("***");
                         freeDutyFlag = true;
                     }
-                    if(kpls.getZsfs().equals("2")){
+                    if(null != kpls.getZsfs() && kpls.getZsfs().equals("2")){
                         fpPdfMxInfo.setSl("***");
                         kce = kce + t_kpspmx.getKce();
                     }                    //处理商品名称字体大小
@@ -516,7 +516,7 @@ public class PdfDocumentGenerator {
                 /*****************************/
             }
             String bz = kpls.getBz() == null ? "" : kpls.getBz();
-            if(kpls.getZsfs().equals("2")){
+            if(null != kpls.getZsfs() && kpls.getZsfs().equals("2")){
                 bz = "差额征税："+kce+"。"+bz;
             }
             bz = bz.replaceAll("\\n", "<br/>");
