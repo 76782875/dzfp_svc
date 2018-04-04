@@ -21,6 +21,7 @@ public class JkmbbVo {
     private Integer lrry;
     private String gsdm;
     private Integer id;
+    private String mbid;
 
     public String getMbmc() {
         return mbmc;
@@ -76,5 +77,13 @@ public class JkmbbVo {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getMbid() {
+        return mbid;
+    }
+
+    public void setMbid(String mbid) {
+        this.mbid = mbid;
     }
 }
