@@ -1373,7 +1373,7 @@ public class FpclService {
                 kpspmxvo = tmpList.get(j);
                 hjje = hjje + kpspmxvo.getSpje();
                 hjse = hjse + kpspmxvo.getSpse();
-                kce = kce +kpspmxvo.getKce();
+                kce = kce +(kpspmxvo.getKce()==null?0d:kpspmxvo.getKce());
                 if (kpspmxvo.getSpdj() != null) {
                     BigDecimal b = new BigDecimal(kpspmxvo.getSpdj());
                     double f1 = b.setScale(6, BigDecimal.ROUND_HALF_UP).doubleValue();
