@@ -1408,7 +1408,7 @@ public class FpclService {
             Cszb cszb = cszbService.getSpbmbbh(kplsVO5.getGsdm(), kplsVO5.getXfid(), kplsVO5.getSkpid(), "spbmbbh");
             String spbmbbh = cszb.getCsz();
             params2.put("spbmbbh", spbmbbh);
-            params2.put("zsfs",jyxxsq.getZsfs());
+            params2.put("zsfs",kpls.getZsfs()==null?"0":kpls.getZsfs());
             params2.put("kpls", kplsVO5);
             params2.put("kpspmxList", kpspmxvoListNew);
             params2.put("mxCount", kpspmxvoListNew.size());
