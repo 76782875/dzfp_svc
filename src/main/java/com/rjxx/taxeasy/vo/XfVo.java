@@ -1,16 +1,10 @@
 package com.rjxx.taxeasy.vo;
 
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
-import org.springframework.format.annotation.DateTimeFormat;
-
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.rjxx.comm.json.JsonDatetimeFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.util.Date;
 
 public class XfVo {
 
@@ -155,6 +149,25 @@ public class XfVo {
 	protected Double ppzdje;
 	
 	protected String sjxfmc;
+
+	private String ybnsrqssj;
+	private String ybnsrjyzs;
+
+	public String getYbnsrqssj() {
+		return ybnsrqssj;
+	}
+
+	public void setYbnsrqssj(String ybnsrqssj) {
+		this.ybnsrqssj = ybnsrqssj;
+	}
+
+	public String getYbnsrjyzs() {
+		return ybnsrjyzs;
+	}
+
+	public void setYbnsrjyzs(String ybnsrjyzs) {
+		this.ybnsrjyzs = ybnsrjyzs;
+	}
 
 	public Integer getId() {
 		return id;

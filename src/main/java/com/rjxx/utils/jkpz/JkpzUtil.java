@@ -11,6 +11,7 @@ import com.rjxx.taxeasy.service.CszbService;
 import com.rjxx.taxeasy.service.SpvoService;
 import com.rjxx.taxeasy.vo.JkpzVo;
 import com.rjxx.taxeasy.vo.Spvo;
+import com.rjxx.utils.StringUtil;
 import com.rjxx.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -230,6 +231,9 @@ public class JkpzUtil {
         try{
             int xh = 1;
             for(int i=0;i<details.size();i++){
+                if(StringUtil.isBlankList(details.get(i).getVenderOwnCode())){
+                    return "商品信息缺少商品编码";
+                }
                 Map param = new HashMap();
                 param.put("gsdm",gsxx.getGsdm());
                 param.put("spdm",details.get(i).getVenderOwnCode());
