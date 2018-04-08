@@ -480,7 +480,7 @@ public class PdfDocumentGenerator {
                     }
                     if(null != kpls.getZsfs() && kpls.getZsfs().equals("2")){
                         fpPdfMxInfo.setSl("***");
-                        kce = kce + t_kpspmx.getKce();
+                        kce = kce + (t_kpspmx.getKce()==null?0d:t_kpspmx.getKce());
                     }                    //处理商品名称字体大小
                     fpPdfMxInfo.setSpmcSize(getSpmcFontSize(fpPdfMxInfo.getSpmc()));
                     //处理规格型号字体大小
