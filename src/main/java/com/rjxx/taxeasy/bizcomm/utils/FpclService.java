@@ -1414,9 +1414,8 @@ public class FpclService {
             params2.put("mxCount", kpspmxvoListNew.size());
             params2.put("hjje", hjje);
             params2.put("hjse", hjse);
-            if(!fpczlxdm.equals("12")){
-                params2.put("kce", kce);
-            }
+            params2.put("kce", fpczlxdm.equals("12")?null:kce);
+
             /**
              * 模板名称，电子票税控服务器报文
              */
