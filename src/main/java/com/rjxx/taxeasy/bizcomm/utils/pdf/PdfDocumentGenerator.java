@@ -518,7 +518,7 @@ public class PdfDocumentGenerator {
             String bz = kpls.getBz() == null ? "" : kpls.getBz();
             if(null != kpls.getZsfs() && kpls.getZsfs().equals("2")){
                 if(null != kpls.getFpczlxdm() && kpls.getFpczlxdm().equals("12")){
-                    bz = bz + " \\n差额征税";
+                    bz = bz + "<br/>差额征税";
                 }else{
                     bz = "差额征税："+kce+"。"+bz;
                 }
