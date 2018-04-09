@@ -1,5 +1,6 @@
 package com.rjxx.taxeasy.vo;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -7,11 +8,11 @@ import java.util.Map;
  * @date: 2018/3/28 19:36
  * @describe:
  */
-public class JkpzTreeXFVo {
+public class JkpzTree {
     private String id;
     private String text;
-    private String parent;
-    private Map state;
+    private String templateId;
+    private List children;
     public String getId() {
         return id;
     }
@@ -28,19 +29,19 @@ public class JkpzTreeXFVo {
         this.text = text;
     }
 
-    public String getParent() {
-        return parent;
+    public String getTemplateId() {
+        return templateId;
     }
 
-    public void setParent(String parent) {
-        this.parent = parent;
+    public void setTemplateId(String templateId) {
+        this.templateId = templateId;
     }
 
-    public Map getState() {
-        return state;
+    public List getChildren() {
+        return children;
     }
 
-    public void setState(Map state) {
-        this.state = state;
+    public void setChildren(List children) {
+        this.children = children;
     }
 }
