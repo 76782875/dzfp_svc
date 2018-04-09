@@ -35,7 +35,7 @@ public class SeperateInvoiceUtils {
             Kpspmx mx = kpspmxList.get(i);
             BigDecimal jshj = new BigDecimal(mx.getSpje() + mx.getSpse());
             jshj = jshj.setScale(2,BigDecimal.ROUND_HALF_UP);
-            if(!kpls.getZsfs().equals("2")){
+            if(kpls.getZsfs()!=null&&!kpls.getZsfs().equals("2")){
                 BigDecimal spsl = new BigDecimal(mx.getSpsl());
                 spsl = spsl.setScale(2,BigDecimal.ROUND_HALF_UP);
                 BigDecimal jeWithoutTax = div(jshj, spsl.add(new BigDecimal(1))).setScale(6, BigDecimal.ROUND_HALF_UP);
