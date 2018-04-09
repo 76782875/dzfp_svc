@@ -1373,7 +1373,7 @@ public class FpclService {
                 kpspmxvo = tmpList.get(j);
                 hjje = hjje + kpspmxvo.getSpje();
                 hjse = hjse + kpspmxvo.getSpse();
-                kce = kce +kpspmxvo.getKce();
+                kce = kce +(kpspmxvo.getKce()==null?0d:kpspmxvo.getKce());
                 if (kpspmxvo.getSpdj() != null) {
                     BigDecimal b = new BigDecimal(kpspmxvo.getSpdj());
                     double f1 = b.setScale(6, BigDecimal.ROUND_HALF_UP).doubleValue();
@@ -1408,13 +1408,14 @@ public class FpclService {
             Cszb cszb = cszbService.getSpbmbbh(kplsVO5.getGsdm(), kplsVO5.getXfid(), kplsVO5.getSkpid(), "spbmbbh");
             String spbmbbh = cszb.getCsz();
             params2.put("spbmbbh", spbmbbh);
-            params2.put("zsfs",jyxxsq.getZsfs());
+            params2.put("zsfs",kpls.getZsfs()==null?"0":kpls.getZsfs());
             params2.put("kpls", kplsVO5);
             params2.put("kpspmxList", kpspmxvoListNew);
             params2.put("mxCount", kpspmxvoListNew.size());
             params2.put("hjje", hjje);
             params2.put("hjse", hjse);
-            params2.put("kce", kce);
+            params2.put("kce", fpczlxdm.equals("12")?null:kce);
+
             /**
              * 模板名称，电子票税控服务器报文
              */

@@ -480,7 +480,7 @@ public class PdfDocumentGenerator {
                     }
                     if(null != kpls.getZsfs() && kpls.getZsfs().equals("2")){
                         fpPdfMxInfo.setSl("***");
-                        kce = kce + t_kpspmx.getKce();
+                        kce = kce + (t_kpspmx.getKce()==null?0d:t_kpspmx.getKce());
                     }                    //处理商品名称字体大小
                     fpPdfMxInfo.setSpmcSize(getSpmcFontSize(fpPdfMxInfo.getSpmc()));
                     //处理规格型号字体大小
@@ -517,7 +517,11 @@ public class PdfDocumentGenerator {
             }
             String bz = kpls.getBz() == null ? "" : kpls.getBz();
             if(null != kpls.getZsfs() && kpls.getZsfs().equals("2")){
-                bz = "差额征税："+kce+"。"+bz;
+                if(null != kpls.getFpczlxdm() && kpls.getFpczlxdm().equals("12")){
+                    bz = bz + "<br/>差额征税";
+                }else{
+                    bz = "差额征税："+kce+"。"+bz;
+                }
             }
             bz = bz.replaceAll("\\n", "<br/>");
             in_request.setBz(bz);
