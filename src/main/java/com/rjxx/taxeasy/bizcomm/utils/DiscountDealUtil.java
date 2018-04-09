@@ -527,6 +527,7 @@ public class DiscountDealUtil {
 		kpspmxR.setKpddm(kpspmx1.getKpddm());
 		kpspmxR.setZfry(kpspmx1.getZfry());
 		kpspmxR.setHcry(kpspmx1.getHcry());
+		kpspmxR.setKce(kpspmx1.getKce());
 		return kpspmxR;
 	}
 

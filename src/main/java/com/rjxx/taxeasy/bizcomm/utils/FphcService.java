@@ -227,7 +227,7 @@ public class FphcService {
 							jymx.setFphxz(mxItem.getFphxz());
 							jymx.setYhzcbs(mxItem.getYhzcbs());
 							jymx.setLslbz(mxItem.getLslbz());
-							jymx.setKce(mxItem.getKce()==null?0d:mxItem.getKce());
+							jymx.setKce(mxItem.getKce()==null?0d:-mxItem.getKce());
 							jymx.setYhzcmc(mxItem.getYhzcmc());
 							jymx.setXfid(kpls.getXfid());
 							jymx.setSkpid(kpls.getSkpid());
@@ -260,7 +260,7 @@ public class FphcService {
 							kpspmx.setXgry(jymx.getXgry());
 							kpspmx.setKhcje(jymx.getJshj().doubleValue());
 							kpspmx.setYhcje(0d);
-							kpspmx.setKce(jymx.getKce());
+							kpspmx.setKce(jymx.getKce().doubleValue());
 							kpspmx.setGsdm(jymx.getGsdm());
 							kpspmx.setYhzcbs(jymx.getYhzcbs());
 							kpspmx.setLslbz(jymx.getLslbz());
@@ -310,7 +310,7 @@ public class FphcService {
 							jymx.setYkphj(Double.valueOf(khcje));
 							jymx.setGsdm(gsdm);
 							jymx.setLrsj(TimeUtil.getNowDate());
-							jymx.setKce(mxItem.getKce());
+							jymx.setKce(-mxItem.getKce());
 							jymx.setLrry(yhid);
 							jymx.setXgsj(TimeUtil.getNowDate());
 							jymx.setXgry(yhid);
