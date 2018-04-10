@@ -19,8 +19,8 @@ public class GenJavaCode {
     private String authorName = "ZhangBing";
     String baseOutputFiePath = javaFilePath + "/src/main/java/";
 
-    private String fullDomainClassName = "com.rjxx.taxeasy.domains.Jkmbb";
-    private String tableName = "t_jkmbb";
+    private String fullDomainClassName = "com.rjxx.taxeasy.domains.JyxxsqHb";
+    private String tableName = "t_jyxxsq_hb";
     private String simpleDomainClassName = null;
     private String domainParamsName = null;
     private String servicePackageName = "com.rjxx.taxeasy.service";
