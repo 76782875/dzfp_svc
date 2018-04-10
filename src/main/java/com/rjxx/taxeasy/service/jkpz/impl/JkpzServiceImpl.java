@@ -219,12 +219,13 @@ public class JkpzServiceImpl implements JkpzService {
                 if(StringUtils.isNotBlank(msg)){
                     return ResultUtil.error(msg);
                 }
-                //开票
+
                 Map kpMap = new HashMap();
                 kpMap.put("jyxxsqList",jyxxsqList);
                 kpMap.put("jymxsqList",jymxsqList);
                 kpMap.put("jyzfmxList",jyzfmxList);
-                String kpresult = kpService.uploadOrderData(gsdm, kpMap, "01");
+                //01 开票，02 上传数据 不开票
+                String kpresult = kpService.uploadOrderData(gsdm, kpMap,reqType);
                 DefaultResult defaultResult = XmlJaxbUtils.convertXmlStrToObject(DefaultResult.class, kpresult);
                 if(defaultResult.getReturnCode().equals("0000")){
                     return ResultUtil.success(defaultResult.getReturnMessage());
@@ -265,7 +266,7 @@ public class JkpzServiceImpl implements JkpzService {
                     //红冲
                     Map HcMap = new HashMap();
                     HcMap.put("Kphc",kphc);
-                    String hcResult = kpService.uploadOrderData(gsdm, HcMap, "04");
+                    String hcResult = kpService.uploadOrderData(gsdm, HcMap, reqType);
                     DefaultResult defaultResult = XmlJaxbUtils.convertXmlStrToObject(DefaultResult.class, hcResult);
                     if(!defaultResult.getReturnCode().equals("0000")){
                        result += defaultResult.getReturnMessage();

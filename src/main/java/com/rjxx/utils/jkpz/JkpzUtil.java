@@ -563,7 +563,7 @@ public class JkpzUtil {
                     break;
                 case "buyer":
                     //02 交易数据上传不封装购方
-                    if(!adapterPost.getReqType().equals("02")){
+//                    if(!adapterPost.getReqType().equals("02")){
                         jyxxsq.setGfsh(buyer.getIdentifier());
                         jyxxsq.setGfmc(buyer.getName());
                         jyxxsq.setGflx(buyer.getCustomerType());
@@ -578,7 +578,7 @@ public class JkpzUtil {
                         if(StringUtils.isNotBlank(buyer.getEmail())){
                             jyxxsq.setSffsyj("1");
                         }
-                    }
+//                    }
                     break;
             }
         } catch (Exception e) {
