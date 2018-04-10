@@ -471,7 +471,7 @@ public class InvoiceSplitUtils {
 						BigDecimal spsm = jyspmx.getSps();// 原商品数量
 						BigDecimal spse = jyspmx.getSpse()==null?BigDecimal.ZERO:jyspmx.getSpse().setScale(2, BigDecimal.ROUND_HALF_UP);// 原商品税额
 
-						BigDecimal kce = jyspmx.getKce().setScale(2, BigDecimal.ROUND_HALF_UP);
+						BigDecimal kce = null == jyspmx.getKce()?BigDecimal.ZERO:jyspmx.getKce().setScale(2, BigDecimal.ROUND_HALF_UP);
 
 						BigDecimal ccje = sub(zje, maxje).setScale(2, BigDecimal.ROUND_HALF_UP);// 超出金额
 
