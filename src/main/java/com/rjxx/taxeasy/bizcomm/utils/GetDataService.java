@@ -729,6 +729,7 @@ public class GetDataService {
                 System.out.println("request url=" + "" + ", exception, msg=" + e.getMessage());
                 e.printStackTrace();
                 e.printStackTrace();
+                parmsMap.put("error","获取数据失败，请重试！");
             }
             return parmsMap;
     }

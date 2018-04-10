@@ -12,6 +12,7 @@ public class JkpzTree {
     private String id;
     private String text;
     private String templateId;
+    private String templateName;
     private List children;
     public String getId() {
         return id;
@@ -43,5 +44,13 @@ public class JkpzTree {
 
     public void setChildren(List children) {
         this.children = children;
+    }
+
+    public String getTemplateName() {
+        return templateName;
+    }
+
+    public void setTemplateName(String templateName) {
+        this.templateName = templateName;
     }
 }
