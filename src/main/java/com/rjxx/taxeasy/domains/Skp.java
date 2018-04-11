@@ -4,6 +4,7 @@ import java.sql.Time;
 import java.util.Date;
 import javax.persistence.*;
 import com.rjxx.comm.json.JsonDatetimeFormat;
+import com.rjxx.taxeasy.vo.SkpVo;
 import org.springframework.format.annotation.DateTimeFormat;
 import java.io.Serializable;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -492,5 +493,41 @@ public class Skp implements Serializable {
 
 	public void setWrzs(String wrzs) {
 		this.wrzs = wrzs;
+	}
+
+	public Skp() {
+		super();
+	}
+
+	public Skp(SkpVo skpVo) {
+		this.kpddm = skpVo.getKpddm();
+		this.kpdmc = skpVo.getKpdmc();
+		this.skph = skpVo.getSkph();
+		this.sbcs = skpVo.getSbcs();
+		this.lxdz = skpVo.getLxdz();
+		this.skpmm = skpVo.getSkpmm();
+		this.zsmm = skpVo.getZsmm();
+		this.lxdh = skpVo.getLxdh();
+		this.khyh = skpVo.getKhyh();
+		this.yhzh = skpVo.getYhzh();
+		this.skr = skpVo.getSkr();
+		this.fhr = skpVo.getFhr();
+		this.kpr = skpVo.getKpr();
+		this.dpmax = skpVo.getDpmax();
+		this.fpfz = skpVo.getFpfz();
+		this.zpmax = skpVo.getZpmax();
+		this.zpfz = skpVo.getZpfz();
+		this.ppmax = skpVo.getPpmax();
+		this.ppfz = skpVo.getPpfz();
+		this.lrry = skpVo.getLrry();
+		this.lrsj = skpVo.getLrsj();
+		this.xgry = skpVo.getXgry();
+		this.xgsj = skpVo.getXgsj();
+		this.yxbz = skpVo.getYxbz();
+		this.pid = skpVo.getPid();
+		this.kplx = skpVo.getKplx();
+		this.wrzs = skpVo.getWrzs();
+		this.gsdm = skpVo.getGsdm();
+		this.xfid = skpVo.getXfid();
 	}
 }

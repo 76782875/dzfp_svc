@@ -7,6 +7,7 @@ import com.rjxx.taxeasy.domains.*;
 import com.rjxx.taxeasy.service.*;
 import com.rjxx.taxeasy.vo.Spvo;
 import com.rjxx.utils.CheckOrderUtil;
+import com.rjxx.utils.StringUtils;
 import com.rjxx.utils.weixin.HttpClientUtil;
 import org.apache.axiom.om.OMElement;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -669,6 +670,15 @@ public class GetDataService {
         return rsMap;
     }
 
+
+    private String getDataUrl(String gsdm,String xfid,String kpdid){
+        Cszb  zb1 =  cszbService.getSpbmbbh(gsdm, null,null, "sfhhurl");
+        if(zb1 == null){
+            return null;
+        }
+        return zb1.getCsz();
+    }
+
     /**
      * 全家--调用接口获取数据
      * @param ExtractCode
@@ -684,8 +694,14 @@ public class GetDataService {
             parms.put("gsdm",gsdm);
             Gsxx gsxx=gsxxService.findOneByParams(parms);
             Map resultMap = null;
+            String url = getDataUrl(gsdm, null, null);
+            if(StringUtils.isBlank(url)){
+                parmsMap.put("error","获取数据地址为空！");
+                return parmsMap;
+            }
+            HttpPost httpPost = new HttpPost(url);
 //            HttpPost httpPost = new HttpPost("http://103.13.247.68:6180/EinvoiceWebvoiceWeb/strMessageervice/EInvoiceWS/QueryOrder");
-            HttpPost httpPost = new HttpPost("http://172.16.0.221:6180/EinvoiceWeb/service/EInvoiceWS/QueryOrder");
+//            HttpPost httpPost = new HttpPost("http://172.16.0.221:6180/EinvoiceWeb/service/EInvoiceWS/QueryOrder");
             CloseableHttpResponse response = null;
             RequestConfig requestConfig = RequestConfig.custom().
                     setSocketTimeout(120*1000).setConnectionRequestTimeout(120*1000).setConnectTimeout(120*1000).build();
@@ -706,6 +722,8 @@ public class GetDataService {
                 if (response.getStatusLine().getStatusCode() != 200) {
                     System.out.println("request url failed, http code=" + response.getStatusLine().getStatusCode()
                             + ", url=" + "");
+                    parmsMap.put("error","获取数据失败，请重试！");
+                    return parmsMap;
                 }
                 HttpEntity entity = response.getEntity();
                 if (entity != null) {
@@ -726,9 +744,9 @@ public class GetDataService {
                     parmsMap.put("tmp", msg);
                 }
             }catch (Exception e){
-                System.out.println("request url=" + "" + ", exception, msg=" + e.getMessage());
+                System.out.println("request url=" +url+ ", exception, msg=" + e.getMessage());
                 e.printStackTrace();
-                e.printStackTrace();
+                parmsMap.put("error","获取数据失败，请重试！");
             }
             return parmsMap;
     }

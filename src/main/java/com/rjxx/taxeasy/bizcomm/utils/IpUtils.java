@@ -56,10 +56,12 @@ public class IpUtils {
      * @return boolean
      */
     public static boolean ipIsInRange(String ip, String ipRange) {
-        if (ipRange == null)
+        if (ipRange == null) {
             throw new NullPointerException("IP段不能为空！");
-        if (ip == null)
+        }
+        if (ip == null) {
             throw new NullPointerException("IP不能为空！");
+        }
         ipRange = ipRange.trim();
         ip = ip.trim();
         final String REGX_IP = "((25[0-5]|2[0-4]\\d|1\\d{2}|[1-9]\\d|\\d)\\.){3}(25[0-5]|2[0-4]\\d|1\\d{2}|[1-9]\\d|\\d)";
@@ -107,6 +109,5 @@ public class IpUtils {
             ip2long = ip2long << 8 | Integer.parseInt(ips[i]);
         }
         return ip2long;
-
     }
 }

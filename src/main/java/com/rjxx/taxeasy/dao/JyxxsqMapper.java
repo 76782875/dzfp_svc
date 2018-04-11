@@ -62,5 +62,7 @@ public interface JyxxsqMapper {
     Jyxxsq findOneByJylsh(Map jyxxsqMap);
 
     public void updateGfxx(Map params);
+
+    public Integer findJshjSum(Map params);
 }
 
