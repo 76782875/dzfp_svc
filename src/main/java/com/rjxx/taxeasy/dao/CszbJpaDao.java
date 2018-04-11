@@ -31,5 +31,8 @@ public interface CszbJpaDao extends CrudRepository<Cszb, Integer> {
 
     @Query(nativeQuery = true,value = "select * from t_cszb  where yxbz='1' and  csid=?1 and gsdm=?2 and csz=?3")
     List<Cszb> findByGsdmAndCszAndCsid(Integer csid,String gsdm,String csz);
+
+    @Query(nativeQuery = true,value = "select * from t_cszb  where yxbz='1' and  csid=?1 and csz=?2")
+    List<Cszb> findByCsidAndCsz(Integer csid,String csz);
 }
 

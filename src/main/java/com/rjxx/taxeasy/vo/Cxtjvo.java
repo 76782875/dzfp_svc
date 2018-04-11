@@ -9,6 +9,8 @@ public class Cxtjvo {
 	private double jshj;
 	private String fpzldm;
 	private String fpzlmc;
+	private String skpid;
+	private String kpddmc;
 	public Integer getFpsl() {
 		return fpsl;
 	}
@@ -58,6 +60,22 @@ public class Cxtjvo {
 		this.fpzlmc = fpzlmc;
 	}
 
+	public String getSkpid() {
+		return skpid;
+	}
+
+	public void setSkpid(String skpid) {
+		this.skpid = skpid;
+	}
+
+	public String getKpddmc() {
+		return kpddmc;
+	}
+
+	public void setKpddmc(String kpddmc) {
+		this.kpddmc = kpddmc;
+	}
+
 	public Cxtjvo() {
 
 	}
@@ -70,5 +88,7 @@ public class Cxtjvo {
 		this.jshj = cxtjvo.getJshj();
 		this.fpzldm = cxtjvo.getFpzldm();
 		this.fpzlmc = cxtjvo.getFpzlmc();
+		this.skpid = cxtjvo.getSkpid();
+		this.kpddmc = cxtjvo.getKpddmc();
 	}
 }

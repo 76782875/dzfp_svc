@@ -94,8 +94,10 @@ public class CheckOrderUtil {
             if (null == drawer || drawer.equals("")) {
                 result += ddh + ":开票人(Drawer)不能为空;";
             }
+
+            Cszb cszb = cszbservice.getSpbmbbh(jyxxsq.getGsdm(),jyxxsq.getXfid(),jyxxsq.getSkpid(),"sfzlkp");
             // 购方名称
-            if (!Operation.equals("02")) {
+            if (!Operation.equals("02")&&(null !=cszb.getCsz()&&cszb.getCsz().equals("是"))) {
                 String buyerName = jyxxsq.getGfmc();
                 if (null == buyerName || buyerName.equals("")) {
                     result += ddh + ":购方名称(Name)不能为空;";
