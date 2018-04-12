@@ -7,6 +7,8 @@ package com.rjxx.taxeasy.dto;
  */
 public class ClientData {
 
+    private String identifier;
+    private String type;
     private String clientNO;
     private String name;
     private String brandCode;
@@ -15,7 +17,13 @@ public class ClientData {
     private String equipNum;
     private String taxDiskPass;
     private String certiCipher;
-
+    private String drawer;
+    private String payee;
+    private String reviewer;
+    private String kpdh;
+    private String kpdz;
+    private String kpyh;
+    private String kpyhzh;
     public String getClientNO() {
         return clientNO;
     }
@@ -78,5 +86,77 @@ public class ClientData {
 
     public void setCertiCipher(String certiCipher) {
         this.certiCipher = certiCipher;
+    }
+
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getDrawer() {
+        return drawer;
+    }
+
+    public void setDrawer(String drawer) {
+        this.drawer = drawer;
+    }
+
+    public String getPayee() {
+        return payee;
+    }
+
+    public void setPayee(String payee) {
+        this.payee = payee;
+    }
+
+    public String getReviewer() {
+        return reviewer;
+    }
+
+    public void setReviewer(String reviewer) {
+        this.reviewer = reviewer;
+    }
+
+    public String getKpdh() {
+        return kpdh;
+    }
+
+    public void setKpdh(String kpdh) {
+        this.kpdh = kpdh;
+    }
+
+    public String getKpdz() {
+        return kpdz;
+    }
+
+    public void setKpdz(String kpdz) {
+        this.kpdz = kpdz;
+    }
+
+    public String getKpyh() {
+        return kpyh;
+    }
+
+    public void setKpyh(String kpyh) {
+        this.kpyh = kpyh;
+    }
+
+    public String getKpyhzh() {
+        return kpyhzh;
+    }
+
+    public void setKpyhzh(String kpyhzh) {
+        this.kpyhzh = kpyhzh;
     }
 }
