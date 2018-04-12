@@ -26,5 +26,7 @@ public interface CszbMapper {
 
 	public Cszb findsfzlkpByParams(Cszb cszb);
 
+	public List<CsbVo> findAllByGsdmAndCsm(Map params);
+
 }
 

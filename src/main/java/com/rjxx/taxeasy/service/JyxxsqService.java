@@ -127,6 +127,7 @@ public class JyxxsqService {
 		return jyxxsqMapper.findJshjSum(params);
 	}
 
+	public List<JyxxsqVO> findBySqlsh(Map params){return jyxxsqMapper.findBySqlsh(params);}
 	/**
 	 * 删除交易流水，包括明细
 	 *

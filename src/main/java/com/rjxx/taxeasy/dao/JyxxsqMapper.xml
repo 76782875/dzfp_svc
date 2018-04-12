@@ -651,5 +651,23 @@
 		WHERE m.sqlsh = t.sqlsh
 		ORDER BY m.sqlsh asc
 	</select>
+	<select id="findBySqlsh" parameterType="map" resultType="jyxxsqVO">
+		SELECT *,SUM(jshj) jshjSum,GROUP_CONCAT(sqlsh) sqlshCount
+		FROM  t_jyxxsq  WHERE yxbz='1'
+		<if test="gsdm !=null and gsdm !=''">
+			and gsdm =#{gsdm}
+		</if>
+		<if test="ztbz !=null and ztbz !=''">
+			and ztbz in(#{ztbz},#{bfzt})
+		</if>
+		<if test="sqlshList != null">
+			<foreach collection="sqlshList" open=" and sqlsh in (" separator="," close=")" item="sqlsh">
+				#{sqlsh}
+			</foreach>
+		</if>
+		GROUP BY gsdm,xfid ,skpid,kpddm , fpzldm
+	</select>
+
+
 </mapper>
 

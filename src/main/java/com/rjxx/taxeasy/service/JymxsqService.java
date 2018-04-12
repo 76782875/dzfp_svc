@@ -6,6 +6,7 @@ import com.rjxx.taxeasy.dao.JymxsqMapper;
 import com.rjxx.taxeasy.domains.Jymxsq;
 import com.rjxx.taxeasy.domains.Jyspmx;
 
+import com.rjxx.taxeasy.vo.JymxsqVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -58,7 +59,9 @@ public class JymxsqService {
     public List<Jymxsq> findByPage(Pagination pagination) {
         return jymxsqMapper.findByPage(pagination);
     }
-    
+
+    public List<JymxsqVo> findBySqlsh(Map params){return  jymxsqMapper.findBySqlsh(params);}
+
     /**
      * 根据单据号查找
      *

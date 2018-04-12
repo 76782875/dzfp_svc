@@ -55,6 +55,8 @@ public class CszbService {
     public List<CsbVo> findByPage(Pagination pagination) {
         return cszbMapper.findByPage(pagination);
     }
+
+    public List<CsbVo> findAllByGsdmAndCsm(Map params){return cszbMapper.findAllByGsdmAndCsm(params);}
     
     //其实是根据公司代码，销方id，和skp表id,取该csm的值
     public Cszb getSpbmbbh(String gsdm,Integer xfid,Integer kpdid,String csm){

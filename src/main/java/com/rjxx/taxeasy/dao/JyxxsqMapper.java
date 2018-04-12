@@ -54,6 +54,7 @@ public interface JyxxsqMapper {
 
     public Integer findBykplscxtotal(Map params);
 
+    public List<JyxxsqVO> findBySqlsh(Map params);
 
     Xf findXfExistByXfsh(Map params);
 
