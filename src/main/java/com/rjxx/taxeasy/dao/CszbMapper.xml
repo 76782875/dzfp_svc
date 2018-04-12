@@ -56,5 +56,83 @@
 		</if>
 	</select>
 
+
+	<select id="findAllByGsdmAndCsm" parameterType="map" resultType="csbVo">
+
+
+
+		SELECT
+		t.gsdm,
+		t.xfid,
+		t3.xfmc,
+		t.kpdid,
+		t4.kpdmc,
+		max(t.csz) csz
+		FROM
+		(
+		SELECT
+		c.gsdm,
+		xf.id xfid,
+		skp.id kpdid,
+		NULL csz
+		FROM
+		t_gsxx c
+		LEFT JOIN (
+		SELECT
+		b.gsdm,
+		b.id
+		FROM
+		t_xf b
+		WHERE
+		b.yxbz = '1'
+		GROUP BY
+		b.gsdm,
+		b.id WITH ROLLUP
+		) xf ON c.gsdm = xf.gsdm
+		LEFT JOIN (
+		SELECT
+		a.gsdm,
+		a.xfid,
+		a.id
+		FROM
+		t_skp a
+		WHERE
+		a.yxbz = '1'
+		GROUP BY
+		a.gsdm,
+		a.xfid,
+		a.id WITH ROLLUP
+		) skp ON c.gsdm = skp.gsdm
+		AND xf.id = skp.xfid
+		WHERE
+		c.gsdm = #{gsdm}
+		UNION ALL
+		SELECT
+		e.gsdm,
+		e.xfid,
+		e.kpdid,
+		e.csz
+		FROM
+		t_csb d
+		JOIN t_cszb e ON d.id = e.csid
+		WHERE
+		d.csm = #{csm}
+		AND e.gsdm = #{gsdm}
+		AND e.yxbz = '1'
+		AND d.yxbz = '1'
+		) t
+		LEFT JOIN t_xf t3 ON t.xfid = t3.id
+		LEFT JOIN t_skp t4 ON t.kpdid = t4.id
+		GROUP BY
+		t.gsdm,
+		t.xfid,
+		t3.xfmc,
+		t.kpdid,
+		t4.kpdmc
+		ORDER BY
+		1,
+		2,
+		4
+	</select>
 </mapper>
 
