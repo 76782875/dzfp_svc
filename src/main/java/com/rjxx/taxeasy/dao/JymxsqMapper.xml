@@ -109,7 +109,6 @@
         *,
         SUM(sps)  sumsps,
         SUM(spje) sumspje,
-        SUM(spse) sumspse,
         SUM(jshj) sumjshj,
         SUM(ykjje) sumykjje,
         SUM(kkjje) sumkkjje
@@ -122,7 +121,7 @@
                 #{sqlsh}
             </foreach>
         </if>
-        GROUP BY  kpddm,hsbz,spdm,spmc,spggxh,spzxbm,yhzcbs,yhzcmc,lslbz,spdw
+        GROUP BY  kpddm,fphxz,spdm,spmc,spggxh,spzxbm,yhzcbs,yhzcmc,lslbz,spdw
     </select>
 
 
