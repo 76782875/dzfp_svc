@@ -144,7 +144,7 @@ public class FphbService {
     }
 
 
-    public boolean fphbCancle(List sqlshList,String gsdm,Integer yhid){
+    public boolean fphbCancle(List<Integer> sqlshList,String gsdm,Integer yhid){
         try {
             if(sqlshList.isEmpty()){
                 return false;
