@@ -1,13 +1,15 @@
 package com.rjxx.taxeasy.bizcomm.utils;
 
+import com.alibaba.fastjson.JSON;
 import com.rjxx.taxeasy.dao.JyxxsqHbJpaDao;
 import com.rjxx.taxeasy.dao.JyxxsqJpaDao;
 import com.rjxx.taxeasy.domains.*;
 import com.rjxx.taxeasy.dto.FphbData;
-import com.rjxx.taxeasy.service.JymxsqService;
-import com.rjxx.taxeasy.service.JyxxsqService;
+import com.rjxx.taxeasy.service.*;
 import com.rjxx.taxeasy.vo.JymxsqVo;
+import com.rjxx.taxeasy.vo.JyspmxDecimal2;
 import com.rjxx.taxeasy.vo.JyxxsqVO;
+import com.rjxx.time.TimeUtil;
 import com.rjxx.utils.BeanConvertUtils;
 import com.rjxx.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,12 @@ public class FphbService {
     private JyxxsqHbJpaDao jyxxsqHbJpaDao;
     @Autowired
     private DiscountDealUtil discountDealUtil;
+    @Autowired
+    private YhcljlService yhcljlService;
+    @Autowired
+    private JylsService jylsService;
+    @Autowired
+    private JyspmxService jyspmxService;
 
     public List fphbcl(FphbData data){
         List result = new ArrayList();
@@ -85,7 +93,7 @@ public class FphbService {
                     newjymxsq.setSpdw(jymxsq.getSpdw());
                     newjymxsq.setSps(null);
                     newjymxsq.setSpdj(null);
-                    newjymxsq.setSpje(jymxsq.getSumspje());
+                    newjymxsq.setSpje(jymxsq.getSumjshj());
                     newjymxsq.setSpsl(jymxsq.getSpsl());
                     newjymxsq.setSpse(0d);
                     newjymxsq.setJshj(jymxsq.getSumjshj());
@@ -137,38 +145,65 @@ public class FphbService {
 
 
     public boolean fphbCancle(List sqlshList,String gsdm,Integer yhid){
-        if(sqlshList.isEmpty()){
-            return false;
-        }
-        Date date = new Date();
-        for(int i = 0;i<sqlshList.size();i++){
-            String sqlsh = sqlshList.get(i).toString();
-            Map map = new HashMap();
-            map.put("gsdm",gsdm);
-            map.put("sqlsh",sqlsh);
-            Jyxxsq jyxxsq = jyxxsqService.findOneByParams(map);
-            List<JyxxsqHb> hbList = jyxxsqHbJpaDao.findByNewsqlsh(jyxxsq.getSqlsh());
-            for(int j =0; j<hbList.size();j++){
-                Integer sqlsh1= hbList.get(j).getOldsqlsh();
-                Map map1 = new HashMap();
-                map1.put("gsdm",gsdm);
-                map1.put("sqlsh",sqlsh1);
-                Jyxxsq jyxxsq1 = jyxxsqService.findOneByParams(map1);
-                jyxxsq1.setZtbz("6");
-                jyxxsq1.setXgry(yhid);
-                jyxxsq1.setXgsj(date);
-                jyxxsqJpaDao.save(jyxxsq1);
+        try {
+            if(sqlshList.isEmpty()){
+                return false;
             }
-            jyxxsq.setYxbz("0");
-            jyxxsq.setXgry(yhid);
-            jyxxsq.setXgsj(date);
-            jyxxsqJpaDao.save(jyxxsq);
-//            jyxxsqJpaDao.delete(jyxxsq);
+            Date date = new Date();
+            jyxxsqService.delBySqlshList2(sqlshList);
+            for(int i = 0;i<sqlshList.size();i++){
+                String sqlsh = sqlshList.get(i).toString();
+                List<JyxxsqHb> hbList = jyxxsqHbJpaDao.findByNewsqlsh(Integer.valueOf(sqlsh));
+                for(int j =0; j<hbList.size();j++){
+                    Integer sqlsh1= hbList.get(j).getOldsqlsh();
+                    Map map1 = new HashMap();
+                    map1.put("gsdm",gsdm);
+                    map1.put("sqlsh",sqlsh1);
+                    Jyxxsq jyxxsq1 = jyxxsqService.findOneByParams(map1);
+                    jyxxsq1.setZtbz("6");
+                    jyxxsq1.setXgry(yhid);
+                    jyxxsq1.setXgsj(date);
+                    jyxxsqJpaDao.save(jyxxsq1);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
         return true;
     }
 
 
+    public boolean fphbsave(List sqlshList,Integer yhid,String gsdm){
+        try {
+            if(sqlshList.isEmpty()){
+                return false;
+            }
+            System.out.println(JSON.toJSONString(sqlshList));
+            for (int i = 0;i<sqlshList.size();i++) {
+                String sqlsh = (String) sqlshList.get(i);
+                Map map = new HashMap();
+                map.put("sqlsh",sqlsh);
+                map.put("gsdm",gsdm);
+                Jyxxsq jyxxsq = jyxxsqService.findOneByParams(map);
+                jyxxsq.setZtbz("3");
+                yhcljlService.saveYhcljl(yhid, "开票单审核");
+                jyxxsqService.save(jyxxsq);
+
+                List<Jymxsq>  jymxsqList = jymxsqService.findAllByParams(map);
+                List list = new ArrayList();
+                for(int j =0 ;j<jymxsqList.size();j++){
+                    list.add(jymxsqList.get(j));
+                }
+                Jyls jyls = saveJyls(jyxxsq,list,yhid);
+                saveKpspmx(jyls, list,yhid,jyxxsq.getGsdm());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
     //生成订单号
     public char getRandomLetter() {
         String chars = "abcdefghijklmnopqrstuvwxyz";
@@ -232,5 +267,105 @@ public class FphbService {
         jyxxsqNew.setSfdyqd(jyxxsq.getSfdyqd());
 //        Jyxxsq jyxxsqSave = jyxxsqJpaDao.save(jyxxsqNew);
         return jyxxsqNew;
+    }
+
+    /**
+     * 保存交易流水
+     *
+     * @param
+     * @return
+     */
+    public Jyls saveJyls(Jyxxsq jyxxsq, List jymxsqList,Integer yhid) throws Exception {
+        Jyls jyls1 = new Jyls();
+        jyls1.setDdh(jyxxsq.getDdh());
+        jyls1.setSqlsh(jyxxsq.getSqlsh());
+        jyls1.setJylsh(jyxxsq.getJylsh());
+        jyls1.setJylssj(TimeUtil.getNowDate());
+        jyls1.setFpzldm(jyxxsq.getFpzldm());
+        jyls1.setFpczlxdm("11");
+        jyls1.setXfid(jyxxsq.getXfid());
+        jyls1.setXfsh(jyxxsq.getXfsh());
+        jyls1.setXfmc(jyxxsq.getXfmc());
+        jyls1.setXfyh(jyxxsq.getXfyh());
+        jyls1.setTqm(jyxxsq.getTqm());
+        jyls1.setXfyhzh(jyxxsq.getXfyhzh());
+        jyls1.setXflxr(jyxxsq.getXflxr());
+        jyls1.setXfdh(jyxxsq.getXfdh());
+        jyls1.setXfdz(jyxxsq.getXfdz());
+        jyls1.setGfid(jyxxsq.getGfid());
+        jyls1.setGfsh(jyxxsq.getGfsh());
+        jyls1.setGfmc(jyxxsq.getGfmc());
+        jyls1.setGfyh(jyxxsq.getGfyh());
+        jyls1.setGfyhzh(jyxxsq.getGfyhzh());
+        jyls1.setGflxr(jyxxsq.getGflxr());
+        jyls1.setGfdh(jyxxsq.getGfdh());
+        jyls1.setGfdz(jyxxsq.getGfdz());
+        jyls1.setGfyb(jyxxsq.getGfyb());
+        jyls1.setGfemail(jyxxsq.getGfemail());
+        jyls1.setClztdm("00");
+        jyls1.setSfdyqd(jyxxsq.getSfdyqd());
+        jyls1.setBz(jyxxsq.getBz());
+        jyls1.setSkr(jyxxsq.getSkr());
+        jyls1.setKpr(jyxxsq.getKpr());
+        jyls1.setFhr(jyxxsq.getFhr());
+        jyls1.setSsyf(jyxxsq.getSsyf());
+        jyls1.setYfpdm(null);
+        jyls1.setYfphm(null);
+        jyls1.setSffsyj(jyxxsq.getSffsyj());
+        jyls1.setHsbz(jyxxsq.getHsbz());
+        jyls1.setZsfs(jyxxsq.getZsfs());
+        double hjje = 0;
+        double hjse = 0;
+        for (int i =0;i<jymxsqList.size();i++) {
+            Jymxsq jymxsq= (Jymxsq) jymxsqList.get(i);
+            hjje += jymxsq.getSpje().doubleValue();
+            hjse += jymxsq.getSpse().doubleValue();
+        }
+        jyls1.setJshj(hjje + hjse);
+        jyls1.setYkpjshj(0d);
+        jyls1.setYxbz("1");
+        jyls1.setGsdm(jyxxsq.getGsdm());
+        jyls1.setLrry(yhid);
+        jyls1.setLrsj(TimeUtil.getNowDate());
+        jyls1.setXgry(yhid);
+        jyls1.setXgsj(TimeUtil.getNowDate());
+        jyls1.setSkpid(jyxxsq.getSkpid());
+        jyls1.setSqlsh(jyxxsq.getSqlsh());
+        jyls1.setKhh(jyxxsq.getKhh());
+        jyls1.setGfsjh(jyxxsq.getGfsjh());
+        jyls1.setGfsjrdz(jyxxsq.getGfsjrdz());
+        jylsService.save(jyls1);
+        return jyls1;
+    }
+
+    public void saveKpspmx(Jyls jyls, List jymxsqList,Integer yhid ,String gsdm) throws Exception {
+        int djh = jyls.getDjh();
+        int i=1;
+        for (int j =0;j<jymxsqList.size();j++) {
+            Jymxsq mxItem = (Jymxsq) jymxsqList.get(j);
+            Jyspmx jymx = new Jyspmx();
+            jymx.setDjh(djh);
+            jymx.setSpmxxh(i);
+            jymx.setSpdm(mxItem.getSpdm());
+            jymx.setSpmc(mxItem.getSpmc());
+            jymx.setSpggxh(mxItem.getSpggxh());
+            jymx.setSpdw(mxItem.getSpdw());
+            jymx.setSps(mxItem.getSps() == null ? null : mxItem.getSps().doubleValue());
+            jymx.setSpdj(mxItem.getSpdj() == null ? null : mxItem.getSpdj().doubleValue());
+            jymx.setSpje(mxItem.getSpje() == null ? null : mxItem.getSpje().doubleValue());
+            jymx.setSpsl(mxItem.getSpsl().doubleValue());
+            jymx.setSpse(mxItem.getSpse() == null ? null : mxItem.getSpse().doubleValue());
+            jymx.setJshj(mxItem.getJshj() == null ? null : mxItem.getJshj().doubleValue());
+            jymx.setYkphj(0d);
+            jymx.setGsdm(gsdm);
+            jymx.setLrsj(TimeUtil.getNowDate());
+            jymx.setLrry(yhid);
+            jymx.setXgsj(TimeUtil.getNowDate());
+            jymx.setXgry(yhid);
+            jymx.setKce(mxItem.getKce() == null ? null : mxItem.getKce().doubleValue());
+            jymx.setFphxz("0");
+            jyspmxService.save(jymx);
+            i++;
+        }
     }
 }
