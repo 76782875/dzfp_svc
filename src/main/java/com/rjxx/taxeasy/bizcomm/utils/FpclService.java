@@ -855,7 +855,7 @@ public class FpclService {
                     }
                 }
             }*/
-        } catch (IOException e) {
+        } catch (Exception e) {
             int pos = key.indexOf("$");
             if (pos != -1) {
                 key = key.substring(pos + 1);
@@ -865,11 +865,14 @@ public class FpclService {
             e.printStackTrace();
             rabbitmqSend.sendMsg("ErrorException_Sk", "12", key + "");
         } finally {
-            if (response != null) try {
-                response.close();
-                httpClient.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+            if (response != null) {
+                try {
+                    response.close();
+                    httpClient.close();
+                } catch (Exception e) {
+
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -923,10 +926,12 @@ public class FpclService {
             System.out.println("request url=" + url + ", exception, msg=" + e.getMessage());
             e.printStackTrace();
         } finally {
-            if (response != null) try {
-                response.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+            if (response != null) {
+                try {
+                    response.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
