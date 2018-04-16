@@ -1,6 +1,7 @@
 package com.rjxx.taxeasy.dao;
 
 import com.rjxx.taxeasy.domains.Jyxxsq;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 /**
@@ -11,6 +12,7 @@ import org.springframework.data.repository.CrudRepository;
  * @ZhangBing
  */ 
 public interface JyxxsqJpaDao extends CrudRepository<Jyxxsq, Integer> {
-
+    @Query(nativeQuery = true,value = "select * from t_jyxxsq where gsdm=?1 and ddh=?2 and fpzldm=?3 and yxbz='1' ")
+    Jyxxsq findOneByGsdmAndDdhAndFpzldm(String gsdm, String ddh, String fpzldm);
 }
 

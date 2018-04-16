@@ -103,5 +103,27 @@
 			#{item.ykjje},#{item.kkjje},#{item.spbz})
 		</foreach>
 	</insert>
+
+    <select id="findBySqlsh" parameterType="map" resultType="jymxsqVo">
+        select
+        *,
+        SUM(sps)  sumsps,
+        SUM(spje) sumspje,
+        SUM(jshj) sumjshj,
+        SUM(ykjje) sumykjje,
+        SUM(kkjje) sumkkjje
+        from t_jymxsq where 1 = 1 and yxbz = '1'
+        <if test="gsdm !=null and gsdm !=''">
+            and gsdm =#{gsdm}
+        </if>
+        <if test="sqlshList != null">
+            <foreach collection="sqlshList" open=" and sqlsh in (" close=")" separator="," item="sqlsh">
+                #{sqlsh}
+            </foreach>
+        </if>
+        GROUP BY  kpddm,fphxz,spdm,spmc,spggxh,spzxbm,yhzcbs,yhzcmc,lslbz,spdw
+    </select>
+
+
 </mapper>
 

@@ -367,7 +367,27 @@ protected String fpjshsbz;
 
 protected String qdbz;
 
-public Integer getSqlsh() {
+protected Double jshjSum;
+
+protected String sqlshCount;
+
+	public String getSqlshCount() {
+		return sqlshCount;
+	}
+
+	public void setSqlshCount(String sqlshCount) {
+		this.sqlshCount = sqlshCount;
+	}
+
+	public Double getJshjSum() {
+		return jshjSum;
+	}
+
+	public void setJshjSum(Double jshjSum) {
+		this.jshjSum = jshjSum;
+	}
+
+	public Integer getSqlsh() {
 	return sqlsh;
 }
 

@@ -1,9 +1,18 @@
 package com.rjxx.taxeasy.bizcomm.utils;
 
+import com.alibaba.dubbo.config.annotation.Reference;
+import com.rjxx.taxeasy.domains.Cszb;
+import com.rjxx.taxeasy.domains.Kpls;
+import com.rjxx.taxeasy.domains.Skp;
+import com.rjxx.taxeasy.dubbo.business.tcs.service.DubboInvoiceService;
+import com.rjxx.taxeasy.service.CszbService;
+import com.rjxx.taxeasy.service.KplsService;
+import com.rjxx.taxeasy.service.SkpService;
 import com.rjxx.utils.DesUtils;
 import com.rjxx.utils.HttpUtils;
 import com.rjxx.utils.StringUtils;
 import com.rjxx.utils.XmlJaxbUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +35,14 @@ public class SkService {
     @Value("${skkp_server_url:}")
     private String skkpServerUrl;
 
+    @Reference(version = "1.0.0",group = "tcs",timeout = 12000,retries = 0)
+    private DubboInvoiceService dubboInvoiceService;
+    @Autowired
+    private KplsService kplsService;
+    @Autowired
+    private CszbService cszbService;
+    @Autowired
+    private SkpService SkpService;
     /**
      * 调用税控服务开票
      *
@@ -37,10 +54,17 @@ public class SkService {
             return InvoiceResponseUtils.responseError("skServerUrl为空");
         }
         String encryptStr = encryptSkServerParameter(kplsh + "");
-        String url = skServerUrl + "/invoice/invoice";
-        Map<String, String> map = new HashMap<>();
-        map.put("p", encryptStr);
-        String result = HttpUtils.doPost(url, map);
+        Kpls kpls=kplsService.findOne(kplsh);
+        Cszb cszb=cszbService.getSpbmbbh(kpls.getGsdm(),kpls.getXfid(),kpls.getSkpid(),"sfqysknew");
+        String result=null;
+        if("是".equals(cszb.getCsz())){
+             result=dubboInvoiceService.invoice(encryptStr);
+        }else{
+            String url = skServerUrl + "/invoice/invoice";
+            Map<String, String> map = new HashMap<>();
+            map.put("p", encryptStr);
+             result = HttpUtils.doPost(url, map);
+        }
         InvoiceResponse response = XmlJaxbUtils.convertXmlStrToObject(InvoiceResponse.class, result);
         return response;
     }
@@ -56,10 +80,17 @@ public class SkService {
             return InvoiceResponseUtils.responseError("skkpServerUrl为空");
         }
         String encryptStr = encryptSkServerParameter(kplsh + "");
-        String url = skkpServerUrl + "/invoice/ReCreatePdf";
-        Map<String, String> map = new HashMap<>();
-        map.put("p", encryptStr);
-        String result = HttpUtils.doPost(url, map);
+        Kpls kpls=kplsService.findOne(kplsh);
+        Cszb cszb=cszbService.getSpbmbbh(kpls.getGsdm(),kpls.getXfid(),kpls.getSkpid(),"sfqysknew");
+        String result=null;
+        if("是".equals(cszb.getCsz())){
+            result=dubboInvoiceService.ReCreatePdf(encryptStr);
+        }else{
+            String url = skkpServerUrl + "/invoice/ReCreatePdf";
+            Map<String, String> map = new HashMap<>();
+            map.put("p", encryptStr);
+            result = HttpUtils.doPost(url, map);
+        }
         InvoiceResponse response = XmlJaxbUtils.convertXmlStrToObject(InvoiceResponse.class, result);
         return response;
     }
@@ -77,10 +108,17 @@ public class SkService {
                 return InvoiceResponseUtils.responseError("skkpServerUrl为空");
             }
             String encryptStr = encryptSkServerParameter(kplsh + "");
-            String url = skkpServerUrl + "/invoice/SkServerKP";
-            Map<String, String> map = new HashMap<>();
-            map.put("p", encryptStr);
-            String result = HttpUtils.doPost(url, map);
+            Kpls kpls=kplsService.findOne(kplsh);
+            Cszb cszb=cszbService.getSpbmbbh(kpls.getGsdm(),kpls.getXfid(),kpls.getSkpid(),"sfqysknew");
+            String result=null;
+            if("是".equals(cszb.getCsz())){
+                result=dubboInvoiceService.skServerKP(encryptStr);
+            }else{
+                String url = skkpServerUrl + "/invoice/SkServerKP";
+                Map<String, String> map = new HashMap<>();
+                map.put("p", encryptStr);
+                result = HttpUtils.doPost(url, map);
+            }
             if(result!=null){
                 response= XmlJaxbUtils.convertXmlStrToObject(InvoiceResponse.class, result);
             }
@@ -121,10 +159,17 @@ public class SkService {
         }
         String params = "kpdid=" + kpdid + "&fplxdm=" + fplxdm;
         String encryptStr = encryptSkServerParameter(params);
-        String url = skServerUrl + "/invoice/getCodeAndNo";
-        Map<String, String> map = new HashMap<>();
-        map.put("p", encryptStr);
-        String result = HttpUtils.doPost(url, map);
+        Skp skp=SkpService.findOne(kpdid);
+        Cszb cszb=cszbService.getSpbmbbh(skp.getGsdm(),skp.getXfid(),skp.getId(),"sfqysknew");
+        String result=null;
+        if("是".equals(cszb.getCsz())){
+            result=dubboInvoiceService.getCodeAndNo(encryptStr);
+        }else{
+            String url = skServerUrl + "/invoice/getCodeAndNo";
+            Map<String, String> map = new HashMap<>();
+            map.put("p", encryptStr);
+            result = HttpUtils.doPost(url, map);
+        }
         InvoiceResponse response = XmlJaxbUtils.convertXmlStrToObject(InvoiceResponse.class, result);
         return response;
     }
@@ -141,10 +186,17 @@ public class SkService {
             return InvoiceResponseUtils.responseError("skServerUrl为空");
         }
         String encryptStr = encryptSkServerParameter(kplsh + "");
-        String url = skServerUrl + "/invoice/voidInvoice";
-        Map<String, String> map = new HashMap<>();
-        map.put("p", encryptStr);
-        String result = HttpUtils.doPost(url, map);
+        Kpls kpls=kplsService.findOne(kplsh);
+        Cszb cszb=cszbService.getSpbmbbh(kpls.getGsdm(),kpls.getXfid(),kpls.getSkpid(),"sfqysknew");
+        String result=null;
+        if("是".equals(cszb.getCsz())){
+            result = dubboInvoiceService.voidInvoice(encryptStr);
+        }else{
+            String url = skServerUrl + "/invoice/voidInvoice";
+            Map<String, String> map = new HashMap<>();
+            map.put("p", encryptStr);
+            result = HttpUtils.doPost(url, map);
+        }
         InvoiceResponse response = XmlJaxbUtils.convertXmlStrToObject(InvoiceResponse.class, result);
         return response;
     }
@@ -161,10 +213,17 @@ public class SkService {
             return InvoiceResponseUtils.responseError("skServerUrl为空");
         }
         String encryptStr = encryptSkServerParameter(kplsh + "");
-        String url = skServerUrl + "/invoice/reprintInvoice";
-        Map<String, String> map = new HashMap<>();
-        map.put("p", encryptStr);
-        String result = HttpUtils.doPost(url, map);
+        Kpls kpls=kplsService.findOne(kplsh);
+        Cszb cszb=cszbService.getSpbmbbh(kpls.getGsdm(),kpls.getXfid(),kpls.getSkpid(),"sfqysknew");
+        String result=null;
+        if("是".equals(cszb.getCsz())){
+            result = dubboInvoiceService.reprintInvoice(encryptStr);
+        }else{
+            String url = skServerUrl + "/invoice/reprintInvoice";
+            Map<String, String> map = new HashMap<>();
+            map.put("p", encryptStr);
+            result = HttpUtils.doPost(url, map);
+        }
         InvoiceResponse response = XmlJaxbUtils.convertXmlStrToObject(InvoiceResponse.class, result);
         return response;
     }

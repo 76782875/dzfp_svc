@@ -91,8 +91,108 @@ public class JymxsqVo {
     protected Double ykjje;
 
     protected String spbz;
-    
-    public Double getKkjje() {
+
+    protected Double sumsps;
+    protected Double sumspje;
+    protected Double sumspse;
+    protected Double sumjshj;
+    protected Double sumykjje;
+    protected Double sumkkjje;
+    protected String hsbz;
+    protected String spzxbm;
+    protected String yhzcbs;
+    protected String yhzcmc;
+    protected String lslbz;
+
+	public String getYhzcbs() {
+		return yhzcbs;
+	}
+
+	public void setYhzcbs(String yhzcbs) {
+		this.yhzcbs = yhzcbs;
+	}
+
+	public String getYhzcmc() {
+		return yhzcmc;
+	}
+
+	public void setYhzcmc(String yhzcmc) {
+		this.yhzcmc = yhzcmc;
+	}
+
+	public String getLslbz() {
+		return lslbz;
+	}
+
+	public void setLslbz(String lslbz) {
+		this.lslbz = lslbz;
+	}
+
+	public String getSpzxbm() {
+		return spzxbm;
+	}
+
+	public void setSpzxbm(String spzxbm) {
+		this.spzxbm = spzxbm;
+	}
+
+	public Double getSumsps() {
+		return sumsps;
+	}
+
+	public void setSumsps(Double sumsps) {
+		this.sumsps = sumsps;
+	}
+
+	public Double getSumspje() {
+		return sumspje;
+	}
+
+	public void setSumspje(Double sumspje) {
+		this.sumspje = sumspje;
+	}
+
+	public Double getSumspse() {
+		return sumspse;
+	}
+
+	public void setSumspse(Double sumspse) {
+		this.sumspse = sumspse;
+	}
+
+	public Double getSumjshj() {
+		return sumjshj;
+	}
+
+	public void setSumjshj(Double sumjshj) {
+		this.sumjshj = sumjshj;
+	}
+
+	public Double getSumykjje() {
+		return sumykjje;
+	}
+
+	public void setSumykjje(Double sumykjje) {
+		this.sumykjje = sumykjje;
+	}
+
+	public Double getSumkkjje() {
+		return sumkkjje;
+	}
+
+	public void setSumkkjje(Double sumkkjje) {
+		this.sumkkjje = sumkkjje;
+	}
+
+	public String getHsbz() {
+		return hsbz;
+	}
+
+	public void setHsbz(String hsbz) {
+		this.hsbz = hsbz;
+	}
+
+	public Double getKkjje() {
 		return kkjje;
 	}
 

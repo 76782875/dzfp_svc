@@ -3,6 +3,7 @@ package com.rjxx.taxeasy.dao;
 import com.rjxx.comm.mybatis.MybatisRepository;
 import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.domains.Jymxsq;
+import com.rjxx.taxeasy.vo.JymxsqVo;
 
 import java.util.List;
 import java.util.Map;
@@ -30,5 +31,7 @@ public interface JymxsqMapper {
     public List<Jymxsq> findBySqlshList(List<Integer> sqlshList);
   
     public void addJymxsqBatch(List<Jymxsq> jymxsqs);
+
+    public List<JymxsqVo> findBySqlsh(Map params);
 }
 

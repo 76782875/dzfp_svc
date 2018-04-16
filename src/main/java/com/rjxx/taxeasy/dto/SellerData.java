@@ -9,6 +9,7 @@ import java.util.List;
  */
 public class SellerData {
     private String identifier;
+    private String yidentifier;
     private String name;
     private String address;
     private String telephoneNo;
@@ -151,5 +152,13 @@ public class SellerData {
 
     public void setClient(List<ClientData> client) {
         this.client = client;
+    }
+
+    public String getYidentifier() {
+        return yidentifier;
+    }
+
+    public void setYidentifier(String yidentifier) {
+        this.yidentifier = yidentifier;
     }
 }
