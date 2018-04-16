@@ -2,7 +2,6 @@ package com.rjxx.taxeasy.bizcomm.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.jcraft.jsch.JSchException;
-import com.rjxx.comm.utils.ApplicationContextUtils;
 import com.rjxx.taxeasy.bizcomm.utils.pdf.PdfDocumentGenerator;
 import com.rjxx.taxeasy.bizcomm.utils.pdf.TwoDimensionCode;
 import com.rjxx.taxeasy.config.RabbitmqUtils;
@@ -14,7 +13,6 @@ import com.rjxx.taxeasy.vo.smsEnvelopes;
 import com.rjxx.utils.SignUtils;
 import com.rjxx.utils.StringUtils;
 import com.rjxx.utils.XmlJaxbUtils;
-import org.apache.commons.codec.binary.*;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.jaxws.endpoint.dynamic.JaxWsDynamicClientFactory;
@@ -37,7 +35,6 @@ import org.springframework.stereotype.Service;
 import sun.misc.BASE64Encoder;
 
 import java.io.*;
-import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -238,9 +235,6 @@ public class GeneratePdfService {
                     }
                     if(f) {
                         GetYjnr getYjnr = new GetYjnr();
-                       /* Map gsxxmap = new HashMap();
-                        gsxxmap.put("gsdm", kpls.getGsdm());
-                        Gsxx gsxx = gsxxService.findOneByGsdm(gsxxmap);*/
                         Integer yjmbDm = gsxx.getYjmbDm();
                         Yjmb yjmb = yjmbService.findOne(yjmbDm);
                         String yjmbcontent = yjmb.getYjmbNr();
@@ -269,7 +263,8 @@ public class GeneratePdfService {
                         // 二维码生成部分
                         TwoDimensionCode handler = new TwoDimensionCode();
                         ByteArrayOutputStream output = new ByteArrayOutputStream();
-                        handler.encoderQRCode("http://fpj.datarj.com/einv/tq?q="+listkpls.get(0).getSerialorder(), output);// 二维码中数据的来源
+                        // 二维码中数据的来源
+                        handler.encoderQRCode("http://fpj.datarj.com/einv/tq?q="+listkpls.get(0).getSerialorder(), output);
                         String imgbase64string = org.apache.commons.codec.binary.Base64.encodeBase64String(output.toByteArray());
                         csmap.put("ewm", "data:image/jpeg;base64,"+imgbase64string);
                         String content = getYjnr.getFpkjYj(csmap, yjmbcontent);
@@ -290,7 +285,8 @@ public class GeneratePdfService {
                                     }
                                 }
                             }else{
-                                String gfEmailstr =kpls.getGfemail();// 购方email校验
+                                // 购方email校验
+                                String gfEmailstr =kpls.getGfemail();
                                 if(gfEmailstr!=null&&!"".equals(gfEmailstr.trim())){
                                     String []gfEmailArray=gfEmailstr.split("，");
                                     for(String gfEmail:gfEmailArray){
@@ -328,14 +324,7 @@ public class GeneratePdfService {
                                 if (sjhm != null && !"".equals(sjhm)) {
                                     try {
                                         if(jyls.getGsdm().equals("fwk")){
-                                          /*  Map messageMap=new HashMap();
-                                            messageMap.put("toPhoneNumber",jyls.getGfsjh());
-                                            Map messageParams=new HashMap();
-                                            messageParams.put("extractcode",jyls.getTqm());
-                                            messageMap.put("messageParams",messageParams);
-                                            messageMap.put("Messagetype","DigitalInvoiceCode");
-                                            Map smsEnvelopesMap=new HashMap();
-                                            smsEnvelopesMap.put("smsEnvelopes",messageMap);*/
+
                                             smsEnvelopes mb=new smsEnvelopes();
                                             mb.setToPhoneNumber(jyls.getGfsjh());
                                             messageParams messageParams=new messageParams();
@@ -401,7 +390,6 @@ public class GeneratePdfService {
         Map parms=new HashMap();
         parms.put("gsdm",kpls.getGsdm());
         Gsxx gsxx=gsxxService.findOneByParams(parms);
-        //String url="https://vrapi.fvt.tujia.com/Invoice/CallBack";
         String url=gsxx.getCallbackurl();
         String strMessage = "";
         BufferedReader reader = null;
@@ -415,7 +403,6 @@ public class GeneratePdfService {
             CloseableHttpClient httpClient = HttpClients.custom()
                     .setDefaultRequestConfig(requestConfig)
                     .build();
-            //httpPost.setConfig(requestConfig);
             httpPost.addHeader("Content-Type", "application/json");
             try {
                 Map nvps = new HashMap();
@@ -457,11 +444,13 @@ public class GeneratePdfService {
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
-                if (response != null) try {
-                    response.close();
-                    httpClient.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if (response != null) {
+                    try {
+                        response.close();
+                        httpClient.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -469,8 +458,7 @@ public class GeneratePdfService {
     }
 
     public static void main(String[] args) {
-       /* GeneratePdfService generatePdfService= ApplicationContextUtils.getBean(GeneratePdfService.class);
-        generatePdfService.generatePdf( 14688);*/
+
       String s= getSign("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
                "<Request>\n" +
                "    <ExtractCode>081820888801000000837</ExtractCode>\n" +
@@ -926,12 +914,12 @@ public class GeneratePdfService {
         return newSign;
     }
     public  Map httpPost(String sendMes, Kpls kpls) throws Exception {
+
         Map parms=new HashMap();
         parms.put("gsdm",kpls.getGsdm());
         Gsxx gsxx=gsxxService.findOneByParams(parms);
         Map resultMap = null;
         try {
-            //String url="https://vrapi.fvt.tujia.com/Invoice/CallBack";
             String url = gsxx.getCallbackurl();
             String strMessage = "";
             BufferedReader reader = null;
