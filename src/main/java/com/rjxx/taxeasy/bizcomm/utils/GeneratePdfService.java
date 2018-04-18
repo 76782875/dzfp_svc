@@ -299,68 +299,70 @@ public class GeneratePdfService {
                             System.out.println("邮件发送失败" + e.getMessage());
                         }
                     }
-                    //发送手机短信
-                    if(jyls.getSkpid()!=null){
-                        Boolean sffsdx = sffsdxMap.get(jyls.getSkpid());
-                        if (sffsdx == null) {
-                            Cszb cszb = cszbService.getSpbmbbh(jyls.getGsdm(), jyls.getXfid(), jyls.getSkpid(), "sfktdx");
-                            String dxfsFlag = cszb.getCsz();
-                            if ("是".equals(dxfsFlag)) {
-                                sffsdxMap.put(jyls.getSkpid(), true);
-                                sffsdx = true;
-                            } else {
-                                sffsdxMap.put(jyls.getSkpid(), false);
-                                sffsdx = false;
-                            }
-                        }
-                        if (sffsdx) {
-                            Cszb zb = cszbService.getSpbmbbh(jyls.getGsdm(), jyls.getXfid(), jyls.getSkpid(), "sfzdfs");
-                            String zdfsFlag = zb.getCsz();
-                            if ("是".equals(zdfsFlag)) {
-                                String sjhm = jyls.getGfsjh();
-                                Map<String, String> rep = new HashMap();
-                                rep.put("jshj", jyls.getJshj() + "");
-                                rep.put("tqm", jyls.getTqm());
-                                if (sjhm != null && !"".equals(sjhm)) {
-                                    try {
-                                        if(jyls.getGsdm().equals("fwk")){
+                }
+                /**
+                 * 发送手机短信
+                 */
+                if(jyls.getSkpid()!=null){
 
-                                            smsEnvelopes mb=new smsEnvelopes();
-                                            mb.setToPhoneNumber(jyls.getGfsjh());
-                                            messageParams messageParams=new messageParams();
-                                            messageParams.setExtractcode(jyls.getTqm());
-                                            mb.setMessageType("DigitalInvoiceCode");
-                                            mb.setMessageParams(messageParams);
-                                            List mblist=new ArrayList();
-                                            mblist.add(mb);
-                                            Map smsEnvelopesMap=new HashMap();
-                                            smsEnvelopesMap.put("smsEnvelopes",mblist);
-                                            logger.info("-----短信模板-------"+JSON.toJSONString(smsEnvelopesMap));
-                                            HttpUtils.HttpPost_Basic(gsxx.getMessageurl(),JSON.toJSONString(smsEnvelopesMap));
-                                        }else{
+                    boolean sffsdx=false;
+                    Cszb cszb = cszbService.getSpbmbbh(jyls.getGsdm(), jyls.getXfid(), jyls.getSkpid(), "sfktdx");
+                    String dxfsFlag = cszb.getCsz();
+                    if ("是".equals(dxfsFlag)) {
+                        sffsdx = true;
+                    } else {
+                        sffsdx = false;
+                    }
+                    if (sffsdx) {
+                        Cszb zb = cszbService.getSpbmbbh(jyls.getGsdm(), jyls.getXfid(), jyls.getSkpid(), "sfzdfs");
+                        String zdfsFlag = zb.getCsz();
+                        if ("是".equals(zdfsFlag)) {
+                            String sjhm = jyls.getGfsjh();
+                            Map<String, String> rep = new HashMap();
+                            rep.put("jshj", jyls.getJshj() + "");
+                            rep.put("tqm", jyls.getTqm());
+                            if (sjhm != null && !"".equals(sjhm)) {
+                                try {
+                                    if(jyls.getGsdm().equals("fwk")){
+                                        smsEnvelopes mb=new smsEnvelopes();
+                                        mb.setToPhoneNumber(jyls.getGfsjh());
+                                        messageParams messageParams=new messageParams();
+                                        messageParams.setExtractcode(jyls.getTqm());
+                                        mb.setMessageType("DigitalInvoiceCode");
+                                        mb.setMessageParams(messageParams);
+                                        List mblist=new ArrayList();
+                                        mblist.add(mb);
+                                        Map smsEnvelopesMap=new HashMap();
+                                        smsEnvelopesMap.put("smsEnvelopes",mblist);
+                                        logger.info("-----短信模板-------"+JSON.toJSONString(smsEnvelopesMap));
+                                        HttpUtils.HttpPost_Basic(gsxx.getMessageurl(),JSON.toJSONString(smsEnvelopesMap));
+                                        Map param3 = new HashMap<>();
+                                        param3.put("djh", djh);
+                                        param3.put("dxzt", '1');
+                                        jylsService.updateDxbz(param3);
+                                    }else{
                                         saveMsg.saveMessage(jyls.getGsdm(), djh, sjhm, rep, "SMS_34725005", "泰易电子发票");
                                         Map param3 = new HashMap<>();
                                         param3.put("djh", djh);
                                         param3.put("dxzt", '1');
                                         jylsService.updateDxbz(param3);
-                                        }
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                        System.out.println("发送短信失败" + e.getMessage());
                                     }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    System.out.println("发送短信失败" + e.getMessage());
                                 }
-                            } else {
-                                Map param1 = new HashMap<>();
-                                param1.put("djh", djh);
-                                param1.put("dxzt", '2');
-                                jylsService.updateDxbz(param1);
                             }
                         } else {
-                            Map param2 = new HashMap<>();
-                            param2.put("djh", djh);
-                            param2.put("dxzt", '2');
-                            jylsService.updateDxbz(param2);
+                            Map param1 = new HashMap<>();
+                            param1.put("djh", djh);
+                            param1.put("dxzt", '2');
+                            jylsService.updateDxbz(param1);
                         }
+                    } else {
+                        Map param2 = new HashMap<>();
+                        param2.put("djh", djh);
+                        param2.put("dxzt", '2');
+                        jylsService.updateDxbz(param2);
                     }
                 }
                 dc.saveLog(djh, "91", "0", "正常开具", "", 1, jyls.getXfsh(), jyls.getJylsh());

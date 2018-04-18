@@ -13,6 +13,7 @@ public class AdapterGet {
     private String sn;//门店号
     private String sp;//商品代码
     private String tq;//抽取数据提取码
+    private String mi;//客户号
     private String type;//数据处理类型标识
 
     public String getOn() {
@@ -69,5 +70,13 @@ public class AdapterGet {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getMi() {
+        return mi;
+    }
+
+    public void setMi(String mi) {
+        this.mi = mi;
     }
 }

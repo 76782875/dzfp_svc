@@ -202,9 +202,9 @@ public class WeixinUtils {
             logger.info("进入一茶一坐测试开票----等待页面跳转");
             redirect_url=WeiXinConstants.YCYZ_REDIRECT_URL;
         }else if(gsdm.equals("chamate")){
-            Map map = new HashMap();
-            map.put("kpddm", menDianId);
-            Skp skp = skpService.findOneByParams(map);
+            Map skpParam = new HashMap();
+            skpParam.put("kpddm", menDianId);
+            Skp skp = skpService.findOneByParams(skpParam);
             Pp pp = ppJpaDao.findOneById(skp.getPid());
             redirect_url = "http://fpjtest.datarj.com/einv/QR/witting01.html?t="+System.currentTimeMillis()+"&ppdm="+pp.getPpdm();
         }else {
@@ -217,6 +217,8 @@ public class WeixinUtils {
         nvps.put("timestamp", dateTime.getTime() / 1000);
         nvps.put("source", source);
         if(type.equals("1")){
+            nvps.put("redirect_url", redirect_url);//正式跳转url
+        }else if(type.equals("0")){
             nvps.put("redirect_url", redirect_url);//正式跳转url
         }
         nvps.put("ticket", ticket);

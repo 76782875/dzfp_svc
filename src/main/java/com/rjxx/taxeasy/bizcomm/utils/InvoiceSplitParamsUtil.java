@@ -68,17 +68,17 @@ public class InvoiceSplitParamsUtil {
                */
               if (skp != null) {
                   if ("01".equals(jyxxsq.getFpzldm())) {
-                      zdje = skp.getZpmax();
-                      fpje = skp.getZpfz();
+                      zdje = skp.getZpmax()==null?zdje:skp.getZpmax();
+                      fpje = skp.getZpfz()==null?fpje:skp.getZpfz();
                   } else if ("02".equals(jyxxsq.getFpzldm())) {
-                      zdje = skp.getPpmax();
-                      fpje = skp.getPpfz();
+                      zdje = skp.getPpmax()==null?zdje:skp.getPpmax();
+                      fpje = skp.getPpfz()==null?fpje:skp.getPpfz();
                   } else if ("12".equals(jyxxsq.getFpzldm())) {
-                      zdje = skp.getDpmax();
-                      fpje = skp.getFpfz();
+                      zdje = skp.getDpmax()==null?zdje:skp.getDpmax();
+                      fpje = skp.getFpfz()==null?fpje:skp.getFpfz();
                   } else if ("03".equals(jyxxsq.getFpzldm())) {
-                      zdje = skp.getDpmax();
-                      fpje = skp.getFpfz();
+                      zdje = skp.getDpmax()==null?zdje:skp.getDpmax();
+                      fpje = skp.getFpfz()==null?fpje:skp.getFpfz();
                   }
                   flag = true;
               }
@@ -87,17 +87,17 @@ public class InvoiceSplitParamsUtil {
                */
               if (!flag) {
                   if ("01".equals(jyxxsq.getFpzldm())) {
-                      zdje = xf.getZpzdje();
-                      fpje = xf.getZpfpje();
+                      zdje = xf.getZpzdje()==null?zdje:xf.getZpzdje();
+                      fpje = xf.getZpfpje()==null?fpje:xf.getZpfpje();
                   } else if ("02".equals(jyxxsq.getFpzldm())) {
-                      zdje = xf.getPpzdje();
-                      fpje = xf.getPpfpje();
+                      zdje = xf.getPpzdje()==null?zdje:xf.getPpzdje();
+                      fpje = xf.getPpfpje()==null?fpje:xf.getPpfpje();
                   } else if ("12".equals(jyxxsq.getFpzldm())) {
-                      zdje = xf.getDzpzdje();
-                      fpje = xf.getDzpfpje();
+                      zdje = xf.getDzpzdje()==null?zdje:xf.getDzpzdje();
+                      fpje = xf.getDzpfpje()==null?fpje:xf.getDzpfpje();
                   } else if ("03".equals(jyxxsq.getFpzldm())) {
-                      zdje = xf.getDzpzdje();
-                      fpje = xf.getDzpfpje();
+                      zdje = xf.getDzpzdje()==null?zdje:xf.getDzpzdje();
+                      fpje = xf.getDzpfpje()==null?fpje:xf.getDzpfpje();
                   }
               }
               //获取纸票分票行数。系统默认为8行
