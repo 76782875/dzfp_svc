@@ -1,13 +1,10 @@
 package com.rjxx.taxeasy.invoice;
 
-import com.rjxx.taxeasy.domains.Gsxx;
 import com.rjxx.taxeasy.service.GsxxService;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.Map;
 
 
@@ -48,7 +45,7 @@ public class KpService {
     /**
      * 处理上传的交易信息
      */
-    public String dealOrder(String gsdm, Map map, String Operation) {
+    private String dealOrder(String gsdm, Map map, String Operation) {
         if (Operation.equals("01")) {
             return dealOrder01.execute(gsdm, map, Operation);
         } else if (Operation.equals("02")) {
