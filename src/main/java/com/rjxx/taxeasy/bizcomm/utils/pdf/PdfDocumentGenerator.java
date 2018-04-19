@@ -2,7 +2,6 @@ package com.rjxx.taxeasy.bizcomm.utils.pdf;
 
 import com.rjxx.taxeasy.bizcomm.utils.DataOperate;
 import com.rjxx.taxeasy.bizcomm.utils.PasswordConfig;
-import com.rjxx.taxeasy.bizcomm.utils.SFtpUtil;
 import com.rjxx.taxeasy.domains.*;
 import com.rjxx.taxeasy.service.CszbService;
 import com.rjxx.taxeasy.service.KppmxxService;
@@ -371,16 +370,6 @@ public class PdfDocumentGenerator {
             in_request.setXfsh(xfsh);
             in_request.setYfpdm((String) map.get("FP_DM"));
             in_request.setYfphm((String) map.get("FP_HM"));
-
-//        if ("12".equals(jyls.getFpczlxdm()) || "13".equals(jyls.getFpczlxdm())) {
-//            if (StringUtils.isBlank(bz)) {
-//                bz = "对应正数发票代码:" + jyls.getYfpdm() + "号码:" + jyls.getYfphm();
-//            } else {
-//                bz += "<br/>对应正数发票代码:" + jyls.getYfpdm() + "号码:" + jyls.getYfphm();
-//            }
-//
-//        }
-
             Date kprq = kpls.getKprq();
             SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
             String dateString = formatter.format(kprq);
@@ -516,6 +505,13 @@ public class PdfDocumentGenerator {
                 /*****************************/
             }
             String bz = kpls.getBz() == null ? "" : kpls.getBz();
+            if ("12".equals(jyls.getFpczlxdm()) || "13".equals(jyls.getFpczlxdm())) {
+                if (StringUtils.isBlank(bz)) {
+                    bz = "对应正数发票代码:" + jyls.getYfpdm() + "号码:" + jyls.getYfphm();
+                } else {
+                    bz += "<br/>对应正数发票代码:" + jyls.getYfpdm() + "号码:" + jyls.getYfphm();
+                }
+            }
             if(null != kpls.getZsfs() && kpls.getZsfs().equals("2")){
                 if(null != kpls.getFpczlxdm() && kpls.getFpczlxdm().equals("12")){
                     bz = bz + "<br/>差额征税";
