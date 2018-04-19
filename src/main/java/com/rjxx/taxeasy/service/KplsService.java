@@ -4,6 +4,7 @@ import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.config.RabbitmqUtils;
 import com.rjxx.taxeasy.dao.KplsJpaDao;
 import com.rjxx.taxeasy.dao.KplsMapper;
+import com.rjxx.taxeasy.domains.Cszb;
 import com.rjxx.taxeasy.domains.Kpls;
 import com.rjxx.taxeasy.vo.Fpcxvo;
 import com.rjxx.taxeasy.vo.FptjVo;
@@ -38,6 +39,9 @@ public class KplsService {
     @Autowired
     private SkpService skpService;
 
+    @Autowired
+    private CszbService cszbService;
+
     public Kpls findOne(int id) {
         return kplsJpaDao.findOne(id);
     }
@@ -46,20 +50,30 @@ public class KplsService {
         return kplsMapper.findFpExist(params);
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void save(Kpls kpls) {
         kplsJpaDao.save(kpls);
+        Cszb cszb = cszbService.getSpbmbbh(kpls.getGsdm(), kpls.getXfid(), kpls.getSkpid(), "kpfs");
+
         if ("04".equals(kpls.getFpztdm())) {
-            //如果状态是04，发送的mq中
-            try {
-                String sksbh = skpService.findOne(kpls.getSkpid()).getSkph();
-                if(!"".equals(sksbh)&&null!=sksbh){
-                    rabbitmqSend.sendMsg(sksbh, kpls.getFpzldm(), kpls.getKplsh() + "");
-                }else{
-                    rabbitmqSend.sendMsg(skpService.findOne(kpls.getSkpid()).getId().toString(), kpls.getFpzldm(), kpls.getKplsh() + "");
+            if(cszb.getCsz().equals("01")) {
+                //如果状态是04，发送的mq中
+                try {
+                    String sksbh = skpService.findOne(kpls.getSkpid()).getSkph();
+                    if(!"".equals(sksbh)&&null!=sksbh){
+                        rabbitmqSend.sendMsg(sksbh, kpls.getFpzldm(), kpls.getKplsh() + "");
+                    }else{
+                        rabbitmqSend.sendMsg(skpService.findOne(kpls.getSkpid()).getId().toString(), kpls.getFpzldm(), kpls.getKplsh() + "");
+                    }
+                } catch (Exception e) {
+                    throw new RuntimeException("发送队列失败，请联系管理员");
                 }
-            } catch (Exception e) {
-                throw new RuntimeException("发送队列失败，请联系管理员");
+            }else if(cszb.getCsz().equals("03")){
+                try {
+                    rabbitmqSend.sendMsg("ErrorException_Sk", "12", kpls.getKplsh() + "");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
