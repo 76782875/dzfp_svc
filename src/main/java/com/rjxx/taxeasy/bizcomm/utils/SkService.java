@@ -35,7 +35,7 @@ public class SkService {
     @Value("${skkp_server_url:}")
     private String skkpServerUrl;
 
-    @Reference(version = "1.0.0",group = "tcs",timeout = 12000,retries = 0)
+    @Reference(version = "1.0.0",group = "tcs",timeout = 12000,retries = '0')
     private DubboInvoiceService dubboInvoiceService;
     @Autowired
     private KplsService kplsService;
