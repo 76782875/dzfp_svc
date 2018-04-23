@@ -2,20 +2,16 @@ package com.rjxx.utils;
 
 import com.rjxx.taxeasy.domains.*;
 import com.rjxx.taxeasy.service.*;
-
 import com.rjxx.taxeasy.vo.Spbm;
-import javafx.print.PageOrientation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 @Service
@@ -327,7 +323,8 @@ public class CheckOrderUtil {
 					 */
                     // 商品金额
                     String Amount = String.valueOf(jymxsq.getSpje());
-                    if( Amount.equals("0") || Amount.equals("0.00")){
+                    if(jymxsq.getSpje()==0){
+//                    if( Amount.equals("0") || Amount.equals("0.00")){
                         result += "订单号为" + ddh + "的订单,第"+ (j+1)+"行的商品金额(Amount)为0\r\n";
                     } else if (Amount == null) {
                         result += "订单号为" + ddh + "的订单,第"+ (j+1)+"行的商品金额(Amount)为空\r\n";
@@ -429,7 +426,8 @@ public class CheckOrderUtil {
             if(jyxxsq.getQjzk()==null){
                 jyxxsq.setQjzk(0d);
             }
-            if(jyxxsq.getJshj().toString().equals("0") ||jyxxsq.getJshj().toString().equals("0.00")){
+            if(jyxxsq.getJshj()==0){
+//            if(jyxxsq.getJshj().toString().equals("0") ||jyxxsq.getJshj().toString().equals("0.00")){
                 result += "订单号为" + ddh + "的订单，价税合计(TotalAmount)不能为0\r\n";
             }
             BigDecimal qjzk = new BigDecimal(jyxxsq.getQjzk().toString());
