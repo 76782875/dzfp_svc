@@ -12,6 +12,8 @@ import com.rjxx.utils.DesUtils;
 import com.rjxx.utils.HttpUtils;
 import com.rjxx.utils.StringUtils;
 import com.rjxx.utils.XmlJaxbUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -35,7 +37,7 @@ public class SkService {
     @Value("${skkp_server_url:}")
     private String skkpServerUrl;
 
-    @Reference(version = "1.0.0",group = "tcs",timeout = 12000,retries = 0)
+    @Reference(version = "1.0.0",group = "tcs",timeout = 12000,retries = '0')
     private DubboInvoiceService dubboInvoiceService;
     @Autowired
     private KplsService kplsService;
@@ -43,6 +45,9 @@ public class SkService {
     private CszbService cszbService;
     @Autowired
     private SkpService SkpService;
+
+
+    private Logger logger=LoggerFactory.getLogger(this.getClass());
     /**
      * 调用税控服务开票
      *
@@ -103,6 +108,7 @@ public class SkService {
     public InvoiceResponse SkServerKP(int kplsh) throws Exception {
 
         InvoiceResponse response=null;
+        String result=null;
         try{
             if (StringUtils.isBlank(skkpServerUrl)) {
                 return InvoiceResponseUtils.responseError("skkpServerUrl为空");
@@ -110,7 +116,6 @@ public class SkService {
             String encryptStr = encryptSkServerParameter(kplsh + "");
             Kpls kpls=kplsService.findOne(kplsh);
             Cszb cszb=cszbService.getSpbmbbh(kpls.getGsdm(),kpls.getXfid(),kpls.getSkpid(),"sfqysknew");
-            String result=null;
             if("是".equals(cszb.getCsz())){
                 result=dubboInvoiceService.skServerKP(encryptStr);
             }else{
@@ -124,6 +129,7 @@ public class SkService {
             }
         }catch (Exception e){
             e.printStackTrace();
+            logger.info("------返回数据--------"+result);
         }
         return response;
     }

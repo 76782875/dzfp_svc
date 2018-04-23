@@ -863,7 +863,10 @@ public class FpclService {
             }
             System.out.println("request url=" + url + ", exception, msg=" + e.getMessage());
             e.printStackTrace();
-            rabbitmqSend.sendMsg("ErrorException_Sk", "12", key + "");
+            Kpls kpls=kplsService.findOne(Integer.parseInt(key));
+            kpls.setFpztdm("04");
+            kpls.setErrorReason(e.getMessage());
+            kplsService.save(kpls);
         } finally {
             if (response != null) {
                 try {
@@ -1129,7 +1132,9 @@ public class FpclService {
                             skService.SkServerKP(kpls.getKplsh());
                         }catch (Exception e){
                              e.printStackTrace();
-                            rabbitmqSend.sendMsg("ErrorException_Sk", kpls.getFpzldm(), kpls.getKplsh() + "");
+                            kpls.setFpztdm("04");
+                            kpls.setErrorReason(e.getMessage());
+                            kplsService.save(kpls);
                         }
                     }
                 }
