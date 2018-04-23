@@ -293,7 +293,7 @@ public class CheckOrderUtil {
                     }
                     // 商品名称
                     String ProductName = (String) jymxsq.getSpmc();
-                    if (ProductName == null) {
+                    if (StringUtils.isBlank(ProductName)) {
                         result += "订单号为" + ddh + "的订单，第"+ (j+1) + "行的商品名称(ProductName)为空！\r\n";
                     } else if (ProductName.length() > 50) {
                         result += "订单号为" + ddh + "的订单，第"+ (j+1) + "行的商品名称(ProductName)维护不正确，请联系商户！\r\n";

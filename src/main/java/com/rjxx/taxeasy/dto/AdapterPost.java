@@ -1,5 +1,7 @@
 package com.rjxx.taxeasy.dto;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 /**
  * @author wangyahui
  * @email wangyahui@datarj.com
@@ -7,12 +9,19 @@ package com.rjxx.taxeasy.dto;
  * @date 2018/3/20
  */
 public class AdapterPost {
+    @JSONField(ordinal=1)
     private String appId;
+    @JSONField(ordinal=2)
     private String taxNo;
+    @JSONField(ordinal=3)
     private String clientNo;
+    @JSONField(ordinal=4)
     private String sign;
+    @JSONField(ordinal=5)
     private String viewId;
+    @JSONField(ordinal=6)
     private String reqType;
+    @JSONField(ordinal=7)
     private AdapterData data;
 
     public String getAppId() {
