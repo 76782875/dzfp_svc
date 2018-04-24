@@ -1,12 +1,9 @@
 package com.rjxx.utils;
 
 import com.alibaba.fastjson.JSON;
-import com.rjxx.taxeasy.dto.*;
-import com.rjxx.utils.weixin.HttpClientUtil;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
 
-import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -193,16 +190,16 @@ public class RJCheckUtil {
     //生成Q
     public static void main(String[] args) {
         //公司信息的key
-        String key="3da6cfd33bd76de1b0e9483ed6c6d956";
+        String key="42709f25722653a5d7b5b8dde426f494";
         Map map = new HashMap();
         //订单号
-        String on = "yfw-2769";
+        String on = System.currentTimeMillis()+"";
         //订单时间
-        String ot = "2014-12-11 00:00:00";
+        String ot = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
         //金额
         String pr = "10";
         //门店号
-        String sn = "CoCoichibanya5000002";
+        String sn = "wx002";
         //商品代码
 //        String sp = "1";
         map.put("A0",on);
@@ -221,17 +218,16 @@ public class RJCheckUtil {
 
 //    public static void main(String[] args) throws UnsupportedEncodingException {
 //        AdapterGet adapterGet = new AdapterGet();
-//        adapterGet.setType("1");
-//        adapterGet.setOn("20180326");
-//        adapterGet.setOt("20180326180900");
-//        adapterGet.setPr("10");
+//        adapterGet.setType("4");
+//        adapterGet.setOt("201804");
+//        adapterGet.setMi("khh0000090066");
 //        String dataJson = JSON.toJSONString(adapterGet);
-//        String key = "fa19f6c4d0e4144e8115ed71b0e4c349";
+//        String key = "39c94657262b27d1b9b5f5012bc1548a";
 //        String sign = DigestUtils.md5Hex("data=" + dataJson + "&key=" + key);
 //        String str = "data=" + dataJson + "&si=" + sign;
 //        String encode = Base64Util.encode(str);
 //        System.out.println(encode);
-
+//    }
 
 //        Map map1 = new HashMap();
 //        //订单号
