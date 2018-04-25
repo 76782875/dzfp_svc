@@ -1101,7 +1101,8 @@ public class FpclService {
                             skService.callService(kpls.getKplsh());
                         }catch(Exception e){
                             e.printStackTrace();
-                            rabbitmqSend.sendMsg("ErrorException_Sk", kpls.getFpzldm(), kpls.getKplsh() + "");
+                            kpls.setFpztdm("04");
+                            kplsService.save(kpls);
                         }
                     }else{
                         kpls.setFpztdm("04");
@@ -1343,10 +1344,10 @@ public class FpclService {
                     taskExecutor.execute(pdfTask);
                 }
             } else {
-                if(returnmsg.equals("00F103:Socket连接有误")){
-                    rabbitmqSend.sendMsg("ErrorException_Sk", kpls.getFpzldm(), kpls.getKplsh() + "");
-                }
                 kpls.setFpztdm("05");
+                if(returnmsg.equals("00F103:Socket连接有误")){
+                    kpls.setFpztdm("04");
+                }
                 kpls.setErrorReason(returnmsg);
                 kpls.setXgsj(new Date());
                 kpls.setXgry(1);
