@@ -651,11 +651,11 @@ public class AdapterServiceImpl implements AdapterService {
             if(StringUtil.isNotBlankList(cszb.getCsz())){
                 Class<? extends TransferExtractDataService> clazz = transferExtractDataService.getClass();
                 Method method = clazz.getDeclaredMethod(cszb.getCsz(), String.class,String.class);
-                AdapterPost post = (AdapterPost)method.invoke(transferExtractDataService, gsdm,tq);
-                if(post==null){
+                Map result = (Map)method.invoke(transferExtractDataService, gsdm,tq);
+                if(result==null){
                     return null;
                 }
-                return post;
+                return (AdapterPost)result.get("post");
             }else{
                 return null;
             }
