@@ -68,7 +68,7 @@ public class TransferExtractDataService {
         Map jyzfmxparam = new HashMap<>();
         jyzfmxparam.put("gsdm", gsdm);
         jyzfmxparam.put("sqlsh", jyxxsq.getSqlsh());
-        jyzfmxparam.put("orderBy", "asc");
+//        jyzfmxparam.put("orderBy", "asc");
         List<Jyzfmx> jyzfmxs = jyzfmxService.findAllByParams(jyzfmxparam);
 
         AdapterPost post = new AdapterPost();
@@ -80,34 +80,38 @@ public class TransferExtractDataService {
         List<AdapterDataOrderPayments> payments = new ArrayList<>();
 
         //明细
-        for(int i=0;i<jymxsqs.size();i++){
-            Jymxsq jymxsq = jymxsqs.get(i);
-            AdapterDataOrderDetails detail = new AdapterDataOrderDetails();
-            detail.setAmount(jymxsq.getSpje());
-            detail.setMxTotalAmount(jymxsq.getJshj());
-            detail.setPolicyMark(jymxsq.getYhzcbs());
-            detail.setPolicyName(jymxsq.getYhzcmc());
-            detail.setProductCode(jymxsq.getSpdm());
-            detail.setProductName(jymxsq.getSpmc());
-            detail.setQuantity(jymxsq.getSps());
-            detail.setUnitPrice(jymxsq.getSpdj());
-            detail.setSpec(jymxsq.getSpggxh());
-            detail.setUtil(jymxsq.getSpdw());
-            detail.setRowType(jymxsq.getFphxz());
-            detail.setTaxRate(jymxsq.getSpsl());
-            detail.setTaxAmount(jymxsq.getSpse());
-            detail.setVenderOwnCode(jymxsq.getSpzxbm());
-            detail.setTaxRateMark(jymxsq.getLslbz());
-            detail.setDeductAmount(jymxsq.getKce());
-            details.add(detail);
+        if(jymxsqs.size()>0){
+            for(int i=0;i<jymxsqs.size();i++){
+                Jymxsq jymxsq = jymxsqs.get(i);
+                AdapterDataOrderDetails detail = new AdapterDataOrderDetails();
+                detail.setAmount(jymxsq.getSpje());
+                detail.setMxTotalAmount(jymxsq.getJshj());
+                detail.setPolicyMark(jymxsq.getYhzcbs());
+                detail.setPolicyName(jymxsq.getYhzcmc());
+                detail.setProductCode(jymxsq.getSpdm());
+                detail.setProductName(jymxsq.getSpmc());
+                detail.setQuantity(jymxsq.getSps());
+                detail.setUnitPrice(jymxsq.getSpdj());
+                detail.setSpec(jymxsq.getSpggxh());
+                detail.setUtil(jymxsq.getSpdw());
+                detail.setRowType(jymxsq.getFphxz());
+                detail.setTaxRate(jymxsq.getSpsl());
+                detail.setTaxAmount(jymxsq.getSpse());
+                detail.setVenderOwnCode(jymxsq.getSpzxbm());
+                detail.setTaxRateMark(jymxsq.getLslbz());
+                detail.setDeductAmount(jymxsq.getKce());
+                details.add(detail);
+            }
         }
 
         //支付
-        for (Jyzfmx jyzfmx:jyzfmxs){
-            AdapterDataOrderPayments payment = new AdapterDataOrderPayments();
-            payment.setPayPrice(jyzfmx.getZfje());
-            payment.setPayCode(jyzfmx.getZffsDm());
-            payments.add(payment);
+        if(jyzfmxs.size()>0){
+            for (Jyzfmx jyzfmx:jyzfmxs){
+                AdapterDataOrderPayments payment = new AdapterDataOrderPayments();
+                payment.setPayPrice(jyzfmx.getZfje());
+                payment.setPayCode(jyzfmx.getZffsDm());
+                payments.add(payment);
+            }
         }
 
         //购方
