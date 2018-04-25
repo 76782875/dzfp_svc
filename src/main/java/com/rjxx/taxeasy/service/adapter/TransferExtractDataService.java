@@ -1,11 +1,14 @@
 package com.rjxx.taxeasy.service.adapter;
 
 import com.alibaba.fastjson.JSON;
+import com.rjxx.taxeasy.bizcomm.utils.GetDataService;
 import com.rjxx.taxeasy.dao.JyxxsqJpaDao;
+import com.rjxx.taxeasy.domains.Cszb;
 import com.rjxx.taxeasy.domains.Jymxsq;
 import com.rjxx.taxeasy.domains.Jyxxsq;
 import com.rjxx.taxeasy.domains.Jyzfmx;
 import com.rjxx.taxeasy.dto.*;
+import com.rjxx.taxeasy.service.CszbService;
 import com.rjxx.taxeasy.service.JymxsqService;
 import com.rjxx.taxeasy.service.JyzfmxService;
 import com.rjxx.utils.NumberUtil;
@@ -31,12 +34,99 @@ public class TransferExtractDataService {
     private JyzfmxService jyzfmxService;
     @Autowired
     private JyxxsqJpaDao jyxxsqJpaDao;
+    @Autowired
+    private GetDataService getDataService;
+    @Autowired
+    private CszbService cszbService;
 
     private static Logger logger = LoggerFactory.getLogger(TransferExtractDataService.class);
     public Map seaway(String gsdm,String tq) {
         Map resultMap =new HashMap();
         AdapterPost data = new AdapterPost();
         resultMap.put("post",data);
+        return resultMap;
+    }
+
+    /**
+     * 绿地获取数据
+     * @param gsdm
+     * @param tq
+     * @return
+     */
+    public Map ldyx(String gsdm,String tq) {
+        Map resultMap =  new HashMap();
+        try {
+            AdapterPost data = new AdapterPost();
+            Map map = getDataService.getldyxFirData(tq,gsdm);
+            if(map==null){
+                resultMap.put("msg", "系统出现异常，请重试！");
+                return resultMap;
+            }
+            String accessToken = map.get("accessToken").toString();
+            if(accessToken==null || "".equals(accessToken)){
+                resultMap.put("msg", "未查询到数据，请重试！");
+                return resultMap;
+            }
+            Map resMap = getDataService.getldyxSecData(tq,gsdm,accessToken);
+            List<Jyxxsq> jyxxsqList = (List) resMap.get("jyxxsqList");
+            List<Jymxsq> jymxsqList = (List) resMap.get("jymxsqList");
+            List<Jyzfmx> jyzfmxList = (List) resMap.get("jyzfmxList");
+            resultMap.put("jyxxsqList",jyxxsqList);
+            resultMap.put("jymxsqList",jymxsqList);
+            resultMap.put("jyzfmxList",jyzfmxList);
+            resultMap.put("post",data);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resultMap;
+    }
+
+    /**
+     * 全家获取数据
+     * @param gsdm
+     * @param tq
+     * @return
+     */
+    public Map family(String gsdm,String tq) {
+        Map resultMap =  new HashMap();
+        try {
+            AdapterPost data = new AdapterPost();
+            Map resMap=getDataService.getData(tq,gsdm);
+            List<Jyxxsq> jyxxsqList = (List) resMap.get("jyxxsqList");
+            List<Jymxsq> jymxsqList = (List) resMap.get("jymxsqList");
+            List<Jyzfmx> jyzfmxList = (List) resMap.get("jyzfmxList");
+            resultMap.put("jyxxsqList",jyxxsqList);
+            resultMap.put("jymxsqList",jymxsqList);
+            resultMap.put("jyzfmxList",jyzfmxList);
+            resultMap.put("post",data);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resultMap;
+    }
+
+    /**
+     * 波奇网获取数据
+     * @param gsdm
+     * @param tq
+     * @return
+     */
+    public Map bqw(String gsdm,String tq) {
+        Map resultMap =  new HashMap();
+        try {
+            AdapterPost data = new AdapterPost();
+            Cszb csz =  cszbService.getSpbmbbh(gsdm, null,null, "sfhhurl");
+            Map resMap=getDataService.getDataForBqw(tq,gsdm,csz.getCsz());
+            List<Jyxxsq> jyxxsqList = (List) resMap.get("jyxxsqList");
+            List<Jymxsq> jymxsqList = (List) resMap.get("jymxsqList");
+            List<Jyzfmx> jyzfmxList = (List) resMap.get("jyzfmxList");
+            resultMap.put("jyxxsqList",jyxxsqList);
+            resultMap.put("jymxsqList",jymxsqList);
+            resultMap.put("jyzfmxList",jyzfmxList);
+            resultMap.put("post",data);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return resultMap;
     }
 

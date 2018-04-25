@@ -666,6 +666,32 @@ public class AdapterServiceImpl implements AdapterService {
     }
 
     /**
+     * ims 平台提取开票获取数据
+     * @param gsdm
+     * @param tq
+     * @return
+     */
+    public Map getApiMsg(String gsdm, String tq){
+        try {
+            Cszb cszb = cszbService.getSpbmbbh(gsdm, null,null,"extractMethod");
+            if(StringUtil.isNotBlankList(cszb.getCsz())){
+                Class<? extends TransferExtractDataService> clazz = transferExtractDataService.getClass();
+                Method method = clazz.getDeclaredMethod(cszb.getCsz(), String.class,String.class);
+                Map result = (Map)method.invoke(transferExtractDataService, gsdm,tq);
+                if(result==null){
+                    return null;
+                }
+                return result;
+            }else{
+                return null;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
      * 转换adapterpost对象为含有jyxxsq、jymxsq、jyzfmx的map
      * @param post
      * @return
