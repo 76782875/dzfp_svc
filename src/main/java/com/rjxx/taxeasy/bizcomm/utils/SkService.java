@@ -1,12 +1,15 @@
 package com.rjxx.taxeasy.bizcomm.utils;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.alibaba.fastjson.JSON;
 import com.rjxx.taxeasy.domains.Cszb;
 import com.rjxx.taxeasy.domains.Kpls;
+import com.rjxx.taxeasy.domains.Kpspmx;
 import com.rjxx.taxeasy.domains.Skp;
 import com.rjxx.taxeasy.dubbo.business.tcs.service.DubboInvoiceService;
 import com.rjxx.taxeasy.service.CszbService;
 import com.rjxx.taxeasy.service.KplsService;
+import com.rjxx.taxeasy.service.KpspmxService;
 import com.rjxx.taxeasy.service.SkpService;
 import com.rjxx.utils.DesUtils;
 import com.rjxx.utils.HttpUtils;
@@ -18,6 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +49,10 @@ public class SkService {
     @Autowired
     private CszbService cszbService;
     @Autowired
-    private SkpService SkpService;
+    private SkpService skpService;
+    @Autowired
+    private KpspmxService kpspmxService;
+
 
 
     private Logger logger=LoggerFactory.getLogger(this.getClass());
@@ -165,7 +173,7 @@ public class SkService {
         }
         String params = "kpdid=" + kpdid + "&fplxdm=" + fplxdm;
         String encryptStr = encryptSkServerParameter(params);
-        Skp skp=SkpService.findOne(kpdid);
+        Skp skp=skpService.findOne(kpdid);
         Cszb cszb=cszbService.getSpbmbbh(skp.getGsdm(),skp.getXfid(),skp.getId(),"sfqysknew");
         String result=null;
         if("是".equals(cszb.getCsz())){
@@ -262,6 +270,8 @@ public class SkService {
         String result = HttpUtils.doPost(url, map);
         return result;
     }
+
+
 
     /**
      * 加密税控服务参数
