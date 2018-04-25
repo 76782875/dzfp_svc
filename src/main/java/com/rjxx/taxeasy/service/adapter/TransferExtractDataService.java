@@ -33,22 +33,29 @@ public class TransferExtractDataService {
     private JyxxsqJpaDao jyxxsqJpaDao;
 
     private static Logger logger = LoggerFactory.getLogger(TransferExtractDataService.class);
-    public AdapterPost seaway(String gsdm,String tq) {
+    public Map seaway(String gsdm,String tq) {
+        Map resultMap =new HashMap();
         AdapterPost data = new AdapterPost();
-        return data;
+        resultMap.put("post",data);
+        return resultMap;
     }
 
-    public AdapterPost kgc(String gsdm,String tq) {
+    public Map kgc(String gsdm,String tq) {
+        Map resultMap =new HashMap();
         AdapterPost data = new AdapterPost();
-        return data;
+        resultMap.put("post",data);
+        return resultMap;
     }
 
-    public AdapterPost fujifilm(String gsdm,String tq) {
+    public Map fujifilm(String gsdm,String tq) {
+        Map resultMap =new HashMap();
         AdapterPost data = new AdapterPost();
-        return data;
+        resultMap.put("post",data);
+        return resultMap;
     }
 
-    public AdapterPost jyxxsq(String gsdm,String tq) {
+    public Map jyxxsq(String gsdm,String tq) {
+        Map resultMap =new HashMap();
         logger.info("抽取数据KEY={}",tq);
         Jyxxsq jyxxsq = jyxxsqJpaDao.findOneByGsdmAndDdhAndFpzldm(gsdm, tq, "12");
         if(jyxxsq==null){
@@ -142,7 +149,11 @@ public class TransferExtractDataService {
         post.setData(data);
 
         logger.info("抽取的数据=【"+JSON.toJSONString(post)+"】");
-        return post;
+        resultMap.put("post",post);
+        resultMap.put("jyxxsq",jyxxsq);
+        resultMap.put("jymxsqList",jymxsqs);
+        resultMap.put("jyzfmxList",jyzfmxs);
+        return resultMap;
     }
 
     public static AdapterPost test(String gsdm,String tq) {
