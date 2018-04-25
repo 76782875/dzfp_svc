@@ -77,6 +77,7 @@ public class AdapterServiceImpl implements AdapterService {
 
     /**
      * GET_TYPE_2获取品牌信息
+     *
      * @param gsdm
      * @param q
      * @return
@@ -129,6 +130,7 @@ public class AdapterServiceImpl implements AdapterService {
 
     /**
      * GET_TYPE_3获取品牌信息
+     *
      * @param gsdm
      * @param on
      * @param sn
@@ -176,10 +178,9 @@ public class AdapterServiceImpl implements AdapterService {
     }
 
 
-
-
     /**
      * GET_TYPE_2获取展示在确认页面的信息
+     *
      * @param gsdm
      * @param q
      * @return
@@ -194,7 +195,7 @@ public class AdapterServiceImpl implements AdapterService {
         String price = jsonData.getString("pr");
         String storeNo = jsonData.getString("sn");
         String spdm = jsonData.getString("sp");
-        if(spdm==null){
+        if (spdm == null) {
             spdm = "";
         }
         //如果门店号为空则认为是该公司下只有一个税号一个门店号
@@ -292,6 +293,7 @@ public class AdapterServiceImpl implements AdapterService {
 
     /**
      * GET_TYPE_3获取确认页面的展示信息
+     *
      * @param gsdm
      * @param on
      * @param sn
@@ -360,6 +362,7 @@ public class AdapterServiceImpl implements AdapterService {
 
     /**
      * GET_TYPE_2开票方法
+     *
      * @param gsdm
      * @param q
      * @param gfmc
@@ -387,7 +390,7 @@ public class AdapterServiceImpl implements AdapterService {
         String price = jsonData.getString("pr");
         String storeNo = jsonData.getString("sn");
         String spdm = jsonData.getString("sp");
-        if(spdm==null){
+        if (spdm == null) {
             spdm = "";
         }
         //如果门店号为空则认为是该公司下只有一个税号一个门店号
@@ -430,9 +433,9 @@ public class AdapterServiceImpl implements AdapterService {
                 order.setOrderNo(orderNo);
                 order.setOrderDate(new SimpleDateFormat("yyyyMMddHHmmss").parse(orderTime));
                 order.setOrderDetails(details);
-                if(StringUtil.isNotBlankList(tqm)){
+                if (StringUtil.isNotBlankList(tqm)) {
                     order.setExtractedCode(tqm);
-                }else{
+                } else {
                     Integer pid = skp.getPid();
                     if (pid == null) {
                         logger.info("pid is null");
@@ -479,9 +482,9 @@ public class AdapterServiceImpl implements AdapterService {
                     detail.setAmount(Double.valueOf(price));
                     detail.setMxTotalAmount(Double.valueOf(price));
                     detail.setTaxAmount(0d);
-                    if("".equals(spdm)){
+                    if ("".equals(spdm)) {
                         detail.setVenderOwnCode(null);
-                    }else{
+                    } else {
                         detail.setVenderOwnCode(spdm);
                     }
                     details.add(detail);
@@ -515,6 +518,7 @@ public class AdapterServiceImpl implements AdapterService {
 
     /**
      * GET_TYPE_3开票方法
+     *
      * @param gsdm
      * @param on
      * @param sn
@@ -539,8 +543,8 @@ public class AdapterServiceImpl implements AdapterService {
             try {
                 Skp skp = skpJpaDao.findOneByKpddmAndGsdm(sn, gsdm);
                 Xf xf = xfJpaDao.findOneById(skp.getXfid());
-                AdapterPost post = getApiMsg(gsdm,xf.getId(),skp.getId(), tq);
-                if(post==null){
+                AdapterPost post = getApiMsg(gsdm, xf.getId(), skp.getId(), tq);
+                if (post == null) {
                     return "-2";
                 }
                 AdapterData data = post.getData();
@@ -554,9 +558,9 @@ public class AdapterServiceImpl implements AdapterService {
                 data.setOrder(order);
                 order.setOrderNo(on);
                 order.setBuyer(buyer);
-                if(StringUtil.isNotBlankList(tqm)){
+                if (StringUtil.isNotBlankList(tqm)) {
                     order.setExtractedCode(tqm);
-                }else{
+                } else {
                     Integer pid = skp.getPid();
                     if (pid == null) {
                         logger.info("pid is null");
@@ -578,14 +582,14 @@ public class AdapterServiceImpl implements AdapterService {
 
                 Cszb cszb = cszbService.getSpbmbbh(gsdm, null, null, "extractMethod");
                 Map resultMap = new HashMap();
-                if("jyxxsq".equals(cszb.getCsz())){
+                if ("jyxxsq".equals(cszb.getCsz())) {
                     Cszb kpfs = cszbService.getSpbmbbh(gsdm, null, null, "kpfs");
-                    Map map =transAdapterForSq(gsdm, post);
-                    fpclService.zjkp((List<Jyxxsq>) map.get("jyxxsqList"),kpfs.getCsz());
+                    Map map = transAdapterForSq(gsdm, post);
+                    fpclService.zjkp((List<Jyxxsq>) map.get("jyxxsqList"), kpfs.getCsz());
                     resultMap.put("returnMsg", "成功");
                     resultMap.put("returnCode", "0000");
                     resultMap.put("serialorder", data.getSerialNumber() + order.getOrderNo());
-                }else{
+                } else {
                     String xmlString = kpService.uploadOrderData(gsdm, kpMap, "01");
                     DefaultResult defaultResult = XmlJaxbUtils.convertXmlStrToObject(DefaultResult.class, xmlString);
                     if (null != defaultResult.getReturnCode() && "9999".equals(defaultResult.getReturnCode())) {
@@ -614,24 +618,25 @@ public class AdapterServiceImpl implements AdapterService {
 
     /**
      * 发送抬头数据给客户（根据参数获取客户接收抬头信息的接口），适用于GET_TYPE_1
+     *
      * @param gsdm
      * @param on
      * @param buyer
      * @return
      */
     @Override
-    public boolean sendBuyer(String gsdm,String on,AdapterDataOrderBuyer buyer) {
+    public boolean sendBuyer(String gsdm, String on, AdapterDataOrderBuyer buyer) {
         try {
             Cszb cszb = cszbService.getSpbmbbh(gsdm, null, null, "sendBuyerUrl");
             JSONObject jsonObject = JSON.parseObject(JSON.toJSONString(buyer));
             jsonObject.put("orderNo", on);
-            String result=HttpClientUtil.doPostJson(cszb.getCsz(), JSON.toJSONString(jsonObject));
-            if("0000".equals(JSON.parseObject(result).getString("returnCode"))){
+            String result = HttpClientUtil.doPostJson(cszb.getCsz(), JSON.toJSONString(jsonObject));
+            if ("0000".equals(JSON.parseObject(result).getString("returnCode"))) {
                 return true;
-            }else{
+            } else {
                 return false;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
@@ -639,27 +644,28 @@ public class AdapterServiceImpl implements AdapterService {
 
     /**
      * 获取抽取数据方法（根据参数值去取方法名），适用于GET_TYPE_3
+     *
      * @param gsdm
      * @param xfid
      * @param skpid
      * @param tq
      * @return
      */
-    private AdapterPost getApiMsg(String gsdm,Integer xfid,Integer skpid, String tq){
+    private AdapterPost getApiMsg(String gsdm, Integer xfid, Integer skpid, String tq) {
         try {
             Cszb cszb = cszbService.getSpbmbbh(gsdm, xfid, skpid, "extractMethod");
-            if(StringUtil.isNotBlankList(cszb.getCsz())){
+            if (StringUtil.isNotBlankList(cszb.getCsz())) {
                 Class<? extends TransferExtractDataService> clazz = transferExtractDataService.getClass();
-                Method method = clazz.getDeclaredMethod(cszb.getCsz(), String.class,String.class);
-                Map result = (Map)method.invoke(transferExtractDataService, gsdm,tq);
-                if(result==null){
+                Method method = clazz.getDeclaredMethod(cszb.getCsz(), String.class, String.class);
+                Map result = (Map) method.invoke(transferExtractDataService, gsdm, tq);
+                if (result == null) {
                     return null;
                 }
-                return (AdapterPost)result.get("post");
-            }else{
+                return (AdapterPost) result.get("post");
+            } else {
                 return null;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
@@ -693,12 +699,13 @@ public class AdapterServiceImpl implements AdapterService {
 
     /**
      * 转换adapterpost对象为含有jyxxsq、jymxsq、jyzfmx的map
+     *
      * @param post
      * @return
      */
-    private  Map transAdapterForSq(String gsdm,AdapterPost post){
-        AdapterData adapterData=post.getData();
-        AdapterDataOrder adapterDataOrder=adapterData.getOrder();
+    private Map transAdapterForSq(String gsdm, AdapterPost post) {
+        AdapterData adapterData = post.getData();
+        AdapterDataOrder adapterDataOrder = adapterData.getOrder();
         AdapterDataSeller adapterDataSeller = adapterData.getSeller();
         AdapterDataOrderBuyer adapterDataOrderBuyer = adapterDataOrder.getBuyer();
         List<AdapterDataOrderDetails> adapterDataOrderOrderDetails = adapterDataOrder.getOrderDetails();
@@ -761,7 +768,7 @@ public class AdapterServiceImpl implements AdapterService {
         jyxxsq.setYkpjshj(0d);
         jyxxsqList.add(jyxxsq);
 
-        for(int i=0;i<adapterDataOrderOrderDetails.size();i++){
+        for (int i = 0; i < adapterDataOrderOrderDetails.size(); i++) {
             Jymxsq jymxsq = new Jymxsq();
             jymxsq.setYxbz("1");
             jymxsq.setGsdm(gsdm);
@@ -792,7 +799,7 @@ public class AdapterServiceImpl implements AdapterService {
         }
 
 
-        for(int i=0;i<adapterDataOrderPayments.size();i++){
+        for (int i = 0; i < adapterDataOrderPayments.size(); i++) {
             Jyzfmx jyzfmx = new Jyzfmx();
             jyzfmx.setGsdm(gsdm);
             jyzfmx.setLrsj(new Date());
@@ -804,14 +811,15 @@ public class AdapterServiceImpl implements AdapterService {
         }
 
         Map kpMap = new HashMap();
-        kpMap.put("jyxxsqList",jyxxsqList);
-        kpMap.put("jymxsqList",jymxsqList);
-        kpMap.put("jyzfmxList",jyzfmxList);
+        kpMap.put("jyxxsqList", jyxxsqList);
+        kpMap.put("jymxsqList", jymxsqList);
+        kpMap.put("jyzfmxList", jyzfmxList);
         return kpMap;
     }
 
     /**
      * 验证这笔订单是否已开具过
+     *
      * @param tqm
      * @param gsdm
      * @return
@@ -834,14 +842,14 @@ public class AdapterServiceImpl implements AdapterService {
                         String orderTime = sdf.format(kpls.getLrsj());
                         String kplsh = kpls.getKplsh() + "";
                         String serialorder = kpls.getSerialorder();
-                        if ("00".equals(fpztdm)  && StringUtils.isNotBlank(fphm)) {
-                            if("12".equals(fpzldm)&& StringUtils.isNotBlank(pdfurl)){
+                        if ("00".equals(fpztdm) && StringUtils.isNotBlank(fphm)) {
+                            if ("12".equals(fpzldm) && StringUtils.isNotBlank(pdfurl)) {
                                 logger.info("已开具电票");
                                 result.add(pdfurl + "+" + je + "+" + orderTime + "+" + kplsh + "+" + serialorder);
-                            }else if("01".equals(fpzldm)||"02".equals(fpzldm)){
+                            } else if ("01".equals(fpzldm) || "02".equals(fpzldm)) {
                                 logger.info("已开具纸票");
                                 result.add("纸票");
-                            }else{
+                            } else {
                                 logger.info("异常");
                                 result.add("开具中");
                             }
@@ -868,19 +876,20 @@ public class AdapterServiceImpl implements AdapterService {
 
     /**
      * 开票日期限制
+     *
      * @param orderTime
      */
     @Override
-    public Boolean isInvoiceDateRestriction(String gsdm,Integer xfid,Integer skpid,String orderTime){
+    public Boolean isInvoiceDateRestriction(String gsdm, Integer xfid, Integer skpid, String orderTime) {
         Cszb cszb = cszbService.getSpbmbbh(gsdm, xfid, skpid, "dateRestriction");
-        if(cszb.getCsz()==null){
+        if (cszb.getCsz() == null) {
             return false;
         }
         //获取限制天数
         BigInteger days;
         try {
             days = new BigInteger(cszb.getCsz());
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
@@ -894,7 +903,7 @@ public class AdapterServiceImpl implements AdapterService {
             e.printStackTrace();
             return null;
         }
-        Long orderDate =yyyyMMddHHmmss.getTime();
+        Long orderDate = yyyyMMddHHmmss.getTime();
         //当前时间较订单时间过去了多久
         BigInteger timeOuting = BigInteger.valueOf(nowDate - orderDate);
         //限制天数的毫秒数
@@ -902,7 +911,7 @@ public class AdapterServiceImpl implements AdapterService {
         //逝去的时间减去限制时间
         BigInteger time = timeOuting.subtract(restriction);
         //等于1则大于
-        if (time.compareTo(new BigInteger("0"))==1) {
+        if (time.compareTo(new BigInteger("0")) == 1) {
             //过了限制天数
             return true;
         }
@@ -938,19 +947,19 @@ public class AdapterServiceImpl implements AdapterService {
         String ppurl;
         Skp skp = skpJpaDao.findOneByKpddmAndGsdm(storeNo, gsdm);
         Integer pid = skp.getPid();
-        if(pid==null){
+        if (pid == null) {
             return "pp";
-        }else{
+        } else {
             Pp pp = ppJpaDao.findOneById(pid);
             ppdm = pp.getPpdm();
             ppurl = pp.getPpurl();
-            if(!StringUtil.isNotBlankList(ppdm,ppurl)){
+            if (!StringUtil.isNotBlankList(ppdm, ppurl)) {
                 return "pp";
             }
         }
         try {
-            List<Jyxxsq> jyxxsqs = jyxxsqJpaDao.findOneByKhhAndGsdm(mi, gsdm);
-            if(jyxxsqs.isEmpty()){
+            List<Jyxxsq> jyxxsqs = jyxxsqJpaDao.findByKhhAndGsdm(mi, gsdm);
+            if (jyxxsqs.isEmpty()) {
                 return "jyxxsq";
             }
             Jyxxsq jyxxsq = jyxxsqs.get(0);
@@ -963,17 +972,17 @@ public class AdapterServiceImpl implements AdapterService {
             result.put("ppurl", ppurl);
             result.put("gsdm", gsdm);
             return JSON.toJSONString(result);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return "error";
         }
     }
 
     @Override
-    public String getInvoiceList(String gsdm,String khh) {
+    public String getInvoiceList(String gsdm, String khh) {
         List<Map> resultList = new ArrayList<>();
-        List<Jyxxsq> jyxxsqs = jyxxsqJpaDao.findOneByKhhAndGsdm(khh, gsdm);
-        if(jyxxsqs.isEmpty()){
+        List<Jyxxsq> jyxxsqs = jyxxsqJpaDao.findByKhhAndGsdm(khh, gsdm);
+        if (jyxxsqs.isEmpty()) {
             return null;
         }
         for (Jyxxsq jyxxsq : jyxxsqs) {
@@ -1007,36 +1016,36 @@ public class AdapterServiceImpl implements AdapterService {
             kplsParam.put("jylsh", jyxxsq.getJylsh());
             kplsParam.put("gsdm", gsdm);
             Kpls kpls = kplsService.findOneByParams(kplsParam);
-            if(kpls!=null){
+            if (kpls != null) {
                 map.put("serialorder", kpls.getSerialorder());
-                if("12".equals(kpls.getFpzldm())){
-                    if("00".equals(kpls.getFpztdm())){
-                        if(StringUtil.isNotBlankList(kpls.getFpdm(),kpls.getFphm(),kpls.getPdfurl())){
+                if ("12".equals(kpls.getFpzldm())) {
+                    if ("00".equals(kpls.getFpztdm())) {
+                        if (StringUtil.isNotBlankList(kpls.getFpdm(), kpls.getFphm(), kpls.getPdfurl())) {
                             map.put("sfkj", MAKED_AND_PDF);
-                        }else{
+                        } else {
                             map.put("sfkj", MAKING);
                         }
-                    }else if("05".equals(kpls.getFpztdm())){
+                    } else if ("05".equals(kpls.getFpztdm())) {
                         map.put("sfkj", MAKING);
-                    }else{
+                    } else {
                         map.put("sfkj", MAKING);
                     }
-                }else if("01".equals(kpls.getFpzldm())||"02".equals(kpls.getFpzldm())){
-                    if("00".equals(kpls.getFpztdm())) {
-                        if(StringUtil.isNotBlankList(kpls.getFpdm(),kpls.getFphm())){
+                } else if ("01".equals(kpls.getFpzldm()) || "02".equals(kpls.getFpzldm())) {
+                    if ("00".equals(kpls.getFpztdm())) {
+                        if (StringUtil.isNotBlankList(kpls.getFpdm(), kpls.getFphm())) {
                             map.put("sfkj", MAKED_AND_NO_PDF);
-                        }else{
+                        } else {
                             map.put("sfkj", MAKING);
                         }
-                    }else if("05".equals(kpls.getFpztdm())){
+                    } else if ("05".equals(kpls.getFpztdm())) {
                         map.put("sfkj", MAKING);
-                    }else{
+                    } else {
                         map.put("sfkj", MAKING);
                     }
-                }else{
+                } else {
                     continue;
                 }
-            }else{
+            } else {
                 map.put("sfkj", NO_MAKED);
             }
             resultList.add(map);
@@ -1046,45 +1055,46 @@ public class AdapterServiceImpl implements AdapterService {
     }
 
     @Override
-    public String makeInvoiceForFour(String gsdm,String jylsh,String gfmc, String gfsh, String gfdz,
-                                     String gfdh, String gfyhzh, String gfyh,String email,String openid,String sjly,String access_token,String weixinOrderNo) {
-        Map jyxxsqParam = new HashMap();
-        jyxxsqParam.put("jylsh", jylsh);
-        jyxxsqParam.put("gsdm", gsdm);
-        Jyxxsq jyxxsq = jyxxsqService.findOneByParams(jyxxsqParam);
-        if(gfmc!=null){
-            jyxxsq.setGfmc(gfmc);
-        }
-        if(gfsh!=null){
-            jyxxsq.setGfsh(gfsh);
-        }
-        if(gfdz!=null){
-            jyxxsq.setGfdz(gfdz);
-        }
-        if(gfdh!=null){
-            jyxxsq.setGfdh(gfdh);
-        }
-        if(gfyhzh!=null){
-            jyxxsq.setGfyhzh(gfyhzh);
-        }
-        if(gfyh!=null){
-            jyxxsq.setGfyh(gfyh);
-        }
-        jyxxsq.setGfemail(email);
-        jyxxsq.setSjly(sjly);
-        jyxxsq.setOpenid(openid);
-        List<Jyxxsq> jyxxsqList = new ArrayList<>();
-        jyxxsqList.add(jyxxsq);
-        Cszb kpfs = cszbService.getSpbmbbh(gsdm, null, null, "kpfs");
+    public String makeInvoiceForFour(String gsdm, String jylsh, String gfmc, String gfsh, String gfdz,
+                                     String gfdh, String gfyhzh, String gfyh, String email, String openid, String sjly, String access_token, String weixinOrderNo) {
         try {
-            fpclService.zjkp(jyxxsqList,kpfs.getCsz());
+            Map resultMap = new HashMap();
+            Jyxxsq jyxxsq = jyxxsqJpaDao.findOneByJylshAndGsdm(jylsh, gsdm);
+            if (gfmc != null) {
+                jyxxsq.setGfmc(gfmc);
+            }
+            if (gfsh != null) {
+                jyxxsq.setGfsh(gfsh);
+            }
+            if (gfdz != null) {
+                jyxxsq.setGfdz(gfdz);
+            }
+            if (gfdh != null) {
+                jyxxsq.setGfdh(gfdh);
+            }
+            if (gfyhzh != null) {
+                jyxxsq.setGfyhzh(gfyhzh);
+            }
+            if (gfyh != null) {
+                jyxxsq.setGfyh(gfyh);
+            }
+            jyxxsq.setGfemail(email);
+            jyxxsq.setSjly(sjly);
+            jyxxsq.setOpenid(openid);
+            List<Jyxxsq> jyxxsqList = new ArrayList<>();
+            jyxxsqList.add(jyxxsq);
+            Cszb kpfs = cszbService.getSpbmbbh(gsdm, null, null, "kpfs");
+            fpclService.zjkp(jyxxsqList, kpfs.getCsz());
+            resultMap.put("returnMsg", "成功");
+            resultMap.put("returnCode", "0000");
+            resultMap.put("serialorder", jyxxsq.getJylsh() + jyxxsq.getDdh());
+            return JSON.toJSONString(resultMap);
         } catch (Exception e) {
             e.printStackTrace();
+            Map resultMap = new HashMap();
+            resultMap.put("returnMsg", "开具失败");
+            resultMap.put("returnCode", "9999");
+            return JSON.toJSONString(resultMap);
         }
-        Map resultMap = new HashMap();
-        resultMap.put("returnMsg", "成功");
-        resultMap.put("returnCode", "0000");
-        resultMap.put("serialorder", jyxxsq.getJylsh()+jyxxsq.getDdh());
-        return JSON.toJSONString(resultMap);
     }
 }
