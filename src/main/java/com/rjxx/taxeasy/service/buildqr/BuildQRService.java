@@ -63,25 +63,30 @@ public class BuildQRService {
         }
     }
 
-    public String create(String gsdm,String orderNo, String orderTime,
-                         String storeNo, String price){
-        AdapterGet adapterGet = new AdapterGet();
-        adapterGet.setType("2");
-        adapterGet.setOt(orderNo);
-        adapterGet.setSn(storeNo);
-        adapterGet.setOt(orderTime);
-        adapterGet.setPr(price);
-        String dataJson = JSON.toJSONString(adapterGet);
-        Gsxx gsxx = gsxxJpaDao.findOneByGsdm(gsdm);
-        String key = gsxx.getSecretKey();
-        String sign = DigestUtils.md5Hex("data=" + dataJson + "&key=" + key);
-        String str = "data=" + dataJson + "&si=" + sign;
-        String encode = null;
+    public String create(String gsdm, String orderNo, String orderTime,
+                         String storeNo, String price) {
         try {
-            encode = Base64Util.encode(str);
-        } catch (UnsupportedEncodingException e) {
+            AdapterGet adapterGet = new AdapterGet();
+            adapterGet.setType("2");
+            adapterGet.setOt(orderNo);
+            adapterGet.setSn(storeNo);
+            adapterGet.setOt(orderTime);
+            adapterGet.setPr(price);
+            String dataJson = JSON.toJSONString(adapterGet);
+            Gsxx gsxx = gsxxJpaDao.findOneByGsdm(gsdm);
+            String key = gsxx.getSecretKey();
+            String sign = DigestUtils.md5Hex("data=" + dataJson + "&key=" + key);
+            String str = "data=" + dataJson + "&si=" + sign;
+            String encode = null;
+            try {
+                encode = Base64Util.encode(str);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            return encode;
+        } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-        return encode;
     }
 }
