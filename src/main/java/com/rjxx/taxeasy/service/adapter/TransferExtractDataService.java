@@ -1,11 +1,14 @@
 package com.rjxx.taxeasy.service.adapter;
 
 import com.alibaba.fastjson.JSON;
+import com.rjxx.taxeasy.bizcomm.utils.GetDataService;
 import com.rjxx.taxeasy.dao.JyxxsqJpaDao;
+import com.rjxx.taxeasy.domains.Cszb;
 import com.rjxx.taxeasy.domains.Jymxsq;
 import com.rjxx.taxeasy.domains.Jyxxsq;
 import com.rjxx.taxeasy.domains.Jyzfmx;
 import com.rjxx.taxeasy.dto.*;
+import com.rjxx.taxeasy.service.CszbService;
 import com.rjxx.taxeasy.service.JymxsqService;
 import com.rjxx.taxeasy.service.JyzfmxService;
 import com.rjxx.utils.NumberUtil;
@@ -31,24 +34,118 @@ public class TransferExtractDataService {
     private JyzfmxService jyzfmxService;
     @Autowired
     private JyxxsqJpaDao jyxxsqJpaDao;
+    @Autowired
+    private GetDataService getDataService;
+    @Autowired
+    private CszbService cszbService;
 
     private static Logger logger = LoggerFactory.getLogger(TransferExtractDataService.class);
-    public AdapterPost seaway(String gsdm,String tq) {
+    public Map seaway(String gsdm,String tq) {
+        Map resultMap =new HashMap();
         AdapterPost data = new AdapterPost();
-        return data;
+        resultMap.put("post",data);
+        return resultMap;
     }
 
-    public AdapterPost kgc(String gsdm,String tq) {
-        AdapterPost data = new AdapterPost();
-        return data;
+    /**
+     * 绿地获取数据
+     * @param gsdm
+     * @param tq
+     * @return
+     */
+    public Map ldyx(String gsdm,String tq) {
+        Map resultMap =  new HashMap();
+        try {
+            AdapterPost data = new AdapterPost();
+            Map map = getDataService.getldyxFirData(tq,gsdm);
+            if(map==null){
+                resultMap.put("msg", "系统出现异常，请重试！");
+                return resultMap;
+            }
+            String accessToken = map.get("accessToken").toString();
+            if(accessToken==null || "".equals(accessToken)){
+                resultMap.put("msg", "未查询到数据，请重试！");
+                return resultMap;
+            }
+            Map resMap = getDataService.getldyxSecData(tq,gsdm,accessToken);
+            List<Jyxxsq> jyxxsqList = (List) resMap.get("jyxxsqList");
+            List<Jymxsq> jymxsqList = (List) resMap.get("jymxsqList");
+            List<Jyzfmx> jyzfmxList = (List) resMap.get("jyzfmxList");
+            resultMap.put("jyxxsqList",jyxxsqList);
+            resultMap.put("jymxsqList",jymxsqList);
+            resultMap.put("jyzfmxList",jyzfmxList);
+            resultMap.put("post",data);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resultMap;
     }
 
-    public AdapterPost fujifilm(String gsdm,String tq) {
-        AdapterPost data = new AdapterPost();
-        return data;
+    /**
+     * 全家获取数据
+     * @param gsdm
+     * @param tq
+     * @return
+     */
+    public Map family(String gsdm,String tq) {
+        Map resultMap =  new HashMap();
+        try {
+            AdapterPost data = new AdapterPost();
+            Map resMap=getDataService.getData(tq,gsdm);
+            List<Jyxxsq> jyxxsqList = (List) resMap.get("jyxxsqList");
+            List<Jymxsq> jymxsqList = (List) resMap.get("jymxsqList");
+            List<Jyzfmx> jyzfmxList = (List) resMap.get("jyzfmxList");
+            resultMap.put("jyxxsqList",jyxxsqList);
+            resultMap.put("jymxsqList",jymxsqList);
+            resultMap.put("jyzfmxList",jyzfmxList);
+            resultMap.put("post",data);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resultMap;
     }
 
-    public AdapterPost jyxxsq(String gsdm,String tq) {
+    /**
+     * 波奇网获取数据
+     * @param gsdm
+     * @param tq
+     * @return
+     */
+    public Map bqw(String gsdm,String tq) {
+        Map resultMap =  new HashMap();
+        try {
+            AdapterPost data = new AdapterPost();
+            Cszb csz =  cszbService.getSpbmbbh(gsdm, null,null, "sfhhurl");
+            Map resMap=getDataService.getDataForBqw(tq,gsdm,csz.getCsz());
+            List<Jyxxsq> jyxxsqList = (List) resMap.get("jyxxsqList");
+            List<Jymxsq> jymxsqList = (List) resMap.get("jymxsqList");
+            List<Jyzfmx> jyzfmxList = (List) resMap.get("jyzfmxList");
+            resultMap.put("jyxxsqList",jyxxsqList);
+            resultMap.put("jymxsqList",jymxsqList);
+            resultMap.put("jyzfmxList",jyzfmxList);
+            resultMap.put("post",data);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resultMap;
+    }
+
+    public Map kgc(String gsdm,String tq) {
+        Map resultMap =new HashMap();
+        AdapterPost data = new AdapterPost();
+        resultMap.put("post",data);
+        return resultMap;
+    }
+
+    public Map fujifilm(String gsdm,String tq) {
+        Map resultMap =new HashMap();
+        AdapterPost data = new AdapterPost();
+        resultMap.put("post",data);
+        return resultMap;
+    }
+
+    public Map jyxxsq(String gsdm,String tq) {
+        Map resultMap =new HashMap();
         logger.info("抽取数据KEY={}",tq);
         Jyxxsq jyxxsq = jyxxsqJpaDao.findOneByGsdmAndDdhAndFpzldm(gsdm, tq, "12");
         if(jyxxsq==null){
@@ -61,7 +158,7 @@ public class TransferExtractDataService {
         Map jyzfmxparam = new HashMap<>();
         jyzfmxparam.put("gsdm", gsdm);
         jyzfmxparam.put("sqlsh", jyxxsq.getSqlsh());
-        jyzfmxparam.put("orderBy", "asc");
+//        jyzfmxparam.put("orderBy", "asc");
         List<Jyzfmx> jyzfmxs = jyzfmxService.findAllByParams(jyzfmxparam);
 
         AdapterPost post = new AdapterPost();
@@ -73,34 +170,38 @@ public class TransferExtractDataService {
         List<AdapterDataOrderPayments> payments = new ArrayList<>();
 
         //明细
-        for(int i=0;i<jymxsqs.size();i++){
-            Jymxsq jymxsq = jymxsqs.get(i);
-            AdapterDataOrderDetails detail = new AdapterDataOrderDetails();
-            detail.setAmount(jymxsq.getSpje());
-            detail.setMxTotalAmount(jymxsq.getJshj());
-            detail.setPolicyMark(jymxsq.getYhzcbs());
-            detail.setPolicyName(jymxsq.getYhzcmc());
-            detail.setProductCode(jymxsq.getSpdm());
-            detail.setProductName(jymxsq.getSpmc());
-            detail.setQuantity(jymxsq.getSps());
-            detail.setUnitPrice(jymxsq.getSpdj());
-            detail.setSpec(jymxsq.getSpggxh());
-            detail.setUtil(jymxsq.getSpdw());
-            detail.setRowType(jymxsq.getFphxz());
-            detail.setTaxRate(jymxsq.getSpsl());
-            detail.setTaxAmount(jymxsq.getSpse());
-            detail.setVenderOwnCode(jymxsq.getSpzxbm());
-            detail.setTaxRateMark(jymxsq.getLslbz());
-            detail.setDeductAmount(jymxsq.getKce());
-            details.add(detail);
+        if(jymxsqs.size()>0){
+            for(int i=0;i<jymxsqs.size();i++){
+                Jymxsq jymxsq = jymxsqs.get(i);
+                AdapterDataOrderDetails detail = new AdapterDataOrderDetails();
+                detail.setAmount(jymxsq.getSpje());
+                detail.setMxTotalAmount(jymxsq.getJshj());
+                detail.setPolicyMark(jymxsq.getYhzcbs());
+                detail.setPolicyName(jymxsq.getYhzcmc());
+                detail.setProductCode(jymxsq.getSpdm());
+                detail.setProductName(jymxsq.getSpmc());
+                detail.setQuantity(jymxsq.getSps());
+                detail.setUnitPrice(jymxsq.getSpdj());
+                detail.setSpec(jymxsq.getSpggxh());
+                detail.setUtil(jymxsq.getSpdw());
+                detail.setRowType(jymxsq.getFphxz());
+                detail.setTaxRate(jymxsq.getSpsl());
+                detail.setTaxAmount(jymxsq.getSpse());
+                detail.setVenderOwnCode(jymxsq.getSpzxbm());
+                detail.setTaxRateMark(jymxsq.getLslbz());
+                detail.setDeductAmount(jymxsq.getKce());
+                details.add(detail);
+            }
         }
 
         //支付
-        for (Jyzfmx jyzfmx:jyzfmxs){
-            AdapterDataOrderPayments payment = new AdapterDataOrderPayments();
-            payment.setPayPrice(jyzfmx.getZfje());
-            payment.setPayCode(jyzfmx.getZffsDm());
-            payments.add(payment);
+        if(jyzfmxs.size()>0){
+            for (Jyzfmx jyzfmx:jyzfmxs){
+                AdapterDataOrderPayments payment = new AdapterDataOrderPayments();
+                payment.setPayPrice(jyzfmx.getZfje());
+                payment.setPayCode(jyzfmx.getZffsDm());
+                payments.add(payment);
+            }
         }
 
         //购方
@@ -142,7 +243,11 @@ public class TransferExtractDataService {
         post.setData(data);
 
         logger.info("抽取的数据=【"+JSON.toJSONString(post)+"】");
-        return post;
+        resultMap.put("post",post);
+        resultMap.put("jyxxsq",jyxxsq);
+        resultMap.put("jymxsqList",jymxsqs);
+        resultMap.put("jyzfmxList",jyzfmxs);
+        return resultMap;
     }
 
     public static AdapterPost test(String gsdm,String tq) {
