@@ -67,6 +67,11 @@ public class RolesVo  implements Serializable {
  */ 
 @Column(name="xgry")
 	protected String xgry;
+/**
+ * 是否是系统默认角色
+ */
+@Column(name="sfsmr")
+	protected String sfsmr;
 
 protected String lrr;
 protected String xgr;
@@ -166,12 +171,20 @@ protected String xgr;
 		this.xgr = xgr;
 	}
 
+	public String getSfsmr() {
+		return sfsmr;
+	}
+
+	public void setSfsmr(String sfsmr) {
+		this.sfsmr = sfsmr;
+	}
+
 	public RolesVo() {
 		super();
 	}
 
 	public RolesVo(Integer id, String name, String description, String privilegeids, Integer sort, String yxbz,
-			Date lrsj, String lrry, Date xgsj, String xgry, String lrr, String xgr) {
+			Date lrsj, String lrry, Date xgsj, String xgry,String sfsmr, String lrr, String xgr) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -183,6 +196,7 @@ protected String xgr;
 		this.lrry = lrry;
 		this.xgsj = xgsj;
 		this.xgry = xgry;
+		this.sfsmr = sfsmr;
 		this.lrr = lrr;
 		this.xgr = xgr;
 	}
