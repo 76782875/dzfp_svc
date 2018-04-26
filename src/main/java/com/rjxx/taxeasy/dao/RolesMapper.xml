@@ -44,12 +44,23 @@
         <if test="params.roleName != null and params.roleName !=''">
            and a.name like concat ('%',#{params.roleName},'%')
         </if>
-
+		union
+		SELECT m.*,'系统' ,'系统' from roles m where m.yxbz= 1 and m.sfsmr = 1
+				
     </select>
    <select id="findBySql" parameterType="map" resultType="roles">
      SELECT * from roles WHERE lrry in (SELECT id FROM t_yh WHERE gsdm = #{gsdm}) and yxbz = '1' 
      	<if test="roleList != null">
             <foreach collection="roleList" open=" and id in (" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
+        <if test="sfsmr != null">
+        or sfsmr = '1'
+        </if>
+        <if test="yhjscx != null and roleList != null">
+       		union SELECT * from roles where sfsmr = 1 
+       		<foreach collection="roleList" open=" and id in (" separator="," close=")" item="item">
                 #{item}
             </foreach>
         </if>
