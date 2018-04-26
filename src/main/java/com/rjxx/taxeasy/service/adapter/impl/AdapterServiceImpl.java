@@ -114,6 +114,7 @@ public class AdapterServiceImpl implements AdapterService {
                 if (StringUtil.isNotBlankList(pp.getPpheadcolor(), pp.getPpbodycolor())) {
                     ppheadcolor = pp.getPpheadcolor();
                     ppbodycolor = pp.getPpbodycolor();
+                    ppbuttoncolor = pp.getPpbuttoncolor();
                 }
             }
             Map result = new HashMap();
