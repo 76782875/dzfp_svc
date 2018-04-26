@@ -1019,37 +1019,41 @@ public class AdapterServiceImpl implements AdapterService {
             map.put("jylsh", jyxxsq.getSqlsh());//其实放的申请流水号
             map.put("kpddm", jyxxsq.getKpddm());
             List<Jyls> jyls = jylsJpaDao.findBySqlshAndGsdm(jyxxsq.getSqlsh(), jyxxsq.getGsdm());
-            Kpls kpls = kplsJpaDao.findOneByDjh(jyls.get(0).getDjh());
-            if (kpls != null) {
-                map.put("serialorder", kpls.getSerialorder());
-                if ("12".equals(kpls.getFpzldm())) {
-                    if ("00".equals(kpls.getFpztdm())) {
-                        if (StringUtil.isNotBlankList(kpls.getFpdm(), kpls.getFphm(), kpls.getPdfurl())) {
-                            map.put("sfkj", MAKED_AND_PDF);
+            if(!jyls.isEmpty()){
+                Kpls kpls = kplsJpaDao.findOneByDjh(jyls.get(0).getDjh());
+                if (kpls != null) {
+                    map.put("serialorder", kpls.getSerialorder());
+                    if ("12".equals(kpls.getFpzldm())) {
+                        if ("00".equals(kpls.getFpztdm())) {
+                            if (StringUtil.isNotBlankList(kpls.getFpdm(), kpls.getFphm(), kpls.getPdfurl())) {
+                                map.put("sfkj", MAKED_AND_PDF);
+                            } else {
+                                map.put("sfkj", MAKING);
+                            }
+                        } else if ("05".equals(kpls.getFpztdm())) {
+                            map.put("sfkj", MAKING);
                         } else {
                             map.put("sfkj", MAKING);
                         }
-                    } else if ("05".equals(kpls.getFpztdm())) {
-                        map.put("sfkj", MAKING);
-                    } else {
-                        map.put("sfkj", MAKING);
-                    }
-                } else if ("01".equals(kpls.getFpzldm()) || "02".equals(kpls.getFpzldm())) {
-                    if ("00".equals(kpls.getFpztdm())) {
-                        if (StringUtil.isNotBlankList(kpls.getFpdm(), kpls.getFphm())) {
-                            map.put("sfkj", MAKED_AND_NO_PDF);
+                    } else if ("01".equals(kpls.getFpzldm()) || "02".equals(kpls.getFpzldm())) {
+                        if ("00".equals(kpls.getFpztdm())) {
+                            if (StringUtil.isNotBlankList(kpls.getFpdm(), kpls.getFphm())) {
+                                map.put("sfkj", MAKED_AND_NO_PDF);
+                            } else {
+                                map.put("sfkj", MAKING);
+                            }
+                        } else if ("05".equals(kpls.getFpztdm())) {
+                            map.put("sfkj", MAKING);
                         } else {
                             map.put("sfkj", MAKING);
                         }
-                    } else if ("05".equals(kpls.getFpztdm())) {
-                        map.put("sfkj", MAKING);
                     } else {
-                        map.put("sfkj", MAKING);
+                        continue;
                     }
                 } else {
-                    continue;
+                    map.put("sfkj", NO_MAKED);
                 }
-            } else {
+            }else{
                 map.put("sfkj", NO_MAKED);
             }
             resultList.add(map);
