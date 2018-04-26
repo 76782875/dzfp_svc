@@ -68,7 +68,7 @@ public class BuildQRService {
         try {
             AdapterGet adapterGet = new AdapterGet();
             adapterGet.setType("2");
-            adapterGet.setOt(orderNo);
+            adapterGet.setOn(orderNo);
             adapterGet.setSn(storeNo);
             adapterGet.setOt(orderTime);
             adapterGet.setPr(price);
