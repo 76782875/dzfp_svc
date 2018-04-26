@@ -1,6 +1,7 @@
 package com.rjxx.taxeasy.dao;
 
 import com.rjxx.taxeasy.domains.Gfxx;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 /**
@@ -11,6 +12,7 @@ import org.springframework.data.repository.CrudRepository;
  * @ZhangBing
  */ 
 public interface GfxxJpaDao extends CrudRepository<Gfxx, Integer> {
-
+    @Query(nativeQuery = true,value = "select * from t_gfxx  where yxbz='1' and  gfmc=?1 and gfsh=?2")
+    Gfxx  findOneByGfmcAndGfsh(String gfmc,String gfsh);
 }
 

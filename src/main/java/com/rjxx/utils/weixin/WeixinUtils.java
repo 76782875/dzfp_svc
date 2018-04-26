@@ -557,7 +557,7 @@ public class WeixinUtils {
         Map base_info = new HashMap();
         WeiXinMuBan weiXinMuBan = new WeiXinMuBan();
         weiXinMuBan.setPayee(payee);
-        weiXinMuBan.setType("增值税普通发票");
+        weiXinMuBan.setType("增值税电子普通发票");
         weiXinMuBan.setTitle(gsmc);
         weiXinMuBan.setLogo_url(logo_url);
         //weiXinMuBan.setLogo_url("http://mmbiz.qpic.cn/mmbiz_jpg/l249Gu1JJaJjZiauO138MD1d6dnglRlj1bicFTaNyyDGcAOgxMd2WoXLKvEn8icJiaiaibRJkgeBcsCODI4AYP7V6vPg/0");

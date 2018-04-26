@@ -94,7 +94,8 @@ public class GeneratePdfService {
     private XfJpaDao xfJpaDao;
     @Autowired
     private KpspmxJpaDao kpspmxJpaDao;
-
+    @Autowired
+    private SaveGfxxUtil saveGfxxUtil;
 
     @Autowired
     private RabbitmqUtils rabbitmqSend;
@@ -384,6 +385,10 @@ public class GeneratePdfService {
                 dc.saveLog(djh, "91", "0", "正常开具", "", 1, jyls.getXfsh(), jyls.getJylsh());
                 //开具成功后写入卡包或发票管家
                 imputationCardUtil.invoice2card(jyxxsq,kpls);
+
+                //开具成功后写入购方管理 gfxx
+                saveGfxxUtil.saveGfxx(xfid,jyls.getGsdm(),jyls.getGfmc(),jyls.getGfsh(),jyls.getGfdz(),jyls.getGfdh(),
+                        jyls.getGfyh(),jyls.getGfyhzh(),jyls.getGfemail());
             } else {
                 dc.updateFlag(jyls, "92");
                 logger.info("------1、生成pdf出现异常：---------" + kplsh);
