@@ -1,5 +1,7 @@
 package com.rjxx.taxeasy.dto;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 /**
  * @author wangyahui
  * @email wangyahui@datarj.com
@@ -7,18 +9,31 @@ package com.rjxx.taxeasy.dto;
  * @date 2018/3/20
  */
 public class AdapterDataOrderBuyer {
-    private String customerType;
-    private String identifier;
+    @JSONField(ordinal=1)
     private String name;
+    @JSONField(ordinal=2)
+    private String identifier;
+    @JSONField(ordinal=3)
     private String address;
+    @JSONField(ordinal=4)
     private String telephoneNo;
+    @JSONField(ordinal=5)
     private String bank;
+    @JSONField(ordinal=6)
     private String bankAcc;
+    @JSONField(ordinal=7)
     private String email;
+    @JSONField(ordinal=8)
+    private String customerType;
+    @JSONField(ordinal=9)
     private String isSend;
+    @JSONField(ordinal=10)
     private String recipient;
+    @JSONField(ordinal=11)
     private String reciAddress;
+    @JSONField(ordinal=12)
     private String zip;
+    @JSONField(ordinal=13)
     private String memberId;//客户号
 
     public String getMemberId() {

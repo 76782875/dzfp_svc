@@ -1,5 +1,7 @@
 package com.rjxx.taxeasy.dto;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 /**
  * @author wangyahui
  * @email wangyahui@datarj.com
@@ -7,16 +9,26 @@ package com.rjxx.taxeasy.dto;
  * @date 2018/3/20
  */
 public class AdapterData {
+    @JSONField(ordinal=1)
     private String serialNumber;
-    private String invType;
-    private String version;
+    @JSONField(ordinal=2)
     private String drawer;
+    @JSONField(ordinal=3)
     private String payee;
+    @JSONField(ordinal=4)
     private String reviewer;
-    private String datasource;
-    private String openid;
+    @JSONField(ordinal=5)
     private AdapterDataSeller seller;
+    @JSONField(ordinal=6)
     private AdapterDataOrder order;
+    @JSONField(ordinal=7)
+    private String invType;
+    @JSONField(ordinal=8)
+    private String version;
+    @JSONField(ordinal=9)
+    private String datasource;
+    @JSONField(ordinal=10)
+    private String openid;
 
     public String getSerialNumber() {
         return serialNumber;

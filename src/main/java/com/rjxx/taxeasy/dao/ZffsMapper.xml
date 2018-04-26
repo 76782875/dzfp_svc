@@ -62,8 +62,11 @@
             order by ${orderBy}
         </if>
     </select>
-    <select id="findByPage" parameterType="pagination" resultType="zffs">
+    <select id="findByPage" parameterType="pagination" resultType="zffsvo">
         select * from t_zffs where yxbz = '1'
+        <if test="params.gsdm != null and params.gsdm !=''">
+            and gsdm = #{params.gsdm}
+        </if>
         <if test="params.orderBy != null">
             order by ${params.orderBy}
         </if>
