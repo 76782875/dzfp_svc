@@ -106,6 +106,7 @@ public class AdapterServiceImpl implements AdapterService {
             String ppurl = "";
             String ppheadcolor = "no";
             String ppbodycolor = "no";
+            String ppbuttoncolor = "no";
             if (pid != null) {
                 Pp pp = ppJpaDao.findOneById(pid);
                 ppdm = pp.getPpdm();
@@ -121,6 +122,7 @@ public class AdapterServiceImpl implements AdapterService {
             result.put("orderNo", on);
             result.put("headcolor", ppheadcolor);
             result.put("bodycolor", ppbodycolor);
+            result.put("buttoncolor", ppbuttoncolor);
             return result;
         } catch (Exception e) {
             e.printStackTrace();
