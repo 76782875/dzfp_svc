@@ -1018,8 +1018,8 @@ public class AdapterServiceImpl implements AdapterService {
             map.put("ddrq", new SimpleDateFormat("yyyyMMddHHmmss").format(jyxxsq.getDdrq()));
             map.put("jylsh", jyxxsq.getSqlsh());//其实放的申请流水号
             map.put("kpddm", jyxxsq.getKpddm());
-            Jyls jyls = jylsJpaDao.findOneBySqlshAndGsdm(jyxxsq.getSqlsh(), jyxxsq.getGsdm());
-            Kpls kpls = kplsJpaDao.findOneByDjh(jyls.getDjh());
+            List<Jyls> jyls = jylsJpaDao.findBySqlshAndGsdm(jyxxsq.getSqlsh(), jyxxsq.getGsdm());
+            Kpls kpls = kplsJpaDao.findOneByDjh(jyls.get(0).getDjh());
             if (kpls != null) {
                 map.put("serialorder", kpls.getSerialorder());
                 if ("12".equals(kpls.getFpzldm())) {
