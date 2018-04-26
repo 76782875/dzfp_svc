@@ -11,6 +11,8 @@ import com.rjxx.taxeasy.service.SkpService;
 import com.rjxx.utils.Base64Util;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +29,9 @@ import java.util.Map;
  */
 @Service
 public class BuildQRService {
+
+    private  static Logger logger = LoggerFactory.getLogger(BuildQRService.class);
+
     @Autowired
     private YhJpaDao yhJpaDao;
     @Autowired
@@ -73,6 +78,7 @@ public class BuildQRService {
             adapterGet.setOt(orderTime);
             adapterGet.setPr(price);
             String dataJson = JSON.toJSONString(adapterGet);
+            logger.info("dataJson={}",dataJson);
             Gsxx gsxx = gsxxJpaDao.findOneByGsdm(gsdm);
             String key = gsxx.getSecretKey();
             String sign = DigestUtils.md5Hex("data=" + dataJson + "&key=" + key);
