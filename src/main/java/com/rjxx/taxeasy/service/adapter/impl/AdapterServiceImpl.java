@@ -1013,7 +1013,7 @@ public class AdapterServiceImpl implements AdapterService {
             map.put("je", jyxxsq.getJshj());
             map.put("ddh", jyxxsq.getDdh());
             map.put("ddrq", new SimpleDateFormat("yyyyMMddHHmmss").format(jyxxsq.getDdrq()));
-            map.put("jylsh", jyxxsq.getJylsh());
+            map.put("jylsh", jyxxsq.getSqlsh());//其实放的申请流水号
             map.put("kpddm", jyxxsq.getKpddm());
             Map kplsParam = new HashMap();
             kplsParam.put("jylsh", jyxxsq.getJylsh());
@@ -1058,11 +1058,11 @@ public class AdapterServiceImpl implements AdapterService {
     }
 
     @Override
-    public String makeInvoiceForFour(String gsdm, String jylsh, String gfmc, String gfsh, String gfdz,
+    public String makeInvoiceForFour(String gsdm, String sqlsh, String gfmc, String gfsh, String gfdz,
                                      String gfdh, String gfyhzh, String gfyh, String email, String openid, String sjly, String access_token, String weixinOrderNo) {
         try {
             Map resultMap = new HashMap();
-            Jyxxsq jyxxsq = jyxxsqJpaDao.findOneByJylshAndGsdm(jylsh, gsdm);
+            Jyxxsq jyxxsq = jyxxsqJpaDao.findOneBySqlshAndGsdm(sqlsh, gsdm);
             if (gfmc != null) {
                 jyxxsq.setGfmc(gfmc);
             }
