@@ -24,7 +24,7 @@ public interface ZffsMapper {
 
     public List<ZffsVo> findAllByMap(Map params);
     
-    public List<Zffs> findByPage(Pagination pagination);
+    public List<ZffsVo> findByPage(Pagination pagination);
 
 }
 

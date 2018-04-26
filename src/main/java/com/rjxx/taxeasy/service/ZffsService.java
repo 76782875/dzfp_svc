@@ -52,7 +52,7 @@ public class ZffsService {
         return zffsMapper.findAllByMap(params);
     }
     
-    public List<Zffs> findByPage(Pagination pagination) {
+    public List<ZffsVo> findByPage(Pagination pagination) {
         return zffsMapper.findByPage(pagination);
     }
 
