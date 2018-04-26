@@ -24,5 +24,8 @@ public interface JyxxsqJpaDao extends CrudRepository<Jyxxsq, Integer> {
 
     @Query(nativeQuery = true,value = "select * from t_jyxxsq where jylsh=?1 and gsdm=?2 and yxbz='1' ")
     Jyxxsq findOneByJylshAndGsdm(String jylsh, String gsdm);
+
+    @Query(nativeQuery = true,value = "select * from t_jyxxsq where sqlsh=?1 and gsdm=?2 and yxbz='1' ")
+    Jyxxsq findOneBySqlshAndGsdm(String sqlsh, String gsdm);
 }
 
