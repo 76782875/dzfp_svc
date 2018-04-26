@@ -1,5 +1,7 @@
 package com.rjxx.taxeasy.dto;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.util.Date;
 import java.util.List;
 
@@ -10,20 +12,34 @@ import java.util.List;
  * @date 2018/3/20
  */
 public class AdapterDataOrder {
+    @JSONField(ordinal=1)
     private String orderNo;
-    private String invoiceList;
-    private String invoiceSplit;
-    private String invoiceSfdy;
+    @JSONField(ordinal=2)
     private Date orderDate;
-    private String chargeTaxWay;
+    @JSONField(ordinal=3)
     private Double totalAmount;
-    private String taxMark;
+    @JSONField(ordinal=4)
     private String remark;
-    private String extractedCode;
-    private Double totalDiscount;
+    @JSONField(ordinal=5)
     private AdapterDataOrderBuyer buyer;
-    private List<AdapterDataOrderPayments> payments;
+    @JSONField(ordinal=6)
     private List<AdapterDataOrderDetails> orderDetails;
+    @JSONField(ordinal=7)
+    private List<AdapterDataOrderPayments> payments;
+    @JSONField(ordinal=8)
+    private String invoiceList;
+    @JSONField(ordinal=9)
+    private String invoiceSplit;
+    @JSONField(ordinal=10)
+    private String invoiceSfdy;
+    @JSONField(ordinal=11)
+    private String chargeTaxWay;
+    @JSONField(ordinal=12)
+    private String taxMark;
+    @JSONField(ordinal=13)
+    private String extractedCode;
+    @JSONField(ordinal=14)
+    private Double totalDiscount;
 
     public String getOrderNo() {
         return orderNo;
