@@ -33,10 +33,46 @@
         </if>
     </select>
 
-    <select id="findByPage" parameterType="pagination" resultType="fpkcYzsz">
-        select * from t_fpkc_yzsz where yxbz = '1'
-        <if test="params.orderBy != null">
-            order by #{params.orderBy}
+    <select id="findByPage" parameterType="pagination" resultType="fpkcYzszVo">
+        SELECT
+        a.*, b.xfsh,
+        b.xfmc,
+        c.skph,
+        c.kpdmc,
+        d.fpzlmc
+        FROM
+        t_fpkc_yzsz a
+        LEFT JOIN t_xf b ON a.xfid = b.id
+        LEFT JOIN t_skp c ON a.skpid = c.id
+        LEFT JOIN t_fpzl d ON a.fpzldm = d.fpzldm
+        WHERE
+        a.yxbz = '1'
+        <if test="params.gsdm != null and params.gsdm !=''">
+            and a.gsdm = #{params.gsdm}
+        </if>
+        <if test="params.xfid != null and params.xfid !=''">
+            and a.xfid = #{params.xfid}
+        </if>
+        <if test="params.xfids !=null and params.xfids !=''">
+            and a.xfid in
+            <foreach collection="params.xfids" item="item" index="index" open="("
+                     separator="," close=")">#{params.xfids[${index}]}
+            </foreach>
+        </if>
+        <if test="params.skpids !=null and params.skpids !=''">
+            and a.skpid in
+            <foreach collection="params.skpids" item="item" index="index" open="("
+                     separator="," close=")">#{params.skpids[${index}]}
+            </foreach>
+        </if>
+        <if test="params.skpid != null and params.skpid !=''">
+            and a.skpid = #{params.skpid}
+        </if>
+        <if test="params.fpzldm != null and params.fpzldm !=''">
+            and a.fpzldm = #{params.fpzldm}
+        </if>
+        <if test="params.kpfs != null and params.kpfs !=''">
+            and a.kpfs = #{params.kpfs}
         </if>
     </select>
     

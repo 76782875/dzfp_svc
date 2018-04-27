@@ -58,9 +58,6 @@
 
 
 	<select id="findAllByGsdmAndCsm" parameterType="map" resultType="csbVo">
-
-
-
 		SELECT
 		t.gsdm,
 		t.xfid,
@@ -133,6 +130,22 @@
 		1,
 		2,
 		4
+	</select>
+
+
+	<select id="findKpfsBySkpid" parameterType="map" resultType="kpfsVo">
+		select a.gsdm,a.gsmc,a.xfid,a.xfsh,a.xfmc,a.kpdid,a.kpddm,a.kpdmc,a.skph,a.kpfs,a.sbcs,a.csz,a.jkfs
+		from v_kpfs a where 1=1
+		<if test="gsdm != null and gsdm != ''">
+			and a.gsdm = #{gsdm}
+		</if>
+		<if test="xfid != null and xfid != ''">
+			and a.xfid = #{xfid}
+		</if>
+		<if test="kpdid != null and kpdid != ''">
+			and a.kpdid = #{kpdid}
+		</if>
+		limit 1
 	</select>
 </mapper>
 
