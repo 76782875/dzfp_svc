@@ -1228,6 +1228,7 @@ public class FpclService {
         jyls1.setKhh(jyxxsq.getKhh());
         jyls1.setGfsjh(jyxxsq.getGfsjh());
         jyls1.setGfsjrdz(jyxxsq.getGfsjrdz());
+        jyls1.setSfdyqd(jyxxsq.getSfdyqd());
         jylsService.save(jyls1);
         return jyls1;
     }
