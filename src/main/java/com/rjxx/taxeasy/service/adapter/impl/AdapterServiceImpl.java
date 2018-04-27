@@ -461,6 +461,7 @@ public class AdapterServiceImpl implements AdapterService {
                 buyer.setBankAcc(gfyhzh);
                 buyer.setBank(gfyh);
                 buyer.setAddress(gfdz);
+                buyer.setIdentifier(gfsh);
 
 
                 if (price.indexOf(",") != -1 && spdm.indexOf(",") != -1) {
