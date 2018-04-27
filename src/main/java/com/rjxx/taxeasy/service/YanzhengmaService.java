@@ -49,6 +49,9 @@ public class YanzhengmaService {
     public List<Yanzhengma> findByPage(Pagination pagination) {
         return yanzhengmaMapper.findByPage(pagination);
     }
-
+    
+    public Yanzhengma findBySql(Map params) {
+        return yanzhengmaMapper.findBySql(params);
+    }
 }
 

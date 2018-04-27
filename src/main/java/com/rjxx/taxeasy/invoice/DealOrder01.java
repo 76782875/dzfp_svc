@@ -228,6 +228,15 @@ public class DealOrder01 implements SVCDealOrder {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
+                    }else if(cszb2.getCsz().equals("04")){//凯盈开票
+                        List resultList = new ArrayList();
+                        try {
+                            resultList= fpclservice.zjkp(jyxxsqList, "04");//税控服务器，电子发票处理
+                            result = responseUtil.lpResponse(null);
+                        } catch (Exception e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
                     }
                 } else {
                     // 不是直连开票

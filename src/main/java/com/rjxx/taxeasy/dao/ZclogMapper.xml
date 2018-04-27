@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rjxx.taxeasy.dao.ZclogMapper">
+
+    <select id="findOneByParams" parameterType="map" resultType="zclog">
+        select * from t_zclog
+        <if test="orderBy != null">
+            order by ${orderBy}
+        </if>
+        limit 1
+    </select>
+
+    <select id="findAllByParams" parameterType="map" resultType="zclog">
+        select * from t_zclog
+        <if test="orderBy != null">
+            order by ${orderBy}
+        </if>
+    </select>
+
+    <select id="findByPage" parameterType="pagination" resultType="zclog">
+        select * from t_zclog
+        <if test="params.orderBy != null">
+            order by ${params.orderBy}
+        </if>
+    </select>
+	
+	<select id="findOneBySql" parameterType="map" resultType="zclog">
+        select * from t_zclog where 1=1 
+        <if test="phone != null">
+			and phone=#{phone}
+		</if>
+        <if test="orderBy != null">
+            order by ${orderBy}
+        </if>
+        limit 1
+    </select>
+    
+    <update id="updateZcnum" parameterType="map">
+        update t_zclog set zcnum = #{zcnum} where id = #{id}
+   </update>
+   
+    <update id="updateTynum" parameterType="map">
+        update t_zclog set tynum = #{tynum} where id = #{id}
+   </update>
+    
+    
+    
+</mapper>
+

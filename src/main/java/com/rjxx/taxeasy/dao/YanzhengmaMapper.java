@@ -22,6 +22,7 @@ public interface YanzhengmaMapper {
     public List<Yanzhengma> findAllByParams(Map params);
 
     public List<Yanzhengma> findByPage(Pagination pagination);
-
+    
+    public Yanzhengma findBySql(Map params);
 }
 
