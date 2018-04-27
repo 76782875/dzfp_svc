@@ -14,7 +14,7 @@ import java.util.List;
 public class AdapterDataOrder {
     @JSONField(ordinal=1)
     private String orderNo;
-    @JSONField(ordinal=2)
+    @JSONField(ordinal=2,format ="yyyy-MM-dd HH:mm:ss")
     private Date orderDate;
     @JSONField(ordinal=3)
     private Double totalAmount;
