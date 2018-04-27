@@ -1,11 +1,11 @@
 package com.rjxx.taxeasy.bizcomm.utils;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.rjxx.taxeasy.business.ims.service.DubboSkpService;
-import com.rjxx.taxeasy.business.tcs.service.DubboInvoiceService;
 import com.rjxx.taxeasy.domains.Cszb;
 import com.rjxx.taxeasy.domains.Kpls;
 import com.rjxx.taxeasy.domains.Skp;
+import com.rjxx.taxeasy.dubbo.business.ims.service.DubboSkpService;
+import com.rjxx.taxeasy.dubbo.business.tcs.service.DubboInvoiceService;
 import com.rjxx.taxeasy.service.CszbService;
 import com.rjxx.taxeasy.service.KplsService;
 import com.rjxx.taxeasy.service.KpspmxService;
