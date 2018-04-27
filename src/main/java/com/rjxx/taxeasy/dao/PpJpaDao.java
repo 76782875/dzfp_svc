@@ -19,5 +19,8 @@ public interface PpJpaDao extends CrudRepository<Pp, Integer> {
 
     @Query(nativeQuery = true, value = "select * from t_pp where ppdm=?1 and gsdm=?2 and yxbz='1'")
     List<Pp> findAllByPpdm(String ppdm, String gsdm);
+
+    @Query(nativeQuery = true, value = "select * from t_pp where ppdm=?1 and yxbz='1' ")
+    Pp findOneByPpdm(String ppdm);
 }
 
