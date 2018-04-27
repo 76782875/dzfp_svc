@@ -52,13 +52,57 @@
     </select>
 
     <select id="findAllByParams" parameterType="map" resultType="yh">
-        select * from t_yh where yxbz = '1'
-        <if test="gsdm != null and gsdm !=''">
+        SELECT
+        *
+        FROM
+        t_yh y
+        WHERE
+        y.yxbz = '1'
+        <if test="dlyhid != null and dlyhid != ''">
+            and y.dlyhid like concat('%',#{dlyhid},'%')
+        </if>
+        <if test="yhmc != null and yhmc != ''">
+            and y.yhmc like concat('%',#{yhmc},'%')
+        </if>
+        AND EXISTS (
+        SELECT
+        1
+        FROM
+        t_xf a,
+        t_group d
+        WHERE
+        a.id = d.xfid
+        AND d.yxbz = '1'
+        AND a.yxbz = '1'
+        AND y.id = d.yhid
+        AND EXISTS (
+        SELECT
+        1
+        FROM
+        t_group b,
+        t_yh c
+        WHERE
+        b.yxbz = '1'
+        <if test="yhid != null and yhid != ''">
+            and c.id = #{yhid}
+        </if>
+        <if test="gsdm != null and gsdm != ''">
             and gsdm = #{gsdm}
         </if>
-        <if test="orderBy != null">
-            order by #{orderBy}
-        </if>
+        AND c.sup = '1'
+        AND a.gsdm = c.gsdm
+        AND b.yhid = c.id
+        AND c.yxbz = '1'
+        AND (
+        (
+        b.xfid IS NULL
+        )
+        OR (
+        a.id = b.xfid
+        )
+        )
+        )
+        )
     </select>
     <select id="findAllByYHCount" parameterType="map" resultType="yhvo">
         select count( DISTINCT a.id) as yhcount from t_yh a where a.yxbz='1'
