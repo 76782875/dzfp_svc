@@ -1086,7 +1086,9 @@ public class AdapterServiceImpl implements AdapterService {
             if (gfyh != null) {
                 jyxxsq.setGfyh(gfyh);
             }
-            jyxxsq.setGfemail(email);
+            if (email != null) {
+                jyxxsq.setGfemail(email);
+            }
             jyxxsq.setSjly(sjly);
             jyxxsq.setOpenid(openid);
             List<Jyxxsq> jyxxsqList = new ArrayList<>();
