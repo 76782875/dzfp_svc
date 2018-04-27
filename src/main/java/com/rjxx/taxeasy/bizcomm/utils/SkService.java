@@ -40,10 +40,11 @@ public class SkService {
     private String skkpServerUrl;
 
     @Reference(version = "1.0.0",group = "tcs",timeout = 12000,retries = '0')
-    private DubboInvoiceService dubboInvoiceService;
+    public DubboInvoiceService dubboInvoiceService;
 
     @Reference(version = "1.0.0",group = "ims",timeout = 12000,retries = '0')
-    private DubboSkpService dubboSkpService;
+    public DubboSkpService dubboSkpService;
+
     @Autowired
     private KplsService kplsService;
     @Autowired
@@ -56,6 +57,9 @@ public class SkService {
 
 
     private Logger logger=LoggerFactory.getLogger(this.getClass());
+
+
+
     /**
      * 调用税控服务开票
      *
