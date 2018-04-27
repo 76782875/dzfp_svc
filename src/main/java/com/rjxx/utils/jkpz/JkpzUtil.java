@@ -552,13 +552,15 @@ public class JkpzUtil {
                     }
                     break;*/
                 case "payments":
-                    for (AdapterDataOrderPayments payments : paymentsList) {
-                        Jyzfmx jyzfmx = new Jyzfmx();
-                        jyzfmx.setGsdm(gsxx.getGsdm());
-                        jyzfmx.setDdh(jyxxsq.getDdh());
-                        jyzfmx.setZffsDm(payments.getPayCode());
-                        jyzfmx.setZfje(payments.getPayPrice());
-                        jyzfmxList.add(jyzfmx);
+                    if(paymentsList!=null && paymentsList.size()>0){
+                        for (AdapterDataOrderPayments payments : paymentsList) {
+                            Jyzfmx jyzfmx = new Jyzfmx();
+                            jyzfmx.setGsdm(gsxx.getGsdm());
+                            jyzfmx.setDdh(jyxxsq.getDdh());
+                            jyzfmx.setZffsDm(payments.getPayCode());
+                            jyzfmx.setZfje(payments.getPayPrice());
+                            jyzfmxList.add(jyzfmx);
+                        }
                     }
                     break;
                 case "buyer":
