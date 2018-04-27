@@ -4,6 +4,7 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.rjxx.taxeasy.domains.Cszb;
 import com.rjxx.taxeasy.domains.Kpls;
 import com.rjxx.taxeasy.domains.Skp;
+import com.rjxx.taxeasy.dubbo.business.ims.service.DubboSkpService;
 import com.rjxx.taxeasy.dubbo.business.tcs.service.DubboInvoiceService;
 import com.rjxx.taxeasy.service.CszbService;
 import com.rjxx.taxeasy.service.KplsService;
@@ -40,6 +41,9 @@ public class SkService {
 
     @Reference(version = "1.0.0",group = "tcs",timeout = 12000,retries = '0')
     private DubboInvoiceService dubboInvoiceService;
+
+    @Reference(version = "1.0.0",group = "ims",timeout = 12000,retries = '0')
+    private DubboSkpService dubboSkpService;
     @Autowired
     private KplsService kplsService;
     @Autowired
@@ -303,6 +307,12 @@ public class SkService {
 
 
 
+    public String register(int skpid) throws Exception {
+        return dubboSkpService.deviceAuth(skpid);
+    }
+    public String inputUDiskPassword(int skpid) throws Exception {
+        return dubboSkpService.inputUDiskPassword(skpid);
+    }
     /**
      * 加密税控服务参数
      *
