@@ -37,6 +37,36 @@ public class FpcyVo implements Serializable {
 
     protected String lrsj;
 
+    protected String fplx;
+
+    protected String je;
+
+    protected String jym;
+
+    public String getJym() {
+        return jym;
+    }
+
+    public void setJym(String jym) {
+        this.jym = jym;
+    }
+
+    public String getFplx() {
+        return fplx;
+    }
+
+    public void setFplx(String fplx) {
+        this.fplx = fplx;
+    }
+
+    public String getJe() {
+        return je;
+    }
+
+    public void setJe(String je) {
+        this.je = je;
+    }
+
     public Integer getId() {
         return id;
     }
