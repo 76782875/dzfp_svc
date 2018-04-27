@@ -34,4 +34,6 @@ public interface AdapterService {
 
     String makeInvoiceForFour(String gsdm, String jylsh, String gfmc, String gfsh, String gfdz,
                               String gfdh, String gfyhzh, String gfyh, String email, String openid, String sjly, String access_token, String weixinOrderNo);
+
+    Map getApiMsg(String gsdm, String tq);
 }
