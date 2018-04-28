@@ -31,5 +31,14 @@
 		</if>
 	</select>
 
+	<select id="findBySql" parameterType="map" resultType="csb">
+		select * from t_csb where yxbz = '1'
+		<if test="ids != null">
+			<foreach collection="ids" open=" and id in (" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+		</if>
+	</select>
+	
 </mapper>
 
