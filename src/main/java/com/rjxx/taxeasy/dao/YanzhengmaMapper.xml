@@ -26,10 +26,14 @@
     </select>
 	<select id="findBySql" parameterType="map" resultType="yanzhengma">
 		select * from t_yanzhengma
-		where TIMESTAMPDIFF(SECOND,lrsj, now()) &lt;=444490
+		where TIMESTAMPDIFF(SECOND,lrsj, now()) &lt;=600
 		<if test="phone != null">
 			and phone=#{phone}
 		</if>
+		<if test="code != null">
+			and code=#{code}
+		</if>
+		
 		ORDER BY lrsj desc
 		LIMIT 1
 		
