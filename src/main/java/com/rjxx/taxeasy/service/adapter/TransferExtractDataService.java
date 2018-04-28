@@ -250,7 +250,7 @@ public class TransferExtractDataService {
         return resultMap;
     }
 
-    public static AdapterPost test(String gsdm,String tq) {
+    public static Map test(String gsdm,String tq) {
         logger.info("抽取数据KEY={}",tq);
         AdapterPost post = new AdapterPost();
         AdapterData data = new AdapterData();
@@ -280,16 +280,16 @@ public class TransferExtractDataService {
             details.add(detail);
         }
 
-        //支付
-        AdapterDataOrderPayments payment = new AdapterDataOrderPayments();
-        payment.setPayCode("02");
-        payment.setPayPrice(5d);
-        payments.add(payment);
-
-        AdapterDataOrderPayments payment2 = new AdapterDataOrderPayments();
-        payment2.setPayCode("04");
-        payment2.setPayPrice(5d);
-        payments.add(payment2);
+//        //支付
+//        AdapterDataOrderPayments payment = new AdapterDataOrderPayments();
+//        payment.setPayCode("02");
+//        payment.setPayPrice(5d);
+//        payments.add(payment);
+//
+//        AdapterDataOrderPayments payment2 = new AdapterDataOrderPayments();
+//        payment2.setPayCode("04");
+//        payment2.setPayPrice(5d);
+//        payments.add(payment2);
 
         //购方
         buyer.setMemberId("khh12345678");
@@ -326,7 +326,9 @@ public class TransferExtractDataService {
 
 
         logger.info("抽取的数据=【"+JSON.toJSONString(post)+"】");
-        return post;
+        Map resultMap =new HashMap();
+        resultMap.put("post",post);
+        return resultMap;
     }
 
     public static void main(String[] args) {
