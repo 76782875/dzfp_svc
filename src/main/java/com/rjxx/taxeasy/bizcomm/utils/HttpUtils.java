@@ -230,6 +230,61 @@ public class HttpUtils {
         }
         return result;
     }
+
+    /**
+     * 调用.net ws设置参数接口
+     * @param url
+     * @param methodName
+     * @param servletip
+     * @param servletport
+     * @param keypwd
+     * @return
+     */
+    public static String netSetParameter (String url,String methodName,String servletip,String servletport,String keypwd,String t){
+        String result="";
+        try {
+            logger.info("----------发送的报文------"+keypwd);
+            JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+            Client client = dcf.createClient(url);
+            //String sign= SignUtils.getSign(QueryData,key);
+            Object[] objects = client.invoke(methodName, servletip,servletport,keypwd,t);
+            //输出调用结果
+            result = objects[0].toString();
+            logger.info("----------接收返回值------"+result.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    /**
+     * 调用.net ws获取发票领购信息
+     * @param url
+     * @param methodName
+     * @param nsrsbh
+     * @param kpzdbs
+     * @param fplxdm
+     * @param fpzt
+     * @param lgqxx
+     * @return
+     */
+    public static String netFPLGXXCX (String url,String methodName,String nsrsbh,String kpzdbs,String fplxdm,String fpzt,String lgqxx){
+        String result="";
+        try {
+            logger.info("----------发送的报文------"+methodName);
+            JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+            Client client = dcf.createClient(url);
+            //String sign= SignUtils.getSign(QueryData,key);
+            Object[] objects = client.invoke(methodName, nsrsbh,kpzdbs,fplxdm,fpzt,lgqxx);
+            //输出调用结果
+            result = objects[0].toString();
+            logger.info("----------接收返回值------"+result.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     public static String HttpPost_Basic(String url,String data){
         HttpPost httpPost = new HttpPost(url);
         CloseableHttpResponse response = null;
@@ -356,5 +411,10 @@ public class HttpUtils {
                 "   </soapenv:Body>\n" +
                 "</soapenv:Envelope>";
         HttpsdoPostSoap1_2(wsurl,xml,null,null,null);*/
+        String wsurl="http://192.168.1.200:8009/Service.asmx?wsdl";
+        //netSetParameter(wsurl,"SetParameter","210.14.78.228","7090","00000000",null);
+
+        netFPLGXXCX(wsurl,"FPLGXXCX",null,"qs1njkpd1","026","1","1");
+        //System.out.println(t);
     }
 }

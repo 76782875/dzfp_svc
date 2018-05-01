@@ -23,5 +23,7 @@ public interface CsbMapper {
 
     public List<Csb> findByPage(Pagination pagination);
 
+	public List<Csb> findBySql(Map params);
+
 }
 

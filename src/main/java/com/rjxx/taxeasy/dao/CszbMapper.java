@@ -30,5 +30,7 @@ public interface CszbMapper {
 	public List<CsbVo> findAllByGsdmAndCsm(Map params);
 
     public KpfsVo findKpfsBySkpid(Map map);
+
+    public List<KpfsVo> findAllKpfs(Map map);
 }
 

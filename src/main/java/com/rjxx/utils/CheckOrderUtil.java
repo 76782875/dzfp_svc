@@ -343,7 +343,7 @@ public class CheckOrderUtil {
                         double taxRate = Double.valueOf(TaxRate);
                         if (!(taxRate == 0 || taxRate == 0.03 || taxRate == 0.04
                                 || taxRate == 0.06 || taxRate == 0.11 || taxRate == 0.13
-                                || taxRate == 0.17)) {
+                                || taxRate == 0.17 || taxRate == 0.1 || taxRate == 0.16 || taxRate == 0.10)) {
                             result += "订单号为" + ddh + "的订单,商品税率(TaxRate)格式有误，请联系商户;\r\n";
                         }
                     }

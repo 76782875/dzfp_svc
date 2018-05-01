@@ -5,14 +5,30 @@
 
     <select id="findOneByParams" parameterType="map" resultType="fpkcYztz">
         select * from t_fpkc_yztz where yxbz = '1'
-        <if test="orderBy != null">
-            order by ${orderBy}
+        <if test="gsdm != null and gsdm != ''">
+            and gsdm = #{gsdm}
+        </if>
+        <if test="yjszid != null and yjszid != ''">
+            and  yjszid = #{yjszid}
+        </if>
+        <if test="tzyhid != null and tzyhid != ''">
+            and  tzyhid = #{tzyhid}
         </if>
         limit 1
     </select>
 
     <select id="findAllByParams" parameterType="map" resultType="fpkcYztz">
         select * from t_fpkc_yztz where yxbz = '1'
+        <if test="gsdm != null and gsdm != ''">
+            and  gsdm = #{gsdm}
+        </if>
+        <if test="yjszid != null and yjszid != ''">
+            and  yjszid = #{yjszid}
+        </if>
+        <!--<if test="yjszids != null and yjszids !=''">
+            and yjszid in <foreach collection="yjszids" item="item" index="index"
+                                    open="(" separator="," close=")"> #{yjszids[${index}]}</foreach>
+        </if>-->
         <if test="orderBy != null">
             order by ${orderBy}
         </if>

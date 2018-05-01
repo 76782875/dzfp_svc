@@ -50,5 +50,9 @@ public class CsbService {
         return csbMapper.findByPage(pagination);
     }
 
+	public List<Csb> findBySql(Map params) {
+		 return csbMapper.findBySql(params);
+	}
+
 }
 
