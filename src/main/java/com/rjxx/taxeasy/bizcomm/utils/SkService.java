@@ -1,11 +1,11 @@
 package com.rjxx.taxeasy.bizcomm.utils;
 
-import com.alibaba.dubbo.config.annotation.Reference;
+//import com.alibaba.dubbo.config.annotation.Reference;
 import com.rjxx.taxeasy.domains.Cszb;
 import com.rjxx.taxeasy.domains.Kpls;
 import com.rjxx.taxeasy.domains.Skp;
-import com.rjxx.taxeasy.dubbo.business.ims.service.DubboSkpService;
-import com.rjxx.taxeasy.dubbo.business.tcs.service.DubboInvoiceService;
+//import com.rjxx.taxeasy.dubbo.business.ims.service.DubboSkpService;
+///import com.rjxx.taxeasy.dubbo.business.tcs.service.DubboInvoiceService;
 import com.rjxx.taxeasy.service.CszbService;
 import com.rjxx.taxeasy.service.KplsService;
 import com.rjxx.taxeasy.service.KpspmxService;
@@ -39,12 +39,12 @@ public class SkService {
     @Value("${skkp_server_url:}")
     private String skkpServerUrl;
 
-    @Reference(version = "1.0.0",group = "tcs",timeout = 12000,retries = '0')
+    /*@Reference(version = "1.0.0",group = "tcs",timeout = 12000,retries = '0')
     public DubboInvoiceService dubboInvoiceService;
 
     @Reference(version = "1.0.0",group = "ims",timeout = 12000,retries = '0')
     public DubboSkpService dubboSkpService;
-
+*/
     @Autowired
     private KplsService kplsService;
     @Autowired
@@ -75,7 +75,7 @@ public class SkService {
         Cszb cszb=cszbService.getSpbmbbh(kpls.getGsdm(),kpls.getXfid(),kpls.getSkpid(),"sfqysknew");
         String result=null;
         if("是".equals(cszb.getCsz())){
-             result=dubboInvoiceService.invoice(encryptStr);
+             //result=dubboInvoiceService.invoice(encryptStr);
         }else{
             String url = skServerUrl + "/invoice/invoice";
             Map<String, String> map = new HashMap<>();
@@ -101,7 +101,7 @@ public class SkService {
         Cszb cszb=cszbService.getSpbmbbh(kpls.getGsdm(),kpls.getXfid(),kpls.getSkpid(),"sfqysknew");
         String result=null;
         if("是".equals(cszb.getCsz())){
-            result=dubboInvoiceService.ReCreatePdf(encryptStr);
+            //result=dubboInvoiceService.ReCreatePdf(encryptStr);
         }else{
             String url = skkpServerUrl + "/invoice/ReCreatePdf";
             Map<String, String> map = new HashMap<>();
@@ -129,7 +129,7 @@ public class SkService {
             Kpls kpls=kplsService.findOne(kplsh);
             Cszb cszb=cszbService.getSpbmbbh(kpls.getGsdm(),kpls.getXfid(),kpls.getSkpid(),"sfqysknew");
             if("是".equals(cszb.getCsz())){
-                result=dubboInvoiceService.skServerKP(encryptStr);
+                //result=dubboInvoiceService.skServerKP(encryptStr);
             }else{
                 String url = skkpServerUrl + "/invoice/SkServerKP";
                 Map<String, String> map = new HashMap<>();
@@ -163,7 +163,7 @@ public class SkService {
             Kpls kpls=kplsService.findOne(kplsh);
             Cszb cszb=cszbService.getSpbmbbh(kpls.getGsdm(),kpls.getXfid(),kpls.getSkpid(),"sfqysknew");
             if("是".equals(cszb.getCsz())){
-                result=dubboInvoiceService.skBoxKP(encryptStr);
+                //result=dubboInvoiceService.skBoxKP(encryptStr);
             }else{
                 String url = skkpServerUrl + "/invoice/SkBoxP";
                 Map<String, String> map = new HashMap<>();
@@ -215,7 +215,7 @@ public class SkService {
         Cszb cszb=cszbService.getSpbmbbh(skp.getGsdm(),skp.getXfid(),skp.getId(),"sfqysknew");
         String result=null;
         if("是".equals(cszb.getCsz())){
-            result=dubboInvoiceService.getCodeAndNo(encryptStr);
+            //result=dubboInvoiceService.getCodeAndNo(encryptStr);
         }else{
             String url = skServerUrl + "/invoice/getCodeAndNo";
             Map<String, String> map = new HashMap<>();
@@ -242,7 +242,7 @@ public class SkService {
         Cszb cszb=cszbService.getSpbmbbh(kpls.getGsdm(),kpls.getXfid(),kpls.getSkpid(),"sfqysknew");
         String result=null;
         if("是".equals(cszb.getCsz())){
-            result = dubboInvoiceService.voidInvoice(encryptStr);
+            //result = dubboInvoiceService.voidInvoice(encryptStr);
         }else{
             String url = skServerUrl + "/invoice/voidInvoice";
             Map<String, String> map = new HashMap<>();
@@ -269,7 +269,7 @@ public class SkService {
         Cszb cszb=cszbService.getSpbmbbh(kpls.getGsdm(),kpls.getXfid(),kpls.getSkpid(),"sfqysknew");
         String result=null;
         if("是".equals(cszb.getCsz())){
-            result = dubboInvoiceService.reprintInvoice(encryptStr);
+            //result = dubboInvoiceService.reprintInvoice(encryptStr);
         }else{
             String url = skServerUrl + "/invoice/reprintInvoice";
             Map<String, String> map = new HashMap<>();
@@ -311,12 +311,12 @@ public class SkService {
 
 
 
-    public String register(int skpid) throws Exception {
+   /* public String register(int skpid) throws Exception {
         return dubboSkpService.deviceAuth(skpid);
     }
     public String inputUDiskPassword(int skpid) throws Exception {
         return dubboSkpService.inputUDiskPassword(skpid);
-    }
+    }*/
     /**
      * 加密税控服务参数
      *
