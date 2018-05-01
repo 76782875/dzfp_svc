@@ -37,6 +37,11 @@ public class FpkcYztz  implements Serializable {
  */ 
 @Column(name="tzfs")
 	protected String tzfs;
+/**
+ * 公司代码
+ */
+@Column(name="gsdm")
+	protected String gsdm;
 
 /**
  * 通知用户id
@@ -151,5 +156,12 @@ public class FpkcYztz  implements Serializable {
 		this.yxbz=yxbz;
 	}
 
+	public String getGsdm() {
+		return gsdm;
+	}
+
+	public void setGsdm(String gsdm) {
+		this.gsdm = gsdm;
+	}
 }
 

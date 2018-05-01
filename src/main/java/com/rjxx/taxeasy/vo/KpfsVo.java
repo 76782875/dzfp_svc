@@ -15,6 +15,8 @@ public class KpfsVo {
     protected String sbcs;
     protected String csz;
     protected String jkfs;
+    protected String skurl;
+    protected String kpzdbs;
 
     public String getGsdm() {
         return gsdm;
@@ -118,5 +120,21 @@ public class KpfsVo {
 
     public void setJkfs(String jkfs) {
         this.jkfs = jkfs;
+    }
+
+    public String getSkurl() {
+        return skurl;
+    }
+
+    public void setSkurl(String skurl) {
+        this.skurl = skurl;
+    }
+
+    public String getKpzdbs() {
+        return kpzdbs;
+    }
+
+    public void setKpzdbs(String kpzdbs) {
+        this.kpzdbs = kpzdbs;
     }
 }

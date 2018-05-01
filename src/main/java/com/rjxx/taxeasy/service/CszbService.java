@@ -101,5 +101,10 @@ public class CszbService {
 		return cszbMapper.findKpfsBySkpid(map);
 	}
 
+	public List<KpfsVo> findAllKpfs(Map map) {
+		// TODO Auto-generated method stub
+		return cszbMapper.findAllKpfs(map);
+	}
+
 }
 
