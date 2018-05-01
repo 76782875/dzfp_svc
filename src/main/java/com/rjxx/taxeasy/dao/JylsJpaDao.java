@@ -20,5 +20,8 @@ public interface JylsJpaDao extends CrudRepository<Jyls, Integer> {
 
     @Query(nativeQuery = true,value = "select * from t_jyls where gsdm=?1 and ddh=?2 and yxbz='1'")
     List<Jyls> findByGsdmAndDdh(String gsdm, String ddh);
+
+    @Query(nativeQuery = true,value = "select * from t_jyls where sqlsh=?1 and gsdm=?2 and yxbz='1'")
+    List<Jyls> findBySqlshAndGsdm(Integer sqlsh, String gsdm);
 }
 

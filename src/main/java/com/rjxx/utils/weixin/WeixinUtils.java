@@ -205,10 +205,32 @@ public class WeixinUtils {
             Map skpParam = new HashMap();
             skpParam.put("kpddm", menDianId);
             Skp skp = skpService.findOneByParams(skpParam);
+            if(skp==null){
+                logger.info("根据开票点代码，获取开票点失败!");
+                return null;
+            }
             Pp pp = ppJpaDao.findOneById(skp.getPid());
+            if(pp==null){
+                logger.info("根据开票点，获取品牌失败!");
+                return null;
+            }
             redirect_url = "http://fpjtest.datarj.com/einv/QR/witting01.html?t="+System.currentTimeMillis()+"&ppdm="+pp.getPpdm();
         }else {
-            redirect_url = WeiXinConstants.SUCCESS_REDIRECT_URL;
+            Map skpParam = new HashMap();
+            skpParam.put("kpddm", menDianId);
+            Skp skp = skpService.findOneByParams(skpParam);
+            if(skp==null){
+                logger.info("根据开票点代码，获取开票点失败!");
+                return null;
+            }
+            Pp pp = ppJpaDao.findOneById(skp.getPid());
+            if(pp==null){
+                logger.info("根据开票点，获取品牌失败!");
+                return null;
+            }
+            redirect_url = WeiXinConstants.SUCCESS_REDIRECT_URL
+                    +"?t="+System.currentTimeMillis()
+                    +"&ppdm="+pp.getPpdm()+"="+pp.getPpheadcolor()+"="+pp.getPpbodycolor()+"="+pp.getPpbuttoncolor();
         }
         Map nvps = new HashMap();
         nvps.put("s_pappid", spappid);
@@ -557,7 +579,7 @@ public class WeixinUtils {
         Map base_info = new HashMap();
         WeiXinMuBan weiXinMuBan = new WeiXinMuBan();
         weiXinMuBan.setPayee(payee);
-        weiXinMuBan.setType("增值税普通发票");
+        weiXinMuBan.setType("增值税电子普通发票");
         weiXinMuBan.setTitle(gsmc);
         weiXinMuBan.setLogo_url(logo_url);
         //weiXinMuBan.setLogo_url("http://mmbiz.qpic.cn/mmbiz_jpg/l249Gu1JJaJjZiauO138MD1d6dnglRlj1bicFTaNyyDGcAOgxMd2WoXLKvEn8icJiaiaibRJkgeBcsCODI4AYP7V6vPg/0");

@@ -87,8 +87,10 @@ public class JkpzServiceImpl implements JkpzService {
             }
             //发票开具、上传
             if(reqType.equals("01")||reqType.equals("02")){
+
                 ObjectMapper mapper = new ObjectMapper();
-                AdapterPost adapterPost=mapper.readValue(data, AdapterPost.class);
+//                AdapterPost adapterPost=mapper.readValue(data, AdapterPost.class);
+                AdapterPost adapterPost=JSON.parseObject(data,AdapterPost.class);
                 if(adapterPost==null){
                     return ResultUtil.error("参数错误");
                 }

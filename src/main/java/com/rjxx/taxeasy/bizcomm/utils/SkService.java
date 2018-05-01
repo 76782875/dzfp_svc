@@ -1,11 +1,10 @@
 package com.rjxx.taxeasy.bizcomm.utils;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.alibaba.fastjson.JSON;
 import com.rjxx.taxeasy.domains.Cszb;
 import com.rjxx.taxeasy.domains.Kpls;
-import com.rjxx.taxeasy.domains.Kpspmx;
 import com.rjxx.taxeasy.domains.Skp;
+import com.rjxx.taxeasy.dubbo.business.ims.service.DubboSkpService;
 import com.rjxx.taxeasy.dubbo.business.tcs.service.DubboInvoiceService;
 import com.rjxx.taxeasy.service.CszbService;
 import com.rjxx.taxeasy.service.KplsService;
@@ -21,8 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +40,11 @@ public class SkService {
     private String skkpServerUrl;
 
     @Reference(version = "1.0.0",group = "tcs",timeout = 12000,retries = '0')
-    private DubboInvoiceService dubboInvoiceService;
+    public DubboInvoiceService dubboInvoiceService;
+
+    @Reference(version = "1.0.0",group = "ims",timeout = 12000,retries = '0')
+    public DubboSkpService dubboSkpService;
+
     @Autowired
     private KplsService kplsService;
     @Autowired
@@ -56,6 +57,9 @@ public class SkService {
 
 
     private Logger logger=LoggerFactory.getLogger(this.getClass());
+
+
+
     /**
      * 调用税控服务开票
      *
@@ -128,6 +132,40 @@ public class SkService {
                 result=dubboInvoiceService.skServerKP(encryptStr);
             }else{
                 String url = skkpServerUrl + "/invoice/SkServerKP";
+                Map<String, String> map = new HashMap<>();
+                map.put("p", encryptStr);
+                result = HttpUtils.doPost(url, map);
+            }
+            if(result!=null){
+                response= XmlJaxbUtils.convertXmlStrToObject(InvoiceResponse.class, result);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.info("------返回数据--------"+result);
+        }
+        return response;
+    }
+    /**
+     * 税控服务器开票
+     *
+     * @param kplsh
+     * @return
+     */
+    public InvoiceResponse SkBoxKP(int kplsh) throws Exception {
+
+        InvoiceResponse response=null;
+        String result=null;
+        try{
+            if (StringUtils.isBlank(skkpServerUrl)) {
+                return InvoiceResponseUtils.responseError("skkpServerUrl为空");
+            }
+            String encryptStr = encryptSkServerParameter(kplsh + "");
+            Kpls kpls=kplsService.findOne(kplsh);
+            Cszb cszb=cszbService.getSpbmbbh(kpls.getGsdm(),kpls.getXfid(),kpls.getSkpid(),"sfqysknew");
+            if("是".equals(cszb.getCsz())){
+                result=dubboInvoiceService.skBoxKP(encryptStr);
+            }else{
+                String url = skkpServerUrl + "/invoice/SkBoxP";
                 Map<String, String> map = new HashMap<>();
                 map.put("p", encryptStr);
                 result = HttpUtils.doPost(url, map);
@@ -273,6 +311,12 @@ public class SkService {
 
 
 
+    public String register(int skpid) throws Exception {
+        return dubboSkpService.deviceAuth(skpid);
+    }
+    public String inputUDiskPassword(int skpid) throws Exception {
+        return dubboSkpService.inputUDiskPassword(skpid);
+    }
     /**
      * 加密税控服务参数
      *

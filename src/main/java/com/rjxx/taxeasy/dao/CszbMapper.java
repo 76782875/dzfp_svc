@@ -7,6 +7,7 @@ import com.rjxx.comm.mybatis.MybatisRepository;
 import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.domains.Cszb;
 import com.rjxx.taxeasy.vo.CsbVo;
+import com.rjxx.taxeasy.vo.KpfsVo;
 
 /**
  * 由GenJavaCode类自动生成
@@ -28,5 +29,8 @@ public interface CszbMapper {
 
 	public List<CsbVo> findAllByGsdmAndCsm(Map params);
 
+    public KpfsVo findKpfsBySkpid(Map map);
+
+    public List<KpfsVo> findAllKpfs(Map map);
 }
 

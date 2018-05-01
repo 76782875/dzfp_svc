@@ -84,7 +84,7 @@ public class JkpzUtil {
         Skp skp = (Skp) map.get("skp");
         Jyxxsq jyxxsq = (Jyxxsq) map.get("jyxxsq");
         if(StringUtils.isBlank(skp.getKpddm())){
-            return "缺少开票点代码";
+            return "缺少开票点代码！";
         }
         jyxxsq.setKpddm(skp.getKpddm());
         return null;
@@ -131,11 +131,11 @@ public class JkpzUtil {
                 case "spbmbbh":
                     break;
                 default:
-                    return "未知的参数";
+                    return "未知的参数！";
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return csm+"未知的参数";
+            return csm+"未知的参数！";
         }
         return null;
     }
@@ -149,7 +149,7 @@ public class JkpzUtil {
         jyxxsq.setFhr((String) xfxx.get("fhr"));
         String kpr=(String) xfxx.get("kpr");
         if(StringUtils.isBlank(kpr)){
-            return "缺少开票人信息";
+            return "缺少开票人信息！";
         }
         jyxxsq.setKpr(kpr);
         return null;
@@ -169,7 +169,7 @@ public class JkpzUtil {
         try{
             details = adapterPost.getData().getOrder().getOrderDetails();
         }catch (Exception e){
-            return "商品信息缺少金额，税额，价税合计标签";
+            return "商品信息缺少金额，税额，价税合计标签！";
         }
         try{
             Cszb cszb = cszbService.getSpbmbbh(gsxx.getGsdm(),xf.getId(),skp.getId(),jkpzVo.getCsm());
@@ -226,13 +226,13 @@ public class JkpzUtil {
         try{
             details = adapterPost.getData().getOrder().getOrderDetails();
         }catch (Exception e){
-            return "商品信息缺少金额，税额，价税合计标签";
+            return "商品信息缺少金额，税额，价税合计标签！";
         }
         try{
             int xh = 1;
             for(int i=0;i<details.size();i++){
                 if(StringUtil.isBlankList(details.get(i).getVenderOwnCode())){
-                    return "商品信息缺少商品编码";
+                    return "商品信息缺少商品编码！";
                 }
                 Map param = new HashMap();
                 param.put("gsdm",gsxx.getGsdm());
@@ -328,7 +328,7 @@ public class JkpzUtil {
         try{
             details = adapterPost.getData().getOrder().getOrderDetails();
         }catch (Exception e){
-            return "商品信息缺少金额，税额，价税合计标签";
+            return "商品信息缺少金额，税额，价税合计标签！";
         }
         try {
             int xh = 1;
@@ -363,7 +363,7 @@ public class JkpzUtil {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return "获取商品信息错误";
+            return "获取商品信息错误！";
         }
         return null;
     }
@@ -423,24 +423,24 @@ public class JkpzUtil {
             List<Jyzfmx> jyzfmxList = (List<Jyzfmx>) map.get("jyzfmxList");
             String pzcsm = jkpzVo.getPzcsm();
             if(adapterPost.getTaxNo() == null || adapterPost.getClientNo()==null){
-                result="获取销方或开票点信息错误";
+                result="获取销方或开票点信息错误！";
                 return result;
             }
             AdapterData data = adapterPost.getData();
             if(data == null){
-                result="获取主信息错误";
+                result="缺少主信息！";
                 return result;
             }
             //订单
             AdapterDataOrder order = adapterPost.getData().getOrder();
             if(order==null){
-                result="获取订单信息错误";
+                result="缺少订单信息！";
                 return result;
             }
             //销方
             AdapterDataSeller seller = adapterPost.getData().getSeller();
             if(seller == null){
-                result="获取销方信息错误";
+                result="缺少销方信息！";
                 return result;
             }
             //购方
@@ -448,14 +448,14 @@ public class JkpzUtil {
             //交易数据上传
             if(adapterPost.getReqType()!=null && !adapterPost.getReqType().equals("02")){
                 if(buyer==null){
-                    result="获取购方信息错误";
+                    result="缺少购方信息！";
                     return result;
                 }
             }
             //商品信息list
             List<AdapterDataOrderDetails> orderDetailList = adapterPost.getData().getOrder().getOrderDetails();
             if(orderDetailList.isEmpty()){
-                result="获取商品信息错误";
+                result="缺少商品信息！";
                 return result;
             }
             //支付信息list
@@ -552,13 +552,15 @@ public class JkpzUtil {
                     }
                     break;*/
                 case "payments":
-                    for (AdapterDataOrderPayments payments : paymentsList) {
-                        Jyzfmx jyzfmx = new Jyzfmx();
-                        jyzfmx.setGsdm(gsxx.getGsdm());
-                        jyzfmx.setDdh(jyxxsq.getDdh());
-                        jyzfmx.setZffsDm(payments.getPayCode());
-                        jyzfmx.setZfje(payments.getPayPrice());
-                        jyzfmxList.add(jyzfmx);
+                    if(paymentsList!=null && paymentsList.size()>0){
+                        for (AdapterDataOrderPayments payments : paymentsList) {
+                            Jyzfmx jyzfmx = new Jyzfmx();
+                            jyzfmx.setGsdm(gsxx.getGsdm());
+                            jyzfmx.setDdh(jyxxsq.getDdh());
+                            jyzfmx.setZffsDm(payments.getPayCode());
+                            jyzfmx.setZfje(payments.getPayPrice());
+                            jyzfmxList.add(jyzfmx);
+                        }
                     }
                     break;
                 case "buyer":
@@ -583,7 +585,7 @@ public class JkpzUtil {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            result="获取数据错误";
+            result="获取数据错误！";
             return result;
         }
         return null;

@@ -67,7 +67,11 @@ public class Roles  implements Serializable {
  */ 
 @Column(name="xgry")
 	protected String xgry;
-
+/**
+ * 是否是系统默认角色
+ */
+@Column(name="sfsmr")
+	protected String sfsmr;
 
 	public Integer getId(){
 		return id;
@@ -147,6 +151,14 @@ public class Roles  implements Serializable {
 
 	public void setXgry(String xgry){
 		this.xgry=xgry;
+	}
+
+	public String getSfsmr() {
+		return sfsmr;
+	}
+
+	public void setSfsmr(String sfsmr) {
+		this.sfsmr = sfsmr;
 	}
 
 }

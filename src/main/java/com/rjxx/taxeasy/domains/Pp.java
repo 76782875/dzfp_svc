@@ -104,6 +104,15 @@ public class Pp implements Serializable {
 
     private String ppheadcolor;
     private String ppbodycolor;
+    private String ppbuttoncolor;
+
+    public String getPpbuttoncolor() {
+        return ppbuttoncolor;
+    }
+
+    public void setPpbuttoncolor(String ppbuttoncolor) {
+        this.ppbuttoncolor = ppbuttoncolor;
+    }
 
     public String getPpheadcolor() {
         return ppheadcolor;

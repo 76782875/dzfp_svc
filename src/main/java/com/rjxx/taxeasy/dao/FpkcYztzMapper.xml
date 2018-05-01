@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rjxx.taxeasy.dao.FpkcYztzMapper">
+
+    <select id="findOneByParams" parameterType="map" resultType="fpkcYztz">
+        select * from t_fpkc_yztz where yxbz = '1'
+        <if test="gsdm != null and gsdm != ''">
+            and gsdm = #{gsdm}
+        </if>
+        <if test="yjszid != null and yjszid != ''">
+            and  yjszid = #{yjszid}
+        </if>
+        <if test="tzyhid != null and tzyhid != ''">
+            and  tzyhid = #{tzyhid}
+        </if>
+        limit 1
+    </select>
+
+    <select id="findAllByParams" parameterType="map" resultType="fpkcYztz">
+        select * from t_fpkc_yztz where yxbz = '1'
+        <if test="gsdm != null and gsdm != ''">
+            and  gsdm = #{gsdm}
+        </if>
+        <if test="yjszid != null and yjszid != ''">
+            and  yjszid = #{yjszid}
+        </if>
+        <!--<if test="yjszids != null and yjszids !=''">
+            and yjszid in <foreach collection="yjszids" item="item" index="index"
+                                    open="(" separator="," close=")"> #{yjszids[${index}]}</foreach>
+        </if>-->
+        <if test="orderBy != null">
+            order by ${orderBy}
+        </if>
+    </select>
+
+    <select id="findByPage" parameterType="pagination" resultType="fpkcYztz">
+        select * from t_fpkc_yztz where yxbz = '1'
+        <if test="params.orderBy != null">
+            order by ${params.orderBy}
+        </if>
+    </select>
+
+</mapper>
+

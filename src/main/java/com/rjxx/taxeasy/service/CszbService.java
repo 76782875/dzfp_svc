@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.rjxx.taxeasy.vo.KpfsVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -93,6 +94,16 @@ public class CszbService {
 	public Cszb findsfzlkpByParams(Cszb cszb) {
 		// TODO Auto-generated method stub
 		return cszbMapper.findsfzlkpByParams(cszb);
+	}
+
+	public KpfsVo findKpfsBySkpid(Map map) {
+		// TODO Auto-generated method stub
+		return cszbMapper.findKpfsBySkpid(map);
+	}
+
+	public List<KpfsVo> findAllKpfs(Map map) {
+		// TODO Auto-generated method stub
+		return cszbMapper.findAllKpfs(map);
 	}
 
 }
