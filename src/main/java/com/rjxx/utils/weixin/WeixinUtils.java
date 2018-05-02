@@ -218,19 +218,21 @@ public class WeixinUtils {
         }else {
             Map skpParam = new HashMap();
             skpParam.put("kpddm", menDianId);
-            Skp skp = skpService.findOneByParams(skpParam);
-            if(skp==null){
-                logger.info("根据开票点代码，获取开票点失败!");
-                return null;
+            try {
+                Skp skp = skpService.findOneByParams(skpParam);
+                Pp pp = ppJpaDao.findOneById(skp.getPid());
+                if(skp==null || pp==null){
+                    logger.info("根据开票点，获取品牌失败!");
+                    redirect_url = WeiXinConstants.SUCCESS_REDIRECT_URL;
+                }else{
+                    redirect_url = WeiXinConstants.SUCCESS_REDIRECT_URL
+                            +"?t="+System.currentTimeMillis()
+                            +"&ppdm="+pp.getPpdm()+"="+pp.getPpheadcolor()+"="+pp.getPpbodycolor()+"="+pp.getPpbuttoncolor();
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+                redirect_url = WeiXinConstants.SUCCESS_REDIRECT_URL;
             }
-            Pp pp = ppJpaDao.findOneById(skp.getPid());
-            if(pp==null){
-                logger.info("根据开票点，获取品牌失败!");
-                return null;
-            }
-            redirect_url = WeiXinConstants.SUCCESS_REDIRECT_URL
-                    +"?t="+System.currentTimeMillis()
-                    +"&ppdm="+pp.getPpdm()+"="+pp.getPpheadcolor()+"="+pp.getPpbodycolor()+"="+pp.getPpbuttoncolor();
         }
         Map nvps = new HashMap();
         nvps.put("s_pappid", spappid);
