@@ -220,18 +220,14 @@ public class WeixinUtils {
             skpParam.put("kpddm", menDianId);
             try {
                 Skp skp = skpService.findOneByParams(skpParam);
-                if(skp==null){
+                Pp pp = ppJpaDao.findOneById(skp.getPid());
+                if(skp==null || pp==null){
                     logger.info("根据开票点，获取品牌失败!");
                     redirect_url = WeiXinConstants.SUCCESS_REDIRECT_URL;
-                }else {
-                    Pp pp = ppJpaDao.findOneById(skp.getPid());
-                    if(pp==null){
-                        redirect_url = WeiXinConstants.SUCCESS_REDIRECT_URL;
-                    }else {
-                        redirect_url = WeiXinConstants.SUCCESS_REDIRECT_URL
-                                +"?t="+System.currentTimeMillis()
-                                +"&ppdm="+pp.getPpdm()+"="+pp.getPpheadcolor()+"="+pp.getPpbodycolor()+"="+pp.getPpbuttoncolor();
-                    }
+                }else{
+                    redirect_url = WeiXinConstants.SUCCESS_REDIRECT_URL
+                            +"?t="+System.currentTimeMillis()
+                            +"&ppdm="+pp.getPpdm()+"="+pp.getPpheadcolor()+"="+pp.getPpbodycolor()+"="+pp.getPpbuttoncolor();
                 }
             }catch (Exception e){
                 e.printStackTrace();
