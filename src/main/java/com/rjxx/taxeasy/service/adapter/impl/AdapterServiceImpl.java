@@ -67,13 +67,30 @@ public class AdapterServiceImpl implements AdapterService {
     @Autowired
     private JymxsqService jymxsqService;
     @Autowired
-    private JyxxsqService jyxxsqService;
-    @Autowired
-    private KplsService kplsService;
-    @Autowired
-    private JyzfmxService jyzfmxService;
-    @Autowired
     private FpclService fpclService;
+
+    @Override
+    public String getShowMsg(String ppdm) {
+        try {
+            Pp pp = ppJpaDao.findOneByPpdm(ppdm);
+            String ppheadcolor = "no";
+            String ppbodycolor = "no";
+            String ppbuttoncolor = "no";
+            if (StringUtil.isNotBlankList(pp.getPpheadcolor(), pp.getPpbodycolor())) {
+                ppheadcolor = pp.getPpheadcolor();
+                ppbodycolor = pp.getPpbodycolor();
+                ppbuttoncolor = pp.getPpbuttoncolor();
+            }
+            Map result = new HashMap();
+            result.put("headcolor", ppheadcolor);
+            result.put("bodycolor", ppbodycolor);
+            result.put("buttoncolor", ppbuttoncolor);
+            return JSON.toJSONString(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     /**
      * GET_TYPE_2获取品牌信息
@@ -104,26 +121,26 @@ public class AdapterServiceImpl implements AdapterService {
             Integer pid = skp.getPid();
             String ppdm = "";
             String ppurl = "";
-            String ppheadcolor = "no";
-            String ppbodycolor = "no";
-            String ppbuttoncolor = "no";
+//            String ppheadcolor = "no";
+//            String ppbodycolor = "no";
+//            String ppbuttoncolor = "no";
             if (pid != null) {
                 Pp pp = ppJpaDao.findOneById(pid);
                 ppdm = pp.getPpdm();
                 ppurl = pp.getPpurl();
-                if (StringUtil.isNotBlankList(pp.getPpheadcolor(), pp.getPpbodycolor())) {
-                    ppheadcolor = pp.getPpheadcolor();
-                    ppbodycolor = pp.getPpbodycolor();
-                    ppbuttoncolor = pp.getPpbuttoncolor();
-                }
+//                if (StringUtil.isNotBlankList(pp.getPpheadcolor(), pp.getPpbodycolor())) {
+//                    ppheadcolor = pp.getPpheadcolor();
+//                    ppbodycolor = pp.getPpbodycolor();
+//                    ppbuttoncolor = pp.getPpbuttoncolor();
+//                }
             }
             Map result = new HashMap();
             result.put("ppdm", ppdm);
             result.put("ppurl", ppurl);
             result.put("orderNo", on);
-            result.put("headcolor", ppheadcolor);
-            result.put("bodycolor", ppbodycolor);
-            result.put("buttoncolor", ppbuttoncolor);
+//            result.put("headcolor", ppheadcolor);
+//            result.put("bodycolor", ppbodycolor);
+//            result.put("buttoncolor", ppbuttoncolor);
             return result;
         } catch (Exception e) {
             e.printStackTrace();
@@ -156,26 +173,26 @@ public class AdapterServiceImpl implements AdapterService {
             Integer pid = skp.getPid();
             String ppdm = "";
             String ppurl = "";
-            String ppheadcolor = "no";
-            String ppbodycolor = "no";
-            String ppbuttoncolor = "no";
+//            String ppheadcolor = "no";
+//            String ppbodycolor = "no";
+//            String ppbuttoncolor = "no";
             if (pid != null) {
                 Pp pp = ppJpaDao.findOneById(pid);
                 ppdm = pp.getPpdm();
                 ppurl = pp.getPpurl();
-                if (StringUtil.isNotBlankList(pp.getPpheadcolor(), pp.getPpbodycolor())) {
-                    ppheadcolor = pp.getPpheadcolor();
-                    ppbodycolor = pp.getPpbodycolor();
-                    ppbuttoncolor=pp.getPpbuttoncolor();
-                }
+//                if (StringUtil.isNotBlankList(pp.getPpheadcolor(), pp.getPpbodycolor())) {
+//                    ppheadcolor = pp.getPpheadcolor();
+//                    ppbodycolor = pp.getPpbodycolor();
+//                    ppbuttoncolor=pp.getPpbuttoncolor();
+//                }
             }
             Map result = new HashMap();
             result.put("ppdm", ppdm);
             result.put("ppurl", ppurl);
             result.put("orderNo", on);
-            result.put("headcolor", ppheadcolor);
-            result.put("bodycolor", ppbodycolor);
-            result.put("buttoncolor", ppbuttoncolor);
+//            result.put("headcolor", ppheadcolor);
+//            result.put("bodycolor", ppbodycolor);
+//            result.put("buttoncolor", ppbuttoncolor);
             return result;
         } catch (Exception e) {
             e.printStackTrace();
