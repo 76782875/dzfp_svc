@@ -228,9 +228,21 @@ public class WeixinUtils {
                     if(pp==null){
                         redirect_url = WeiXinConstants.SUCCESS_REDIRECT_URL;
                     }else {
+                        String headColor = "no";
+                        String bodyColor = "no";
+                        String buttonColor = "no";
+                        if(pp.getPpheadcolor()!=null){
+                            headColor = pp.getPpheadcolor();
+                        }
+                        if(pp.getPpbuttoncolor()!=null){
+                            bodyColor = pp.getPpbuttoncolor();
+                        }
+                        if(pp.getPpbodycolor()!=null){
+                            buttonColor = pp.getPpbodycolor();
+                        }
                         redirect_url = WeiXinConstants.SUCCESS_REDIRECT_URL
                                 +"?t="+System.currentTimeMillis()
-                                +"&ppdm="+pp.getPpdm()+"="+pp.getPpheadcolor()+"="+pp.getPpbodycolor()+"="+pp.getPpbuttoncolor();
+                                +"&ppdm="+pp.getPpdm()+"="+headColor+"="+bodyColor+"="+buttonColor;
                     }
                 }
             }catch (Exception e){
