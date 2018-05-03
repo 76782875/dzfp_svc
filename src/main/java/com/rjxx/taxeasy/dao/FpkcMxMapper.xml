@@ -20,6 +20,9 @@
 
     <select id="findByPage" parameterType="pagination" resultType="fpkcMx">
         select * from t_fpkc_mx where yxbz = '1'
+        <if test="params.kcid != null">
+            and kcid = #{params.kcid}
+        </if>
         <if test="params.orderBy != null">
             order by ${params.orderBy}
         </if>
