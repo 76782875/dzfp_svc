@@ -17,6 +17,7 @@ public class KpfsVo {
     protected String jkfs;
     protected String skurl;
     protected String kpzdbs;
+    protected String kplx;
 
     public String getGsdm() {
         return gsdm;
@@ -136,5 +137,13 @@ public class KpfsVo {
 
     public void setKpzdbs(String kpzdbs) {
         this.kpzdbs = kpzdbs;
+    }
+
+    public String getKplx() {
+        return kplx;
+    }
+
+    public void setKplx(String kplx) {
+        this.kplx = kplx;
     }
 }
