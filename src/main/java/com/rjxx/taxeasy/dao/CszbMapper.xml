@@ -166,7 +166,6 @@
 		<if test="skurl2 != null and skurl2 != ''">
 			and a.skurl is not NULL
 		</if>
-		GROUP
 	</select>
 </mapper>
 
