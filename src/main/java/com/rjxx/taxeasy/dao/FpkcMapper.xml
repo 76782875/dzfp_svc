@@ -235,5 +235,49 @@ AND a.yxbz = '1'
 		</if>
     </select>
    
+    <select id="findKcYjByPage" parameterType="pagination" resultType="fpkcYjvo">
+          SELECT s.* from (
+			SELECT o.*,p.fpkcl,p.id,q.yjyz from (SELECT t.*,fpzl.fpzldm,fpzl.fpzlmc,xf.xfmc,xf.xfsh from (
+			SELECT a.xfid,a.gsdm,a.kpdmc,a.id skpid,substring_index(substring_index(a.kplx,',',b.id),',',-1) kplx from 
+			(
+			SELECT	*		FROM		t_skp a		WHERE		a.yxbz = '1'		AND EXISTS (	SELECT 1	FROM		t_group b,t_yh c	WHERE  b.yxbz = '1'
+			<if test="params.yhid !=null and params.yhid !=''">
+		    	and b.yhid = #{params.yhid}
+			</if>
+			AND b.yhid = c.id	AND a.gsdm = c.gsdm		AND c.yxbz = '1'	AND b.yxbz = '1'
+					AND (	(	 b.xfid IS NULL	AND b.skpid IS NULL	)
+					OR (a.xfid = b.xfid		AND b.skpid IS NULL		)		OR (
+						a.xfid = b.xfid		AND a.id = b.skpid		)	)	)
+			) a<!--a表是skpMapper中的getSkpListByYhId方法查询出来的数据，当前用户下所有税控盘 -->
+			join
+			t_fpzl b
+			on b.id &lt;= (length(a.kplx) - length(replace(a.kplx,',',''))+1)
+			) t ,t_fpzl fpzl,t_xf xf
+			where t.xfid = xf.id and t.kplx = fpzl.fpzldm
+			and xf.yxbz ='1'
+			) o LEFT JOIN (select *from t_fpkc where yxbz='1') p on o.gsdm = p.gsdm 
+			and o.xfid = p.xfid and o.skpid=p.skpid and o.kplx = p.fpzldm
+			LEFT JOIN t_fpkc_yzsz q on o.gsdm = q.gsdm 
+			and o.xfid = q.xfid and o.skpid=q.skpid and o.kplx = q.fpzldm and q.yxbz='1'
+			) s where 1=1
+          
+          <if test="params.xfid !=null and params.xfid !=''">
+		   and s.xfid = #{params.xfid}
+			</if>
+		<if test="params.skpid !=null and params.skpid !=''">
+		   and s.skpid = #{params.skpid}
+		</if>
+		<if test="params.fplx !=null and params.fplx !=''">
+		   and s.fpzldm = #{params.fplx}
+		</if>
+		<if test="params.xfsh !=null and params.xfsh !=''">
+		    and s.xfsh like CONCAT('%',#{params.xfsh},'%')
+		</if>
+         <if test="params.fpsl !=null and params.fpsl !=''">
+		    and s.fpkcl &lt;= #{params.fpsl}
+		</if>
+		
+    </select>
+    
 </mapper>
 

@@ -411,10 +411,11 @@ public class HttpUtils {
                 "   </soapenv:Body>\n" +
                 "</soapenv:Envelope>";
         HttpsdoPostSoap1_2(wsurl,xml,null,null,null);*/
-        String wsurl="http://192.168.1.200:8009/Service.asmx?wsdl";
-        //netSetParameter(wsurl,"SetParameter","210.14.78.228","7090","00000000",null);
+        String wsurl="http://datarj.imwork.net:52472/Service.asmx?wsdl";
+        String skurl ="http://datarj.imwork.net:24825/SKServer/SKDo";
+        netSetParameter(wsurl,"SetParameter",skurl.split("/")[2].split(":")[0],skurl.split("/")[2].split(":")[1],"00000000",null);
 
-        netFPLGXXCX(wsurl,"FPLGXXCX",null,"qs1njkpd1","026","1","1");
+        //netFPLGXXCX(wsurl,"FPLGXXCX",null,"qs1njkpd1","026","1","1");
         //System.out.println(t);
     }
 }

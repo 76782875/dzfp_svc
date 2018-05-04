@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rjxx.taxeasy.dao.FpkcMxMapper">
+
+    <select id="findOneByParams" parameterType="map" resultType="fpkcMx">
+        select * from t_fpkc_mx where yxbz = '1'
+        <if test="orderBy != null">
+            order by ${orderBy}
+        </if>
+        limit 1
+    </select>
+
+    <select id="findAllByParams" parameterType="map" resultType="fpkcMx">
+        select * from t_fpkc_mx where yxbz = '1'
+        <if test="orderBy != null">
+            order by ${orderBy}
+        </if>
+    </select>
+
+    <select id="findByPage" parameterType="pagination" resultType="fpkcMx">
+        select * from t_fpkc_mx where yxbz = '1'
+        <if test="params.kcid != null">
+            and kcid = #{params.kcid}
+        </if>
+        <if test="params.orderBy != null">
+            order by ${params.orderBy}
+        </if>
+    </select>
+
+    <delete id="deleteMxByKcid" parameterType="map">
+        DELETE from t_fpkc_mx where 1=1
+        <if test="kcid != null">
+            and kcid = #{kcid}
+        </if>
+    </delete>
+
+</mapper>
+
