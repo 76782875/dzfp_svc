@@ -41,5 +41,13 @@
         </if>
     </select>
 
+    <delete id="deleteYhtzByYjszid" parameterType="map">
+       DELETE from t_fpkc_yztz where yxbz = '1'
+        <if test="yjszid != null and yjszid != ''">
+            and  yjszid = #{yjszid}
+        </if>
+    </delete>
+
+
 </mapper>
 

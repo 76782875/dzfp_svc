@@ -50,5 +50,9 @@ public class FpkcYztzService {
         return fpkcYztzMapper.findByPage(pagination);
     }
 
+    public void deleteYhtzByYjszid(Map map){
+        fpkcYztzMapper.deleteYhtzByYjszid(map);
+    }
+
 }
 
