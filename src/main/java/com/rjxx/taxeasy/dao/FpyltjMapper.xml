@@ -39,7 +39,7 @@
 
     <select id="findYplByParams" parameterType="pagination" resultType="cxtjvo">
         SELECT
-        a.fpsl fpsl,
+        SUM(fpsl) fpsl,
         DATE_FORMAT(a.kprq,'%Y-%m') kpny,
         SUM(a.zjshj) jshj,
         CASE
