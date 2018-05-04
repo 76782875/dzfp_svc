@@ -1661,5 +1661,14 @@ AND djh =#{djh}
             and jylsh = #{jylsh}
         </if>
     </select>
+
+    <select id="findFpylByParams" parameterType="map" resultType="fpyltjVo">
+        select SUM(a.jshj) sumhjje,COUNT(*) fpsl,a.gsdm gsdm,a.skpid skpid,a.xfid xfid,a.fpzldm fpzldm,a.fpztdm fpztdm,a.kprq kprq from t_kpls a where yxbz = '1'
+        <if test="kprqq !=null and kprqq !='' ">
+            and a.kprq between #{kprqq} and
+            date_add(str_to_date(#{kprqq},'%Y-%m-%d'),INTERVAL 1 day)
+        </if>
+        GROUP BY a.gsdm,a.skpid,a.xfid,a.fpzldm,a.fpztdm;
+    </select>
 </mapper>
 

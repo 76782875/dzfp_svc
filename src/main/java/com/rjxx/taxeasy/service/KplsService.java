@@ -6,10 +6,7 @@ import com.rjxx.taxeasy.dao.KplsJpaDao;
 import com.rjxx.taxeasy.dao.KplsMapper;
 import com.rjxx.taxeasy.domains.Cszb;
 import com.rjxx.taxeasy.domains.Kpls;
-import com.rjxx.taxeasy.vo.Fpcxvo;
-import com.rjxx.taxeasy.vo.FptjVo;
-import com.rjxx.taxeasy.vo.KpcxjgVo;
-import com.rjxx.taxeasy.vo.KplsVO3;
+import com.rjxx.taxeasy.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -350,5 +347,7 @@ public class KplsService {
     public List<Kpls> findFphc(Map parms) {
         return kplsMapper.findFphc(parms);
     }
+
+    public List<FpyltjVo> findFpylByParams(Map parms){return kplsMapper.findFpylByParams(parms);}
 }
 
