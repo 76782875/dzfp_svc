@@ -11,6 +11,8 @@ public class Cxtjvo {
 	private String fpzlmc;
 	private String skpid;
 	private String kpdmc;
+	private String xfid;
+	private String gsdm;
 	public Integer getFpsl() {
 		return fpsl;
 	}
@@ -74,6 +76,23 @@ public class Cxtjvo {
 
 	public void setKpdmc(String kpdmc) {
 		this.kpdmc = kpdmc;
+	}
+
+
+	public String getXfid() {
+		return xfid;
+	}
+
+	public void setXfid(String xfid) {
+		this.xfid = xfid;
+	}
+
+	public String getGsdm() {
+		return gsdm;
+	}
+
+	public void setGsdm(String gsdm) {
+		this.gsdm = gsdm;
 	}
 
 	public Cxtjvo() {

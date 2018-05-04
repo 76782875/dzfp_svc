@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rjxx.taxeasy.dao.FpyltjMapper">
+
+    <select id="findOneByParams" parameterType="map" resultType="fpyltj">
+        select * from t_fpyltj where 1=1
+        <if test="gsdm !=null and gsdm !=''">
+            and gsdm =#{gsdm}
+        </if>
+        <if test="skpid !=null and skpid !=''">
+            and skpid =#{skpid}
+        </if>
+        <if test="xfid !=null and xfid !=''">
+            and xfid =#{xfid}
+        </if>
+        <if test="kprqq !=null">
+            and kprq between #{kprqq} and #{kprqq}
+        </if>
+        <if test="orderBy != null">
+            order by ${orderBy}
+        </if>
+        limit 1
+    </select>
+
+    <select id="findAllByParams" parameterType="map" resultType="fpyltj">
+        select * from t_fpyltj where yxbz = '1'
+        <if test="orderBy != null">
+            order by ${orderBy}
+        </if>
+    </select>
+
+    <select id="findByPage" parameterType="pagination" resultType="fpyltj">
+        select * from t_fpyltj where yxbz = '1'
+        <if test="params.orderBy != null">
+            order by ${params.orderBy}
+        </if>
+    </select>
+
+    <select id="findYplByParams" parameterType="pagination" resultType="cxtjvo">
+        SELECT
+        a.fpsl fpsl,
+        DATE_FORMAT(a.kprq,'%Y-%m') kpny,
+        SUM(a.zjshj) jshj,
+        CASE
+        WHEN a.fpzldm IS NULL THEN
+        '00'
+        ELSE
+        a.fpzldm
+        END fpzldm,
+        b.fpzlmc fpzlmc ,
+        a.skpid skpid,
+        c.kpdmc kpdmc,
+        a.xfid xfid,
+        a.gsdm gsdm
+        FROM
+        t_fpyltj a , t_fpzl b,t_skp c
+        WHERE
+        1 = 1
+        and fpztdm in('00','02')
+        and a.fpzldm =b.fpzldm
+        and a.skpid = c.id
+        <if test="gsdm !=null and gsdm !=''">
+            and a.gsdm =#{gsdm}
+        </if>
+        <if test="skpid !=null and skpid !=''">
+            and a.skpid =#{skpid}
+        </if>
+        <if test="xfid !=null and xfid !=''">
+            and a.xfid =#{xfid}
+        </if>
+        <if test="kprqq !=null">
+            and DATE_FORMAT(a.kprq,'%Y-%m') between #{kprqq} and #{kprqz}
+        </if>
+        GROUP BY
+        substring(a.kprq, 1, 7),
+        a.skpid,
+        a.fpzldm
+        WITH ROLLUP
+    </select>
+</mapper>
+
