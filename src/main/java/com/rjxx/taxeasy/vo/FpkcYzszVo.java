@@ -38,6 +38,7 @@ public class FpkcYzszVo{
 	protected String kpdmc;
 	protected String fpzlmc;
 	protected String kpfs;
+    protected String csz;
 	public Integer getId(){
 		return id;
 	}
@@ -181,5 +182,13 @@ public class FpkcYzszVo{
 	public void setKpfs(String kpfs) {
 		this.kpfs = kpfs;
 	}
+
+    public String getCsz() {
+        return csz;
+    }
+
+    public void setCsz(String csz) {
+        this.csz = csz;
+    }
 }
 

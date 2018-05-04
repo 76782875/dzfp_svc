@@ -62,6 +62,8 @@ public class FpkcYzsz  implements Serializable {
 @Column(name="fpzldm")
 protected String fpzldm;
 
+@Column(name="kpfs")
+protected String kpfs;
 
 	public Integer getId(){
 		return id;
@@ -159,5 +161,12 @@ protected String fpzldm;
 		this.fpzldm = fpzldm;
 	}
 
+	public String getKpfs() {
+		return kpfs;
+	}
+
+	public void setKpfs(String kpfs) {
+		this.kpfs = kpfs;
+	}
 }
 

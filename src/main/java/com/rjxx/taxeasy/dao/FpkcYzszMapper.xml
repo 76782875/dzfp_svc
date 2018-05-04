@@ -83,7 +83,7 @@
         <if test="params.kpfs != null and params.kpfs !=''">
             and m.csz = #{params.csz}
         </if>
-
+        ORDER  BY  m.xfid
     </select>
     
     <select id="findYhYzsz" parameterType="map" resultType="fpkcYzsz">
