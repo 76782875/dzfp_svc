@@ -4,8 +4,10 @@ import com.alibaba.fastjson.JSON;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
 
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by wangyahui on 2017/8/11 0011
@@ -172,10 +174,11 @@ public class RJCheckUtil {
     }
 
     public static String decodeXml(String key, String orderData, String sign){
+        System.out.println(orderData);
         String signSourceData = "data=" + orderData + "&key=" + key;
         String newSign = DigestUtils.md5Hex(signSourceData);
         System.out.println(newSign);
-        System.out.println("手输的"+sign);
+        System.out.println("传入的"+sign);
         System.out.println(newSign.equalsIgnoreCase(sign));
         if (!sign.equalsIgnoreCase(newSign)) {
             return "0"; //失败
@@ -188,33 +191,33 @@ public class RJCheckUtil {
      * 以下所有方法为白盒测试时候使用，不涉及业务
      */
     //生成Q
-    public static void main(String[] args) {
-        //公司信息的key
-        String key="42709f25722653a5d7b5b8dde426f494";
-        Map map = new HashMap();
-        //订单号
-        String on = System.currentTimeMillis()+"";
-        //订单时间
-        String ot = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-        //金额
-        String pr = "10";
-        //门店号
-        String sn = "wx002";
-        //商品代码
-//        String sp = "1";
-        map.put("A0",on);
-        map.put("A1",ot);
-        map.put("A2", pr);
-        map.put("A3", sn);
-        //如果没有商品代码请注释
-//        map.put("A4", sp);
-        System.out.println(JSON.toJSONString(map));
-        String result = getQForAll(key, map,"on","ot","pr","sn"
-        //如果没有商品代码请注释
-//        ,"sp"
-        );
-        System.out.println(result);
-    }
+//    public static void main(String[] args) {
+//        //公司信息的key
+//        String key="42709f25722653a5d7b5b8dde426f494";
+//        Map map = new HashMap();
+//        //订单号
+//        String on = System.currentTimeMillis()+"";
+//        //订单时间
+//        String ot = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+//        //金额
+//        String pr = "10";
+//        //门店号
+//        String sn = "wx002";
+//        //商品代码
+////        String sp = "1";
+//        map.put("A0",on);
+//        map.put("A1",ot);
+//        map.put("A2", pr);
+//        map.put("A3", sn);
+//        //如果没有商品代码请注释
+////        map.put("A4", sp);
+//        System.out.println(JSON.toJSONString(map));
+//        String result = getQForAll(key, map,"on","ot","pr","sn"
+//        //如果没有商品代码请注释
+////        ,"sp"
+//        );
+//        System.out.println(result);
+//    }
 
 //    public static void main(String[] args) throws UnsupportedEncodingException {
 //        AdapterGet adapterGet = new AdapterGet();
@@ -252,8 +255,8 @@ public class RJCheckUtil {
 //        ,"sp"
 //        );
 //        System.out.println(result1);
-    }
-//    public static void main(String[] args) {
+//    }
+    public static void main(String[] args) {
 //        AdapterPost post = new AdapterPost();
 //        AdapterData data = new AdapterData();
 //        AdapterDataOrder order = new AdapterDataOrder();
@@ -263,12 +266,12 @@ public class RJCheckUtil {
 //        List<AdapterDataOrderPayments> payments = new ArrayList<>();
 //
 //        //数据
-//        data.setDrawer("王亚辉");
+//        data.setDrawer("开票人");
 //        data.setVersion("19");
 //        data.setInvType("12");
-//        data.setSerialNumber("20180323103125X");
-//        data.setOrder(order);
-//        data.setSeller(seller);
+//        data.setSerialNumber("TESTJY"+System.currentTimeMillis());
+////        data.setOrder(order);
+////        data.setSeller(seller);
 //
 //        //销方
 //        seller.setName("上海百旺测试3643");
@@ -280,9 +283,9 @@ public class RJCheckUtil {
 //
 //        //订单
 //        order.setBuyer(buyer);
-//        order.setPayments(payments);
+////        order.setPayments(payments);
 //        order.setOrderDetails(details);
-//        order.setOrderNo(System.currentTimeMillis()+"");
+//        order.setOrderNo("TESTDDH"+System.currentTimeMillis());
 //        order.setOrderDate(new Date());
 //        order.setTotalAmount(10d);
 //        order.setChargeTaxWay("0");//普通征收
@@ -293,15 +296,15 @@ public class RJCheckUtil {
 //        order.setRemark("这是备注");
 //
 //        //购方
-//        buyer.setName("法国ankama信息技术有限公司");
-//        buyer.setIdentifier("500102010003643");
-//        buyer.setAddress("购方地址");
-//        buyer.setTelephoneNo("120");
-//        buyer.setBank("购方银行");
-//        buyer.setBankAcc("321");
-//        buyer.setCustomerType("1");
-//        buyer.setEmail("243409312@qq.com");
-//        buyer.setIsSend("1");
+////        buyer.setName("法国ankama信息技术有限公司");
+////        buyer.setIdentifier("500102010003643");
+////        buyer.setAddress("购方地址");
+////        buyer.setTelephoneNo("120");
+////        buyer.setBank("购方银行");
+////        buyer.setBankAcc("321");
+////        buyer.setCustomerType("1");
+////        buyer.setEmail("123@qq.com");
+////        buyer.setIsSend("1");
 //
 //        //明细
 //        for (int i=2;i>0;i--){
@@ -319,33 +322,59 @@ public class RJCheckUtil {
 //            details.add(detail);
 //        }
 //
-//        //支付
-//        AdapterDataOrderPayments payment = new AdapterDataOrderPayments();
-//        payment.setPayCode("02");
-//        payment.setPayPrice(5d);
-//        payments.add(payment);
-//
-//        AdapterDataOrderPayments payment2 = new AdapterDataOrderPayments();
-//        payment2.setPayCode("04");
-//        payment2.setPayPrice(5d);
-//        payments.add(payment2);
-//
 //        //请求
-//        post.setAppId("RJ17634f1a0279");
+//        post.setAppId("RJ2673f9e77a35");
+//        String key = "f2a825b110d445f9b7dcc032e2b702f0";
+//        post.setClientNo("wyh_01");
+//        post.setReqType("02");
+//
 //        post.setTaxNo("500102010003643");
 //        String dataJson = JSON.toJSONString(data);
 //        System.out.println("data="+dataJson);
-//        String key = "fa19f6c4d0e4144e8115ed71b0e4c349";
 //        String sign = DigestUtils.md5Hex("data=" + dataJson + "&key=" + key);
 //        System.out.println("sign="+sign);
 //        post.setSign(sign);
 //        post.setData(data);
-//        post.setClientNo("test1");
 //        String postJson=JSON.toJSONString(post);
-//        System.out.println("request="+postJson);
-//
-//        String url = "http://localhost:8080/adapter";
-//        String result = HttpClientUtil.doPostJson(url, postJson);
-//        System.out.println(result);
-//    }
-//}
+//        System.out.println(postJson);
+////
+////        String url = "http://localhost:8080/adapter";
+////        String result = HttpClientUtil.doPostJson(url, postJson);
+////        System.out.println(result);
+
+        String key = "f2a825b110d445f9b7dcc032e2b702f0";
+        Map map = new HashMap();
+        Map dtMAP = new HashMap();
+        dtMAP.put("serialNumber", "LS201805030001");
+        dtMAP.put("invType", "12");
+        dtMAP.put("version", "18.0");
+        dtMAP.put("drawer", "SYSTEM");
+        dtMAP.put("payee", "SYSTEM");
+        dtMAP.put("reviewer", "SYSTEM");
+        Map sellerMap = new HashMap();
+        sellerMap.put("identifier", "500102010003643");
+        sellerMap.put("name", "上海百旺测试3643");
+        sellerMap.put("address", "中华路10号1203室");
+        sellerMap.put("telephoneNo", "021-55555555");
+        sellerMap.put("bank", "中国建设银行打浦桥支行");
+        sellerMap.put("bankAcc", "123456789-0");
+        dtMAP.put("seller", sellerMap);
+        String dtMapJson=JSON.toJSONString(dtMAP);
+        System.out.println("data为："+dtMapJson);
+        String md5 = "data=" + dtMapJson + "&key=" + key;
+        System.out.println("拼接后为："+md5);
+        String si =DigestUtils.md5Hex(md5);
+
+        map.put("appId", "RJ2673f9e77a35");
+        map.put("taxNo", "500102010003643");
+        map.put("clientNo", "wyh_01");
+        map.put("sign", si);
+        map.put("data", dtMAP);
+        map.put("reqType", "02");
+        String mapJson=JSON.toJSONString(map);
+        System.out.println("最后结果为："+mapJson);
+
+
+        System.out.println(DigestUtils.md5Hex("a"));
+    }
+}
