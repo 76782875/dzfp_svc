@@ -31,6 +31,10 @@ public class FpkcYzsz  implements Serializable {
 @Column(name="skpid")
 	protected Integer skpid;
 
+
+@Column(name="skph")
+	protected String skph;
+
 @Column(name="yhid")
 	protected Integer yhid;
 
@@ -167,6 +171,14 @@ protected String kpfs;
 
 	public void setKpfs(String kpfs) {
 		this.kpfs = kpfs;
+	}
+
+	public String getSkph() {
+		return skph;
+	}
+
+	public void setSkph(String skph) {
+		this.skph = skph;
 	}
 }
 
