@@ -144,6 +144,16 @@ public class SkpVo {
 
 	protected String address;
 
+	protected String token;
+
+	protected String kpjh;
+
+	protected String devicesn;
+
+	protected String devicepassword;
+
+	protected String devicekey;
+
 	public String getProvinceid() {
 		return provinceid;
 	}
@@ -499,5 +509,45 @@ public class SkpVo {
 
 	public void setWrzs(String wrzs) {
 		this.wrzs = wrzs;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+	public String getKpjh() {
+		return kpjh;
+	}
+
+	public void setKpjh(String kpjh) {
+		this.kpjh = kpjh;
+	}
+
+	public String getDevicesn() {
+		return devicesn;
+	}
+
+	public void setDevicesn(String devicesn) {
+		this.devicesn = devicesn;
+	}
+
+	public String getDevicepassword() {
+		return devicepassword;
+	}
+
+	public void setDevicepassword(String devicepassword) {
+		this.devicepassword = devicepassword;
+	}
+
+	public String getDevicekey() {
+		return devicekey;
+	}
+
+	public void setDevicekey(String devicekey) {
+		this.devicekey = devicekey;
 	}
 }
