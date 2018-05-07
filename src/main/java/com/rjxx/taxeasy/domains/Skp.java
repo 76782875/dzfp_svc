@@ -199,6 +199,50 @@ public class Skp implements Serializable {
 	@Column(name = "kpjssj")
 	protected Time kpjssj;
 
+	@Column(name = "provinceid")
+	protected String provinceid;
+
+	@Column(name = "cityid")
+	protected String cityid;
+
+	@Column(name = "areaid")
+	protected String areaid;
+
+	@Column(name = "address")
+	protected String address;
+
+	public String getProvinceid() {
+		return provinceid;
+	}
+
+	public void setProvinceid(String provinceid) {
+		this.provinceid = provinceid;
+	}
+
+	public String getCityid() {
+		return cityid;
+	}
+
+	public void setCityid(String cityid) {
+		this.cityid = cityid;
+	}
+
+	public String getAreaid() {
+		return areaid;
+	}
+
+	public void setAreaid(String areaid) {
+		this.areaid = areaid;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
 	public Time getKpqssj() {
 		return kpqssj;
 	}
