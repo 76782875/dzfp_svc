@@ -136,6 +136,56 @@ public class SkpVo {
 	
 	protected String skpcount;
 
+	protected String provinceid;
+
+	protected String cityid;
+
+	protected String areaid;
+
+	protected String address;
+
+	protected String token;
+
+	protected String kpjh;
+
+	protected String devicesn;
+
+	protected String devicepassword;
+
+	protected String devicekey;
+
+	public String getProvinceid() {
+		return provinceid;
+	}
+
+	public void setProvinceid(String provinceid) {
+		this.provinceid = provinceid;
+	}
+
+	public String getCityid() {
+		return cityid;
+	}
+
+	public void setCityid(String cityid) {
+		this.cityid = cityid;
+	}
+
+	public String getAreaid() {
+		return areaid;
+	}
+
+	public void setAreaid(String areaid) {
+		this.areaid = areaid;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
 	public String getSkph() {
 		return skph;
 	}
@@ -459,5 +509,45 @@ public class SkpVo {
 
 	public void setWrzs(String wrzs) {
 		this.wrzs = wrzs;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+	public String getKpjh() {
+		return kpjh;
+	}
+
+	public void setKpjh(String kpjh) {
+		this.kpjh = kpjh;
+	}
+
+	public String getDevicesn() {
+		return devicesn;
+	}
+
+	public void setDevicesn(String devicesn) {
+		this.devicesn = devicesn;
+	}
+
+	public String getDevicepassword() {
+		return devicepassword;
+	}
+
+	public void setDevicepassword(String devicepassword) {
+		this.devicepassword = devicepassword;
+	}
+
+	public String getDevicekey() {
+		return devicekey;
+	}
+
+	public void setDevicekey(String devicekey) {
+		this.devicekey = devicekey;
 	}
 }

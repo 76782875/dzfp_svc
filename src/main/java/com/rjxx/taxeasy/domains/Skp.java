@@ -1,13 +1,14 @@
 package com.rjxx.taxeasy.domains;
 
-import java.sql.Time;
-import java.util.Date;
-import javax.persistence.*;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.rjxx.comm.json.JsonDatetimeFormat;
 import com.rjxx.taxeasy.vo.SkpVo;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.persistence.*;
 import java.io.Serializable;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import java.sql.Time;
+import java.util.Date;
 
 /**
  * t_skp 实体类 税控盘信息表 由GenEntityMysql类自动生成 Fri Oct 14 08:53:29 GMT+08:00 2016
@@ -198,6 +199,65 @@ public class Skp implements Serializable {
 
 	@Column(name = "kpjssj")
 	protected Time kpjssj;
+
+	@Column(name = "provinceid")
+	protected String provinceid;
+
+	@Column(name = "cityid")
+	protected String cityid;
+
+	@Column(name = "areaid")
+	protected String areaid;
+
+	@Column(name = "address")
+	protected String address;
+
+	@Column(name = "token")
+	protected String token;
+
+	@Column(name = "kpjh")
+	protected String kpjh;
+
+	@Column(name = "devicesn")
+	protected String devicesn;
+
+	@Column(name = "devicepassword")
+	protected String devicepassword;
+
+	@Column(name = "devicekey")
+	protected String devicekey;
+
+	public String getProvinceid() {
+		return provinceid;
+	}
+
+	public void setProvinceid(String provinceid) {
+		this.provinceid = provinceid;
+	}
+
+	public String getCityid() {
+		return cityid;
+	}
+
+	public void setCityid(String cityid) {
+		this.cityid = cityid;
+	}
+
+	public String getAreaid() {
+		return areaid;
+	}
+
+	public void setAreaid(String areaid) {
+		this.areaid = areaid;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
 
 	public Time getKpqssj() {
 		return kpqssj;
@@ -499,6 +559,46 @@ public class Skp implements Serializable {
 		super();
 	}
 
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+	public String getKpjh() {
+		return kpjh;
+	}
+
+	public void setKpjh(String kpjh) {
+		this.kpjh = kpjh;
+	}
+
+	public String getDevicesn() {
+		return devicesn;
+	}
+
+	public void setDevicesn(String devicesn) {
+		this.devicesn = devicesn;
+	}
+
+	public String getDevicepassword() {
+		return devicepassword;
+	}
+
+	public void setDevicepassword(String devicepassword) {
+		this.devicepassword = devicepassword;
+	}
+
+	public String getDevicekey() {
+		return devicekey;
+	}
+
+	public void setDevicekey(String devicekey) {
+		this.devicekey = devicekey;
+	}
+
 	public Skp(SkpVo skpVo) {
 		this.kpddm = skpVo.getKpddm();
 		this.kpdmc = skpVo.getKpdmc();
@@ -529,5 +629,7 @@ public class Skp implements Serializable {
 		this.wrzs = skpVo.getWrzs();
 		this.gsdm = skpVo.getGsdm();
 		this.xfid = skpVo.getXfid();
+		this.devicesn=skpVo.getDevicesn();
+		this.devicepassword=skpVo.getDevicepassword();
 	}
 }
