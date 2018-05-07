@@ -2,6 +2,7 @@ package com.rjxx.taxeasy.service.adapter;
 
 import com.alibaba.fastjson.JSON;
 import com.rjxx.taxeasy.bizcomm.utils.GetDataService;
+import com.rjxx.taxeasy.config.MakingConstans;
 import com.rjxx.taxeasy.dao.JyxxsqJpaDao;
 import com.rjxx.taxeasy.domains.Cszb;
 import com.rjxx.taxeasy.domains.Jymxsq;
@@ -38,6 +39,8 @@ public class TransferExtractDataService {
     private GetDataService getDataService;
     @Autowired
     private CszbService cszbService;
+    @Autowired
+    private AdapterService adapterService;
 
     private static Logger logger = LoggerFactory.getLogger(TransferExtractDataService.class);
     public Map seaway(String gsdm,String tq) {
@@ -150,6 +153,19 @@ public class TransferExtractDataService {
         Jyxxsq jyxxsq = jyxxsqJpaDao.findOneByGsdmAndDdhAndFpzldm(gsdm, tq, "12");
         if(jyxxsq==null){
             logger.info("TPYE3根据订单号【"+tq+"】未找到数据");
+            return null;
+        }
+        String check = adapterService.checkMakedForJyxxsq(jyxxsq.getSqlsh(), gsdm);
+        if(!MakingConstans.NO_MAKED.equals(check)){
+            String msg = "";
+            if(MakingConstans.MAKED_AND_NO_PDF.equals(check)){
+                msg = "纸票";
+            }else if(MakingConstans.MAKED_AND_PDF.equals(check)){
+                msg = "电票";
+            }else if(MakingConstans.MAKING.equals(check)){
+                msg = ",但未开具成功";
+            }
+            logger.info("已开具过"+msg);
             return null;
         }
         Map jymxsqParam = new HashMap();
