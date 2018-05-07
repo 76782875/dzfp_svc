@@ -10,6 +10,7 @@ import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.dao.FpkcJpaDao;
 import com.rjxx.taxeasy.dao.FpkcMapper;
 import com.rjxx.taxeasy.domains.Fpkc;
+import com.rjxx.taxeasy.vo.FpkcYjvo;
 import com.rjxx.taxeasy.vo.Fpkcvo;
 
 /**
@@ -93,6 +94,10 @@ public class FpkcService {
     public List<Fpkcvo> findKcjkByPage(Pagination pagination){
     	return fpkcMapper.findKcjkByPage(pagination);
     }
+    //发票库存预警统计
+	public List<FpkcYjvo> findKcYjByPage(Pagination pagination) {
+		return fpkcMapper.findKcYjByPage(pagination);
+	}
 
 }
 

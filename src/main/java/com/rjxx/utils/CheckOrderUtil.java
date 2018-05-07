@@ -21,9 +21,6 @@ public class CheckOrderUtil {
     private JyxxsqService jyxxsqService;
 
     @Autowired
-    private JymxsqService jymxsqService;
-    
-    @Autowired
     private ZffsService zffsService;
 
     @Autowired
@@ -31,6 +28,9 @@ public class CheckOrderUtil {
 
     @Autowired
     private SpbmService spbmService;
+
+    @Autowired
+    private SmService smService;
 
     public String checkBuyer(List<Jyxxsq> jyxxsqList, String gsdm, String Operation) {
         String result = "";
@@ -341,9 +341,21 @@ public class CheckOrderUtil {
                         result = "订单号为" + ddh + "的订单，第"+ (j+1)+"行的商品税率(TaxRate)为空;\r\n";
                     } else {
                         double taxRate = Double.valueOf(TaxRate);
-                        if (!(taxRate == 0 || taxRate == 0.03 || taxRate == 0.04
+                        /*if (!(taxRate == 0 || taxRate == 0.03 || taxRate == 0.04
                                 || taxRate == 0.06 || taxRate == 0.11 || taxRate == 0.13
                                 || taxRate == 0.17 || taxRate == 0.1 || taxRate == 0.16 || taxRate == 0.10)) {
+                            result += "订单号为" + ddh + "的订单,商品税率(TaxRate)格式有误，请联系商户;\r\n";
+                        }*/
+                        boolean flag = false;
+                        List<Sm> smList = smService.findAll();
+                        for(int t=0;t<smList.size();t++){
+                            Sm sm = smList.get(t);
+                            if(sm.getSl().compareTo(taxRate)==0){
+                                 flag =true;
+                                 break;
+                            }
+                        }
+                        if(!flag){
                             result += "订单号为" + ddh + "的订单,商品税率(TaxRate)格式有误，请联系商户;\r\n";
                         }
                     }
@@ -387,7 +399,7 @@ public class CheckOrderUtil {
                         }
                     }
                     double sl = Double.valueOf(TaxRate);
-                    if (!ChargeTaxWay.equals("2") && TaxMark.equals("0") && je * sl - se >= 0.0625) {
+                    if (!ChargeTaxWay.equals("2") && TaxMark.equals("0") && Math.abs(je * sl - se) >= 0.0625) {
                         result += "订单号为" + ddh + "的订单不含税时，商品金额(Amount)乘以商品税率(TaxRate)不等于税额(TaxAmount)!\r\n";
                     }
 

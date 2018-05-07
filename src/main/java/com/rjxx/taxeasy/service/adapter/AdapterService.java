@@ -9,6 +9,9 @@ import java.util.Map;
  * Created by wangyahui on 2018/3/13 0013
  */
 public interface AdapterService {
+
+    String getShowMsg(String ppdm);
+
     Map getGrandMsg(String gsdm, String q);
 
     Map getGrandMsg(String gsdm, String on, String sn);

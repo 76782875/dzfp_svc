@@ -6,6 +6,7 @@ import java.util.Map;
 import com.rjxx.comm.mybatis.MybatisRepository;
 import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.domains.Fpkc;
+import com.rjxx.taxeasy.vo.FpkcYjvo;
 import com.rjxx.taxeasy.vo.Fpkcvo;
 
 /**
@@ -47,6 +48,7 @@ public interface FpkcMapper {
     
     //发票库存监控查询
     public List<Fpkcvo> findKcjkByPage(Pagination pagination);
-
+    //发票库存和预警查询
+    public List<FpkcYjvo> findKcYjByPage(Pagination pagination);
 }
 

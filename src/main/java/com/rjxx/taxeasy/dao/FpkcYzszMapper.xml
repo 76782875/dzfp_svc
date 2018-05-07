@@ -34,46 +34,56 @@
     </select>
 
     <select id="findByPage" parameterType="pagination" resultType="fpkcYzszVo">
-        SELECT
-        a.*, b.xfsh,
-        b.xfmc,
-        c.skph,
-        c.kpdmc,
-        d.fpzlmc
+        select * from (select c.id,t.gsdm,t.xfid,t.id as skpid,t.lrry,t.fpzldm,f.xfmc,f.xfsh,t.skph,t.kpdmc,e.fpzlmc,c.yjyz,d.kpfs,d.csz from
+        (SELECT
+        a.*, substring_index(
+        substring_index(
+        a.kplx,
+        ',',
+        b.id
+        ),
+        ',' ,- 1
+        ) fpzldm
         FROM
-        t_fpkc_yzsz a
-        LEFT JOIN t_xf b ON a.xfid = b.id
-        LEFT JOIN t_skp c ON a.skpid = c.id
-        LEFT JOIN t_fpzl d ON a.fpzldm = d.fpzldm
-        WHERE
-        a.yxbz = '1'
+        t_skp a
+        JOIN t_fpzl b ON b.id  &lt;=(
+        length(a.kplx) - length(REPLACE(a.kplx, ',', '')) + 1
+        )
+        where a.yxbz ='1'
+        ORDER BY
+        a.id) t LEFT JOIN t_fpkc_yzsz c on t.gsdm = c.gsdm and t.xfid = c.xfid and t.id = c.skpid and t.fpzldm = c.fpzldm
+        LEFT JOIN v_kpfs d on t.gsdm = d.gsdm and t.xfid = d.xfid and t.id = d.kpdid
+        LEFT JOIN t_fpzl e on t.fpzldm = e.fpzldm
+        LEFT JOIN t_xf f on t.gsdm = f.gsdm and t.xfid = f.id ) m
+        where 1=1
         <if test="params.gsdm != null and params.gsdm !=''">
-            and a.gsdm = #{params.gsdm}
+            and m.gsdm = #{params.gsdm}
         </if>
         <if test="params.xfid != null and params.xfid !=''">
-            and a.xfid = #{params.xfid}
+            and m.xfid = #{params.xfid}
         </if>
         <if test="params.xfids !=null and params.xfids !=''">
-            and a.xfid in
+            and m.xfid in
             <foreach collection="params.xfids" item="item" index="index" open="("
                      separator="," close=")">#{params.xfids[${index}]}
             </foreach>
         </if>
         <if test="params.skpids !=null and params.skpids !=''">
-            and a.skpid in
+            and m.skpid in
             <foreach collection="params.skpids" item="item" index="index" open="("
                      separator="," close=")">#{params.skpids[${index}]}
             </foreach>
         </if>
         <if test="params.skpid != null and params.skpid !=''">
-            and a.skpid = #{params.skpid}
+            and m.skpid = #{params.skpid}
         </if>
         <if test="params.fpzldm != null and params.fpzldm !=''">
-            and a.fpzldm = #{params.fpzldm}
+            and m.fpzldm = #{params.fpzldm}
         </if>
         <if test="params.kpfs != null and params.kpfs !=''">
-            and a.kpfs = #{params.kpfs}
+            and m.csz = #{params.csz}
         </if>
+        ORDER  BY  m.xfid
     </select>
     
     <select id="findYhYzsz" parameterType="map" resultType="fpkcYzsz">

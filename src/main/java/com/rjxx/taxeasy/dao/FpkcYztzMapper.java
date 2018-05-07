@@ -23,5 +23,6 @@ public interface FpkcYztzMapper {
 
     public List<FpkcYztz> findByPage(Pagination pagination);
 
+    public void deleteYhtzByYjszid(Map map);
 }
 

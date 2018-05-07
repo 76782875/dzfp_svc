@@ -299,7 +299,7 @@ public class WechatBatchCard {
             Map card_ext = new HashMap();//发票具体内容
             Map map = new HashMap();
             map.put("card_ext", card_ext);//发票具体内容
-            map.put("order_id", kpls.getDjh());//订单号 list
+            map.put("order_id", kpls.getKplsh());//订单号 list
             batch_card_exts.add(map);
             WeiXinInfo weiXinInfo = new WeiXinInfo();
             List<Map> info = new ArrayList<>();
