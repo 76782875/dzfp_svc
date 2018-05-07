@@ -24,6 +24,8 @@ public class ClientData {
     private String kpdz;
     private String kpyh;
     private String kpyhzh;
+    private String deviceSN;
+    private String devicePSWD;
     public String getClientNO() {
         return clientNO;
     }
@@ -158,5 +160,21 @@ public class ClientData {
 
     public void setKpyhzh(String kpyhzh) {
         this.kpyhzh = kpyhzh;
+    }
+
+    public String getDeviceSN() {
+        return deviceSN;
+    }
+
+    public void setDeviceSN(String deviceSN) {
+        this.deviceSN = deviceSN;
+    }
+
+    public String getDevicePSWD() {
+        return devicePSWD;
+    }
+
+    public void setDevicePSWD(String devicePSWD) {
+        this.devicePSWD = devicePSWD;
     }
 }

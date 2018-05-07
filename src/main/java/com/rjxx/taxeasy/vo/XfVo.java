@@ -152,6 +152,42 @@ public class XfVo {
 
 	private String ybnsrqssj;
 	private String ybnsrjyzs;
+	protected String provinceid;
+	protected String cityid;
+	protected String areaid;
+	protected String address;
+
+	public String getProvinceid() {
+		return provinceid;
+	}
+
+	public void setProvinceid(String provinceid) {
+		this.provinceid = provinceid;
+	}
+
+	public String getCityid() {
+		return cityid;
+	}
+
+	public void setCityid(String cityid) {
+		this.cityid = cityid;
+	}
+
+	public String getAreaid() {
+		return areaid;
+	}
+
+	public void setAreaid(String areaid) {
+		this.areaid = areaid;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
 
 	public String getYbnsrqssj() {
 		return ybnsrqssj;
