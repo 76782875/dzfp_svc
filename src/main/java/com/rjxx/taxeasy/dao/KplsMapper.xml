@@ -713,7 +713,7 @@
             and kp.fphm = #{fphm}
         </if>
         <if test="kprqq != null and kprqq !='' and kprqz != null and kprqz !=''">
-            and kp.lrsj between #{kprqq} and
+            and kp.lrsj &gt;=  #{kprqq} AND kp.lrsj &lt;
             date_add(str_to_date(#{kprqz},'%Y-%m-%d'),INTERVAL 1 day)
         </if>
         <!--<if test="spmc != null and spmc != ''">
@@ -749,7 +749,7 @@
             </foreach>
         </if>
         <if test="kprqq2 !=null and kprqq2 !='' and kprqz2 !=null and kprqz2 !=''">
-            and kp.kprq between #{kprqq2} and
+            and kp.kprq &gt;= #{kprqq2} AND kp.kprq &lt;
             date_add(str_to_date(#{kprqz2},'%Y-%m-%d'),INTERVAL 1 day)
         </if>
         <if test="fpczlx != null and fpczlx !=''">
