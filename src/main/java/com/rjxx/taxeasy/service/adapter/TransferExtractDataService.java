@@ -13,6 +13,7 @@ import com.rjxx.taxeasy.service.CszbService;
 import com.rjxx.taxeasy.service.JymxsqService;
 import com.rjxx.taxeasy.service.JyzfmxService;
 import com.rjxx.utils.NumberUtil;
+import com.rjxx.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +60,12 @@ public class TransferExtractDataService {
     public Map ldyx(String gsdm,String tq) {
         Map resultMap =  new HashMap();
         try {
+            logger.info("抽取数据KEY={}",tq);
+            Jyxxsq jyxxsq = jyxxsqJpaDao.findOneByGsdmAndTqm(gsdm, tq);
+            if(jyxxsq!=null){
+                resultMap.put("msg","该订单已开具过");
+                return resultMap;
+            }
             AdapterPost data = new AdapterPost();
             Map map = getDataService.getldyxFirData(tq,gsdm);
             if(map==null){
@@ -80,6 +87,7 @@ public class TransferExtractDataService {
             resultMap.put("post",data);
         } catch (Exception e) {
             e.printStackTrace();
+            resultMap.put("msg","获取数据失败，系统异常");
         }
         return resultMap;
     }
@@ -93,8 +101,28 @@ public class TransferExtractDataService {
     public Map family(String gsdm,String tq) {
         Map resultMap =  new HashMap();
         try {
+            logger.info("抽取数据KEY={}",tq);
+            Jyxxsq jyxxsq = jyxxsqJpaDao.findOneByGsdmAndTqm(gsdm, tq);
+            if(jyxxsq!=null){
+                resultMap.put("msg","该订单已开具过");
+                return resultMap;
+            }
             AdapterPost data = new AdapterPost();
             Map resMap=getDataService.getData(tq,gsdm);
+            String error = (String) resMap.get("error");
+            String tmp = (String) resMap.get("tmp");
+            if(resMap==null){
+                resultMap.put("msg","获取数据失败");
+                return resultMap;
+            }
+            if(StringUtils.isNotBlank(error)){
+                resultMap.put("msg",error);
+                return resultMap;
+            }
+            if(StringUtils.isNotBlank(tmp)){
+                resultMap.put("msg",tmp);
+                return resultMap;
+            }
             List<Jyxxsq> jyxxsqList = (List) resMap.get("jyxxsqList");
             List<Jymxsq> jymxsqList = (List) resMap.get("jymxsqList");
             List<Jyzfmx> jyzfmxList = (List) resMap.get("jyzfmxList");
@@ -104,6 +132,7 @@ public class TransferExtractDataService {
             resultMap.put("post",data);
         } catch (Exception e) {
             e.printStackTrace();
+            resultMap.put("msg","获取数据失败，系统异常");
         }
         return resultMap;
     }
@@ -117,9 +146,29 @@ public class TransferExtractDataService {
     public Map bqw(String gsdm,String tq) {
         Map resultMap =  new HashMap();
         try {
+            logger.info("抽取数据KEY={}",tq);
+            Jyxxsq jyxxsq = jyxxsqJpaDao.findOneByGsdmAndTqm(gsdm, tq);
+            if(jyxxsq!=null){
+                resultMap.put("msg","该订单已开具过");
+                return resultMap;
+            }
             AdapterPost data = new AdapterPost();
             Cszb csz =  cszbService.getSpbmbbh(gsdm, null,null, "sfhhurl");
             Map resMap=getDataService.getDataForBqw(tq,gsdm,csz.getCsz());
+            String error = (String) resMap.get("error");
+            String tmp = (String) resMap.get("tmp");
+            if(resMap==null){
+                resultMap.put("msg","获取数据失败");
+                return resultMap;
+            }
+            if(StringUtils.isNotBlank(error)){
+                resultMap.put("msg",error);
+                return resultMap;
+            }
+            if(StringUtils.isNotBlank(tmp)){
+                resultMap.put("msg",tmp);
+                return resultMap;
+            }
             List<Jyxxsq> jyxxsqList = (List) resMap.get("jyxxsqList");
             List<Jymxsq> jymxsqList = (List) resMap.get("jymxsqList");
             List<Jyzfmx> jyzfmxList = (List) resMap.get("jyzfmxList");
@@ -129,6 +178,7 @@ public class TransferExtractDataService {
             resultMap.put("post",data);
         } catch (Exception e) {
             e.printStackTrace();
+            resultMap.put("msg","获取数据失败，系统异常");
         }
         return resultMap;
     }
@@ -150,10 +200,21 @@ public class TransferExtractDataService {
     public Map jyxxsq(String gsdm,String tq) {
         Map resultMap =new HashMap();
         logger.info("抽取数据KEY={}",tq);
-        Jyxxsq jyxxsq = jyxxsqJpaDao.findOneByGsdmAndDdhAndFpzldm(gsdm, tq, "12");
+        Jyxxsq jyxxsq = null;
+        try {
+            jyxxsq = jyxxsqJpaDao.findOneByGsdmAndDdh(gsdm,tq);
+        } catch (Exception e) {
+//            e.printStackTrace();
+            resultMap.put("msg","该订单号已查询到多笔数据，请重新输入！");
+            return resultMap;
+        }
         if(jyxxsq==null){
             logger.info("TPYE3根据订单号【"+tq+"】未找到数据");
             return null;
+        }
+        if(jyxxsq.getZtbz()!=null && jyxxsq.getZtbz().equals("3")){
+            resultMap.put("msg","该订单号已被处理，请重新输入！");
+            return resultMap;
         }
         String check = adapterService.checkMakedForJyxxsq(jyxxsq.getSqlsh(), gsdm);
         if(!MakingConstans.NO_MAKED.equals(check)){
