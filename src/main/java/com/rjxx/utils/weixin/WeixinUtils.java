@@ -208,6 +208,7 @@ public class WeixinUtils {
         }else if(gsdm.equals("chamate")){
             Map skpParam = new HashMap();
             skpParam.put("kpddm", menDianId);
+            skpParam.put("gsdm", gsdm);
             Skp skp = skpService.findOneByParams(skpParam);
             if(skp==null){
                 logger.info("根据开票点代码，获取开票点失败!");
@@ -222,6 +223,7 @@ public class WeixinUtils {
         }else {
             Map skpParam = new HashMap();
             skpParam.put("kpddm", menDianId);
+            skpParam.put("gsdm", gsdm);
             try {
                 Skp skp = skpService.findOneByParams(skpParam);
                 if(skp==null){
