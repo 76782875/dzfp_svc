@@ -165,7 +165,7 @@ and fphm is not null) t
         a.skpid,
         b.kpdmc
         FROM
-        t_kpls a
+        t_kpls a  use index(idx_kpls_gskprq)
         LEFT JOIN t_skp b ON b.id = a.skpid
         LEFT JOIN t_fpzl t ON t.fpzldm = a.fpzldm
         where a.yxbz = '1'
