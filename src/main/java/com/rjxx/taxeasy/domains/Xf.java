@@ -190,6 +190,19 @@ public class Xf implements Serializable {
     @Column(name = "ppzdje")
     protected Double ppzdje;
 
+
+    /**
+     * 卷票分票金额
+     */
+    @Column(name = "jpfpje")
+    protected Double jpfpje;
+
+    /**
+     * 卷票最大金额
+     */
+    @Column(name = "jpzdje")
+    protected Double jpzdje;
+
     /**
      * 微信卡券模板id
      */
@@ -495,6 +508,22 @@ public class Xf implements Serializable {
 
     public void setYbnsrjyzs(String ybnsrjyzs) {
         this.ybnsrjyzs = ybnsrjyzs;
+    }
+
+    public Double getJpfpje() {
+        return jpfpje;
+    }
+
+    public void setJpfpje(Double jpfpje) {
+        this.jpfpje = jpfpje;
+    }
+
+    public Double getJpzdje() {
+        return jpzdje;
+    }
+
+    public void setJpzdje(Double jpzdje) {
+        this.jpzdje = jpzdje;
     }
 }
 

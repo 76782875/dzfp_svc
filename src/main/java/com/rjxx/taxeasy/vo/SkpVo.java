@@ -154,6 +154,10 @@ public class SkpVo {
 
 	protected String devicekey;
 
+	protected Double jpfz;
+
+	protected Double jpmax;
+
 	public String getProvinceid() {
 		return provinceid;
 	}
@@ -549,5 +553,21 @@ public class SkpVo {
 
 	public void setDevicekey(String devicekey) {
 		this.devicekey = devicekey;
+	}
+
+	public Double getJpfz() {
+		return jpfz;
+	}
+
+	public void setJpfz(Double jpfz) {
+		this.jpfz = jpfz;
+	}
+
+	public Double getJpmax() {
+		return jpmax;
+	}
+
+	public void setJpmax(Double jpmax) {
+		this.jpmax = jpmax;
 	}
 }
