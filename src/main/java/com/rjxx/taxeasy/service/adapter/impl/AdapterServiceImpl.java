@@ -3,6 +3,7 @@ package com.rjxx.taxeasy.service.adapter.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.rjxx.taxeasy.bizcomm.utils.FpclService;
+import com.rjxx.taxeasy.config.MakingConstans;
 import com.rjxx.taxeasy.dao.*;
 import com.rjxx.taxeasy.domains.*;
 import com.rjxx.taxeasy.dto.*;
@@ -675,7 +676,8 @@ public class AdapterServiceImpl implements AdapterService {
      * @param tq
      * @return
      */
-    private AdapterPost getApiMsg(String gsdm, Integer xfid, Integer skpid, String tq) {
+    @Override
+    public AdapterPost getApiMsg(String gsdm, Integer xfid, Integer skpid, String tq) {
         try {
             Cszb cszb = cszbService.getSpbmbbh(gsdm, xfid, skpid, "extractMethod");
             if (StringUtil.isNotBlankList(cszb.getCsz())) {
@@ -701,6 +703,7 @@ public class AdapterServiceImpl implements AdapterService {
      * @param tq
      * @return
      */
+    @Override
     public Map getApiMsg(String gsdm, String tq){
         try {
             Cszb cszb = cszbService.getSpbmbbh(gsdm, null,null,"extractMethod");
@@ -942,11 +945,6 @@ public class AdapterServiceImpl implements AdapterService {
         return false;
     }
 
-    private static final String MAKED_AND_PDF = "2";
-    private static final String MAKED_AND_NO_PDF = "1";
-    private static final String NO_MAKED = "0";
-    private static final String MAKING = "3";
-
     @Override
     public String getConfirmMsg(String gsdm, String q) {
         Map map = RJCheckUtil.decodeForAll(q);
@@ -1044,35 +1042,35 @@ public class AdapterServiceImpl implements AdapterService {
                     if ("12".equals(kpls.getFpzldm())) {
                         if ("00".equals(kpls.getFpztdm())) {
                             if (StringUtil.isNotBlankList(kpls.getFpdm(), kpls.getFphm(), kpls.getPdfurl())) {
-                                map.put("sfkj", MAKED_AND_PDF);
+                                map.put("sfkj", MakingConstans.MAKED_AND_PDF);
                             } else {
-                                map.put("sfkj", MAKING);
+                                map.put("sfkj", MakingConstans.MAKING);
                             }
                         } else if ("05".equals(kpls.getFpztdm())) {
-                            map.put("sfkj", MAKING);
+                            map.put("sfkj", MakingConstans.MAKING);
                         } else {
-                            map.put("sfkj", MAKING);
+                            map.put("sfkj", MakingConstans.MAKING);
                         }
                     } else if ("01".equals(kpls.getFpzldm()) || "02".equals(kpls.getFpzldm())) {
                         if ("00".equals(kpls.getFpztdm())) {
                             if (StringUtil.isNotBlankList(kpls.getFpdm(), kpls.getFphm())) {
-                                map.put("sfkj", MAKED_AND_NO_PDF);
+                                map.put("sfkj", MakingConstans.MAKED_AND_NO_PDF);
                             } else {
-                                map.put("sfkj", MAKING);
+                                map.put("sfkj", MakingConstans.MAKING);
                             }
                         } else if ("05".equals(kpls.getFpztdm())) {
-                            map.put("sfkj", MAKING);
+                            map.put("sfkj", MakingConstans.MAKING);
                         } else {
-                            map.put("sfkj", MAKING);
+                            map.put("sfkj", MakingConstans.MAKING);
                         }
                     } else {
                         continue;
                     }
                 } else {
-                    map.put("sfkj", NO_MAKED);
+                    map.put("sfkj", MakingConstans.NO_MAKED);
                 }
             }else{
-                map.put("sfkj", NO_MAKED);
+                map.put("sfkj", MakingConstans.NO_MAKED);
             }
             resultList.add(map);
         }
@@ -1123,6 +1121,47 @@ public class AdapterServiceImpl implements AdapterService {
             resultMap.put("returnMsg", "开具失败");
             resultMap.put("returnCode", "9999");
             return JSON.toJSONString(resultMap);
+        }
+    }
+
+    @Override
+    public String checkMakedForJyxxsq(Integer sqlsh, String gsdm) {
+        List<Jyls> jyls = jylsJpaDao.findBySqlshAndGsdm(sqlsh, gsdm);
+        if(!jyls.isEmpty()){
+            Kpls kpls = kplsJpaDao.findOneByDjh(jyls.get(0).getDjh());
+            if (kpls != null) {
+                if ("12".equals(kpls.getFpzldm())) {
+                    if ("00".equals(kpls.getFpztdm())) {
+                        if (StringUtil.isNotBlankList(kpls.getFpdm(), kpls.getFphm(), kpls.getPdfurl())) {
+                            return MakingConstans.MAKED_AND_PDF;
+                        } else {
+                            return MakingConstans.MAKING;
+                        }
+                    } else if ("05".equals(kpls.getFpztdm())) {
+                        return  MakingConstans.MAKING;
+                    } else {
+                        return  MakingConstans.MAKING;
+                    }
+                } else if ("01".equals(kpls.getFpzldm()) || "02".equals(kpls.getFpzldm())) {
+                    if ("00".equals(kpls.getFpztdm())) {
+                        if (StringUtil.isNotBlankList(kpls.getFpdm(), kpls.getFphm())) {
+                            return  MakingConstans.MAKED_AND_NO_PDF;
+                        } else {
+                            return  MakingConstans.MAKING;
+                        }
+                    } else if ("05".equals(kpls.getFpztdm())) {
+                        return  MakingConstans.MAKING;
+                    } else {
+                        return  MakingConstans.MAKING;
+                    }
+                } else {
+                    return null;
+                }
+            } else {
+                return MakingConstans.NO_MAKED;
+            }
+        }else{
+            return MakingConstans.NO_MAKED;
         }
     }
 }

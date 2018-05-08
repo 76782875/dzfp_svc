@@ -139,12 +139,13 @@ public class SkService {
                 map.put("p", encryptStr);
                 result = HttpUtils.doPost(url, map);
             }
+            logger.info("------返回数据--------"+result);
             if(result!=null){
                 response= XmlJaxbUtils.convertXmlStrToObject(InvoiceResponse.class, result);
             }
         }catch (Exception e){
-            e.printStackTrace();
             logger.info("------返回数据--------"+result);
+            e.printStackTrace();
         }
         return response;
     }
