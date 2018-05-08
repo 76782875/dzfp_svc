@@ -3,6 +3,7 @@ package com.rjxx.taxeasy.dao;
 import com.rjxx.comm.mybatis.MybatisRepository;
 import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.domains.FpkcYztz;
+import com.rjxx.taxeasy.vo.FpkcYjtzVo;
 
 import java.util.List;
 import java.util.Map;
@@ -24,5 +25,8 @@ public interface FpkcYztzMapper {
     public List<FpkcYztz> findByPage(Pagination pagination);
 
     public void deleteYhtzByYjszid(Map map);
+
+    public List<FpkcYjtzVo> findAllTzList(Map params);
+
 }
 
