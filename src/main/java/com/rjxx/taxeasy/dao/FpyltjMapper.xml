@@ -54,10 +54,10 @@
         a.xfid xfid,
         a.gsdm gsdm
         FROM
-        t_fpyltj a , t_fpzl b,t_skp c
+        v_fpyltj a , t_fpzl b,t_skp c
         WHERE
         1 = 1
-        and fpztdm in('00','02')
+
         and a.fpzldm =b.fpzldm
         and a.skpid = c.id
         <if test="gsdm !=null and gsdm !=''">
