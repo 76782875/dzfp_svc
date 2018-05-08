@@ -144,6 +144,18 @@ public class Skp implements Serializable {
 	protected Double zpfz;
 
 	/**
+	 * 卷票阈值
+	 */
+	@Column(name = "jpfz")
+	protected Double jpfz;
+
+	/**
+	 * 卷票最大开票限额
+	 */
+	@Column(name = "jpmax")
+	protected Double jpmax;
+
+	/**
 	 * 开票点ip地址
 	 */
 	@Column(name = "kpdip")
@@ -599,6 +611,22 @@ public class Skp implements Serializable {
 		this.devicekey = devicekey;
 	}
 
+	public Double getJpfz() {
+		return jpfz;
+	}
+
+	public void setJpfz(Double jpfz) {
+		this.jpfz = jpfz;
+	}
+
+	public Double getJpmax() {
+		return jpmax;
+	}
+
+	public void setJpmax(Double jpmax) {
+		this.jpmax = jpmax;
+	}
+
 	public Skp(SkpVo skpVo) {
 		this.kpddm = skpVo.getKpddm();
 		this.kpdmc = skpVo.getKpdmc();
@@ -631,5 +659,7 @@ public class Skp implements Serializable {
 		this.xfid = skpVo.getXfid();
 		this.devicesn=skpVo.getDevicesn();
 		this.devicepassword=skpVo.getDevicepassword();
+		this.jpmax=skpVo.getJpmax();
+		this.jpfz=skpVo.getJpfz();
 	}
 }

@@ -24,6 +24,7 @@ public class SellerData {
     private double eticketLim;
     private double specialticketLim;
     private double ordinaryticketLim;
+    private double rollticketLim;
     private List<ClientData> client;
 
     public String getIdentifier() {
@@ -160,5 +161,13 @@ public class SellerData {
 
     public void setYidentifier(String yidentifier) {
         this.yidentifier = yidentifier;
+    }
+
+    public double getRollticketLim() {
+        return rollticketLim;
+    }
+
+    public void setRollticketLim(double rollticketLim) {
+        this.rollticketLim = rollticketLim;
     }
 }
