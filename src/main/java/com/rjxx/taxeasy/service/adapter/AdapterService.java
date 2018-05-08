@@ -1,6 +1,7 @@
 package com.rjxx.taxeasy.service.adapter;
 
 import com.rjxx.taxeasy.dto.AdapterDataOrderBuyer;
+import com.rjxx.taxeasy.dto.AdapterPost;
 
 import java.util.List;
 import java.util.Map;
@@ -39,4 +40,8 @@ public interface AdapterService {
                               String gfdh, String gfyhzh, String gfyh, String email, String openid, String sjly, String access_token, String weixinOrderNo);
 
     Map getApiMsg(String gsdm, String tq);
+
+    AdapterPost getApiMsg(String gsdm, Integer xfid, Integer skpid, String tq);
+
+    String checkMakedForJyxxsq(Integer sqlsh,String gsdm);
 }
