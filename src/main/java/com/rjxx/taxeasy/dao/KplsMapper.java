@@ -32,6 +32,8 @@ public interface KplsMapper {
     public List<Fpcxvo> findByPage(Pagination pagination);
 
     public List<Fpcxvo> findByPage2(Map map);
+    
+    public List<Fpcxvo> findByPage3(Map map);
 
     public Integer findTotal(Map map);
 
@@ -160,5 +162,10 @@ public interface KplsMapper {
     List<Kpls> findFphc(Map parms);
 
     List<FpyltjVo> findFpylByParams(Map parms);
+
+	public int findTotal2(Map map);
+	
+	public List<Kpls> findKplsMxListByPagination(Pagination pagination);
+	
 }
 

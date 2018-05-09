@@ -1672,5 +1672,252 @@ AND djh =#{djh}
         </if>
         GROUP BY a.gsdm,a.skpid,a.xfid,a.fpzldm;
     </select>
+    <select id="findByPage3" parameterType="map" resultType="fpcxvo">
+          SELECT
+            sum(a.jshj) jshj,
+            sum(a.hjje) hjje,
+            sum(a.hjse) hjse,
+            a.pdfurl,
+            e.jylssj,
+            e.ddh,
+            e.xfid,
+            e.xfsh,
+            e.xfmc,
+            e.xfyh,
+            e.xfyhzh,
+            e.gfid,
+            e.gfsh,
+            e.gfmc,
+            a.gfemail,
+            a.serialorder
+            FROM
+            t_kpls a
+            JOIN (
+            SELECT
+            kp.kplsh
+            FROM
+            t_kpls kp
+            <if test="kprqq != null and kprqq !='' and kprqz != null and kprqz !=''">
+                use index(idx_kpls_gskprq,idx_kpls_gslrsj)
+            </if>
+            <if test="kprqq2 !=null and kprqq2 !='' and kprqz2 !=null and kprqz2 !=''">
+                use index(idx_kpls_gskprq,idx_kpls_gslrsj)
+            </if>
+            join t_jyls jy on jy.djh = kp.djh
+            WHERE kp.yxbz ='1'
+        <if test="gsdm !=null and gsdm !=''">
+            and kp.gsdm = #{gsdm}
+        </if>
+        <if test="xfid !=null and xfid !=''">
+            and (kp.xfid in
+            <foreach collection="xfid" item="item" index="index" open="("
+                     separator="," close=")">#{xfid[${index}]}
+            </foreach>
+            or kp.xfid is null)
+        </if>
+        <if test="xfid2 !=null and xfid2 !=''">
+            and kp.xfid = #{xfid2}
+        </if>
+        <if test="lrry !=null and lrry !=''">
+            and kp.lrry = #{lrry}
+        </if>
+        <if test="skpid !=null and skpid !=''">
+            and (kp.skpid in
+            <foreach collection="skpid" item="item" index="index" open="("
+                     separator="," close=")">#{skpid[${index}]}
+            </foreach>
+            or kp.skpid is null)
+        </if>
+        <if test="ddh != null and ddh !=''">
+            and jy.ddh = #{ddh}
+        </if>
+        <if test="fpzldm != null and fpzldm !=''">
+            and jy.fpzldm = #{fpzldm}
+        </if>
+        <if test="fphm != null and fphm !=''">
+            and kp.fphm = #{fphm}
+        </if>
+        <if test="kprqq != null and kprqq !='' and kprqz != null and kprqz !=''">
+            and kp.lrsj between #{kprqq} and
+            date_add(str_to_date(#{kprqz},'%Y-%m-%d'),INTERVAL 1 day)
+        </if>
+        <!--<if test="spmc != null and spmc != ''">
+            and d.spmc like CONCAT('%',#{spmc},'%')
+        </if>-->
+        <if test="jzjtzt != null and jzjtzt != ''">
+            and EXISTS(select 1 from t_kpspmx m,t_sp n where kp.kplsh =
+            m.kplsh and m.spdm = n.spdm and n.jzjtbz = #{jzjtzt})
+        </if>
+        <if test="printflag != null and printflag != ''">
+            and kp.printflag = #{printflag}
+        </if>
+        <if test="gfmc != null and gfmc !=''">
+            and kp.gfmc like CONCAT(#{gfmc},'%')
+        </if>
+        <if test="fpdm != null and fpdm !=''">
+            and kp.fpdm = #{fpdm}
+        </if>
+        <if test="fpzt != null and fpzt !=''">
+            and kp.fpztdm = #{fpzt}
+        </if>
+        <if test="yxbz != null and yxbz !=''">
+            and kp.yxbz = #{yxbz}
+        </if>
+        <if test="fpztlist != null">
+            <foreach collection="fpztlist" open=" and kp.fpztdm in (" separator="," close=")" item="fpztdm">
+                #{fpztdm}
+            </foreach>
+        </if>
+        <if test="fpzllist != null">
+            <foreach collection="fpzllist" open=" and kp.fpzldm in (" separator="," close=")" item="fpzl">
+                #{fpzl}
+            </foreach>
+        </if>
+        <if test="kprqq2 !=null and kprqq2 !='' and kprqz2 !=null and kprqz2 !=''">
+            and kp.kprq between #{kprqq2} and
+            date_add(str_to_date(#{kprqz2},'%Y-%m-%d'),INTERVAL 1 day)
+        </if>
+        <if test="fpczlx != null and fpczlx !=''">
+            and kp.fpczlxdm = #{fpczlx}
+        </if>
+        <if test="xfsh != null and xfsh !=''">
+            and kp.xfsh = #{xfsh}
+        </if>
+        <if test="sk != null and sk !=''">
+            and kp.skpid = #{sk}
+        </if>
+            ORDER BY
+            kp.kplsh  DESC
+            <!-- LIMIT #{start}, #{length} -->
+            ) b ON a.kplsh = b.kplsh
+            LEFT JOIN t_fpzl c ON c.fpzldm = a.fpzldm
+            LEFT JOIN t_fpczlx d ON d.fpczlxdm = a.fpczlxdm
+            LEFT JOIN t_jyls e ON e.djh = a.djh
+            LEFT JOIN t_fpzt f ON f.fpztdm = a.fpztdm
+            GROUP BY serialorder 
+            ORDER BY a.kplsh  DESC
+            limit #{start},#{length}
+    </select>
+
+    <select id="findTotal2" parameterType="map" resultType="int">
+     	select count(1) from (
+        SELECT
+        1
+        FROM
+        t_kpls a
+        JOIN (
+        SELECT
+        kp.kplsh
+        FROM
+        t_kpls kp
+        <if test="kprqq != null and kprqq !='' and kprqz != null and kprqz !=''">
+            use index(idx_kpls_gskprq,idx_kpls_gslrsj)
+        </if>
+        <if test="kprqq2 !=null and kprqq2 !='' and kprqz2 !=null and kprqz2 !=''">
+            use index(idx_kpls_gskprq,idx_kpls_gslrsj)
+        </if>
+        join t_jyls jy on jy.djh = kp.djh
+        WHERE kp.yxbz ='1'
+        <if test="gsdm !=null and gsdm !=''">
+            and kp.gsdm = #{gsdm}
+        </if>
+        <if test="xfid !=null and xfid !=''">
+            and (kp.xfid in
+            <foreach collection="xfid" item="item" index="index" open="("
+                     separator="," close=")">#{xfid[${index}]}
+            </foreach>
+            or kp.xfid is null)
+        </if>
+        <if test="xfid2 !=null and xfid2 !=''">
+            and kp.xfid = #{xfid2}
+        </if>
+        <if test="lrry !=null and lrry !=''">
+            and kp.lrry = #{lrry}
+        </if>
+        <if test="skpid !=null and skpid !=''">
+            and (kp.skpid in
+            <foreach collection="skpid" item="item" index="index" open="("
+                     separator="," close=")">#{skpid[${index}]}
+            </foreach>
+            or kp.skpid is null)
+        </if>
+        <if test="ddh != null and ddh !=''">
+            and jy.ddh = #{ddh}
+        </if>
+        <if test="fpzldm != null and fpzldm !=''">
+            and jy.fpzldm = #{fpzldm}
+        </if>
+        <if test="fphm != null and fphm !=''">
+            and kp.fphm = #{fphm}
+        </if>
+        <if test="kprqq != null and kprqq !='' and kprqz != null and kprqz !=''">
+            and kp.lrsj between #{kprqq} and
+            date_add(str_to_date(#{kprqz},'%Y-%m-%d'),INTERVAL 1 day)
+        </if>
+
+        <!--<if test="spmc != null and spmc != ''">
+            and d.spmc like CONCAT('%',#{spmc},'%')
+        </if>-->
+        <if test="jzjtzt != null and jzjtzt != ''">
+            and EXISTS(select 1 from t_kpspmx m,t_sp n where kp.kplsh =
+            m.kplsh and m.spdm = n.spdm and n.jzjtbz = #{jzjtzt})
+        </if>
+        <if test="printflag != null and printflag != ''">
+            and kp.printflag = #{printflag}
+        </if>
+        <if test="gfmc != null and gfmc !=''">
+            and kp.gfmc like CONCAT(#{gfmc},'%')
+        </if>
+        <if test="fpdm != null and fpdm !=''">
+            and kp.fpdm = #{fpdm}
+        </if>
+        <if test="fpzt != null and fpzt !=''">
+            and kp.fpztdm = #{fpzt}
+        </if>
+        <if test="yxbz != null and yxbz !=''">
+            and kp.yxbz = #{yxbz}
+        </if>
+        <if test="fpztlist != null">
+        <foreach collection="fpztlist" open=" and kp.fpztdm in (" separator="," close=")" item="fpztdm">
+            #{fpztdm}
+        </foreach>
+        </if>
+        <if test="fpzllist != null">
+            <foreach collection="fpzllist" open=" and kp.fpzldm in (" separator="," close=")" item="fpzldm">
+                #{fpzldm}
+            </foreach>
+        </if>
+        <if test="kprqq2 !=null and kprqq2 !='' and kprqz2 !=null and kprqz2 !=''">
+            and kp.kprq between #{kprqq2} and
+            date_add(str_to_date(#{kprqz2},'%Y-%m-%d'),INTERVAL 1 day)
+        </if>
+        <if test="fpczlx != null and fpczlx !=''">
+            and kp.fpczlxdm = #{fpczlx}
+        </if>
+        <if test="xfsh != null and xfsh !=''">
+            and kp.xfsh = #{xfsh}
+        </if>
+        <if test="sk != null and sk !=''">
+            and kp.skpid = #{sk}
+        </if>
+        ) b ON a.kplsh = b.kplsh
+        LEFT JOIN t_fpzl c ON c.fpzldm = a.fpzldm
+        LEFT JOIN t_fpczlx d ON d.fpczlxdm = a.fpczlxdm
+        LEFT JOIN t_jyls e ON e.djh = a.djh
+        LEFT JOIN t_fpzt f ON f.fpztdm = a.fpztdm
+         GROUP BY a.serialorder 
+        ORDER BY
+        a.kplsh  DESC
+        ) t
+    </select>
+    
+      <select id="findKplsMxListByPagination" parameterType="pagination"
+            resultType="kpls">
+        select * from t_kpls where yxbz='1'
+        <if test="params.serialorder != null">
+            and serialorder = #{params.serialorder}
+        </if>
+    </select>
+    
 </mapper>
 
