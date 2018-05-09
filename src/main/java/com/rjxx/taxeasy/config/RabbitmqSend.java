@@ -11,6 +11,7 @@ import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.support.CorrelationData;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +35,13 @@ public class RabbitmqSend implements RabbitTemplate.ConfirmCallback{
 
     @Autowired
     private ConnectionFactory connectionFactory;
+
+    @Value("${rabbitmq.concurrency}")
+    private int concurrency;
+
+    @Value("${rabbitmq.maxconcurrency}")
+    private int maxconcurrency;
+
 
 
     private RabbitTemplate rabbitTemplate;
@@ -73,8 +81,8 @@ public class RabbitmqSend implements RabbitTemplate.ConfirmCallback{
     public SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory() {
         SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory);
-        factory.setConcurrentConsumers(1);
-        factory.setMaxConcurrentConsumers(1);
+        factory.setConcurrentConsumers(concurrency);
+        factory.setMaxConcurrentConsumers(maxconcurrency);
         return factory;
     }
 

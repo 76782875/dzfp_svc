@@ -29,6 +29,11 @@ public class Yjmb  implements Serializable {
  */ 
 @Column(name="yjmb_mc")
 	protected String yjmbMc;
+/**
+ * 邮件模板主题
+ */ 
+@Column(name="yjmb_subject")
+	protected String yjmbSubject;
 
 /**
  * 邮件模板内容
@@ -49,6 +54,14 @@ public class Yjmb  implements Serializable {
 
 	public void setYjmbDm(Integer yjmbDm){
 		this.yjmbDm=yjmbDm;
+	}
+
+	public String getYjmbSubject() {
+		return yjmbSubject;
+	}
+
+	public void setYjmbSubject(String yjmbSubject) {
+		this.yjmbSubject = yjmbSubject;
 	}
 
 	public String getYjmbMc(){
