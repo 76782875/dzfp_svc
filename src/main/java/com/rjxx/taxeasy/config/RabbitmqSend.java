@@ -73,8 +73,8 @@ public class RabbitmqSend implements RabbitTemplate.ConfirmCallback{
     public SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory() {
         SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory);
-        factory.setConcurrentConsumers(1);
-        factory.setMaxConcurrentConsumers(1);
+        factory.setConcurrentConsumers(2);
+        factory.setMaxConcurrentConsumers(3);
         return factory;
     }
 
