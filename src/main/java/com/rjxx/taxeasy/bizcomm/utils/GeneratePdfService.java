@@ -1187,7 +1187,8 @@ public class GeneratePdfService {
                         }
                     }
                     System.out.println("接收返回值:" + buffer.toString());
-                    Cszb callbacktype = cszbService.getSpbmbbh(gsxx.getGsdm(), null, null, "callBackType");
+                    Cszb cszb = cszbService.getSpbmbbh(gsxx.getGsdm(), null, null, "callBackType");
+                    String callbacktype = cszb.getCsz();
                     if(callbacktype!=null){
                         if("9".equals(callbacktype)){
                             resultMap = handerReturnMesJson(buffer.toString());
