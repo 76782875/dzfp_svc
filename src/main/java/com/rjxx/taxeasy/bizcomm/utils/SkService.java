@@ -42,10 +42,10 @@ public class SkService {
     @Value("${skkp_server_url:}")
     private String skkpServerUrl;
 
-    @Reference(version = "1.0.0",group = "tcs",timeout = 12000,retries = -2)
+    @Reference(version = "1.0.0",group = "tcs",timeout = 120000,retries = -2)
     public DubboInvoiceService dubboInvoiceService;
 
-    @Reference(version = "1.0.0",group = "ims",timeout = 12000,retries = -2)
+    @Reference(version = "1.0.0",group = "ims",timeout = 120000,retries = -2)
     public DubboSkpService dubboSkpService;
 
     @Autowired
@@ -139,12 +139,10 @@ public class SkService {
                 map.put("p", encryptStr);
                 result = HttpUtils.doPost(url, map);
             }
-            logger.info("------返回数据--------"+result);
             if(result!=null){
                 response= XmlJaxbUtils.convertXmlStrToObject(InvoiceResponse.class, result);
             }
         }catch (Exception e){
-            logger.info("------返回数据--------"+result);
             e.printStackTrace();
         }
         return response;
