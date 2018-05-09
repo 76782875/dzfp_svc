@@ -22,7 +22,7 @@ public class SaveGfxxUtil {
     @Autowired
     private GfxxJpaDao gfxxJpaDao;
 
-    public boolean saveGfxx(Integer xfid,String gsdm, String gfsh, String gfmc, String gfdz, String gfdh,String gfyh,String gfyhzh ,String gfemail){
+    public boolean saveGfxx(Integer xfid,String gsdm, String gfmc, String gfsh, String gfdz, String gfdh,String gfyh,String gfyhzh ,String gfemail){
         try {
             if(StringUtils.isNotBlank(gfsh) && StringUtils.isNotBlank(gfmc)){
                 logger.info("购方管理开始---------");
