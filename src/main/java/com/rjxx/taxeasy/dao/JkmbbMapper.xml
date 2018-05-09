@@ -23,6 +23,9 @@
         <if test="params.gsdm != null  and params.gsdm != ''">
             and a.gsdm = #{params.gsdm}
         </if>
+        <if test="params.gsmc != null  and params.gsmc != ''">
+            and b.gsmc LIKE concat('%',#{params.gsmc},'%')
+        </if>
         <if test="params.orderBy != null">
             order by ${params.orderBy}
         </if>
