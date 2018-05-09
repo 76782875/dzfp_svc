@@ -34,7 +34,8 @@ public class AmqpConfig {
         connectionFactory.setUsername(username);
         connectionFactory.setPassword(password);
         connectionFactory.setVirtualHost(virtualHost);
-        connectionFactory.setPublisherConfirms(true); //必须要设置
+        //必须要设置
+        connectionFactory.setPublisherConfirms(true);
         connectionFactory.setChannelCacheSize(100);
         return connectionFactory;
     }

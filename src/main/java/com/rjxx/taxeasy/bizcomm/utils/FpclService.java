@@ -841,11 +841,6 @@ public class FpclService {
                             "(服务端)发送服务器失败" + resultMap.get("RETURNMSG").toString(), 2, xfsh, jylsh);
                 }
             }
-            int str = kplsh.indexOf("$");
-            if (str != -1) {
-                kplsh = kplsh.substring(str+1);
-                System.out.println("传入开票流水号:" + kplsh);
-            }
         } catch (Exception e) {
             int pos = key.indexOf("$");
             if (pos != -1) {
@@ -853,11 +848,11 @@ public class FpclService {
                 System.out.println("传入开票流水号:" + key);
             }
             System.out.println("request url=" + url + ", exception, msg=" + e.getMessage());
-            e.printStackTrace();
             Kpls kpls=kplsService.findOne(Integer.parseInt(key));
             kpls.setFpztdm("04");
             kpls.setErrorReason(e.getMessage());
             kplsService.save(kpls);
+            e.printStackTrace();
         } finally {
             if (response != null) {
                 try {

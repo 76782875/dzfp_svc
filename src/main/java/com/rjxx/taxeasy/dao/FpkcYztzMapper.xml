@@ -49,5 +49,34 @@
     </delete>
 
 
+    <select id="findAllTzList" parameterType="map" resultType="FpkcYjtzVo">
+        SELECT
+        a.tzfs, GROUP_CONCAT(
+        CONCAT('盘号',t.skph,'对应的',t.fpzlmc,'票种,只剩',t.fpkcl,'张发票;')
+        )  tzy,
+        max(d.yx) email,
+        max(d.sjhm) phone
+        FROM
+        t_fpkc_yztz a
+        JOIN (
+        SELECT
+        b.*, c.fpkcl,
+        e.fpzlmc
+        FROM
+        t_fpkc_yzsz b
+        JOIN t_fpzl e ON b.fpzldm = e.fpzldm
+        JOIN t_fpkc c ON b.gsdm = c.gsdm
+        AND b.xfid = c.xfid
+        AND b.skpid = c.skpid
+        AND b.fpzldm = c.fpzldm
+        AND b.yjyz >= c.fpkcl
+        ) t ON a.yjszid = t.id
+        JOIN t_yh d ON a.tzyhid = d.id
+        GROUP BY
+        a.tzfs,
+        a.tzyhid
+    </select>
+
+
 </mapper>
 

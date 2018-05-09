@@ -8,6 +8,7 @@ import com.rjxx.taxeasy.dao.WxfpxxJpaDao;
 import com.rjxx.taxeasy.dao.XfJpaDao;
 import com.rjxx.taxeasy.domains.*;
 import com.rjxx.taxeasy.service.SkpService;
+import com.rjxx.utils.HtmlUtils;
 import com.rjxx.utils.StringUtils;
 import com.rjxx.utils.TimeUtil;
 import com.rjxx.utils.WeixinUtil;
@@ -55,6 +56,9 @@ public class WeixinUtils {
 
     @Autowired
     private WxTokenJpaDao wxTokenJpaDao;
+
+    @Autowired
+    private HttpServletRequest request;
 
     /**
      * 判断是否微信浏览器
@@ -204,6 +208,7 @@ public class WeixinUtils {
         }else if(gsdm.equals("chamate")){
             Map skpParam = new HashMap();
             skpParam.put("kpddm", menDianId);
+            skpParam.put("gsdm", gsdm);
             Skp skp = skpService.findOneByParams(skpParam);
             if(skp==null){
                 logger.info("根据开票点代码，获取开票点失败!");
@@ -218,15 +223,18 @@ public class WeixinUtils {
         }else {
             Map skpParam = new HashMap();
             skpParam.put("kpddm", menDianId);
+            skpParam.put("gsdm", gsdm);
             try {
                 Skp skp = skpService.findOneByParams(skpParam);
                 if(skp==null){
                     logger.info("根据开票点，获取品牌失败!");
-                    redirect_url = WeiXinConstants.SUCCESS_REDIRECT_URL;
+//                    redirect_url = WeiXinConstants.SUCCESS_REDIRECT_URL;
+                    redirect_url = HtmlUtils.getBasePath(request)+"qrcode/witting.html";
                 }else{
                     Pp pp = ppJpaDao.findOneById(skp.getPid());
                     if(pp==null){
-                        redirect_url = WeiXinConstants.SUCCESS_REDIRECT_URL;
+//                        redirect_url = WeiXinConstants.SUCCESS_REDIRECT_URL;
+                        redirect_url = HtmlUtils.getBasePath(request)+"qrcode/witting.html";
                     }else {
                         String headColor = "no";
                         String bodyColor = "no";
@@ -240,14 +248,17 @@ public class WeixinUtils {
                         if(pp.getPpbodycolor()!=null){
                             buttonColor = pp.getPpbodycolor();
                         }
-                        redirect_url = WeiXinConstants.SUCCESS_REDIRECT_URL
-                                +"?t="+System.currentTimeMillis()
-                                +"&ppdm="+pp.getPpdm()+"="+headColor+"="+bodyColor+"="+buttonColor;
+//                        redirect_url = WeiXinConstants.SUCCESS_REDIRECT_URL
+//                                +"?t="+System.currentTimeMillis()
+//                                +"&ppdm="+pp.getPpdm()+"="+headColor+"="+bodyColor+"="+buttonColor;
+                        redirect_url = HtmlUtils.getBasePath(request)+"qrcode/witting.html"
+                                +"?t="+System.currentTimeMillis() +"&ppdm="+pp.getPpdm();
                     }
                 }
             }catch (Exception e){
                 e.printStackTrace();
-                redirect_url = WeiXinConstants.SUCCESS_REDIRECT_URL;
+//                redirect_url = WeiXinConstants.SUCCESS_REDIRECT_URL;
+                redirect_url = HtmlUtils.getBasePath(request)+"qrcode/witting.html";
             }
         }
         Map nvps = new HashMap();
