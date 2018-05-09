@@ -21,7 +21,7 @@ public interface FpcyjlJpaDao extends JpaRepository<Fpcyjl,Integer> {
     @Query(nativeQuery = true,value = "select * from t_fpcy_jl where fpcyid=?1  order by lrsj ")
     List<Fpcyjl> findByFpcyId(Integer fpcyid);
 
-    @Query(nativeQuery = true,value = "select * from t_fpcy_jl where fpcyid=?1  order by cyrq,id desc limit 1 ")
+    @Query(nativeQuery = true,value = "select * from t_fpcy_jl where fpcyid=?1  order by lrsj desc limit 1 ")
     Fpcyjl findOneBy1FpcyId(Integer fpcyid);
 
     @Query(nativeQuery = true,value = "select count(1) from t_fpcy_jl where fpcyid=?1 ")
