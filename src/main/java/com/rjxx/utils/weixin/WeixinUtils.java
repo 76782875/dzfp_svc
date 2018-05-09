@@ -252,8 +252,7 @@ public class WeixinUtils {
 //                                +"?t="+System.currentTimeMillis()
 //                                +"&ppdm="+pp.getPpdm()+"="+headColor+"="+bodyColor+"="+buttonColor;
                         redirect_url = HtmlUtils.getBasePath(request)+"qrcode/witting.html"
-                                +"?t="+System.currentTimeMillis()
-                                +"&ppdm="+pp.getPpdm()+"="+headColor+"="+bodyColor+"="+buttonColor;
+                                +"?t="+System.currentTimeMillis() +"&ppdm="+pp.getPpdm();
                     }
                 }
             }catch (Exception e){
