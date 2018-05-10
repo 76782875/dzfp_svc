@@ -207,7 +207,6 @@ public class TransferExtractDataService {
 //            e.printStackTrace();
             logger.info("该订单号已查询到多笔数据，请重新输入！");
             resultMap.put("msg","该订单号已查询到多笔数据，请重新输入！");
-            resultMap.put("code","1001");
             return resultMap;
         }
         if(jyxxsq==null){
@@ -217,14 +216,12 @@ public class TransferExtractDataService {
         if(jyxxsq.getZtbz()!=null && jyxxsq.getZtbz().equals("3")){
             logger.info("该订单号已被处理，请重新输入！");
             resultMap.put("msg","该订单号已被处理，请重新输入！");
-            resultMap.put("code","1002");
             return resultMap;
         }
         String check = adapterService.checkMakedForJyxxsq(jyxxsq.getSqlsh(), gsdm);
         if(!MakingConstans.NO_MAKED.equals(check)){
             logger.info("该笔订单已开具过");
             resultMap.put("msg","该笔订单已开具过");
-            resultMap.put("code","1003");
             return resultMap;
         }
         Map jymxsqParam = new HashMap();

@@ -333,7 +333,7 @@ public class AdapterServiceImpl implements AdapterService {
                 return "1";
             }
             if(apiMsg.get("msg")!=null){
-                return (String) apiMsg.get("code");
+                return (String) apiMsg.get("msg");
             }
             AdapterPost post= (AdapterPost) apiMsg.get("post");
             AdapterData data = post.getData();
@@ -575,7 +575,7 @@ public class AdapterServiceImpl implements AdapterService {
                     return "-2";
                 }
                 if(apiMsg.get("msg")!=null){
-                    return (String) apiMsg.get("code");
+                    return (String) apiMsg.get("msg");
                 }
                 AdapterPost post = (AdapterPost) apiMsg.get("post");
                 AdapterData data = post.getData();
