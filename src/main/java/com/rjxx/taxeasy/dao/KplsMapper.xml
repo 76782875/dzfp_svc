@@ -673,10 +673,10 @@
             FROM
             t_kpls kp
             <if test="kprqq != null and kprqq !='' and kprqz != null and kprqz !=''">
-                use index(idx_kpls_gskprq,idx_kpls_gslrsj)
+                force index(idx_kpls_gskprq,idx_kpls_gslrsj)
             </if>
             <if test="kprqq2 !=null and kprqq2 !='' and kprqz2 !=null and kprqz2 !=''">
-                use index(idx_kpls_gskprq,idx_kpls_gslrsj)
+                force index(idx_kpls_gskprq,idx_kpls_gslrsj)
             </if>
             join t_jyls jy on jy.djh = kp.djh
             WHERE kp.yxbz ='1'
@@ -713,7 +713,7 @@
             and kp.fphm = #{fphm}
         </if>
         <if test="kprqq != null and kprqq !='' and kprqz != null and kprqz !=''">
-            and kp.lrsj &gt;=  #{kprqq} AND kp.lrsj &lt;
+            and kp.lrsj &gt;= str_to_date(#{kprqq},'%Y-%m-%d') AND kp.lrsj &lt;
             date_add(str_to_date(#{kprqz},'%Y-%m-%d'),INTERVAL 1 day)
         </if>
         <!--<if test="spmc != null and spmc != ''">
@@ -749,7 +749,7 @@
             </foreach>
         </if>
         <if test="kprqq2 !=null and kprqq2 !='' and kprqz2 !=null and kprqz2 !=''">
-            and kp.kprq &gt;= #{kprqq2} AND kp.kprq &lt;
+            and kp.kprq &gt;= str_to_date(#{kprqq2},'%Y-%m-%d') AND kp.kprq &lt;
             date_add(str_to_date(#{kprqz2},'%Y-%m-%d'),INTERVAL 1 day)
         </if>
         <if test="fpczlx != null and fpczlx !=''">
@@ -785,10 +785,10 @@
         FROM
         t_kpls kp
         <if test="kprqq != null and kprqq !='' and kprqz != null and kprqz !=''">
-            use index(idx_kpls_gskprq,idx_kpls_gslrsj)
+            force index(idx_kpls_gskprq,idx_kpls_gslrsj)
         </if>
         <if test="kprqq2 !=null and kprqq2 !='' and kprqz2 !=null and kprqz2 !=''">
-            use index(idx_kpls_gskprq,idx_kpls_gslrsj)
+            force index(idx_kpls_gskprq,idx_kpls_gslrsj)
         </if>
         join t_jyls jy on jy.djh = kp.djh
         WHERE kp.yxbz ='1'
@@ -825,7 +825,7 @@
             and kp.fphm = #{fphm}
         </if>
         <if test="kprqq != null and kprqq !='' and kprqz != null and kprqz !=''">
-            and kp.lrsj &gt;= #{kprqq} AND kp.lrsj &lt;
+            and kp.lrsj &gt;= str_to_date(#{kprqq},'%Y-%m-%d') AND kp.lrsj &lt;
             date_add(str_to_date(#{kprqz},'%Y-%m-%d'),INTERVAL 1 day)
         </if>
 
@@ -862,7 +862,7 @@
             </foreach>
         </if>
         <if test="kprqq2 !=null and kprqq2 !='' and kprqz2 !=null and kprqz2 !=''">
-            and kp.kprq &gt;= #{kprqq2} and kp.kprq &lt;
+            and kp.kprq &gt;= str_to_date(#{kprqq2},'%Y-%m-%d') and kp.kprq &lt;
             date_add(str_to_date(#{kprqz2},'%Y-%m-%d'),INTERVAL 1 day)
         </if>
         <if test="fpczlx != null and fpczlx !=''">
@@ -1698,10 +1698,10 @@ AND djh =#{djh}
             FROM
             t_kpls kp
             <if test="kprqq != null and kprqq !='' and kprqz != null and kprqz !=''">
-                use index(idx_kpls_gskprq,idx_kpls_gslrsj)
+                force index(idx_kpls_gskprq,idx_kpls_gslrsj)
             </if>
             <if test="kprqq2 !=null and kprqq2 !='' and kprqz2 !=null and kprqz2 !=''">
-                use index(idx_kpls_gskprq,idx_kpls_gslrsj)
+                force index(idx_kpls_gskprq,idx_kpls_gslrsj)
             </if>
             join t_jyls jy on jy.djh = kp.djh
             WHERE kp.yxbz ='1'
@@ -1738,7 +1738,7 @@ AND djh =#{djh}
             and kp.fphm = #{fphm}
         </if>
         <if test="kprqq != null and kprqq !='' and kprqz != null and kprqz !=''">
-            and kp.lrsj between #{kprqq} and
+            and kp.lrsj &gt;=  str_to_date(#{kprqq},'%Y-%m-%d') AND kp.lrsj &lt;
             date_add(str_to_date(#{kprqz},'%Y-%m-%d'),INTERVAL 1 day)
         </if>
         <!--<if test="spmc != null and spmc != ''">
@@ -1774,7 +1774,7 @@ AND djh =#{djh}
             </foreach>
         </if>
         <if test="kprqq2 !=null and kprqq2 !='' and kprqz2 !=null and kprqz2 !=''">
-            and kp.kprq between #{kprqq2} and
+            and kp.kprq &gt;= str_to_date(#{kprqq2},'%Y-%m-%d') AND kp.kprq &lt;
             date_add(str_to_date(#{kprqz2},'%Y-%m-%d'),INTERVAL 1 day)
         </if>
         <if test="fpczlx != null and fpczlx !=''">
@@ -1811,10 +1811,10 @@ AND djh =#{djh}
         FROM
         t_kpls kp
         <if test="kprqq != null and kprqq !='' and kprqz != null and kprqz !=''">
-            use index(idx_kpls_gskprq,idx_kpls_gslrsj)
+            force index(idx_kpls_gskprq,idx_kpls_gslrsj)
         </if>
         <if test="kprqq2 !=null and kprqq2 !='' and kprqz2 !=null and kprqz2 !=''">
-            use index(idx_kpls_gskprq,idx_kpls_gslrsj)
+            force index(idx_kpls_gskprq,idx_kpls_gslrsj)
         </if>
         join t_jyls jy on jy.djh = kp.djh
         WHERE kp.yxbz ='1'
@@ -1851,7 +1851,7 @@ AND djh =#{djh}
             and kp.fphm = #{fphm}
         </if>
         <if test="kprqq != null and kprqq !='' and kprqz != null and kprqz !=''">
-            and kp.lrsj between #{kprqq} and
+            and kp.lrsj &gt;= str_to_date(#{kprqq},'%Y-%m-%d') AND kp.lrsj &lt;
             date_add(str_to_date(#{kprqz},'%Y-%m-%d'),INTERVAL 1 day)
         </if>
 
@@ -1888,7 +1888,7 @@ AND djh =#{djh}
             </foreach>
         </if>
         <if test="kprqq2 !=null and kprqq2 !='' and kprqz2 !=null and kprqz2 !=''">
-            and kp.kprq between #{kprqq2} and
+             and kp.kprq &gt;= str_to_date(#{kprqq2},'%Y-%m-%d') AND kp.kprq &lt;
             date_add(str_to_date(#{kprqz2},'%Y-%m-%d'),INTERVAL 1 day)
         </if>
         <if test="fpczlx != null and fpczlx !=''">
