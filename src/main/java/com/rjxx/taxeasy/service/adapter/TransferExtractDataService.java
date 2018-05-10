@@ -205,7 +205,9 @@ public class TransferExtractDataService {
             jyxxsq = jyxxsqJpaDao.findOneByGsdmAndDdh(gsdm,tq);
         } catch (Exception e) {
 //            e.printStackTrace();
+            logger.info("该订单号已查询到多笔数据，请重新输入！");
             resultMap.put("msg","该订单号已查询到多笔数据，请重新输入！");
+            resultMap.put("code","1001");
             return resultMap;
         }
         if(jyxxsq==null){
@@ -213,21 +215,17 @@ public class TransferExtractDataService {
             return null;
         }
         if(jyxxsq.getZtbz()!=null && jyxxsq.getZtbz().equals("3")){
+            logger.info("该订单号已被处理，请重新输入！");
             resultMap.put("msg","该订单号已被处理，请重新输入！");
+            resultMap.put("code","1002");
             return resultMap;
         }
         String check = adapterService.checkMakedForJyxxsq(jyxxsq.getSqlsh(), gsdm);
         if(!MakingConstans.NO_MAKED.equals(check)){
-            String msg = "";
-            if(MakingConstans.MAKED_AND_NO_PDF.equals(check)){
-                msg = "纸票";
-            }else if(MakingConstans.MAKED_AND_PDF.equals(check)){
-                msg = "电票";
-            }else if(MakingConstans.MAKING.equals(check)){
-                msg = ",但未开具成功";
-            }
-            logger.info("已开具过"+msg);
-            return null;
+            logger.info("该笔订单已开具过");
+            resultMap.put("msg","该笔订单已开具过");
+            resultMap.put("code","1003");
+            return resultMap;
         }
         Map jymxsqParam = new HashMap();
         jymxsqParam.put("sqlsh", jyxxsq.getSqlsh());

@@ -328,11 +328,14 @@ public class AdapterServiceImpl implements AdapterService {
     public String getSpxx(String gsdm, String on, String sn, String tq) {
         try {
             Skp skp = skpJpaDao.findOneByKpddmAndGsdm(sn, gsdm);
-            Xf xf = xfJpaDao.findOneById(skp.getXfid());
-            AdapterPost post = getApiMsg(gsdm, xf.getId(), skp.getId(), tq);
-            if (post == null) {
+            Map apiMsg = getApiMsg(gsdm, tq);
+            if (apiMsg == null) {
                 return "1";
             }
+            if(apiMsg.get("msg")!=null){
+                return (String) apiMsg.get("code");
+            }
+            AdapterPost post= (AdapterPost) apiMsg.get("post");
             AdapterData data = post.getData();
             String orderNo = on;
             String orderTime = new SimpleDateFormat("yyyyMMddHHmmss").format(data.getOrder().getOrderDate());
@@ -567,11 +570,14 @@ public class AdapterServiceImpl implements AdapterService {
         if (StringUtil.isNotBlankList(on, sn, tq, gfmc)) {
             try {
                 Skp skp = skpJpaDao.findOneByKpddmAndGsdm(sn, gsdm);
-                Xf xf = xfJpaDao.findOneById(skp.getXfid());
-                AdapterPost post = getApiMsg(gsdm, xf.getId(), skp.getId(), tq);
-                if (post == null) {
+                Map apiMsg = getApiMsg(gsdm, tq);
+                if (apiMsg == null) {
                     return "-2";
                 }
+                if(apiMsg.get("msg")!=null){
+                    return (String) apiMsg.get("code");
+                }
+                AdapterPost post = (AdapterPost) apiMsg.get("post");
                 AdapterData data = post.getData();
                 AdapterDataOrder order = data.getOrder();
                 AdapterDataOrderBuyer buyer = new AdapterDataOrderBuyer();
@@ -669,35 +675,6 @@ public class AdapterServiceImpl implements AdapterService {
         }
     }
 
-    /**
-     * 获取抽取数据方法（根据参数值去取方法名），适用于GET_TYPE_3
-     *
-     * @param gsdm
-     * @param xfid
-     * @param skpid
-     * @param tq
-     * @return
-     */
-    @Override
-    public AdapterPost getApiMsg(String gsdm, Integer xfid, Integer skpid, String tq) {
-        try {
-            Cszb cszb = cszbService.getSpbmbbh(gsdm, xfid, skpid, "extractMethod");
-            if (StringUtil.isNotBlankList(cszb.getCsz())) {
-                Class<? extends TransferExtractDataService> clazz = transferExtractDataService.getClass();
-                Method method = clazz.getDeclaredMethod(cszb.getCsz(), String.class, String.class);
-                Map result = (Map) method.invoke(transferExtractDataService, gsdm, tq);
-                if (result == null) {
-                    return null;
-                }
-                return (AdapterPost) result.get("post");
-            } else {
-                return null;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 
     /**
      * ims 平台提取开票获取数据
