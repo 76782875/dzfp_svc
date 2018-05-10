@@ -610,14 +610,14 @@ public class AdapterServiceImpl implements AdapterService {
                 buyer.setIdentifier(gfsh);
                 //转换
                 Map kpMap = transAdapterForSq(gsdm, post);
-
                 Cszb cszb = cszbService.getSpbmbbh(gsdm, null, null, "extractMethod");
                 Map resultMap = new HashMap();
                 if ("jyxxsq".equals(cszb.getCsz())) {
                     logger.info("type3------jyxxsq");
                     Cszb kpfs = cszbService.getSpbmbbh(gsdm, null, null, "kpfs");
-                    Map map = transAdapterForSq(gsdm, post);
-                    fpclService.zjkp((List<Jyxxsq>) map.get("jyxxsqList"), kpfs.getCsz());
+                    logger.info("直接开票数据："+JSON.toJSONString(kpMap.get("jyxxsqList")));
+                    List<Object> jyxxsqList = fpclService.zjkp((List<Jyxxsq>) kpMap.get("jyxxsqList"), kpfs.getCsz());
+                    logger.info("返回数据："+JSON.toJSONString(jyxxsqList));
                     resultMap.put("returnMsg", "成功");
                     resultMap.put("returnCode", "0000");
                     resultMap.put("serialorder", data.getSerialNumber() + order.getOrderNo());
