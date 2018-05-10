@@ -577,19 +577,29 @@ public class AdapterServiceImpl implements AdapterService {
                 if(apiMsg.get("msg")!=null){
                     return (String) apiMsg.get("msg");
                 }
+                Jyxxsq jyxxsq= (Jyxxsq) apiMsg.get("jyxxsq");
                 AdapterPost post = (AdapterPost) apiMsg.get("post");
+
                 AdapterData data = post.getData();
                 AdapterDataOrder order = data.getOrder();
                 AdapterDataOrderBuyer buyer = new AdapterDataOrderBuyer();
                 post.setData(data);
+
+                jyxxsq.setKpddm(sn);
                 post.setClientNo(sn);
 //                data.setSerialNumber("JY" + System.currentTimeMillis() + NumberUtil.getRandomLetter());
+
+                jyxxsq.setSjly(sjly);
                 data.setDatasource(sjly);
+                jyxxsq.setOpenid(openid);
                 data.setOpenid(openid);
                 data.setOrder(order);
+
+                jyxxsq.setDdh(on);
                 order.setOrderNo(on);
                 order.setBuyer(buyer);
                 if (StringUtil.isNotBlankList(tqm)) {
+                    jyxxsq.setTqm(tqm);
                     order.setExtractedCode(tqm);
                 } else {
                     Integer pid = skp.getPid();
@@ -598,30 +608,41 @@ public class AdapterServiceImpl implements AdapterService {
                         return "0";
                     } else {
                         Pp pp = ppJpaDao.findOneById(pid);
+                        jyxxsq.setTqm(pp.getPpdm() + on);
                         order.setExtractedCode(pp.getPpdm() + on);
                     }
                 }
+                jyxxsq.setGfemail(email);
                 buyer.setEmail(email);
+                jyxxsq.setGfdh(gfdh);
                 buyer.setTelephoneNo(gfdh);
+                jyxxsq.setGfmc(gfmc);
                 buyer.setName(gfmc);
+                jyxxsq.setGfyhzh(gfyhzh);
                 buyer.setBankAcc(gfyhzh);
+                jyxxsq.setGfyh(gfyh);
                 buyer.setBank(gfyh);
+                jyxxsq.setGfdz(gfdz);
                 buyer.setAddress(gfdz);
+                jyxxsq.setGfsh(gfsh);
                 buyer.setIdentifier(gfsh);
+
+                List<Jyxxsq> list = new ArrayList<>();
+                list.add(jyxxsq);
                 //转换
-                Map kpMap = transAdapterForSq(gsdm, post);
                 Cszb cszb = cszbService.getSpbmbbh(gsdm, null, null, "extractMethod");
                 Map resultMap = new HashMap();
                 if ("jyxxsq".equals(cszb.getCsz())) {
                     logger.info("type3------jyxxsq");
                     Cszb kpfs = cszbService.getSpbmbbh(gsdm, null, null, "kpfs");
-                    logger.info("直接开票数据："+JSON.toJSONString(kpMap.get("jyxxsqList")));
-                    List<Object> jyxxsqList = fpclService.zjkp((List<Jyxxsq>) kpMap.get("jyxxsqList"), kpfs.getCsz());
+                    logger.info("直接开票数据："+JSON.toJSONString(list));
+                    List<Object> jyxxsqList = fpclService.zjkp(list, kpfs.getCsz());
                     logger.info("返回数据："+JSON.toJSONString(jyxxsqList));
                     resultMap.put("returnMsg", "成功");
                     resultMap.put("returnCode", "0000");
                     resultMap.put("serialorder", data.getSerialNumber() + order.getOrderNo());
                 } else {
+                    Map kpMap = transAdapterForSq(gsdm, post);
                     logger.info("type3------otherAPI");
                     String xmlString = kpService.uploadOrderData(gsdm, kpMap, "01");
                     DefaultResult defaultResult = XmlJaxbUtils.convertXmlStrToObject(DefaultResult.class, xmlString);
