@@ -608,6 +608,7 @@ public class AdapterServiceImpl implements AdapterService {
                 Cszb cszb = cszbService.getSpbmbbh(gsdm, null, null, "extractMethod");
                 Map resultMap = new HashMap();
                 if ("jyxxsq".equals(cszb.getCsz())) {
+                    logger.info("type3------jyxxsq");
                     Cszb kpfs = cszbService.getSpbmbbh(gsdm, null, null, "kpfs");
                     Map map = transAdapterForSq(gsdm, post);
                     fpclService.zjkp((List<Jyxxsq>) map.get("jyxxsqList"), kpfs.getCsz());
@@ -615,6 +616,7 @@ public class AdapterServiceImpl implements AdapterService {
                     resultMap.put("returnCode", "0000");
                     resultMap.put("serialorder", data.getSerialNumber() + order.getOrderNo());
                 } else {
+                    logger.info("type3------otherAPI");
                     String xmlString = kpService.uploadOrderData(gsdm, kpMap, "01");
                     DefaultResult defaultResult = XmlJaxbUtils.convertXmlStrToObject(DefaultResult.class, xmlString);
                     if (null != defaultResult.getReturnCode() && "9999".equals(defaultResult.getReturnCode())) {
