@@ -183,7 +183,8 @@ public class GeneratePdfService {
                     }else if (kpls.getFpzldm().equals("12") && (kpls.getGsdm().equals("fwk")||kpls.getGsdm().equals("bqw"))) {
                         returnmessage = this.CreateReturnMessage3(kpls.getKplsh());
                     }else {
-                        Cszb callbacktype = cszbService.getSpbmbbh(gsxx.getGsdm(), null, null, "callBackType");
+                        Cszb cszb = cszbService.getSpbmbbh(gsxx.getGsdm(), null, null, "callBackType");
+                        String callbacktype = cszb.getCsz();
                         if(callbacktype!=null){
                             if("9".equals(callbacktype)){
                                 returnmessage = this.createJsonMsg(kpls.getKplsh());
@@ -1187,8 +1188,8 @@ public class GeneratePdfService {
                         }
                     }
                     System.out.println("接收返回值:" + buffer.toString());
-                    Cszb cszb = cszbService.getSpbmbbh(gsxx.getGsdm(), null, null, "callBackType");
-                    String callbacktype = cszb.getCsz();
+                    Cszb cszbForCallBackType = cszbService.getSpbmbbh(gsxx.getGsdm(), null, null, "callBackType");
+                    String callbacktype = cszbForCallBackType.getCsz();
                     if(callbacktype!=null){
                         if("9".equals(callbacktype)){
                             resultMap = handerReturnMesJson(buffer.toString());
