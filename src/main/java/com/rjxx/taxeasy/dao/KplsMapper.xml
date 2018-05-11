@@ -1910,8 +1910,10 @@ AND djh =#{djh}
             resultType="KplsXqVo">
         select a.pdfurl,a.fpdm,a.fphm,a.xfmc,a.jshj,a.kprq,b.ddh from t_kpls a,t_jyls b where a.yxbz='1'
         and a.djh = b.djh
-        <if test="params.serialorder != null">
-            and a.serialorder = #{params.serialorder}
+        <if test="params.serialorders != null">
+             <foreach collection="params.serialorders" open=" and a.serialorder in (" separator="," close=")" index="index" item="serialorder">
+                #{params.serialorders[${index}]}
+            </foreach>
         </if>
     </select>
     
