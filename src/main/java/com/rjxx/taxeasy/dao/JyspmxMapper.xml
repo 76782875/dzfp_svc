@@ -13,6 +13,36 @@
         <if test="djh != null">
             and djh = #{djh}
         </if>
+        ORDER BY spmxxh asc,fphxz desc
+    </select>
+
+
+    <select id="findAllByParams2" parameterType="jyspmx" resultType="jyspmx">
+        SELECT
+        a.id,
+        a.djh,
+        a.spmxxh,
+        a.fphxz,
+        a.spdm,
+        a.spggxh,
+        a.spdw,
+        a.sps,
+        a.spdj,
+        a.spje,
+        a.spsl,
+        a.spse,
+        a.kce ,a.jshj,a.ykphj, CONCAT('*', b.SPBMJC, '*', a.spmc) spmc
+        FROM
+        t_jyspmx a
+        LEFT JOIN spbm b ON a.spdm = b.SPBM
+        WHERE
+        1 = 1
+        <if test="djh != null">
+            and djh = #{djh}
+        </if>
+        ORDER BY
+        a.spmxxh ASC,
+        a.fphxz DESC
     </select>
     
       <!--  根据djh查询明细 -->

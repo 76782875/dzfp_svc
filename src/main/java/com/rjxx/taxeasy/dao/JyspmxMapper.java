@@ -23,6 +23,8 @@ public interface JyspmxMapper {
 
     public List<Jyspmx> findAllByParams(Jyspmx jyspmx);
 
+    public List<Jyspmx> findAllByParams2(Jyspmx jyspmx);
+
     public List<Jyspmx> findByPage(Pagination pagination);
 
     /**
