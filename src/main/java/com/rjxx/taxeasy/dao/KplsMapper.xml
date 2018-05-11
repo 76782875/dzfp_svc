@@ -1672,24 +1672,19 @@ AND djh =#{djh}
         </if>
         GROUP BY a.gsdm,a.skpid,a.xfid,a.fpzldm;
     </select>
-    <select id="findByPage3" parameterType="map" resultType="fpcxvo">
+    <select id="findByPage3" parameterType="map" resultType="yjfsvo">
           SELECT
             sum(a.jshj) jshj,
-            sum(a.hjje) hjje,
-            sum(a.hjse) hjse,
-            a.pdfurl,
             e.jylssj,
             e.ddh,
-            e.xfid,
-            e.xfsh,
-            e.xfmc,
-            e.xfyh,
-            e.xfyhzh,
-            e.gfid,
-            e.gfsh,
             e.gfmc,
             a.gfemail,
-            a.serialorder
+            a.serialorder,
+            (
+				case when
+				count(1)=sum(case when a.pdfurl is null or a.pdfurl='' THEN 0 else 1 end)
+				THEN 1 else 0 END
+			) as sfkp
             FROM
             t_kpls a
             JOIN (
@@ -1912,10 +1907,11 @@ AND djh =#{djh}
     </select>
     
       <select id="findKplsMxListByPagination" parameterType="pagination"
-            resultType="kpls">
-        select * from t_kpls where yxbz='1'
+            resultType="KplsXqVo">
+        select a.pdfurl,a.fpdm,a.fphm,a.xfmc,a.jshj,a.kprq,b.ddh from t_kpls a,t_jyls b where a.yxbz='1'
+        and a.djh = b.djh
         <if test="params.serialorder != null">
-            and serialorder = #{params.serialorder}
+            and a.serialorder = #{params.serialorder}
         </if>
     </select>
     

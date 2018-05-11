@@ -152,7 +152,7 @@
 
     <select id="findBykplscxPage" parameterType="map" resultType="jyxxsqVO">
 		SELECT
-		a.sqlsh,a.jylsh,a.ddh,a.jshj,a.gfmc,a.ddrq,d.fpzlmc,a.tqm,a.sjly,a.ztbz
+		a.sqlsh,a.jylsh,a.ddh,a.jshj,a.gfmc,a.ddrq,d.fpzlmc,a.tqm,a.sjly,a.ztbz,f.ztbzmc
 		FROM
 		t_jyxxsq a
 		JOIN (
@@ -205,6 +205,7 @@
 		ORDER BY t.sqlsh desc
 		LIMIT #{start},#{length}) b ON a.sqlsh = b.sqlsh
 		LEFT JOIN t_fpzl d on a.fpzldm = d.fpzldm
+		left join t_ztbz f on a.ztbz = f.ztbzdm
 		-- LEFT JOIN t_fpczlx e on a.fpczlxdm = e.fpczlxdm
 		-- LEFT JOIN t_clzt c on a.clztdm = c.clztdm;
     </select>
@@ -263,6 +264,7 @@
 		</if>
 		ORDER BY t.sqlsh desc) b ON a.sqlsh = b.sqlsh
 		LEFT JOIN t_fpzl d on a.fpzldm = d.fpzldm
+		left join t_ztbz f on a.ztbz = f.ztbzdm
 		-- LEFT JOIN t_fpczlx e on a.fpczlxdm = e.fpczlxdm
 		-- LEFT JOIN t_clzt c on a.clztdm = c.clztdm;
 	</select>
