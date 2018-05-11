@@ -577,6 +577,7 @@ public class JkpzUtil {
                         jyxxsq.setGfyb(buyer.getZip());
                         jyxxsq.setGfemail(buyer.getEmail());
                         jyxxsq.setKhh(buyer.getMemberId());//客户号
+                        jyxxsq.setSffsyj(buyer.getIsSend());
                         if(StringUtils.isNotBlank(buyer.getEmail())){
                             jyxxsq.setSffsyj("1");
                         }
