@@ -97,5 +97,11 @@ public class JyspmxService {
         return jyspmxMapper.findMxList(params);
     }
 
+
+    public List<Jyspmx> findAllByParams2(Jyspmx jyspmx) {
+        return jyspmxMapper.findAllByParams2(jyspmx);
+    }
+
+
 }
 
