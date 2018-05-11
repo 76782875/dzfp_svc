@@ -626,7 +626,10 @@ public class AdapterServiceImpl implements AdapterService {
                 buyer.setAddress(gfdz);
                 jyxxsq.setGfsh(gfsh);
                 buyer.setIdentifier(gfsh);
-
+                if(StringUtils.isNotBlank(email)){
+                    jyxxsq.setSffsyj("1");
+                    buyer.setIsSend("1");
+                }
                 List<Jyxxsq> list = new ArrayList<>();
                 list.add(jyxxsq);
                 //转换
