@@ -202,6 +202,12 @@ public class TransferExtractDataService {
         logger.info("抽取数据KEY={}",tq);
         Jyxxsq jyxxsq = null;
         try {
+            Jyxxsq cancelJyxxsq = jyxxsqJpaDao.findOneByGsdmAndDdhAndZtbz(gsdm,tq,"7");
+            if(cancelJyxxsq!=null){
+                logger.info("该笔订单已作废");
+                resultMap.put("msg","该笔订单已作废");
+                return resultMap;
+            }
             jyxxsq = jyxxsqJpaDao.findOneByGsdmAndDdh(gsdm,tq);
         } catch (Exception e) {
 //            e.printStackTrace();
