@@ -27,11 +27,21 @@ public class SaveGfxxUtil {
             if(StringUtils.isNotBlank(gfsh) && StringUtils.isNotBlank(gfmc)){
                 logger.info("购方管理开始---------");
                 Gfxx gfxx1 = gfxxJpaDao.findOneByGfmcAndGfsh(gfmc, gfsh);
+                Date date = new Date();
                 if(gfxx1!=null){
-                    return true;
+                    Gfxx gfxx = new Gfxx();
+                    gfxx.setGfdz(gfdz);
+                    gfxx.setGfdh(gfdh);
+                    gfxx.setGfyh(gfyh);
+                    gfxx.setGfyhzh(gfyhzh);
+                    gfxx.setXgry(1);
+                    gfxx.setXgsj(date);
+                    gfxx.setGsdm(gsdm);
+                    gfxx.setXfid(xfid);
+                    gfxx.setEmail(gfemail);
+                    gfxxJpaDao.save(gfxx);
                 }else {
                     Gfxx gfxx = new Gfxx();
-                    Date date = new Date();
                     ChinaInitial chinain = new ChinaInitial();
                     String mcszmsx = chinain.getPYIndexStr(gfmc, false);//第二个参数代表是否大小写，ture大写，false小写。
                     gfxx.setGfmc(gfmc);
@@ -52,7 +62,6 @@ public class SaveGfxxUtil {
                     gfxxJpaDao.save(gfxx);
                 }
             }
-
         } catch (Exception e) {
             e.printStackTrace();
             return false;
