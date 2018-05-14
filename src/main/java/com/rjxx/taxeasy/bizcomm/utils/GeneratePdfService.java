@@ -39,6 +39,7 @@ import org.springframework.stereotype.Service;
 import sun.misc.BASE64Encoder;
 
 import java.io.*;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -102,6 +103,11 @@ public class GeneratePdfService {
 
     @Value("${emailInfoUrl:}")
     private String emailInfoUrl;
+    
+    @Value("${imgdz_:}")
+	private String imgdz_;
+	@Value("${fpdz_:}")
+	private String fpdz_;
 
     /**
      * 销方省份名称
@@ -243,14 +249,17 @@ public class GeneratePdfService {
                     kplsparms.setGsdm(listkpls.get(0).getGsdm());
                     List<Kpls> lslist=kplsService.findAllByKpls(kplsparms);
                     List<String> pdfUrlList = new ArrayList<>();
+                    BigDecimal jshj = new BigDecimal(0);
                     boolean f=true;
                     for (Kpls kpls1 : lslist) {
                         if(null==kpls1.getPdfurl()||"".equals(kpls1.getPdfurl())){
                             f=false;
                             break;
                         }
+                        jshj= jshj.add(new BigDecimal(kpls1.getJshj()));
                         pdfUrlList.add(kpls1.getPdfurl());
                     }
+                    
                     if(f) {
                         GetYjnr getYjnr = new GetYjnr();
                         Integer yjmbDm = gsxx.getYjmbDm();
@@ -278,20 +287,42 @@ public class GeneratePdfService {
                         SimpleDateFormat sdfw = new SimpleDateFormat("dd MMMM,yyyy",
                                 Locale.ENGLISH);
                         csmap.put("ywdqrq", sdfw.format(new Date()));
+
+                        SimpleDateFormat sdf2=new SimpleDateFormat("yyyy年MM月dd日");
+                		csmap.put("gs_mc_", kpls.getXfmc());//取销方名称
+                		csmap.put("sq_sj_", sdf2.format(kpls.getKprq()));//取开票日期
+                		csmap.put("d_d_h_", jyls.getDdh());
+                		csmap.put("gf_mc_", kpls.getGfmc());
+                		csmap.put("js_hj_",jshj.setScale(2).toString());
+                		csmap.put("fp_dz_", fpdz_+"?q="+kpls.getSerialorder());
+                		csmap.put("lo_go_dz_", imgdz_+"emailLogo.png");
+                		csmap.put("e_wm_dz_", imgdz_+"emailCode.png");
+                		
                         // 二维码生成部分
                         TwoDimensionCode handler = new TwoDimensionCode();
                         ByteArrayOutputStream output = new ByteArrayOutputStream();
                         // 二维码中数据的来源
-                        handler.encoderQRCode("http://fpj.datarj.com/einv/tq?q="+listkpls.get(0).getSerialorder(), output);
+                       // handler.encoderQRCode("http://fpj.datarj.com/einv/tq?q="+listkpls.get(0).getSerialorder(), output);
+                        handler.encoderQRCode(fpdz_+"?q="+listkpls.get(0).getSerialorder(), output);
                         String imgbase64string = org.apache.commons.codec.binary.Base64.encodeBase64String(output.toByteArray());
                         csmap.put("ewm", "data:image/jpeg;base64,"+imgbase64string);
+                        csmap.put("e_w_m_", "data:image/jpeg;base64,"+imgbase64string);
                         String content = getYjnr.getFpkjYj(csmap, yjmbcontent);
+                        String yjmbSubject = yjmb.getYjmbSubject();//邮件主题
+                        
+                        if(yjmbSubject!=null && !"".equals(yjmbSubject)) {
+                			yjmbSubject=yjmbSubject.replace("gs_mc_", kpls.getXfmc());
+                			yjmbSubject=yjmbSubject.replace("d_d_h_", jyls.getDdh());
+                		}else {
+                			yjmbSubject="电子发票";
+                		}
+                        
                         try {
                             if(kpls.getGsdm().equals("afb")){
                                 String [] to=new String[1];
                                 to[0]=kpls.getGfemail();
                                 String filePath=(String)map.get("BaseFilePath");
-                                mailService.sendAttachmentsMail(to,"电子发票",content,filePath);
+                                mailService.sendAttachmentsMail(to,yjmbSubject,content,filePath);
                                 Cszb cszb = cszbService.getSpbmbbh(kpls.getGsdm(), kpls.getXfid(), kpls.getSkpid(), "sfuploadftp");
                                 if(cszb.getCsz().equals("是")){
                                     FileInputStream in=new FileInputStream(new File(filePath));
@@ -308,7 +339,7 @@ public class GeneratePdfService {
                                 if(gfEmailstr!=null&&!"".equals(gfEmailstr.trim())){
                                     String []gfEmailArray=gfEmailstr.split("，");
                                     for(String gfEmail:gfEmailArray){
-                                        se.sendEmail(String.valueOf(kpls.getDjh()), kpls.getGsdm(),gfEmail , "发票开具成功发送邮件", String.valueOf(kpls.getDjh()), content, "电子发票");
+                                        se.sendEmail(String.valueOf(kpls.getDjh()), kpls.getGsdm(),gfEmail , "发票开具成功发送邮件", String.valueOf(kpls.getDjh()), content, yjmbSubject);
                                     }
                                 }
                             }

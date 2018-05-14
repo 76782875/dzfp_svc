@@ -884,6 +884,10 @@ public class AdapterServiceImpl implements AdapterService {
                                 result.add("开具中");
                             }
                         } else {
+                            if("02".equals(fpztdm)){
+                                logger.info("红冲");
+                                result.add("红冲");
+                            }
                             logger.info("开具中");
                             result.add("开具中");
                         }

@@ -12,7 +12,7 @@ import org.springframework.data.repository.CrudRepository;
  * @ZhangBing
  */ 
 public interface GfxxJpaDao extends CrudRepository<Gfxx, Integer> {
-    @Query(nativeQuery = true,value = "select * from t_gfxx  where yxbz='1' and  gfmc=?1 and gfsh=?2 limit 1")
+    @Query(nativeQuery = true,value = "select * from t_gfxx  where yxbz='1' and  gfmc=?1 and gfsh=?2 order by id desc limit 1")
     Gfxx  findOneByGfmcAndGfsh(String gfmc,String gfsh);
 }
 
