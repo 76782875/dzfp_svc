@@ -659,6 +659,7 @@ public class Skp implements Serializable {
 		this.xfid = skpVo.getXfid();
 		this.devicesn=skpVo.getDevicesn();
 		this.devicepassword=skpVo.getDevicepassword();
+		this.devicekey=skpVo.getDevicekey();
 		this.jpmax=skpVo.getJpmax();
 		this.jpfz=skpVo.getJpfz();
 	}
