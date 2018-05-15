@@ -29,17 +29,16 @@ public class SaveGfxxUtil {
                 Gfxx gfxx1 = gfxxJpaDao.findOneByGfmcAndGfsh(gfmc, gfsh);
                 Date date = new Date();
                 if(gfxx1!=null){
-                    Gfxx gfxx = new Gfxx();
-                    gfxx.setGfdz(gfdz);
-                    gfxx.setGfdh(gfdh);
-                    gfxx.setGfyh(gfyh);
-                    gfxx.setGfyhzh(gfyhzh);
-                    gfxx.setXgry(1);
-                    gfxx.setXgsj(date);
-                    gfxx.setGsdm(gsdm);
-                    gfxx.setXfid(xfid);
-                    gfxx.setEmail(gfemail);
-                    gfxxJpaDao.save(gfxx);
+                    gfxx1.setGfdz(gfdz);
+                    gfxx1.setGfdh(gfdh);
+                    gfxx1.setGfyh(gfyh);
+                    gfxx1.setGfyhzh(gfyhzh);
+                    gfxx1.setXgry(1);
+                    gfxx1.setXgsj(date);
+                    gfxx1.setGsdm(gsdm);
+                    gfxx1.setXfid(xfid);
+                    gfxx1.setEmail(gfemail);
+                    gfxxJpaDao.save(gfxx1);
                 }else {
                     Gfxx gfxx = new Gfxx();
                     ChinaInitial chinain = new ChinaInitial();
