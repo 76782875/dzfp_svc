@@ -817,7 +817,7 @@ public class AdapterServiceImpl implements AdapterService {
             jymxsq.setSpsl(adapterDataOrderOrderDetails.get(i).getTaxRate());
             jymxsq.setSpmc(adapterDataOrderOrderDetails.get(i).getProductName());
             jymxsq.setSpggxh(adapterDataOrderOrderDetails.get(i).getSpec());
-            jymxsq.setSpdw(adapterDataOrderOrderDetails.get(i).getUtil());
+            jymxsq.setSpdw(adapterDataOrderOrderDetails.get(i).getUnit());
             jymxsq.setYhzcmc(adapterDataOrderOrderDetails.get(i).getPolicyName());
             jymxsq.setYhzcbs(adapterDataOrderOrderDetails.get(i).getPolicyMark());
             jymxsq.setLslbz(adapterDataOrderOrderDetails.get(i).getTaxRateMark());
