@@ -829,7 +829,7 @@ public class GeneratePdfService {
                     detail.setAmount(kpspmx.getSpje());
                     detail.setTaxAmount(kpspmx.getSpse());
                     detail.setSpec(kpspmx.getSpggxh());
-                    detail.setUtil(kpspmx.getSpdw());
+                    detail.setUnit(kpspmx.getSpdw());
                     detail.setQuantity(kpspmx.getSps());
                     detail.setProductName(kpspmx.getSpmc());
                     detail.setProductCode(kpspmx.getSpdm());

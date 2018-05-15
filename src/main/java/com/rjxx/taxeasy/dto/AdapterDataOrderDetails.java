@@ -12,7 +12,7 @@ public class AdapterDataOrderDetails{
     private String productName;
     private String rowType;
     private String spec;
-    private String util;
+    private String unit;
     private Double quantity;
     private Double unitPrice;
     private Double amount;
@@ -64,12 +64,12 @@ public class AdapterDataOrderDetails{
         this.spec = spec;
     }
 
-    public String getUtil() {
-        return util;
+    public String getUnit() {
+        return unit;
     }
 
-    public void setUtil(String util) {
-        this.util = util;
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 
     public Double getQuantity() {

@@ -261,7 +261,7 @@ public class TransferExtractDataService {
                 detail.setQuantity(jymxsq.getSps());
                 detail.setUnitPrice(jymxsq.getSpdj());
                 detail.setSpec(jymxsq.getSpggxh());
-                detail.setUtil(jymxsq.getSpdw());
+                detail.setUnit(jymxsq.getSpdw());
                 detail.setRowType(jymxsq.getFphxz());
                 detail.setTaxRate(jymxsq.getSpsl());
                 detail.setTaxAmount(jymxsq.getSpse());
@@ -352,7 +352,7 @@ public class TransferExtractDataService {
             detail.setQuantity(1d);
             detail.setUnitPrice(5d);
             detail.setSpec("规格型号");
-            detail.setUtil("次");
+            detail.setUnit("次");
             detail.setRowType("0");
             detail.setTaxRate(0.06);
             details.add(detail);
