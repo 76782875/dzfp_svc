@@ -21,16 +21,6 @@ public class Fpkcvo implements Serializable{
 	protected String yx;      //用户邮箱
 	protected String fpzldm;
 	protected String fpzlmc;
-	protected String xfyh;
-	protected String xfyhzh;
-	protected String xflxr;
-	protected String xfdz;
-	protected String xfdh;
-	protected String xfyb;
-	protected String skr;
-	protected String fhr;
-	protected String kpr;
-	protected String zfr;
 	public Integer getId() {
 		return id;
 	}
@@ -139,84 +129,6 @@ public class Fpkcvo implements Serializable{
 	public void setFpzlmc(String fpzlmc) {
 		this.fpzlmc = fpzlmc;
 	}
+	
 
-	public String getXfyh() {
-		return xfyh;
-	}
-
-	public void setXfyh(String xfyh) {
-		this.xfyh = xfyh;
-	}
-
-	public String getXfyhzh() {
-		return xfyhzh;
-	}
-
-	public void setXfyhzh(String xfyhzh) {
-		this.xfyhzh = xfyhzh;
-	}
-
-	public String getXflxr() {
-		return xflxr;
-	}
-
-	public void setXflxr(String xflxr) {
-		this.xflxr = xflxr;
-	}
-
-	public String getXfdz() {
-		return xfdz;
-	}
-
-	public void setXfdz(String xfdz) {
-		this.xfdz = xfdz;
-	}
-
-	public String getXfdh() {
-		return xfdh;
-	}
-
-	public void setXfdh(String xfdh) {
-		this.xfdh = xfdh;
-	}
-
-	public String getXfyb() {
-		return xfyb;
-	}
-
-	public void setXfyb(String xfyb) {
-		this.xfyb = xfyb;
-	}
-
-	public String getSkr() {
-		return skr;
-	}
-
-	public void setSkr(String skr) {
-		this.skr = skr;
-	}
-
-	public String getFhr() {
-		return fhr;
-	}
-
-	public void setFhr(String fhr) {
-		this.fhr = fhr;
-	}
-
-	public String getKpr() {
-		return kpr;
-	}
-
-	public void setKpr(String kpr) {
-		this.kpr = kpr;
-	}
-
-	public String getZfr() {
-		return zfr;
-	}
-
-	public void setZfr(String zfr) {
-		this.zfr = zfr;
-	}
 }
