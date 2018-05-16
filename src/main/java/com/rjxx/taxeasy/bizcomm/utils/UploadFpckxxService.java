@@ -42,7 +42,8 @@ public class UploadFpckxxService {
     @Autowired
     private FpkcService fpkcService;
 
-    public String UploadFpckxx(String data)throws Exception{
+    public InvoiceResponse UploadFpckxx(String data)throws Exception{
+        InvoiceResponse invoiceResponse=new InvoiceResponse();
         try {
             JSONObject upData = JSON.parseObject(data);
             String spbmbbh = upData.getString("spbmbbh");//商品编码版本号
@@ -50,11 +51,15 @@ public class UploadFpckxxService {
             String skpid = upData.getString("skpid");//税控盘id
             JSONArray kcxx = upData.getJSONArray("kcxx");//库存信息
             if(StringUtils.isBlank(xfid)||StringUtils.isBlank(skpid)){
-                return ResponeseUtils.error("销方或税控盘信息为空");
+                invoiceResponse.setReturnCode("9999");
+                invoiceResponse.setReturnMessage("销方或税控盘信息为空！");
+                return invoiceResponse;
             }
             Xf xf = xfJpaDao.findOne(Integer.valueOf(xfid));
             if(xf==null){
-                return ResponeseUtils.error("未查询到销方信息");
+                invoiceResponse.setReturnCode("9999");
+                invoiceResponse.setReturnMessage("未查询到销方信息！");
+                return invoiceResponse;
             }
             Date date = new Date();
             if(StringUtils.isNotBlank(spbmbbh)){
@@ -128,10 +133,14 @@ public class UploadFpckxxService {
                     fpkcJpaDao.save(fpkc);
                 }
             }
+            invoiceResponse.setReturnCode("0000");
+            invoiceResponse.setReturnMessage("数据上传成功！");
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponeseUtils.error("数据上传失败");
+            invoiceResponse.setReturnCode("9999");
+            invoiceResponse.setReturnMessage("数据上传失败！");
+            return invoiceResponse;
         }
-        return ResponeseUtils.success("数据上传成功");
+        return invoiceResponse;
     }
 }
