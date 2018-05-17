@@ -237,7 +237,7 @@ AND a.yxbz = '1'
    
     <select id="findKcYjByPage" parameterType="pagination" resultType="fpkcYjvo">
           SELECT s.* from (
-			SELECT o.*,p.fpkcl,p.id,q.yjyz from (SELECT t.*,fpzl.fpzldm,fpzl.fpzlmc,xf.xfmc,xf.xfsh from (
+			SELECT o.*,p.fpkcl,p.id,q.yjyz,p.xgsj from (SELECT t.*,fpzl.fpzldm,fpzl.fpzlmc,xf.xfmc,xf.xfsh from (
 			SELECT a.xfid,a.gsdm,a.kpdmc,a.id skpid,substring_index(substring_index(a.kplx,',',b.id),',',-1) kplx from 
 			(
 			SELECT	*		FROM		t_skp a		WHERE		a.yxbz = '1'		AND EXISTS (	SELECT 1	FROM		t_group b,t_yh c	WHERE  b.yxbz = '1'
