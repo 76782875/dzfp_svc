@@ -635,6 +635,8 @@ public class PdfDocumentGenerator {
             csmap.put("gfsh",kpls.getGfsh()==null?"N":kpls.getGfsh().toString());
             csmap.put("ddrq",new SimpleDateFormat("yyyyMMdd").format(jyls.getJylssj()));
             csmap.put("kprq",new SimpleDateFormat("yyyyMMdd").format(kpls.getKprq()));
+            csmap.put("fpdm", kpls.getFpdm());
+            csmap.put("fphm", kpls.getFphm());
             for (Map.Entry<String, Object> entry : csmap.entrySet()) {
                 String key=entry.getKey();
                 String value=(String)entry.getValue();
