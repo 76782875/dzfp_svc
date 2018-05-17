@@ -102,13 +102,19 @@ public class JkpzServiceImpl implements JkpzService {
                 Gsxx gsxx = gsxxService.findOneByParams(map);
                 String gsdm = gsxx.getGsdm();
                 //处理销方
-                Xf xf;
+                Xf xf=null;
                 String xfsh = adapterPost.getTaxNo();
                 try {
                     if(StringUtils.isNotBlank(xfsh)){
                         xf = xfJpaDao.findOneByXfshAndGsdm(xfsh,gsdm);
+                        if(xf==null){
+                            return ResultUtil.error("根据销方税号，获取销方有误");
+                        }
                     }else{
                         xf=xfJpaDao.findOneByGsdm(gsdm);
+                        if(xf==null){
+                            return ResultUtil.error("获取销方有误");
+                        }
                     }
                 } catch (RuntimeException e) {
                     e.printStackTrace();
@@ -120,15 +126,21 @@ public class JkpzServiceImpl implements JkpzService {
                 try {
                     if(StringUtils.isNotBlank(kpddm)){
                         skp = skpJpaDao.findOneByKpddmAndGsdm(kpddm, gsdm);
+                        if(skp==null){
+                            return ResultUtil.error("根据开票点代码，获取开票点有误");
+                        }
                     }else{
                         skp = skpJpaDao.findOneByGsdmAndXfsh(gsdm, xf.getId());
+                        if(skp==null){
+                            return ResultUtil.error("获取开票点有误");
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return ResultUtil.error("获取开票点信息有误");
                 }
                 Cszb cszb = cszbService.getSpbmbbh(gsdm, xf.getId(), skp.getId(), "jkpzmbid");
-                if(cszb==null){
+                if(cszb==null || cszb.getCsz()==null || "".equals(cszb.getCsz())){
                     return ResultUtil.error("模板未配置");
                 }
                 Map map1 = new HashMap();
