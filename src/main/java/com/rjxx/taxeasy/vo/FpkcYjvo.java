@@ -1,6 +1,11 @@
 package com.rjxx.taxeasy.vo;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.rjxx.comm.json.JsonDatetimeFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
+import java.util.Date;
 
 public class FpkcYjvo implements Serializable{
 	protected Integer id;
@@ -15,6 +20,13 @@ public class FpkcYjvo implements Serializable{
 	protected String xfsh;
 	protected Integer fpkcl;
 	protected Integer yjyz;
+	/**
+	 * 修改时间
+	 */
+	@JsonSerialize(using = JsonDatetimeFormat.class)
+	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	protected Date xgsj;
+
 	public Integer getId() {
 		return id;
 	}
@@ -87,5 +99,12 @@ public class FpkcYjvo implements Serializable{
 	public void setYjyz(Integer yjyz) {
 		this.yjyz = yjyz;
 	}
-	
+
+	public Date getXgsj() {
+		return xgsj;
+	}
+
+	public void setXgsj(Date xgsj) {
+		this.xgsj = xgsj;
+	}
 }
