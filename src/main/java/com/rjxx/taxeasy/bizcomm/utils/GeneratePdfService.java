@@ -40,6 +40,7 @@ import sun.misc.BASE64Encoder;
 
 import java.io.*;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -249,14 +250,14 @@ public class GeneratePdfService {
                     kplsparms.setGsdm(listkpls.get(0).getGsdm());
                     List<Kpls> lslist=kplsService.findAllByKpls(kplsparms);
                     List<String> pdfUrlList = new ArrayList<>();
-                    BigDecimal jshj = new BigDecimal(0);
+                    double jshj=0;
                     boolean f=true;
                     for (Kpls kpls1 : lslist) {
                         if(null==kpls1.getPdfurl()||"".equals(kpls1.getPdfurl())){
                             f=false;
                             break;
                         }
-                        jshj= jshj.add(new BigDecimal(kpls1.getJshj()));
+                        jshj = jshj + kpls1.getJshj();
                         pdfUrlList.add(kpls1.getPdfurl());
                     }
                     
@@ -268,15 +269,18 @@ public class GeneratePdfService {
                         String q="";
                         String infoUrl="";
                         List<Fpcxvo> fpcxvos = invoiceQueryUtil.getInvoiceListByDdh(gsxx.getGsdm(), jyls.getDdh());
-                        if(fpcxvos !=null && !fpcxvos.isEmpty()){
-                            if(fpcxvos.get(0).getTqm()!=null && !fpcxvos.get(0).getTqm().equals("")){
-                                q=fpcxvos.get(0).getTqm();
-                                infoUrl=emailInfoUrl+"g="+gsxx.getGsdm()+"&q="+q;
-                            }else if(fpcxvos.get(0).getKhh()!=null&&!fpcxvos.get(0).getKhh().equals("")){
-                                q=fpcxvos.get(0).getKhh();
-                                infoUrl=emailInfoUrl+"g="+gsxx.getGsdm()+"&q="+q;
+                        if(fpcxvos.size()>0){
+                            if(fpcxvos !=null && !fpcxvos.isEmpty()){
+                                if(fpcxvos.get(0).getTqm()!=null && !fpcxvos.get(0).getTqm().equals("")){
+                                    q=fpcxvos.get(0).getTqm();
+                                    infoUrl=emailInfoUrl+"g="+gsxx.getGsdm()+"&q="+q;
+                                }else if(fpcxvos.get(0).getKhh()!=null&&!fpcxvos.get(0).getKhh().equals("")){
+                                    q=fpcxvos.get(0).getKhh();
+                                    infoUrl=emailInfoUrl+"g="+gsxx.getGsdm()+"&q="+q;
+                                }
                             }
                         }
+                        
                         Map csmap = new HashMap();
                         csmap.put("ddh", jyls.getDdh());
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
@@ -293,7 +297,7 @@ public class GeneratePdfService {
                 		csmap.put("sq_sj_", sdf2.format(kpls.getKprq()));//取开票日期
                 		csmap.put("d_d_h_", jyls.getDdh());
                 		csmap.put("gf_mc_", kpls.getGfmc());
-                		csmap.put("js_hj_",jshj.setScale(2).toString());
+                		csmap.put("js_hj_",new DecimalFormat("0.00").format(jshj));
                 		csmap.put("fp_dz_", fpdz_+"?q="+kpls.getSerialorder());
                 		csmap.put("lo_go_dz_", imgdz_+"emailLogo.png");
                 		csmap.put("e_wm_dz_", imgdz_+"emailCode.png");
