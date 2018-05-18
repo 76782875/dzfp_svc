@@ -1124,27 +1124,26 @@ public class FpclService {
                             kplsService.save(kpls);
                         }
                     }
-                }else if (kpfs.equals("04")) {//凯盈开票
-                    //保存开票流水
+                }else if (kpfs.equals("04")||kpfs.equals("05")) {
+                    //保存开票流水 //凯盈开票  盟度开票
                     Kpls kpls = saveKpls(jyls, list2, jyxxsq.getSfdy(), kpfs);
                     kpls.setKpddm(jyxxsq.getKpddm());
                     kplsService.save(kpls);
                     saveKpspmx(kpls, list2);
                     KplsVO5 kplsVO5 = new KplsVO5(kpls, jyxxsq);
                     result.add(kplsVO5);
-                    //skService.SkServerKP(kpls.getKplsh());//税控开票
-                    if(kpls.getGsdm().equals("afb")){
-                        skService.SkServerKPhttps(kpls.getKplsh());
-                    }else{
                         try {
-                            skService.SkBoxKP(kpls.getKplsh());
+                            if(kpfs.equals("04")){
+                                skService.SkBoxKP(kpls.getKplsh());
+                            }else if(kpfs.equals("05")){
+                                skService.skEkyunKP(kpls.getKplsh());
+                            }
                         }catch (Exception e){
                             e.printStackTrace();
                             kpls.setFpztdm("04");
                             kpls.setErrorReason(e.getMessage());
                             kplsService.save(kpls);
                         }
-                    }
                 }
                 i++;
             }
