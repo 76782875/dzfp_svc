@@ -55,6 +55,11 @@ public class PpService {
         return ppMapper.findByPage(pagination);
     }
 
+    public List<Pp> findTqListByPage(Pagination pagination) {
+        return ppMapper.findTqListByPage(pagination);
+    }
+
+
     /**
      * @param skpid
      * @param gsdm
