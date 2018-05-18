@@ -41,12 +41,36 @@ public class Yanzhengma  implements Serializable {
 @JsonSerialize(using = JsonDatetimeFormat.class)
 @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	protected Date lrsj;
-
+	/**
+	 * 录入时间
+	 */
+	@Column(name="xgsj")
+	@JsonSerialize(using = JsonDatetimeFormat.class)
+	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	protected Date xgsj;
 /**
  * 短信请求ID
  */ 
 @Column(name="requestid")
 	protected String requestid;
+
+	/**
+	 * 获取验证码次数
+	 */
+	@Column(name="hqnum")
+	protected Integer hqnum;
+
+	/**
+	 * 体验次数
+	 */
+	@Column(name="tynum")
+	protected Integer tynum;
+	/**
+	 * 有效标识
+	 */
+	@Column(name="yxbz")
+	protected  String yxbz;
+
 
 
 	public Integer getId(){
@@ -89,5 +113,36 @@ public class Yanzhengma  implements Serializable {
 		this.requestid=requestid;
 	}
 
+	public Integer getHqnum() {
+		return hqnum;
+	}
+
+	public void setHqnum(Integer hqnum) {
+		this.hqnum = hqnum;
+	}
+
+	public Integer getTynum() {
+		return tynum;
+	}
+
+	public void setTynum(Integer tynum) {
+		this.tynum = tynum;
+	}
+
+	public Date getXgsj() {
+		return xgsj;
+	}
+
+	public void setXgsj(Date xgsj) {
+		this.xgsj = xgsj;
+	}
+
+	public String getYxbz() {
+		return yxbz;
+	}
+
+	public void setYxbz(String yxbz) {
+		this.yxbz = yxbz;
+	}
 }
 

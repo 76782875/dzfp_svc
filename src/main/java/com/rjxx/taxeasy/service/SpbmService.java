@@ -40,5 +40,7 @@ public class SpbmService {
         return spbmMapper.findByPage(pagination);
     }
 
+    public List<Spbm> findSpbm(){return spbmMapper.findSpbm();}
+    public List<Spbm> findAllSpbm(){return spbmMapper.findAllSpbm();}
 }
 
