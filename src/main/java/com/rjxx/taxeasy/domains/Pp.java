@@ -106,6 +106,13 @@ public class Pp implements Serializable {
     private String ppbodycolor;
     private String ppbuttoncolor;
 
+
+    /**
+     * 公司代码
+     */
+    @Column(name = "tqurl")
+    protected String tqurl;
+
     public String getPpbuttoncolor() {
         return ppbuttoncolor;
     }
@@ -224,6 +231,14 @@ public class Pp implements Serializable {
 
     public void setAliSubMShortName(String aliSubMShortName) {
         this.aliSubMShortName = aliSubMShortName;
+    }
+
+    public String getTqurl() {
+        return tqurl;
+    }
+
+    public void setTqurl(String tqurl) {
+        this.tqurl = tqurl;
     }
 }
 

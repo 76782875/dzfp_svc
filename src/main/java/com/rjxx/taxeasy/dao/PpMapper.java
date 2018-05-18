@@ -23,5 +23,7 @@ public interface PpMapper {
 
     public List<Pp> findByPage(Pagination pagination);
 
+    public List<Pp> findTqListByPage(Pagination pagination);
+
 }
 

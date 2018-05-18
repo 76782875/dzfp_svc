@@ -37,5 +37,19 @@
         </if>
     </select>
 
+
+    <select id="findTqListByPage" parameterType="pagination" resultType="pp">
+        select * from t_pp where yxbz = '1' and tqurl is not NULL
+        <if test="params.gsdm != null and params.gsdm != ''">
+            and gsdm = #{params.gsdm}
+        </if>
+        <if test="params.ppmc != null and params.ppmc != ''">
+            and ppmc like concat('%',#{params.ppmc},'%')
+        </if>
+        <if test="params.orderBy != null">
+            order by ${params.orderBy}
+        </if>
+    </select>
+
 </mapper>
 
