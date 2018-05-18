@@ -3,10 +3,7 @@ package com.rjxx.utils.yjapi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by wangyahui on 2017/11/27 0027.
@@ -14,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/companyInfo")
+@CrossOrigin
 public class QCCController{
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());

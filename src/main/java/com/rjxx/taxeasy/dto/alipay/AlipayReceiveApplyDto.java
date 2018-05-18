@@ -15,8 +15,10 @@ public class AlipayReceiveApplyDto {
     private String subShortName;//支付宝为商户分配的商户门店简称，与发票回传接口的商户名称保持一致
     private String payerName;//抬头名称
     private String payerRegisterNo;//纳税人识别号
-    private String payerAddressPhone;//地址电话
-    private String payerBankNameAccount;//银行、银行账号
+    private String payerAddress;//地址电话
+    private String payerTelphone;//地址电话
+    private String payerBankName;//银行、银行账号
+    private String payerBankAccount;//银行、银行账号
     private String sign;//签名
 
     public String getApplyId() {
@@ -83,20 +85,36 @@ public class AlipayReceiveApplyDto {
         this.payerRegisterNo = payerRegisterNo;
     }
 
-    public String getPayerAddressPhone() {
-        return payerAddressPhone;
+    public String getPayerAddress() {
+        return payerAddress;
     }
 
-    public void setPayerAddressPhone(String payerAddressPhone) {
-        this.payerAddressPhone = payerAddressPhone;
+    public void setPayerAddress(String payerAddress) {
+        this.payerAddress = payerAddress;
     }
 
-    public String getPayerBankNameAccount() {
-        return payerBankNameAccount;
+    public String getPayerTelphone() {
+        return payerTelphone;
     }
 
-    public void setPayerBankNameAccount(String payerBankNameAccount) {
-        this.payerBankNameAccount = payerBankNameAccount;
+    public void setPayerTelphone(String payerTelphone) {
+        this.payerTelphone = payerTelphone;
+    }
+
+    public String getPayerBankName() {
+        return payerBankName;
+    }
+
+    public void setPayerBankName(String payerBankName) {
+        this.payerBankName = payerBankName;
+    }
+
+    public String getPayerBankAccount() {
+        return payerBankAccount;
+    }
+
+    public void setPayerBankAccount(String payerBankAccount) {
+        this.payerBankAccount = payerBankAccount;
     }
 
     public String getSign() {
