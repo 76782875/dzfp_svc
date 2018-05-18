@@ -148,7 +148,7 @@ public class SkService {
         return response;
     }
     /**
-     * 税控服务器开票
+     * 凯盈盒子开票
      *
      * @param kplsh
      * @return
@@ -180,6 +180,85 @@ public class SkService {
             logger.info("------返回数据--------"+result);
         }
         return response;
+    }
+
+    /**
+     * 凯盈盒子查询开票信息
+     *
+     * @param kplsh
+     * @return
+     */
+    public String skInvoiceQuery(int kplsh) throws Exception {
+
+        InvoiceResponse response=null;
+        String result=null;
+        try{
+            if (StringUtils.isBlank(skkpServerUrl)) {
+                return "skkpServerUrl为空";
+            }
+            String encryptStr = encryptSkServerParameter(kplsh + "");
+            Kpls kpls=kplsService.findOne(kplsh);
+            Cszb cszb=cszbService.getSpbmbbh(kpls.getGsdm(),kpls.getXfid(),kpls.getSkpid(),"sfqysknew");
+            if("是".equals(cszb.getCsz())){
+                result=dubboInvoiceService.skInvoiceQuery(encryptStr);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.info("------返回数据--------"+result);
+        }
+        return result;
+    }
+    /**
+     * 凯盈盒子作废发票
+     *
+     * @param kplsh
+     * @return
+     */
+    public String InvalidateInvoice(int kplsh) throws Exception {
+
+        InvoiceResponse response=null;
+        String result=null;
+        try{
+            if (StringUtils.isBlank(skkpServerUrl)) {
+                return "skkpServerUrl为空";
+            }
+            String encryptStr = encryptSkServerParameter(kplsh + "");
+            Kpls kpls=kplsService.findOne(kplsh);
+            Cszb cszb=cszbService.getSpbmbbh(kpls.getGsdm(),kpls.getXfid(),kpls.getSkpid(),"sfqysknew");
+            if("是".equals(cszb.getCsz())){
+                result=dubboInvoiceService.InvalidateInvoice(encryptStr);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.info("------返回数据--------"+result);
+        }
+        return result;
+    }
+
+    /**
+     * 凯盈获取当前发票段信息
+     * @param kplsh
+     * @return
+     */
+    public String GetCurrentInvoiceInfo(int kplsh) throws Exception {
+
+        InvoiceResponse response=null;
+        String result=null;
+        try{
+            if (StringUtils.isBlank(skkpServerUrl)) {
+                return "skkpServerUrl为空";
+            }
+            String encryptStr = encryptSkServerParameter(kplsh + "");
+            Kpls kpls=kplsService.findOne(kplsh);
+            Cszb cszb=cszbService.getSpbmbbh(kpls.getGsdm(),kpls.getXfid(),kpls.getSkpid(),"sfqysknew");
+            if("是".equals(cszb.getCsz())){
+                result=dubboInvoiceService.GetCurrentInvoiceInfo(encryptStr);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.info("------返回数据--------"+result);
+        }
+        return result;
     }
     /**
      * 税控服务器开票https
@@ -312,12 +391,155 @@ public class SkService {
     }
 
 
-
+    /**
+     * 凯盈终端盒子注册
+     * @param skpid
+     * @return
+     * @throws Exception
+     */
     public String register(int skpid) throws Exception {
         return dubboSkpService.deviceAuth(skpid);
     }
+
+    /**
+     * 凯盈终端盒子初始化税控盘密码，证书
+     * @param skpid
+     * @return
+     * @throws Exception
+     */
     public String inputUDiskPassword(int skpid) throws Exception {
         return dubboSkpService.inputUDiskPassword(skpid);
+    }
+
+    /**
+     * 获取凯盈盒子在线状态
+     * @param skpid
+     * @return
+     * @throws Exception
+     */
+    public String deviceState(int skpid) throws Exception {
+        return dubboSkpService.deviceState(skpid);
+    }
+
+    /**
+     * 凯盈查询发票上传状态
+     * @param skpid
+     * @return
+     * @throws Exception
+     */
+    public String GetUploadStates(int skpid) throws Exception {
+        return dubboSkpService.GetUploadStates(skpid);
+    }
+
+    /**
+     * 凯盈立即上传发票
+     * @param skpid
+     * @return
+     * @throws Exception
+     */
+    public String TriggerUpload(int skpid) throws Exception {
+        return dubboSkpService.TriggerUpload(skpid);
+    }
+
+    /**
+     * 凯盈抄报状态查询
+     * @param skpid
+     * @return
+     * @throws Exception
+     */
+    public String GetDeclareTaxStates(int skpid) throws Exception {
+        return dubboSkpService.GetDeclareTaxStates(skpid);
+    }
+
+    /**
+     * 立即抄报
+     * @param skpid
+     * @return
+     * @throws Exception
+     */
+    public String TriggerDeclareTax(int skpid) throws Exception {
+        return dubboSkpService.TriggerDeclareTax(skpid);
+    }
+
+    /**
+     * 获取税控装置信息
+     * @param skpid
+     * @return
+     * @throws Exception
+     */
+    public String UDiskInfo(int skpid) throws Exception {
+        return dubboSkpService.UDiskInfo(skpid);
+    }
+
+    /**
+     * 获取当前税控装置内发票的监控管理信息
+     * @param skpid
+     * @return
+     * @throws Exception
+     */
+    public String InvoiceControlInfo(int skpid) throws Exception {
+        return dubboSkpService.InvoiceControlInfo(skpid);
+    }
+
+    /**
+     * 获取指定税控装置（当前已载入的）内指定票种的全部发票段信息
+     * @param skpid
+     * @return
+     * @throws Exception
+     */
+    public String GetAllInvoiceSections(int skpid) throws Exception {
+        return dubboSkpService.GetAllInvoiceSections(skpid);
+    }
+
+    /**
+     * 在本地已载入税控盘/金税盘与对应的报税盘之间分发、回收发票，
+     * 或从局端下载、退回发票到本地 盘，或从本地报税盘分发至远程税控盘
+     * @param skpMap
+     * @return
+     * @throws Exception
+     */
+    public String InvoiceDistribute(Map skpMap) throws Exception {
+        return dubboSkpService.InvoiceDistribute(skpMap);
+    }
+
+    /**
+     * 。本指令可用于清空绑定列表，使终端可以绑定新的税控装置或纳税人。
+     * @param skpid
+     * @return
+     * @throws Exception
+     */
+    public String UDiskBinding(int skpid) throws Exception {
+        return dubboSkpService.UDiskBinding(skpid);
+    }
+
+    /**
+     * 切换至终端连接的另一个税控装置（不包括报税盘）并重新初始化
+     * @param skpid
+     * @return
+     * @throws Exception
+     */
+    public String SwitchUDisk(int skpid) throws Exception {
+        return dubboSkpService.SwitchUDisk(skpid);
+    }
+
+    /**
+     * 获取设备信息。
+     * @param skpid
+     * @return
+     * @throws Exception
+     */
+    public String DeviceInfo(int skpid) throws Exception {
+        return dubboSkpService.DeviceInfo(skpid);
+    }
+
+    /**
+     * 将终端恢复出厂设置。
+     * @param skpid
+     * @return
+     * @throws Exception
+     */
+    public String FactoryReset(int skpid) throws Exception {
+        return dubboSkpService.FactoryReset(skpid);
     }
     /**
      * 加密税控服务参数

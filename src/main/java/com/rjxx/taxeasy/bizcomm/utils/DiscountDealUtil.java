@@ -463,7 +463,7 @@ public class DiscountDealUtil {
 						Kpspmx kpspmx2 = KpspmxList.get(j);
 							if (kpspmx2.getSpmc().equals(kpspmx.getSpmc())
 									&& kpspmx2.getSpdm().equals(kpspmx.getSpdm())
-									&& kpspmx2.getSpggxh().equals(kpspmx.getSpggxh())
+									&& (kpspmx2.getSpggxh()==null?"":kpspmx2.getSpggxh()).equals(kpspmx.getSpggxh()==null?"":kpspmx.getSpggxh())
 									&& kpspmx2.getSpmxxh() == kpspmx.getSpmxxh()&&kpspmx2.getFphxz().equals("1")) {
 								KpspmxR = genNewKpspmx(kpspmx);
 								if((kpspmx.getSpje() + kpspmx2.getSpje())!=0){

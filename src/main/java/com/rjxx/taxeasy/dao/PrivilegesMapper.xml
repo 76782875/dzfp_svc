@@ -12,6 +12,9 @@
                  #{id}
              </foreach>
          </if>
+        <if test="ztbz != null and ztbz !=''">
+            and p.ztbz = #{ztbz}
+        </if>
           order by P.SORT ASC
     </select>
    <select id="findOneByParams" parameterType="map" resultType="privileges">

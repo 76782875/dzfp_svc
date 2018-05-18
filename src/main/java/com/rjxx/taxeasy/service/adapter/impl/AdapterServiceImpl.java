@@ -626,7 +626,10 @@ public class AdapterServiceImpl implements AdapterService {
                 buyer.setAddress(gfdz);
                 jyxxsq.setGfsh(gfsh);
                 buyer.setIdentifier(gfsh);
-
+                if(StringUtils.isNotBlank(email)){
+                    jyxxsq.setSffsyj("1");
+                    buyer.setIsSend("1");
+                }
                 List<Jyxxsq> list = new ArrayList<>();
                 list.add(jyxxsq);
                 //转换
@@ -814,7 +817,7 @@ public class AdapterServiceImpl implements AdapterService {
             jymxsq.setSpsl(adapterDataOrderOrderDetails.get(i).getTaxRate());
             jymxsq.setSpmc(adapterDataOrderOrderDetails.get(i).getProductName());
             jymxsq.setSpggxh(adapterDataOrderOrderDetails.get(i).getSpec());
-            jymxsq.setSpdw(adapterDataOrderOrderDetails.get(i).getUtil());
+            jymxsq.setSpdw(adapterDataOrderOrderDetails.get(i).getUnit());
             jymxsq.setYhzcmc(adapterDataOrderOrderDetails.get(i).getPolicyName());
             jymxsq.setYhzcbs(adapterDataOrderOrderDetails.get(i).getPolicyMark());
             jymxsq.setLslbz(adapterDataOrderOrderDetails.get(i).getTaxRateMark());
@@ -881,8 +884,13 @@ public class AdapterServiceImpl implements AdapterService {
                                 result.add("开具中");
                             }
                         } else {
-                            logger.info("开具中");
-                            result.add("开具中");
+                            if("02".equals(fpztdm)){
+                                logger.info("红冲");
+                                result.add("红冲");
+                            }else{
+                                logger.info("开具中");
+                                result.add("开具中");
+                            }
                         }
                     } else {
                         logger.info("可开具");

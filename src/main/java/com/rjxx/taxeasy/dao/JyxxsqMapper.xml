@@ -328,7 +328,7 @@
 	<select id="findByPage2" parameterType="map" resultType="jyxxsqVO">
 					SELECT * FROM  t_jyxxsq m
 							JOIN (SELECT DISTINCT a.sqlsh FROM
-									t_jyxxsq a use INDEX(IDX_jyxxsq_ddrq),
+									t_jyxxsq a force INDEX(IDX_jyxxsq_ddrq),
 									t_jymxsq b
 										WHERE a.sqlsh = b.sqlsh
 										AND a.yxbz = '1'
@@ -384,7 +384,7 @@
 	<select id="findtotal" parameterType="map" resultType="int">
 		SELECT COUNT(m.sqlsh) FROM  t_jyxxsq m
 		JOIN (SELECT DISTINCT a.sqlsh FROM
-		t_jyxxsq a use INDEX(IDX_jyxxsq_ddrq),
+		t_jyxxsq a force INDEX(IDX_jyxxsq_ddrq),
 		t_jymxsq b
 		WHERE a.sqlsh = b.sqlsh
 		AND a.yxbz = '1'
