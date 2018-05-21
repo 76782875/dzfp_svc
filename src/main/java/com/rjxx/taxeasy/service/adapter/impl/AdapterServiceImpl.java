@@ -14,10 +14,7 @@ import com.rjxx.taxeasy.service.adapter.AdapterService;
 import com.rjxx.taxeasy.service.adapter.TransferExtractDataService;
 import com.rjxx.taxeasy.service.jkpz.JkpzService;
 import com.rjxx.taxeasy.vo.Spvo;
-import com.rjxx.utils.NumberUtil;
-import com.rjxx.utils.RJCheckUtil;
-import com.rjxx.utils.StringUtil;
-import com.rjxx.utils.XmlJaxbUtils;
+import com.rjxx.utils.*;
 import com.rjxx.utils.weixin.HttpClientUtil;
 import com.rjxx.utils.weixin.WeixinUtils;
 import com.rjxx.utils.yjapi.Result;
@@ -69,6 +66,8 @@ public class AdapterServiceImpl implements AdapterService {
     private JymxsqService jymxsqService;
     @Autowired
     private FpclService fpclService;
+    @Autowired
+    private CheckOrderUtil checkOrderUtil;
 
     @Override
     public String getShowMsg(String ppdm) {
@@ -639,6 +638,16 @@ public class AdapterServiceImpl implements AdapterService {
                     logger.info("type3------jyxxsq");
                     Cszb kpfs = cszbService.getSpbmbbh(gsdm, null, null, "kpfs");
                     logger.info("直接开票数据："+JSON.toJSONString(list));
+                    String msg = checkOrderUtil.checkBuyer(list, gsdm, null);
+                    if(!"".equals(msg)){
+                        logger.info("进入拒绝开票-----错误原因为" + msg);
+                        String reason = msg;
+                        if (null != sjly && "4".equals(sjly)) {
+                            logger.info("进行拒绝开票的weixinOrderN+++++" + weixinOrderNo);
+                            weixinUtils.jujuekp(weixinOrderNo, reason, access_token);
+                        }
+                        return "-1";
+                    }
                     List<Object> jyxxsqList = fpclService.zjkp(list, kpfs.getCsz());
                     logger.info("返回数据："+JSON.toJSONString(jyxxsqList));
                     resultMap.put("returnMsg", "成功");
