@@ -34,7 +34,7 @@
     </select>
 
     <select id="findByPage" parameterType="pagination" resultType="fpkcYzszVo">
-        select * from (select c.id,t.gsdm,t.xfid,t.id as skpid,t.lrry,t.fpzldm,f.xfmc,f.xfsh,t.skph,t.kpdmc,e.fpzlmc,c.yjyz,d.kpfs,d.csz from
+        select * from (select c.id,t.gsdm,t.xfid,t.id as skpid,t.lrry,t.fpzldm,f.xfmc,f.xfsh,t.skph,t.kpdmc,e.fpzlmc,c.yjyz,d.kpfs,d.csz,g.fpkcl,g.xgsj kchqsj from
         (SELECT
         a.*, substring_index(
         substring_index(
@@ -54,6 +54,7 @@
         a.id) t LEFT JOIN t_fpkc_yzsz c on t.gsdm = c.gsdm and t.xfid = c.xfid and t.id = c.skpid and t.fpzldm = c.fpzldm
         LEFT JOIN v_kpfs d on t.gsdm = d.gsdm and t.xfid = d.xfid and t.id = d.kpdid
         LEFT JOIN t_fpzl e on t.fpzldm = e.fpzldm
+        LEFT JOIN t_fpkc g on t.gsdm = g.gsdm and t.xfid = g.xfid and t.id = g.skpid and t.fpzldm = g.fpzldm
         LEFT JOIN t_xf f on t.gsdm = f.gsdm and t.xfid = f.id ) m
         where 1=1
         <if test="params.gsdm != null and params.gsdm !=''">
