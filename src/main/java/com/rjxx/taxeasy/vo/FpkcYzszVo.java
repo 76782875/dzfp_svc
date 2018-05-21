@@ -39,6 +39,11 @@ public class FpkcYzszVo{
 	protected String fpzlmc;
 	protected String kpfs;
     protected String csz;
+	protected String fpkcl;
+	@JsonSerialize(using = JsonDatetimeFormat.class)
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	protected Date kchqsj;
+
 	public Integer getId(){
 		return id;
 	}
@@ -190,5 +195,21 @@ public class FpkcYzszVo{
     public void setCsz(String csz) {
         this.csz = csz;
     }
+
+	public String getFpkcl() {
+		return fpkcl;
+	}
+
+	public void setFpkcl(String fpkcl) {
+		this.fpkcl = fpkcl;
+	}
+
+	public Date getKchqsj() {
+		return kchqsj;
+	}
+
+	public void setKchqsj(Date kchqsj) {
+		this.kchqsj = kchqsj;
+	}
 }
 
