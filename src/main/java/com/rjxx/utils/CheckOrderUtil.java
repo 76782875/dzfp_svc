@@ -161,6 +161,8 @@ public class CheckOrderUtil {
         Jyxxsq jyxxsq = new Jyxxsq();
         for (int i = 0; i < jyxxsqList.size(); i++) {
             jyxxsq = jyxxsqList.get(i);
+            // 订单号
+            ddh = jyxxsq.getDdh();
             // 购方名称
             String buyerName = jyxxsq.getGfmc();
             if (null == buyerName || buyerName.equals("")) {
