@@ -26,4 +26,7 @@
             and urls = #{urls}
         </if>
     </select>
+    <select id="findAll" resultType="privileges">
+        select * from privileges where yxbz = '1' order by SORT ASC
+    </select>
 </mapper>

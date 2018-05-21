@@ -55,9 +55,20 @@
                 #{item}
             </foreach>
         </if>
-        <if test="sfsmr != null">
-        or sfsmr = '1'
-        </if>
+
+
+       <if test="sup == 1">
+           <if test="sfsmr != null">
+               or sfsmr = '1'
+           </if>
+       </if>
+       <if test="sup==null">
+           <if test="sfsmr != null">
+               or (sfsmr = '1' and id!=1)
+           </if>
+       </if>
+
+
         <if test="yhjscx != null and roleList != null">
        		union SELECT * from roles where sfsmr = 1 
        		<foreach collection="roleList" open=" and id in (" separator="," close=")" item="item">
