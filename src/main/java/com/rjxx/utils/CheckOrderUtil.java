@@ -42,9 +42,6 @@ public class CheckOrderUtil {
         Map tqmMap = new HashMap();
         Map jylshMap = new HashMap();
         Map ddhMap = new HashMap();
-        //只校验购方7要素
-        String re = checkBuye(jyxxsqList, gsdm, Operation);
-        result +=re;
         for (int i = 0; i < jyxxsqList.size(); i++) {
             jyxxsq = jyxxsqList.get(i);
             // 订单号
@@ -53,6 +50,7 @@ public class CheckOrderUtil {
                 if (ddh.length() > 100) {
                     result += "购方数据" + ddh + ":订单号(OrderNo)太长;";
                 }
+//                ddhList.add(ddh);
             } else {
                 result += "购方数据订单号(OrderNo)不能为空;";
             }
@@ -82,12 +80,98 @@ public class CheckOrderUtil {
             }
             // 发票类型
             String fpzldm = (String) jyxxsq.getFpzldm();
+            /*
+             * if (!"12".equals(fpzldm) || !"01".equals(fpzldm) ||
+			 * !"02".equals(fpzldm)) { result += ddh + ":不支持" + fpzldm +
+			 * ",目前只支持01、02、12;"; }
+			 */
 
             String drawer = jyxxsq.getKpr();
             if (null == drawer || drawer.equals("")) {
                 result += ddh + ":开票人(Drawer)不能为空;";
             }
 
+            Cszb cszb = cszbservice.getSpbmbbh(jyxxsq.getGsdm(),jyxxsq.getXfid(),jyxxsq.getSkpid(),"sfzlkp");
+            // 购方名称
+            if (!Operation.equals("02")&&(null !=cszb.getCsz()&&cszb.getCsz().equals("是"))) {
+                String buyerName = jyxxsq.getGfmc();
+                if (null == buyerName || buyerName.equals("")) {
+                    result += ddh + ":购方名称(Name)不能为空;";
+                } else if (characterLength(buyerName) > 100) {
+                    result += ddh + ":购方名称(Name)太长;";
+                }
+            }
+            String CustomerType = (String) jyxxsq.getGflx();
+            if (CustomerType != null && !CustomerType.equals("")) {
+                if(CustomerType.equals("1")){
+                    String buyerIdentifier = (String) jyxxsq.getGfsh();
+                    if(null == buyerIdentifier || buyerIdentifier.equals("") ){
+                        result += ddh + ":购方税号(Identifier)不能为空;";
+                    }
+                }
+            }
+            // 购方税号
+            String buyerIdentifier = (String) jyxxsq.getGfsh();
+            if (buyerIdentifier != null && !buyerIdentifier.equals("")) {
+                if (!(buyerIdentifier.length() == 15 || buyerIdentifier.length() == 18 || buyerIdentifier.length() == 20 )) {
+                    result += ddh + ":购方税号(Identifier)"+buyerIdentifier+"长度有误，请核对;";
+                }else{
+                    if(buyerIdentifier.length() == 18){
+                        //校验18位是否满足条件
+                        if(!CheckSocialCreditCode(buyerIdentifier)){
+                            result += ddh + ":购方税号(Identifier)不符合规则;";
+                        }
+                    }
+                    if(isSameChars(buyerIdentifier)){
+                        result += ddh + ":购方税号(Identifier)不符合规则;";
+                    }
+                    if(isSpecialCharacter(buyerIdentifier)){
+                        result +=  " :购方税号(Identifier)只能包含数字和大写英文字母;";
+                    }
+                }
+                /*if(buyerIdentifier.substring(0,1).equals("0")){
+                    result += ddh + ":购方税号不符合规则;";
+                }*/
+            }
+            // 购方地址
+            String buyerAddress = (String) jyxxsq.getGfdz();
+            if (buyerAddress != null && !buyerAddress.equals("") && buyerAddress.length() > 100) {
+                result += ddh + ":购方地址(Address)太长;";
+            }
+            // 购方电话
+            String buyerTelephoneNo = (String) jyxxsq.getGfdh();
+            if (buyerTelephoneNo != null && !buyerTelephoneNo.equals("") && buyerTelephoneNo.length() > 20) {
+                result += ddh + ":购方电话(TelephoneNo)超过20个字符;";
+            }
+            // 购方银行
+            String buyerBank = (String) jyxxsq.getGfyh();
+            if (buyerBank != null && !buyerBank.equals("") && buyerBank.length() > 50) {
+                result += ddh + ":购方银行(Bank)超过50个字符;";
+            }
+            // 购方银行账号
+            String buyerBankAcc = (String) jyxxsq.getGfyhzh();
+            if (buyerBankAcc != null && !buyerBankAcc.equals("") && buyerBankAcc.length() > 50) {
+                result += ddh + ":购方银行账号(BankAcc)超过50个字符;";
+            }
+            // 开具纸质专用发票时，购方所有信息必须有
+            if ("01".equals(fpzldm) && !Operation.equals("02")) {
+                if (null == buyerIdentifier || buyerIdentifier.equals("")) {
+                    result += ddh + ":发票种类(InvType)为专票(01)时购方税号(Identifier)不能为空;";
+                }
+                if (null == buyerBank || buyerBank.equals("")) {
+                    result += ddh + ":发票种类(InvType)为专票(01)时购方银行(Bank)不能为空;";
+                }
+                if (null == buyerBankAcc || buyerBankAcc.equals("")) {
+                    result += ddh + ":发票种类(InvType)为专票(01)时购方银行账号(BankAcc)不能为空;";
+                }
+            }
+
+            // email
+            String Email = (String) jyxxsq.getGfemail();
+            if (Email != null && !Email.equals("") && !Email
+                    .matches("^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-\\.\\_]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$")) {
+                result += ddh + ":购方邮箱(Email)格式有误;";
+            }
             // 提取码校验
             String tqm = jyxxsq.getTqm();
             if (null !=tqm && !tqm.equals("")) {
@@ -96,6 +180,16 @@ public class CheckOrderUtil {
             // 交易流水号校验
             String jylsh = jyxxsq.getJylsh();
             jylshList.add(jylsh);
+            // 购方收件人地址
+            String gfsjrdz = jyxxsq.getGfsjrdz();
+            if (gfsjrdz != null && !gfsjrdz.equals("") && gfsjrdz.length() > 100) {
+                result += ddh + ":购方收件人(ReciAddress)地址太长;";
+            }
+
+            String Zip = jyxxsq.getGfyb();
+            if (Zip != null && Zip.length() > 10) {
+                result += ddh + ":购方收件人邮编(Zip)不能超过10个字符;";
+            }
 
             String kpddm = jyxxsq.getKpddm();
             String xfsh = jyxxsq.getXfsh();
@@ -164,8 +258,9 @@ public class CheckOrderUtil {
         return result;
     }
 
+
     //只校验购方7要素
-    public String checkBuye(List<Jyxxsq> jyxxsqList, String gsdm,String Operation) {
+    public String checkBuyer(List<Jyxxsq> jyxxsqList, String gsdm) {
         String result = "";
         String ddh = "";
         Jyxxsq jyxxsq = new Jyxxsq();
@@ -173,16 +268,14 @@ public class CheckOrderUtil {
             jyxxsq = jyxxsqList.get(i);
             // 订单号
             ddh = jyxxsq.getDdh();
+            // 发票类型
+            String fpzldm = (String) jyxxsq.getFpzldm();
             // 购方名称
-            Cszb cszb = cszbservice.getSpbmbbh(jyxxsq.getGsdm(),jyxxsq.getXfid(),jyxxsq.getSkpid(),"sfzlkp");
-            // 购方名称
-            if (!Operation.equals("02")&&(null !=cszb.getCsz()&&cszb.getCsz().equals("是"))) {
-                String buyerName = jyxxsq.getGfmc();
-                if (null == buyerName || buyerName.equals("")) {
-                    result += ddh + ":购方名称(Name)不能为空;";
-                } else if (characterLength(buyerName) > 100) {
-                    result += ddh + ":购方名称(Name)太长;";
-                }
+            String buyerName = jyxxsq.getGfmc();
+            if (null == buyerName || buyerName.equals("")) {
+                result += ddh + ":购方名称(Name)不能为空;";
+            } else if (characterLength(buyerName) > 100) {
+                result += ddh + ":购方名称(Name)太长;";
             }
             String CustomerType = (String) jyxxsq.getGflx();
             if (CustomerType != null && !CustomerType.equals("")) {
@@ -236,8 +329,6 @@ public class CheckOrderUtil {
             if (buyerBankAcc != null && !buyerBankAcc.equals("") && buyerBankAcc.length() > 50) {
                 result += ddh + ":购方银行账号(BankAcc)超过50个字符;";
             }
-            // 发票类型
-            String fpzldm = (String) jyxxsq.getFpzldm();
             // 开具纸质专用发票时，购方所有信息必须有
             if ("01".equals(fpzldm)) {
                 if (null == buyerIdentifier || buyerIdentifier.equals("")) {
@@ -250,6 +341,7 @@ public class CheckOrderUtil {
                     result += ddh + ":发票种类(InvType)为专票(01)时购方银行账号(BankAcc)不能为空;";
                 }
             }
+
             // email
             String Email = (String) jyxxsq.getGfemail();
             if (Email != null && !Email.equals("") && !Email
@@ -261,11 +353,13 @@ public class CheckOrderUtil {
             if (gfsjrdz != null && !gfsjrdz.equals("") && gfsjrdz.length() > 100) {
                 result += ddh + ":购方收件人(ReciAddress)地址太长;";
             }
+
             String Zip = jyxxsq.getGfyb();
             if (Zip != null && Zip.length() > 10) {
                 result += ddh + ":购方收件人邮编(Zip)不能超过10个字符;";
             }
         }
+
         return result;
     }
 
@@ -362,8 +456,8 @@ public class CheckOrderUtil {
                         for(int t=0;t<smList.size();t++){
                             Sm sm = smList.get(t);
                             if(sm.getSl().compareTo(taxRate)==0){
-                                 flag =true;
-                                 break;
+                                flag =true;
+                                break;
                             }
                         }
                         if(!flag){
@@ -459,15 +553,15 @@ public class CheckOrderUtil {
             }
             Map params = new HashMap();
             List zffsdmList = new ArrayList();
-			if (null != jyzfmxList && !jyzfmxList.isEmpty()) {
-				List kpfsList = new ArrayList();
-				//kpfsList.add("02");
-				params.put("gsdm", gsdm);
-				//params.put("kpfsList", kpfsList);
+            if (null != jyzfmxList && !jyzfmxList.isEmpty()) {
+                List kpfsList = new ArrayList();
+                //kpfsList.add("02");
+                params.put("gsdm", gsdm);
+                //params.put("kpfsList", kpfsList);
                 for(int j = 0; j < jyzfmxList.size(); j++){
                     jyzfmx = (Jyzfmx) jyzfmxList.get(j);
                     if(!zffsdmList.contains(jyzfmx.getZffsDm()))
-                    zffsdmList.add(jyzfmx.getZffsDm());
+                        zffsdmList.add(jyzfmx.getZffsDm());
 
                     ddh2 = jyzfmx.getDdh();
                     if (ddh.equals(ddh2)) {
@@ -477,17 +571,17 @@ public class CheckOrderUtil {
                 }
                 /*Cszb cszb = cszbservice.getSpbmbbh(gsdm, jymxsq.getXfid(), jyxxsq.getSkpid(), "sfsfcl");
                 if (null == cszb || cszb.getCsz().equals("否")) {*/
-                    //交易支付明细合计！=价税合计合计舍分
-                    if (jshj2.compareTo(bd2.subtract(qjzk)) !=0 && bd2.subtract(qjzk).setScale(1, BigDecimal.ROUND_DOWN).compareTo(jshj2) !=0) {
-                        result += "订单号为" + ddh + "的订单,支付金额合计与总金额不等;\r\n";
-                    }
+                //交易支付明细合计！=价税合计合计舍分
+                if (jshj2.compareTo(bd2.subtract(qjzk)) !=0 && bd2.subtract(qjzk).setScale(1, BigDecimal.ROUND_DOWN).compareTo(jshj2) !=0) {
+                    result += "订单号为" + ddh + "的订单,支付金额合计与总金额不等;\r\n";
+                }
                 //}
 
                 params.put("zffsList", zffsdmList);
                 List<Zffs> zffsList = zffsService.findAllByParams(params);
                 if(null == zffsList ||zffsList.isEmpty()){
-					result += "请去平台支付方式管理维护对应的支付方式;\r\n";
-				}else{
+                    result += "请去平台支付方式管理维护对应的支付方式;\r\n";
+                }else{
                     if(zffsList.size() != zffsdmList.size()){
                         result += "订单号为" + ddh + "的订单有支付方式未维护，请联系管理员进行维护\r\n";
                     }
@@ -507,21 +601,21 @@ public class CheckOrderUtil {
 
     }
     public String checkAll(List<Jyxxsq> jyxxsqList, List<Jymxsq> jymxsqList,  String gsdm, String Operation) {
-       return  checkAll( jyxxsqList,  jymxsqList,new ArrayList<Jyzfmx>(),   gsdm,  Operation);
+        return  checkAll( jyxxsqList,  jymxsqList,new ArrayList<Jyzfmx>(),   gsdm,  Operation);
     }
 
     public String checkAll(List<Jyxxsq> jyxxsqList, List<Jymxsq> jymxsqList, List<Jyzfmx> jyzfmxList, String gsdm, String Operation) {
-        	String result = "";
-        	result = checkBuyer(jyxxsqList, gsdm, Operation);
-        	result += checkOrders(jyxxsqList, jymxsqList, jyzfmxList, gsdm, Operation);
-        	return result;
-        }
+        String result = "";
+        result = checkBuyer(jyxxsqList, gsdm, Operation);
+        result += checkOrders(jyxxsqList, jymxsqList, jyzfmxList, gsdm, Operation);
+        return result;
+    }
 
     //校验18位社会统一信用代码是否正确（未加入最后一位以为校验）
     public static  boolean CheckSocialCreditCode(String gfsh){
         if ((gfsh.equals("")) || gfsh.length() != 18) {
-        return false;
-    }
+            return false;
+        }
         String baseCode = "0123456789ABCDEFGHJKLMNPQRTUWXY";
         char[] baseCodeArray = baseCode.toCharArray();
         Map<Character, Integer> codes = new HashMap<Character, Integer>();
@@ -594,7 +688,7 @@ public class CheckOrderUtil {
 
         String buyerIdentifier = "91310101MA1FW0008P";
         // System.out.print(s.replace(s.substring(s.length()-1), ""));
-       // System.out.print(CheckSocialCreditCode("liniyanxing@yeah.net"));
+        // System.out.print(CheckSocialCreditCode("liniyanxing@yeah.net"));
         //System.out.print(Double.parseDouble(".00") == 0);
         //System.out.println(s.substring(0,1).equals("0"));
         String result ="";
