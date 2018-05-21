@@ -43,7 +43,7 @@ public class CheckOrderUtil {
         Map jylshMap = new HashMap();
         Map ddhMap = new HashMap();
         //只校验购方7要素
-        String re = checkBuyer(jyxxsqList, gsdm);
+        String re = checkBuye(jyxxsqList, gsdm, Operation);
         result +=re;
         for (int i = 0; i < jyxxsqList.size(); i++) {
             jyxxsq = jyxxsqList.get(i);
@@ -165,7 +165,7 @@ public class CheckOrderUtil {
     }
 
     //只校验购方7要素
-    public String checkBuyer(List<Jyxxsq> jyxxsqList, String gsdm) {
+    public String checkBuye(List<Jyxxsq> jyxxsqList, String gsdm,String Operation) {
         String result = "";
         String ddh = "";
         Jyxxsq jyxxsq = new Jyxxsq();
@@ -174,13 +174,16 @@ public class CheckOrderUtil {
             // 订单号
             ddh = jyxxsq.getDdh();
             // 购方名称
-            String buyerName = jyxxsq.getGfmc();
-            if (null == buyerName || buyerName.equals("")) {
-                result += ddh + ":购方名称(Name)不能为空;";
-            } else if (characterLength(buyerName) > 100) {
-                result += ddh + ":购方名称(Name)太长;";
+            Cszb cszb = cszbservice.getSpbmbbh(jyxxsq.getGsdm(),jyxxsq.getXfid(),jyxxsq.getSkpid(),"sfzlkp");
+            // 购方名称
+            if (!Operation.equals("02")&&(null !=cszb.getCsz()&&cszb.getCsz().equals("是"))) {
+                String buyerName = jyxxsq.getGfmc();
+                if (null == buyerName || buyerName.equals("")) {
+                    result += ddh + ":购方名称(Name)不能为空;";
+                } else if (characterLength(buyerName) > 100) {
+                    result += ddh + ":购方名称(Name)太长;";
+                }
             }
-
             String CustomerType = (String) jyxxsq.getGflx();
             if (CustomerType != null && !CustomerType.equals("")) {
                 if(CustomerType.equals("1")){
