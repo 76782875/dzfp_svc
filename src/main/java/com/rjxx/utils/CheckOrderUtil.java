@@ -87,6 +87,16 @@ public class CheckOrderUtil {
             if (null == drawer || drawer.equals("")) {
                 result += ddh + ":开票人(Drawer)不能为空;";
             }
+
+            // 提取码校验
+            String tqm = jyxxsq.getTqm();
+            if (null !=tqm && !tqm.equals("")) {
+                tqmList.add(tqm);
+            }
+            // 交易流水号校验
+            String jylsh = jyxxsq.getJylsh();
+            jylshList.add(jylsh);
+
             String kpddm = jyxxsq.getKpddm();
             String xfsh = jyxxsq.getXfsh();
             Map tt = new HashMap();
@@ -161,6 +171,8 @@ public class CheckOrderUtil {
         Jyxxsq jyxxsq = new Jyxxsq();
         for (int i = 0; i < jyxxsqList.size(); i++) {
             jyxxsq = jyxxsqList.get(i);
+            // 订单号
+            ddh = jyxxsq.getDdh();
             // 购方名称
             String buyerName = jyxxsq.getGfmc();
             if (null == buyerName || buyerName.equals("")) {
