@@ -144,6 +144,8 @@ public class YhVO  implements Serializable {
 	protected String zhlxmc;
 	
 	protected String yhcount;
+
+	protected String flag;
 	
 	public Integer getId(){
 		return id;
@@ -337,6 +339,14 @@ public class YhVO  implements Serializable {
 		this.yhcount = yhcount;
 	}
 
+	public String getFlag() {
+		return flag;
+	}
+
+	public void setFlag(String flag) {
+		this.flag = flag;
+	}
+
 	public YhVO() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -370,6 +380,7 @@ public class YhVO  implements Serializable {
 		this.jsmc = jsmc;
 		this.zhlxmc = zhlxmc;
 		this.yhcount=yhcount;
+		this.flag = "";
 	}
 
 	public YhVO(Yh yh) {
@@ -394,6 +405,7 @@ public class YhVO  implements Serializable {
 		this.yx = yh.getYx();
 		this.yxbz = yh.getYxbz();
 		this.admin = yh.getAdmin();
+		this.flag = "";
 	}
 	
 }
