@@ -617,7 +617,7 @@ public class AdapterServiceImpl implements AdapterService {
                     logger.info("type3------jyxxsq");
                     Cszb kpfs = cszbService.getSpbmbbh(gsdm, null, null, "kpfs");
                     logger.info("直接开票数据："+JSON.toJSONString(list));
-                    String msg = checkOrderUtil.checkBuyer(list, gsdm);
+                    String msg = checkOrderUtil.checkBuye(list, gsdm,"02");
                     if(!"".equals(msg)){
                         logger.info("进入拒绝开票-----错误原因为" + msg);
 //                        String reason = msg;
