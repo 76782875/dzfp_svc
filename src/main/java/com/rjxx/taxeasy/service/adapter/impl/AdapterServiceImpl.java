@@ -121,26 +121,15 @@ public class AdapterServiceImpl implements AdapterService {
             Integer pid = skp.getPid();
             String ppdm = "";
             String ppurl = "";
-//            String ppheadcolor = "no";
-//            String ppbodycolor = "no";
-//            String ppbuttoncolor = "no";
             if (pid != null) {
                 Pp pp = ppJpaDao.findOneById(pid);
                 ppdm = pp.getPpdm();
                 ppurl = pp.getPpurl();
-//                if (StringUtil.isNotBlankList(pp.getPpheadcolor(), pp.getPpbodycolor())) {
-//                    ppheadcolor = pp.getPpheadcolor();
-//                    ppbodycolor = pp.getPpbodycolor();
-//                    ppbuttoncolor = pp.getPpbuttoncolor();
-//                }
             }
             Map result = new HashMap();
             result.put("ppdm", ppdm);
             result.put("ppurl", ppurl);
             result.put("orderNo", on);
-//            result.put("headcolor", ppheadcolor);
-//            result.put("bodycolor", ppbodycolor);
-//            result.put("buttoncolor", ppbuttoncolor);
             return result;
         } catch (Exception e) {
             e.printStackTrace();
@@ -173,26 +162,15 @@ public class AdapterServiceImpl implements AdapterService {
             Integer pid = skp.getPid();
             String ppdm = "";
             String ppurl = "";
-//            String ppheadcolor = "no";
-//            String ppbodycolor = "no";
-//            String ppbuttoncolor = "no";
             if (pid != null) {
                 Pp pp = ppJpaDao.findOneById(pid);
                 ppdm = pp.getPpdm();
                 ppurl = pp.getPpurl();
-//                if (StringUtil.isNotBlankList(pp.getPpheadcolor(), pp.getPpbodycolor())) {
-//                    ppheadcolor = pp.getPpheadcolor();
-//                    ppbodycolor = pp.getPpbodycolor();
-//                    ppbuttoncolor=pp.getPpbuttoncolor();
-//                }
             }
             Map result = new HashMap();
             result.put("ppdm", ppdm);
             result.put("ppurl", ppurl);
             result.put("orderNo", on);
-//            result.put("headcolor", ppheadcolor);
-//            result.put("bodycolor", ppbodycolor);
-//            result.put("buttoncolor", ppbuttoncolor);
             return result;
         } catch (Exception e) {
             e.printStackTrace();
@@ -520,12 +498,13 @@ public class AdapterServiceImpl implements AdapterService {
                 Result result = jkpzService.jkpzInvoice(JSON.toJSONString(adapterPost));
                 if (null != result.getCode() && "9999".equals(result.getCode())) {
                     logger.info("进入拒绝开票-----错误原因为" + result.getMsg());
-                    String reason = result.getMsg();
-                    if (null != sjly && "4".equals(sjly)) {
-                        logger.info("进行拒绝开票的weixinOrderN+++++" + weixinOrderNo);
-                        weixinUtils.jujuekp(weixinOrderNo, reason, access_token);
-                    }
-                    return "-1";
+                    return result.getMsg();
+//                    String reason = result.getMsg();
+//                    if (null != sjly && "4".equals(sjly)) {
+//                        logger.info("进行拒绝开票的weixinOrderN+++++" + weixinOrderNo);
+//                        weixinUtils.jujuekp(weixinOrderNo, reason, access_token);
+//                    }
+//                    return "-1";
                 }
                 Map map = new HashMap();
                 map.put("returnMsg", result.getMsg());
@@ -638,15 +617,15 @@ public class AdapterServiceImpl implements AdapterService {
                     logger.info("type3------jyxxsq");
                     Cszb kpfs = cszbService.getSpbmbbh(gsdm, null, null, "kpfs");
                     logger.info("直接开票数据："+JSON.toJSONString(list));
-                    String msg = checkOrderUtil.checkBuyer(list, gsdm, null);
+                    String msg = checkOrderUtil.checkBuyer(list, gsdm, "02");
                     if(!"".equals(msg)){
                         logger.info("进入拒绝开票-----错误原因为" + msg);
-                        String reason = msg;
-                        if (null != sjly && "4".equals(sjly)) {
-                            logger.info("进行拒绝开票的weixinOrderN+++++" + weixinOrderNo);
-                            weixinUtils.jujuekp(weixinOrderNo, reason, access_token);
-                        }
-                        return "-1";
+//                        String reason = msg;
+//                        if (null != sjly && "4".equals(sjly)) {
+//                            logger.info("进行拒绝开票的weixinOrderN+++++" + weixinOrderNo);
+//                            weixinUtils.jujuekp(weixinOrderNo, reason, access_token);
+//                        }
+                        return msg;
                     }
                     List<Object> jyxxsqList = fpclService.zjkp(list, kpfs.getCsz());
                     logger.info("返回数据："+JSON.toJSONString(jyxxsqList));
@@ -660,12 +639,12 @@ public class AdapterServiceImpl implements AdapterService {
                     DefaultResult defaultResult = XmlJaxbUtils.convertXmlStrToObject(DefaultResult.class, xmlString);
                     if (null != defaultResult.getReturnCode() && "9999".equals(defaultResult.getReturnCode())) {
                         logger.info("进入拒绝开票-----错误原因为" + defaultResult.getReturnMessage());
-                        String reason = defaultResult.getReturnMessage();
-                        if (null != sjly && "4".equals(sjly)) {
-                            logger.info("进行拒绝开票的weixinOrderN+++++" + weixinOrderNo);
-                            weixinUtils.jujuekp(weixinOrderNo, reason, access_token);
-                        }
-                        return "-1";
+//                        String reason = defaultResult.getReturnMessage();
+//                        if (null != sjly && "4".equals(sjly)) {
+//                            logger.info("进行拒绝开票的weixinOrderN+++++" + weixinOrderNo);
+//                            weixinUtils.jujuekp(weixinOrderNo, reason, access_token);
+//                        }
+                        return defaultResult.getReturnMessage();
                     }
 
                     resultMap.put("returnMsg", defaultResult.getReturnMessage());
