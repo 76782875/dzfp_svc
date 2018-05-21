@@ -258,6 +258,183 @@ public class CheckOrderUtil {
         return result;
     }
 
+
+
+    public String checkBuyer(List<Jyxxsq> jyxxsqList, String gsdm) {
+        String result = "";
+        String ddh = "";
+        Jyxxsq jyxxsq = new Jyxxsq();
+        for (int i = 0; i < jyxxsqList.size(); i++) {
+            jyxxsq = jyxxsqList.get(i);
+            // 订单号
+            ddh = jyxxsq.getDdh();
+            if (ddh != null && !ddh.equals("")) {
+                if (ddh.length() > 100) {
+                    result += "购方数据" + ddh + ":订单号(OrderNo)太长;";
+                }
+            } else {
+                result += "购方数据订单号(OrderNo)不能为空;";
+            }
+            // 订单时间
+            SimpleDateFormat sim = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            if (null != jyxxsq.getDdrq() && !jyxxsq.getDdrq().equals("")) {
+                String OrderDate = sim.format(jyxxsq.getDdrq());
+                Pattern p = Pattern.compile(
+                        "^((\\d{2}(([02468][048])|([13579][26]))[\\-\\/\\s]?((((0?[13578])|(1[02]))[\\-\\/\\s]?((0?[1-9])|([1-2][0-9])|(3[01])))|(((0?[469])|(11))[\\-\\/\\s]?((0?[1-9])|([1-2][0-9])|(30)))|(0?2[\\-\\/\\s]?((0?[1-9])|([1-2][0-9])))))|(\\d{2}(([02468][1235679])|([13579][01345789]))[\\-\\/\\s]?((((0?[13578])|(1[02]))[\\-\\/\\s]?((0?[1-9])|([1-2][0-9])|(3[01])))|(((0?[469])|(11))[\\-\\/\\s]?((0?[1-9])|([1-2][0-9])|(30)))|(0?2[\\-\\/\\s]?((0?[1-9])|(1[0-9])|(2[0-8]))))))(\\s((([0-1][0-9])|(2?[0-3]))\\:([0-5]?[0-9])((\\s)|(\\:([0-5]?[0-9])))))?$");
+                if (OrderDate != null && !p.matcher(OrderDate).matches()) {
+                    result += ddh + ":订单时间(OrderDate)格式不正确;";
+                }
+            }
+            // 价税合计
+            //String TotalAmount = String.valueOf(jyxxsq.getJshj());
+            Double  TotalAmount = jyxxsq.getJshj();
+            if (TotalAmount == null) {
+                result += ddh + ":价税合计(TotalAmount)为空;";
+            } /*else if (!TotalAmount.matches("^\\-?[0-9]{0,15}+(.[0-9]{0,2})?$")) {
+                result += ddh + ":价税合计格式不正确;";
+            }*/
+
+            // 价税合计
+            String TaxMark = String.valueOf(jyxxsq.getHsbz());
+            if (TaxMark == null || TaxMark.equals("")) {
+                result += ddh + ":含税标志(TaxMark)为空;";
+            }
+            // 发票类型
+            String fpzldm = (String) jyxxsq.getFpzldm();
+            /*
+             * if (!"12".equals(fpzldm) || !"01".equals(fpzldm) ||
+			 * !"02".equals(fpzldm)) { result += ddh + ":不支持" + fpzldm +
+			 * ",目前只支持01、02、12;"; }
+			 */
+
+            String drawer = jyxxsq.getKpr();
+            if (null == drawer || drawer.equals("")) {
+                result += ddh + ":开票人(Drawer)不能为空;";
+            }
+
+            // 购方名称
+            String buyerName = jyxxsq.getGfmc();
+            if (null == buyerName || buyerName.equals("")) {
+                result += ddh + ":购方名称(Name)不能为空;";
+            } else if (characterLength(buyerName) > 100) {
+                result += ddh + ":购方名称(Name)太长;";
+            }
+
+            String CustomerType = (String) jyxxsq.getGflx();
+            if (CustomerType != null && !CustomerType.equals("")) {
+                if(CustomerType.equals("1")){
+                    String buyerIdentifier = (String) jyxxsq.getGfsh();
+                    if(null == buyerIdentifier || buyerIdentifier.equals("") ){
+                        result += ddh + ":购方税号(Identifier)不能为空;";
+                    }
+                }
+            }
+            // 购方税号
+            String buyerIdentifier = (String) jyxxsq.getGfsh();
+            if (buyerIdentifier != null && !buyerIdentifier.equals("")) {
+                if (!(buyerIdentifier.length() == 15 || buyerIdentifier.length() == 18 || buyerIdentifier.length() == 20 )) {
+                    result += ddh + ":购方税号(Identifier)"+buyerIdentifier+"长度有误，请核对;";
+                }else{
+                    if(buyerIdentifier.length() == 18){
+                        //校验18位是否满足条件
+                        if(!CheckSocialCreditCode(buyerIdentifier)){
+                            result += ddh + ":购方税号(Identifier)不符合规则;";
+                        }
+                    }
+                    if(isSameChars(buyerIdentifier)){
+                        result += ddh + ":购方税号(Identifier)不符合规则;";
+                    }
+                    if(isSpecialCharacter(buyerIdentifier)){
+                        result +=  " :购方税号(Identifier)只能包含数字和大写英文字母;";
+                    }
+                }
+                /*if(buyerIdentifier.substring(0,1).equals("0")){
+                    result += ddh + ":购方税号不符合规则;";
+                }*/
+            }
+            // 购方地址
+            String buyerAddress = (String) jyxxsq.getGfdz();
+            if (buyerAddress != null && !buyerAddress.equals("") && buyerAddress.length() > 100) {
+                result += ddh + ":购方地址(Address)太长;";
+            }
+            // 购方电话
+            String buyerTelephoneNo = (String) jyxxsq.getGfdh();
+            if (buyerTelephoneNo != null && !buyerTelephoneNo.equals("") && buyerTelephoneNo.length() > 20) {
+                result += ddh + ":购方电话(TelephoneNo)超过20个字符;";
+            }
+            // 购方银行
+            String buyerBank = (String) jyxxsq.getGfyh();
+            if (buyerBank != null && !buyerBank.equals("") && buyerBank.length() > 50) {
+                result += ddh + ":购方银行(Bank)超过50个字符;";
+            }
+            // 购方银行账号
+            String buyerBankAcc = (String) jyxxsq.getGfyhzh();
+            if (buyerBankAcc != null && !buyerBankAcc.equals("") && buyerBankAcc.length() > 50) {
+                result += ddh + ":购方银行账号(BankAcc)超过50个字符;";
+            }
+            // 开具纸质专用发票时，购方所有信息必须有
+            if ("01".equals(fpzldm)) {
+                if (null == buyerIdentifier || buyerIdentifier.equals("")) {
+                    result += ddh + ":发票种类(InvType)为专票(01)时购方税号(Identifier)不能为空;";
+                }
+                if (null == buyerBank || buyerBank.equals("")) {
+                    result += ddh + ":发票种类(InvType)为专票(01)时购方银行(Bank)不能为空;";
+                }
+                if (null == buyerBankAcc || buyerBankAcc.equals("")) {
+                    result += ddh + ":发票种类(InvType)为专票(01)时购方银行账号(BankAcc)不能为空;";
+                }
+            }
+
+            // email
+            String Email = (String) jyxxsq.getGfemail();
+            if (Email != null && !Email.equals("") && !Email
+                    .matches("^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-\\.\\_]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$")) {
+                result += ddh + ":购方邮箱(Email)格式有误;";
+            }
+            // 购方收件人地址
+            String gfsjrdz = jyxxsq.getGfsjrdz();
+            if (gfsjrdz != null && !gfsjrdz.equals("") && gfsjrdz.length() > 100) {
+                result += ddh + ":购方收件人(ReciAddress)地址太长;";
+            }
+
+            String Zip = jyxxsq.getGfyb();
+            if (Zip != null && Zip.length() > 10) {
+                result += ddh + ":购方收件人邮编(Zip)不能超过10个字符;";
+            }
+
+            String kpddm = jyxxsq.getKpddm();
+            String xfsh = jyxxsq.getXfsh();
+            Map tt = new HashMap();
+            if (null == kpddm || kpddm.equals("")) {
+                result += ddh + ":开票点(ClientNO)不能为空;";
+            } else {
+                tt.put("kpddm", kpddm);
+                tt.put("xfsh", xfsh);
+                tt.put("gsdm", gsdm);
+                Xf xf = jyxxsqService.findXfExistByXfsh(tt);
+                if (null == xf || xf.equals("")) {
+                    result += "该公司" + gsdm + ":对应的销方不存在!;";
+                } else {
+                    tt.put("xfid", xf.getId());
+                    Skp skp = jyxxsqService.findskpExistByXfid(tt);
+                    if (null == skp || skp.equals("")) {
+                        result += "该销方" + xf.getXfsh() + ":对应的" + kpddm + "不存在!;";
+                    }else{
+                        if(fpzldm.equals("01") && (null == skp.getZpmax() ||skp.getZpmax().equals(""))){
+                            result += "开具专票(InvType为01)时，该开票点(" + kpddm + "),没有进行维护开票专票限额;";
+                        }else if(fpzldm.equals("02") && (null == skp.getPpmax() ||skp.getPpmax().equals(""))){
+                            result += "开具普票(InvType为02)时，该开票点(" + kpddm + "),没有进行维护普票开票限额;";
+                        }else if(fpzldm.equals("12") && (null == skp.getDpmax() ||skp.getDpmax().equals(""))){
+                            result += "开具电票(InvType为12)时，该开票点(" + kpddm + "),没有进行维护电票开票限额;";
+                        }
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
+
     public String checkOrders(List<Jyxxsq> jyxxsqList, List<Jymxsq> jymxsqList, List<Jyzfmx> jyzfmxList, String gsdm, String Operation){
 
         String result = "";
