@@ -57,7 +57,7 @@ public class KplsService {
 		Cszb cszb = cszbService.getSpbmbbh(kpls.getGsdm(), kpls.getXfid(), kpls.getSkpid(), "kpfs");
 
 		if ("04".equals(kpls.getFpztdm())) {
-			if (cszb.getCsz().equals("01")) {
+			if (("01").equals(cszb.getCsz())) {
 				// 如果状态是04，发送的mq中
 				try {
 					String sksbh = skpService.findOne(kpls.getSkpid()).getSkph();
@@ -70,7 +70,7 @@ public class KplsService {
 				} catch (Exception e) {
 					throw new RuntimeException("发送队列失败，请联系管理员");
 				}
-			} else if (cszb.getCsz().equals("03")) {
+			} else if (("03").equals(cszb.getCsz())||("04").equals(cszb.getCsz())) {
 				try {
 					rabbitmqSend.send(kpls.getKplsh() + "");
 				} catch (Exception e) {

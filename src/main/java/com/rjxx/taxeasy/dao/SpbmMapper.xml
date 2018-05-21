@@ -32,5 +32,12 @@
         </if>
     </select>
 
+    <select id="findSpbm" parameterType="pagination" resultType="spbm">
+        select * from spbm where yxbz = '1' and SJSPBM ='0' or SJSPBM='';
+    </select>
+
+    <select id="findAllSpbm" parameterType="pagination" resultType="spbm">
+        select * from spbm where yxbz = '1';
+    </select>
 </mapper>
 

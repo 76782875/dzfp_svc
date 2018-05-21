@@ -14,10 +14,7 @@ import com.rjxx.taxeasy.service.adapter.AdapterService;
 import com.rjxx.taxeasy.service.adapter.TransferExtractDataService;
 import com.rjxx.taxeasy.service.jkpz.JkpzService;
 import com.rjxx.taxeasy.vo.Spvo;
-import com.rjxx.utils.NumberUtil;
-import com.rjxx.utils.RJCheckUtil;
-import com.rjxx.utils.StringUtil;
-import com.rjxx.utils.XmlJaxbUtils;
+import com.rjxx.utils.*;
 import com.rjxx.utils.weixin.HttpClientUtil;
 import com.rjxx.utils.weixin.WeixinUtils;
 import com.rjxx.utils.yjapi.Result;
@@ -69,6 +66,8 @@ public class AdapterServiceImpl implements AdapterService {
     private JymxsqService jymxsqService;
     @Autowired
     private FpclService fpclService;
+    @Autowired
+    private CheckOrderUtil checkOrderUtil;
 
     @Override
     public String getShowMsg(String ppdm) {
@@ -122,26 +121,15 @@ public class AdapterServiceImpl implements AdapterService {
             Integer pid = skp.getPid();
             String ppdm = "";
             String ppurl = "";
-//            String ppheadcolor = "no";
-//            String ppbodycolor = "no";
-//            String ppbuttoncolor = "no";
             if (pid != null) {
                 Pp pp = ppJpaDao.findOneById(pid);
                 ppdm = pp.getPpdm();
                 ppurl = pp.getPpurl();
-//                if (StringUtil.isNotBlankList(pp.getPpheadcolor(), pp.getPpbodycolor())) {
-//                    ppheadcolor = pp.getPpheadcolor();
-//                    ppbodycolor = pp.getPpbodycolor();
-//                    ppbuttoncolor = pp.getPpbuttoncolor();
-//                }
             }
             Map result = new HashMap();
             result.put("ppdm", ppdm);
             result.put("ppurl", ppurl);
             result.put("orderNo", on);
-//            result.put("headcolor", ppheadcolor);
-//            result.put("bodycolor", ppbodycolor);
-//            result.put("buttoncolor", ppbuttoncolor);
             return result;
         } catch (Exception e) {
             e.printStackTrace();
@@ -174,26 +162,15 @@ public class AdapterServiceImpl implements AdapterService {
             Integer pid = skp.getPid();
             String ppdm = "";
             String ppurl = "";
-//            String ppheadcolor = "no";
-//            String ppbodycolor = "no";
-//            String ppbuttoncolor = "no";
             if (pid != null) {
                 Pp pp = ppJpaDao.findOneById(pid);
                 ppdm = pp.getPpdm();
                 ppurl = pp.getPpurl();
-//                if (StringUtil.isNotBlankList(pp.getPpheadcolor(), pp.getPpbodycolor())) {
-//                    ppheadcolor = pp.getPpheadcolor();
-//                    ppbodycolor = pp.getPpbodycolor();
-//                    ppbuttoncolor=pp.getPpbuttoncolor();
-//                }
             }
             Map result = new HashMap();
             result.put("ppdm", ppdm);
             result.put("ppurl", ppurl);
             result.put("orderNo", on);
-//            result.put("headcolor", ppheadcolor);
-//            result.put("bodycolor", ppbodycolor);
-//            result.put("buttoncolor", ppbuttoncolor);
             return result;
         } catch (Exception e) {
             e.printStackTrace();
@@ -521,12 +498,13 @@ public class AdapterServiceImpl implements AdapterService {
                 Result result = jkpzService.jkpzInvoice(JSON.toJSONString(adapterPost));
                 if (null != result.getCode() && "9999".equals(result.getCode())) {
                     logger.info("进入拒绝开票-----错误原因为" + result.getMsg());
-                    String reason = result.getMsg();
-                    if (null != sjly && "4".equals(sjly)) {
-                        logger.info("进行拒绝开票的weixinOrderN+++++" + weixinOrderNo);
-                        weixinUtils.jujuekp(weixinOrderNo, reason, access_token);
-                    }
-                    return "-1";
+                    return result.getMsg();
+//                    String reason = result.getMsg();
+//                    if (null != sjly && "4".equals(sjly)) {
+//                        logger.info("进行拒绝开票的weixinOrderN+++++" + weixinOrderNo);
+//                        weixinUtils.jujuekp(weixinOrderNo, reason, access_token);
+//                    }
+//                    return "-1";
                 }
                 Map map = new HashMap();
                 map.put("returnMsg", result.getMsg());
@@ -639,6 +617,16 @@ public class AdapterServiceImpl implements AdapterService {
                     logger.info("type3------jyxxsq");
                     Cszb kpfs = cszbService.getSpbmbbh(gsdm, null, null, "kpfs");
                     logger.info("直接开票数据："+JSON.toJSONString(list));
+                    String msg = checkOrderUtil.checkBuyer(list, gsdm);
+                    if(!"".equals(msg)){
+                        logger.info("进入拒绝开票-----错误原因为" + msg);
+//                        String reason = msg;
+//                        if (null != sjly && "4".equals(sjly)) {
+//                            logger.info("进行拒绝开票的weixinOrderN+++++" + weixinOrderNo);
+//                            weixinUtils.jujuekp(weixinOrderNo, reason, access_token);
+//                        }
+                        return msg;
+                    }
                     List<Object> jyxxsqList = fpclService.zjkp(list, kpfs.getCsz());
                     logger.info("返回数据："+JSON.toJSONString(jyxxsqList));
                     resultMap.put("returnMsg", "成功");
@@ -651,12 +639,12 @@ public class AdapterServiceImpl implements AdapterService {
                     DefaultResult defaultResult = XmlJaxbUtils.convertXmlStrToObject(DefaultResult.class, xmlString);
                     if (null != defaultResult.getReturnCode() && "9999".equals(defaultResult.getReturnCode())) {
                         logger.info("进入拒绝开票-----错误原因为" + defaultResult.getReturnMessage());
-                        String reason = defaultResult.getReturnMessage();
-                        if (null != sjly && "4".equals(sjly)) {
-                            logger.info("进行拒绝开票的weixinOrderN+++++" + weixinOrderNo);
-                            weixinUtils.jujuekp(weixinOrderNo, reason, access_token);
-                        }
-                        return "-1";
+//                        String reason = defaultResult.getReturnMessage();
+//                        if (null != sjly && "4".equals(sjly)) {
+//                            logger.info("进行拒绝开票的weixinOrderN+++++" + weixinOrderNo);
+//                            weixinUtils.jujuekp(weixinOrderNo, reason, access_token);
+//                        }
+                        return defaultResult.getReturnMessage();
                     }
 
                     resultMap.put("returnMsg", defaultResult.getReturnMessage());
@@ -817,7 +805,7 @@ public class AdapterServiceImpl implements AdapterService {
             jymxsq.setSpsl(adapterDataOrderOrderDetails.get(i).getTaxRate());
             jymxsq.setSpmc(adapterDataOrderOrderDetails.get(i).getProductName());
             jymxsq.setSpggxh(adapterDataOrderOrderDetails.get(i).getSpec());
-            jymxsq.setSpdw(adapterDataOrderOrderDetails.get(i).getUtil());
+            jymxsq.setSpdw(adapterDataOrderOrderDetails.get(i).getUnit());
             jymxsq.setYhzcmc(adapterDataOrderOrderDetails.get(i).getPolicyName());
             jymxsq.setYhzcbs(adapterDataOrderOrderDetails.get(i).getPolicyMark());
             jymxsq.setLslbz(adapterDataOrderOrderDetails.get(i).getTaxRateMark());
@@ -884,8 +872,13 @@ public class AdapterServiceImpl implements AdapterService {
                                 result.add("开具中");
                             }
                         } else {
-                            logger.info("开具中");
-                            result.add("开具中");
+                            if("02".equals(fpztdm)){
+                                logger.info("红冲");
+                                result.add("红冲");
+                            }else{
+                                logger.info("开具中");
+                                result.add("开具中");
+                            }
                         }
                     } else {
                         logger.info("可开具");

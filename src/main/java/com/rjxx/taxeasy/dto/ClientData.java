@@ -26,6 +26,7 @@ public class ClientData {
     private String kpyhzh;
     private String deviceSN;
     private String devicePSWD;
+    private String deviceKEY;
     public String getClientNO() {
         return clientNO;
     }
@@ -176,5 +177,13 @@ public class ClientData {
 
     public void setDevicePSWD(String devicePSWD) {
         this.devicePSWD = devicePSWD;
+    }
+
+    public String getDeviceKEY() {
+        return deviceKEY;
+    }
+
+    public void setDeviceKEY(String deviceKEY) {
+        this.deviceKEY = deviceKEY;
     }
 }

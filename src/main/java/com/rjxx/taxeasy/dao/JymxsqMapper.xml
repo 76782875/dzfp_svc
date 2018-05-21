@@ -40,15 +40,20 @@
     </select>
 
     <select id="findByPage" parameterType="pagination" resultType="jymxsq">
-        select * from t_jymxsq_cl where 1=1
+        select c.id,c.sqlsh,c.kpddm,c.hsbz,c.spmxxh,c.fphxz,
+        c.spdm,c.spmc,c.spggxh,c.spzxbm,c.yhzcbs,c.yhzcmc,c.lslbz,
+        c.spdw,c.sps,c.spdj,c.spje,c.spsl,c.spse,c.kce,
+        c.jshj,c.hzkpxh,c.lrsj,c.lrry,c.xgsj,c.xgry,c.gsdm,
+        c.skpid,c.xfid,c.yxbz,c.spid,c.ykjje,c.kkjje,c.spbz,
+        s.ddh from t_jymxsq_cl c,t_jyxxsq s where c.sqlsh=s.sqlsh
         <if test="params.sqlsh != null">
-          and   sqlsh = #{params.sqlsh}
+          and   c.sqlsh = #{params.sqlsh}
         </if>
         <if test="params.gsdm != null">
-          and gsdm = #{params.gsdm}
+          and c.gsdm = #{params.gsdm}
         </if>
         <if test="params.sqlshlist !=null">
-            <foreach collection="params.sqlshlist" open=" and sqlsh in ("  close=")" separator=","  item="item" index="index" >
+            <foreach collection="params.sqlshlist" open=" and c.sqlsh in ("  close=")" separator=","  item="item" index="index" >
                 #{params.sqlshlist[${index}]}
             </foreach>
         </if>

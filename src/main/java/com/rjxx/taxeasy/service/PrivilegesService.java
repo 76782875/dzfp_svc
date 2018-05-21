@@ -29,5 +29,13 @@ public class PrivilegesService {
     public List<Privileges> findOneByParams(Map params) {
         return privilegesMapper.findOneByParams(params);
     }
+
+    /**
+     * 查询所有权限信息
+     * @return
+     */
+    public List<Privileges> findAll(){
+        return privilegesMapper.findAll();
+    }
     
 }

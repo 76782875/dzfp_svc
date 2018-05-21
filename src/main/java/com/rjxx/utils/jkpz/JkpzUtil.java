@@ -522,7 +522,7 @@ public class JkpzUtil {
                         jymxsq.setSpmc(orderDetails.getProductName());
                         jymxsq.setSpggxh(orderDetails.getSpec());
                         jymxsq.setSpzxbm(orderDetails.getVenderOwnCode());
-                        jymxsq.setSpdw(orderDetails.getUtil());
+                        jymxsq.setSpdw(orderDetails.getUnit());
                         jymxsq.setSps(orderDetails.getQuantity());
                         jymxsq.setSpdj(orderDetails.getUnitPrice());
                         jymxsq.setSpje(orderDetails.getAmount());

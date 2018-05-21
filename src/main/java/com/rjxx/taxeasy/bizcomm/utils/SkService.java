@@ -360,7 +360,21 @@ public class SkService {
         InvoiceResponse response = XmlJaxbUtils.convertXmlStrToObject(InvoiceResponse.class, result);
         return response;
     }
-
+    /**
+     * 盟度开票
+     * @param kplsh
+     * @param
+     * @return
+     */
+    public void skEkyunKP(int kplsh) throws Exception {
+        String encryptStr = encryptSkServerParameter(kplsh + "");
+        Kpls kpls=kplsService.findOne(kplsh);
+        Cszb cszb=cszbService.getSpbmbbh(kpls.getGsdm(),kpls.getXfid(),kpls.getSkpid(),"sfqysknew");
+        String result=null;
+        if("是".equals(cszb.getCsz())){
+            dubboInvoiceService.skEkyunKP(encryptStr);
+        }
+    }
     /**
      * 获取库存
      *

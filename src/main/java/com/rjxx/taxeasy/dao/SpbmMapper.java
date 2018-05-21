@@ -25,5 +25,7 @@ public interface SpbmMapper {
 
     public List<Spbm> findByPage(Pagination pagination);
 
+    public List<Spbm> findSpbm();
+    public List<Spbm> findAllSpbm();
 }
 

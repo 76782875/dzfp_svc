@@ -36,6 +36,9 @@ public interface JyxxsqJpaDao extends CrudRepository<Jyxxsq, Integer> {
     Jyxxsq findOneByGsdmAndDdh(String gsdm, String ddh);
 
     @Query(nativeQuery = true,value = "select * from t_jyxxsq where gsdm=?1 and ddh=?2 and ztbz in (?3) and yxbz='1' ")
-    Jyxxsq findOneByGsdmAndDdhAndZtbz(String gsdm, String ddh,String ztbz);
+    Jyxxsq findOneByGsdmAndDdhAndZtbz(String gsdm, String ddh,String... ztbz);
+
+    @Query(nativeQuery = true,value = "select * from t_jyxxsq where gsdm=?1 and ddh=?2 and ztbz in (?3) and yxbz='1' ")
+    List<Jyxxsq> findAllByGsdmAndDdhAndZtbz(String gsdm, String ddh,String... ztbz);
 }
 

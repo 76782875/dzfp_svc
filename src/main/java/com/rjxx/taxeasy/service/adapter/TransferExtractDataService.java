@@ -202,17 +202,23 @@ public class TransferExtractDataService {
         logger.info("抽取数据KEY={}",tq);
         Jyxxsq jyxxsq = null;
         try {
-            Jyxxsq cancelJyxxsq = jyxxsqJpaDao.findOneByGsdmAndDdhAndZtbz(gsdm,tq,"7");
-            if(cancelJyxxsq!=null){
+            List<Jyxxsq> cancelJyxxsq = jyxxsqJpaDao.findAllByGsdmAndDdhAndZtbz(gsdm,tq,"7");
+            if(!cancelJyxxsq.isEmpty()){
                 logger.info("该笔订单已作废");
                 resultMap.put("msg","该笔订单已作废");
                 return resultMap;
             }
-            jyxxsq = jyxxsqJpaDao.findOneByGsdmAndDdh(gsdm,tq);
+            //是否已经开具
+            List<Jyxxsq> jyxxsqMore = jyxxsqJpaDao.findAllByGsdmAndDdhAndZtbz(gsdm,tq,"5","3");
+            if(!jyxxsqMore.isEmpty()){
+                logger.info("该订单已接收过开票申请");
+                resultMap.put("msg","该订单已接收过开票申请！");
+                    return resultMap;
+            }
+            jyxxsq = jyxxsqJpaDao.findOneByGsdmAndDdhAndZtbz(gsdm,tq,"6");
         } catch (Exception e) {
-//            e.printStackTrace();
-            logger.info("该订单号已查询到多笔数据，请重新输入！");
-            resultMap.put("msg","该订单号已查询到多笔数据，请重新输入！");
+            logger.info("查询多条，获取数据失败！");
+            resultMap.put("msg","获取数据失败！");
             return resultMap;
         }
         if(jyxxsq==null){
@@ -261,7 +267,7 @@ public class TransferExtractDataService {
                 detail.setQuantity(jymxsq.getSps());
                 detail.setUnitPrice(jymxsq.getSpdj());
                 detail.setSpec(jymxsq.getSpggxh());
-                detail.setUtil(jymxsq.getSpdw());
+                detail.setUnit(jymxsq.getSpdw());
                 detail.setRowType(jymxsq.getFphxz());
                 detail.setTaxRate(jymxsq.getSpsl());
                 detail.setTaxAmount(jymxsq.getSpse());
@@ -352,7 +358,7 @@ public class TransferExtractDataService {
             detail.setQuantity(1d);
             detail.setUnitPrice(5d);
             detail.setSpec("规格型号");
-            detail.setUtil("次");
+            detail.setUnit("次");
             detail.setRowType("0");
             detail.setTaxRate(0.06);
             details.add(detail);

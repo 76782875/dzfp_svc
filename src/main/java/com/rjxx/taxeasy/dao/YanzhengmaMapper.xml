@@ -4,7 +4,7 @@
 <mapper namespace="com.rjxx.taxeasy.dao.YanzhengmaMapper">
 
     <select id="findOneByParams" parameterType="map" resultType="yanzhengma">
-        select * from t_yanzhengma
+        select * from t_yanzhengma where yxbz='1'
         <if test="orderBy != null">
             order by ${orderBy}
         </if>
@@ -12,21 +12,20 @@
     </select>
 
     <select id="findAllByParams" parameterType="map" resultType="yanzhengma">
-        select * from t_yanzhengma
+        select * from t_yanzhengma where yxbz='1'
         <if test="orderBy != null">
             order by ${orderBy}
         </if>
     </select>
 
     <select id="findByPage" parameterType="pagination" resultType="yanzhengma">
-        select * from t_yanzhengma
+        select * from t_yanzhengma where yxbz='1'
         <if test="params.orderBy != null">
             order by ${params.orderBy}
         </if>
     </select>
 	<select id="findBySql" parameterType="map" resultType="yanzhengma">
-		select * from t_yanzhengma
-		where TIMESTAMPDIFF(SECOND,lrsj, now()) &lt;=600
+		select * from t_yanzhengma where yxbz='1'
 		<if test="phone != null">
 			and phone=#{phone}
 		</if>
