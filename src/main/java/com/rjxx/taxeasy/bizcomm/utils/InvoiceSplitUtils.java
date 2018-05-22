@@ -85,6 +85,10 @@ public class InvoiceSplitUtils {
 
 		Map<String, BigDecimal> resultMap = new HashMap<String, BigDecimal>();
 		BigDecimal cfsm = div(spje, spdj);
+		if(div(spje, spdj).compareTo(BigDecimal.ONE)<0){
+			cfsm =BigDecimal.valueOf(1);
+			spdj = div(spje, cfsm);
+		}
 		BigDecimal cfsm1 = cfsm;// 未取整的数量
 		BigDecimal cfje_int;// 取整后的金额
 		//BigDecimal ccje;// 取整后多出的金额 cfje = cfje_int,ccje
@@ -443,8 +447,11 @@ public class InvoiceSplitUtils {
 									
 								}else{
 									cfsm = (null==cfsm?BigDecimal.ZERO:cfsm);
-									cfjyspmxtmp.setSps(sub(jyspmx.getSps(),cfsm).setScale(6, BigDecimal.ROUND_HALF_UP));
-									cfjyspmxtmp.setSpdj(div(cfjyspmxtmp.getSpje(),cfjyspmxtmp.getSps(),15));
+									BigDecimal sysl = sub(jyspmx.getSps(),cfsm).setScale(6, BigDecimal.ROUND_HALF_UP);//用于处理整数拆分
+									cfjyspmxtmp.setSps(sysl.doubleValue()<=0?BigDecimal.ONE.setScale(6, BigDecimal.ROUND_HALF_UP):sysl);
+									cfjyspmxtmp.setSpdj(div(cfjyspmxtmp.getSpje(),cfjyspmxtmp.getSps()).setScale(15, BigDecimal.ROUND_HALF_UP));
+									/*cfjyspmxtmp.setSps(sub(jyspmx.getSps(),cfsm).setScale(6, BigDecimal.ROUND_HALF_UP));
+									cfjyspmxtmp.setSpdj(div(cfjyspmxtmp.getSpje(),cfjyspmxtmp.getSps(),15));*/
 								}
 							}
 						}
@@ -499,6 +506,7 @@ public class InvoiceSplitUtils {
 						//cfse = div(spse, cfbl).setScale(2, BigDecimal.ROUND_HALF_UP);// 拆分税额
 						//cfjshj = add(cfje, cfse).setScale(2, BigDecimal.ROUND_HALF_UP);
 						if (spzsfp && null != spdj && !"".equals(spdj) && null != spsm && !"".equals(spsm)) {
+
 							// 拆分整数数量处理
 							Map cfslMap = cfsl_byInt(spdj,cfje,spsl,cfse,cfjshj,ccje,cfkce);
 							cfsm = BigDecimal.valueOf(Double.valueOf(String.valueOf(cfslMap.get("cfsm"))));// 拆分整数数量
@@ -581,7 +589,8 @@ public class InvoiceSplitUtils {
 								}else{
 									if(cfjyspmxtmp.getSpje().doubleValue()>0d){
 										cfsm = (null==cfsm?BigDecimal.ZERO:cfsm);
-										cfjyspmxtmp.setSps(sub(jyspmx.getSps(),cfsm).setScale(6, BigDecimal.ROUND_HALF_UP));
+										BigDecimal sysl = sub(jyspmx.getSps(),cfsm).setScale(6, BigDecimal.ROUND_HALF_UP);//用于处理整数拆分
+										cfjyspmxtmp.setSps(sysl.doubleValue()<=0?BigDecimal.ONE.setScale(6, BigDecimal.ROUND_HALF_UP):sysl);
 										cfjyspmxtmp.setSpdj(div(cfjyspmxtmp.getSpje(),cfjyspmxtmp.getSps()).setScale(15, BigDecimal.ROUND_HALF_UP));
 									}
 								}
