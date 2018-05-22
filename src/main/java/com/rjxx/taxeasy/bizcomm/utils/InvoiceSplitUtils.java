@@ -367,10 +367,9 @@ public class InvoiceSplitUtils {
 									cfje = BigDecimal.valueOf(Double.valueOf(String.valueOf(cfslMap.get("cfje")))).setScale(2, BigDecimal.ROUND_HALF_UP);// 对应整数数量金额
 									cfse =  BigDecimal.valueOf(Double.valueOf(String.valueOf(cfslMap.get("cfse")))).setScale(2, BigDecimal.ROUND_HALF_UP);// 对应整数数量税额
 									cfjshj =  BigDecimal.valueOf(Double.valueOf(String.valueOf(cfslMap.get("cfjshj")))).setScale(2, BigDecimal.ROUND_HALF_UP);// 对应整数数量价税合计
-									/*ccje = add(ccje,
-									 BigDecimal.valueOf((long)
-									 cfslMap.get("ccje")));*/
-									 //BigDecimal wcbl = div(div(cfjyspmxtmp.getSpje(), cfbl), cfje);//原拆分金额=div(cfjyspmxtmp.getSpje(), cfbl)
+									ccje =  BigDecimal.valueOf(Double.valueOf(String.valueOf(cfslMap.get("ccje")))).setScale(2, BigDecimal.ROUND_HALF_UP);// 对应整数数量金额
+
+									//BigDecimal wcbl = div(div(cfjyspmxtmp.getSpje(), cfbl), cfje);//原拆分金额=div(cfjyspmxtmp.getSpje(), cfbl)
 									 //wcbl表示原cfje和整数拆分后cfje的比例
 									//cfbl = mul(wcbl,cfbl);// 原金额除以整数数量对应金额重新计算比例用于折扣行比例计算
 								}
@@ -379,16 +378,16 @@ public class InvoiceSplitUtils {
 								cfje = div(cfjyspmxtmp.getSpje(), cfbl,2);
 								//ccje = add(ccje,sub(cfjyspmxtmp.getSpje(),cfje));
 							}
-
-							if(j==zkAndbzkList.size()-1){
+							//20180522kzx注释
+							/*if(j==zkAndbzkList.size()-1){
 								cfje = cfzje;
 								cfse = mul(cfje,spsl).setScale(2, BigDecimal.ROUND_HALF_UP);
-							}else{
+							}else{*/
 								cfzje = sub(cfzje,cfje).setScale(2, BigDecimal.ROUND_HALF_UP);
 								//cfse = div(spse, cfbl,2);// 拆分税额
 								//存在误差，改用je*sl
 								//cfzse = mul(cfzje,spsl).setScale(2, BigDecimal.ROUND_HALF_UP);
-							}
+							//}
 
 							// ccjyspmx = jyspmx;//超出金额对象
 							cfjyspmx.setFphxz(s_fphxz);
@@ -398,6 +397,7 @@ public class InvoiceSplitUtils {
 							if(null != cfsm && !cfsm.equals("") && s_fphxz.equals("2")){
 								cfjyspmx.setSps(cfsm.setScale(6, BigDecimal.ROUND_HALF_UP));
 							}else{
+								if(!s_fphxz.equals("1"))
 								cfjyspmx.setSps(cfsm);
 							}
 							
@@ -424,8 +424,11 @@ public class InvoiceSplitUtils {
 							cfjyspmxtmp.setSpje(sub(cfjyspmxtmp.getSpje(),cfje).setScale(2, BigDecimal.ROUND_HALF_UP));
 							if (null != spdj && !"".equals(spdj) && null != spsm && !"".equals(spsm) && s_fphxz.equals("2")) {
 							   cfsm = (null==cfsm?BigDecimal.ZERO:cfsm);
-							   cfjyspmxtmp.setSps(sub(cfjyspmxtmp.getSps(),cfsm).setScale(6, BigDecimal.ROUND_HALF_UP));
-							   cfjyspmxtmp.setSpdj(div(cfjyspmxtmp.getSpje(),cfjyspmxtmp.getSps(),15));
+							   //cfjyspmxtmp.setSps(sub(cfjyspmxtmp.getSps(),cfsm).setScale(6, BigDecimal.ROUND_HALF_UP));
+							   //cfjyspmxtmp.setSpdj(div(cfjyspmxtmp.getSpje(),cfjyspmxtmp.getSps(),15));
+								BigDecimal sysl = sub(jyspmx.getSps(),cfsm).setScale(6, BigDecimal.ROUND_HALF_UP);//用于处理整数拆分
+								cfjyspmxtmp.setSps(sysl.doubleValue()<=0?BigDecimal.ONE.setScale(6, BigDecimal.ROUND_HALF_UP):sysl);
+								cfjyspmxtmp.setSpdj(div(cfjyspmxtmp.getSpje(),cfjyspmxtmp.getSps()).setScale(15, BigDecimal.ROUND_HALF_UP));
 							}
 							cfjyspmxtmp.setSpse(sub(cfjyspmxtmp.getSpse(),cfse).setScale(2, BigDecimal.ROUND_HALF_UP));
 							cfjyspmxtmp.setJshj(sub(cfjyspmxtmp.getJshj(),cfjshj).setScale(2, BigDecimal.ROUND_HALF_UP));
