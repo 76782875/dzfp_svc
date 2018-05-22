@@ -313,6 +313,11 @@ public class JyxxsqService {
 		 return jyxxsqMapper.findBykplscxPage(params);
 	}
 
+	public List<JyxxsqVO> findAllBykplscx(Map params) {
+		// TODO Auto-generated method stub
+		return jyxxsqMapper.findAllBykplscx(params);
+	}
+
 	public Integer findBykplscxtotal(Map params){
 		return jyxxsqMapper.findBykplscxtotal(params);
 	}

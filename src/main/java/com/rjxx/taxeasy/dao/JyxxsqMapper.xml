@@ -191,6 +191,9 @@
 		<if test="jylsh !=null and jylsh !=''">
 			and t.jylsh = #{jylsh}
 		</if>
+		<if test="ztbz !=null and ztbz !=''">
+			and t.ztbz = #{ztbz}
+		</if>
 
 		<if test="gfmc !=null and gfmc !=''">
 			and t.gfmc like concat('%',#{gfmc},'%')
@@ -209,6 +212,69 @@
 		-- LEFT JOIN t_fpczlx e on a.fpczlxdm = e.fpczlxdm
 		-- LEFT JOIN t_clzt c on a.clztdm = c.clztdm;
     </select>
+
+
+	<select id="findAllBykplscx" parameterType="map" resultType="jyxxsqVO">
+		SELECT
+		a.sqlsh,a.jylsh,a.ddh,a.jshj,a.gfmc,a.ddrq,d.fpzlmc,a.tqm,a.sjly,a.ztbz,f.ztbzmc
+		FROM
+		t_jyxxsq a
+		JOIN (
+		SELECT
+		t.sqlsh
+		FROM
+		t_jyxxsq t
+		WHERE
+		t.yxbz = '1'
+		<if test="gsdm !=null and gsdm !=''">
+			and t.gsdm = #{gsdm}
+		</if>
+		<if test="xfs !=null">
+			<foreach collection="xfs" open=" and (t.xfid in ("
+					 separator="," close=")" item="item" index="index">
+				#{xfs[${index}].id}
+			</foreach>
+			or t.xfid is null)
+		</if>
+		<if test="skps !=null">
+			<foreach collection="skps" open=" and (t.skpid in ("
+					 separator="," close=")" item="item" index="index">
+				#{skps[${index}].id}
+			</foreach>
+			or t.skpid is null)
+		</if>
+		<if test="ddh !=null and ddh !=''">
+			and t.ddh = #{ddh}
+		</if>
+		<if test="fpzldm !=null and fpzldm !=''" >
+			and t.fpzldm= #{fpzldm}
+		</if>
+		<if test="xfsh !=null and xfsh !=''" >
+			and t.xfsh = #{xfsh}
+		</if>
+		<if test="jylsh !=null and jylsh !=''">
+			and t.jylsh = #{jylsh}
+		</if>
+		<if test="ztbz !=null and ztbz !=''">
+			and t.ztbz = #{ztbz}
+		</if>
+		<if test="gfmc !=null and gfmc !=''">
+			and t.gfmc like concat('%',#{gfmc},'%')
+		</if>
+		<if test="rqq !=null and rqq != ''">
+			and t.ddrq &gt;= #{rqq}
+		</if>
+		<if test="rqz !=null and rqz != ''">
+			and t.ddrq &lt;
+			date_add(str_to_date(#{rqz},'%Y-%m-%d'),INTERVAL 1 day)
+		</if>
+		ORDER BY t.sqlsh desc
+		) b ON a.sqlsh = b.sqlsh
+		LEFT JOIN t_fpzl d on a.fpzldm = d.fpzldm
+		left join t_ztbz f on a.ztbz = f.ztbzdm
+		-- LEFT JOIN t_fpczlx e on a.fpczlxdm = e.fpczlxdm
+		-- LEFT JOIN t_clzt c on a.clztdm = c.clztdm;
+	</select>
 
 	<select id="findBykplscxtotal" parameterType="map" resultType="int">
 		SELECT
@@ -251,7 +317,9 @@
 		<if test="jylsh !=null and jylsh !=''">
 			and t.jylsh = #{jylsh}
 		</if>
-
+		<if test="ztbz !=null and ztbz !=''">
+			and t.ztbz = #{ztbz}
+		</if>
 		<if test="gfmc !=null and gfmc !=''">
 			and t.gfmc like concat('%',#{gfmc},'%')
 		</if>
