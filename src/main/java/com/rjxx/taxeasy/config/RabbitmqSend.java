@@ -69,7 +69,7 @@ public class RabbitmqSend implements RabbitTemplate.ConfirmCallback{
 
     @Bean
     public Binding bindingbox() {
-        return BindingBuilder.bind(queue()).to(defaultExchange()).with("queue_box");
+        return BindingBuilder.bind(queuebox()).to(defaultExchange()).with("queue_box");
     }
 
     @Bean
