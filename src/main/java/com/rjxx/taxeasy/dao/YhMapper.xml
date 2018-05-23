@@ -52,6 +52,11 @@
     </select>
 
     <select id="findAllByParams" parameterType="map" resultType="yh">
+        <if test="sup !=null">
+            select  * from t_yh where yxbz='1' and gsdm=#{gsdm}
+        </if>
+        <if test="sup ==null">
+        select * from (
         SELECT
         *
         FROM
@@ -89,7 +94,7 @@
         <if test="gsdm != null and gsdm != ''">
             and gsdm = #{gsdm}
         </if>
-        AND c.sup = '1'
+        AND c.admin = '1'
         AND a.gsdm = c.gsdm
         AND b.yhid = c.id
         AND c.yxbz = '1'
@@ -102,7 +107,8 @@
         )
         )
         )
-        )
+        )) t where t.sup is null or t.sup <![CDATA[ <> ]]> '1'
+        </if>
     </select>
     <select id="findAllByYHCount" parameterType="map" resultType="yhvo">
         select count( DISTINCT a.id) as yhcount from t_yh a where a.yxbz='1'
