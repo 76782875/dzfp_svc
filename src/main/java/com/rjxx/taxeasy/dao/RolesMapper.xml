@@ -19,7 +19,7 @@
 
     <select id="findDefaultOneByParams" parameterType="map" resultType="roles">
         select * from roles where yxbz = '1'
-        and lrry is null
+        and sfsmr ='1' and description ='SYS'
         <if test="name != null">
             and name = #{name}
         </if>
