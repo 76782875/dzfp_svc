@@ -77,6 +77,23 @@
         a.tzyhid
     </select>
 
+    <select id="findAllByPage" parameterType="pagination" resultType="FpkcTzVo">
+        SELECT
+        a.yjszid,a.gsdm,a.tzfs,a.tzyhid,b.xfid,b.skpid,b.skph,b.fpzldm,c.xfmc,c.xfsh,d.yhmc,e.kpdmc,f.fpzlmc
+        from  t_fpkc_yztz a
+        LEFT JOIN t_fpkc_yzsz b on a.yjszid = b.id
+        LEFT JOIN t_xf c ON b.xfid = c.id
+        LEFT JOIN t_yh d on a.tzyhid = d.id
+        LEFT JOIN t_skp e on b.skpid = e.id
+        LEFT JOIN t_fpzl f on b.fpzldm = f.fpzldm
+        WHERE
+        a.yxbz='1'
+        <if test="params.ids != null">
+            <foreach collection="params.ids" open=" and a.yjszid in (" separator="," close=")" index="index" item="id">
+                #{params.ids[${index}]}
+            </foreach>
+        </if>
+    </select>
 
 </mapper>
 
