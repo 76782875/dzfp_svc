@@ -4,6 +4,7 @@ import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.dao.FpkcYztzJpaDao;
 import com.rjxx.taxeasy.dao.FpkcYztzMapper;
 import com.rjxx.taxeasy.domains.FpkcYztz;
+import com.rjxx.taxeasy.vo.FpkcTzVo;
 import com.rjxx.taxeasy.vo.FpkcYjtzVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,6 +59,8 @@ public class FpkcYztzService {
     public List<FpkcYjtzVo> findAllTzList(Map params) {
         return fpkcYztzMapper.findAllTzList(params);
     }
-
+    public List<FpkcTzVo> findAllByPage(Pagination pagination){
+        return fpkcYztzMapper.findAllByPage(pagination);
+    }
 }
 
