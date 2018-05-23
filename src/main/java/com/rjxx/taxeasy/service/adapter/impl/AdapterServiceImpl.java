@@ -322,7 +322,7 @@ public class AdapterServiceImpl implements AdapterService {
 
             List<AdapterDataOrderDetails> orderDetails = data.getOrder().getOrderDetails();
             for (int i = 0; i < orderDetails.size(); i++) {
-                String amount = orderDetails.get(i).getAmount().toString();
+                String amount = orderDetails.get(i).getMxTotalAmount().toString();
                 String taxRate = orderDetails.get(i).getTaxRate().toString();
                 String productName = orderDetails.get(i).getProductName();
                 if (!StringUtil.isNotBlankList(amount, taxRate, productName)) {
