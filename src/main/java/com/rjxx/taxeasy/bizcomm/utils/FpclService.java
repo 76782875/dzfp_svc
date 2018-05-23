@@ -1134,7 +1134,9 @@ public class FpclService {
                     result.add(kplsVO5);
                         try {
                             if(kpfs.equals("04")){
-                                skService.SkBoxKP(kpls.getKplsh());
+                                //skService.SkBoxKP(kpls.getKplsh());
+                                kpls.setFpztdm("04");
+                                kplsService.save(kpls);
                             }else if(kpfs.equals("05")){
                                 skService.skEkyunKP(kpls.getKplsh());
                             }
