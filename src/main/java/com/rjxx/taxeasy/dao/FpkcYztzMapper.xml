@@ -55,7 +55,8 @@
         CONCAT('盘号',t.skph,'对应的',t.fpzlmc,'票种,只剩',t.fpkcl,'张发票;')
         )  tzy,
         max(d.yx) email,
-        max(d.sjhm) phone
+        max(d.sjhm) phone,
+        a.gsdm
         FROM
         t_fpkc_yztz a
         JOIN (
