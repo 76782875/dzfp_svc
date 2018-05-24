@@ -572,7 +572,7 @@ public class JkpzUtil {
                         jyxxsq.setGfyh(buyer.getBank());
                         jyxxsq.setGfyhzh(buyer.getBankAcc());
                         jyxxsq.setGflxr(buyer.getRecipient());
-                        jyxxsq.setGfdz(buyer.getReciAddress());
+                        jyxxsq.setGfdz(buyer.getAddress());
                         jyxxsq.setGfdh(buyer.getTelephoneNo());
                         jyxxsq.setGfyb(buyer.getZip());
                         jyxxsq.setGfemail(buyer.getEmail());

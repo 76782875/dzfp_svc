@@ -111,7 +111,7 @@ public class RabbitmqSend implements RabbitTemplate.ConfirmCallback{
         CorrelationData correlationId = new CorrelationData(uuid);
         rabbitTemplate.convertAndSend(EXCHANGE_NAME, "queue_box",message ,correlationId);
     }
-    public Object receivebox(Object message) {
+    public Object receivebox() {
         //执行保存
         return rabbitTemplate.receiveAndConvert("queue_box");
     }
