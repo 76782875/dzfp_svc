@@ -240,9 +240,7 @@ public class TransferExtractDataService {
         jymxsqParam.put("sqlsh", jyxxsq.getSqlsh());
         List<Jymxsq> jymxsqs = jymxsqService.findAllBySqlsh(jymxsqParam);
         Map jyzfmxparam = new HashMap<>();
-        jyzfmxparam.put("gsdm", gsdm);
         jyzfmxparam.put("sqlsh", jyxxsq.getSqlsh());
-//        jyzfmxparam.put("orderBy", "asc");
         List<Jyzfmx> jyzfmxs = jyzfmxService.findAllByParams(jyzfmxparam);
 
         AdapterPost post = new AdapterPost();
