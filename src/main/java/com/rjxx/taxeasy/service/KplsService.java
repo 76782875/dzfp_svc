@@ -70,9 +70,18 @@ public class KplsService {
 				} catch (Exception e) {
 					throw new RuntimeException("发送队列失败，请联系管理员");
 				}
-			} else if (("03").equals(cszb.getCsz())||("04").equals(cszb.getCsz())) {
+			} else if (("03").equals(cszb.getCsz())) {
 				try {
 					rabbitmqSend.send(kpls.getKplsh() + "");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}else if(("04").equals(cszb.getCsz())){
+				/**
+				 * 凯盈开票放队列
+				 */
+				try {
+					rabbitmqSend.sendbox(kpls.getKplsh() + "");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

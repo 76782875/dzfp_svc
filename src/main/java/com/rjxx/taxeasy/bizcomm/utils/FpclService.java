@@ -1042,7 +1042,7 @@ public class FpclService {
                 }
             } else {
                 if (jyxxsq.getFpzldm().equals("12")) {
-                    InvoiceSplitUtils.splitInvoices((List) mapResult.get("jymxsqs"), (Map) mapResult.get("zkAndbzk"), new BigDecimal(Double.valueOf(zdje)),jyxxsq.getZsfs(), new BigDecimal(fpje), fphs2, sfqzfp, false, 0, splitKpspmxs);
+                    InvoiceSplitUtils.splitInvoices((List) mapResult.get("jymxsqs"), (Map) mapResult.get("zkAndbzk"), new BigDecimal(Double.valueOf(zdje)),jyxxsq.getZsfs(), new BigDecimal(fpje), fphs2, sfqzfp, spzsfp, 0, splitKpspmxs);
                 } else if (jyxxsq.getFpzldm().equals("03")) {//卷票
                     InvoiceSplitUtils.splitInvoices((List) mapResult.get("jymxsqs"), (Map) mapResult.get("zkAndbzk"), new BigDecimal(Double.valueOf(zdje)), jyxxsq.getZsfs(),new BigDecimal(fpje), fphs3, sfqzfp, spzsfp, 0, splitKpspmxs);
                 } else {
@@ -1134,7 +1134,9 @@ public class FpclService {
                     result.add(kplsVO5);
                         try {
                             if(kpfs.equals("04")){
-                                skService.SkBoxKP(kpls.getKplsh());
+                                //skService.SkBoxKP(kpls.getKplsh());
+                                kpls.setFpztdm("04");
+                                kplsService.save(kpls);
                             }else if(kpfs.equals("05")){
                                 skService.skEkyunKP(kpls.getKplsh());
                             }

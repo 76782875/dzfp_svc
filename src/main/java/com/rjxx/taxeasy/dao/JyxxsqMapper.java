@@ -65,5 +65,7 @@ public interface JyxxsqMapper {
     public void updateGfxx(Map params);
 
     public Integer findJshjSum(Map params);
+
+    public List<JyxxsqVO> findAllBykplscx( Map params);
 }
 

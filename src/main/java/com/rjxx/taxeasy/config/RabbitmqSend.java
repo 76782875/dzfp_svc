@@ -63,6 +63,16 @@ public class RabbitmqSend implements RabbitTemplate.ConfirmCallback{
     }
 
     @Bean
+    public Queue queuebox() {
+        return new Queue("queue_box", true);
+    }
+
+    @Bean
+    public Binding bindingbox() {
+        return BindingBuilder.bind(queuebox()).to(defaultExchange()).with("queue_box");
+    }
+
+    @Bean
     public Binding binding() {
         return BindingBuilder.bind(queue()).to(defaultExchange()).with("queue_ErrorException_Sk_12");
     }
@@ -92,5 +102,17 @@ public class RabbitmqSend implements RabbitTemplate.ConfirmCallback{
         String uuid = UUID.randomUUID().toString();
         CorrelationData correlationId = new CorrelationData(uuid);
         rabbitTemplate.convertAndSend(EXCHANGE_NAME, "queue_ErrorException_Sk_12",message ,correlationId);
+    }
+
+    public void sendbox(Object message) {
+
+        //执行保存
+        String uuid = UUID.randomUUID().toString();
+        CorrelationData correlationId = new CorrelationData(uuid);
+        rabbitTemplate.convertAndSend(EXCHANGE_NAME, "queue_box",message ,correlationId);
+    }
+    public Object receivebox() {
+        //执行保存
+        return rabbitTemplate.receiveAndConvert("queue_box");
     }
 }

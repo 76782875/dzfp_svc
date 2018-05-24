@@ -6,6 +6,7 @@ public class FpkcYjtzVo {
 	private String tzy;
 	private String email;
 	private String phone;
+	private String gsdm;
 
 	public String getTzfs() {
 		return tzfs;
@@ -37,5 +38,13 @@ public class FpkcYjtzVo {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+
+	public String getGsdm() {
+		return gsdm;
+	}
+
+	public void setGsdm(String gsdm) {
+		this.gsdm = gsdm;
 	}
 }
