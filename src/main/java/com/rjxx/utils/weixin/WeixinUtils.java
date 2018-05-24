@@ -26,10 +26,12 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -59,6 +61,21 @@ public class WeixinUtils {
 
     @Autowired
     private HttpServletRequest request;
+
+    @Value("${web.url.error}")
+    private String errorUrl;
+
+    @Value("${web.url.success}")
+    private String succesUrl;
+
+    @Value("${web.url.ticketing}")
+    private String ticketingUrl;
+
+    @Value("${web.url.luru}")
+    private String luruUrl;
+
+    @Value("${web.url.maked}")
+    private String makedUrl;
 
     /**
      * 判断是否微信浏览器
@@ -228,36 +245,19 @@ public class WeixinUtils {
                 Skp skp = skpService.findOneByParams(skpParam);
                 if(skp==null){
                     logger.info("根据开票点，获取品牌失败!");
-//                    redirect_url = WeiXinConstants.SUCCESS_REDIRECT_URL;
                     redirect_url = HtmlUtils.getBasePath(request)+"qrcode/witting.html";
                 }else{
                     Pp pp = ppJpaDao.findOneById(skp.getPid());
                     if(pp==null){
-//                        redirect_url = WeiXinConstants.SUCCESS_REDIRECT_URL;
                         redirect_url = HtmlUtils.getBasePath(request)+"qrcode/witting.html";
                     }else {
-                        String headColor = "no";
-                        String bodyColor = "no";
-                        String buttonColor = "no";
-                        if(pp.getPpheadcolor()!=null){
-                            headColor = pp.getPpheadcolor();
-                        }
-                        if(pp.getPpbuttoncolor()!=null){
-                            bodyColor = pp.getPpbuttoncolor();
-                        }
-                        if(pp.getPpbodycolor()!=null){
-                            buttonColor = pp.getPpbodycolor();
-                        }
-//                        redirect_url = WeiXinConstants.SUCCESS_REDIRECT_URL
-//                                +"?t="+System.currentTimeMillis()
-//                                +"&ppdm="+pp.getPpdm()+"="+headColor+"="+bodyColor+"="+buttonColor;
-                        redirect_url = HtmlUtils.getBasePath(request)+"qrcode/witting.html"
-                                +"?t="+System.currentTimeMillis() +"&ppdm="+pp.getPpdm();
+//                        redirect_url = HtmlUtils.getBasePath(request)+"qrcode/witting.html"
+//                                +"?t="+System.currentTimeMillis() +"&ppdm="+pp.getPpdm();
+                        redirect_url=succesUrl+"?t="+System.currentTimeMillis() +"&ppdm="+pp.getPpdm();
                     }
                 }
             }catch (Exception e){
                 e.printStackTrace();
-//                redirect_url = WeiXinConstants.SUCCESS_REDIRECT_URL;
                 redirect_url = HtmlUtils.getBasePath(request)+"qrcode/witting.html";
             }
         }
