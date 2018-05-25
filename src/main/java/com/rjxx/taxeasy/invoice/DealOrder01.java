@@ -61,6 +61,9 @@ public class DealOrder01 implements SVCDealOrder {
     @Autowired
     private RemarkProcessingUtil remarkUtil;
 
+    @Autowired
+    private XfService xfService;
+
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public String execute(String gsdm, Map map, String Operation) {
@@ -381,7 +384,7 @@ public class DealOrder01 implements SVCDealOrder {
                 }
 
                 // 征税方式
-                String chargeTaxWay = "";
+                String chargeTaxWay = "0";
                 if (null != orderMainMap.selectSingleNode("ChargeTaxWay")
                         && !orderMainMap.selectSingleNode("ChargeTaxWay").equals("")) {
                     chargeTaxWay = orderMainMap.selectSingleNode("ChargeTaxWay").getText();
@@ -536,7 +539,7 @@ public class DealOrder01 implements SVCDealOrder {
                 jyxxsq.setBz(remark);
                 jyxxsq.setGflx(CustomerType);
                 jyxxsq.setGfsh(buyerIdentifier.replaceAll(" ",""));
-                jyxxsq.setGfmc(buyerName.replaceAll(" ",""));
+                jyxxsq.setGfmc(buyerName.trim());
                 jyxxsq.setGfdz(buyerAddress);
                 jyxxsq.setGfdh(buyerTelephoneNo);
                 jyxxsq.setGfyh(buyerBank);
@@ -789,6 +792,18 @@ public class DealOrder01 implements SVCDealOrder {
             if (null != skp && !skp.equals("")) {
                 jyxxsq.setXfid(skp.getXfid());
                 jyxxsq.setSkpid(skp.getId());
+                //20180111 kzx 判断是否是使用初始配置参数（销方，开票点数据）
+                Cszb cszb = cszbservice.getSpbmbbh(gsdm,skp.getXfid(),skp.getId(),"sfsycshpz");
+                if(cszb.getCsz().equals("是")){
+                    Xf xf = xfService.findOne(skp.getXfid());
+                    Map resultSys = GetXfxx.getXfxx(xf,skp);
+                    if(null == jyxxsq.getSkr() || jyxxsq.getSkr().equals("")){
+                        jyxxsq.setSkr(String.valueOf(resultSys.get("skr")));
+                    }
+                    if(null == jyxxsq.getFhr() || jyxxsq.getFhr().equals("")){
+                        jyxxsq.setFhr(String.valueOf(resultSys.get("fhr")));
+                    }
+                }
             }
             /*fpzldm = jyxxsq.getFpzldm();
             if (fpzldm.equals("0")) { // 专票
