@@ -66,8 +66,8 @@ public class AlipayRSAUtil {
         Signature signature = Signature.getInstance("SHA1withRSA");
         signature.initVerify(publicK);
         signature.update(srcData.getBytes("GBK"));
-//        return signature.verify(Base64.decodeBase64(sign.getBytes()));
-        return signature.verify(sign.getBytes());
+        return signature.verify(Base64.decodeBase64(sign.getBytes()));
+//        return signature.verify(sign.getBytes());
     }
 
     /**
