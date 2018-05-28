@@ -22,8 +22,6 @@ public class AlipayResultUtil {
         AlipayResult result = new AlipayResult();
         result.setResultCode(code);
         result.setResultMsg(msg);
-        result.setEinvCode(null);
-        result.setEinvNo(null);
         return result;
     }
 }
