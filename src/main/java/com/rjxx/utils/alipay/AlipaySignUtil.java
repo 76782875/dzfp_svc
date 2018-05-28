@@ -28,7 +28,7 @@ public class AlipaySignUtil {
         //解析参数
         Map<String, String> map = restoreMap(params, "&");
         //urldecode 签名
-        String sign = URLDecoder.decode(map.get("sign"), "gbk");
+        String sign = URLDecoder.decode(map.get("sign"), "utf-8");
         //去除签名参数
         map.remove("sign");
         //生成待验签字符串
@@ -56,7 +56,7 @@ public class AlipaySignUtil {
             String signatureContent = getSignatureContent(params);
 
             //获取签名,得到签名之后进行urlencode
-            String sign = URLEncoder.encode(AlipayRSAUtil.sign(signatureContent, privateKey), "gbk");
+            String sign = URLEncoder.encode(AlipayRSAUtil.sign(signatureContent, privateKey), "utf-8");
             params.put("sign", sign);
 
             return getSignatureContent(params);
