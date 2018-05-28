@@ -8,7 +8,6 @@ import java.security.*;
 import java.security.spec.EncodedKeySpec;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
-import java.util.*;
 
 /**
  * @author wangyahui
@@ -17,6 +16,18 @@ import java.util.*;
  * @date 2018/5/9
  */
 public class AlipayRSAUtil {
+    public static String PRIKEY = "MIICdQIBADANBgkqhkiG9w0BAQEFAASCAl8wggJbAgEAAoGBAIgp2pq98axr1IcLrsW" +
+            "5MPUqeggdeGPAyh8+2aHObn4ER6KmpTgo+pi2SScFoNgesWx72kY2PEEGsUwcTXKkSYaeZVs7z7Z/ujQvP0kbPGouG7Q6MN5" +
+            "+jud0sM2Gkmu60fGJXQ8IfeFi6oQCKZpMviXg00KV7ct6JmHlgUpP0jR5AgMBAAECgYBlxAo6/t1iBVFZATVFV4ysn2uHJyd0Po" +
+            "GR6rJTSWqxSleTy8LN/2qTuiFgRceZ3w6xyrsvIJfV7b+S59BGb1z3ZdO09gOeviP5W3pC23ClItBlsyNf4njXylQus9Nl4ZnKcV/U" +
+            "EDvjChGIma8ZZChkxHNpLls9WGWFkQkFk88TkQJBALuOBCgCVyI1Lm2r0mPlC7RbuPiKzmT5kOs0+1696WulbRMODPGXsz8ivMJSBQy+e" +
+            "hU6xV//nd5GOAfjt5PqRw0CQQC52rJZdqPGxHhESw8eI5ZBe9Mz7b6T2UKuPJch6xwpiMPlQB7p0hk5Nhnyic01fppG3gpP6MEtHwiTOT" +
+            "MwXsgdAkAqzpkoQJB+oEC+i07zud1YBu9K2vOMnGF1LZyJ3TKffRxOExDlO0iQCm+msm2woPDgU4+k/4SarNAxDMpjmj8pAkA6/1WGWM" +
+            "b8nfmflEQkSR+1gd01qs7ImDs2nD1Noxi5hpTI/WXSy8L+ClKKT3w48wt+W5Xib/yCmktakNnTDQNxAkBbXimHdGVY3GrZszuAN1n3c" +
+            "yafBSTqpFUdqhfRZ/QLj7wJcmJ+PrLpyB6KMZVsnjzOCS9/tWtIZi14ynhOvM2l";
+    public static String PUBKEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCb0HCH1F/TwCq7P52xqVq3XI7n8KvS" +
+            "erHK0SdxcOtbCUBksEoL94rrC21nJK2AJUTTLXUXQHsResGZ3cllJiA1KjBM6ckvavdoaXrByaIP3GuzJpgF7ojSeCn" +
+            "BNk1+osZexNsc9QmUey02h4o3antAi6U1zb/nGdXzXovtKYigxQIDAQAB";
 
     private static Logger logger = LoggerFactory.getLogger(AlipayRSAUtil.class);
     /**
@@ -97,90 +108,5 @@ public class AlipayRSAUtil {
         X509EncodedKeySpec bobPubKeySpec = new X509EncodedKeySpec(Base64.decodeBase64(publicKey
                 .getBytes()));
         return keyFactory.generatePublic(bobPubKeySpec);
-    }
-
-    /**
-     * 获得需要签名的数据，按照参数名字母升序的顺序将所有参数用&连接起来
-     *
-     * @param params 待签名参数集
-     * @return 排好序的待签名字符串
-     */
-    public static String getSignatureContent(Map<String, String> params) {
-        if (params == null) {
-            return null;
-        }
-        StringBuffer content = new StringBuffer();
-        List<String> keys = new ArrayList<String>(params.keySet());
-        Collections.sort(keys);
-        for (int i = 0; i < keys.size(); i++) {
-            String key = keys.get(i);
-            String value = params.get(key);
-            content.append((i == 0 ? "" : "&") + key + "=" + value);
-        }
-        return content.toString();
-    }
-
-    public static String toSign(Map<String, String> params,String privateKey) {
-        try {
-            PrivateKey prikey = getPrivateKey(privateKey);
-            //获取原始加签内容
-            String signatureContent = getSignatureContent(params);
-            //获取签名,得到签名之后,将该签名字符串放于返回字段sign,返回给支付宝
-            String sign = AlipayRSAUtil.sign(signatureContent, prikey);
-            return signatureContent + "&sign=" + sign;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return "";
-    }
-
-    public static boolean toVerify(String params, String publicKey,String sign) throws Exception {
-        PublicKey pubkey = getPublickey(publicKey);
-        String[] result = params.split("&sign=");
-        String resultSign = result[1];
-        logger.info("signEquals=",resultSign==sign);
-        String signatureContent = result[0];
-        return AlipayRSAUtil.verify(signatureContent, pubkey, sign);
-    }
-
-
-
-    public static void main(String[] args) throws Exception {
-        KeyPair keyPair = AlipayRSAUtil.getKeyPair();
-        String params = signTest(keyPair.getPrivate());
-        System.out.println(params);
-        verifyTest(params, keyPair.getPublic());
-    }
-
-    public static void verifyTest(String params, PublicKey publicKey) throws Exception {
-        String[] result = params.split("&sign=");
-        String sign = result[1];
-        String signatureContent = result[0];
-        System.out.println(signatureContent);
-        System.out.println(AlipayRSAUtil.verify(signatureContent, publicKey, sign));
-    }
-
-    /**
-     * 加签demo方法
-     */
-    public static String signTest(PrivateKey privateKey) {
-            try {
-                //获取待验签原始数据,以下数据均从支付宝的请求内容中获取
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("invoiceAmount", "开票金额");
-                params.put("orderNo", "订单号");
-                params.put("mShortName", "商户的品牌名称简称");
-                params.put("subShortName", "商户门店简称");
-                params.put("customParam1", "自定义参数1");
-                params.put("customParam2", "自定义参数2");
-                //获取原始加签内容
-                String signatureContent = getSignatureContent(params);
-                //获取签名,得到签名之后,将该签名字符串放于返回字段sign,返回给支付宝
-                String sign = AlipayRSAUtil.sign(signatureContent, privateKey);
-                return signatureContent + "&sign=" + sign;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return "";
     }
 }
