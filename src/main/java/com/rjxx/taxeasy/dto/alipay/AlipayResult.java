@@ -9,8 +9,6 @@ package com.rjxx.taxeasy.dto.alipay;
 public class AlipayResult {
     private String resultMsg;//业务结果说明
     private String resultCode;//业务结果码
-    private String einvCode;//发票代码（开票成功时不能为空）
-    private String einvNo;//发票号码（开票成功时不能为空）
     private String sign;
 
     public String getResultMsg() {
@@ -27,22 +25,6 @@ public class AlipayResult {
 
     public void setResultCode(String resultCode) {
         this.resultCode = resultCode;
-    }
-
-    public String getEinvCode() {
-        return einvCode;
-    }
-
-    public void setEinvCode(String einvCode) {
-        this.einvCode = einvCode;
-    }
-
-    public String getEinvNo() {
-        return einvNo;
-    }
-
-    public void setEinvNo(String einvNo) {
-        this.einvNo = einvNo;
     }
 
     public String getSign() {
