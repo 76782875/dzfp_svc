@@ -11,6 +11,7 @@ public class AlipayResult {
     private String resultCode;//业务结果码
     private String einvCode;//发票代码（开票成功时不能为空）
     private String einvNo;//发票号码（开票成功时不能为空）
+    private String sign;
 
     public String getResultMsg() {
         return resultMsg;
@@ -42,5 +43,13 @@ public class AlipayResult {
 
     public void setEinvNo(String einvNo) {
         this.einvNo = einvNo;
+    }
+
+    public String getSign() {
+        return sign;
+    }
+
+    public void setSign(String sign) {
+        this.sign = sign;
     }
 }
