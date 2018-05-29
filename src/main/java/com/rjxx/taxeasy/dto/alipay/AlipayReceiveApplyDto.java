@@ -16,7 +16,7 @@ public class AlipayReceiveApplyDto {
     private String payerName;//抬头名称
     private String payerRegisterNo;//纳税人识别号
     private String payerAddress;//地址电话
-    private String payerTelphone;//地址电话
+    private String payerTelPhone;//地址电话
     private String payerBankName;//银行、银行账号
     private String payerBankAccount;//银行、银行账号
     private String sign;//签名
@@ -93,12 +93,12 @@ public class AlipayReceiveApplyDto {
         this.payerAddress = payerAddress;
     }
 
-    public String getPayerTelphone() {
-        return payerTelphone;
+    public String getPayerTelPhone() {
+        return payerTelPhone;
     }
 
-    public void setPayerTelphone(String payerTelphone) {
-        this.payerTelphone = payerTelphone;
+    public void setPayerTelPhone(String payerTelPhone) {
+        this.payerTelPhone = payerTelPhone;
     }
 
     public String getPayerBankName() {
