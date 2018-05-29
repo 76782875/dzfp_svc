@@ -1,13 +1,12 @@
 package com.rjxx.taxeasy.domains;
 
-import java.util.Date;
-import javax.persistence.*;
-import org.hibernate.annotations.GenericGenerator;
-import com.rjxx.comm.json.JsonDateFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.rjxx.comm.json.JsonDatetimeFormat;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.persistence.*;
 import java.io.Serializable;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import java.util.Date;
 /**
  * t_crestvbusiness 实体类
  * 由GenEntityMysql类自动生成
@@ -47,6 +46,12 @@ public class Crestvbusiness  implements Serializable {
 @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	protected Date xgsj;
 
+	/**
+	 * 是否发送mq标志0否1是
+	 */
+	@Column(name="mqbz")
+	protected String mqbz;
+
 
 	public Integer getId(){
 		return id;
@@ -80,5 +85,12 @@ public class Crestvbusiness  implements Serializable {
 		this.xgsj=xgsj;
 	}
 
+	public String getMqbz() {
+		return mqbz;
+	}
+
+	public void setMqbz(String mqbz) {
+		this.mqbz = mqbz;
+	}
 }
 
