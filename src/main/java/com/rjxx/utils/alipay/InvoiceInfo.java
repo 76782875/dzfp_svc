@@ -7,6 +7,8 @@ import java.util.List;
  */
 public class InvoiceInfo {
 
+    private String apply_id;
+
     private String user_id;
 
     private String invoice_no;
@@ -285,5 +287,13 @@ public class InvoiceInfo {
 
     public void setRegister_bank_account(String register_bank_account) {
         this.register_bank_account = register_bank_account;
+    }
+
+    public String getApply_id() {
+        return apply_id;
+    }
+
+    public void setApply_id(String apply_id) {
+        this.apply_id = apply_id;
     }
 }

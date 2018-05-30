@@ -1,17 +1,25 @@
 package com.rjxx.utils.alipay;
 
+import com.alibaba.fastjson.JSON;
+import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
+import com.alipay.api.request.AlipayEbppInvoiceApplyResultSyncRequest;
 import com.alipay.api.request.AlipayEbppInvoiceSycnRequest;
+import com.alipay.api.response.AlipayEbppInvoiceApplyResultSyncResponse;
 import com.alipay.api.response.AlipayEbppInvoiceSycnResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rjxx.taxeasy.dao.WxfpxxJpaDao;
 import com.rjxx.taxeasy.domains.Kpls;
 import com.rjxx.taxeasy.domains.Kpspmx;
+import com.rjxx.taxeasy.domains.WxFpxx;
 import com.rjxx.utils.StringUtils;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -23,7 +31,11 @@ import java.security.spec.X509EncodedKeySpec;
 import java.text.DecimalFormat;
 import java.util.*;
 
+@Component
 public class AlipaySignUtil {
+
+    @Autowired
+    private WxfpxxJpaDao wxfpxxJpaDao;
 
     private static Logger logger = LoggerFactory.getLogger(AlipaySignUtil.class);
 
@@ -40,6 +52,20 @@ public class AlipaySignUtil {
     public static String PUBKEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCb0HCH1F/TwCq7P52xqVq3XI7n8KvS" +
             "erHK0SdxcOtbCUBksEoL94rrC21nJK2AJUTTLXUXQHsResGZ3cllJiA1KjBM6ckvavdoaXrByaIP3GuzJpgF7ojSeCn" +
             "BNk1+osZexNsc9QmUey02h4o3antAi6U1zb/nGdXzXovtKYigxQIDAQAB";
+
+    public static String SYNC_PRIKEY = "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAKK0PXoLKnBkgtOl" +
+            "0kvyc9X2tUUdh/lRZr9RE1frjr2ZtAulZ+Moz9VJZFew1UZIzeK0478obY/DjHmD3GMfqJoTguVqJ2MEg+mJ8hJKWelvKL" +
+            "gfFBNliAw+/9O6Jah9Q3mRzCD8pABDEHY7BM54W7aLcuGpIIOa/qShO8dbXn+FAgMBAAECgYA8+nQ380taiDEIBZPFZv7G6AmT" +
+            "97doV3u8pDQttVjv8lUqMDm5RyhtdW4n91xXVR3ko4rfr9UwFkflmufUNp9HU9bHIVQS+HWLsPv9GypdTSNNp+nDn4JExUtAakJx" +
+            "ZmGhCu/WjHIUzCoBCn6viernVC2L37NL1N4zrR73lSCk2QJBAPb/UOmtSx+PnA/mimqnFMMP3SX6cQmnynz9+63JlLjXD8rowRD2Z0" +
+            "3U41Qfy+RED3yANZXCrE1V6vghYVmASYsCQQCoomZpeNxAKuUJZp+VaWi4WQeMW1KCK3aljaKLMZ57yb5Bsu+P3odyBk1AvYIPvd" +
+            "ajAJiiikRdIDmi58dqfN0vAkEAjFX8LwjbCg+aaB5gvsA3t6ynxhBJcWb4UZQtD0zdRzhKLMuaBn05rKssjnuSaRuSgPaHe5O" +
+            "kOjx6yIiOuz98iQJAXIDpSMYhm5lsFiITPDScWzOLLnUR55HL/biaB1zqoODj2so7G2JoTiYiznamF9h9GuFC2TablbINq80" +
+            "U2NcxxQJBAMhw06Ha/U7qTjtAmr2qAuWSWvHU4ANu2h0RxYlKTpmWgO0f47jCOQhdC3T/RK7f38c7q8uPyi35eZ7S1e/PznY=";
+
+    public static String SYNC_PUBKEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIgHnOn7LLILlKETd6BFRJ0GqgS2Y3" +
+            "mn1wMQmyh9zEyWlz5p1zrahRahbXAfCfSqshSNfqOmAQzSHRVjCqjsAw1jyqrXaPdKBmr90DIpIxmIyKXv4GGAkPyJ/6" +
+            "FTFY99uhpiq0qadD/uSzQsefWo0aTvP/65zi3eof7TcZ32oWpwIDAQAB";
 
     public static void main(String[] args) throws UnsupportedEncodingException {
         Map sendParam = new HashMap();
@@ -251,10 +277,17 @@ public class AlipaySignUtil {
      * @return
      */
     public static String syncInvoiceAlipay(String applyId, Kpls kpls, List<Kpspmx> kpspmxList, String mShortName, String subMShortName) throws Exception {
-        AlipayClient alipayClient = new DefaultAlipayClient("openapi.stable.dl.alipaydev.com",
-                "2014060600164699", AlipaySignUtil.PRIKEY,
-                AlipayConstant.FORMAT, AlipayConstant.CHARSET, AlipaySignUtil.PUBKEY,
-                "RSA");
+        String serverUrl = "http://openapi.stable.dl.alipaydev.com/gateway.do";
+        String appId = "2014060600164699";
+        String privateKey = AlipaySignUtil.SYNC_PRIKEY;
+        String format = AlipayConstant.FORMAT;
+        String charset = AlipayConstant.CHARSET;
+        String alipayPulicKey = AlipaySignUtil.SYNC_PUBKEY;
+        String signType = "RSA";
+        AlipayClient alipayClient = new DefaultAlipayClient(serverUrl,
+                appId, privateKey,
+                format, charset, alipayPulicKey,
+                signType);
         AlipayEbppInvoiceSycnRequest alipayEbppInvoiceSycnRequest = new AlipayEbppInvoiceSycnRequest();
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
 
@@ -265,9 +298,9 @@ public class AlipaySignUtil {
         List<InvoiceInfo> invoiceInfoList = new ArrayList<>();
         invoiceInfoList.add(invoiceInfo);
         alipayBizObject.setInvoice_info(invoiceInfoList);
-        alipayBizObject.setApply_id(applyId);
 
 //        invoiceInfo.setUser_id(userId);
+        invoiceInfo.setApply_id(applyId);
         invoiceInfo.setInvoice_code(kpls.getFpdm());
         invoiceInfo.setInvoice_no(kpls.getFphm());
         invoiceInfo.setRegister_no(kpls.getXfsh());
@@ -350,4 +383,56 @@ public class AlipaySignUtil {
             return null;
         }
     }
+
+    /**
+     * 拒绝开票
+     *
+     * @param applyId
+     * @param reason
+     */
+    public void refuse(String orderNo, String applyId, String reason) {
+        String serverUrl = "http://openapi.stable.dl.alipaydev.com/gateway.do";
+        String appId = "2014060600164699";
+        String privateKey = AlipaySignUtil.SYNC_PRIKEY;
+        String format = AlipayConstant.FORMAT;
+        String charset = AlipayConstant.CHARSET;
+        String alipayPulicKey = AlipaySignUtil.SYNC_PUBKEY;
+        String signType = "RSA";
+
+        AlipayClient alipayClient = new DefaultAlipayClient(serverUrl, appId, privateKey,
+                format, charset, alipayPulicKey, signType);
+        AlipayEbppInvoiceApplyResultSyncRequest request = new AlipayEbppInvoiceApplyResultSyncRequest();
+
+        Map param = new HashMap();
+        param.put("apply_id", applyId);
+        param.put("result", "失败");
+        param.put("result_code", "FAIL");
+        param.put("result_msg", reason);
+
+        String bizContent = JSON.toJSONString(param);
+        request.setBizContent(bizContent);
+        AlipayEbppInvoiceApplyResultSyncResponse response = null;
+        try {
+            response = alipayClient.execute(request);
+            logger.info("result={}",JSON.toJSONString(response));
+        } catch (AlipayApiException e) {
+            e.printStackTrace();
+        }
+        if (response.isSuccess()) {
+            logger.info("------支付宝拒绝开票成功------");
+            WxFpxx wxFpxx = wxfpxxJpaDao.selectByWeiXinOrderNo(orderNo);
+            if(wxFpxx!=null){
+                int coun = wxFpxx.getCount() + 1;
+                logger.info("拒绝开票----更新计数" + coun);
+                wxFpxx.setCount(coun);
+                wxfpxxJpaDao.save(wxFpxx);
+            }
+        } else {
+            logger.info("------支付宝拒绝开票失败-------");
+            logger.info(response.getCode() + "--------" + response.getMsg());
+            logger.info(response.getSubCode() + "--------" + response.getSubMsg());
+        }
+    }
+
+
 }
