@@ -15,8 +15,6 @@ public class AlipayBizObject extends AlipayObject {
 
     private List<InvoiceInfo> invoice_info;
 
-    private String apply_id;
-
     public String getM_short_name() {
         return m_short_name;
     }
@@ -39,13 +37,5 @@ public class AlipayBizObject extends AlipayObject {
 
     public void setInvoice_info(List<InvoiceInfo> invoice_info) {
         this.invoice_info = invoice_info;
-    }
-
-    public String getApply_id() {
-        return apply_id;
-    }
-
-    public void setApply_id(String apply_id) {
-        this.apply_id = apply_id;
     }
 }
