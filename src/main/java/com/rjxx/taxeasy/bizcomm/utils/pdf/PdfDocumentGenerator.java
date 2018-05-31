@@ -525,7 +525,7 @@ public class PdfDocumentGenerator {
             // 二维码生成部分
             String qrcode = (String) map.get("EWM");
             String imgbase64string = null;
-            if (StringUtils.isBlank(qrcode)) {
+            if (StringUtils.isBlank(qrcode)||(null!=qrcode&&qrcode.length()<1000)) {
                 String qrcode1 = "01,10," + kpls.getFpdm() + "," + kpls.getFphm() + "," + total + "," + dateString + "," + kpls.getJym();
                 // 二维码生成部分
                 TwoDimensionCode handler = new TwoDimensionCode();

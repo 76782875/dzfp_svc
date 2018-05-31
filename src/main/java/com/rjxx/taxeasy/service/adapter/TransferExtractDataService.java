@@ -2,7 +2,6 @@ package com.rjxx.taxeasy.service.adapter;
 
 import com.alibaba.fastjson.JSON;
 import com.rjxx.taxeasy.bizcomm.utils.GetDataService;
-import com.rjxx.taxeasy.config.MakingConstans;
 import com.rjxx.taxeasy.dao.JyxxsqJpaDao;
 import com.rjxx.taxeasy.domains.Cszb;
 import com.rjxx.taxeasy.domains.Jymxsq;
@@ -213,7 +212,8 @@ public class TransferExtractDataService {
             if(!jyxxsqMore.isEmpty()){
                 logger.info("该订单已接收过开票申请");
                 resultMap.put("msg","该订单已接收过开票申请！");
-                    return resultMap;
+                resultMap.put("jyxxsq", jyxxsqMore.get(0));
+                return resultMap;
             }
             jyxxsq = jyxxsqJpaDao.findOneByGsdmAndDdhAndZtbz(gsdm,tq,"6");
         } catch (Exception e) {
@@ -225,24 +225,22 @@ public class TransferExtractDataService {
             logger.info("TPYE3根据订单号【"+tq+"】未找到数据");
             return null;
         }
-        if(jyxxsq.getZtbz()!=null && jyxxsq.getZtbz().equals("3")){
-            logger.info("该订单号已被处理，请重新输入！");
-            resultMap.put("msg","该订单号已被处理，请重新输入！");
-            return resultMap;
-        }
-        String check = adapterService.checkMakedForJyxxsq(jyxxsq.getSqlsh(), gsdm);
-        if(!MakingConstans.NO_MAKED.equals(check)){
-            logger.info("该笔订单已开具过");
-            resultMap.put("msg","该笔订单已开具过");
-            return resultMap;
-        }
+//        if(jyxxsq.getZtbz()!=null && jyxxsq.getZtbz().equals("3")){
+//            logger.info("该订单号已被处理，请重新输入！");
+//            resultMap.put("msg","该订单号已被处理，请重新输入！");
+//            return resultMap;
+//        }
+//        String check = adapterService.checkMakedForJyxxsq(jyxxsq.getSqlsh(), gsdm);
+//        if(!MakingConstans.NO_MAKED.equals(check)){
+//            logger.info("该笔订单已开具过");
+//            resultMap.put("msg","该笔订单已开具过");
+//            return resultMap;
+//        }
         Map jymxsqParam = new HashMap();
         jymxsqParam.put("sqlsh", jyxxsq.getSqlsh());
         List<Jymxsq> jymxsqs = jymxsqService.findAllBySqlsh(jymxsqParam);
         Map jyzfmxparam = new HashMap<>();
-        jyzfmxparam.put("gsdm", gsdm);
         jyzfmxparam.put("sqlsh", jyxxsq.getSqlsh());
-//        jyzfmxparam.put("orderBy", "asc");
         List<Jyzfmx> jyzfmxs = jyzfmxService.findAllByParams(jyzfmxparam);
 
         AdapterPost post = new AdapterPost();

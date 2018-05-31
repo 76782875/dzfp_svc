@@ -847,20 +847,18 @@ public class FpclService {
                 key = key.substring(pos + 1);
                 System.out.println("传入开票流水号:" + key);
             }
-            System.out.println("request url=" + url + ", exception, msg=" + e.getMessage());
+            logger.info("request url=" + url + ", exception, msg=" + e.getMessage());
             Kpls kpls=kplsService.findOne(Integer.parseInt(key));
             kpls.setFpztdm("04");
             kpls.setErrorReason(e.getMessage());
             kplsService.save(kpls);
-            e.printStackTrace();
         } finally {
             if (response != null) {
                 try {
                     response.close();
                     httpClient.close();
                 } catch (Exception e) {
-
-                    e.printStackTrace();
+                  logger.info(e.getMessage());
                 }
             }
         }

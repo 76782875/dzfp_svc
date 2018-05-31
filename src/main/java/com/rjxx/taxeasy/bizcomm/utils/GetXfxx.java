@@ -2,10 +2,6 @@ package com.rjxx.taxeasy.bizcomm.utils;
 
 import com.rjxx.taxeasy.domains.Skp;
 import com.rjxx.taxeasy.domains.Xf;
-import com.rjxx.taxeasy.service.SkpService;
-import com.rjxx.taxeasy.service.XfService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,17 +17,17 @@ public class GetXfxx {
         if(null !=skp.getKpr() &&!skp.getKpr().equals("")){
             map.put("kpr",skp.getKpr());
         }else{
-            map.put("kpr",xf.getKpr());
+            map.put("kpr",xf.getKpr()==null?"":xf.getKpr());
         }
         if(null !=skp.getFhr() &&!skp.getFhr().equals("")){
             map.put("fhr",skp.getFhr());
         }else{
-            map.put("fhr",xf.getFhr());
+            map.put("fhr",xf.getFhr()==null?"":xf.getFhr());
         }
         if(null !=skp.getSkr() &&!skp.getSkr().equals("")){
             map.put("skr",skp.getSkr());
         }else{
-            map.put("skr",xf.getSkr());
+            map.put("skr",xf.getSkr()==null?"":xf.getSkr());
         }
 
         if(null!=skp.getLxdz()&&null!=skp.getLxdh()&&null!=skp.getYhzh()&&null!=skp.getKhyh()){

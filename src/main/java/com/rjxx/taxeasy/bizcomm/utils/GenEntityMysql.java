@@ -1,14 +1,14 @@
 package com.rjxx.taxeasy.bizcomm.utils;
 
 
+import com.rjxx.utils.StringUtils;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
 import java.util.*;
 import java.util.Date;
-
-import com.rjxx.utils.StringUtils;
 
 /**
  * 从数据库表反射出实体类，自动生成实体类
@@ -19,7 +19,7 @@ public class GenEntityMysql {
 
     private String packageOutPath = "com.rjxx.taxeasy.domains";//指定实体生成所在包的路径
     private String authorName = "ZhangBing";//作者名字
-    private String tablename = "areas";//表名
+    private String tablename = "t_crestvbusiness";//表名
     private String tableComment = null;//表注释
     //private String javaFilePath = "./"; //for eclipse
     private String javaFilePath = "dzfp-svc"; //for idea

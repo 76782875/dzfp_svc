@@ -2,6 +2,9 @@ package com.rjxx.utils.alipay;
 
 import com.rjxx.taxeasy.dto.alipay.AlipayResult;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author wangyahui
  * @email wangyahui@datarj.com
@@ -9,21 +12,21 @@ import com.rjxx.taxeasy.dto.alipay.AlipayResult;
  * @date 2018/5/15
  */
 public class AlipayResultUtil {
-    public static AlipayResult result(String code,String msg,String fpdm,String fphm){
-        AlipayResult result = new AlipayResult();
-        result.setResultCode(code);
-        result.setResultMsg(msg);
-        result.setEinvCode(fpdm);
-        result.setEinvNo(fphm);
-        return result;
-    }
-
     public static AlipayResult result(String code,String msg){
+        Map map = new HashMap();
+        map.put("resultCode", code);
+        map.put("resultMsg", msg);
+
+        String sign = "";
+        try {
+            sign= AlipaySignUtil.getSign(map,AlipaySignUtil.getPrivateKey(AlipaySignUtil.PRIKEY));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         AlipayResult result = new AlipayResult();
         result.setResultCode(code);
         result.setResultMsg(msg);
-        result.setEinvCode(null);
-        result.setEinvNo(null);
+        result.setSign(sign);
         return result;
     }
 }

@@ -1006,7 +1006,6 @@ public class AdapterServiceImpl implements AdapterService {
         for (Jyxxsq jyxxsq : jyxxsqs) {
             Map jymxsqParam = new HashMap();
             jymxsqParam.put("sqlsh", jyxxsq.getSqlsh());
-            jymxsqParam.put("gsdm", gsdm);
             List<Jymxsq> jymxsqs = jymxsqService.findAllBySqlsh(jymxsqParam);
             List<Map> jymxList = new ArrayList<>();
             for (Jymxsq jymxsq : jymxsqs) {
@@ -1025,6 +1024,7 @@ public class AdapterServiceImpl implements AdapterService {
             map.put("gfdz", jyxxsq.getGfdz());
             map.put("gfdh", jyxxsq.getGfdh());
             map.put("gfmc", jyxxsq.getGfmc());
+            map.put("email", jyxxsq.getGfemail());
             map.put("je", jyxxsq.getJshj());
             map.put("ddh", jyxxsq.getDdh());
             map.put("ddrq", new SimpleDateFormat("yyyyMMddHHmmss").format(jyxxsq.getDdrq()));
