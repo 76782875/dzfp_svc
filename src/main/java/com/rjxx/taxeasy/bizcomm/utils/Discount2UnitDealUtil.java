@@ -103,7 +103,9 @@ public class Discount2UnitDealUtil {
 				jymxsqCl.setSpje((jymxsqCl.getSpdj()==null || jymxsqCl.getSpdj().equals(""))
 						?(JymxsqClVoTmp2.getJshj()-JymxsqClVoTmp2.getSphzkje()-JymxsqClVoTmp2.getFtzfje())
 						:JymxsqClVoTmp2.getSpje()+JymxsqClVoTmp2.getSphzkje()-JymxsqClVoTmp2.getFtzfje());
-				jymxsqCl.setSpdj(jymxsqCl.getSpje()/jymxsqCl.getSps());
+				if(jymxsqCl.getSps()!=null){
+					jymxsqCl.setSpdj(jymxsqCl.getSpje()/jymxsqCl.getSps());
+				}
 				jymxsqCl.setJshj(jymxsqCl.getSpje());
 				jymxsqCl.setSpse(null);
 				jymxsqCl.setFphxz("0");
@@ -114,7 +116,9 @@ public class Discount2UnitDealUtil {
 				jymxsqCl.setSpje((jymxsqCl.getSpdj()==null || jymxsqCl.getSpdj().equals(""))
 						?(JymxsqClVoTmp2.getJshj()-JymxsqClVoTmp2.getSphzkje()-JymxsqClVoTmp2.getFtzfje())
 						:JymxsqClVoTmp2.getSpje()+JymxsqClVoTmp2.getSphzkje()-JymxsqClVoTmp2.getFtzfje());
-				jymxsqCl.setSpdj(jymxsqCl.getSpje()/jymxsqCl.getSps());
+				if(jymxsqCl.getSps()!=null){
+					jymxsqCl.setSpdj(jymxsqCl.getSpje()/jymxsqCl.getSps());
+				}
 				jymxsqCl.setJshj(jymxsqCl.getSpje());
 				jymxsqCl.setSpse(null);
 				jymxsqCl.setFphxz("2");
