@@ -1,16 +1,15 @@
 package com.rjxx.taxeasy.bizcomm.utils;
 
+import com.rjxx.taxeasy.domains.*;
+import com.rjxx.taxeasy.service.*;
+import com.rjxx.taxeasy.vo.Kpspmxvo;
+import com.rjxx.time.TimeUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
-import com.alibaba.fastjson.JSON;
-import com.rjxx.taxeasy.domains.*;
-import com.rjxx.taxeasy.service.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import com.rjxx.taxeasy.vo.Kpspmxvo;
-import com.rjxx.time.TimeUtil;
 
 @Service
 public class FphcService {
@@ -342,6 +341,12 @@ public class FphcService {
 							skService.SkServerKP(kpls2.getKplsh());
 						}
 					}
+				}else if("04".equals(cszb.getCsz())){
+					kpls.setFpztdm("04");
+					kplsService.save(kpls);
+				}else if("05".equals(cszb.getCsz())){
+					kpls.setFpztdm("04");
+					kplsService.save(kpls);
 				}
 				response.setReturnCode("0000");
 				response.setReturnMessage("红冲请求已接受！");
