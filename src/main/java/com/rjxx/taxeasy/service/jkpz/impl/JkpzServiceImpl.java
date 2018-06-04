@@ -317,7 +317,7 @@ public class JkpzServiceImpl implements JkpzService {
                     for (OrderCancelVo item : orderCancelVoList) {
                         Kphc kphc= new Kphc();
                         kphc.setSerialNumber("JY" + new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date()));//序列号
-                        kphc.setTotalAmount(item.getKpje());//加税合计
+                        kphc.setTotalAmount(-item.getKpje());//加税合计
                         kphc.setCNDNCode(item.getFpdm());//原发票代码
                         kphc.setCNDNNo(item.getFphm());//原发票号码
                         kphc.setInvType("12");//发票种类
@@ -326,10 +326,15 @@ public class JkpzServiceImpl implements JkpzService {
                         //红冲
                         Map HcMap = new HashMap();
                         HcMap.put("Kphc",kphc);
-                        String hcResult = kpService.uploadOrderData(gsdm, HcMap, reqType);
+                        String hcResult = kpService.uploadOrderData(gsdm, HcMap, "04");
                         DefaultResult defaultResult = XmlJaxbUtils.convertXmlStrToObject(DefaultResult.class, hcResult);
                         if(!defaultResult.getReturnCode().equals("0000")){
                             result += defaultResult.getReturnMessage();
+                        }else{
+                            List<Integer> sqlshList = new ArrayList<>();
+                            sqlshList.add(Integer.valueOf(resultMap.get("sqlsh").toString()));
+                            jyxxsqService.updateJyxxsqZtzt(sqlshList,"8");
+                            return ResultUtil.success("退货成功！");
                         }
                     }
                     if(!result.equals("")){
@@ -411,6 +416,7 @@ public class JkpzServiceImpl implements JkpzService {
                             }else{
                                 resultMap.put("code","2");
                                 resultMap.put("resMsg","");
+                                resultMap.put("sqlsh",orderCancelVo.getSqlsh());
                                 resultMap.put("orderCancelVoList",orderCancelVoList1);
                                 return resultMap;
                             }
