@@ -235,31 +235,7 @@ public class SkService {
         return result;
     }
 
-    /**
-     * 凯盈获取当前发票段信息
-     * @param kplsh
-     * @return
-     */
-    public String GetCurrentInvoiceInfo(int kplsh) throws Exception {
 
-        InvoiceResponse response=null;
-        String result=null;
-        try{
-            if (StringUtils.isBlank(skkpServerUrl)) {
-                return "skkpServerUrl为空";
-            }
-            String encryptStr = encryptSkServerParameter(kplsh + "");
-            Kpls kpls=kplsService.findOne(kplsh);
-            Cszb cszb=cszbService.getSpbmbbh(kpls.getGsdm(),kpls.getXfid(),kpls.getSkpid(),"sfqysknew");
-            if("是".equals(cszb.getCsz())){
-                result=dubboInvoiceService.GetCurrentInvoiceInfo(encryptStr);
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-            logger.info("------返回数据--------"+result);
-        }
-        return result;
-    }
     /**
      * 税控服务器开票https
      *
@@ -295,8 +271,14 @@ public class SkService {
         Skp skp=skpService.findOne(kpdid);
         Cszb cszb=cszbService.getSpbmbbh(skp.getGsdm(),skp.getXfid(),skp.getId(),"sfqysknew");
         String result=null;
+        Cszb cszb2 = cszbService.getSpbmbbh(skp.getGsdm(), skp.getXfid(), skp.getId(), "kpfs");
+        String kpfs=cszb2.getCsz();
         if("是".equals(cszb.getCsz())){
-            result=dubboInvoiceService.getCodeAndNo(encryptStr);
+            if(("04").equals(kpfs)){
+                result=dubboInvoiceService.GetCurrentInvoiceInfo(encryptStr);
+            }else{
+                result=dubboInvoiceService.getCodeAndNo(encryptStr);
+            }
         }else{
             String url = skServerUrl + "/invoice/getCodeAndNo";
             Map<String, String> map = new HashMap<>();
