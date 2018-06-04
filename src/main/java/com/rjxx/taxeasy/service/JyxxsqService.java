@@ -4,10 +4,7 @@ import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.dao.JyxxsqJpaDao;
 import com.rjxx.taxeasy.dao.JyxxsqMapper;
 import com.rjxx.taxeasy.domains.*;
-import com.rjxx.taxeasy.vo.Jylsvo;
-import com.rjxx.taxeasy.vo.JymxsqVo;
-import com.rjxx.taxeasy.vo.JyspmxVo;
-import com.rjxx.taxeasy.vo.JyxxsqVO;
+import com.rjxx.taxeasy.vo.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -128,6 +125,8 @@ public class JyxxsqService {
 	}
 
 	public List<JyxxsqVO> findBySqlsh(Map params){return jyxxsqMapper.findBySqlsh(params);}
+
+	public List<OrderCancelVo> findAllCancelVoByDdh(Map params){return jyxxsqMapper.findAllCancelVoByDdh(params);}
 	/**
 	 * 删除交易流水，包括明细
 	 *

@@ -61,20 +61,20 @@
 
 
 	<select id="findAllByTqms" parameterType="map" resultType="jyxxsq">
-		select * from t_jyxxsq where yxbz = '1'
-		<if test="tqmList != null">
-			<foreach collection="tqmList" open=" and tqm in (" separator=","
-				close=")" item="tqm">
-				#{tqm}
-			</foreach>
-		</if>
-		<if test="gsdm != null">
-			and gsdm = #{gsdm}
-		</if>
-		<if test="orderBy != null">
-			order by #{orderBy}
-		</if>
-	</select>
+	select * from t_jyxxsq where yxbz = '1'
+	<if test="tqmList != null">
+		<foreach collection="tqmList" open=" and tqm in (" separator=","
+				 close=")" item="tqm">
+			#{tqm}
+		</foreach>
+	</if>
+	<if test="gsdm != null">
+		and gsdm = #{gsdm}
+	</if>
+	<if test="orderBy != null">
+		order by #{orderBy}
+	</if>
+</select>
 
 	<select id="findAllByJylshs" parameterType="map" resultType="jyxxsq">
 		select * from t_jyxxsq where yxbz = '1'
@@ -116,6 +116,21 @@
 		</if>
 		<if test="gsdm != null">
 			and gsdm = #{gsdm}
+		</if>
+		<if test="orderBy != null">
+			order by #{orderBy}
+		</if>
+	</select>
+
+
+	<select id="findAllCancelVoByDdh" parameterType="map" resultType="orderCancelVo">
+		select sum(jshj) ddje,max(ztbz) max_ztbz,min(ztbz) min_ztbz,max(sqlsh) sqlsh from t_jyxxsq
+		where yxbz ='1'
+		<if test="gsdm != null">
+			and gsdm = #{gsdm}
+		</if>
+		<if test="ddh != null">
+			and ddh = #{ddh}
 		</if>
 		<if test="orderBy != null">
 			order by #{orderBy}

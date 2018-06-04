@@ -1916,6 +1916,18 @@ AND djh =#{djh}
             </foreach>
         </if>
     </select>
-    
+
+
+    <select id="findAllFpBySqlsh" parameterType="map" resultType="orderCancelVo">
+        select b.jshj kpje ,fpdm,fphm from t_jyls a join t_kpls b
+        on a.djh = b.djh where  b.fpzldm = '12'  and b.fpztdm = '00'
+        <if test="sqlsh != null and sqlsh != ''">
+            and a.sqlsh = #{sqlsh}
+        </if>
+        <if test="gsdm !=null and gsdm !=''">
+            and a.gsdm = #{gsdm}
+        </if>
+    </select>
+
 </mapper>
 
