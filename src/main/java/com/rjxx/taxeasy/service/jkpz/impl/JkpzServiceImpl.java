@@ -313,7 +313,7 @@ public class JkpzServiceImpl implements JkpzService {
                     jyxxsqService.updateJyxxsqZtzt(sqlshList,"7");
                     return ResultUtil.success("退货成功！");
                 }else if(code.equals("2")){
-                    List<OrderCancelVo> orderCancelVoList = (List)resultMap.get("orderCancelVoList1");
+                    List<OrderCancelVo> orderCancelVoList = (List)resultMap.get("orderCancelVoList");
                     for (OrderCancelVo item : orderCancelVoList) {
                         Kphc kphc= new Kphc();
                         kphc.setSerialNumber("JY" + new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date()));//序列号
