@@ -90,6 +90,7 @@ public class FpclService {
         /*jyls1.setClztdm("40");
         jylsService.save(jyls1);*/
         Cszb cszb = cszbService.getSpbmbbh(kpls.getGsdm(), kpls.getXfid(), kpls.getSkpid(), "kpfs");
+        String kpfs=cszb.getCsz();
         if(cszb != null && cszb.getCsz().equals("01")){
             if(first){
                 skService.callService(kpls.getKplsh());
@@ -108,6 +109,22 @@ public class FpclService {
                 }else{
                     skService.SkServerKP(kpls.getKplsh());
                 }
+            }
+        }else if (kpfs.equals("04")||kpfs.equals("05")) {
+            //凯盈开票  盟度开票
+            try {
+                if(kpfs.equals("04")){
+                    //skService.SkBoxKP(kpls.getKplsh());
+                    kpls.setFpztdm("04");
+                    kplsService.save(kpls);
+                }else if(kpfs.equals("05")){
+                    skService.skEkyunKP(kpls.getKplsh());
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+                kpls.setFpztdm("04");
+                kpls.setErrorReason(e.getMessage());
+                kplsService.save(kpls);
             }
         }
         return true;
