@@ -380,4 +380,8 @@ public class KplsService {
 	public List<Kpls> findKplsMxListByPagination(Pagination pagination) {
 		return kplsMapper.findKplsMxListByPagination(pagination);
 	}
+
+	public List<OrderCancelVo>  findAllFpBySqlsh(Map params){
+		return kplsMapper.findAllFpBySqlsh(params);
+	}
 }

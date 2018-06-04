@@ -11,16 +11,15 @@ import com.rjxx.taxeasy.dao.JkmbzbJpaDao;
 import com.rjxx.taxeasy.dao.SkpJpaDao;
 import com.rjxx.taxeasy.dao.XfJpaDao;
 import com.rjxx.taxeasy.domains.*;
-import com.rjxx.taxeasy.dto.AdapterPost;
-import com.rjxx.taxeasy.dto.AdapterPostRedData;
-import com.rjxx.taxeasy.dto.AdapterRedData;
-import com.rjxx.taxeasy.dto.AdapterRedInvoiceItem;
+import com.rjxx.taxeasy.dto.*;
+import com.rjxx.taxeasy.invoice.DealOrder04;
 import com.rjxx.taxeasy.invoice.DefaultResult;
 import com.rjxx.taxeasy.invoice.KpService;
 import com.rjxx.taxeasy.invoice.Kphc;
 import com.rjxx.taxeasy.service.*;
 import com.rjxx.taxeasy.service.jkpz.JkpzService;
 import com.rjxx.taxeasy.vo.JkpzVo;
+import com.rjxx.taxeasy.vo.OrderCancelVo;
 import com.rjxx.utils.CheckOrderUtil;
 import com.rjxx.utils.StringUtils;
 import com.rjxx.utils.XmlJaxbUtils;
@@ -30,9 +29,11 @@ import com.rjxx.utils.yjapi.ResultUtil;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -68,7 +69,10 @@ public class JkpzServiceImpl implements JkpzService {
     private KpService kpService;
 
     @Autowired
-    private JkmbzbJpaDao jkmbzbJpaDao;
+    private JyxxsqService jyxxsqService;
+
+    @Autowired
+    private KplsService kplsService;
 
     private Logger logger = LoggerFactory.getLogger(JkpzServiceImpl.class);
 
@@ -290,7 +294,59 @@ public class JkpzServiceImpl implements JkpzService {
                     return ResultUtil.error(result);
                 }
                 return ResultUtil.success(result);
-            }else {
+            }else if(reqType.equals("03")){
+                //订单退货处理
+                String appId = jsonObject.getString("appId");
+                Map map = new HashMap();
+                map.put("appkey",appId);
+                Gsxx gsxx = gsxxService.findOneByParams(map);
+                String gsdm = gsxx.getGsdm();
+                String adapterCancel = jsonObject.getString("data");
+                ObjectMapper mapper = new ObjectMapper();
+                CancelData cancelData = mapper.readValue(adapterCancel, CancelData.class);
+                Map resultMap = dealCancel(cancelData,gsdm);
+                String code = String.valueOf(resultMap.get("code"));
+                // code为0表示无法进行退货；1表示可以进行退货，置退货状态；2表示可以进行订单红冲。
+                if (code.equals("1")) {
+                    List<Integer> sqlshList = new ArrayList<>();
+                    sqlshList.add(Integer.valueOf(resultMap.get("sqlsh").toString()));
+                    jyxxsqService.updateJyxxsqZtzt(sqlshList,"7");
+                    return ResultUtil.success("退货成功！");
+                }else if(code.equals("2")){
+                    List<OrderCancelVo> orderCancelVoList = (List)resultMap.get("orderCancelVoList");
+                    for (OrderCancelVo item : orderCancelVoList) {
+                        Kphc kphc= new Kphc();
+                        kphc.setSerialNumber("JY" + new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date()));//序列号
+                        kphc.setTotalAmount(-item.getKpje());//加税合计
+                        kphc.setCNDNCode(item.getFpdm());//原发票代码
+                        kphc.setCNDNNo(item.getFphm());//原发票号码
+                        kphc.setInvType("12");//发票种类
+                        //kphc.setCNNoticeNo(item.getCnnoticeNo());//专票红字通知单号
+                        kphc.setServiceType("1");
+                        //红冲
+                        Map HcMap = new HashMap();
+                        HcMap.put("Kphc",kphc);
+                        String hcResult = kpService.uploadOrderData(gsdm, HcMap, "04");
+                        DefaultResult defaultResult = XmlJaxbUtils.convertXmlStrToObject(DefaultResult.class, hcResult);
+                        if(!defaultResult.getReturnCode().equals("0000")){
+                            result += defaultResult.getReturnMessage();
+                        }else{
+                            List<Integer> sqlshList = new ArrayList<>();
+                            sqlshList.add(Integer.valueOf(resultMap.get("sqlsh").toString()));
+                            jyxxsqService.updateJyxxsqZtzt(sqlshList,"8");
+                            return ResultUtil.success("退货成功！");
+                        }
+                    }
+                    if(!result.equals("")){
+                        return ResultUtil.error(result);
+                    }else{
+                        return ResultUtil.success(result);
+                    }
+                }else{
+                    result = String.valueOf(resultMap.get("resMsg"));
+                    return ResultUtil.error(result);
+                }
+            }else{
                 result ="不支持的请求类型";
                 return ResultUtil.error(result);
             }
@@ -315,5 +371,63 @@ public class JkpzServiceImpl implements JkpzService {
             e.printStackTrace();
         }
         return result;
+    }
+
+
+    /**
+     *  处理退货方法
+     * @param cancelData
+     * @return
+     */
+    private Map dealCancel(CancelData cancelData,String gsdm){
+            // code为0表示无法进行退货；1表示可以进行退货，置退货状态；2表示可以进行订单红冲。
+            String resMsg ="";
+            Map resultMap = new HashMap();
+            Map param = new HashMap();
+            param.put("gsdm",gsdm);
+            param.put("ddh",cancelData.getOderNo());
+            List<OrderCancelVo> orderCancelVoList = jyxxsqService.findAllCancelVoByDdh(param);
+            orderCancelVoList.remove(null);
+            if(orderCancelVoList.isEmpty() ||  orderCancelVoList.size()>1){
+                resMsg += "未查询到订单或者存在多笔订单无法进行退货操作！";
+            }else{
+                OrderCancelVo orderCancelVo = orderCancelVoList.get(0);
+                if(orderCancelVo.getDdje()!=cancelData.getTotalAmount()){
+                    resMsg += "退货订单金额和系统订单金额不一致！";
+                }else{
+                    if(orderCancelVo.getMinZtbz().equals(orderCancelVo.getMaxZtbz()) && orderCancelVo.getMinZtbz().equals("6")){
+                        resultMap.put("code","1");
+                        resultMap.put("resMsg","");
+                        resultMap.put("sqlsh",orderCancelVo.getSqlsh());
+                        return resultMap;
+                    }else if(!orderCancelVo.getMinZtbz().equals("6")){
+                        Map param2 = new HashMap();
+                        param2.put("sqlsh",orderCancelVo.getSqlsh());
+                        param2.put("gsdm",gsdm);
+                        List<OrderCancelVo> orderCancelVoList1 = kplsService.findAllFpBySqlsh(param2);
+                        if(!orderCancelVoList1.isEmpty()){
+                            double sumJe = 0d;
+                            for (int i=0;i<orderCancelVoList1.size();i++){
+                                OrderCancelVo orderCancelVo1 = orderCancelVoList1.get(i);
+                                sumJe = sumJe+orderCancelVo1.getKpje();
+                            }
+                            if(orderCancelVo.getDdje()!= sumJe){
+                                resMsg += "该订单所生成发票未全部开具，无法进行退货红冲操作！";
+                            }else{
+                                resultMap.put("code","2");
+                                resultMap.put("resMsg","");
+                                resultMap.put("sqlsh",orderCancelVo.getSqlsh());
+                                resultMap.put("orderCancelVoList",orderCancelVoList1);
+                                return resultMap;
+                            }
+                        }
+                    }else{
+                        resMsg += "订单存在问题，无法进行退货！";
+                    }
+                }
+            }
+        resultMap.put("code","0");
+        resultMap.put("resMsg",resMsg);
+        return resultMap;
     }
 }

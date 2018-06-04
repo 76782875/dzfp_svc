@@ -6,6 +6,7 @@ import com.rjxx.taxeasy.domains.Jyxxsq;
 import com.rjxx.taxeasy.domains.Skp;
 import com.rjxx.taxeasy.domains.Xf;
 import com.rjxx.taxeasy.vo.JyxxsqVO;
+import com.rjxx.taxeasy.vo.OrderCancelVo;
 
 import java.util.List;
 import java.util.Map;
@@ -67,5 +68,7 @@ public interface JyxxsqMapper {
     public Integer findJshjSum(Map params);
 
     public List<JyxxsqVO> findAllBykplscx( Map params);
+
+    public List<OrderCancelVo> findAllCancelVoByDdh(Map params);
 }
 
