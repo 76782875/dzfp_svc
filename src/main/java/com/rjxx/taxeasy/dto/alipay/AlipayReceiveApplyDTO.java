@@ -6,7 +6,7 @@ package com.rjxx.taxeasy.dto.alipay;
  * @company 上海容津信息技术有限公司
  * @date 2018/5/15
  */
-public class AlipayReceiveApplyDto {
+public class AlipayReceiveApplyDTO {
     private String applyId;//支付宝开票申请id，该id为支付宝内的开票申请唯一标识，与订单号绑定
     private String userId;//支付宝用户id
     private String invoiceAmount;//开票金额
