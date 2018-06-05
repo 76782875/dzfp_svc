@@ -683,6 +683,11 @@
 	  gflx=#{gflx},sjly=#{sjly},openid=#{openid},gflx=#{gflx} where gsdm=#{gsdm} and tqm=#{tqm}
 	</update>
 
+	<update id="updateJyxxsqTqm" parameterType="map">
+		UPDATE t_jyxxsq set
+			 tqm =#{tqm}
+		 where sqlsh=#{sqlsh} and gsdm=#{gsdm}
+	</update>
 
 	<select id="findJshjSum" parameterType="map" resultType="int">
 		SELECT sum(m.jshj) totalJshj FROM  t_jyxxsq m
