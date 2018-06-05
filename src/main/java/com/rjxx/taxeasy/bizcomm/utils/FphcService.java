@@ -342,11 +342,9 @@ public class FphcService {
 						}
 					}
 				}else if("04".equals(cszb.getCsz())){
-					kpls.setFpztdm("04");
-					kplsService.save(kpls);
+					skService.SkBoxKP(kpls2.getKplsh());
 				}else if("05".equals(cszb.getCsz())){
-					kpls.setFpztdm("04");
-					kplsService.save(kpls);
+					skService.skEkyunKP(kpls2.getKplsh());
 				}
 				response.setReturnCode("0000");
 				response.setReturnMessage("红冲请求已接受！");
