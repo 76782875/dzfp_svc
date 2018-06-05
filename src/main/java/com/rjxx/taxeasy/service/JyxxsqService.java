@@ -6,6 +6,7 @@ import com.rjxx.taxeasy.dao.JyxxsqMapper;
 import com.rjxx.taxeasy.domains.*;
 import com.rjxx.taxeasy.vo.*;
 
+import com.rjxx.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -162,7 +163,7 @@ public class JyxxsqService {
 	 * 更新jyxxsq状态
 	 *
 	 * @param sqlshList
-	 * @param clztdm
+	 * @param ztbz
 	 */
 	public void updateJyxxsqZtzt(List<Integer> sqlshList, String ztbz) {
 		List<Jyxxsq> jylsIterable = (List<Jyxxsq>) jyxxsqJpaDao.findAll(sqlshList);
@@ -189,7 +190,13 @@ public class JyxxsqService {
 		jymxsqservice.save(jymxsqList);
 		return sqlsh;
 	}
-	
+	/**
+	 * 更新交易信息申请--tqm
+	 *
+	 */
+	public void updateJyxxsqTqm(Map params){
+		jyxxsqMapper.updateJyxxsqTqm(params);
+	}
 	
 	/**
 	 * 保存交易信息申请

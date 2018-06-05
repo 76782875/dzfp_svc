@@ -70,5 +70,7 @@ public interface JyxxsqMapper {
     public List<JyxxsqVO> findAllBykplscx( Map params);
 
     public List<OrderCancelVo> findAllCancelVoByDdh(Map params);
+
+    public void updateJyxxsqTqm(Map params);
 }
 
