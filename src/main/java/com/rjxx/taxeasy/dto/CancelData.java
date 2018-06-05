@@ -7,15 +7,15 @@ package com.rjxx.taxeasy.dto;
  */
 public class CancelData {
 
-    private String oderNo;
+    private String orderNo;
     private double totalAmount;
 
     public String getOderNo() {
-        return oderNo;
+        return orderNo;
     }
 
-    public void setOderNo(String oderNo) {
-        this.oderNo = oderNo;
+    public void setOrderNo(String orderNo) {
+        this.orderNo = orderNo;
     }
 
     public double getTotalAmount() {
