@@ -2,12 +2,18 @@ package com.rjxx.utils.shouqianba;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.rjxx.taxeasy.dto.shouqianba.MerchantCreate;
+import com.rjxx.taxeasy.dto.shouqianba.QueryResult;
 import com.rjxx.utils.alipay.AlipaySignUtil;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,8 +33,9 @@ public class PayUtil {
     private static String vendor_key = "8e8d34115a0162d42068d9d685f68258";
     private static String code = "37819981";
 
-    private static String api_domain="https://api.shouqianba.com";
+    private static String WEB_API_DOMAIN="https://api.shouqianba.com";
     private static String WAP_API_PRO_URL = "https://m.wosai.cn/qr/gateway";
+    private static String VENDOR_API_URL = "https://api-sandbox.test.shouqianba.com";
 
 
 
@@ -70,7 +77,7 @@ public class PayUtil {
      * @return {terminal_sn:"$终端号",terminal_key:"$终端密钥"}
      */
     public static JSONObject activate(String vendor_sn, String vendor_key, String appId,String code,String deviceId,String storeNo) {
-        String url = api_domain + "/terminal/activate";
+        String url = WEB_API_DOMAIN + "/terminal/activate";
         JSONObject params = new JSONObject();
         try {
             params.put("app_id", appId);                                          //APPID
@@ -105,7 +112,7 @@ public class PayUtil {
      * @return {terminal_sn:"$终端号",terminal_key:"$终端密钥"}
      */
     public JSONObject checkin(String terminal_sn, String terminal_key) {
-        String url = api_domain + "/terminal/checkin";
+        String url = WEB_API_DOMAIN + "/terminal/checkin";
         JSONObject params = new JSONObject();
         try {
             params.put("terminal_sn", terminal_sn);                            //终端号
@@ -136,7 +143,7 @@ public class PayUtil {
 //     * @return
 //     */
 //    public String pay(String terminal_sn, String terminal_key) {
-//        String url = api_domain + "/upay/v2/pay";
+//        String url = WEB_API_DOMAIN + "/upay/v2/pay";
 //        JSONObject params = new JSONObject();
 //        try {
 //            params.put("terminal_sn", terminal_sn);           //终端号
@@ -163,7 +170,7 @@ public class PayUtil {
 //     * @return
 //     */
 //    public String refund(String terminal_sn, String terminal_key) {
-//        String url = api_domain + "/upay/v2/refund";
+//        String url = WEB_API_DOMAIN + "/upay/v2/refund";
 //        JSONObject params = new JSONObject();
 //        try {
 //            params.put("terminal_sn", terminal_sn);            //收钱吧终端ID
@@ -187,20 +194,24 @@ public class PayUtil {
      *
      * @param terminal_sn:终端号
      * @param terminal_key:终端密钥
+     * @param client_sn:商户系统订单号,必须在商户系统内唯一；且长度不超过64字节
+     * @param sn:收钱吧系统内部唯一订单号
      * @return
      */
-    public static String query(String terminal_sn, String terminal_key,String client_sn) {
-        String url = api_domain + "/upay/v2/query";
+    public static QueryResult query(String terminal_sn, String terminal_key,String client_sn,String sn) {
+        String url = WEB_API_DOMAIN + "/upay/v2/query";
         JSONObject params = new JSONObject();
         try {
-            params.put("terminal_sn", terminal_sn);           //终端号
-//            params.put("sn", sn);             //收钱吧系统内部唯一订单号
-            params.put("client_sn", client_sn);  //商户系统订单号,必须在商户系统内唯一；且长度不超过64字节
+            params.put("terminal_sn", terminal_sn);
+            params.put("sn", sn);
+            params.put("client_sn", client_sn);
 
             String sign = getSign(params.toString() + terminal_key);
             String result = HttpUtil.httpPost(url, params.toString(), sign, terminal_sn);
 
-            return result;
+            JSONObject jsonObject = JSON.parseObject(result);
+            JSONObject biz_response = jsonObject.getJSONObject("biz_response");
+            return JSON.parseObject(JSON.toJSONString(biz_response),QueryResult.class);
         } catch (Exception e) {
             return null;
         }
@@ -214,7 +225,7 @@ public class PayUtil {
 //     * @return
 //     */
 //    public String cancel(String terminal_sn, String terminal_key) {
-//        String url = api_domain + "/upay/v2/cancel";
+//        String url = WEB_API_DOMAIN + "/upay/v2/cancel";
 //        JSONObject params = new JSONObject();
 //        try {
 //            params.put("terminal_sn", terminal_sn);           //终端号
@@ -238,7 +249,7 @@ public class PayUtil {
 //     * @return
 //     */
 //    public String revoke(String terminal_sn, String terminal_key) {
-//        String url = api_domain + "/upay/v2/revoke";
+//        String url = WEB_API_DOMAIN + "/upay/v2/revoke";
 //        JSONObject params = new JSONObject();
 //        try {
 //            params.put("terminal_sn", terminal_sn);           //终端号
@@ -262,7 +273,7 @@ public class PayUtil {
 //     * @return
 //     */
 //    public String precreate(String terminal_sn, String terminal_key) {
-//        String url = api_domain + "/upay/v2/precreate";
+//        String url = WEB_API_DOMAIN + "/upay/v2/precreate";
 //        JSONObject params = new JSONObject();
 //        try {
 //            params.put("terminal_sn", terminal_sn);           //收钱吧终端ID
@@ -292,22 +303,49 @@ public class PayUtil {
      * @param oprator       操作员
      * @param return_url
      */
-    public static  void payIn(String terminal_sn, String terminal_key,String client_sn, String total_amount,
+    public static Map payIn(String terminal_sn, String terminal_key,String client_sn, String total_amount,
                               String subject,String oprator,String return_url){
-        Map<String, String> param = new HashMap<>();
-        param.put("terminal_sn", terminal_sn);
-        param.put("client_sn", client_sn);
-        param.put("total_amount", total_amount);
-        param.put("subject", subject);
-        param.put("operator", oprator);
-        param.put("return_url", return_url);
-        String signatureContent = AlipaySignUtil.getSignatureContent(param);//排序
-        logger.info("signatureContent={}",signatureContent);
-        String sign = DigestUtils.md5Hex(signatureContent + "&key=" + terminal_key).toUpperCase();
-        logger.info("sign={}",sign);
-        String paramString=signatureContent + "&sign=" + sign;
-        String redirectUrl = WAP_API_PRO_URL +"?"+ paramString;
-        System.out.println(redirectUrl);
+        try {
+            Map<String, String> param = new HashMap<>();
+            param.put("terminal_sn", terminal_sn);
+            param.put("client_sn", client_sn);
+            param.put("total_amount", total_amount);
+            param.put("subject", subject);
+            param.put("operator", oprator);
+            param.put("return_url", return_url);
+            String signatureContent = AlipaySignUtil.getSignatureContent(param);//排序
+            logger.info("signatureContent={}",signatureContent);
+            String sign = DigestUtils.md5Hex(signatureContent + "&key=" + terminal_key).toUpperCase();
+            logger.info("sign={}",sign);
+            String paramString=signatureContent + "&sign=" + sign;
+            String redirectUrl = WAP_API_PRO_URL +"?"+ paramString;
+            logger.info("redirectUrl={}", redirectUrl);
+            Map map = new HashMap();
+            map.put("url", redirectUrl);
+            return map;
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+    public static void merchantCreate(String terminal_key,String terminal_sn,MerchantCreate merchantCreate){
+        String url = VENDOR_API_URL;
+        String param = JSON.toJSONString(merchantCreate);
+        String sign = getSign(param + terminal_key);
+        try {
+            String result = HttpUtil.httpPost(url, param, sign, terminal_sn);
+            logger.info("result={}",result);
+        } catch (UnrecoverableKeyException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (KeyStoreException e) {
+            e.printStackTrace();
+        } catch (KeyManagementException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -316,11 +354,23 @@ public class PayUtil {
 //        JSONObject activate = activate(vendor_sn, vendor_key, app_id, code, "test", null);
 //        System.out.println(activate.toJSONString());
 
-        String query = query("100007450004004732", "4e0473e9dabb20bceae6876685b716ff",
-                "orderNo2");
-        System.out.println(query);
+        String orderNo = "orderNo6";
+        String terminal_sn = "100007450004004732";
+        String terminal_key = "4e0473e9dabb20bceae6876685b716ff";
 
-//        payIn("100007450004004732","4e0473e9dabb20bceae6876685b716ff","orderNo2",
-//                "1","测试","wyh","http://www.baidu.com");
+        QueryResult query = query(terminal_sn, terminal_key,
+                orderNo,null);
+
+//        payIn(terminal_sn, terminal_key, orderNo, "1",
+//                "测试", "wyh", "http://www.baidu.com");
+
+//
+//        MerchantCreate merchantCreate = new MerchantCreate();
+//        merchantCreate.setVendor_sn(vendor_sn);
+//        merchantCreate.setVendor_app_id(app_id);
+//        merchantCreate.setName("容津测试商户");
+//        merchantCreate.setContact_name("容津");
+//        merchantCreate.setContact_cellphone("021-33566700");
+//        merchantCreate(terminal_sn,terminal_key,merchantCreate);
     }
 }
