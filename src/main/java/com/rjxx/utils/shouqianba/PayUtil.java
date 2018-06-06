@@ -354,17 +354,18 @@ public class PayUtil {
 //        JSONObject activate = activate(vendor_sn, vendor_key, app_id, code, "test", null);
 //        System.out.println(activate.toJSONString());
 
-        String orderNo = "orderNo6";
+        String orderNo = "orderNo9";
         String terminal_sn = "100007450004004732";
         String terminal_key = "4e0473e9dabb20bceae6876685b716ff";
+        String returnUrl = "https://www.xforceplus.com/";
+        String price = "1";
+        String subject = "测试";
+        String oprator = "wyh";
 
-        QueryResult query = query(terminal_sn, terminal_key,
-                orderNo,null);
-
-//        payIn(terminal_sn, terminal_key, orderNo, "1",
-//                "测试", "wyh", "http://www.baidu.com");
-
+//        query(terminal_sn, terminal_key, orderNo,null);
 //
+        payIn(terminal_sn, terminal_key, orderNo, price, subject, oprator, returnUrl);
+
 //        MerchantCreate merchantCreate = new MerchantCreate();
 //        merchantCreate.setVendor_sn(vendor_sn);
 //        merchantCreate.setVendor_app_id(app_id);
