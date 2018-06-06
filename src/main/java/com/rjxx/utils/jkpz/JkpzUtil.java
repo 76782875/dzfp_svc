@@ -203,6 +203,7 @@ public class JkpzUtil {
                 jymxsq.setYkjje(0d);
                 jymxsq.setKkjje(ads.getMxTotalAmount());
                 jymxsq.setYxbz("1");
+                jymxsq.setGsdm(gsxx.getGsdm());
                 jymxsqList.add(jymxsq);
             }
 
@@ -259,6 +260,7 @@ public class JkpzUtil {
                 jymxsq.setYkjje(0d);
                 jymxsq.setKkjje(ads.getMxTotalAmount());
                 jymxsq.setYxbz("1");
+                jymxsq.setGsdm(gsxx.getGsdm());
                 jymxsqList.add(jymxsq);
             }
 
@@ -359,6 +361,7 @@ public class JkpzUtil {
                 jymxsq.setYkjje(0d);
                 jymxsq.setKkjje(ads.getMxTotalAmount());
                 jymxsq.setYxbz("1");
+                jymxsq.setGsdm(gsxx.getGsdm());
                 jymxsqList.add(jymxsq);
             }
         } catch (Exception e) {

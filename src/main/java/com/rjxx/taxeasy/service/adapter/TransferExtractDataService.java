@@ -205,7 +205,6 @@ public class TransferExtractDataService {
                 return null;
             }
             String b = JyxxsqProcessed(jyxxsq);
-            //b为空则该订单状态标志为6，为未处理可提票
             if(b!=null){
                 logger.info("该订单"+b);
                 resultMap.put("msg","该订单"+b);
@@ -215,7 +214,7 @@ public class TransferExtractDataService {
         }catch (Exception e){
             e.printStackTrace();
             logger.info("查询多条，获取数据失败！");
-            resultMap.put("msg","获取数据失败！");
+            resultMap.put("msg","获取数据失败或已红冲！");
             return resultMap;
         }
 
