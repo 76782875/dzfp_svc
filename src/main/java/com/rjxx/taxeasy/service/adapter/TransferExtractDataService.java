@@ -447,9 +447,9 @@ public class TransferExtractDataService {
         String filter = oneByZtbzdm.getFilter();
         String cancellFlag = filter.substring(0, 1);
         if("1".equals(cancellFlag)){
-            return null;
-        }else{
             return oneByZtbzdm.getZtbzmc();
+        }else{
+            return null;
         }
     }
 
