@@ -178,6 +178,10 @@ public class JkpzServiceImpl implements JkpzService {
                     }else {
                         jyxxsq.setSjly("1");
                     }
+                    //openid
+                    if(adapterPost.getData().getOpenid()!=null && adapterPost.getData().getOpenid()!=""){
+                        jyxxsq.setOpenid(adapterPost.getData().getOpenid());
+                    }
                     jyxxsq.setYkpjshj(0d);
                     jyxxsq.setGsdm(gsdm);
                     jyxxsq.setFpczlxdm("11");
