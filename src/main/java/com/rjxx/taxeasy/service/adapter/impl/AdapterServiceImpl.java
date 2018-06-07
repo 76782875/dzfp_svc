@@ -514,12 +514,6 @@ public class AdapterServiceImpl implements AdapterService {
                 if (null != result.getCode() && "9999".equals(result.getCode())) {
                     logger.info("进入拒绝开票-----错误原因为" + result.getMsg());
                     return result.getMsg();
-//                    String reason = result.getMsg();
-//                    if (null != sjly && "4".equals(sjly)) {
-//                        logger.info("进行拒绝开票的weixinOrderN+++++" + weixinOrderNo);
-//                        weixinUtils.jujuekp(weixinOrderNo, reason, access_token);
-//                    }
-//                    return "-1";
                 }
                 Map map = new HashMap();
                 map.put("returnMsg", result.getMsg());
@@ -571,61 +565,70 @@ public class AdapterServiceImpl implements AdapterService {
                     return (String) apiMsg.get("msg");
                 }
                 Jyxxsq jyxxsq = (Jyxxsq) apiMsg.get("jyxxsq");
+                if(jyxxsq!=null){
+                    jyxxsq.setKpddm(sn);
+                    jyxxsq.setSjly(sjly);
+                    jyxxsq.setOpenid(openid);
+                    jyxxsq.setDdh(on);
+                    jyxxsq.setGfemail(email);
+                    jyxxsq.setGfdh(gfdh);
+                    jyxxsq.setGfmc(gfmc);
+                    jyxxsq.setGfyhzh(gfyhzh);
+                    jyxxsq.setGfyh(gfyh);
+                    jyxxsq.setGfdz(gfdz);
+                    jyxxsq.setGfsh(gfsh);
+                    if (StringUtils.isNotBlank(email)) {
+                        jyxxsq.setSffsyj("1");
+                    }
+                    if (StringUtil.isNotBlankList(tqm)) {
+                        jyxxsq.setTqm(tqm);
+                    } else {
+                        Integer pid = skp.getPid();
+                        if (pid == null || pid==-1 || pid==0) {
+                            Pp pp = ppJpaDao.findOneByPpdm("rjxx");
+                            jyxxsq.setTqm(pp.getPpdm() + on);
+                        } else {
+                            Pp pp = ppJpaDao.findOneById(pid);
+                            jyxxsq.setTqm(pp.getPpdm() + on);
+                        }
+                    }
+                }
                 AdapterPost post = (AdapterPost) apiMsg.get("post");
-
                 AdapterData data = post.getData();
                 AdapterDataOrder order = data.getOrder();
                 AdapterDataOrderBuyer buyer = new AdapterDataOrderBuyer();
                 post.setData(data);
-
-                jyxxsq.setKpddm(sn);
                 post.setClientNo(sn);
-//                data.setSerialNumber("JY" + System.currentTimeMillis() + NumberUtil.getRandomLetter());
-
-                jyxxsq.setSjly(sjly);
                 data.setDatasource(sjly);
-                jyxxsq.setOpenid(openid);
                 data.setOpenid(openid);
                 data.setOrder(order);
-
-                jyxxsq.setDdh(on);
                 order.setOrderNo(on);
                 order.setBuyer(buyer);
                 if (StringUtil.isNotBlankList(tqm)) {
-                    jyxxsq.setTqm(tqm);
                     order.setExtractedCode(tqm);
                 } else {
                     Integer pid = skp.getPid();
                     if (pid == null || pid==-1 || pid==0) {
 //                        logger.info("pid is null");
 //                        return "0";
-
                         Pp pp = ppJpaDao.findOneByPpdm("rjxx");
                         order.setExtractedCode(pp.getPpdm() + on);
                     } else {
                         Pp pp = ppJpaDao.findOneById(pid);
-                        jyxxsq.setTqm(pp.getPpdm() + on);
                         order.setExtractedCode(pp.getPpdm() + on);
                     }
                 }
-                jyxxsq.setGfemail(email);
                 buyer.setEmail(email);
-                jyxxsq.setGfdh(gfdh);
                 buyer.setTelephoneNo(gfdh);
-                jyxxsq.setGfmc(gfmc);
                 buyer.setName(gfmc);
-                jyxxsq.setGfyhzh(gfyhzh);
                 buyer.setBankAcc(gfyhzh);
-                jyxxsq.setGfyh(gfyh);
                 buyer.setBank(gfyh);
-                jyxxsq.setGfdz(gfdz);
                 buyer.setAddress(gfdz);
-                jyxxsq.setGfsh(gfsh);
                 buyer.setIdentifier(gfsh);
                 if (StringUtils.isNotBlank(email)) {
-                    jyxxsq.setSffsyj("1");
                     buyer.setIsSend("1");
                 }
+
                 List<Jyxxsq> list = new ArrayList<>();
                 list.add(jyxxsq);
                 //转换
@@ -638,11 +641,6 @@ public class AdapterServiceImpl implements AdapterService {
                     String msg = checkOrderUtil.checkBuyer(list, gsdm);
                     if (!"".equals(msg)) {
                         logger.info("进入拒绝开票-----错误原因为" + msg);
-//                        String reason = msg;
-//                        if (null != sjly && "4".equals(sjly)) {
-//                            logger.info("进行拒绝开票的weixinOrderN+++++" + weixinOrderNo);
-//                            weixinUtils.jujuekp(weixinOrderNo, reason, access_token);
-//                        }
                         return msg;
                     }
                     List<Object> jyxxsqList = fpclService.zjkp(list, kpfs.getCsz());
@@ -657,11 +655,6 @@ public class AdapterServiceImpl implements AdapterService {
                     DefaultResult defaultResult = XmlJaxbUtils.convertXmlStrToObject(DefaultResult.class, xmlString);
                     if (null != defaultResult.getReturnCode() && "9999".equals(defaultResult.getReturnCode())) {
                         logger.info("进入拒绝开票-----错误原因为" + defaultResult.getReturnMessage());
-//                        String reason = defaultResult.getReturnMessage();
-//                        if (null != sjly && "4".equals(sjly)) {
-//                            logger.info("进行拒绝开票的weixinOrderN+++++" + weixinOrderNo);
-//                            weixinUtils.jujuekp(weixinOrderNo, reason, access_token);
-//                        }
                         return defaultResult.getReturnMessage();
                     }
 
