@@ -178,6 +178,10 @@ public class JkpzServiceImpl implements JkpzService {
                     }else {
                         jyxxsq.setSjly("1");
                     }
+                    //openid
+                    if(adapterPost.getData().getOpenid()!=null && adapterPost.getData().getOpenid()!=""){
+                        jyxxsq.setOpenid(adapterPost.getData().getOpenid());
+                    }
                     jyxxsq.setYkpjshj(0d);
                     jyxxsq.setGsdm(gsdm);
                     jyxxsq.setFpczlxdm("11");
@@ -310,7 +314,7 @@ public class JkpzServiceImpl implements JkpzService {
                 if (code.equals("1")) {
                     List<Integer> sqlshList = new ArrayList<>();
                     sqlshList.add(Integer.valueOf(resultMap.get("sqlsh").toString()));
-                    jyxxsqService.updateJyxxsqZtzt(sqlshList,"7");
+                    jyxxsqService.updateJyxxsqZtzt(sqlshList,"8");
                     return ResultUtil.success("退货成功！");
                 }else if(code.equals("2")){
                     List<OrderCancelVo> orderCancelVoList = (List)resultMap.get("orderCancelVoList");
@@ -333,7 +337,7 @@ public class JkpzServiceImpl implements JkpzService {
                         }else{
                             List<Integer> sqlshList = new ArrayList<>();
                             sqlshList.add(Integer.valueOf(resultMap.get("sqlsh").toString()));
-                            jyxxsqService.updateJyxxsqZtzt(sqlshList,"8");
+                            jyxxsqService.updateJyxxsqZtzt(sqlshList,"9");
                             return ResultUtil.success("退货成功！");
                         }
                     }

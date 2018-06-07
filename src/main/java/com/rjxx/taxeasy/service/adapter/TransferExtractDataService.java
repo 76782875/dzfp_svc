@@ -3,10 +3,8 @@ package com.rjxx.taxeasy.service.adapter;
 import com.alibaba.fastjson.JSON;
 import com.rjxx.taxeasy.bizcomm.utils.GetDataService;
 import com.rjxx.taxeasy.dao.JyxxsqJpaDao;
-import com.rjxx.taxeasy.domains.Cszb;
-import com.rjxx.taxeasy.domains.Jymxsq;
-import com.rjxx.taxeasy.domains.Jyxxsq;
-import com.rjxx.taxeasy.domains.Jyzfmx;
+import com.rjxx.taxeasy.dao.ZtbzJpaDao;
+import com.rjxx.taxeasy.domains.*;
 import com.rjxx.taxeasy.dto.*;
 import com.rjxx.taxeasy.service.CszbService;
 import com.rjxx.taxeasy.service.JymxsqService;
@@ -40,7 +38,7 @@ public class TransferExtractDataService {
     @Autowired
     private CszbService cszbService;
     @Autowired
-    private AdapterService adapterService;
+    private ZtbzJpaDao ztbzJpaDao;
 
     private static Logger logger = LoggerFactory.getLogger(TransferExtractDataService.class);
     public Map seaway(String gsdm,String tq) {
@@ -199,42 +197,52 @@ public class TransferExtractDataService {
     public Map jyxxsq(String gsdm,String tq) {
         Map resultMap =new HashMap();
         logger.info("抽取数据KEY={}",tq);
-        Jyxxsq jyxxsq = null;
+        Jyxxsq jyxxsq=null;
         try {
-            List<Jyxxsq> cancelJyxxsq = jyxxsqJpaDao.findAllByGsdmAndDdhAndZtbz(gsdm,tq,"7");
-            if(!cancelJyxxsq.isEmpty()){
-                logger.info("该笔订单已作废");
-                resultMap.put("msg","该笔订单已作废");
+            jyxxsq = jyxxsqJpaDao.findOneByGsdmAndDdh(gsdm, tq);
+            if(jyxxsq==null){
+                logger.info("TPYE3根据订单号【"+tq+"】未找到数据");
+                return null;
+            }
+            String b = JyxxsqProcessed(jyxxsq);
+            if(b!=null){
+                logger.info("该订单"+b);
+                resultMap.put("msg","该订单"+b);
+                resultMap.put("jyxxsq", jyxxsq);
                 return resultMap;
             }
-            //是否已经开具
-            List<Jyxxsq> jyxxsqMore = jyxxsqJpaDao.findAllByGsdmAndDdhAndZtbz(gsdm,tq,"5","3");
-            if(!jyxxsqMore.isEmpty()){
-                logger.info("该订单已接收过开票申请");
-                resultMap.put("msg","该订单已接收过开票申请！");
-                resultMap.put("jyxxsq", jyxxsqMore.get(0));
-                return resultMap;
-            }
-            jyxxsq = jyxxsqJpaDao.findOneByGsdmAndDdhAndZtbz(gsdm,tq,"6");
-        } catch (Exception e) {
+        }catch (Exception e){
+            e.printStackTrace();
             logger.info("查询多条，获取数据失败！");
-            resultMap.put("msg","获取数据失败！");
+            resultMap.put("msg","获取数据失败或已红冲！");
             return resultMap;
         }
-        if(jyxxsq==null){
-            logger.info("TPYE3根据订单号【"+tq+"】未找到数据");
-            return null;
-        }
-//        if(jyxxsq.getZtbz()!=null && jyxxsq.getZtbz().equals("3")){
-//            logger.info("该订单号已被处理，请重新输入！");
-//            resultMap.put("msg","该订单号已被处理，请重新输入！");
+
+//        Jyxxsq jyxxsq = null;
+//        try {
+//            String check = checkZtbz(gsdm, tq);
+//            if(StringUtils.isNotBlank(check)){
+//                resultMap.put("msg", check);
+//                return resultMap;
+//            }
+//            //是否已经开具
+//            List<Jyxxsq> jyxxsqMore = jyxxsqJpaDao.findAllByGsdmAndDdhAndZtbz(gsdm,tq,"5","3");
+//            if(!jyxxsqMore.isEmpty()){
+//                logger.info("该订单已接收过开票申请");
+//                resultMap.put("msg","该订单已接收过开票申请！");
+//                resultMap.put("jyxxsq", jyxxsqMore.get(0));
+//                return resultMap;
+//            }
+//            jyxxsq = jyxxsqJpaDao.findOneByGsdmAndDdhAndZtbz(gsdm,tq,"6");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            logger.info("查询多条，获取数据失败！");
+//            resultMap.put("msg","获取数据失败！");
 //            return resultMap;
 //        }
-//        String check = adapterService.checkMakedForJyxxsq(jyxxsq.getSqlsh(), gsdm);
-//        if(!MakingConstans.NO_MAKED.equals(check)){
-//            logger.info("该笔订单已开具过");
-//            resultMap.put("msg","该笔订单已开具过");
-//            return resultMap;
+//        if(jyxxsq==null){
+//            logger.info("TPYE3根据订单号【"+tq+"】未找到数据");
+//            return null;
 //        }
         Map jymxsqParam = new HashMap();
         jymxsqParam.put("sqlsh", jyxxsq.getSqlsh());
@@ -411,6 +419,37 @@ public class TransferExtractDataService {
         Map resultMap =new HashMap();
         resultMap.put("post",post);
         return resultMap;
+    }
+
+    public String checkZtbz(String gsdm,String tq){
+        List<Jyxxsq> deleteJyxxsq = jyxxsqJpaDao.findAllByGsdmAndDdhAndZtbz(gsdm,tq,"7");
+        if(!deleteJyxxsq.isEmpty()){
+            logger.info("该笔订单已失效");
+            return "该笔订单已失效";
+        }
+        List<Jyxxsq> cancelJyxxsq = jyxxsqJpaDao.findAllByGsdmAndDdhAndZtbz(gsdm,tq,"8");
+        if(!cancelJyxxsq.isEmpty()){
+            logger.info("该笔订单已退货");
+            return "该笔订单已退货";
+        }
+        List<Jyxxsq> cancelAndRedJyxxsq = jyxxsqJpaDao.findAllByGsdmAndDdhAndZtbz(gsdm,tq,"9");
+        if(!cancelAndRedJyxxsq.isEmpty()){
+            logger.info("该笔订单已退货并红冲");
+            return "该笔订单已退货并红冲";
+        }
+        return null;
+    }
+
+    public String JyxxsqProcessed(Jyxxsq jyxxsq){
+        String ztbz = jyxxsq.getZtbz();
+        Ztbz oneByZtbzdm = ztbzJpaDao.findOneByZtbzdm(ztbz);
+        String filter = oneByZtbzdm.getFilter();
+        String cancellFlag = filter.substring(0, 1);
+        if("1".equals(cancellFlag)){
+            return oneByZtbzdm.getZtbzmc();
+        }else{
+            return null;
+        }
     }
 
     public static void main(String[] args) {
