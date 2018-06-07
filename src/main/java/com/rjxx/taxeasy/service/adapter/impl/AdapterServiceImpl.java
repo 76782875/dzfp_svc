@@ -125,6 +125,10 @@ public class AdapterServiceImpl implements AdapterService {
                 Pp pp = ppJpaDao.findOneById(pid);
                 ppdm = pp.getPpdm();
                 ppurl = pp.getPpurl();
+            }else{
+                Pp pp = ppJpaDao.findOneByPpdm("rjxx");
+                ppdm = pp.getPpdm();
+                ppurl = pp.getPpurl();
             }
             Map result = new HashMap();
             result.put("ppdm", ppdm);
@@ -164,6 +168,10 @@ public class AdapterServiceImpl implements AdapterService {
             String ppurl = "";
             if (pid != null) {
                 Pp pp = ppJpaDao.findOneById(pid);
+                ppdm = pp.getPpdm();
+                ppurl = pp.getPpurl();
+            } else{
+                Pp pp = ppJpaDao.findOneByPpdm("rjxx");
                 ppdm = pp.getPpdm();
                 ppurl = pp.getPpurl();
             }
@@ -266,8 +274,10 @@ public class AdapterServiceImpl implements AdapterService {
                 Map result = new HashMap();
                 Integer pid = skp.getPid();
                 if (pid == null) {
-                    logger.info("pid is null");
-                    return null;
+//                    logger.info("pid is null");
+//                    return null;
+                    Pp pp = ppJpaDao.findOneByPpdm("rjxx");
+                    result.put("tqm", pp.getPpdm() + orderNo);
                 } else {
                     Pp pp = ppJpaDao.findOneById(pid);
                     result.put("tqm", pp.getPpdm() + orderNo);
@@ -341,8 +351,10 @@ public class AdapterServiceImpl implements AdapterService {
             Map result = new HashMap();
             Integer pid = skp.getPid();
             if (pid == null) {
-                logger.info("pid is null");
-                return null;
+//                logger.info("pid is null");
+//                return null;
+                Pp pp = ppJpaDao.findOneByPpdm("rjxx");
+                result.put("tqm", pp.getPpdm() + orderNo);
             } else {
                 Pp pp = ppJpaDao.findOneById(pid);
                 result.put("tqm", pp.getPpdm() + orderNo);
@@ -442,8 +454,11 @@ public class AdapterServiceImpl implements AdapterService {
                 } else {
                     Integer pid = skp.getPid();
                     if (pid == null) {
-                        logger.info("pid is null");
-                        return "0";
+//                        logger.info("pid is null");
+//                        return "0";
+                        Pp pp = ppJpaDao.findOneByPpdm("rjxx");
+                        order.setExtractedCode(pp.getPpdm() + orderNo);
+
                     } else {
                         Pp pp = ppJpaDao.findOneById(pid);
                         order.setExtractedCode(pp.getPpdm() + orderNo);
@@ -582,8 +597,11 @@ public class AdapterServiceImpl implements AdapterService {
                 } else {
                     Integer pid = skp.getPid();
                     if (pid == null) {
-                        logger.info("pid is null");
-                        return "0";
+//                        logger.info("pid is null");
+//                        return "0";
+
+                        Pp pp = ppJpaDao.findOneByPpdm("rjxx");
+                        order.setExtractedCode(pp.getPpdm() + on);
                     } else {
                         Pp pp = ppJpaDao.findOneById(pid);
                         jyxxsq.setTqm(pp.getPpdm() + on);
