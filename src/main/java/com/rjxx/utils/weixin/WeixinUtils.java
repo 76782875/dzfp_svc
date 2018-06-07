@@ -247,7 +247,13 @@ public class WeixinUtils {
                     logger.info("根据开票点，获取品牌失败!");
                     redirect_url = HtmlUtils.getBasePath(request)+"qrcode/witting.html";
                 }else{
-                    Pp pp = ppJpaDao.findOneById(skp.getPid());
+                    Integer pid=skp.getPid();
+                    Pp pp = null;
+                    if(pid!=null && pid!=-1 &&pid!=0){
+                        pp = ppJpaDao.findOneById(skp.getPid());
+                    }else{
+                        pp = ppJpaDao.findOneByPpdm("rjxx");
+                    }
                     if(pp==null){
                         redirect_url = HtmlUtils.getBasePath(request)+"qrcode/witting.html";
                     }else {
