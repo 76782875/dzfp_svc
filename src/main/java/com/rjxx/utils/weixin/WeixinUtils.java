@@ -784,9 +784,9 @@ public class WeixinUtils {
         skpMap.put("kpdid", kpls.getSkpid());
         Skp skp = skpService.findOneByParams(skpMap);
         Pp pp =new Pp();
-        if (null == skp.getPid()) {
+        if (null == skp.getPid()||skp.getPid()==0 || skp.getPid()== -1) {
              pp = ppJpaDao.findOneByPpdm("rjxx");
-            logger.info("pid 为空----,取默认品牌+"+pp.getPpmc());
+            logger.info("pid 为空----,取默认品牌rjxx+"+pp.getPpmc());
             return null;
         }else {
             logger.info("根据品牌代码查询品牌表---");
