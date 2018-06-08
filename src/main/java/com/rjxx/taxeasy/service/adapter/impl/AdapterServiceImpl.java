@@ -343,13 +343,13 @@ public class AdapterServiceImpl implements AdapterService {
             StringBuilder spsl = new StringBuilder();
             StringBuilder spmc = new StringBuilder();
             //添加商品数量
-            Double sps = 0d;
+            String  sps = "";
             List<AdapterDataOrderDetails> orderDetails = data.getOrder().getOrderDetails();
             for (int i = 0; i < orderDetails.size(); i++) {
                 String amount = orderDetails.get(i).getMxTotalAmount().toString();
                 String taxRate = orderDetails.get(i).getTaxRate().toString();
                 String productName = orderDetails.get(i).getProductName();
-                sps  += orderDetails.get(i).getQuantity();
+                sps  = orderDetails.get(i).getQuantity().toString();
                 if (!StringUtil.isNotBlankList(amount, taxRate, productName)) {
                     return null;
                 }
