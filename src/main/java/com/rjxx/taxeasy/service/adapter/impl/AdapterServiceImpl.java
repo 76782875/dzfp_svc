@@ -287,6 +287,7 @@ public class AdapterServiceImpl implements AdapterService {
                 result.put("storeNo", storeNo);
                 result.put("price", price);
                 result.put("spsl", spsl.toString());
+                result.put("sps", "");
                 result.put("spmc", spmc.toString());
                 result.put("kpdmc", skp.getKpdmc());
                 result.put("gsmc", gsdm);
@@ -329,12 +330,14 @@ public class AdapterServiceImpl implements AdapterService {
             StringBuilder price = new StringBuilder();
             StringBuilder spsl = new StringBuilder();
             StringBuilder spmc = new StringBuilder();
-
+            //添加商品数量
+            Double sps = 0d;
             List<AdapterDataOrderDetails> orderDetails = data.getOrder().getOrderDetails();
             for (int i = 0; i < orderDetails.size(); i++) {
                 String amount = orderDetails.get(i).getMxTotalAmount().toString();
                 String taxRate = orderDetails.get(i).getTaxRate().toString();
                 String productName = orderDetails.get(i).getProductName();
+                sps  += orderDetails.get(i).getQuantity();
                 if (!StringUtil.isNotBlankList(amount, taxRate, productName)) {
                     return null;
                 }
@@ -364,6 +367,7 @@ public class AdapterServiceImpl implements AdapterService {
             result.put("storeNo", sn);
             result.put("price", price);
             result.put("spsl", spsl);
+            result.put("sps", sps);
             result.put("spmc", spmc);
             result.put("kpdmc", skp.getKpdmc());
             result.put("gsmc", gsdm);
