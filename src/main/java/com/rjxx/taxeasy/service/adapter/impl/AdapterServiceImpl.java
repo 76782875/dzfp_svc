@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -235,6 +236,13 @@ public class AdapterServiceImpl implements AdapterService {
                         return null;
                     }
                     String[] spdmArray = spdm.split(",");
+                    String[] priceArray = spdm.split(",");
+                    for(String prs:priceArray){
+                        BigDecimal bigDecimal = new BigDecimal(prs);
+                        if(bigDecimal.compareTo(new BigDecimal("0"))!=1){
+                            return "2";
+                        }
+                    }
                     for (String str : spdmArray) {
                         spdmList.add(str);
                     }
@@ -242,6 +250,10 @@ public class AdapterServiceImpl implements AdapterService {
                 } else {
                     if (StringUtils.isNotBlank(spdm)) {
                         spdmList.add(spdm);
+                    }
+                    BigDecimal bigDecimal = new BigDecimal(price);
+                    if(bigDecimal.compareTo(new BigDecimal("0"))!=1){
+                        return "2";
                     }
                 }
                 if (spdmList != null && spdmList.size() > 0) {
