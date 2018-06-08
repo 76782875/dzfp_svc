@@ -349,7 +349,12 @@ public class AdapterServiceImpl implements AdapterService {
                 String amount = orderDetails.get(i).getMxTotalAmount().toString();
                 String taxRate = orderDetails.get(i).getTaxRate().toString();
                 String productName = orderDetails.get(i).getProductName();
-                String quantity  = orderDetails.get(i).getQuantity().toString();
+                String quantity = "";
+                if("1".equals(orderDetails.get(i).getRowType())){
+                    quantity = "0";
+                }else{
+                    quantity  = orderDetails.get(i).getQuantity().toString();
+                }
                 if (!StringUtil.isNotBlankList(amount, taxRate, productName)) {
                     return null;
                 }
