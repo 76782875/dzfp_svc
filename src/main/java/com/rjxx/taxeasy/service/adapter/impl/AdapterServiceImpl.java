@@ -343,13 +343,13 @@ public class AdapterServiceImpl implements AdapterService {
             StringBuilder spsl = new StringBuilder();
             StringBuilder spmc = new StringBuilder();
             //添加商品数量
-            String  sps = "";
+            StringBuilder sps = new StringBuilder();
             List<AdapterDataOrderDetails> orderDetails = data.getOrder().getOrderDetails();
             for (int i = 0; i < orderDetails.size(); i++) {
                 String amount = orderDetails.get(i).getMxTotalAmount().toString();
                 String taxRate = orderDetails.get(i).getTaxRate().toString();
                 String productName = orderDetails.get(i).getProductName();
-                sps  = orderDetails.get(i).getQuantity().toString();
+                String quantity  = orderDetails.get(i).getQuantity().toString();
                 if (!StringUtil.isNotBlankList(amount, taxRate, productName)) {
                     return null;
                 }
@@ -357,10 +357,12 @@ public class AdapterServiceImpl implements AdapterService {
                     price.append(amount);
                     spsl.append(taxRate);
                     spmc.append(productName);
+                    sps.append(quantity);
                 } else {
                     price.append("," + amount);
                     spsl.append("," + taxRate);
                     spmc.append("," + productName);
+                    sps.append("," + quantity);
                 }
             }
             Map result = new HashMap();
