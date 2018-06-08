@@ -190,11 +190,24 @@ public class JkpzUtil {
                 jymxsq.setFphxz(ads.getRowType());
                 jymxsq.setSpdm(spvo.getSpbm());
                 jymxsq.setSpmc(spvo.getSpmc());
-                jymxsq.setSpggxh(spvo.getSpggxh());
+                if("1".equals(ads.getRowType())){
+                    jymxsq.setSpggxh(null);
+                }else {
+                    jymxsq.setSpggxh(spvo.getSpggxh());
+                }
                 jymxsq.setSpzxbm(spvo.getSpdm());
                 jymxsq.setSpdw(spvo.getSpdw());
-                jymxsq.setSps(ads.getQuantity());
-                jymxsq.setSpdj(ads.getUnitPrice());
+
+                if("1".equals(ads.getRowType())){
+                    jymxsq.setSps(null);
+                }else {
+                    jymxsq.setSps(ads.getQuantity());
+                }
+                if("1".equals(ads.getRowType())){
+                    jymxsq.setSpdj(null);
+                }else {
+                    jymxsq.setSpdj(ads.getUnitPrice());
+                }
                 jymxsq.setKce(ads.getDeductAmount());
                 jymxsq.setSpje(ads.getAmount());
                 jymxsq.setSpsl(ads.getTaxRate()==null?spvo.getSl():ads.getTaxRate());
@@ -247,11 +260,24 @@ public class JkpzUtil {
                 jymxsq.setFphxz(ads.getRowType());
                 jymxsq.setSpdm(spvo.getSpbm());
                 jymxsq.setSpmc(spvo.getSpmc());
-                jymxsq.setSpggxh(spvo.getSpggxh());
+                if("1".equals(ads.getRowType())){
+                    jymxsq.setSpggxh(null);
+                }else {
+                    jymxsq.setSpggxh(spvo.getSpggxh());
+                }
                 jymxsq.setSpzxbm(spvo.getSpdm());
                 jymxsq.setSpdw(spvo.getSpdw());
-                jymxsq.setSps(ads.getQuantity());
-                jymxsq.setSpdj(ads.getUnitPrice());
+
+                if("1".equals(ads.getRowType())){
+                    jymxsq.setSps(null);
+                }else {
+                    jymxsq.setSps(ads.getQuantity());
+                }
+                if("1".equals(ads.getRowType())){
+                    jymxsq.setSpdj(null);
+                }else {
+                    jymxsq.setSpdj(ads.getUnitPrice());
+                }
                 jymxsq.setKce(ads.getDeductAmount());
                 jymxsq.setSpje(ads.getAmount());
                 jymxsq.setSpsl(ads.getTaxRate()==null?spvo.getSl():ads.getTaxRate());
@@ -348,11 +374,24 @@ public class JkpzUtil {
                 jymxsq.setFphxz(ads.getRowType());
                 jymxsq.setSpdm(spvo.getSpbm());
                 jymxsq.setSpmc(spvo.getSpmc());
-                jymxsq.setSpggxh(spvo.getSpggxh());
+                if("1".equals(ads.getRowType())){
+                    jymxsq.setSpggxh(null);
+                }else {
+                    jymxsq.setSpggxh(spvo.getSpggxh());
+                }
                 jymxsq.setSpzxbm(spvo.getSpdm());
                 jymxsq.setSpdw(spvo.getSpdw());
-                jymxsq.setSps(ads.getQuantity());
-                jymxsq.setSpdj(ads.getUnitPrice());
+
+                if("1".equals(ads.getRowType())){
+                    jymxsq.setSps(null);
+                }else {
+                    jymxsq.setSps(ads.getQuantity());
+                }
+                if("1".equals(ads.getRowType())){
+                    jymxsq.setSpdj(null);
+                }else {
+                    jymxsq.setSpdj(ads.getUnitPrice());
+                }
                 jymxsq.setKce(ads.getDeductAmount());
                 jymxsq.setSpje(ads.getAmount());
                 jymxsq.setSpsl(ads.getTaxRate()==null?spvo.getSl():ads.getTaxRate());
@@ -523,11 +562,26 @@ public class JkpzUtil {
                         jymxsq.setFphxz(orderDetails.getRowType());
                         jymxsq.setSpdm(orderDetails.getProductCode());
                         jymxsq.setSpmc(orderDetails.getProductName());
-                        jymxsq.setSpggxh(orderDetails.getSpec());
+                        if("1".equals(orderDetails.getRowType())){
+                            jymxsq.setSpggxh(null);
+                        }else {
+                            jymxsq.setSpggxh(orderDetails.getSpec());
+                        }
                         jymxsq.setSpzxbm(orderDetails.getVenderOwnCode());
                         jymxsq.setSpdw(orderDetails.getUnit());
-                        jymxsq.setSps(orderDetails.getQuantity());
-                        jymxsq.setSpdj(orderDetails.getUnitPrice());
+
+                        if("1".equals(orderDetails.getRowType())){
+                            jymxsq.setSps(null);
+                        }else {
+                            jymxsq.setSps(orderDetails.getQuantity());
+                        }
+
+                        if("1".equals(orderDetails.getRowType())){
+                            jymxsq.setSpdj(null);
+                        }else {
+                            jymxsq.setSpdj(orderDetails.getUnitPrice());
+                        }
+
                         jymxsq.setSpje(orderDetails.getAmount());
                         jymxsq.setSpsl(orderDetails.getTaxRate());
                         jymxsq.setSpse(orderDetails.getTaxAmount());
