@@ -783,14 +783,16 @@ public class WeixinUtils {
         logger.info("根据税控盘id查询税控盘-----");
         skpMap.put("kpdid", kpls.getSkpid());
         Skp skp = skpService.findOneByParams(skpMap);
-        Pp pp =new Pp();
-        if (null == skp.getPid()) {
+        Pp pp =null;
+        if (null == skp.getPid()||skp.getPid()==0 || skp.getPid()== -1) {
              pp = ppJpaDao.findOneByPpdm("rjxx");
-            logger.info("pid 为空----,取默认品牌+"+pp.getPpmc());
-            return null;
+            logger.info("pid 为空----,取默认品牌rjxx+"+pp.getPpmc());
         }else {
             logger.info("根据品牌代码查询品牌表---");
              pp = ppJpaDao.findOneById(skp.getPid());
+             if(pp==null){
+                 return null;
+             }
         }
         logger.info("品牌详情---"+pp.toString());
         Xf xf = xfJpaDao.findOneById(skp.getXfid());
