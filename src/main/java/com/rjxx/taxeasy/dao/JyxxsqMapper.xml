@@ -759,5 +759,15 @@
 	</select>
 
 
+	<select id="findkxgzt" parameterType="map" resultType="jyxxsqVO">
+		select ztbzdm,ztbzmc from t_ztbz where SUBSTRING(filter, 2 ,1) =0
+		<if test="gsdm !=null and gsdm !=''">
+			and gsdm =#{gsdm}
+		</if>
+		<if test="ztbz !=null and ztbz !=''">
+			and ztbzdm =#{ztbzdm}
+		</if>
+	</select>
+
 </mapper>
 

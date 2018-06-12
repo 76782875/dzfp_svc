@@ -350,7 +350,7 @@ public class TransferExtractDataService {
         List<AdapterDataOrderDetails> details = new ArrayList<>();
         List<AdapterDataOrderPayments> payments = new ArrayList<>();
 
-        post.setClientNo("wyh_01");
+        post.setClientNo("seaway_01");
         post.setData(data);
 
         //明细
@@ -369,17 +369,6 @@ public class TransferExtractDataService {
             detail.setTaxRate(0.06);
             details.add(detail);
         }
-
-//        //支付
-//        AdapterDataOrderPayments payment = new AdapterDataOrderPayments();
-//        payment.setPayCode("02");
-//        payment.setPayPrice(5d);
-//        payments.add(payment);
-//
-//        AdapterDataOrderPayments payment2 = new AdapterDataOrderPayments();
-//        payment2.setPayCode("04");
-//        payment2.setPayPrice(5d);
-//        payments.add(payment2);
 
         //购方
         buyer.setMemberId("khh12345678");
@@ -419,25 +408,6 @@ public class TransferExtractDataService {
         Map resultMap =new HashMap();
         resultMap.put("post",post);
         return resultMap;
-    }
-
-    public String checkZtbz(String gsdm,String tq){
-        List<Jyxxsq> deleteJyxxsq = jyxxsqJpaDao.findAllByGsdmAndDdhAndZtbz(gsdm,tq,"7");
-        if(!deleteJyxxsq.isEmpty()){
-            logger.info("该笔订单已失效");
-            return "该笔订单已失效";
-        }
-        List<Jyxxsq> cancelJyxxsq = jyxxsqJpaDao.findAllByGsdmAndDdhAndZtbz(gsdm,tq,"8");
-        if(!cancelJyxxsq.isEmpty()){
-            logger.info("该笔订单已退货");
-            return "该笔订单已退货";
-        }
-        List<Jyxxsq> cancelAndRedJyxxsq = jyxxsqJpaDao.findAllByGsdmAndDdhAndZtbz(gsdm,tq,"9");
-        if(!cancelAndRedJyxxsq.isEmpty()){
-            logger.info("该笔订单已退货并红冲");
-            return "该笔订单已退货并红冲";
-        }
-        return null;
     }
 
     public String JyxxsqProcessed(Jyxxsq jyxxsq){

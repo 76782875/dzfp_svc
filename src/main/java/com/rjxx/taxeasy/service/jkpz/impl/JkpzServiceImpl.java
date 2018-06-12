@@ -185,6 +185,7 @@ public class JkpzServiceImpl implements JkpzService {
                     jyxxsq.setYkpjshj(0d);
                     jyxxsq.setGsdm(gsdm);
                     jyxxsq.setFpczlxdm("11");
+                    jyxxsq.setClztdm("00");
                 }
                 //反射 封装数据
                 for (JkpzVo jkpzVo : jkmbzbList) {

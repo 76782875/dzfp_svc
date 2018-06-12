@@ -127,6 +127,8 @@ public class JyxxsqService {
 
 	public List<JyxxsqVO> findBySqlsh(Map params){return jyxxsqMapper.findBySqlsh(params);}
 
+	public List<JyxxsqVO> findkxgzt(Map params){return jyxxsqMapper.findkxgzt(params);}
+
 	public List<OrderCancelVo> findAllCancelVoByDdh(Map params){return jyxxsqMapper.findAllCancelVoByDdh(params);}
 	/**
 	 * 删除交易流水，包括明细

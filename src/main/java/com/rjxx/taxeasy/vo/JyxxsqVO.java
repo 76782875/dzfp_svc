@@ -371,6 +371,8 @@ protected Double jshjSum;
 
 protected String sqlshCount;
 
+protected String ztbzdm;
+
 protected String ztbzmc;
 
 	public String getSqlshCount() {
@@ -1032,5 +1034,13 @@ public void setFpzlmc(String fpzlmc) {
 
 	public void setZtbzmc(String ztbzmc) {
 		this.ztbzmc = ztbzmc;
+	}
+
+	public String getZtbzdm() {
+		return ztbzdm;
+	}
+
+	public void setZtbzdm(String ztbzdm) {
+		this.ztbzdm = ztbzdm;
 	}
 }

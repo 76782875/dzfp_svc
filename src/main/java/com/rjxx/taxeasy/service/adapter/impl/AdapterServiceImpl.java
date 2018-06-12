@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -121,8 +122,12 @@ public class AdapterServiceImpl implements AdapterService {
             Integer pid = skp.getPid();
             String ppdm = "";
             String ppurl = "";
-            if (pid != null) {
+            if (pid != null && pid != -1 && pid != 0) {
                 Pp pp = ppJpaDao.findOneById(pid);
+                ppdm = pp.getPpdm();
+                ppurl = pp.getPpurl();
+            } else {
+                Pp pp = ppJpaDao.findOneByPpdm("rjxx");
                 ppdm = pp.getPpdm();
                 ppurl = pp.getPpurl();
             }
@@ -162,8 +167,12 @@ public class AdapterServiceImpl implements AdapterService {
             Integer pid = skp.getPid();
             String ppdm = "";
             String ppurl = "";
-            if (pid != null) {
+            if (pid != null && pid != -1 && pid != 0) {
                 Pp pp = ppJpaDao.findOneById(pid);
+                ppdm = pp.getPpdm();
+                ppurl = pp.getPpurl();
+            } else {
+                Pp pp = ppJpaDao.findOneByPpdm("rjxx");
                 ppdm = pp.getPpdm();
                 ppurl = pp.getPpurl();
             }
@@ -227,6 +236,13 @@ public class AdapterServiceImpl implements AdapterService {
                         return null;
                     }
                     String[] spdmArray = spdm.split(",");
+                    String[] priceArray = spdm.split(",");
+                    for(String prs:priceArray){
+                        BigDecimal bigDecimal = new BigDecimal(prs);
+                        if(bigDecimal.compareTo(new BigDecimal("0"))!=1){
+                            return "2";
+                        }
+                    }
                     for (String str : spdmArray) {
                         spdmList.add(str);
                     }
@@ -234,6 +250,10 @@ public class AdapterServiceImpl implements AdapterService {
                 } else {
                     if (StringUtils.isNotBlank(spdm)) {
                         spdmList.add(spdm);
+                    }
+                    BigDecimal bigDecimal = new BigDecimal(price);
+                    if(bigDecimal.compareTo(new BigDecimal("0"))!=1){
+                        return "2";
                     }
                 }
                 if (spdmList != null && spdmList.size() > 0) {
@@ -265,9 +285,11 @@ public class AdapterServiceImpl implements AdapterService {
                 }
                 Map result = new HashMap();
                 Integer pid = skp.getPid();
-                if (pid == null) {
-                    logger.info("pid is null");
-                    return null;
+                if (pid == null || pid==-1 || pid==0) {
+//                    logger.info("pid is null");
+//                    return null;
+                    Pp pp = ppJpaDao.findOneByPpdm("rjxx");
+                    result.put("tqm", pp.getPpdm() + orderNo);
                 } else {
                     Pp pp = ppJpaDao.findOneById(pid);
                     result.put("tqm", pp.getPpdm() + orderNo);
@@ -277,6 +299,7 @@ public class AdapterServiceImpl implements AdapterService {
                 result.put("storeNo", storeNo);
                 result.put("price", price);
                 result.put("spsl", spsl.toString());
+                result.put("sps", "");
                 result.put("spmc", spmc.toString());
                 result.put("kpdmc", skp.getKpdmc());
                 result.put("gsmc", gsdm);
@@ -309,22 +332,29 @@ public class AdapterServiceImpl implements AdapterService {
             if (apiMsg == null) {
                 return "1";
             }
-            if(apiMsg.get("msg")!=null){
+            if (apiMsg.get("msg") != null) {
                 return (String) apiMsg.get("msg");
             }
-            AdapterPost post= (AdapterPost) apiMsg.get("post");
+            AdapterPost post = (AdapterPost) apiMsg.get("post");
             AdapterData data = post.getData();
             String orderNo = on;
             String orderTime = new SimpleDateFormat("yyyyMMddHHmmss").format(data.getOrder().getOrderDate());
             StringBuilder price = new StringBuilder();
             StringBuilder spsl = new StringBuilder();
             StringBuilder spmc = new StringBuilder();
-
+            //添加商品数量
+            StringBuilder sps = new StringBuilder();
             List<AdapterDataOrderDetails> orderDetails = data.getOrder().getOrderDetails();
             for (int i = 0; i < orderDetails.size(); i++) {
                 String amount = orderDetails.get(i).getMxTotalAmount().toString();
                 String taxRate = orderDetails.get(i).getTaxRate().toString();
                 String productName = orderDetails.get(i).getProductName();
+                String quantity = "";
+                if("1".equals(orderDetails.get(i).getRowType())){
+                    quantity = "0";
+                }else{
+                    quantity  = orderDetails.get(i).getQuantity().toString();
+                }
                 if (!StringUtil.isNotBlankList(amount, taxRate, productName)) {
                     return null;
                 }
@@ -332,17 +362,21 @@ public class AdapterServiceImpl implements AdapterService {
                     price.append(amount);
                     spsl.append(taxRate);
                     spmc.append(productName);
+                    sps.append(quantity);
                 } else {
                     price.append("," + amount);
                     spsl.append("," + taxRate);
                     spmc.append("," + productName);
+                    sps.append("," + quantity);
                 }
             }
             Map result = new HashMap();
             Integer pid = skp.getPid();
-            if (pid == null) {
-                logger.info("pid is null");
-                return null;
+            if (pid == null || pid==-1 || pid==0) {
+//                logger.info("pid is null");
+//                return null;
+                Pp pp = ppJpaDao.findOneByPpdm("rjxx");
+                result.put("tqm", pp.getPpdm() + orderNo);
             } else {
                 Pp pp = ppJpaDao.findOneById(pid);
                 result.put("tqm", pp.getPpdm() + orderNo);
@@ -352,6 +386,7 @@ public class AdapterServiceImpl implements AdapterService {
             result.put("storeNo", sn);
             result.put("price", price);
             result.put("spsl", spsl);
+            result.put("sps", sps);
             result.put("spmc", spmc);
             result.put("kpdmc", skp.getKpdmc());
             result.put("gsmc", gsdm);
@@ -441,9 +476,12 @@ public class AdapterServiceImpl implements AdapterService {
                     order.setExtractedCode(tqm);
                 } else {
                     Integer pid = skp.getPid();
-                    if (pid == null) {
-                        logger.info("pid is null");
-                        return "0";
+                    if (pid == null || pid==-1 || pid==0) {
+//                        logger.info("pid is null");
+//                        return "0";
+                        Pp pp = ppJpaDao.findOneByPpdm("rjxx");
+                        order.setExtractedCode(pp.getPpdm() + orderNo);
+
                     } else {
                         Pp pp = ppJpaDao.findOneById(pid);
                         order.setExtractedCode(pp.getPpdm() + orderNo);
@@ -499,12 +537,6 @@ public class AdapterServiceImpl implements AdapterService {
                 if (null != result.getCode() && "9999".equals(result.getCode())) {
                     logger.info("进入拒绝开票-----错误原因为" + result.getMsg());
                     return result.getMsg();
-//                    String reason = result.getMsg();
-//                    if (null != sjly && "4".equals(sjly)) {
-//                        logger.info("进行拒绝开票的weixinOrderN+++++" + weixinOrderNo);
-//                        weixinUtils.jujuekp(weixinOrderNo, reason, access_token);
-//                    }
-//                    return "-1";
                 }
                 Map map = new HashMap();
                 map.put("returnMsg", result.getMsg());
@@ -552,62 +584,74 @@ public class AdapterServiceImpl implements AdapterService {
                 if (apiMsg == null) {
                     return "-2";
                 }
-                if(apiMsg.get("msg")!=null){
+                if (apiMsg.get("msg") != null) {
                     return (String) apiMsg.get("msg");
                 }
-                Jyxxsq jyxxsq= (Jyxxsq) apiMsg.get("jyxxsq");
+                Jyxxsq jyxxsq = (Jyxxsq) apiMsg.get("jyxxsq");
+                if(jyxxsq!=null){
+                    jyxxsq.setKpddm(sn);
+                    jyxxsq.setSjly(sjly);
+                    jyxxsq.setOpenid(openid);
+                    jyxxsq.setDdh(on);
+                    jyxxsq.setGfemail(email);
+                    jyxxsq.setGfdh(gfdh);
+                    jyxxsq.setGfmc(gfmc);
+                    jyxxsq.setGfyhzh(gfyhzh);
+                    jyxxsq.setGfyh(gfyh);
+                    jyxxsq.setGfdz(gfdz);
+                    jyxxsq.setGfsh(gfsh);
+                    if (StringUtils.isNotBlank(email)) {
+                        jyxxsq.setSffsyj("1");
+                    }
+                    if (StringUtil.isNotBlankList(tqm)) {
+                        jyxxsq.setTqm(tqm);
+                    } else {
+                        Integer pid = skp.getPid();
+                        if (pid == null || pid==-1 || pid==0) {
+                            Pp pp = ppJpaDao.findOneByPpdm("rjxx");
+                            jyxxsq.setTqm(pp.getPpdm() + on);
+                        } else {
+                            Pp pp = ppJpaDao.findOneById(pid);
+                            jyxxsq.setTqm(pp.getPpdm() + on);
+                        }
+                    }
+                }
                 AdapterPost post = (AdapterPost) apiMsg.get("post");
-
                 AdapterData data = post.getData();
                 AdapterDataOrder order = data.getOrder();
                 AdapterDataOrderBuyer buyer = new AdapterDataOrderBuyer();
                 post.setData(data);
-
-                jyxxsq.setKpddm(sn);
                 post.setClientNo(sn);
-//                data.setSerialNumber("JY" + System.currentTimeMillis() + NumberUtil.getRandomLetter());
-
-                jyxxsq.setSjly(sjly);
                 data.setDatasource(sjly);
-                jyxxsq.setOpenid(openid);
                 data.setOpenid(openid);
                 data.setOrder(order);
-
-                jyxxsq.setDdh(on);
                 order.setOrderNo(on);
                 order.setBuyer(buyer);
                 if (StringUtil.isNotBlankList(tqm)) {
-                    jyxxsq.setTqm(tqm);
                     order.setExtractedCode(tqm);
                 } else {
                     Integer pid = skp.getPid();
-                    if (pid == null) {
-                        logger.info("pid is null");
-                        return "0";
+                    if (pid == null || pid==-1 || pid==0) {
+//                        logger.info("pid is null");
+//                        return "0";
+                        Pp pp = ppJpaDao.findOneByPpdm("rjxx");
+                        order.setExtractedCode(pp.getPpdm() + on);
                     } else {
                         Pp pp = ppJpaDao.findOneById(pid);
-                        jyxxsq.setTqm(pp.getPpdm() + on);
                         order.setExtractedCode(pp.getPpdm() + on);
                     }
                 }
-                jyxxsq.setGfemail(email);
                 buyer.setEmail(email);
-                jyxxsq.setGfdh(gfdh);
                 buyer.setTelephoneNo(gfdh);
-                jyxxsq.setGfmc(gfmc);
                 buyer.setName(gfmc);
-                jyxxsq.setGfyhzh(gfyhzh);
                 buyer.setBankAcc(gfyhzh);
-                jyxxsq.setGfyh(gfyh);
                 buyer.setBank(gfyh);
-                jyxxsq.setGfdz(gfdz);
                 buyer.setAddress(gfdz);
-                jyxxsq.setGfsh(gfsh);
                 buyer.setIdentifier(gfsh);
-                if(StringUtils.isNotBlank(email)){
-                    jyxxsq.setSffsyj("1");
+                if (StringUtils.isNotBlank(email)) {
                     buyer.setIsSend("1");
                 }
+
                 List<Jyxxsq> list = new ArrayList<>();
                 list.add(jyxxsq);
                 //转换
@@ -616,19 +660,14 @@ public class AdapterServiceImpl implements AdapterService {
                 if ("jyxxsq".equals(cszb.getCsz())) {
                     logger.info("type3------jyxxsq");
                     Cszb kpfs = cszbService.getSpbmbbh(gsdm, null, null, "kpfs");
-                    logger.info("直接开票数据："+JSON.toJSONString(list));
+                    logger.info("直接开票数据：" + JSON.toJSONString(list));
                     String msg = checkOrderUtil.checkBuyer(list, gsdm);
-                    if(!"".equals(msg)){
+                    if (!"".equals(msg)) {
                         logger.info("进入拒绝开票-----错误原因为" + msg);
-//                        String reason = msg;
-//                        if (null != sjly && "4".equals(sjly)) {
-//                            logger.info("进行拒绝开票的weixinOrderN+++++" + weixinOrderNo);
-//                            weixinUtils.jujuekp(weixinOrderNo, reason, access_token);
-//                        }
                         return msg;
                     }
                     List<Object> jyxxsqList = fpclService.zjkp(list, kpfs.getCsz());
-                    logger.info("返回数据："+JSON.toJSONString(jyxxsqList));
+                    logger.info("返回数据：" + JSON.toJSONString(jyxxsqList));
                     resultMap.put("returnMsg", "成功");
                     resultMap.put("returnCode", "0000");
                     resultMap.put("serialorder", data.getSerialNumber() + order.getOrderNo());
@@ -639,11 +678,6 @@ public class AdapterServiceImpl implements AdapterService {
                     DefaultResult defaultResult = XmlJaxbUtils.convertXmlStrToObject(DefaultResult.class, xmlString);
                     if (null != defaultResult.getReturnCode() && "9999".equals(defaultResult.getReturnCode())) {
                         logger.info("进入拒绝开票-----错误原因为" + defaultResult.getReturnMessage());
-//                        String reason = defaultResult.getReturnMessage();
-//                        if (null != sjly && "4".equals(sjly)) {
-//                            logger.info("进行拒绝开票的weixinOrderN+++++" + weixinOrderNo);
-//                            weixinUtils.jujuekp(weixinOrderNo, reason, access_token);
-//                        }
                         return defaultResult.getReturnMessage();
                     }
 
@@ -690,26 +724,27 @@ public class AdapterServiceImpl implements AdapterService {
 
     /**
      * ims 平台提取开票获取数据
+     *
      * @param gsdm
      * @param tq
      * @return
      */
     @Override
-    public Map getApiMsg(String gsdm, String tq){
+    public Map getApiMsg(String gsdm, String tq) {
         try {
-            Cszb cszb = cszbService.getSpbmbbh(gsdm, null,null,"extractMethod");
-            if(StringUtil.isNotBlankList(cszb.getCsz())){
+            Cszb cszb = cszbService.getSpbmbbh(gsdm, null, null, "extractMethod");
+            if (StringUtil.isNotBlankList(cszb.getCsz())) {
                 Class<? extends TransferExtractDataService> clazz = transferExtractDataService.getClass();
-                Method method = clazz.getDeclaredMethod(cszb.getCsz(), String.class,String.class);
-                Map result = (Map)method.invoke(transferExtractDataService, gsdm,tq);
-                if(result==null){
+                Method method = clazz.getDeclaredMethod(cszb.getCsz(), String.class, String.class);
+                Map result = (Map) method.invoke(transferExtractDataService, gsdm, tq);
+                if (result == null) {
                     return null;
                 }
                 return result;
-            }else{
+            } else {
                 return null;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
@@ -872,10 +907,10 @@ public class AdapterServiceImpl implements AdapterService {
                                 result.add("开具中");
                             }
                         } else {
-                            if("02".equals(fpztdm)){
+                            if ("02".equals(fpztdm)) {
                                 logger.info("红冲");
                                 result.add("红冲");
-                            }else{
+                            } else {
                                 logger.info("开具中");
                                 result.add("开具中");
                             }
@@ -965,7 +1000,7 @@ public class AdapterServiceImpl implements AdapterService {
         String ppurl;
         Skp skp = skpJpaDao.findOneByKpddmAndGsdm(storeNo, gsdm);
         Integer pid = skp.getPid();
-        if (pid == null) {
+        if (pid == null || pid==0 ||pid==-1) {
             return "pp";
         } else {
             Pp pp = ppJpaDao.findOneById(pid);
@@ -1031,7 +1066,7 @@ public class AdapterServiceImpl implements AdapterService {
             map.put("jylsh", jyxxsq.getSqlsh());//其实放的申请流水号
             map.put("kpddm", jyxxsq.getKpddm());
             List<Jyls> jyls = jylsJpaDao.findBySqlshAndGsdm(jyxxsq.getSqlsh(), jyxxsq.getGsdm());
-            if(!jyls.isEmpty()){
+            if (!jyls.isEmpty()) {
                 Kpls kpls = kplsJpaDao.findOneByDjh(jyls.get(0).getDjh());
                 if (kpls != null) {
                     map.put("serialorder", kpls.getSerialorder());
@@ -1065,7 +1100,7 @@ public class AdapterServiceImpl implements AdapterService {
                 } else {
                     map.put("sfkj", MakingConstans.NO_MAKED);
                 }
-            }else{
+            } else {
                 map.put("sfkj", MakingConstans.NO_MAKED);
             }
             resultList.add(map);
@@ -1123,7 +1158,7 @@ public class AdapterServiceImpl implements AdapterService {
     @Override
     public String checkMakedForJyxxsq(Integer sqlsh, String gsdm) {
         List<Jyls> jyls = jylsJpaDao.findBySqlshAndGsdm(sqlsh, gsdm);
-        if(!jyls.isEmpty()){
+        if (!jyls.isEmpty()) {
             Kpls kpls = kplsJpaDao.findOneByDjh(jyls.get(0).getDjh());
             if (kpls != null) {
                 if ("12".equals(kpls.getFpzldm())) {
@@ -1134,21 +1169,21 @@ public class AdapterServiceImpl implements AdapterService {
                             return MakingConstans.MAKING;
                         }
                     } else if ("05".equals(kpls.getFpztdm())) {
-                        return  MakingConstans.MAKING;
+                        return MakingConstans.MAKING;
                     } else {
-                        return  MakingConstans.MAKING;
+                        return MakingConstans.MAKING;
                     }
                 } else if ("01".equals(kpls.getFpzldm()) || "02".equals(kpls.getFpzldm())) {
                     if ("00".equals(kpls.getFpztdm())) {
                         if (StringUtil.isNotBlankList(kpls.getFpdm(), kpls.getFphm())) {
-                            return  MakingConstans.MAKED_AND_NO_PDF;
+                            return MakingConstans.MAKED_AND_NO_PDF;
                         } else {
-                            return  MakingConstans.MAKING;
+                            return MakingConstans.MAKING;
                         }
                     } else if ("05".equals(kpls.getFpztdm())) {
-                        return  MakingConstans.MAKING;
+                        return MakingConstans.MAKING;
                     } else {
-                        return  MakingConstans.MAKING;
+                        return MakingConstans.MAKING;
                     }
                 } else {
                     return null;
@@ -1156,7 +1191,7 @@ public class AdapterServiceImpl implements AdapterService {
             } else {
                 return MakingConstans.NO_MAKED;
             }
-        }else{
+        } else {
             return MakingConstans.NO_MAKED;
         }
     }
