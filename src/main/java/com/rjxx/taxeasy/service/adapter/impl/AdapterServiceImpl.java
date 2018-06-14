@@ -9,7 +9,9 @@ import com.rjxx.taxeasy.domains.*;
 import com.rjxx.taxeasy.dto.*;
 import com.rjxx.taxeasy.invoice.DefaultResult;
 import com.rjxx.taxeasy.invoice.KpService;
-import com.rjxx.taxeasy.service.*;
+import com.rjxx.taxeasy.service.CszbService;
+import com.rjxx.taxeasy.service.JymxsqService;
+import com.rjxx.taxeasy.service.SpvoService;
 import com.rjxx.taxeasy.service.adapter.AdapterService;
 import com.rjxx.taxeasy.service.adapter.TransferExtractDataService;
 import com.rjxx.taxeasy.service.jkpz.JkpzService;
@@ -709,7 +711,14 @@ public class AdapterServiceImpl implements AdapterService {
             Cszb cszb = cszbService.getSpbmbbh(gsdm, null, null, "sendBuyerUrl");
             JSONObject jsonObject = JSON.parseObject(JSON.toJSONString(buyer));
             jsonObject.put("orderNo", on);
-            String result = HttpClientUtil.doPostJson(cszb.getCsz(), JSON.toJSONString(jsonObject));
+            Gsxx oneByGsdm = gsxxJpaDao.findOneByGsdm(gsdm);
+            String key = oneByGsdm.getSecretKey();
+            String data = JSON.toJSONString(jsonObject);
+            String sign = "data=" + data + "&key=" + key;
+            Map map = new HashMap();
+            map.put("data", jsonObject);
+            map.put("sign", sign);
+            String result = HttpClientUtil.doPostJson(cszb.getCsz(), JSON.toJSONString(map));
             if ("0000".equals(JSON.parseObject(result).getString("returnCode"))) {
                 return true;
             } else {
