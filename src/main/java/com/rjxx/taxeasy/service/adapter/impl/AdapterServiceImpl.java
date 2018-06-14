@@ -720,6 +720,7 @@ public class AdapterServiceImpl implements AdapterService {
             map.put("data", jsonObject);
             map.put("sign", sign);
             String result = HttpClientUtil.doPostJson(cszb.getCsz(), JSON.toJSONString(map));
+            logger.info("发送抬头接收客户返回={}",result);
             if ("0000".equals(JSON.parseObject(result).getString("returnCode"))) {
                 return true;
             } else {
