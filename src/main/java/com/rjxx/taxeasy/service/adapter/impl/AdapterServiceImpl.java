@@ -20,6 +20,7 @@ import com.rjxx.utils.*;
 import com.rjxx.utils.weixin.HttpClientUtil;
 import com.rjxx.utils.weixin.WeixinUtils;
 import com.rjxx.utils.yjapi.Result;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -714,7 +715,7 @@ public class AdapterServiceImpl implements AdapterService {
             Gsxx oneByGsdm = gsxxJpaDao.findOneByGsdm(gsdm);
             String key = oneByGsdm.getSecretKey();
             String data = JSON.toJSONString(jsonObject);
-            String sign = "data=" + data + "&key=" + key;
+            String sign = DigestUtils.md5Hex("data=" + data + "&key=" + key);
             Map map = new HashMap();
             map.put("data", jsonObject);
             map.put("sign", sign);
