@@ -689,8 +689,8 @@ public class InvoiceSplitUtils {
 						qzmxMap.remove(qzmxList.get(0));
 						qzmxList.remove(0);
 						//当全折明细为空时，跳出循环。
-						if(qzList.isEmpty())
-							break;
+						if(qzmxList.isEmpty())
+							return splitKpspmxs;
 					}
 				}
 				//处理所有发票都添加全折明细，还有未处理的全折明细数据
