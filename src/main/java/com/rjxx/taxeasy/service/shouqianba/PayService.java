@@ -200,13 +200,7 @@ public class PayService {
             oldOutCancel.setXgsj(new Date());
             oldOutCancel.setErrorMessage(error_message);
             oldOutCancel.setErrorCode(error_code);
-            oldOutCancel.setSn(sn);
-            oldOutCancel.setTradeNo(trade_no);
-            oldOutCancel.setSign(sign);
-            oldOutCancel.setStatus(status);
             oldOutCancel.setIsSuccess(is_success);
-            oldOutCancel.setResultCode(result_code);
-            oldOutCancel.setResultMessage(result_message);
             payOutRepository.save(oldOutCancel);
 
             if (StringUtils.isNotBlank(error_code)) {
