@@ -150,10 +150,12 @@ public class PayService {
         String sn = payResult.getSn();//收钱吧订单号
         String error_code = payResult.getError_code();
         String error_message = null;
-        try {
-            error_message = URLDecoder.decode(payResult.getError_message(),"utf-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+        if(StringUtils.isNotBlank(payResult.getError_message())){
+            try {
+                error_message = URLDecoder.decode(payResult.getError_message(),"utf-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
         }
         String operator = payResult.getOperator();
         String result_code = payResult.getResult_code();
