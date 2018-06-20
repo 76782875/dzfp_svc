@@ -162,25 +162,25 @@ public class PayService {
         String status = payResult.getStatus();
         String subject = payResult.getSubject();
 
-        if ("T".equals(is_success)) {
-            PayTask payTask = new PayTask();
-            payTask.setClientSn(client_sn);
-            payTask.setGsdm(gsdm);
-            payTask.setOrderNo(orderNo);
-            payTask.setStoreNo(storeNo);
-            payTask.setSn(sn);
-            payTask.setReflect(reflect);
-            payTask.setSign(sign);
-            payTask.setTerminalSn(terminal_sn);
-            payTask.setPayActivateRepository(payActivateRepository);
-            payTask.setPayCodeRepository(payCodeRepository);
-            payTask.setPayOutRepository(payOutRepository);
-            payTask.setPayRecordRepository(payRecordRepository);
-            payTask.setPayPaymentsRepository(payPaymentsRepository);
-            Thread t = new Thread(payTask);
-            t.start();
-            result.put("gsdm",gsdm);
-            result.put("orderNo",orderNo);
+        if ("T".equals(is_success) && "SUCCESS".equals(status)) {
+                PayTask payTask = new PayTask();
+                payTask.setClientSn(client_sn);
+                payTask.setGsdm(gsdm);
+                payTask.setOrderNo(orderNo);
+                payTask.setStoreNo(storeNo);
+                payTask.setSn(sn);
+                payTask.setReflect(reflect);
+                payTask.setSign(sign);
+                payTask.setTerminalSn(terminal_sn);
+                payTask.setPayActivateRepository(payActivateRepository);
+                payTask.setPayCodeRepository(payCodeRepository);
+                payTask.setPayOutRepository(payOutRepository);
+                payTask.setPayRecordRepository(payRecordRepository);
+                payTask.setPayPaymentsRepository(payPaymentsRepository);
+                Thread t = new Thread(payTask);
+                t.start();
+                result.put("gsdm",gsdm);
+                result.put("orderNo",orderNo);
         } else {
             //创建记录表对象
             PayRecord payRecord = new PayRecord();
@@ -201,12 +201,19 @@ public class PayService {
             oldOutCancel.setErrorMessage(error_message);
             oldOutCancel.setErrorCode(error_code);
             oldOutCancel.setIsSuccess(is_success);
+            oldOutCancel.setStatus(status);
+            oldOutCancel.setResultMessage(result_message);
+            oldOutCancel.setResultCode(result_code);
             payOutRepository.save(oldOutCancel);
 
             if (StringUtils.isNotBlank(error_code)) {
                 result.put("errorMsg", error_message);
             } else {
-                result.put("errorMsg", "NO_MESSAGE_FOR_PAY_RESULT");
+                if("FAIL".equals(status)){
+                    result.put("errorMsg", "支付已取消（"+result_message+")");
+                }else{
+                    result.put("errorMsg", "NO_MESSAGE_FOR_PAY_RESULT");
+                }
             }
         }
         return result;

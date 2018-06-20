@@ -180,6 +180,7 @@ public class PayTask implements Runnable {
 
 
     public void cancel(String terminalSn, String terminal_key, String sn, String clientSn) {
+        logger.info("---------------开始撤单----------"+clientSn+"--");
         //撤单
         QueryResult cancel = PayUtil.cancel(terminalSn, terminal_key, sn, clientSn);
         if (cancel == null) {
