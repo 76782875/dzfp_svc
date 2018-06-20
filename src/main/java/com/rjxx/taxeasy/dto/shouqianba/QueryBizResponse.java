@@ -4,17 +4,13 @@ package com.rjxx.taxeasy.dto.shouqianba;
  * @author wangyahui
  * @email wangyahui@datarj.com
  * @company 上海容津信息技术有限公司
- * @date 2018/6/4
+ * @date 2018/6/12
  */
-public class QueryResult {
-    //结果码
+public class QueryBizResponse {
     private String result_code;
-    //错误码
     private String error_code;
-    //错误消息
     private String error_message;
-
-    private QueryBizResponse biz_response;
+    private QueryData data;
 
     public String getResult_code() {
         return result_code;
@@ -40,21 +36,21 @@ public class QueryResult {
         this.error_message = error_message;
     }
 
-    public QueryBizResponse getBiz_response() {
-        return biz_response;
+    public QueryData getData() {
+        return data;
     }
 
-    public void setBiz_response(QueryBizResponse biz_response) {
-        this.biz_response = biz_response;
+    public void setData(QueryData data) {
+        this.data = data;
     }
 
     @Override
     public String toString() {
-        return "QueryResult{" +
+        return "QueryBizResponse{" +
                 "result_code='" + result_code + '\'' +
                 ", error_code='" + error_code + '\'' +
                 ", error_message='" + error_message + '\'' +
-                ", biz_response=" + biz_response +
+                ", data=" + data +
                 '}';
     }
 }
