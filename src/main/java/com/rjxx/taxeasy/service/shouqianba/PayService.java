@@ -152,7 +152,7 @@ public class PayService {
         String error_message = null;
         if(StringUtils.isNotBlank(payResult.getError_message())){
             try {
-                error_message = URLDecoder.decode(payResult.getError_message(),"iso-8859-1");
+                error_message = new String(URLDecoder.decode(payResult.getError_message(),"ISO-8859-1").getBytes("ISO-8859-1"),"ISO-8859-1");
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
@@ -188,6 +188,12 @@ public class PayService {
         } else {
             //创建记录表对象
             PayRecord payRecord = new PayRecord();
+            payRecord.setClientSn(client_sn);
+            payRecord.setTotalAmount(total_amount);
+            payRecord.setOrderNo(orderNo);
+            payRecord.setStoreNo(storeNo);
+            payRecord.setGsdm(gsdm);
+            payRecord.setTerminalSn(terminal_sn);
             payRecord.setLrsj(new Date());
             payRecord.setErrorCode(error_code);
             payRecord.setErrorMessage(error_message);
