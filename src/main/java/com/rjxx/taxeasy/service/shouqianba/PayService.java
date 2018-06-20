@@ -73,7 +73,7 @@ public class PayService {
             payTotal = new BigDecimal(total_amount).multiply(new BigDecimal("100")).stripTrailingZeros().toPlainString();
         } catch (Exception e) {
             e.printStackTrace();
-            errorResult.put("errorMsg", "TOTAL_AMOUNT_ERROR");
+            errorResult.put("errorMsg", "金额格式有误");
             return errorResult;
         }
         String client_sn = "";
@@ -154,6 +154,8 @@ public class PayService {
                 error_message = new String(payResult.getError_message().getBytes("ISO-8859-1"),"UTF-8");
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
+                result.put("errorMsg", "解码失败");
+                return result;
             }
         }
         String operator = payResult.getOperator();
@@ -221,7 +223,7 @@ public class PayService {
                 if("FAIL".equals(status)){
                     result.put("errorMsg", "支付已取消（"+result_message+")");
                 }else{
-                    result.put("errorMsg", "NO_MESSAGE_FOR_PAY_RESULT");
+                    result.put("errorMsg", "未收到支付商返回");
                 }
             }
         }
