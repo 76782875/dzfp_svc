@@ -151,7 +151,11 @@ public class PayService {
         String error_code = payResult.getError_code();
         String error_message = null;
         if(StringUtils.isNotBlank(payResult.getError_message())){
-            error_message = URLDecoder.decode(payResult.getError_message());
+            try {
+                error_message = URLDecoder.decode(payResult.getError_message(),"iso-8859-1");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
         }
         String operator = payResult.getOperator();
         String result_code = payResult.getResult_code();
