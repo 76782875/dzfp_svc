@@ -53,12 +53,11 @@ public class PayTask implements Runnable {
         String terminal_key = payActivate.getTerminalKey();
         logger.info("terminal_key={}", terminal_key);
         //开始轮询
-        logger.info("---------------开始轮询---------------");
+        logger.info("--------------开始轮询------------");
         boolean flag = true;
         QueryResult query = null;
         BigInteger initTime = BigInteger.valueOf(System.currentTimeMillis());
-        x:
-        if (flag) {
+        while(true){
             //查询获得结果
             QueryResult q = PayUtil.query(terminalSn, terminal_key, clientSn, sn);
             logger.info("查询接口结果={}", JSON.toJSONString(q));
@@ -68,7 +67,7 @@ public class PayTask implements Runnable {
                     cancel(terminalSn, terminal_key, sn, clientSn);
                     return;
                 }
-                break x;
+                continue;
             }
             QueryBizResponse biz_response = q.getBiz_response();
             QueryData data = biz_response.getData();
@@ -92,12 +91,17 @@ public class PayTask implements Runnable {
 
             String order_status = data.getOrder_status();
             if (finalCodeList.contains(order_status)) {
-                flag = false;
+                logger.info("--------------最终状态------------");
+                logger.info("--------------结束轮询------------");
+                return;
             } else {
+                logger.info("--------------非最终状态------------");
                 try {
                     BigInteger curTime = BigInteger.valueOf(System.currentTimeMillis());
                     if (curTime.subtract(initTime).compareTo(new BigInteger(TIME_OUT)) == 1) {
                         cancel(terminalSn, terminal_key, sn, clientSn);
+                        logger.info("--------------轮询超时------------");
+                        logger.info("--------------结束轮询------------");
                         return;
                     }
 
@@ -109,10 +113,69 @@ public class PayTask implements Runnable {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                logger.info("---------------继续轮询------------");
+                continue;
             }
-            break x;
         }
-        logger.info("---------------结束轮询---------------");
+        //        x:
+//        if (flag) {
+//            //查询获得结果
+//            QueryResult q = PayUtil.query(terminalSn, terminal_key, clientSn, sn);
+//            logger.info("查询接口结果={}", JSON.toJSONString(q));
+//            if (q == null) {
+//                BigInteger curTime = BigInteger.valueOf(System.currentTimeMillis());
+//                if (curTime.subtract(initTime).compareTo(new BigInteger(TIME_OUT)) == 1) {
+//                    cancel(terminalSn, terminal_key, sn, clientSn);
+//                    return;
+//                }
+//                break x;
+//            }
+//            QueryBizResponse biz_response = q.getBiz_response();
+//            QueryData data = biz_response.getData();
+//            PayOut savePayOut = this.saveRecord(gsdm, orderNo, clientSn, sn, terminalSn, sign, reflect, q, "0",storeNo);
+//            if (savePayOut == null) {
+//                return;
+//            }
+//            List<QueryPayment> payment_list = data.getPayment_list();
+//            List<PayPayments> byoutId = payPaymentsRepository.findByoutId(savePayOut.getId());
+//            if (byoutId.isEmpty()) {
+//                for (QueryPayment queryPayment : payment_list) {
+//                    PayPayments payPayments = new PayPayments();
+//                    payPayments.setLrsj(new Date());
+//                    payPayments.setGsdm(gsdm);
+//                    payPayments.setAmountTotal(this.changeAmount(queryPayment.getAmount_total()));
+//                    payPayments.setType(queryPayment.getType());
+//                    payPayments.setOutId(savePayOut.getId());
+//                    payPaymentsRepository.save(payPayments);
+//                }
+//            }
+//
+//            String order_status = data.getOrder_status();
+//            if (finalCodeList.contains(order_status)) {
+//                flag = false;
+//            } else {
+//                logger.info("---------------非最终状态------------");
+//                try {
+//                    BigInteger curTime = BigInteger.valueOf(System.currentTimeMillis());
+//                    if (curTime.subtract(initTime).compareTo(new BigInteger(TIME_OUT)) == 1) {
+//                        cancel(terminalSn, terminal_key, sn, clientSn);
+//                        logger.info("---------------轮询超时------------");
+//                        return;
+//                    }
+//
+//                    if (curTime.subtract(initTime).compareTo(new BigInteger(SLOW_QUERY)) == 1) {
+//                        Thread.sleep(5000);
+//                    } else {
+//                        Thread.sleep(2000);
+//                    }
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//                logger.info("---------------继续轮询------------");
+//            }
+//            break x;
+//        }
+//        logger.info("---------------结束轮询---------------");
     }
 
 
