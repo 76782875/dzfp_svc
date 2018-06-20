@@ -219,6 +219,7 @@ public class PayTask implements Runnable {
         payRecord.setStatus(data.getStatus());
         payRecord.setReqType(reqType);//0查询 1撤单
         payRecord.setStoreNo(storeNo);
+        payRecord.setTerminalSn(terminalSn);
         payRecordRepository.save(payRecord);
 
         if (data == null) {
