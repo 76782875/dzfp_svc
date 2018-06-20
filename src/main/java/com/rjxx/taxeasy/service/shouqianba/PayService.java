@@ -17,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -68,12 +68,12 @@ public class PayService {
         reflectMap.put("orderNo", orderNo);
         reflectMap.put("storeNo", storeNo);
         String reflect = JSON.toJSONString(reflectMap);
-        BigInteger payTotal = null;
+        String payTotal = null;
         try {
-            payTotal = new BigInteger(total_amount).multiply(new BigInteger("100"));
+            payTotal = new BigDecimal(total_amount).multiply(new BigDecimal("100")).stripTrailingZeros().toPlainString();
         } catch (Exception e) {
             e.printStackTrace();
-            errorResult.put("errorMsg", "传入金额有误,支付失败");
+            errorResult.put("errorMsg", "TOTAL_AMOUNT_ERROR");
             return errorResult;
         }
         String client_sn = "";
@@ -124,7 +124,7 @@ public class PayService {
         payIn.setStoreNo(storeNo);
         Map succResult = null;
         try {
-            succResult = PayUtil.payIn(terminal_sn, terminal_key, client_sn, payTotal.toString(),
+            succResult = PayUtil.payIn(terminal_sn, terminal_key, client_sn, payTotal,
                     subject, operator, return_url, reflect);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -208,7 +208,7 @@ public class PayService {
             if (StringUtils.isNotBlank(error_code)) {
                 result.put("errorMsg", error_message);
             } else {
-                result.put("errorMsg", "调用失败时，未收到支付商返回");
+                result.put("errorMsg", "NO_MESSAGE_FOR_PAY_RESULT");
             }
         }
         return result;
