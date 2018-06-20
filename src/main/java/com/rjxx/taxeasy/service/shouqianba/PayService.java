@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
-import java.net.URLDecoder;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -152,7 +151,7 @@ public class PayService {
         String error_message = null;
         if(StringUtils.isNotBlank(payResult.getError_message())){
             try {
-                error_message = new String(URLDecoder.decode(payResult.getError_message(),"ISO-8859-1").getBytes("ISO-8859-1"),"ISO-8859-1");
+                error_message = new String(payResult.getError_message().getBytes("ISO-8859-1"),"UTF-8");
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
