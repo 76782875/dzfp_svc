@@ -33,7 +33,10 @@ public class AESUtil {
     }
 
     public static String encrypt(String str,String password ) throws Exception {
-        kgen.init(128, new SecureRandom(password.getBytes()));
+//        kgen.init(128, new SecureRandom(password.getBytes()));
+        SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
+        random.setSeed(password.getBytes());
+        kgen.init(128, random);
         SecretKey secretKey = kgen.generateKey();
         cipher.init(Cipher.ENCRYPT_MODE, secretKey, new IvParameterSpec(getIV()));//使用加密模式初始化 密钥
         byte[] encrypt = cipher.doFinal(str.getBytes()); //按单部分操作加密或解密数据，或者结束一个多部分操作。
@@ -41,7 +44,10 @@ public class AESUtil {
     }
 
     public static String decrypt(String str,String password) throws Exception {
-        kgen.init(128, new SecureRandom(password.getBytes()));
+//        kgen.init(128, new SecureRandom(password.getBytes()));
+        SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
+        random.setSeed(password.getBytes());
+        kgen.init(128, random);
         SecretKey secretKey = kgen.generateKey();
         cipher.init(Cipher.DECRYPT_MODE, secretKey, new IvParameterSpec(getIV()));//使用解密模式初始化 密钥
         byte[] decrypt = cipher.doFinal(parseHexStr2Byte(str));
