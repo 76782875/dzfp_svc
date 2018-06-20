@@ -1,5 +1,6 @@
 package com.rjxx.taxeasy.task;
 
+import com.alibaba.fastjson.JSON;
 import com.rjxx.taxeasy.dao.shouqianba.*;
 import com.rjxx.taxeasy.domains.shouqianba.PayActivate;
 import com.rjxx.taxeasy.domains.shouqianba.PayOut;
@@ -13,6 +14,7 @@ import com.rjxx.utils.shouqianba.PayUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
@@ -51,6 +53,7 @@ public class PayTask implements Runnable {
         String terminal_key = payActivate.getTerminalKey();
         logger.info("terminal_key={}", terminal_key);
         //开始轮询
+        logger.info("---------------开始轮询---------------");
         boolean flag = true;
         QueryResult query = null;
         BigInteger initTime = BigInteger.valueOf(System.currentTimeMillis());
@@ -58,6 +61,7 @@ public class PayTask implements Runnable {
         if (flag) {
             //查询获得结果
             QueryResult q = PayUtil.query(terminalSn, terminal_key, clientSn, sn);
+            logger.info("查询接口结果={}", JSON.toJSONString(q));
             if (q == null) {
                 BigInteger curTime = BigInteger.valueOf(System.currentTimeMillis());
                 if (curTime.subtract(initTime).compareTo(new BigInteger(TIME_OUT)) == 1) {
@@ -79,7 +83,7 @@ public class PayTask implements Runnable {
                     PayPayments payPayments = new PayPayments();
                     payPayments.setLrsj(new Date());
                     payPayments.setGsdm(gsdm);
-                    payPayments.setAmountTotal(queryPayment.getAmount_total());
+                    payPayments.setAmountTotal(this.changeAmount(queryPayment.getAmount_total()));
                     payPayments.setType(queryPayment.getType());
                     payPayments.setOutId(savePayOut.getId());
                     payPaymentsRepository.save(payPayments);
@@ -108,6 +112,7 @@ public class PayTask implements Runnable {
             }
             break x;
         }
+        logger.info("---------------结束轮询---------------");
     }
 
 
@@ -146,7 +151,7 @@ public class PayTask implements Runnable {
         payRecord.setClientSn(data.getClient_sn());
         payRecord.setSn(data.getSn());
         payRecord.setTradeNo(data.getTrade_no());
-        payRecord.setTotalAmount(data.getTotal_amount());
+        payRecord.setTotalAmount(this.changeAmount(data.getTotal_amount()));
         payRecord.setStatus(data.getStatus());
         payRecord.setReqType(reqType);//0查询 1撤单
         payRecord.setStoreNo(storeNo);
@@ -176,12 +181,12 @@ public class PayTask implements Runnable {
         oldOutCancel.setOperator(data.getOperator());
         oldOutCancel.setqResultCode(biz_response.getResult_code());
         oldOutCancel.setStatus(data.getStatus());
-        oldOutCancel.setTotalAmount(data.getTotal_amount());
+        oldOutCancel.setTotalAmount(this.changeAmount(data.getTotal_amount()));
         oldOutCancel.setSubject(data.getSubject());
         oldOutCancel.setTradeNo(data.getTrade_no());
         oldOutCancel.setChannelFinishTime(data.getChannel_finish_time());
         oldOutCancel.setFinishTime(data.getFinish_time());
-        oldOutCancel.setNetAmount(data.getNet_amount());
+        oldOutCancel.setNetAmount(this.changeAmount(data.getNet_amount()));
         oldOutCancel.setPayerUid(data.getPayer_uid());
         oldOutCancel.setPaywayName(data.getPayway_name());
         oldOutCancel.setOrderStatus(data.getOrder_status());
@@ -190,6 +195,10 @@ public class PayTask implements Runnable {
         return payOutRepository.save(oldOutCancel);
     }
 
+
+    private String changeAmount(String stringAmount){
+        return new BigDecimal(stringAmount).divide(new BigDecimal("100"), 2, BigDecimal.ROUND_HALF_UP).toString();
+    }
 
     public String getTerminalSn() {
         return terminalSn;
