@@ -6,6 +6,7 @@ import com.rjxx.taxeasy.dao.shouqianba.*;
 import com.rjxx.taxeasy.domains.shouqianba.PayCode;
 import com.rjxx.taxeasy.domains.shouqianba.PayIn;
 import com.rjxx.taxeasy.domains.shouqianba.PayOut;
+import com.rjxx.taxeasy.domains.shouqianba.PayRecord;
 import com.rjxx.taxeasy.dto.shouqianba.PayResult;
 import com.rjxx.taxeasy.task.PayTask;
 import com.rjxx.utils.shouqianba.PayUtil;
@@ -177,6 +178,33 @@ public class PayService {
             result.put("gsdm",gsdm);
             result.put("orderNo",orderNo);
         } else {
+            //创建记录表对象
+            PayRecord payRecord = new PayRecord();
+            payRecord.setLrsj(new Date());
+            payRecord.setErrorCode(error_code);
+            payRecord.setErrorMessage(error_message);
+            payRecord.setSn(sn);
+            payRecord.setTradeNo(trade_no);
+            payRecord.setStatus(status);
+            payRecord.setReqType("2");//0查询 1撤单 2失败
+            payRecord.setStoreNo(storeNo);
+            payRecord.setIsSuccess(is_success);
+            payRecordRepository.save(payRecord);
+
+            //更新主表
+            PayOut oldOutCancel = payOutRepository.findOneByGsdmAndOrderNo(gsdm, orderNo);
+            oldOutCancel.setXgsj(new Date());
+            oldOutCancel.setErrorMessage(error_message);
+            oldOutCancel.setErrorCode(error_code);
+            oldOutCancel.setSn(sn);
+            oldOutCancel.setTradeNo(trade_no);
+            oldOutCancel.setSign(sign);
+            oldOutCancel.setStatus(status);
+            oldOutCancel.setIsSuccess(is_success);
+            oldOutCancel.setResultCode(result_code);
+            oldOutCancel.setResultMessage(result_message);
+            payOutRepository.save(oldOutCancel);
+
             if (StringUtils.isNotBlank(error_code)) {
                 result.put("errorMsg", error_message);
             } else {
