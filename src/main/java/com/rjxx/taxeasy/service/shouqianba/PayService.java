@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -67,9 +67,9 @@ public class PayService {
         reflectMap.put("orderNo", orderNo);
         reflectMap.put("storeNo", storeNo);
         String reflect = JSON.toJSONString(reflectMap);
-        BigDecimal payTotal = null;
+        BigInteger payTotal = null;
         try {
-            payTotal = new BigDecimal(total_amount).multiply(new BigDecimal("100"));
+            payTotal = new BigInteger(total_amount).multiply(new BigInteger("100"));
         } catch (Exception e) {
             e.printStackTrace();
             errorResult.put("errorMsg", "传入金额有误,支付失败");
