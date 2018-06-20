@@ -78,7 +78,7 @@ public class PayTask implements Runnable {
             }
             List<QueryPayment> payment_list = data.getPayment_list();
             List<PayPayments> byoutId = payPaymentsRepository.findByoutId(savePayOut.getId());
-            if (byoutId == null) {
+            if (byoutId.isEmpty()) {
                 for (QueryPayment queryPayment : payment_list) {
                     PayPayments payPayments = new PayPayments();
                     payPayments.setLrsj(new Date());
