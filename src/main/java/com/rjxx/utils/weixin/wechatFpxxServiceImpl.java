@@ -2,9 +2,13 @@ package com.rjxx.utils.weixin;
 
 import com.itextpdf.text.log.Logger;
 import com.itextpdf.text.log.LoggerFactory;
+import com.rjxx.taxeasy.dao.CsbJpaDao;
+import com.rjxx.taxeasy.dao.SkpJpaDao;
 import com.rjxx.taxeasy.dao.WxfpxxJpaDao;
-import com.rjxx.taxeasy.domains.Gsxx;
-import com.rjxx.taxeasy.domains.WxFpxx;
+import com.rjxx.taxeasy.dao.XfJpaDao;
+import com.rjxx.taxeasy.domains.*;
+import com.rjxx.taxeasy.service.CsbService;
+import com.rjxx.taxeasy.service.CszbService;
 import com.rjxx.taxeasy.service.GsxxService;
 import com.rjxx.utils.alipay.AlipayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +32,17 @@ public class wechatFpxxServiceImpl {
     @Autowired
     private GsxxService gsxxService;
 
+    @Autowired
+    private CszbService cszbService;
+    @Autowired
+    private SkpJpaDao skpJpaDao;
+    @Autowired
+    private XfJpaDao xfJpaDao;
+
 
     /**
      * 对上传给微信的订单号进行count
+     * 对订单号拼接新公司代码
      * @param orderNo
      * @return
      */
@@ -63,6 +75,40 @@ public class wechatFpxxServiceImpl {
             return  orderNo;
         }
     }
+
+    /**
+     * 对上传给微信的订单号进行count计数
+     * 对订单号查询参数拼接
+     * @param orderNo,gsdm,xfid
+     * @return
+     */
+    public String getweixinOrderNo(String orderNo,String gsdm,Integer xfid){
+        WxFpxx wxFpxx = wxfpxxJpaDao.selsetByOrderNo(orderNo,gsdm);
+        String weixinOrderNo1 = "";
+        String weixinOrderno2 ="";
+        if(null!=wxFpxx){
+            Cszb cszb = cszbService.getSpbmbbh(gsdm, xfid, null, "prefix-OrderNo");
+            if(cszb!=null && cszb.getCsz()!=null){
+                weixinOrderNo1 = cszb.getCsz()+"-"+orderNo;
+            }else {
+                weixinOrderNo1 = orderNo;
+            }
+            if(wxFpxx.getCount() == 0){
+                wxFpxx.setWeixinOderno(weixinOrderNo1);
+                wxfpxxJpaDao.save(wxFpxx);
+                return weixinOrderNo1;
+            }else {
+                weixinOrderno2 = weixinOrderNo1 +"-"+ wxFpxx.getCount();
+                wxFpxx.setWeixinOderno(weixinOrderno2);
+                wxfpxxJpaDao.save(wxFpxx);
+                return weixinOrderno2;
+            }
+        }else {
+            return  orderNo;
+        }
+    }
+
+
 
     /**
      * 封装微信发票信息保存
@@ -358,5 +404,25 @@ public class wechatFpxxServiceImpl {
                     }
                 }
                 return true;
+            }
+
+            /**
+             * 根据门店号和公司代码获取销方id
+             * @param storeNo
+             * @param gsdm
+             * @return
+             */
+            public Integer getxfid(String storeNo,String gsdm){
+                Integer xfid=null;
+                if(storeNo!=null){
+                    Skp skp = skpJpaDao.findOneByKpddmAndGsdm(storeNo, gsdm);
+                    if(skp!=null){
+                        Xf xf = xfJpaDao.findOneById(skp.getXfid());
+                        if (xf!=null){
+                            xfid = xf.getId();
+                        }
+                    }
+                }
+                return xfid;
             }
 }
