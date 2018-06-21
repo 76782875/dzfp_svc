@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -161,7 +162,7 @@ public class PayUtil {
         param.put("terminal_sn", terminal_sn);
         param.put("client_sn", client_sn);
         param.put("total_amount", total_amount);
-        param.put("subject", subject);
+        param.put("subject", URLEncoder.encode(subject));
         param.put("operator", operator);
         param.put("return_url", return_url);
         param.put("reflect", reflect);
