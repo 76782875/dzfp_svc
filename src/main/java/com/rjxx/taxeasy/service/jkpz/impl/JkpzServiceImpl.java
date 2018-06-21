@@ -3,8 +3,6 @@ package com.rjxx.taxeasy.service.jkpz.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.itextpdf.text.log.Logger;
-import com.itextpdf.text.log.LoggerFactory;
 import com.rjxx.taxeasy.bizcomm.utils.GetXmlUtil;
 import com.rjxx.taxeasy.bizcomm.utils.HttpUtils;
 import com.rjxx.taxeasy.dao.JkmbzbJpaDao;
@@ -28,6 +26,8 @@ import com.rjxx.utils.yjapi.Result;
 import com.rjxx.utils.yjapi.ResultUtil;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -74,7 +74,7 @@ public class JkpzServiceImpl implements JkpzService {
     @Autowired
     private KplsService kplsService;
 
-    private Logger logger = LoggerFactory.getLogger(JkpzServiceImpl.class);
+    private static Logger logger = LoggerFactory.getLogger(JkpzServiceImpl.class);
 
     /**
      * 接口配置业务处理:发票开具、上传、红冲
@@ -87,6 +87,7 @@ public class JkpzServiceImpl implements JkpzService {
             JSONObject jsonObject = JSONObject.parseObject(data);
             String reqType = jsonObject.getString("reqType");
             if(StringUtils.isBlank(reqType)){
+                logger.info("error={}","参数传入类型为空");
                 return ResultUtil.error("参数传入类型为空");
             }
             //发票开具、上传
@@ -96,6 +97,7 @@ public class JkpzServiceImpl implements JkpzService {
 //                AdapterPost adapterPost=mapper.readValue(data, AdapterPost.class);
                 AdapterPost adapterPost=JSON.parseObject(data,AdapterPost.class);
                 if(adapterPost==null){
+                    logger.info("error={}","参数错误");
                     return ResultUtil.error("参数错误");
                 }
                 Jyxxsq jyxxsq = new Jyxxsq();
@@ -112,16 +114,19 @@ public class JkpzServiceImpl implements JkpzService {
                     if(StringUtils.isNotBlank(xfsh)){
                         xf = xfJpaDao.findOneByXfshAndGsdm(xfsh,gsdm);
                         if(xf==null){
+                            logger.info("error={}","根据销方税号，获取销方有误");
                             return ResultUtil.error("根据销方税号，获取销方有误");
                         }
                     }else{
                         xf=xfJpaDao.findOneByGsdm(gsdm);
                         if(xf==null){
+                            logger.info("error={}","获取销方有误");
                             return ResultUtil.error("获取销方有误");
                         }
                     }
                 } catch (RuntimeException e) {
                     e.printStackTrace();
+                    logger.info("error={}","获取销方信息有误");
                     return ResultUtil.error("获取销方信息有误");
                 }
                 //处理开票点
@@ -131,20 +136,24 @@ public class JkpzServiceImpl implements JkpzService {
                     if(StringUtils.isNotBlank(kpddm)){
                         skp = skpJpaDao.findOneByKpddmAndGsdm(kpddm, gsdm);
                         if(skp==null){
+                            logger.info("error={}","根据开票点代码，获取开票点有误");
                             return ResultUtil.error("根据开票点代码，获取开票点有误");
                         }
                     }else{
                         skp = skpJpaDao.findOneByGsdmAndXfsh(gsdm, xf.getId());
                         if(skp==null){
+                            logger.info("error={}","获取开票点有误");
                             return ResultUtil.error("获取开票点有误");
                         }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
+                    logger.info("error={}","获取开票点信息有误");
                     return ResultUtil.error("获取开票点信息有误");
                 }
                 Cszb cszb = cszbService.getSpbmbbh(gsdm, xf.getId(), skp.getId(), "jkpzmbid");
                 if(cszb==null || cszb.getCsz()==null || "".equals(cszb.getCsz())){
+                    logger.info("error={}","模板未配置");
                     return ResultUtil.error("模板未配置");
                 }
                 Map map1 = new HashMap();
@@ -153,6 +162,7 @@ public class JkpzServiceImpl implements JkpzService {
                 //获取数据模板
                 List<JkpzVo> jkmbzbList = jkmbzbService.findByMbId(map1);
                 if(jkmbzbList.isEmpty()){
+                    logger.info("error={}","模板设置有误");
                     return ResultUtil.error("模板设置有误");
                 }
                 if(adapterPost.getData().getOrder()!=null){
@@ -204,6 +214,7 @@ public class JkpzServiceImpl implements JkpzService {
                     }
                 }
                 if(StringUtils.isNotBlank(result)){
+                    logger.info("error={}",result);
                     return ResultUtil.error(result);
                 }
                 //校验数据
@@ -240,6 +251,7 @@ public class JkpzServiceImpl implements JkpzService {
                     msg = checkOrderUtil.checkAll(jyxxsqList,jymxsqList,jyzfmxList,gsdm,"01");
                 }
                 if(StringUtils.isNotBlank(msg)){
+                    logger.info("msg={}",msg);
                     return ResultUtil.error(msg);
                 }
 
@@ -251,8 +263,10 @@ public class JkpzServiceImpl implements JkpzService {
                 String kpresult = kpService.uploadOrderData(gsdm, kpMap,reqType);
                 DefaultResult defaultResult = XmlJaxbUtils.convertXmlStrToObject(DefaultResult.class, kpresult);
                 if(defaultResult.getReturnCode().equals("0000")){
+                    logger.info("success={}",defaultResult.getReturnMessage());
                     return ResultUtil.success(defaultResult.getReturnMessage());
                 }else {
+                    logger.info("error={}",defaultResult.getReturnMessage());
                     return ResultUtil.error(defaultResult.getReturnMessage());
                 }
             }
@@ -296,6 +310,7 @@ public class JkpzServiceImpl implements JkpzService {
                     }
                 }
                 if(StringUtils.isNotBlank(result)){
+                    logger.info("error={}",result);
                     return ResultUtil.error(result);
                 }
                 return ResultUtil.success(result);
@@ -343,11 +358,14 @@ public class JkpzServiceImpl implements JkpzService {
                         }
                     }
                     if(!result.equals("")){
+                        logger.info("error={}",result);
                         return ResultUtil.error(result);
                     }else{
+                        logger.info("success={}",result);
                         return ResultUtil.success(result);
                     }
                 }else{
+                    logger.info("error={}",result);
                     result = String.valueOf(resultMap.get("resMsg"));
                     return ResultUtil.error(result);
                 }
