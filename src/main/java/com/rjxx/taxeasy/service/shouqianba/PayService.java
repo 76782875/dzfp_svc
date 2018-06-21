@@ -267,4 +267,32 @@ public class PayService {
         map.put("finishTime", finishTime);
         return map;
     }
+
+
+    public Map extract(String tradeNo){
+        Map errorResult = new HashMap();
+        Map succResult = new HashMap();
+        PayOut payOut =null;
+        try {
+            payOut = payOutRepository.findOneByTradeNo(tradeNo);
+        }catch (Exception e){
+            e.printStackTrace();
+            errorResult.put("errorMsg", "根据该商户号查询到多条，请联系支付服务商");
+            return errorResult;
+        }
+        if(payOut!=null){
+            String orderNo = payOut.getOrderNo();
+            String totalAmount = payOut.getTotalAmount();
+            String gsdm = payOut.getGsdm();
+            String storeNo = payOut.getStoreNo();
+            succResult.put("orderNo", orderNo);
+            succResult.put("totalAmount", totalAmount);
+            succResult.put("gsdm", gsdm);
+            succResult.put("storeNo", storeNo);
+            return succResult;
+        }else{
+            errorResult.put("errorMsg", "根据该商户号，未查询到数据");
+            return errorResult;
+        }
+    }
 }
