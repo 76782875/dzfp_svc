@@ -2,6 +2,8 @@ package com.rjxx.utils;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.UnsupportedEncodingException;
+
 /**
  * @author wangyahui
  * @email wangyahui@datarj.com
@@ -29,6 +31,16 @@ public class StringUtil {
             }
         }
         return true;
+    }
+
+    public static String changeCharset(String s,String charset){
+        String encoding = getEncoding(s);
+        try {
+            return new String(s.getBytes(encoding), charset);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public static String getEncoding(String str) {
