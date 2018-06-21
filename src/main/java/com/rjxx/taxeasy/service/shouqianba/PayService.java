@@ -285,10 +285,12 @@ public class PayService {
             String totalAmount = payOut.getTotalAmount();
             String gsdm = payOut.getGsdm();
             String storeNo = payOut.getStoreNo();
+            String finishTime = payOut.getFinishTime();
             succResult.put("orderNo", orderNo);
             succResult.put("totalAmount", totalAmount);
             succResult.put("gsdm", gsdm);
             succResult.put("storeNo", storeNo);
+            succResult.put("orderTime", finishTime);
             return succResult;
         }else{
             errorResult.put("errorMsg", "根据该商户号，未查询到数据");
