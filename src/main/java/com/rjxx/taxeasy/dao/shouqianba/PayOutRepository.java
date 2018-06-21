@@ -11,4 +11,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface PayOutRepository extends JpaRepository<PayOut,Integer> {
     PayOut findOneByGsdmAndOrderNo(String gsdm,String orderNo);
+
+    PayOut findOneByTradeNo(String tradeNo);
 }
