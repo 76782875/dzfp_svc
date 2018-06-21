@@ -4,12 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.rjxx.taxeasy.dto.shouqianba.MerchantCreate;
 import com.rjxx.taxeasy.dto.shouqianba.QueryResult;
-import com.rjxx.utils.StringUtil;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -162,7 +162,7 @@ public class PayUtil {
         param.put("terminal_sn", terminal_sn);
         param.put("client_sn", client_sn);
         param.put("total_amount", total_amount);
-        param.put("subject", StringUtil.changeCharset(subject,"iso-8859-1"));
+        param.put("subject", subject);
         param.put("operator", operator);
         param.put("return_url", return_url);
         param.put("reflect", reflect);
@@ -170,7 +170,12 @@ public class PayUtil {
         logger.info("signatureContent={}", signatureContent);
         String sign = DigestUtils.md5Hex(signatureContent + "&key=" + terminal_key).toUpperCase();
         logger.info("sign={}", sign);
-        String paramString = signatureContent + "&sign=" + sign;
+
+        param.put("subject", URLEncoder.encode(subject));
+        String encodeSignatureContent = getSignatureContent(param);//排序
+        String paramString = encodeSignatureContent + "&sign=" + sign;
+
+//        String paramString = signatureContent + "&sign=" + sign;
         String redirectUrl = WAP_API_PRO_URL + "?" + paramString;
         logger.info("redirectUrl={}", redirectUrl);
         Map result = new HashMap();
@@ -248,8 +253,8 @@ public class PayUtil {
         String subject = "测试";
         String oprator = "wyh";
 
-        QueryResult query = query(terminal_sn, terminal_key, clientSn, null);
-        System.out.println(query.toString());
+//        QueryResult query = query(terminal_sn, terminal_key, clientSn, null);
+//        System.out.println(query.toString());
 //
 //        Map map = payIn(terminal_sn, terminal_key, clientSn, price, subject, oprator, returnUrl, "wyh");
 //        System.out.println((String) map.get("url"));
