@@ -183,8 +183,12 @@ public class BuildQRService {
             succResult.put("terminalSn", terminalSn);
             succResult.put("terminalKey", terminalKey);
             Cszb dyspbmbCs = cszbService.getSpbmbbh(gsdm, xfid, skpid, "dyspbmb");
+            Map spvoMap = new HashMap();
+            spvoMap.put("gsdm", gsdm);
+            spvoMap.put("spdm", dyspbmbCs.getCsz());
+            Spvo oneSpvo = spvoService.findOneSpvo(spvoMap);
             if (dyspbmbCs.getCsz() != null) {
-                succResult.put("spmc", dyspbmbCs.getCsz());
+                succResult.put("spmc", oneSpvo.getSpmc());
             } else {
                 errorResult.put("errorMsg", "未获取到默认商品,请确认初始化信息");
                 return errorResult;
