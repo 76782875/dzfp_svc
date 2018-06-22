@@ -157,4 +157,25 @@ public class PayResult {
     public void setSign(String sign) {
         this.sign = sign;
     }
+
+    @Override
+    public String toString() {
+        return "PayResult{" +
+                "is_success='" + is_success + '\'' +
+                ", error_code='" + error_code + '\'' +
+                ", error_message='" + error_message + '\'' +
+                ", terminal_sn='" + terminal_sn + '\'' +
+                ", sn='" + sn + '\'' +
+                ", trade_no='" + trade_no + '\'' +
+                ", client_sn='" + client_sn + '\'' +
+                ", status='" + status + '\'' +
+                ", result_code='" + result_code + '\'' +
+                ", result_message='" + result_message + '\'' +
+                ", total_amount='" + total_amount + '\'' +
+                ", subject='" + subject + '\'' +
+                ", operator='" + operator + '\'' +
+                ", reflect='" + reflect + '\'' +
+                ", sign='" + sign + '\'' +
+                '}';
+    }
 }

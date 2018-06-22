@@ -148,7 +148,7 @@ public class ImputationCardUtil {
 					return true;
 
 				} else if (null!= jyxxsq.getSjly()&& jyxxsq.getSjly().equals("4")) { //数据来源4表示微信
-					String newDdh = wechatFpxxImpl.getweixinOrderNo(jyxxsq.getDdh(),jyxxsq.getGsdm());
+					String newDdh = wechatFpxxImpl.getweixinOrderNo(jyxxsq.getDdh(),jyxxsq.getGsdm(),jyxxsq.getXfid());
 					String result = weixinUtils.fpInsertCardBox(newDdh, getPdf_file_url(pdf_file_url), kpspmxList, kpls);
 					//存入卡包失败
 					if (null == result) {
@@ -201,7 +201,7 @@ public class ImputationCardUtil {
 			}else if(jyxxsq.getSjly()!=null && jyxxsq.getSjly().equals("4")){ //数据来源4表示微信
 				wechatFpxxServiceImpl imp = new wechatFpxxServiceImpl();
 				//WeixinUtils weinxinUtil = new WeixinUtils();
-				String newDdh = wechatFpxxImpl.getweixinOrderNo(jyxxsq.getDdh(),jyxxsq.getGsdm());
+				String newDdh = wechatFpxxImpl.getweixinOrderNo(jyxxsq.getDdh(),jyxxsq.getGsdm(),jyxxsq.getXfid());
 				String result = weixinUtils.fpInsertCardBox(newDdh,getPdf_file_url(pdf_file_url),kpspmxList,kpls);
 				//存入卡包失败
 				if(null == result){

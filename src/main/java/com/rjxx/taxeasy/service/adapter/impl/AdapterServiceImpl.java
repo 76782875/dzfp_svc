@@ -9,7 +9,9 @@ import com.rjxx.taxeasy.domains.*;
 import com.rjxx.taxeasy.dto.*;
 import com.rjxx.taxeasy.invoice.DefaultResult;
 import com.rjxx.taxeasy.invoice.KpService;
-import com.rjxx.taxeasy.service.*;
+import com.rjxx.taxeasy.service.CszbService;
+import com.rjxx.taxeasy.service.JymxsqService;
+import com.rjxx.taxeasy.service.SpvoService;
 import com.rjxx.taxeasy.service.adapter.AdapterService;
 import com.rjxx.taxeasy.service.adapter.TransferExtractDataService;
 import com.rjxx.taxeasy.service.jkpz.JkpzService;
@@ -18,6 +20,7 @@ import com.rjxx.utils.*;
 import com.rjxx.utils.weixin.HttpClientUtil;
 import com.rjxx.utils.weixin.WeixinUtils;
 import com.rjxx.utils.yjapi.Result;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -215,7 +218,7 @@ public class AdapterServiceImpl implements AdapterService {
                 Skp skp = skpJpaDao.findOneByGsdmAndXfsh(gsdm, xf.getId());
                 storeNo = skp.getKpddm();
             } catch (Exception e) {
-                return null;
+                return "3";
             }
         }
         StringBuilder spsl = new StringBuilder();
@@ -233,7 +236,7 @@ public class AdapterServiceImpl implements AdapterService {
                     Integer priceSize = RJCheckUtil.getSize(price, ",");
                     Integer spdmSize = RJCheckUtil.getSize(spdm, ",");
                     if (priceSize != spdmSize) {
-                        return null;
+                        return "4";
                     }
                     String[] spdmArray = spdm.split(",");
                     String[] priceArray = spdm.split(",");
@@ -280,7 +283,7 @@ public class AdapterServiceImpl implements AdapterService {
                         spsl.append(oneSpvo.getSl());
                         spmc.append(oneSpvo.getSpmc());
                     } else {
-                        return null;
+                        return "5";
                     }
                 }
                 Map result = new HashMap();
@@ -311,7 +314,7 @@ public class AdapterServiceImpl implements AdapterService {
             }
         } else {
             logger.info("required msg is null");
-            return null;
+            return "6";
         }
     }
 
@@ -709,7 +712,16 @@ public class AdapterServiceImpl implements AdapterService {
             Cszb cszb = cszbService.getSpbmbbh(gsdm, null, null, "sendBuyerUrl");
             JSONObject jsonObject = JSON.parseObject(JSON.toJSONString(buyer));
             jsonObject.put("orderNo", on);
-            String result = HttpClientUtil.doPostJson(cszb.getCsz(), JSON.toJSONString(jsonObject));
+            Gsxx oneByGsdm = gsxxJpaDao.findOneByGsdm(gsdm);
+            String key = oneByGsdm.getSecretKey();
+            String data = JSON.toJSONString(jsonObject);
+            String sign = DigestUtils.md5Hex("data=" + data + "&key=" + key);
+            Map map = new HashMap();
+            map.put("data", jsonObject);
+            map.put("sign", sign);
+            logger.info("发送数据={}",JSON.toJSONString(map));
+            String result = HttpClientUtil.doPostJson(cszb.getCsz(), JSON.toJSONString(map));
+            logger.info("发送抬头接收客户返回={}",result);
             if ("0000".equals(JSON.parseObject(result).getString("returnCode"))) {
                 return true;
             } else {

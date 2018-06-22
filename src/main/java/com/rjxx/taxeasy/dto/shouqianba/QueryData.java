@@ -169,4 +169,26 @@ public class QueryData {
     public void setPayment_list(List<QueryPayment> payment_list) {
         this.payment_list = payment_list;
     }
+
+    @Override
+    public String toString() {
+        return "QueryData{" +
+                "terminal_sn='" + terminal_sn + '\'' +
+                ", sn='" + sn + '\'' +
+                ", client_sn='" + client_sn + '\'' +
+                ", status='" + status + '\'' +
+                ", order_status='" + order_status + '\'' +
+                ", payway='" + payway + '\'' +
+                ", payway_name='" + payway_name + '\'' +
+                ", payer_uid='" + payer_uid + '\'' +
+                ", trade_no='" + trade_no + '\'' +
+                ", total_amount='" + total_amount + '\'' +
+                ", net_amount='" + net_amount + '\'' +
+                ", finish_time='" + finish_time + '\'' +
+                ", channel_finish_time='" + channel_finish_time + '\'' +
+                ", subject='" + subject + '\'' +
+                ", operator='" + operator + '\'' +
+                ", payment_list=" + payment_list +
+                '}';
+    }
 }

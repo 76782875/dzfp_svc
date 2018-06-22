@@ -25,4 +25,13 @@ public class QueryPayment {
     public void setAmount_total(String amount_total) {
         this.amount_total = amount_total;
     }
+
+
+    @Override
+    public String toString() {
+        return "QueryPayment{" +
+                "type='" + type + '\'' +
+                ", amount_total='" + amount_total + '\'' +
+                '}';
+    }
 }

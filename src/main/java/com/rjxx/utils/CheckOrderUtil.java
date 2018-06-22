@@ -413,12 +413,24 @@ public class CheckOrderUtil {
                             result += "订单号为" + ddh + "的订单,第"+ (j+1) + "行的商品("+ProductName+")对应商品税收分类编码(ProductCode)"+ProductCode+"不是最明细列!\r\n";
                         }
                     }
+
                     // 发票行性质
                     String RowType = (String) jymxsq.getFphxz();
                     if (RowType == null) {
                         result += "订单号为" + ddh + "的订单发票行性质(RowType)为空！\r\n";
                     } else if (!("0".equals(RowType) || "1".equals(RowType) || "2".equals(RowType))) {
                         result += "订单号为" + ddh + "的订单发票行性质(RowType)只能填写0，1或2!\r\n";
+                    }
+
+                    if(null !=RowType && !RowType.equals("") && RowType.equals("2") ){
+                        Jymxsq jymxsq2 = jymxsqList.get(j+1);
+                        if(!jymxsq2.getFphxz().equals("1")){
+                            result += "订单号为" + ddh + "的订单，"+jymxsq.getSpmc()+"对应折扣行（RowType=1）必须紧跟着被折扣行（RowType=2）!\r\n";
+                        }else{
+                            if(jymxsq.getSpje()<-jymxsq2.getSpje()){
+                                result += "订单号为" + ddh + "的订单，"+jymxsq.getSpmc()+"对应被折扣行（RowType=2）必须大于等于折扣行（RowType=1）的绝对值!\r\n";
+                            }
+                        }
                     }
                     // 商品数
                     /*
