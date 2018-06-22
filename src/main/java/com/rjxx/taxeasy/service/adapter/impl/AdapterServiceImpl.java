@@ -218,7 +218,7 @@ public class AdapterServiceImpl implements AdapterService {
                 Skp skp = skpJpaDao.findOneByGsdmAndXfsh(gsdm, xf.getId());
                 storeNo = skp.getKpddm();
             } catch (Exception e) {
-                return null;
+                return "3";
             }
         }
         StringBuilder spsl = new StringBuilder();
@@ -236,7 +236,7 @@ public class AdapterServiceImpl implements AdapterService {
                     Integer priceSize = RJCheckUtil.getSize(price, ",");
                     Integer spdmSize = RJCheckUtil.getSize(spdm, ",");
                     if (priceSize != spdmSize) {
-                        return null;
+                        return "4";
                     }
                     String[] spdmArray = spdm.split(",");
                     String[] priceArray = spdm.split(",");
@@ -283,7 +283,7 @@ public class AdapterServiceImpl implements AdapterService {
                         spsl.append(oneSpvo.getSl());
                         spmc.append(oneSpvo.getSpmc());
                     } else {
-                        return null;
+                        return "5";
                     }
                 }
                 Map result = new HashMap();
@@ -314,7 +314,7 @@ public class AdapterServiceImpl implements AdapterService {
             }
         } else {
             logger.info("required msg is null");
-            return null;
+            return "6";
         }
     }
 
