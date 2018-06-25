@@ -9,6 +9,7 @@ import com.rjxx.taxeasy.domains.shouqianba.PayOut;
 import com.rjxx.taxeasy.domains.shouqianba.PayRecord;
 import com.rjxx.taxeasy.dto.shouqianba.PayResult;
 import com.rjxx.taxeasy.task.PayTask;
+import com.rjxx.utils.StringUtil;
 import com.rjxx.utils.shouqianba.PayUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -281,17 +282,23 @@ public class PayService {
             return errorResult;
         }
         if(payOut!=null){
-            String orderNo = payOut.getOrderNo();
-            String totalAmount = payOut.getTotalAmount();
-            String gsdm = payOut.getGsdm();
-            String storeNo = payOut.getStoreNo();
-            String finishTime = payOut.getFinishTime();
-            succResult.put("orderNo", orderNo);
-            succResult.put("totalAmount", totalAmount);
-            succResult.put("gsdm", gsdm);
-            succResult.put("storeNo", storeNo);
-            succResult.put("orderTime", finishTime);
-            return succResult;
+            try {
+                String orderNo = payOut.getOrderNo();
+                String totalAmount = payOut.getTotalAmount();
+                String gsdm = payOut.getGsdm();
+                String storeNo = payOut.getStoreNo();
+                String finishTime = StringUtil.timeStamp2Date(payOut.getFinishTime(),"yyyyMMddHHmmss");
+                succResult.put("orderNo", orderNo);
+                succResult.put("totalAmount", totalAmount);
+                succResult.put("gsdm", gsdm);
+                succResult.put("storeNo", storeNo);
+                succResult.put("orderTime",finishTime);
+                return succResult;
+            }catch (NullPointerException e){
+                e.printStackTrace();
+                errorResult.put("errorMsg", "获取开票参数失败");
+                return errorResult;
+            }
         }else{
             errorResult.put("errorMsg", "根据该商户号，未查询到数据");
             return errorResult;
