@@ -56,9 +56,9 @@ public class DealGoodsUtil {
                 return ResponeseUtils.error("公司信息没有维护！");
             }
             String check = RJCheckUtil.decodeXml(gsxx.getSecretKey(), JSON.toJSONString(data), sign);
-           // if ("0".equals(check)) {
-            //    return ResponeseUtils.error("签名不通过！");
-           // }else{
+            if ("0".equals(check)) {
+                return ResponeseUtils.error("签名不通过！");
+            }else{
                 if(data.size() <= 0){
                     return ResponeseUtils.error("商品信息不全，请查看文档！");
                 }
@@ -125,7 +125,7 @@ public class DealGoodsUtil {
                 return ResponeseUtils.error("商品上传失败，失败原因:"+msg);
             }
             spService.save(splist);
-           // }
+            }
         }catch (Exception e){
             e.printStackTrace();
             return ResponeseUtils.error("商品上传失败！");
