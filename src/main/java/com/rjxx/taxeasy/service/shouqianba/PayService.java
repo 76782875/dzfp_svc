@@ -276,6 +276,7 @@ public class PayService {
         PayOut payOut =null;
         try {
             payOut = payOutRepository.findOneByTradeNo(tradeNo);
+            logger.info("pay_extract={}",JSON.toJSONString(payOut));
         }catch (Exception e){
             e.printStackTrace();
             errorResult.put("errorMsg", "根据该商户号查询到多条，请联系支付服务商");
@@ -293,6 +294,7 @@ public class PayService {
                 succResult.put("gsdm", gsdm);
                 succResult.put("storeNo", storeNo);
                 succResult.put("orderTime",finishTime);
+                logger.info("send_extract={}",JSON.toJSONString(succResult));
                 return succResult;
             }catch (NullPointerException e){
                 e.printStackTrace();
