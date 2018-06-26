@@ -150,5 +150,7 @@ public class XfService {
         return xfMapper.findXfkzListByXfid(map);
     }
 
-
+    public List<Map> findByxfshAndSkph(Map<String, Object> map) {
+        return xfMapper.findByxfshAndSkph(map);
+    }
 }

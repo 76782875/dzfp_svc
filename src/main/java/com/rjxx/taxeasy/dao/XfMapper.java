@@ -38,4 +38,6 @@ public interface XfMapper {
 	public XfVo findAllByXfxx(Map map);
 
 	public List<XfKzVo> findXfkzListByXfid(Map map);
+
+	public List<Map> findByxfshAndSkph(Map map);
 }
