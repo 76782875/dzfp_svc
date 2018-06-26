@@ -21,7 +21,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author: zsq
@@ -44,8 +48,6 @@ public class DealGoodsUtil {
 
     public String dealGoods(String OrderData){
         Map resultMap = new HashMap();
-        String result = "";//处理返回后的结果信息
-        //HashMap<String, Object> jsonObject = null;
         try {
             JSONObject jsonObject = JSONObject.parseObject(OrderData);
             String sign = String.valueOf(jsonObject.get("sign"));
@@ -53,17 +55,25 @@ public class DealGoodsUtil {
             JSONArray data = jsonObject.getJSONArray("data");
             Gsxx gsxx = gsxxJpaDao.findOneByAppid(appId);
             if(null == gsxx){
-                return ResponeseUtils.error("公司信息没有维护！");
+                resultMap.put("returnCode","9999");
+                resultMap.put("returnMessage","公司信息没有维护！");
+                return JSON.toJSONString(resultMap);
             }
             String check = RJCheckUtil.decodeXml(gsxx.getSecretKey(), JSON.toJSONString(data), sign);
             if ("0".equals(check)) {
-                return ResponeseUtils.error("签名不通过！");
+                resultMap.put("returnCode","9999");
+                resultMap.put("returnMessage","签名不通过,请重新上传！");
+                return JSON.toJSONString(resultMap);
             }else{
                 if(data.size() <= 0){
-                    return ResponeseUtils.error("商品信息不全，请查看文档！");
+                    resultMap.put("returnCode","9999");
+                    resultMap.put("returnMessage","商品信息不全，请查看文档！");
+                    return JSON.toJSONString(resultMap);
                 }
                 List<Sp> splist = new ArrayList<>();
                 List<Sm> smList = smService.findAll();
+                String msgg = "";
+                String msgdj = "";
                 for(int i =0 ; i<data.size();i++){
                     JSONObject jo = data.getJSONObject(i);
                     Sp sp = new Sp();
@@ -107,6 +117,24 @@ public class DealGoodsUtil {
                         sp.setSpdw(null);
                     }
                     try {
+                        //判断单价格式是否保留两位小数
+                        if(jo.getString("spdj")!=null && !"".equals(jo.getString("spdj"))){
+                            Pattern p=Pattern.compile("^[1-9]\\d*\\.\\d*|0\\.\\d*[1-9]\\d*$");
+                            Matcher m=p.matcher(jo.getString("spdj"));
+                            boolean b=m.matches();
+                            if(b){
+                                int bitPos=jo.getString("spdj").indexOf(".");
+                                int numOfBits=jo.getString("spdj").length()-bitPos-1;
+                                System.out.println(numOfBits);
+                                if(numOfBits!=2){
+                                    msgg = "第" + (i+1 ) + "条商品单价格式不正确，请重新上传！";
+                                    msgdj += msgg;
+                                }
+                            }else {
+                                msgg = "第" + (i+1 ) + "条商品单价格式不正确，请重新上传！";
+                                msgdj += msgg;
+                            }
+                        }
                         sp.setSpdj((jo.getString("spdj")== null ||jo.getString("spdj").equals(""))? null : Double.valueOf(jo.getString("spdj")));
                     } catch (Exception e) {
                         sp.setSpdj(null);
@@ -119,24 +147,34 @@ public class DealGoodsUtil {
                     }
                     splist.add(sp);
                 }
-            String msg = check(splist, gsxx.getGsdm());
-            logger.info("---"+msg);
-            if(StringUtils.isNotBlank(msg)){
-                return ResponeseUtils.error("商品上传失败，失败原因:"+msg);
-            }
+                if(StringUtils.isNotBlank(msgdj)){
+                    resultMap.put("returnCode","9999");
+                    resultMap.put("returnMessage","商品上传失败，失败原因:"+msgdj);
+                    return JSON.toJSONString(resultMap);
+                }
+                 String msg = check(splist, gsxx.getGsdm());
+                logger.info("---"+msg);
+                 if(StringUtils.isNotBlank(msg)){
+                    resultMap.put("returnCode","9999");
+                    resultMap.put("returnMessage","商品上传失败，失败原因:"+msg);
+                    return JSON.toJSONString(resultMap);
+                 }
             spService.save(splist);
             }
         }catch (Exception e){
             e.printStackTrace();
-            return ResponeseUtils.error("商品上传失败！");
+            resultMap.put("returnCode","9999");
+            resultMap.put("returnMessage","商品上传失败!");
+            return JSON.toJSONString(resultMap);
         }
-        return ResponeseUtils.success("商品上传成功！");
+        resultMap.put("returnCode","0000");
+        resultMap.put("returnMessage","商品上传成功!");
+        return JSON.toJSONString(resultMap);
     }
 
     private String check(List<Sp> list,String gsdm){
         String msgg = "";
         String msg = "";
-        String reg = "^[0-9]{0,16}+(.[0-9]{0,6})?$";
         Sp s = new Sp();
         s.setGsdm(gsdm);
         List<Sp> spList = spService.findAllByParams(s);
@@ -177,11 +215,11 @@ public class DealGoodsUtil {
                 msgg = "第" + (i+1) + "条商品单位超过10个字符，请重新上传！";
                 msg += msgg;
             }
-            Double spdj = sp.getSpdj();
+           /* Double spdj = sp.getSpdj();
             if (spdj != null && String.valueOf(spdj).matches(reg)) {
                 msgg = "第" + (i+1 ) + "条商品单价格式不正确，请重新上传！";
                 msg += msgg;
-            }
+            }*/
 
             // 判断商品代码是否存在
             for (int j = 0; j < spList.size(); j++) {
@@ -193,6 +231,10 @@ public class DealGoodsUtil {
             }
             boolean flag = false;
             String spbm = sp.getSpbm();
+            if (spbm == null || "".equals(spbm)) {
+                msgg = "第" + (i+1)  + "条商品和服务税收分类编码不能为空，请重新上传！";
+                msg += msgg;
+            }
             for (Spbm bm : spbmList) {
                 if (bm.getSpbm().equals(spbm)) {
                     flag = true;
