@@ -377,22 +377,25 @@ public class GeneratePdfService {
                             if (sjhm != null && !"".equals(sjhm)) {
                                 try {
                                     if(jyls.getGsdm().equals("fwk")){
-                                        smsEnvelopes mb=new smsEnvelopes();
-                                        mb.setToPhoneNumber(jyls.getGfsjh());
-                                        messageParams messageParams=new messageParams();
-                                        messageParams.setExtractcode(jyls.getTqm());
-                                        mb.setMessageType("DigitalInvoiceCode");
-                                        mb.setMessageParams(messageParams);
-                                        List mblist=new ArrayList();
-                                        mblist.add(mb);
-                                        Map smsEnvelopesMap=new HashMap();
-                                        smsEnvelopesMap.put("smsEnvelopes",mblist);
-                                        logger.info("-----短信模板-------"+JSON.toJSONString(smsEnvelopesMap));
-                                        HttpUtils.HttpPost_Basic(gsxx.getMessageurl(),JSON.toJSONString(smsEnvelopesMap));
-                                        Map param3 = new HashMap<>();
-                                        param3.put("djh", djh);
-                                        param3.put("dxzt", '1');
-                                        jylsService.updateDxbz(param3);
+                                        //提取码不为空-by：zsq
+                                        if(StringUtils.isNotBlank(jyls.getTqm())){
+                                            smsEnvelopes mb=new smsEnvelopes();
+                                            mb.setToPhoneNumber(jyls.getGfsjh());
+                                            messageParams messageParams=new messageParams();
+                                            messageParams.setExtractcode(jyls.getTqm());
+                                            mb.setMessageType("DigitalInvoiceCode");
+                                            mb.setMessageParams(messageParams);
+                                            List mblist=new ArrayList();
+                                            mblist.add(mb);
+                                            Map smsEnvelopesMap=new HashMap();
+                                            smsEnvelopesMap.put("smsEnvelopes",mblist);
+                                            logger.info("-----短信模板-------"+JSON.toJSONString(smsEnvelopesMap));
+                                            HttpUtils.HttpPost_Basic(gsxx.getMessageurl(),JSON.toJSONString(smsEnvelopesMap));
+                                            Map param3 = new HashMap<>();
+                                            param3.put("djh", djh);
+                                            param3.put("dxzt", '1');
+                                            jylsService.updateDxbz(param3);
+                                        }
                                     }else{
                                         saveMsg.saveMessage(jyls.getGsdm(), djh, sjhm, rep, "SMS_34725005", "泰易电子发票");
                                         Map param3 = new HashMap<>();
