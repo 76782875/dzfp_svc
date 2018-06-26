@@ -134,4 +134,45 @@
             order by a.lrsj desc
         </if>
     </select>
+
+    <select  id="findByxfshAndSkph" parameterType="map" resultType="map">
+        SELECT
+        b.xfsh,
+        b.xfmc,
+        b.xfdz,
+        b.xfdh,
+        b.xfyh,
+        b.xfyhzh,
+        a.kpddm,
+        a.kpdmc,
+        a.devicesn,
+        a.devicepassword,
+        a.devicekey,
+        a.skph,
+        a.skpmm,
+        a.zsmm,
+        c.csz
+        FROM
+        t_skp a
+        LEFT JOIN v_kpfs c
+        ON a.xfid = c.xfid
+        AND a.id = c.kpdid
+        LEFT JOIN t_xf b ON a.xfid = b.id
+        AND b.yxbz = '1'
+        WHERE
+        b.yxbz = '1'
+        <if test="xfsh != null and xfsh != ''">
+            and b.xfsh = #{xfsh}
+        </if>
+        <if test="gsdm != null and gsdm != ''">
+            and b.gsdm = #{gsdm}
+        </if>
+        <if test="skph != null and skph != ''">
+            and a.skph = #{skph}
+        </if>
+        <if test="csz != null and csz != ''">
+            AND c.csz = #{csz}
+        </if>
+    </select>
+
 </mapper>
