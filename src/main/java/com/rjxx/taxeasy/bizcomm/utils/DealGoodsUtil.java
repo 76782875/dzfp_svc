@@ -3,6 +3,7 @@ package com.rjxx.taxeasy.bizcomm.utils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.parser.Feature;
 import com.rjxx.taxeasy.dao.GsxxJpaDao;
 import com.rjxx.taxeasy.domains.Gsxx;
 import com.rjxx.taxeasy.domains.Sm;
@@ -49,10 +50,18 @@ public class DealGoodsUtil {
     public String dealGoods(String OrderData){
         Map resultMap = new HashMap();
         try {
-            JSONObject jsonObject = JSONObject.parseObject(OrderData);
+            HashMap<String, Object> jsonObject = null;
+            try {
+                jsonObject = JSON.parseObject(OrderData,LinkedHashMap.class, Feature.OrderedField);
+
+            }catch (Exception e){
+                resultMap.put("returnCode","9999");
+                resultMap.put("returnMessage","JSON数据格式有误！");
+                return JSON.toJSONString(resultMap);
+            }
             String sign = String.valueOf(jsonObject.get("sign"));
             String appId = String.valueOf(jsonObject.get("appId"));
-            JSONArray data = jsonObject.getJSONArray("data");
+            JSONArray data = (JSONArray) jsonObject.get("data");
             Gsxx gsxx = gsxxJpaDao.findOneByAppid(appId);
             if(null == gsxx){
                 resultMap.put("returnCode","9999");
