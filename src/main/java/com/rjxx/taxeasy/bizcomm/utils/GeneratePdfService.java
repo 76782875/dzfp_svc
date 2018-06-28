@@ -414,7 +414,7 @@ public class GeneratePdfService {
                                             rep = shortParam(jyls);
                                         }
                                         logger.info("----短信模板代码---"+mbdm+"短信内容："+JSON.toJSONString(rep));
-                                        saveMsg.saveMessage(jyls.getGsdm(), djh, sjhm, rep, "SMS_34725005", "泰易电子发票");
+                                        saveMsg.saveMessage(jyls.getGsdm(), djh, sjhm, rep, mbdm, "泰易电子发票");
                                         Map param3 = new HashMap<>();
                                         param3.put("djh", djh);
                                         param3.put("dxzt", '1');
