@@ -7,6 +7,8 @@ import com.rjxx.taxeasy.bizcomm.utils.pdf.PdfDocumentGenerator;
 import com.rjxx.taxeasy.bizcomm.utils.pdf.TwoDimensionCode;
 import com.rjxx.taxeasy.config.RabbitmqUtils;
 import com.rjxx.taxeasy.dao.KpspmxJpaDao;
+import com.rjxx.taxeasy.dao.PpJpaDao;
+import com.rjxx.taxeasy.dao.ShortLinkJpaDao;
 import com.rjxx.taxeasy.dao.XfJpaDao;
 import com.rjxx.taxeasy.domains.*;
 import com.rjxx.taxeasy.dto.*;
@@ -17,6 +19,7 @@ import com.rjxx.taxeasy.vo.smsEnvelopes;
 import com.rjxx.utils.SignUtils;
 import com.rjxx.utils.StringUtils;
 import com.rjxx.utils.XmlJaxbUtils;
+import com.rjxx.utils.dwz.ShortUrlUtil;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.jaxws.endpoint.dynamic.JaxWsDynamicClientFactory;
@@ -35,6 +38,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import sun.misc.BASE64Encoder;
 
@@ -98,6 +102,12 @@ public class GeneratePdfService {
     private KpspmxJpaDao kpspmxJpaDao;
     @Autowired
     private SaveGfxxUtil saveGfxxUtil;
+    @Autowired
+    private SkpService skpService;
+    @Autowired
+    private PpJpaDao ppJpaDao;
+    @Autowired
+    private ShortLinkJpaDao shortLinkJpaDao;
 
     @Autowired
     private RabbitmqUtils rabbitmqSend;
@@ -397,6 +407,13 @@ public class GeneratePdfService {
                                             jylsService.updateDxbz(param3);
                                         }
                                     }else{
+                                        Cszb dxmb = cszbService.getSpbmbbh(jyls.getGsdm(), jyls.getXfid(), jyls.getSkpid(), "sms_code");
+                                        String mbdm="SMS_34725005";
+                                        if(dxmb!=null&&dxmb.getCsz()!=null){
+                                            mbdm=dxmb.getCsz();
+                                            rep = shortParam(jyls);
+                                        }
+                                        logger.info("----短信模板代码---"+mbdm+"短信内容："+JSON.toJSONString(rep));
                                         saveMsg.saveMessage(jyls.getGsdm(), djh, sjhm, rep, "SMS_34725005", "泰易电子发票");
                                         Map param3 = new HashMap<>();
                                         param3.put("djh", djh);
@@ -445,8 +462,63 @@ public class GeneratePdfService {
             throw new RuntimeException(e);
         }
     }
-
-
+        //生成短链接并保存
+        public Map shortParam(Jyls jyls){
+            Map parms=new HashMap();
+            Kpls ls = new Kpls();
+            ls.setDjh(jyls.getDjh());
+            List<Kpls> listkpls = kplsService.findAllByKpls(ls);
+            Map skpMap = new HashMap();
+            skpMap.put("kpdid",jyls.getSkpid());
+            skpMap.put("gsdm",jyls.getGsdm());
+            Skp skp = skpService.findOneByParams(skpMap);
+            Pp pp = null;
+            if(skp.getPid()!=null && skp.getPid()!=-1 &&skp.getPid()!=0){
+                pp = ppJpaDao.findOneById(skp.getPid());
+            }else{
+                pp = ppJpaDao.findOneByPpdm("rjxx");
+            }
+            //参数转为短链接
+            try {
+                String dlj= ShortUrlUtil.shortUrl("q="+listkpls.get(0).getSerialorder());//生成短链接
+                parms.put("ppmc",pp.getPpmc());
+                parms.put("param",dlj);
+                ShortLink shortLink = new ShortLink();
+                shortLink.setShortLink(dlj);
+                shortLink.setNormalLink("q="+listkpls.get(0).getSerialorder());
+                shortLink.setType("01");//开票
+                shortLink.setCreator("1");
+                shortLink.setCreateDate(new Date());
+                shortLink.setModifier("1");
+                shortLink.setModifyDate(new Date());
+                shortLink.setUseMark("1");
+                shortLinkJpaDao.save(shortLink);
+            } catch (DataIntegrityViolationException e) {
+                e.printStackTrace();
+                logger.info("------短链接保存出现异常：---------");
+                String dlj1=ShortUrlUtil.shortUrl("q="+listkpls.get(0).getSerialorder());
+                logger.info("重新生成shortLink 1"+dlj1);
+                ShortLink shortLink1 = shortLinkJpaDao.findOneByShortLink(dlj1);
+                if(shortLink1!=null){
+                    //查询到数据重新生成shortLink
+                    dlj1 = ShortUrlUtil.shortUrl("q="+listkpls.get(0).getSerialorder());//生成短链接
+                    logger.info("继续生成shortLink 2"+dlj1);
+                }
+                parms.put("ppmc",pp.getPpmc());
+                parms.put("param",dlj1);
+                ShortLink shortLink = new ShortLink();
+                shortLink.setShortLink(dlj1);
+                shortLink.setNormalLink("q="+listkpls.get(0).getSerialorder());
+                shortLink.setType("01");//开票
+                shortLink.setCreator("1");
+                shortLink.setCreateDate(new Date());
+                shortLink.setModifier("1");
+                shortLink.setModifyDate(new Date());
+                shortLink.setUseMark("1");
+                shortLinkJpaDao.save(shortLink);
+            }
+            return parms;
+        }
 
     public Map httpPostNoSign(String returnmessage, Kpls kpls) {
         Map parms=new HashMap();
