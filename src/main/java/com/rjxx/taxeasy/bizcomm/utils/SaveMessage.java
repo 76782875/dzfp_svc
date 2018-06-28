@@ -18,7 +18,7 @@ public class SaveMessage {
 	public boolean saveMessage(String gsdm, Integer djh, String sjhm, Map<String, String> dxnr, String mbdm,
 			String qmmc) {
 		try {
-			String returnid = SendMessage.sendMessage(qmmc, mbdm, dxnr, sjhm);
+			String returnid = SendMessage.sendSms(qmmc, mbdm, dxnr, sjhm);
 			Dxfs dxfs = new Dxfs();
 			dxfs.setGsdm(gsdm);
 			dxfs.setDjh(djh);
