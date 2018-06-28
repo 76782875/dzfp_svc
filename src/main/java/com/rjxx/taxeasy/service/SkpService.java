@@ -45,6 +45,20 @@ public class SkpService {
 		skpJpaDao.save(skp);
 	}
 
+	public void saveNew(Skp skp) {
+		skpJpaDao.save(skp);
+		Group group = new Group();
+		group.setYxbz("1");
+		group.setXfid(skp.getXfid());
+		group.setYhid(skp.getLrry());
+		group.setSkpid(skp.getId());
+		group.setLrry(skp.getLrry());
+		group.setXgry(skp.getLrry());
+		group.setLrsj(new Date());
+		group.setXgsj(new Date());
+		groupService.save(group);
+	}
+
 	@Transactional
 	public void save(List<Skp> skpList) {
 		skpJpaDao.save(skpList);
