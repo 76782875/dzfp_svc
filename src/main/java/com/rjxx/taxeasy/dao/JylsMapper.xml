@@ -32,7 +32,7 @@
     <select id="findByPage" parameterType="pagination" resultType="jyls">
         select * from t_jyls
         <if test="params.rqq !=null and params.rqq != ''">
-            force index(idx_jyls_jylssj)
+            force index(idx_jylssj)
         </if>
         where yxbz = '1'
         <if test="params.clztdm != null">
