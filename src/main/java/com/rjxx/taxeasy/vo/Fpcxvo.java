@@ -35,6 +35,7 @@ public class Fpcxvo implements Serializable {
 	protected String printflag;
 	protected String spmc;
 	protected Double spje;
+	protected Double spsl;
 	protected Double spse;
 	protected String fpzt;
 	protected String ddh;
@@ -59,6 +60,13 @@ public class Fpcxvo implements Serializable {
 	protected String kplsh2;
 	protected String filename;
 
+	public Double getSpsl() {
+		return spsl;
+	}
+
+	public void setSpsl(Double spsl) {
+		this.spsl = spsl;
+	}
 
 	/**
 	 * 交易流水时间 业务系统或电商平台生成。

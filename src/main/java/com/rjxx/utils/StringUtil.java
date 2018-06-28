@@ -3,6 +3,8 @@ package com.rjxx.utils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * @author wangyahui
@@ -12,10 +14,10 @@ import java.io.UnsupportedEncodingException;
  */
 public class StringUtil {
     //全部不能为空
-    public static boolean isNotBlankList(String... args){
-        for (int i=0;i<args.length;i++){
+    public static boolean isNotBlankList(String... args) {
+        for (int i = 0; i < args.length; i++) {
             boolean notBlank = StringUtils.isNotBlank(args[i]);
-            if(!notBlank){
+            if (!notBlank) {
                 return false;
             }
         }
@@ -23,17 +25,17 @@ public class StringUtil {
     }
 
     //全部为空
-    public static boolean isBlankList(String... args){
-        for (int i=0;i<args.length;i++){
+    public static boolean isBlankList(String... args) {
+        for (int i = 0; i < args.length; i++) {
             boolean notBlank = StringUtils.isBlank(args[i]);
-            if(!notBlank){
+            if (!notBlank) {
                 return false;
             }
         }
         return true;
     }
 
-    public static String changeCharset(String s,String charset){
+    public static String changeCharset(String s, String charset) {
         String encoding = getEncoding(s);
         try {
             return new String(s.getBytes(encoding), charset);
@@ -77,5 +79,22 @@ public class StringUtil {
         } catch (Exception exception3) {
         }
         return "";        //如果都不是，说明输入的内容不属于常见的编码格式。
+    }
+
+    /**
+     * 时间戳转换成日期格式字符串
+     * @param seconds 精确到秒的字符串
+     * @param format
+     * @return
+     */
+    public static String timeStamp2Date(String seconds, String format) {
+        if (seconds == null || seconds.isEmpty() || seconds.equals("null")) {
+            return "";
+        }
+        if (format == null || format.isEmpty()) {
+            format = "yyyy-MM-dd HH:mm:ss";
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        return sdf.format(new Date(Long.valueOf(seconds)));
     }
 }

@@ -159,7 +159,7 @@ public class Discount2UnitDealUtil {
 						Jymxsq jymxsqTmp = jymxsqList.get(j);
 						if (jymxsq.getSpmc().equals(jymxsqTmp.getSpmc()) && jymxsq.getSpdm().equals(jymxsqTmp.getSpdm())
 								&& jymxsq.getSpggxh().equals(jymxsqTmp.getSpggxh()) && jymxsq.getDdh().equals(jymxsqTmp.getDdh())
-								&& jymxsqTmp.getSpmxxh() == jymxsqTmp.getSpmxxh() && jymxsqTmp.getFphxz().equals("1")) {
+								&& jymxsqTmp.getSpmxxh() == jymxsqTmp.getSpmxxh() && jymxsqTmp.getFphxz().equals("1")&& (i+1==j)) {
 							jymxsqClVoTmp.setSphzkje(-jymxsqTmp.getJshj());
 							jymxsqClVoTmp.setSpje(new BigDecimal(jymxsqClVoTmp.getSpje()+jymxsqTmp.getSpje()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 							jymxsqClVoTmp.setSpse(new BigDecimal(jymxsqClVoTmp.getSpse()+jymxsqTmp.getSpse()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());

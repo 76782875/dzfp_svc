@@ -279,6 +279,7 @@
         f.fpztmc fpzt,
         mx.spmc,
         mx.spje,
+        mx.spsl,
         mx.spse
         FROM
         t_kpls a
