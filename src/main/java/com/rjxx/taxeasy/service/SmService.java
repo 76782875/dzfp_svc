@@ -51,9 +51,10 @@ public class SmService {
     }
 
     public List<Sm> findAll() {
-        Iterable<Sm> smIterable = smJpaDao.findAll();
+//        Iterable<Sm> smIterable = smJpaDao.findAll();
+        List<Sm> smList1 = smJpaDao.findAll();
         List<Sm> smList = new ArrayList<>();
-        for (Sm sm : smIterable) {
+        for (Sm sm : smList1) {
             smList.add(sm);
         }
         return smList;
