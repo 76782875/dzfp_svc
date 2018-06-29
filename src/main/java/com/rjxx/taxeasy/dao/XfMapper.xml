@@ -170,6 +170,9 @@
         <if test="skph != null and skph != ''">
             and a.skph = #{skph}
         </if>
+        <if test="kpddm != null and kpddm != ''">
+            and a.kpddm = #{kpddm}
+        </if>
         <if test="csz != null and csz != ''">
             AND c.csz = #{csz}
         </if>
