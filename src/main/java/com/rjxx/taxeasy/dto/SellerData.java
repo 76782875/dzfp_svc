@@ -20,6 +20,7 @@ public class SellerData {
     private String drawer;
     private String payee;
     private String reviewer;
+    private String type;
     private String issueType;
     private double eticketLim;
     private double specialticketLim;
@@ -169,5 +170,13 @@ public class SellerData {
 
     public void setRollticketLim(double rollticketLim) {
         this.rollticketLim = rollticketLim;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
