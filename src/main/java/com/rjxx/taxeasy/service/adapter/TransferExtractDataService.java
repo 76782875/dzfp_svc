@@ -199,9 +199,10 @@ public class TransferExtractDataService {
         logger.info("抽取数据KEY={}",tq);
         Jyxxsq jyxxsq=null;
         try {
-            jyxxsq = jyxxsqJpaDao.findOneByGsdmAndDdh(gsdm, tq);
+//            jyxxsq = jyxxsqJpaDao.findOneByGsdmAndDdh(gsdm, tq);
+            jyxxsq = jyxxsqJpaDao.findOneByGsdmAndTqm(gsdm, tq);
             if(jyxxsq==null){
-                logger.info("TPYE3根据订单号【"+tq+"】未找到数据");
+                logger.info("TPYE3根据提取码【"+tq+"】未找到数据");
                 return null;
             }
             String b = JyxxsqProcessed(jyxxsq);
@@ -217,33 +218,6 @@ public class TransferExtractDataService {
             resultMap.put("msg","获取数据失败或已红冲！");
             return resultMap;
         }
-
-//        Jyxxsq jyxxsq = null;
-//        try {
-//            String check = checkZtbz(gsdm, tq);
-//            if(StringUtils.isNotBlank(check)){
-//                resultMap.put("msg", check);
-//                return resultMap;
-//            }
-//            //是否已经开具
-//            List<Jyxxsq> jyxxsqMore = jyxxsqJpaDao.findAllByGsdmAndDdhAndZtbz(gsdm,tq,"5","3");
-//            if(!jyxxsqMore.isEmpty()){
-//                logger.info("该订单已接收过开票申请");
-//                resultMap.put("msg","该订单已接收过开票申请！");
-//                resultMap.put("jyxxsq", jyxxsqMore.get(0));
-//                return resultMap;
-//            }
-//            jyxxsq = jyxxsqJpaDao.findOneByGsdmAndDdhAndZtbz(gsdm,tq,"6");
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            logger.info("查询多条，获取数据失败！");
-//            resultMap.put("msg","获取数据失败！");
-//            return resultMap;
-//        }
-//        if(jyxxsq==null){
-//            logger.info("TPYE3根据订单号【"+tq+"】未找到数据");
-//            return null;
-//        }
         Map jymxsqParam = new HashMap();
         jymxsqParam.put("sqlsh", jyxxsq.getSqlsh());
         List<Jymxsq> jymxsqs = jymxsqService.findAllBySqlsh(jymxsqParam);
