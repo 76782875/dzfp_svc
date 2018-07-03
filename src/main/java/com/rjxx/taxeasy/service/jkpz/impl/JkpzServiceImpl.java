@@ -181,6 +181,9 @@ public class JkpzServiceImpl implements JkpzService {
                     //提取码
                     if(adapterPost.getData().getOrder().getExtractedCode()!=null){
                         jyxxsq.setTqm(adapterPost.getData().getOrder().getExtractedCode());
+                    }else {
+                        //没有值订单号
+                        jyxxsq.setTqm(adapterPost.getData().getOrder().getOrderNo());
                     }
                     //数据来源
                     if(adapterPost.getData().getDatasource()!=null){
