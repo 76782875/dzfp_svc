@@ -192,6 +192,8 @@ public class AdapterServiceImpl implements AdapterService {
     }
 
 
+
+
     /**
      * GET_TYPE_2获取展示在确认页面的信息
      *
@@ -583,10 +585,10 @@ public class AdapterServiceImpl implements AdapterService {
                 }
                 Jyxxsq jyxxsq = (Jyxxsq) apiMsg.get("jyxxsq");
                 if(jyxxsq!=null){
-                    jyxxsq.setKpddm(sn);
+//                    jyxxsq.setKpddm(sn);
                     jyxxsq.setSjly(sjly);
                     jyxxsq.setOpenid(openid);
-                    jyxxsq.setDdh(on);
+//                    jyxxsq.setDdh(on);
                     jyxxsq.setGfemail(email);
                     jyxxsq.setGfdh(gfdh);
                     jyxxsq.setGfmc(gfmc);
@@ -615,11 +617,11 @@ public class AdapterServiceImpl implements AdapterService {
                 AdapterDataOrder order = data.getOrder();
                 AdapterDataOrderBuyer buyer = new AdapterDataOrderBuyer();
                 post.setData(data);
-                post.setClientNo(sn);
+//                post.setClientNo(sn);
                 data.setDatasource(sjly);
                 data.setOpenid(openid);
                 data.setOrder(order);
-                order.setOrderNo(on);
+//                order.setOrderNo(on);
                 order.setBuyer(buyer);
 //                if (StringUtil.isNotBlankList(tqm)) {
 //                    order.setExtractedCode(tqm);
@@ -881,10 +883,15 @@ public class AdapterServiceImpl implements AdapterService {
      * @return
      */
     @Override
-    public List<String> checkStatus(String tqm, String gsdm) {
+    public List<String> checkStatus(String tqm, String gsdm,String on) {
         try {
             List<String> result = new ArrayList();
-            List<Integer> djhs = jylsJpaDao.findDjhByTqmAndGsdm(tqm, gsdm);
+            List<Integer> djhs = null;
+            if(org.apache.commons.lang3.StringUtils.isNotBlank(on)){
+                djhs = jylsJpaDao.findDjhByDdhAndGsdm(on, gsdm);
+            }else{
+                djhs = jylsJpaDao.findDjhByTqmAndGsdm(tqm, gsdm);
+            }
             if (!djhs.isEmpty()) {
                 for (Integer djh : djhs) {
                     if (djh != null) {
