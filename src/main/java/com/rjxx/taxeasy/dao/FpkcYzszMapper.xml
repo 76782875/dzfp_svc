@@ -34,57 +34,85 @@
     </select>
 
     <select id="findByPage" parameterType="pagination" resultType="fpkcYzszVo">
-        select * from (select c.id,t.gsdm,t.xfid,t.id as skpid,t.lrry,t.fpzldm,f.xfmc,f.xfsh,t.skph,t.kpdmc,e.fpzlmc,c.yjyz,d.kpfs,d.csz,g.fpkcl,g.xgsj kchqsj from
-        (SELECT
+        SELECT
+        c.id,
+        t.gsdm,
+        t.xfid,
+        t.id AS skpid,
+        t.lrry,
+        t.fpzldm,
+        f.xfmc,
+        f.xfsh,
+        t.skph,
+        t.kpdmc,
+        e.fpzlmc,
+        c.yjyz,
+        d.kpfs,
+        d.csz,
+        g.fpkcl,
+        g.xgsj kchqsj
+        FROM
+        (
+        SELECT
         a.*, substring_index(
-        substring_index(
-        a.kplx,
-        ',',
-        b.id
-        ),
+        substring_index(a.kplx, ',', b.id),
         ',' ,- 1
         ) fpzldm
         FROM
         t_skp a
-        JOIN t_fpzl b ON b.id  &lt;=(
+        JOIN t_fpzl b ON b.id &lt;= (
         length(a.kplx) - length(REPLACE(a.kplx, ',', '')) + 1
         )
-        where a.yxbz ='1'
-        ORDER BY
-        a.id) t LEFT JOIN t_fpkc_yzsz c on t.gsdm = c.gsdm and t.xfid = c.xfid and t.id = c.skpid and t.fpzldm = c.fpzldm
-        LEFT JOIN v_kpfs d on t.gsdm = d.gsdm and t.xfid = d.xfid and t.id = d.kpdid
-        LEFT JOIN t_fpzl e on t.fpzldm = e.fpzldm
-        LEFT JOIN t_fpkc g on t.gsdm = g.gsdm and t.xfid = g.xfid and t.id = g.skpid and t.fpzldm = g.fpzldm
-        LEFT JOIN t_xf f on t.gsdm = f.gsdm and t.xfid = f.id ) m
-        where 1=1
+        WHERE
+        a.yxbz = '1'
         <if test="params.gsdm != null and params.gsdm !=''">
-            and m.gsdm = #{params.gsdm}
+            and a.gsdm = #{params.gsdm}
         </if>
         <if test="params.xfid != null and params.xfid !=''">
-            and m.xfid = #{params.xfid}
+            and a.xfid = #{params.xfid}
         </if>
         <if test="params.xfids !=null and params.xfids !=''">
-            and m.xfid in
+            and a.xfid in
             <foreach collection="params.xfids" item="item" index="index" open="("
                      separator="," close=")">#{params.xfids[${index}]}
             </foreach>
         </if>
         <if test="params.skpids !=null and params.skpids !=''">
-            and m.skpid in
+            and a.id in
             <foreach collection="params.skpids" item="item" index="index" open="("
                      separator="," close=")">#{params.skpids[${index}]}
             </foreach>
         </if>
         <if test="params.skpid != null and params.skpid !=''">
-            and m.skpid = #{params.skpid}
+            and a.id = #{params.skpid}
         </if>
-        <if test="params.fpzldm != null and params.fpzldm !=''">
-            and m.fpzldm = #{params.fpzldm}
-        </if>
+        ORDER BY
+        a.id asc
+        ) t
+        LEFT JOIN t_fpkc_yzsz c ON t.gsdm = c.gsdm
+        AND t.xfid = c.xfid
+        AND t.id = c.skpid
+        AND t.fpzldm = c.fpzldm
+        LEFT JOIN v_kpfs d ON t.gsdm = d.gsdm
+        AND t.xfid = d.xfid
+        AND t.id = d.kpdid
         <if test="params.kpfs != null and params.kpfs !=''">
-            and m.csz = #{params.csz}
+            and d.csz = #{params.csz}
         </if>
-        ORDER  BY  m.xfid
+        LEFT JOIN t_fpzl e on e.fpzldm = t.fpzldm
+        LEFT JOIN t_fpkc g ON t.gsdm = g.gsdm
+        AND t.xfid = g.xfid
+        AND t.id = g.skpid
+        AND t.fpzldm = g.fpzldm
+        LEFT JOIN t_xf f ON t.gsdm = f.gsdm
+        AND t.xfid = f.id
+        where 1=1
+        <if test="params.fpzldm != null and params.fpzldm !=''">
+            and t.fpzldm = #{params.fpzldm}
+        </if>
+        ORDER BY
+        t.xfid asc
+
     </select>
     
     <select id="findYhYzsz" parameterType="map" resultType="fpkcYzsz">
