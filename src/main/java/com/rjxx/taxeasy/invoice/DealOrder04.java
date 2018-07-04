@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -79,6 +78,11 @@ public class DealOrder04 implements SVCDealOrder{
             parms.setFphm(CNDNNo);
             parms.setGsdm(gsdm);
             Kpls kpls = kplsService.findByfphm(parms);//查询原开票流水
+            if(kpls==null){
+                result04.setReturnCode("9999");
+                result04.setReturnMessage("未找到原发票号码代码！");
+                return XmlJaxbUtils.toXml(result04);
+            }
             Map params = new HashMap();
             params.put("kpdid", kpls.getSkpid());
             params.put("gsdm", gsdm);
