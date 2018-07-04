@@ -52,7 +52,7 @@
     <select id="findAllTzList" parameterType="map" resultType="FpkcYjtzVo">
         SELECT
         a.tzfs, GROUP_CONCAT(
-        CONCAT('盘号',t.skph,'对应的',t.fpzlmc,'票种,只剩',t.fpkcl,'张发票;')
+        CONCAT(t.xfmc,'(',t.xfsh,')','盘号',IFNULL(t.skph,''),'对应的',t.fpzlmc,'票种,只剩',t.fpkcl,'张发票;')
         )  tzy,
         max(d.yx) email,
         max(d.sjhm) phone,
@@ -62,10 +62,11 @@
         JOIN (
         SELECT
         b.*, c.fpkcl,
-        e.fpzlmc
+        e.fpzlmc,f.xfmc,f.xfsh
         FROM
         t_fpkc_yzsz b
         JOIN t_fpzl e ON b.fpzldm = e.fpzldm
+        JOIN t_xf f on f.id = b.xfid
         JOIN t_fpkc c ON b.gsdm = c.gsdm
         AND b.xfid = c.xfid
         AND b.skpid = c.skpid
