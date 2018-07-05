@@ -56,7 +56,7 @@
         )  tzy,
         max(d.yx) email,
         max(d.sjhm) phone,
-        a.gsdm
+        a.gsdm,d.yhmc
         FROM
         t_fpkc_yztz a
         JOIN (
