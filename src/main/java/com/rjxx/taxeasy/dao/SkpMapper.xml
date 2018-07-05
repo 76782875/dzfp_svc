@@ -111,6 +111,12 @@
 		<if test="gsdm != null and gsdm != ''">
 			and gsdm = #{gsdm}
 		</if>
+		<if test="skph != null and skph != ''">
+			and skph = #{skph}
+		</if>
+		<if test="kpddm != null and kpddm != ''">
+			and kpddm = #{kpddm}
+		</if>
 		<if test="pid != null and pid != ''">
 			and pid = #{pid}
 		</if>

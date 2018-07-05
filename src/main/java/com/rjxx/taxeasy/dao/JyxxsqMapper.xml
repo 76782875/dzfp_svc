@@ -167,14 +167,14 @@
 
     <select id="findBykplscxPage" parameterType="map" resultType="jyxxsqVO">
 		SELECT
-		a.sqlsh,a.jylsh,a.ddh,a.jshj,a.gfmc,a.ddrq,d.fpzlmc,a.tqm,a.sjly,a.ztbz,f.ztbzmc
+		a.sqlsh,a.jylsh,a.ddh,a.jshj,a.gfmc,a.ddrq,d.fpzlmc,a.tqm,a.sjly,a.ztbz,f.ztbzmc,a.lrsj
 		FROM
 		t_jyxxsq a
 		JOIN (
 		SELECT
 		t.sqlsh
 		FROM
-		t_jyxxsq t
+		t_jyxxsq t FORCE INDEX(IDX_jyxxsq_ddrq)
 		WHERE
 		t.yxbz = '1'
 		<if test="gsdm !=null and gsdm !=''">
@@ -224,6 +224,7 @@
 		LIMIT #{start},#{length}) b ON a.sqlsh = b.sqlsh
 		LEFT JOIN t_fpzl d on a.fpzldm = d.fpzldm
 		left join t_ztbz f on a.ztbz = f.ztbzdm
+		ORDER BY ifnull(a.ddrq,a.lrsj) desc
 		-- LEFT JOIN t_fpczlx e on a.fpczlxdm = e.fpczlxdm
 		-- LEFT JOIN t_clzt c on a.clztdm = c.clztdm;
     </select>
@@ -300,7 +301,7 @@
 		SELECT
 		t.sqlsh
 		FROM
-		t_jyxxsq t
+		t_jyxxsq t FORCE INDEX(IDX_jyxxsq_ddrq)
 		WHERE
 		t.yxbz = '1'
 		<if test="gsdm !=null and gsdm !=''">
@@ -348,6 +349,7 @@
 		ORDER BY t.sqlsh desc) b ON a.sqlsh = b.sqlsh
 		LEFT JOIN t_fpzl d on a.fpzldm = d.fpzldm
 		left join t_ztbz f on a.ztbz = f.ztbzdm
+		ORDER BY ifnull(a.ddrq,a.lrsj) desc
 		-- LEFT JOIN t_fpczlx e on a.fpczlxdm = e.fpczlxdm
 		-- LEFT JOIN t_clzt c on a.clztdm = c.clztdm;
 	</select>

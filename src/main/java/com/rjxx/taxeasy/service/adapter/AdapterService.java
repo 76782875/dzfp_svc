@@ -14,9 +14,9 @@ public interface AdapterService {
 
     Map getGrandMsg(String gsdm, String q);
 
-    Map getGrandMsg(String gsdm, String on, String sn);
+    Map getGrandMsg(String gsdm, String on, String tq,String sn);
 
-    List<String> checkStatus(String tqm, String gsdm);
+    List<String> checkStatus(String tqm, String gsdm,String on);
 
     String getSpxx(String gsdm, String q);
 

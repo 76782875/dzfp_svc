@@ -154,7 +154,7 @@ public class AdapterServiceImpl implements AdapterService {
      * @return
      */
     @Override
-    public Map getGrandMsg(String gsdm, String on, String sn) {
+    public Map getGrandMsg(String gsdm, String on,String tq, String sn) {
         //如果门店号为空则认为是该公司下只有一个税号一个门店号
         if (StringUtil.isBlankList(sn)) {
             try {
@@ -183,12 +183,15 @@ public class AdapterServiceImpl implements AdapterService {
             result.put("ppdm", ppdm);
             result.put("ppurl", ppurl);
             result.put("orderNo", on);
+            result.put("extractCode", tq);
             return result;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
+
+
 
 
     /**
@@ -340,7 +343,6 @@ public class AdapterServiceImpl implements AdapterService {
             }
             AdapterPost post = (AdapterPost) apiMsg.get("post");
             AdapterData data = post.getData();
-            String orderNo = on;
             String orderTime = new SimpleDateFormat("yyyyMMddHHmmss").format(data.getOrder().getOrderDate());
             StringBuilder price = new StringBuilder();
             StringBuilder spsl = new StringBuilder();
@@ -374,16 +376,7 @@ public class AdapterServiceImpl implements AdapterService {
                 }
             }
             Map result = new HashMap();
-            Integer pid = skp.getPid();
-            if (pid == null || pid==-1 || pid==0) {
-//                logger.info("pid is null");
-//                return null;
-                Pp pp = ppJpaDao.findOneByPpdm("rjxx");
-                result.put("tqm", pp.getPpdm() + orderNo);
-            } else {
-                Pp pp = ppJpaDao.findOneById(pid);
-                result.put("tqm", pp.getPpdm() + orderNo);
-            }
+            result.put("tqm", tq);
             result.put("orderNo", on);
             result.put("orderTime", orderTime);
             result.put("storeNo", sn);
@@ -592,10 +585,10 @@ public class AdapterServiceImpl implements AdapterService {
                 }
                 Jyxxsq jyxxsq = (Jyxxsq) apiMsg.get("jyxxsq");
                 if(jyxxsq!=null){
-                    jyxxsq.setKpddm(sn);
+//                    jyxxsq.setKpddm(sn);
                     jyxxsq.setSjly(sjly);
                     jyxxsq.setOpenid(openid);
-                    jyxxsq.setDdh(on);
+//                    jyxxsq.setDdh(on);
                     jyxxsq.setGfemail(email);
                     jyxxsq.setGfdh(gfdh);
                     jyxxsq.setGfmc(gfmc);
@@ -606,44 +599,44 @@ public class AdapterServiceImpl implements AdapterService {
                     if (StringUtils.isNotBlank(email)) {
                         jyxxsq.setSffsyj("1");
                     }
-                    if (StringUtil.isNotBlankList(tqm)) {
-                        jyxxsq.setTqm(tqm);
-                    } else {
-                        Integer pid = skp.getPid();
-                        if (pid == null || pid==-1 || pid==0) {
-                            Pp pp = ppJpaDao.findOneByPpdm("rjxx");
-                            jyxxsq.setTqm(pp.getPpdm() + on);
-                        } else {
-                            Pp pp = ppJpaDao.findOneById(pid);
-                            jyxxsq.setTqm(pp.getPpdm() + on);
-                        }
-                    }
+//                    if (StringUtil.isNotBlankList(tqm)) {
+//                        jyxxsq.setTqm(tqm);
+//                    } else {
+//                        Integer pid = skp.getPid();
+//                        if (pid == null || pid==-1 || pid==0) {
+//                            Pp pp = ppJpaDao.findOneByPpdm("rjxx");
+//                            jyxxsq.setTqm(pp.getPpdm() + on);
+//                        } else {
+//                            Pp pp = ppJpaDao.findOneById(pid);
+//                            jyxxsq.setTqm(pp.getPpdm() + on);
+//                        }
+//                    }
                 }
                 AdapterPost post = (AdapterPost) apiMsg.get("post");
                 AdapterData data = post.getData();
                 AdapterDataOrder order = data.getOrder();
                 AdapterDataOrderBuyer buyer = new AdapterDataOrderBuyer();
                 post.setData(data);
-                post.setClientNo(sn);
+//                post.setClientNo(sn);
                 data.setDatasource(sjly);
                 data.setOpenid(openid);
                 data.setOrder(order);
-                order.setOrderNo(on);
+//                order.setOrderNo(on);
                 order.setBuyer(buyer);
-                if (StringUtil.isNotBlankList(tqm)) {
-                    order.setExtractedCode(tqm);
-                } else {
-                    Integer pid = skp.getPid();
-                    if (pid == null || pid==-1 || pid==0) {
-//                        logger.info("pid is null");
-//                        return "0";
-                        Pp pp = ppJpaDao.findOneByPpdm("rjxx");
-                        order.setExtractedCode(pp.getPpdm() + on);
-                    } else {
-                        Pp pp = ppJpaDao.findOneById(pid);
-                        order.setExtractedCode(pp.getPpdm() + on);
-                    }
-                }
+//                if (StringUtil.isNotBlankList(tqm)) {
+//                    order.setExtractedCode(tqm);
+//                } else {
+//                    Integer pid = skp.getPid();
+//                    if (pid == null || pid==-1 || pid==0) {
+////                        logger.info("pid is null");
+////                        return "0";
+//                        Pp pp = ppJpaDao.findOneByPpdm("rjxx");
+//                        order.setExtractedCode(pp.getPpdm() + on);
+//                    } else {
+//                        Pp pp = ppJpaDao.findOneById(pid);
+//                        order.setExtractedCode(pp.getPpdm() + on);
+//                    }
+//                }
                 buyer.setEmail(email);
                 buyer.setTelephoneNo(gfdh);
                 buyer.setName(gfmc);
@@ -890,10 +883,15 @@ public class AdapterServiceImpl implements AdapterService {
      * @return
      */
     @Override
-    public List<String> checkStatus(String tqm, String gsdm) {
+    public List<String> checkStatus(String tqm, String gsdm,String on) {
         try {
             List<String> result = new ArrayList();
-            List<Integer> djhs = jylsJpaDao.findDjhByTqmAndGsdm(tqm, gsdm);
+            List<Integer> djhs = null;
+            if(org.apache.commons.lang3.StringUtils.isNotBlank(on)){
+                djhs = jylsJpaDao.findDjhByDdhAndGsdm(on, gsdm);
+            }else{
+                djhs = jylsJpaDao.findDjhByTqmAndGsdm(tqm, gsdm);
+            }
             if (!djhs.isEmpty()) {
                 for (Integer djh : djhs) {
                     if (djh != null) {

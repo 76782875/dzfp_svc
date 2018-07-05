@@ -7,6 +7,7 @@ public class FpkcYjtzVo {
 	private String email;
 	private String phone;
 	private String gsdm;
+	private String yhmc;
 
 	public String getTzfs() {
 		return tzfs;
@@ -46,5 +47,13 @@ public class FpkcYjtzVo {
 
 	public void setGsdm(String gsdm) {
 		this.gsdm = gsdm;
+	}
+
+	public String getYhmc() {
+		return yhmc;
+	}
+
+	public void setYhmc(String yhmc) {
+		this.yhmc = yhmc;
 	}
 }

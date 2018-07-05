@@ -151,14 +151,16 @@
         a.skph,
         a.skpmm,
         a.zsmm,
-        c.csz
+        f_get_param('kpfs',b.gsdm,null,IFNULL(a.id,null)) csz
         FROM
-        t_skp a
-        LEFT JOIN v_kpfs c
-        ON a.xfid = c.xfid
-        AND a.id = c.kpdid
-        LEFT JOIN t_xf b ON a.xfid = b.id
-        AND b.yxbz = '1'
+        t_xf b
+        LEFT JOIN t_skp a ON a.xfid = b.id AND a.yxbz = '1'
+        <if test="skph != null and skph != ''">
+            and a.skph = #{skph}
+        </if>
+        <if test="kpddm != null and kpddm != ''">
+            and a.kpddm = #{kpddm}
+        </if>
         WHERE
         b.yxbz = '1'
         <if test="xfsh != null and xfsh != ''">
@@ -167,11 +169,8 @@
         <if test="gsdm != null and gsdm != ''">
             and b.gsdm = #{gsdm}
         </if>
-        <if test="skph != null and skph != ''">
-            and a.skph = #{skph}
-        </if>
         <if test="csz != null and csz != ''">
-            AND c.csz = #{csz}
+            AND f_get_param('kpfs',b.gsdm,null,IFNULL(a.id,null)) = #{csz}
         </if>
     </select>
 
