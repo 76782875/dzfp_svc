@@ -178,12 +178,19 @@ public class JkpzServiceImpl implements JkpzService {
                     }else {
                         jyxxsq.setQjzk(0d);
                     }
-                    //提取码
-                    if(StringUtils.isNotBlank(adapterPost.getData().getOrder().getExtractedCode())){
-                        jyxxsq.setTqm(adapterPost.getData().getOrder().getExtractedCode());
-                    }else {
-                        //没有值订单号
-                        jyxxsq.setTqm(adapterPost.getData().getOrder().getOrderNo());
+                    if("fujifilm".equals(gsdm)){
+                        //提取码
+                        if(StringUtils.isNotBlank(adapterPost.getData().getOrder().getExtractedCode())){
+                            jyxxsq.setTqm(adapterPost.getData().getOrder().getExtractedCode());
+                        }else {
+                            //没有值订单号
+                            jyxxsq.setTqm(adapterPost.getData().getOrder().getOrderNo());
+                        }
+                    }else{
+                        //提取码
+                        if(StringUtils.isNotBlank(adapterPost.getData().getOrder().getExtractedCode())){
+                            jyxxsq.setTqm(adapterPost.getData().getOrder().getExtractedCode());
+                        }
                     }
                     //数据来源
                     if(adapterPost.getData().getDatasource()!=null){
