@@ -2,12 +2,10 @@ package com.rjxx.taxeasy.domains;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.rjxx.comm.json.JsonDatetimeFormat;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -25,6 +23,8 @@ public class Gsxx  implements Serializable {
  * 公司代码
  */ 
 	@Id
+	@GeneratedValue(generator = "myGenerator")
+	@GenericGenerator(name = "myGenerator", strategy = "assigned")
 	protected String gsdm;
 
 /**

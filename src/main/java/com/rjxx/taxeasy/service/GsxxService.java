@@ -26,9 +26,9 @@ public class GsxxService {
     @Autowired
     private GsxxMapper gsxxMapper;
 
-    public Gsxx findOne(int id) {
-        return gsxxJpaDao.findOne(id);
-    }
+//    public Gsxx findOne(int id) {
+//        return gsxxJpaDao.findOne(id);
+//}
 
     public void save(Gsxx gsxx) {
         gsxxJpaDao.save(gsxx);
