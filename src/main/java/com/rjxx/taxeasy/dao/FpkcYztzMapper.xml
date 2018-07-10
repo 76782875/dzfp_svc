@@ -50,10 +50,8 @@
 
 
     <select id="findAllTzList" parameterType="map" resultType="FpkcYjtzVo">
-        SELECT
-        a.tzfs, GROUP_CONCAT(
-        CONCAT(t.xfmc,'(',t.xfsh,')','盘号',IFNULL(t.skph,''),'对应的',t.fpzlmc,'票种,只剩',t.fpkcl,'张发票;')
-        )  tzy,
+       SELECT
+        a.tzfs, t.xfmc,t.xfsh,t.skph,t.fpzlmc,t.fpkcl,
         max(d.yx) email,
         max(d.sjhm) phone,
         a.gsdm,d.yhmc
@@ -74,9 +72,7 @@
         AND b.yjyz >= c.fpkcl
         ) t ON a.yjszid = t.id
         JOIN t_yh d ON a.tzyhid = d.id
-        GROUP BY
-        a.tzfs,
-        a.tzyhid
+        GROUP BY a.tzfs,a.tzyhid,t.xfmc,t.xfsh,t.skph,t.fpzlmc;
     </select>
 
     <select id="findAllByPage" parameterType="pagination" resultType="FpkcTzVo">
