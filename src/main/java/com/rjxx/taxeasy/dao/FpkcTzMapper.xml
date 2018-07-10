@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rjxx.taxeasy.dao.FpkcTzMapper">
+
+    <select id="findOneByParams" parameterType="map" resultType="fpkcTz">
+        select * from t_fpkc_tz where yxbz = '1'
+        <if test="gsdm != null and gsdm !=''">
+            and gsdm = #{gsdm}
+        </if>
+        <if test="xfid != null and xfid !=''">
+            and xfid = #{xfid}
+        </if>
+        <if test="orderBy != null">
+            order by ${orderBy}
+        </if>
+        limit 1
+    </select>
+
+    <select id="findAllByParams" parameterType="map" resultType="fpkcTz">
+        select * from t_fpkc_tz where yxbz = '1'
+        <if test="orderBy != null">
+            order by ${orderBy}
+        </if>
+    </select>
+
+    <select id="findByPage" parameterType="pagination" resultType="fpkcYzszVo">
+        SELECT
+        t.gsdm,
+        t.id AS xfid,
+        t.lrry,
+        f.xfmc,
+        f.xfsh,
+        d.kpfs,
+        d.csz,
+        c.tzfs,
+        y.yhmc,
+        y.id yhid,
+        c.xgsj
+        FROM
+        (
+        SELECT
+        a.*
+        FROM
+        t_xf a
+        WHERE
+        a.yxbz = '1'
+        <if test="params.gsdm != null and params.gsdm !=''">
+            and a.gsdm = #{params.gsdm}
+        </if>
+        <if test="params.xfid != null and params.xfid !=''">
+            and a.id = #{params.xfid}
+        </if>
+        <if test="params.xfids !=null and params.xfids !=''">
+            and a.id in
+            <foreach collection="params.xfids" item="item" index="index" open="("
+                     separator="," close=")">#{params.xfids[${index}]}
+            </foreach>
+        </if>
+        <!--<if test="params.skpids !=null and params.skpids !=''">
+            and a.id in
+            <foreach collection="params.skpids" item="item" index="index" open="("
+                     separator="," close=")">#{params.skpids[${index}]}
+            </foreach>
+        </if>-->
+        <!--<if test="params.skpid != null and params.skpid !=''">
+            and a.id = #{params.skpid}
+        </if>-->
+        ORDER BY
+        a.id asc
+        ) t
+        LEFT JOIN t_fpkc_tz c ON t.gsdm = c.gsdm
+        AND t.id = c.xfid
+        and c.yxbz='1'
+        LEFT JOIN v_kpfs d ON t.gsdm = d.gsdm
+        AND t.id = d.xfid
+        <if test="params.kpfs != null and params.kpfs !=''">
+            and d.csz = #{params.csz}
+        </if>
+        /*LEFT JOIN t_fpkc g ON t.gsdm = g.gsdm
+        AND t.id = g.xfid*/
+        LEFT JOIN t_xf f ON t.gsdm = f.gsdm
+        AND t.id = f.id
+        and f.yxbz='1'
+        LEFT JOIN t_yh y on c.tzyhid = y.id
+        and y.yxbz='1'
+        where 1=1
+       <!-- <if test="params.fpzldm != null and params.fpzldm !=''">
+            and t.fpzldm = #{params.fpzldm}
+        </if>-->
+        ORDER BY
+        t.id asc
+
+    </select>
+
+    <select id="findAllByPage" parameterType="pagination" resultType="fpkcTzVo">
+        SELECT
+        a.id,
+        a.xfid,
+        a.skpid,
+        a.fpzldm,
+        a.fpdm,
+        a.fphms,
+        a.fphmz,
+        b.xfsh,
+        b.xfmc,
+        c.kpdmc,
+        e.fpzlmc,
+        a.fpkcl fpkcl,
+        a.kcyjz fpyjz
+        FROM
+        t_fpkc a,
+        t_xf b,
+        t_skp c,
+        t_fpzl e
+        WHERE
+        a.xfid = b.id
+        AND a.skpid = c.id
+        AND a.fpzldm = e.fpzldm
+        AND a.yxbz = '1'
+        <if test="params.gsdm != null and params.gsdm !=''">
+            and a.gsdm = #{params.gsdm}
+        </if>
+        <if test="params.xfid !=null">
+            and a.xfid in <foreach collection="params.xfid" item="item" index="index"
+                                   open="(" separator="," close=")"> #{params.xfid[${index}]}</foreach>
+        </if>
+        <if test="params.skpid != null and params.skpid !=''">
+            and a.skpid in <foreach collection="params.skpid" item="item" index="index"
+                                    open="(" separator="," close=")"> #{params.skpid[${index}]}</foreach>
+        </if>
+        <if test="params.xfids !=null and params.xfids != ''">
+            and a.xfid = #{params.xfids}
+        </if>
+        <if test="params.skpids !=null and params.skpids != ''">
+            and a.skpid = #{params.skpids}
+        </if>
+        <if test="params.fpdm !=null and params.fpdm != ''">
+            and a.fpdm = #{params.fpdm}
+        </if>
+        <if test="params.fplx !=null and params.fplx != ''">
+            and a.fpzldm = #{params.fplx}
+        </if>
+        order by a.lrsj desc
+
+    </select>
+
+
+    <select id="findByParams" parameterType="map" resultType="fpkcTzVo">
+        SELECT
+        a.id,
+        a.xfid,
+        a.skpid,
+        a.fpzldm,
+        a.fpdm,
+        a.fphms,
+        a.fphmz,
+        b.xfsh,
+        b.xfmc,
+        c.kpdmc,
+        e.fpzlmc,
+        a.fpkcl fpkcl,
+        a.kcyjz fpyjz
+        FROM
+        t_fpkc a,
+        t_xf b,
+        t_skp c,
+        t_fpzl e
+        WHERE
+        a.xfid = b.id
+        AND a.skpid = c.id
+        AND a.fpzldm = e.fpzldm
+        AND a.yxbz = '1'
+        <if test="gsdm != null and gsdm !=''">
+            and a.gsdm = #{gsdm}
+        </if>
+        <if test="xfid !=null">
+            and a.xfid in <foreach collection="xfid" item="item" index="index"
+                                   open="(" separator="," close=")"> #{xfid[${index}]}</foreach>
+        </if>
+        order by a.lrsj desc
+
+    </select>
+</mapper>
+
