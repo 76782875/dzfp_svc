@@ -545,6 +545,7 @@ public class GeneratePdfService {
                 shortLink.setModifier("1");
                 shortLink.setModifyDate(new Date());
                 shortLink.setUseMark("1");
+                shortLink.setCount(1);
                 shortLinkJpaDao.save(shortLink);
             } catch (DataIntegrityViolationException e) {
                 e.printStackTrace();
@@ -568,6 +569,7 @@ public class GeneratePdfService {
                 shortLink.setModifier("1");
                 shortLink.setModifyDate(new Date());
                 shortLink.setUseMark("1");
+                shortLink.setCount(1);
                 shortLinkJpaDao.save(shortLink);
             }
             return parms;

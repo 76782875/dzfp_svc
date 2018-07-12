@@ -15,5 +15,8 @@ public interface ShortLinkJpaDao extends CrudRepository<ShortLink, Integer> {
 
     @Query(nativeQuery = true, value = "select * from t_short_link where short_link=?1 and use_mark='1'")
     ShortLink findOneByShortLink(String short_link);
+
+    @Query(nativeQuery = true, value = "select * from t_short_link where normal_link=?1 and use_mark='1' order by  create_date desc limit  1")
+    ShortLink findOneByNormalLink(String normal_link);
 }
 

@@ -1680,6 +1680,7 @@ AND djh =#{djh}
             e.ddh,
             e.gfmc,
             a.gfemail,
+            e.gfsjh gfsjh,
             a.serialorder,
             (
 				case when
