@@ -1,6 +1,7 @@
 package com.rjxx.taxeasy.invoice;
 
 import com.alibaba.fastjson.JSON;
+import com.rjxx.comm.utils.ApplicationContextUtils;
 import com.rjxx.taxeasy.bizcomm.utils.DiscountDealUtil;
 import com.rjxx.taxeasy.bizcomm.utils.FpclService;
 import com.rjxx.taxeasy.bizcomm.utils.InvoiceResponse;
@@ -13,6 +14,7 @@ import org.apache.axiom.om.OMElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -172,13 +174,66 @@ public class DealOrder04 implements SVCDealOrder{
                         result04.setReturnCode("9999");
                         result04.setReturnMessage(response.getReturnMessage());
                     }
+                }else if("04".equals(cszb.getCsz())){
+                    skService.SkBoxKP(kpls2.getKplsh());
+                    result04.setReturnCode("0000");
+                    result04.setReturnMessage("红冲成功！");
+                }else if("05".equals(cszb.getCsz())){
+                    skService.skEkyunKP(kpls2.getKplsh());
+                    result04.setReturnCode("0000");
+                    result04.setReturnMessage("红冲成功！");
                 }
             } else {
-                kpls2.setFpztdm("14");
-                kplsService.save(kpls2);
-                skService.callService(kpls2.getKplsh());
-                result04.setReturnCode("0000");
-                result04.setReturnMessage("红冲请求已接受！");
+                if(kpfs.equals("01")){
+                    kpls2.setFpztdm("14");
+                    kplsService.save(kpls2);
+                    //skService.callService(kpls2.getKplsh().intValue());
+                    result04.setReturnCode("0000");
+                    result04.setReturnMessage("红冲请求已接受！");
+
+                    HcTask hcTask= new HcTask();
+                    hcTask.setKplsh(kpls2.getKplsh().intValue());
+                    hcTask.setKpfs("01");
+                    if (taskExecutor == null) {
+                        taskExecutor = ApplicationContextUtils.getBean(ThreadPoolTaskExecutor.class);
+                    }
+                    taskExecutor.execute(hcTask);
+
+                }else if(kpfs.equals("03")){
+                    //skService.SkServerKP(kpls2.getKplsh().intValue());
+                    result04.setReturnCode("0000");
+                    result04.setReturnMessage("红冲请求已接受！");
+
+                    HcTask hcTask= new HcTask();
+                    hcTask.setKplsh(kpls2.getKplsh().intValue());
+                    hcTask.setKpfs("03");
+                    if (taskExecutor == null) {
+                        taskExecutor = ApplicationContextUtils.getBean(ThreadPoolTaskExecutor.class);
+                    }
+                    taskExecutor.execute(hcTask);
+                }else if("04".equals(cszb.getCsz())){
+                    //skService.SkBoxKP(kpls2.getKplsh());
+                    result04.setReturnCode("0000");
+                    result04.setReturnMessage("红冲请求已接受！");
+                    HcTask hcTask= new HcTask();
+                    hcTask.setKplsh(kpls2.getKplsh().intValue());
+                    hcTask.setKpfs("04");
+                    if (taskExecutor == null) {
+                        taskExecutor = ApplicationContextUtils.getBean(ThreadPoolTaskExecutor.class);
+                    }
+                    taskExecutor.execute(hcTask);
+                }else if("05".equals(cszb.getCsz())){
+                    //skService.skEkyunKP(kpls2.getKplsh());
+                    result04.setReturnCode("0000");
+                    result04.setReturnMessage("红冲请求已接受！");
+                    HcTask hcTask= new HcTask();
+                    hcTask.setKplsh(kpls2.getKplsh().intValue());
+                    hcTask.setKpfs("05");
+                    if (taskExecutor == null) {
+                        taskExecutor = ApplicationContextUtils.getBean(ThreadPoolTaskExecutor.class);
+                    }
+                    taskExecutor.execute(hcTask);
+                }
             }
             return XmlJaxbUtils.toXml(result04);
         }catch (Exception e){
@@ -188,6 +243,62 @@ public class DealOrder04 implements SVCDealOrder{
             return XmlJaxbUtils.toXml(result04);
         }
     }
+
+
+    /**
+     * 线程池执行任务
+     */
+    private static ThreadPoolTaskExecutor taskExecutor = null;
+
+    /**
+     * 多线程开票
+     */
+    class HcTask implements Runnable {
+
+        private Integer kplsh;
+        private String kpfs;
+        @Override
+        public void run() {
+            logger.info("------红冲--多线程----------");
+            try {
+                if("01".equals(kpfs)){
+                    logger.info("01----");
+                    skService.callService(kplsh);
+                }
+                if("03".equals(kpfs)){
+                    logger.info("03----");
+                    skService.SkServerKP(kplsh);
+                }
+                if("04".equals(kpfs)){
+                    logger.info("04----");
+                    skService.SkBoxKP(kplsh);
+                }
+                if("05".equals(kpfs)){
+                    logger.info("05----");
+                    skService.skEkyunKP(kplsh);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        public Integer getKplsh() {
+            return kplsh;
+        }
+
+        public void setKplsh(Integer kplsh) {
+            this.kplsh = kplsh;
+        }
+
+        public String getKpfs() {
+            return kpfs;
+        }
+
+        public void setKpfs(String kpfs) {
+            this.kpfs = kpfs;
+        }
+    }
+
     private Map Savejyxxsq(Integer kplsh,String tqm,Jyls jyls) throws Exception {
         Map result = new HashMap();
         Kpls kpls = kplsService.findOne(kplsh);
