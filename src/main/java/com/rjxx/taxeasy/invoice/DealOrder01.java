@@ -1,5 +1,6 @@
 package com.rjxx.taxeasy.invoice;
 
+import com.rjxx.comm.utils.ApplicationContextUtils;
 import com.rjxx.taxeasy.bizcomm.utils.*;
 import com.rjxx.taxeasy.domains.*;
 import com.rjxx.taxeasy.service.*;
@@ -15,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -143,14 +145,22 @@ public class DealOrder01 implements SVCDealOrder {
                     Cszb cszb2 = cszbservice.getSpbmbbh(gsdm, Integer.valueOf(xfid), Integer.valueOf(skpid), "kpfs");
                     // 录屏方式
                     if (cszb2.getCsz().equals("01")) {
-                        List resultList = new ArrayList();
-                        try {
-                            resultList = (List) fpclservice.zjkp(jyxxsqList, "01");//录屏
-
-                        } catch (Exception e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
+//                        List resultList = new ArrayList();
+//                        try {
+//                            resultList = (List) fpclservice.zjkp(jyxxsqList, "01");//录屏
+//
+//                        } catch (Exception e) {
+//                            // TODO Auto-generated catch block
+//                            e.printStackTrace();
+//                        }
+                        //多线程开票
+                        KpTask kpTask=new KpTask();
+                        kpTask.setJyxxsqList(jyxxsqList);
+                        kpTask.setKpfs("01");
+                        if (taskExecutor == null) {
+                            taskExecutor = ApplicationContextUtils.getBean(ThreadPoolTaskExecutor.class);
                         }
+                        taskExecutor.execute(kpTask);
                         result = responseUtil.lpResponse(null);
                     } else if (cszb2.getCsz().equals("02")) {
                         // 组件方式
@@ -223,32 +233,59 @@ public class DealOrder01 implements SVCDealOrder {
                         }
                         result = responseUtil.response(resultList);
                     } else if(cszb2.getCsz().equals("03")){//税控服务器
-                        List resultList = new ArrayList();
-                        try {
-                            resultList= fpclservice.zjkp(jyxxsqList, "03");//税控服务器，电子发票处理
-                            result = responseUtil.lpResponse(null);
-                        } catch (Exception e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
+//                        List resultList = new ArrayList();
+//                        try {
+//                            resultList= fpclservice.zjkp(jyxxsqList, "03");//税控服务器，电子发票处理
+//                            result = responseUtil.lpResponse(null);
+//                        } catch (Exception e) {
+//                            // TODO Auto-generated catch block
+//                            e.printStackTrace();
+//                        }
+                        //多线程开票 ,税控服务器，电子发票处理
+                        KpTask kpTask= new KpTask();
+                        kpTask.setJyxxsqList(jyxxsqList);
+                        kpTask.setKpfs("03");
+                        result = responseUtil.lpResponse(null);
+                        if (taskExecutor == null) {
+                            taskExecutor = ApplicationContextUtils.getBean(ThreadPoolTaskExecutor.class);
                         }
+                        taskExecutor.execute(kpTask);
                     }else if(cszb2.getCsz().equals("04")){//凯盈开票
-                        List resultList = new ArrayList();
-                        try {
-                            resultList= fpclservice.zjkp(jyxxsqList, "04");//税控服务器，电子发票处理
-                            result = responseUtil.lpResponse(null);
-                        } catch (Exception e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
+//                        List resultList = new ArrayList();
+//                        try {
+//                            resultList= fpclservice.zjkp(jyxxsqList, "04");//税控服务器，电子发票处理
+//                            result = responseUtil.lpResponse(null);
+//                        } catch (Exception e) {
+//                            // TODO Auto-generated catch block
+//                            e.printStackTrace();
+//                        }
+                        //多线程开票 ,凯盈,电子发票处理
+                        KpTask kpTask= new KpTask();
+                        kpTask.setJyxxsqList(jyxxsqList);
+                        kpTask.setKpfs("04");
+                        result = responseUtil.lpResponse(null);
+                        if (taskExecutor == null) {
+                            taskExecutor = ApplicationContextUtils.getBean(ThreadPoolTaskExecutor.class);
                         }
+                        taskExecutor.execute(kpTask);
                     }else if(cszb2.getCsz().equals("05")){//盟度开票
-                        List resultList = new ArrayList();
-                        try {
-                            resultList= fpclservice.zjkp(jyxxsqList, "05");//税控服务器，电子发票处理
-                            result = responseUtil.lpResponse(null);
-                        } catch (Exception e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
+//                        List resultList = new ArrayList();
+//                        try {
+//                            resultList= fpclservice.zjkp(jyxxsqList, "05");//税控服务器，电子发票处理
+//                            result = responseUtil.lpResponse(null);
+//                        } catch (Exception e) {
+//                            // TODO Auto-generated catch block
+//                            e.printStackTrace();
+//                        }
+                        //多线程开票 ,盟度开票
+                        KpTask kpTask= new KpTask();
+                        kpTask.setJyxxsqList(jyxxsqList);
+                        kpTask.setKpfs("05");
+                        result = responseUtil.lpResponse(null);
+                        if (taskExecutor == null) {
+                            taskExecutor = ApplicationContextUtils.getBean(ThreadPoolTaskExecutor.class);
                         }
+                        taskExecutor.execute(kpTask);
                     }
                 } else {
                     // 不是直连开票
@@ -267,6 +304,48 @@ public class DealOrder01 implements SVCDealOrder {
         }
         return result;
     }
+
+    /**
+     * 线程池执行任务
+     */
+    private static ThreadPoolTaskExecutor taskExecutor = null;
+
+    /**
+     * 多线程开票
+     */
+    class KpTask implements Runnable {
+
+        private List jyxxsqList;
+        private String kpfs;
+        @Override
+        public void run() {
+            logger.info("------进入多线程开票----------");
+            try {
+              fpclservice.zjkp(jyxxsqList, kpfs);//
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        public List getJyxxsqList() {
+            return jyxxsqList;
+        }
+
+        public void setJyxxsqList(List jyxxsqList) {
+            this.jyxxsqList = jyxxsqList;
+        }
+
+        public String getKpfs() {
+            return kpfs;
+        }
+
+        public void setKpfs(String kpfs) {
+            this.kpfs = kpfs;
+        }
+    }
+
+
+
 
     /**
      * 处理全部交易信息
