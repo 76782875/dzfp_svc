@@ -43,6 +43,24 @@ public class FpkcYzszVo{
 	@JsonSerialize(using = JsonDatetimeFormat.class)
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	protected Date kchqsj;
+	protected String tzfs;
+	protected String yhmc;
+
+	public String getTzfs() {
+		return tzfs;
+	}
+
+	public void setTzfs(String tzfs) {
+		this.tzfs = tzfs;
+	}
+
+	public String getYhmc() {
+		return yhmc;
+	}
+
+	public void setYhmc(String yhmc) {
+		this.yhmc = yhmc;
+	}
 
 	public Integer getId(){
 		return id;

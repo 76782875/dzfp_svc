@@ -17,6 +17,24 @@ public class FpkcTzVo {
     private String yhmc;
     private String kpdmc;
     private String fpzlmc;
+    private String fpkcl;
+    private String fpyjz;
+
+    public String getFpkcl() {
+        return fpkcl;
+    }
+
+    public void setFpkcl(String fpkcl) {
+        this.fpkcl = fpkcl;
+    }
+
+    public String getFpyjz() {
+        return fpyjz;
+    }
+
+    public void setFpyjz(String fpyjz) {
+        this.fpyjz = fpyjz;
+    }
 
     public Integer getYjszid() {
         return yjszid;

@@ -37,6 +37,9 @@ public class Fpkc  implements Serializable {
 @Column(name="skpid")
 	protected Integer skpid;
 
+	@Column(name="kcyjz")
+	protected Integer kcyjz;
+
 /**
  * 发票代码
  */ 
@@ -214,5 +217,12 @@ protected String fpzldm;
 		this.fpzldm = fpzldm;
 	}
 
+	public Integer getKcyjz() {
+		return kcyjz;
+	}
+
+	public void setKcyjz(Integer kcyjz) {
+		this.kcyjz = kcyjz;
+	}
 }
 

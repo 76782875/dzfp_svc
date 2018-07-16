@@ -1,9 +1,12 @@
 package com.rjxx.utils;
 
 import com.alibaba.fastjson.JSON;
+import com.rjxx.taxeasy.dto.AdapterGet;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
 
+import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -188,9 +191,11 @@ public class RJCheckUtil {
     }
 
     /**
-     * 以下所有方法为白盒测试时候使用，不涉及业务
+     * 白盒测试
+     * @param args
+     * @throws UnsupportedEncodingException
      */
-    //生成Q
+
 //    public static void main(String[] args) {
 //        //公司信息的key
 //        String key="42709f25722653a5d7b5b8dde426f494";
@@ -219,44 +224,55 @@ public class RJCheckUtil {
 //        System.out.println(result);
 //    }
 
-//    public static void main(String[] args) throws UnsupportedEncodingException {
-//        AdapterGet adapterGet = new AdapterGet();
+    public static void main(String[] args) throws UnsupportedEncodingException {
+//        String key = "two";//需修改rjxx ppurl为orderdetail
+//        String key = "three";
+//        String key = "four";
+
+        AdapterGet adapterGet = new AdapterGet();
+
+//        adapterGet.setPr("10");
+//        adapterGet.setType("2");
+//        adapterGet.setOn(System.currentTimeMillis() + "");
+//        System.out.println(adapterGet.getOn());
+//        adapterGet.setOt(new SimpleDateFormat("yyyyMMddHHmmss").format(new java.util.Date()));
+//        adapterGet.setSn("two");
+//        adapterGet.setSp("1");
+
+//        adapterGet.setOn(System.currentTimeMillis() + "");
+//        adapterGet.setTq("EX1530596643651");
+//        adapterGet.setType("3");
+//        adapterGet.setSn("three");
+
+//        adapterGet.setMi("four1");
 //        adapterGet.setType("4");
-//        adapterGet.setOt("201804");
-//        adapterGet.setMi("khh0000090066");
+//        adapterGet.setSn("four");
+//        adapterGet.setOt(new SimpleDateFormat("yyyyMMddHHmmss").format(new java.util.Date()));
+
 //        String dataJson = JSON.toJSONString(adapterGet);
-//        String key = "39c94657262b27d1b9b5f5012bc1548a";
 //        String sign = DigestUtils.md5Hex("data=" + dataJson + "&key=" + key);
 //        String str = "data=" + dataJson + "&si=" + sign;
 //        String encode = Base64Util.encode(str);
 //        System.out.println(encode);
-//    }
+//        System.out.println("fpjtest.datarj.com/einv/kptService/" + key + "/" + encode);
 
-//        Map map1 = new HashMap();
-//        //订单号
-//        String on = System.currentTimeMillis() + "X";
-//        //订单时间
-//        String ot = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-//        //金额
-//        String pr = "10";
-//        //门店号
-//        String sn = "BF0074";
-//        //商品代码
-//        String sp = "1";
-//        map1.put("A0",on);
-//        map1.put("A1",ot);
-//        map1.put("A2", pr);
-//        map1.put("A3", sn);
-//        //如果没有商品代码请注释
-//        map1.put("A4", sp);
-//        System.out.println(JSON.toJSONString(map1));
-//        String result1 = getQForAll(key, map1,"on","ot","pr","sn"
-//        //如果没有商品代码请注释
-//        ,"sp"
-//        );
-//        System.out.println(result1);
-//    }
-    public static void main(String[] args) {
+
+        adapterGet.setType("2");
+        adapterGet.setOn(""+System.currentTimeMillis());
+        adapterGet.setOt(new SimpleDateFormat("yyyyMMddHHmmss").format(new java.util.Date()));
+        adapterGet.setPr("11");
+        String key = "267b9725bf058e780a194e32cf07e5de";
+        String gsdm = "wscy";
+
+        String dataJson = JSON.toJSONString(adapterGet);
+        String sign = DigestUtils.md5Hex("data=" + dataJson + "&key=" + key);
+        String str = "data=" + dataJson + "&si=" + sign;
+        String encode = Base64Util.encode(str);
+        System.out.println(encode);
+        System.out.println("fpjtest.datarj.com/einv/kptService/" + gsdm + "/" + encode);
+    }
+
+//    public static void main(String[] args) throws java.text.ParseException {
 //        AdapterPost post = new AdapterPost();
 //        AdapterData data = new AdapterData();
 //        AdapterDataOrder order = new AdapterDataOrder();
@@ -270,8 +286,8 @@ public class RJCheckUtil {
 //        data.setVersion("19");
 //        data.setInvType("12");
 //        data.setSerialNumber("TESTJY"+System.currentTimeMillis());
-////        data.setOrder(order);
-////        data.setSeller(seller);
+//        data.setOrder(order);
+//        data.setSeller(seller);
 //
 //        //销方
 //        seller.setName("上海百旺测试3643");
@@ -285,15 +301,16 @@ public class RJCheckUtil {
 //        order.setBuyer(buyer);
 ////        order.setPayments(payments);
 //        order.setOrderDetails(details);
-//        order.setOrderNo("TESTDDH"+System.currentTimeMillis());
-//        order.setOrderDate(new Date());
-//        order.setTotalAmount(10d);
+//        order.setOrderNo("TPYE3"+System.currentTimeMillis());
+//        order.setOrderDate(new java.util.Date());
+//        order.setTotalAmount(100d);
 //        order.setChargeTaxWay("0");//普通征收
 //        order.setInvoiceList("0");//不打印清单
 //        order.setInvoiceSplit("1");//拆票
 //        order.setInvoiceSfdy("0");//不立即打印
 //        order.setTaxMark("1");//金额含税
 //        order.setRemark("这是备注");
+//        order.setExtractedCode("   ");
 //
 //        //购方
 ////        buyer.setName("法国ankama信息技术有限公司");
@@ -304,28 +321,51 @@ public class RJCheckUtil {
 ////        buyer.setBankAcc("321");
 ////        buyer.setCustomerType("1");
 ////        buyer.setEmail("123@qq.com");
-////        buyer.setIsSend("1");
+//        buyer.setIsSend("1");
 //
 //        //明细
-//        for (int i=2;i>0;i--){
-//            AdapterDataOrderDetails detail = new AdapterDataOrderDetails();
-//            detail.setAmount(5d);
-//            detail.setMxTotalAmount(5d);
-//            detail.setPolicyMark("0");
-//            detail.setProductCode("3070401000000000000");
-//            detail.setProductName("餐饮服务");
-//            detail.setQuantity(1d);
-//            detail.setUnitPrice(5d);
-//            detail.setUtil("次");
-//            detail.setRowType("0");
-//            detail.setTaxRate(0.06);
-//            details.add(detail);
-//        }
+//        AdapterDataOrderDetails detail = new AdapterDataOrderDetails();
+//        detail.setAmount(100d);
+//        detail.setMxTotalAmount(100d);
+//        detail.setPolicyMark("0");
+//        detail.setProductCode("1090622020000000000");
+//        detail.setProductName("相机");
+//        detail.setUnit("个");
+//        detail.setQuantity(1d);
+//        detail.setUnitPrice(100d);
+//        detail.setRowType("0");
+//        detail.setTaxRate(0.16);
+//        details.add(detail);
+//
+//        AdapterDataOrderDetails detail2 = new AdapterDataOrderDetails();
+//        detail2.setAmount(10d);
+//        detail2.setMxTotalAmount(10d);
+//        detail2.setPolicyMark("0");
+//        detail2.setProductCode("1090622020000000000");
+//        detail2.setProductName("冲印");
+//        detail2.setUnit("次");
+//        detail2.setQuantity(1d);
+//        detail2.setUnitPrice(10d);
+//        detail2.setRowType("2");
+//        detail2.setTaxRate(0.16);
+//        details.add(detail2);
+//
+//        AdapterDataOrderDetails detail4 = new AdapterDataOrderDetails();
+//        detail4.setAmount(-10d);
+//        detail4.setMxTotalAmount(-10d);
+//        detail4.setPolicyMark("0");
+//        detail4.setUnit("次");
+//        detail4.setProductCode("1090622020000000000");
+//        detail4.setProductName("冲印");
+//        detail4.setRowType("1");
+//        detail4.setTaxRate(0.16);
+//        details.add(detail4);
 //
 //        //请求
-//        post.setAppId("RJ2673f9e77a35");
-//        String key = "f2a825b110d445f9b7dcc032e2b702f0";
-//        post.setClientNo("wyh_01");
+//        post.setAppId("three");
+//        String key = "three";
+//        String sn = "three";
+//        post.setClientNo(sn);
 //        post.setReqType("02");
 //
 //        post.setTaxNo("500102010003643");
@@ -337,44 +377,10 @@ public class RJCheckUtil {
 //        post.setData(data);
 //        String postJson=JSON.toJSONString(post);
 //        System.out.println(postJson);
-////
-////        String url = "http://localhost:8080/adapter";
-////        String result = HttpClientUtil.doPostJson(url, postJson);
-////        System.out.println(result);
-
-        String key = "f2a825b110d445f9b7dcc032e2b702f0";
-        Map map = new HashMap();
-        Map dtMAP = new HashMap();
-        dtMAP.put("serialNumber", "LS201805030001");
-        dtMAP.put("invType", "12");
-        dtMAP.put("version", "18.0");
-        dtMAP.put("drawer", "SYSTEM");
-        dtMAP.put("payee", "SYSTEM");
-        dtMAP.put("reviewer", "SYSTEM");
-        Map sellerMap = new HashMap();
-        sellerMap.put("identifier", "500102010003643");
-        sellerMap.put("name", "上海百旺测试3643");
-        sellerMap.put("address", "中华路10号1203室");
-        sellerMap.put("telephoneNo", "021-55555555");
-        sellerMap.put("bank", "中国建设银行打浦桥支行");
-        sellerMap.put("bankAcc", "123456789-0");
-        dtMAP.put("seller", sellerMap);
-        String dtMapJson=JSON.toJSONString(dtMAP);
-        System.out.println("data为："+dtMapJson);
-        String md5 = "data=" + dtMapJson + "&key=" + key;
-        System.out.println("拼接后为："+md5);
-        String si =DigestUtils.md5Hex(md5);
-
-        map.put("appId", "RJ2673f9e77a35");
-        map.put("taxNo", "500102010003643");
-        map.put("clientNo", "wyh_01");
-        map.put("sign", si);
-        map.put("data", dtMAP);
-        map.put("reqType", "02");
-        String mapJson=JSON.toJSONString(map);
-        System.out.println("最后结果为："+mapJson);
-
-
-        System.out.println(DigestUtils.md5Hex("a"));
-    }
+//
+//        String url = "http://test.datarj.com/webService/kptService";
+//        String result = HttpClientUtil.doPostJson(url, postJson);
+//        System.out.println(result);
+//        System.out.println(order.getOrderNo());
+//    }
 }

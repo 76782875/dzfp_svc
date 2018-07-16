@@ -12,6 +12,13 @@ public class Yjfsvo implements Serializable{
     private String gfemail;
     private String serialorder;
     private String sfkp;
+    private String gfsjh;
+	public String getGfsjh() {
+		return gfsjh;
+	}
+	public void setGfsjh(String gfsjh) {
+		this.gfsjh = gfsjh;
+	}
 	public String getJshj() {
 		return jshj;
 	}

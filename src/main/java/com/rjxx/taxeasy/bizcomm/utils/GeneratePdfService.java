@@ -366,8 +366,22 @@ public class GeneratePdfService {
                  * 发送手机短信
                  */
                 if(jyls.getSkpid()!=null){
-
-                    boolean sffsdx=false;
+                    Kpls ls = new Kpls();
+                    ls.setDjh(djh);
+                    List<Kpls> listkpls = kplsService.findAllByKpls(ls);
+                    Kpls kplsparms=new Kpls();
+                    kplsparms.setSerialorder(listkpls.get(0).getSerialorder());
+                    kplsparms.setGsdm(listkpls.get(0).getGsdm());
+                    List<Kpls> lslist=kplsService.findAllByKpls(kplsparms);
+                    boolean f=true;
+                    for (Kpls kpls1 : lslist) {
+                        if(null==kpls1.getPdfurl()||"".equals(kpls1.getPdfurl())){
+                            f=false;
+                            break;
+                        }
+                    }
+                    if(f){
+                        boolean sffsdx=false;
                     Cszb cszb = cszbService.getSpbmbbh(jyls.getGsdm(), jyls.getXfid(), jyls.getSkpid(), "sfktdx");
                     String dxfsFlag = cszb.getCsz();
                     if ("是".equals(dxfsFlag)) {
@@ -475,6 +489,7 @@ public class GeneratePdfService {
                         param2.put("dxzt", '2');
                         jylsService.updateDxbz(param2);
                     }
+                    }
                 }
                 dc.saveLog(djh, "91", "0", "正常开具", "", 1, jyls.getXfsh(), jyls.getJylsh());
                 //开具成功后写入卡包或发票管家
@@ -530,6 +545,7 @@ public class GeneratePdfService {
                 shortLink.setModifier("1");
                 shortLink.setModifyDate(new Date());
                 shortLink.setUseMark("1");
+                shortLink.setCount(1);
                 shortLinkJpaDao.save(shortLink);
             } catch (DataIntegrityViolationException e) {
                 e.printStackTrace();
@@ -553,6 +569,7 @@ public class GeneratePdfService {
                 shortLink.setModifier("1");
                 shortLink.setModifyDate(new Date());
                 shortLink.setUseMark("1");
+                shortLink.setCount(1);
                 shortLinkJpaDao.save(shortLink);
             }
             return parms;
