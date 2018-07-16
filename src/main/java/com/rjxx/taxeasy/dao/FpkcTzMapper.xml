@@ -34,8 +34,8 @@
         t.lrry,
         f.xfmc,
         f.xfsh,
-        d.kpfs,
-        d.csz,
+       /* d.kpfs,
+        d.csz,*/
         c.tzfs,
         y.yhmc,
         y.id yhid,
@@ -75,11 +75,11 @@
         LEFT JOIN t_fpkc_tz c ON t.gsdm = c.gsdm
         AND t.id = c.xfid
         and c.yxbz='1'
-        LEFT JOIN v_kpfs d ON t.gsdm = d.gsdm
+       <!-- LEFT JOIN v_kpfs d ON t.gsdm = d.gsdm
         AND t.id = d.xfid
         <if test="params.kpfs != null and params.kpfs !=''">
             and d.csz = #{params.csz}
-        </if>
+        </if>-->
         /*LEFT JOIN t_fpkc g ON t.gsdm = g.gsdm
         AND t.id = g.xfid*/
         LEFT JOIN t_xf f ON t.gsdm = f.gsdm

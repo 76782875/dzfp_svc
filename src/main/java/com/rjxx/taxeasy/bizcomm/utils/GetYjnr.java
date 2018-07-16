@@ -114,4 +114,18 @@ public class GetYjnr {
         return sb.toString();	
 	}
 
+
+	//发票库存预警邮件
+    public String getFpkcyj(Map<String, Object> csmap, String content)throws Exception{
+        try {
+            for (Map.Entry<String, Object> entry : csmap.entrySet()) {
+                String key=entry.getKey();
+                String value=(String)entry.getValue();
+                content=content.replace(key,value);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return content;
+    }
 }

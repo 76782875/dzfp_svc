@@ -50,7 +50,7 @@
 
 
     <select id="findAllTzList" parameterType="map" resultType="FpkcYjtzVo">
-       SELECT
+       /*SELECT
         a.tzfs, t.xfmc,t.xfsh,t.skph,t.fpzlmc,t.fpkcl,
         max(d.yx) email,
         max(d.sjhm) phone,
@@ -72,7 +72,45 @@
         AND b.yjyz >= c.fpkcl
         ) t ON a.yjszid = t.id
         JOIN t_yh d ON a.tzyhid = d.id
-        GROUP BY a.tzfs,a.tzyhid,t.xfmc,t.xfsh,t.skph,t.fpzlmc;
+        GROUP BY a.tzfs,a.tzyhid,t.xfmc,t.xfsh,t.skph,t.fpzlmc;*/
+        SELECT
+            a.tzyhid,
+            a.tzfs,
+            t.xfmc,
+            t.xfsh,
+            t.skph,
+            GROUP_CONCAT(t.fpzlmc) fpzlmc,
+            GROUP_CONCAT(t.fpkcl) fpkcl,
+            GROUP_CONCAT(t.kcyjz) kcyjz,
+            max(d.yx) email,
+            max(d.sjhm) phone,
+            a.gsdm,
+            d.yhmc
+        FROM
+            t_fpkc_tz a
+        JOIN (
+            SELECT
+                b.*,
+                e.fpzlmc,
+                f.xfmc,
+                f.xfsh,
+                s.skph
+            FROM
+                t_fpkc b
+            JOIN t_fpzl e ON b.fpzldm = e.fpzldm
+            JOIN t_xf f ON f.id = b.xfid and f.yxbz='1'
+            JOIN t_skp s on b.skpid = s.id
+            and s.yxbz='1'
+        WHERE b.yxbz='1'
+        and b.kcyjz >= b.fpkcl
+        ) t ON a.xfid = t.xfid
+        AND a.gsdm = t.gsdm
+        and a.yxbz='1'
+        JOIN t_yh d ON a.tzyhid = d.id
+        GROUP BY
+            t.xfmc,
+            t.xfsh,
+            a.tzyhid
     </select>
 
     <select id="findAllByPage" parameterType="pagination" resultType="FpkcTzVo">

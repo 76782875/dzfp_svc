@@ -13,6 +13,15 @@ public class FpkcYjtzVo {
 	private String gsdm;
 	private String yhmc;
 	private String tzy;
+	private Integer tzyhid;
+
+	public Integer getTzyhid() {
+		return tzyhid;
+	}
+
+	public void setTzyhid(Integer tzyhid) {
+		this.tzyhid = tzyhid;
+	}
 
 	public String getTzy() {
 		return tzy;
