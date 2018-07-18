@@ -128,8 +128,11 @@
 		</if>
 	</select>
 	<select id="findByPage" parameterType="pagination" resultType="skpvo">
-		select s.*,x.xfmc, p.ppdm, p.ppmc 
-		from t_skp s LEFT JOIN t_xf x on s.xfid = x.id  LEFT JOIN t_pp p on s.pid = p.id 
+		select s.*,x.xfmc, p.ppdm, p.ppmc, f.csz kpfsCsz
+		from t_skp s LEFT JOIN t_xf x on s.xfid = x.id  LEFT JOIN t_pp p on s.pid = p.id
+		LEFT JOIN v_kpfs f on s.xfid=f.xfid
+		and s.kpddm=f.kpddm
+		and s.gsdm=f.gsdm
 		where s.yxbz = '1'
 		<if test="params.gsdm != null and params.gsdm != ''">
 			and s.gsdm = #{params.gsdm}

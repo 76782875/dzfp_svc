@@ -9,6 +9,8 @@ public class SkpVo {
 	 */
 	protected String skph;
 
+	protected String kpfsCsz;//发票方式参数值
+
 	/**
 	 * 税控盘密码
 	 */
@@ -157,6 +159,14 @@ public class SkpVo {
 	protected Double jpfz;
 
 	protected Double jpmax;
+
+	public String getKpfsCsz() {
+		return kpfsCsz;
+	}
+
+	public void setKpfsCsz(String kpfsCsz) {
+		this.kpfsCsz = kpfsCsz;
+	}
 
 	public String getProvinceid() {
 		return provinceid;
