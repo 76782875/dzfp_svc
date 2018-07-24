@@ -38,6 +38,19 @@ public class Fphxwsjl  implements Serializable {
 @Column(name="sign")
 	protected String sign;
 
+
+	@Column(name="xfid")
+	protected Integer xfid;
+
+	@Column(name="skpid")
+	protected Integer skpid;
+
+	@Column(name="kplsh")
+	protected Integer kplsh;
+
+	@Column(name="ddh")
+	protected String ddh;
+
 /**
  * 回写内容
  */ 
@@ -165,5 +178,36 @@ public class Fphxwsjl  implements Serializable {
 		this.returnmessage=returnmessage;
 	}
 
+	public Integer getXfid() {
+		return xfid;
+	}
+
+	public void setXfid(Integer xfid) {
+		this.xfid = xfid;
+	}
+
+	public Integer getSkpid() {
+		return skpid;
+	}
+
+	public void setSkpid(Integer skpid) {
+		this.skpid = skpid;
+	}
+
+	public Integer getKplsh() {
+		return kplsh;
+	}
+
+	public void setKplsh(Integer kplsh) {
+		this.kplsh = kplsh;
+	}
+
+	public String getDdh() {
+		return ddh;
+	}
+
+	public void setDdh(String ddh) {
+		this.ddh = ddh;
+	}
 }
 
