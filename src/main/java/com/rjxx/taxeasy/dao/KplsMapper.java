@@ -168,6 +168,7 @@ public interface KplsMapper {
 	public List<Kpls> findKplsMxListByPagination(Pagination pagination);
 
 	public List<OrderCancelVo> findAllFpBySqlsh(Map params);
-	
+
+    public List<Kpls> findAllByFwk(Map params);
 }
 
