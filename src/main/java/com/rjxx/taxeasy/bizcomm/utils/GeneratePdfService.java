@@ -294,7 +294,7 @@ public class GeneratePdfService {
                                     Map returnMap = this.httpPost(returnmessage, kpls);
                                     logger.info("返回报文" + JSON.toJSONString(returnMap));
                                     String Secret = getSign(returnmessage, gsxx.getSecretKey());
-                                    if(returnMap==null){
+                                    if(returnMap==null || returnMap.get("ReturnCode")==null){
                                         logger.info("回写返回为空，放入mq---"+kpls.getKplsh() + "_1");
                                         Fphxwsjl fphxwsjl = new Fphxwsjl();
                                         fphxwsjl.setGsdm(kpls.getGsdm());
