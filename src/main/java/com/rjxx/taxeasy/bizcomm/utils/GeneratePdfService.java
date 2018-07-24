@@ -298,6 +298,9 @@ public class GeneratePdfService {
                                         logger.info("回写返回为空，放入mq---"+kpls.getKplsh() + "_1");
                                         Fphxwsjl fphxwsjl = new Fphxwsjl();
                                         fphxwsjl.setGsdm(kpls.getGsdm());
+                                        fphxwsjl.setKplsh(kplsh);
+                                        fphxwsjl.setXfid(kpls.getXfid());
+                                        fphxwsjl.setSkpid(kpls.getSkpid());
                                         fphxwsjl.setEnddate(new Date());
                                         fphxwsjl.setReturncode("9999");
                                         fphxwsjl.setStartdate(new Date());
@@ -317,6 +320,9 @@ public class GeneratePdfService {
                                         }
                                         Fphxwsjl fphxwsjl = new Fphxwsjl();
                                         fphxwsjl.setGsdm(kpls.getGsdm());
+                                        fphxwsjl.setKplsh(kplsh);
+                                        fphxwsjl.setXfid(kpls.getXfid());
+                                        fphxwsjl.setSkpid(kpls.getSkpid());
                                         fphxwsjl.setEnddate(new Date());
                                         if(StringUtils.isBlank(returnCode)|| !"0000".equals(returnCode) || !"0".equals(returnCode)){
                                             fphxwsjl.setReturncode("9999");
