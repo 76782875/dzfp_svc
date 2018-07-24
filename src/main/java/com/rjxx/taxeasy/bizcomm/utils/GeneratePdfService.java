@@ -225,6 +225,7 @@ public class GeneratePdfService {
                                 logger.info("----------sap回写返回报文----------" + Data);
                                 //回写失败放入mq
                                 if(StringUtils.isBlank(ss) || StringUtils.isBlank(Data)){
+                                    logger.info("fwk--回写返回为空，放入mq---");
                                     Fphxwsjl fphxwsjl = new Fphxwsjl();
                                     fphxwsjl.setGsdm("fwk");
                                     fphxwsjl.setXfid(kpls.getXfid());
@@ -245,6 +246,7 @@ public class GeneratePdfService {
                                 Map resultMap = handerReturnMes(ss);
                                 String returnCode = resultMap.get("ReturnCode").toString();
                                 if(StringUtils.isBlank(returnCode)|| !"0000".equals(returnCode)){
+                                    logger.info("fwk--回写返回不成功，放入mq---");
                                     rabbitmqSend.sendMsg("ErrorException_Callback", kpls.getFpzldm(), kpls.getKplsh() + "_1");
                                 }
                                 Fphxwsjl fphxwsjl = new Fphxwsjl();
@@ -277,6 +279,7 @@ public class GeneratePdfService {
                                     logger.info("返回报文" + JSON.toJSONString(returnMap));
                                     String Secret = getSign(returnmessage, gsxx.getSecretKey());
                                     if(returnMap==null){
+                                        logger.info("回写返回为空，放入mq---");
                                         Fphxwsjl fphxwsjl = new Fphxwsjl();
                                         fphxwsjl.setGsdm(kpls.getGsdm());
                                         fphxwsjl.setEnddate(new Date());
@@ -293,6 +296,7 @@ public class GeneratePdfService {
                                         String returnMessage = returnMap.get("ReturnMessage").toString();
                                         //回写失败放入mq
                                         if(StringUtils.isBlank(returnCode)|| !"0000".equals(returnCode)){
+                                            logger.info("回写返回不成功，放入mq---");
                                             rabbitmqSend.sendMsg("ErrorException_Callback", kpls.getFpzldm(), kpls.getKplsh() + "_1");
                                         }
                                         Fphxwsjl fphxwsjl = new Fphxwsjl();
