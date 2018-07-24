@@ -16,6 +16,7 @@ import com.rjxx.taxeasy.vo.smsEnvelopes;
 import com.rjxx.utils.SignUtils;
 import com.rjxx.utils.StringUtils;
 import com.rjxx.utils.XmlJaxbUtils;
+import com.rjxx.utils.XmltoJson;
 import com.rjxx.utils.dwz.ShortUrlUtil;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.cxf.endpoint.Client;
@@ -220,7 +221,7 @@ public class GeneratePdfService {
                                 String ss = this.netWebService(url, "CallBack", returnmessage, gsxx.getAppKey(), gsxx.getSecretKey());
                                 String fwkReturnMessageStr = fwkReturnMessage(kpls);
                                 logger.info("----------sap回写报文----------" + fwkReturnMessageStr);
-                                String Data = HttpUtils.doPostSoap1_2(gsxx.getSapcallbackurl(), fwkReturnMessageStr, null, "Wendy", "Welcome9");
+                                String Data = HttpUtils.doPostSoap1_2(gsxx.getSapcallbackurl(), fwkReturnMessageStr, null, "Deepak", "Welcome0");
                                 logger.info("----------fwk平台回写返回报文--------" + ss);
                                 logger.info("----------sap回写返回报文----------" + Data);
                                 //回写失败放入mq
@@ -243,11 +244,30 @@ public class GeneratePdfService {
                                     fphxwsjlService.save(fphxwsjl);
                                     rabbitmqSend.sendMsg("ErrorException_Callback", kpls.getFpzldm(), kpls.getKplsh() + "_1");
                                 }else {
+                                    //解析fwk前台返回值
                                 Map resultMap = handerReturnMes(ss);
                                 String returnCode = resultMap.get("ReturnCode").toString();
                                 if(StringUtils.isBlank(returnCode)|| !"0000".equals(returnCode)){
                                     logger.info("fwk--回写返回不成功，放入mq---");
                                     rabbitmqSend.sendMsg("ErrorException_Callback", kpls.getFpzldm(), kpls.getKplsh() + "_1");
+                                }
+                                //解析sap返回值
+                                String note = "";
+                                try {
+                                    String jsonString= XmltoJson.xml2json(Data);
+                                    Map dataMap=XmltoJson.strJson2Map(jsonString);
+                                    Map Envelope=(Map)dataMap.get("env:Envelope");
+                                    Map Body=(Map)Envelope.get("env:Body");
+                                    Map GoldenTaxGoldenTaxCreateConfirmation_sync=(Map)Body.get("n0:GoldenTaxGoldenTaxCreateConfirmation_sync");
+                                    Map Log=(Map)GoldenTaxGoldenTaxCreateConfirmation_sync.get("Log");
+                                    Map item = (Map)Log.get("Item");
+                                    note = (String) item.get("Note");
+                                } catch (Exception e) {
+                                    logger.info("解析sap失败");
+                                }
+                                if(StringUtils.isBlank(note)|| !"Create operation was successful".equals(note)){
+                                logger.info("sap--回写返回不成功，放入mq---");
+                                rabbitmqSend.sendMsg("ErrorException_Callback", kpls.getFpzldm(), kpls.getKplsh() + "_1");
                                 }
                                 Fphxwsjl fphxwsjl = new Fphxwsjl();
                                 fphxwsjl.setGsdm("fwk");
@@ -256,7 +276,7 @@ public class GeneratePdfService {
                                 fphxwsjl.setKplsh(kplsh);
                                 fphxwsjl.setDdh(jyls.getDdh());
                                 fphxwsjl.setEnddate(new Date());
-                                if(StringUtils.isBlank(returnCode)|| !"0000".equals(returnCode)){
+                                if((StringUtils.isBlank(returnCode)|| !"0000".equals(returnCode)) || (StringUtils.isBlank(note)||!"Create operation was successful".equals(note))){
                                     fphxwsjl.setReturncode("9999");
                                 }else {
                                     fphxwsjl.setReturncode("0000");
