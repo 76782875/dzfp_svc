@@ -695,7 +695,7 @@ public class GeneratePdfService {
             return parms;
         }*/
 
-    public Map httpPostNoSign(String returnmessage, Kpls kpls) {
+    /*public Map httpPostNoSign(String returnmessage, Kpls kpls) {
         Map parms=new HashMap();
         parms.put("gsdm",kpls.getGsdm());
         Gsxx gsxx=gsxxService.findOneByParams(parms);
@@ -764,7 +764,7 @@ public class GeneratePdfService {
             }
         }
         return resultMap;
-    }
+    }*/
 
     public static void main(String[] args) {
 
@@ -794,7 +794,7 @@ public class GeneratePdfService {
      * @param key
      * @return
      */
-    public String netWebService (String url,String methodName,String QueryData,String AppId,String key){
+    /*public String netWebService (String url,String methodName,String QueryData,String AppId,String key){
         String result="";
         try {
             logger.info("----------发送的报文------"+QueryData);
@@ -828,7 +828,7 @@ public class GeneratePdfService {
             e.printStackTrace();
         }
         return result;
-    }
+    }*/
     public String   fwkReturnMessage(Kpls kpls) {
         SimpleDateFormat sim = new SimpleDateFormat("yyyy-MM-dd");
         String result="Succeed";
@@ -853,7 +853,7 @@ public class GeneratePdfService {
                 "</soap:Envelope>";
         return ss;
     }
-    public String CreateReturnMessage(Integer kplsh) {
+    /*public String CreateReturnMessage(Integer kplsh) {
         String Message="";
         Kpls kpls=kplsService.findOne(kplsh);
         Integer djh = kpls.getDjh();
@@ -1022,9 +1022,9 @@ public class GeneratePdfService {
 
         }
         return Message;
-    }
+    }*/
 
-    public String createJsonMsg(Integer kplsh) {
+    /*public String createJsonMsg(Integer kplsh) {
         String Message="";
         Map rtn = new HashMap();
         List<Map> resultList = new ArrayList<>();
@@ -1229,9 +1229,9 @@ public class GeneratePdfService {
         }
         return Message;
 
-    }
+    }*/
 
-    public String CreateReturnMessage3(Integer kplsh) {
+    /*public String CreateReturnMessage3(Integer kplsh) {
 
         String Message="";
         Kpls kpls=kplsService.findOne(kplsh);
@@ -1426,13 +1426,13 @@ public class GeneratePdfService {
 
         }
         return Message;
-    }
+    }*/
     private static String getSign(String QueryData, String key) {
         String signSourceData = "data=" + QueryData + "&key=" + key;
         String newSign = DigestUtils.md5Hex(signSourceData);
         return newSign;
     }
-    public  Map httpPost(String sendMes, Kpls kpls) throws Exception {
+    /*public  Map httpPost(String sendMes, Kpls kpls) throws Exception {
 
         Map parms=new HashMap();
         parms.put("gsdm",kpls.getGsdm());
@@ -1514,7 +1514,7 @@ public class GeneratePdfService {
             e.printStackTrace();
         }
         return resultMap;
-    }
+    }*/
     /**
      * 接收返回报文并做后续处理
      *
@@ -1522,7 +1522,7 @@ public class GeneratePdfService {
      *
      * @throws Exception
      */
-    public  Map handerReturnMes(String returnMes) throws Exception {
+   /* public  Map handerReturnMes(String returnMes) throws Exception {
 
         Document document = DocumentHelper.parseText(returnMes);
         Element root = document.getRootElement();
@@ -1532,17 +1532,17 @@ public class GeneratePdfService {
             resultMap.put(child.getName(), child.getText());// 返回结果
         }
         return resultMap;
-    }
+    }*/
 
-    public Map handerReturnMesJson(String returnMes) throws Exception {
+    /*public Map handerReturnMesJson(String returnMes) throws Exception {
         JSONObject jsonObject = JSON.parseObject(returnMes);
         Map map = new HashMap();
         map.put("ReturnCode", jsonObject.getString("ReturnCode"));
         map.put("ReturnMessage", jsonObject.getString("ReturnMessage"));
         return map;
-    }
+    }*/
 
-    public String CreateReturnMessage2(Integer kplsh) {
+    /*public String CreateReturnMessage2(Integer kplsh) {
 
         String Message="";
         Kpls kpls=kplsService.findOne(kplsh);
@@ -1631,9 +1631,9 @@ public class GeneratePdfService {
                    // break;
                 }
            // }
-            /*if(invoiceItemList.size()!=kplsList.size()){
+            *//*if(invoiceItemList.size()!=kplsList.size()){
                 f=false;
-            }*/
+            }*//*
             invoiceItems.setCount(invoiceItemList.size());
             invoiceItems.setInvoiceItem(invoiceItemList);
             returnData.setInvoiceItems(invoiceItems);
@@ -1679,5 +1679,5 @@ public class GeneratePdfService {
             Message=XmlJaxbUtils.toXml(returnData);
         }
         return Message;
-    }
+    }*/
 }
