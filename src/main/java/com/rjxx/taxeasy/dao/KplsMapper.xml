@@ -1937,6 +1937,9 @@ AND djh =#{djh}
         <if test="gsdm !=null and gsdm !=''">
             and t.gsdm = #{gsdm}
         </if>
+        <if test="fpczlxdm !=null and fpczlxdm !=''">
+            and t.fpczlxdm = #{fpczlxdm}
+        </if>
     </select>
 </mapper>
 
