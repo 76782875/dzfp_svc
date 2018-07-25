@@ -111,6 +111,10 @@ public class GeneratePdfService {
     private RabbitmqUtils rabbitmqSend;
     @Autowired
     private XsqdJpaDao xsqdJpaDao;
+    @Autowired
+    private FphxUtil fphxUtil;
+    @Autowired
+    private ShortUrlService shortUrlService;
 
     @Value("${emailInfoUrl:}")
     private String emailInfoUrl;
@@ -190,8 +194,10 @@ public class GeneratePdfService {
                 parms.put("gsdm", kpls.getGsdm());
                 Gsxx gsxx = gsxxService.findOneByParams(parms);
                 //String url="https://vrapi.fvt.tujia.com/Invoice/CallBack";
-                String url = gsxx.getCallbackurl();
-                if (!("").equals(url) && url != null) {
+                //String url = gsxx.getCallbackurl();
+                //发票回写
+                fphxUtil.fphx(kpls,jyls,gsxx);
+                /*if (!("").equals(url) && url != null) {
                     String returnmessage = "";
                     if (kpls.getFpzldm().equals("12") && kpls.getGsdm().equals("Family")) {
                         returnmessage = this.CreateReturnMessage2(kpls.getKplsh());
@@ -345,7 +351,7 @@ public class GeneratePdfService {
                                 }
                         }
                     }
-                }
+                }*/
                 //发送email
                 if ("1".equals(jyls.getSffsyj()) && jyls.getGfemail() != null && !"".equals(jyls.getGfemail())) {
                     Kpls ls = new Kpls();
@@ -577,7 +583,7 @@ public class GeneratePdfService {
                                         String mbdm="SMS_34725005";
                                         if(dxmb!=null&&dxmb.getCsz()!=null){
                                             mbdm=dxmb.getCsz();
-                                            rep = shortParam(jyls);
+                                            rep = shortUrlService.shortParam(jyls);
                                         }
                                         logger.info("----短信模板代码---"+mbdm+"短信内容："+JSON.toJSONString(rep));
                                         saveMsg.saveMessage(jyls.getGsdm(), djh, sjhm, rep, mbdm, "泰易电子发票");
@@ -630,7 +636,7 @@ public class GeneratePdfService {
         }
     }
         //生成短链接并保存
-        public Map shortParam(Jyls jyls){
+        /*public Map shortParam(Jyls jyls){
             Map parms=new HashMap();
             Kpls ls = new Kpls();
             ls.setDjh(jyls.getDjh());
@@ -687,7 +693,7 @@ public class GeneratePdfService {
                 shortLinkJpaDao.save(shortLink);
             }
             return parms;
-        }
+        }*/
 
     public Map httpPostNoSign(String returnmessage, Kpls kpls) {
         Map parms=new HashMap();
