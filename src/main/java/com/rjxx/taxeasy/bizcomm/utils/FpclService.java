@@ -787,10 +787,12 @@ public class FpclService {
                 key = key.substring(pos + 1);
                 System.out.println("传入开票流水号:" + key);
             }
-            System.out.println("request url=" + url + ", exception, msg=" + e.getMessage());
+            //System.out.println("多线程接收MQ消息" + url + ", exception, msg=" + e.getMessage());
+            logger.info("多线程接收MQ消息" + url + ", exception, msg=" + e.getMessage());
             e.printStackTrace();
             if(e.getMessage().startsWith("Read")){
-                rabbitmqSend.sendMsg("ErrorException_Sk", "12", key + "");
+                //rabbitmqSend.sendMsg("ErrorException_Sk", "12", key + "");
+                logger.info("kplsh" + key + ", 服务器连接超时输出" + e.getMessage());
             }
         } finally {
             if (response != null) try {
