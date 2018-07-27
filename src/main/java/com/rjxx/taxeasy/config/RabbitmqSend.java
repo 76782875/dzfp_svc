@@ -96,6 +96,11 @@ public class RabbitmqSend implements RabbitTemplate.ConfirmCallback{
         return factory;
     }
 
+    /**
+     * 服务器开具未成功，将数据发送到异常队列，
+     * 异常队列监听，会进行继续开票。
+     * @param message
+     */
     public void send(Object message) {
 
         //执行保存
@@ -104,6 +109,11 @@ public class RabbitmqSend implements RabbitTemplate.ConfirmCallback{
         rabbitTemplate.convertAndSend(EXCHANGE_NAME, "queue_ErrorException_Sk_12",message ,correlationId);
     }
 
+    /**
+     * 凯盈盒子开票队列，所有凯盈盒子开票方式的
+     * 数据，将发送到盒子队列，由定时任务消费开票。
+     * @param message
+     */
     public void sendbox(Object message) {
 
         //执行保存
@@ -111,6 +121,11 @@ public class RabbitmqSend implements RabbitTemplate.ConfirmCallback{
         CorrelationData correlationId = new CorrelationData(uuid);
         rabbitTemplate.convertAndSend(EXCHANGE_NAME, "queue_box",message ,correlationId);
     }
+
+    /**
+     * 获取盒子开票队列中的待开票数据
+     * @return
+     */
     public Object receivebox() {
         //执行保存
         return rabbitTemplate.receiveAndConvert("queue_box");
