@@ -147,6 +147,42 @@ public class SkService {
         }
         return response;
     }
+
+
+    /**
+     * 税控服务器电子发票查询
+     *
+     * @param kplsh
+     * @return
+     */
+    public InvoiceResponse SkServerQuery(int kplsh) throws Exception {
+
+        InvoiceResponse response=null;
+        String result=null;
+        try{
+            if (StringUtils.isBlank(skkpServerUrl)) {
+                return InvoiceResponseUtils.responseError("skkpServerUrl为空");
+            }
+            String encryptStr = encryptSkServerParameter(kplsh + "");
+            Kpls kpls=kplsService.findOne(kplsh);
+            Cszb cszb=cszbService.getSpbmbbh(kpls.getGsdm(),kpls.getXfid(),kpls.getSkpid(),"sfqysknew");
+            if("是".equals(cszb.getCsz())){
+                result=dubboInvoiceService.skServerQuery(encryptStr);
+            }else{
+                String url = skkpServerUrl + "/invoice/SkServerQuery";
+                Map<String, String> map = new HashMap<>();
+                map.put("p", encryptStr);
+                result = HttpUtils.doPost(url, map);
+            }
+            if(result!=null){
+                response= XmlJaxbUtils.convertXmlStrToObject(InvoiceResponse.class, result);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return response;
+    }
+
     /**
      * 凯盈盒子开票
      *

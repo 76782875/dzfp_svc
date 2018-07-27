@@ -742,7 +742,7 @@ public class FpclService {
             httpPost.setEntity(requestEntity);
             response = httpClient.execute(httpPost, new BasicHttpContext());
             if (response.getStatusLine().getStatusCode() != 200) {
-                System.out.println("request url failed, http code=" + response.getStatusLine().getStatusCode()
+                logger.info("request url failed, http code=" + response.getStatusLine().getStatusCode()
                         + ", url=" + url);
                 return null;
             }
@@ -770,7 +770,7 @@ public class FpclService {
             int str = kplsh.indexOf("$");
             if (str != -1) {
                 kplsh = kplsh.substring(str+1);
-                System.out.println("传入开票流水号:" + kplsh);
+                //System.out.println("传入开票流水号:" + kplsh);
             }
             Kpls kpls=kplsService.findOne(Integer.parseInt(kplsh));
             if (!resultMap.get("RETURNCODE").equals("0000")) {
@@ -785,14 +785,14 @@ public class FpclService {
             int pos = key.indexOf("$");
             if (pos != -1) {
                 key = key.substring(pos + 1);
-                System.out.println("传入开票流水号:" + key);
+                //System.out.println("传入开票流水号:" + key);
             }
             //System.out.println("多线程接收MQ消息" + url + ", exception, msg=" + e.getMessage());
-            logger.info("多线程接收MQ消息" + url + ", exception, msg=" + e.getMessage());
+            logger.info("https调用服务器：" + url + ",exception,kplsh="+key+", msg=" + e.getMessage());
             e.printStackTrace();
             if(e.getMessage().startsWith("Read")){
-                //rabbitmqSend.sendMsg("ErrorException_Sk", "12", key + "");
-                logger.info("kplsh" + key + ", 服务器连接超时输出" + e.getMessage());
+                //logger.info("kplsh" + key + ", 服务器连接超时输出" + e.getMessage());
+                rabbitmqSend.sendMsg("ErrorException_Sk", "12", key + "");
             }
         } finally {
             if (response != null) try {
@@ -804,9 +804,10 @@ public class FpclService {
 
         return resultMap;
     }
+
     /**
+     * post传入开票报文，
      * 调用电子发票税控服务器
-     *
      * @param sendMes
      * @param url
      * @param key
@@ -826,8 +827,8 @@ public class FpclService {
         httpPost.addHeader("Content-Type", "text/xml");
         String strMessage = "";
         BufferedReader reader = null;
-        String kplsh=null;
-        kplsh=key;
+        //String kplsh=null;
+        //kplsh=key;
         StringBuffer buffer = new StringBuffer();
         Map resultMap = null;
         try {
@@ -835,7 +836,7 @@ public class FpclService {
             httpPost.setEntity(requestEntity);
             response = httpClient.execute(httpPost, new BasicHttpContext());
             if (response.getStatusLine().getStatusCode() != 200) {
-                System.out.println("request url failed, http code=" + response.getStatusLine().getStatusCode()
+                logger.info("request url failed, http code=" + response.getStatusLine().getStatusCode()
                         + ", url=" + url);
                 return null;
             }
@@ -864,13 +865,15 @@ public class FpclService {
             int pos = key.indexOf("$");
             if (pos != -1) {
                 key = key.substring(pos + 1);
-                System.out.println("传入开票流水号:" + key);
+                //System.out.println("传入开票流水号:" + key);
             }
-            logger.info("request url=" + url + ", exception, msg=" + e.getMessage());
-            Kpls kpls=kplsService.findOne(Integer.parseInt(key));
+            logger.info("http调用服务器：" + url + ",exception,kplsh="+key+", msg=" + e.getMessage());
+            //开具失败，查询税控服务器，若已开具则更新表。
+            skService.SkServerQuery(Integer.parseInt(key));
+           /* Kpls kpls=kplsService.findOne(Integer.parseInt(key));
             kpls.setFpztdm("04");
             kpls.setErrorReason(e.getMessage());
-            kplsService.save(kpls);
+            kplsService.save(kpls);*/
         } finally {
             if (response != null) {
                 try {
@@ -1093,7 +1096,7 @@ public class FpclService {
                 jyxxsq.setXgsj(new Date());
                 jyxxsqService.save(jyxxsq);
                 List<Jyspmx> list2 = saveKpspmx(jyls, fpJyspmxList);
-                if (kpfs.equals("01")) {
+                if (kpfs.equals("01")) {//2.0客户端
                     //保存开票流水
                     Kpls kpls = saveKpls(jyls, list2, jyxxsq.getSfdy(), kpfs);
                     kpls.setKpddm(jyxxsq.getKpddm());
@@ -1112,7 +1115,7 @@ public class FpclService {
                         kplsService.save(kpls);
                     }
                     result.add(kpls.getSerialorder());
-                } else if (kpfs.equals("02")) {//组件
+                } else if (kpfs.equals("02")) {//组件，1.0客户端
                     //保存开票流水
                     Kpls kpls = saveKpls(jyls, list2, jyxxsq.getSfdy(), kpfs);
                     kpls.setKpddm(jyxxsq.getKpddm());
@@ -1120,7 +1123,7 @@ public class FpclService {
                     saveKpspmx(kpls, list2);
                     KplsVO4 kplsVO4 = new KplsVO4(kpls, jyxxsq);
                     result.add(kplsVO4);
-                } else if (kpfs.equals("03")) {//税控服务器
+                } else if (kpfs.equals("03")) {//税控服务器或者盘阵
                     //保存开票流水
                     Kpls kpls = saveKpls(jyls, list2, jyxxsq.getSfdy(), kpfs);
                     kpls.setKpddm(jyxxsq.getKpddm());
@@ -1388,6 +1391,11 @@ public class FpclService {
         return kpls.getSerialorder();
     }
 
+    /**
+     * 调用税控服务器的具体实现方法
+     * @param kplsh
+     * @return
+     */
     public String skServerKP(int kplsh) {
         try {
             Kpls kpls = kplsService.findOne(kplsh);
@@ -1458,7 +1466,7 @@ public class FpclService {
              */
             String templateName = "skdzfp-xml.ftl";
             String result2 = TemplateUtils.generateContent(templateName, params2);
-            logger.debug("封装传开票通的报文" + result2);
+            logger.debug("封装传税控服务器的报文" + result2);
 
             Cszb cszb2 = cszbService.getSpbmbbh(kpls.getGsdm(), kpls.getXfid(), kpls.getSkpid(), "skurl");
             String url = cszb2.getCsz();
@@ -1476,7 +1484,7 @@ public class FpclService {
                     "    <ReturnCode>0000</ReturnCode>\n" +
                     "    <ReturnMessage>" + serialorder + "</ReturnMessage>\n" +
                     "</Responese>\n";
-            logger.debug("封装传开票通的返回报文" + JSONObject.toJSONString(resultMap));
+            logger.debug("封装税控服务器的返回报文" + JSONObject.toJSONString(resultMap));
             return "1";
         } catch (Exception e) {
             // TODO Auto-generated catch block
