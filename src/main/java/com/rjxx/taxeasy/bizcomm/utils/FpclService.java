@@ -868,12 +868,11 @@ public class FpclService {
                 //System.out.println("传入开票流水号:" + key);
             }
             logger.info("http调用服务器：" + url + ",exception,kplsh="+key+", msg=" + e.getMessage());
-            //开具失败，查询税控服务器，若已开具则更新表。
-            skService.SkServerQuery(Integer.parseInt(key));
-           /* Kpls kpls=kplsService.findOne(Integer.parseInt(key));
+            //skService.SkServerQuery(Integer.parseInt(key));
+            Kpls kpls=kplsService.findOne(Integer.parseInt(key));
             kpls.setFpztdm("04");
             kpls.setErrorReason(e.getMessage());
-            kplsService.save(kpls);*/
+            kplsService.save(kpls);
         } finally {
             if (response != null) {
                 try {
