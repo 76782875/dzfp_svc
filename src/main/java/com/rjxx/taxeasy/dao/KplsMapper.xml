@@ -1931,5 +1931,15 @@ AND djh =#{djh}
         </if>
     </select>
 
+    <select id="findAllByFwk" parameterType="map" resultType="kpls">
+        select * from t_kpls t where    t.fpztdm = '00' and t.fphm is not NULL
+            and t.lrsj > #{lrsj}
+        <if test="gsdm !=null and gsdm !=''">
+            and t.gsdm = #{gsdm}
+        </if>
+        <if test="fpczlxdm !=null and fpczlxdm !=''">
+            and t.fpczlxdm = #{fpczlxdm}
+        </if>
+    </select>
 </mapper>
 

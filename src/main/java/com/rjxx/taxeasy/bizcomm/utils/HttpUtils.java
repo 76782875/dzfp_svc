@@ -195,7 +195,7 @@ public class HttpUtils {
             if (httpEntity != null) {
                 // 打印响应内容
                 retStr = EntityUtils.toString(httpEntity, "UTF-8");
-                System.out.println("response:" + retStr);
+                //System.out.println("response:" + retStr);
             }
             // 释放资源
             closeableHttpClient.close();

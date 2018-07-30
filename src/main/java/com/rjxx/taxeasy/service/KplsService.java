@@ -384,4 +384,8 @@ public class KplsService {
 	public List<OrderCancelVo>  findAllFpBySqlsh(Map params){
 		return kplsMapper.findAllFpBySqlsh(params);
 	}
+
+	public List<Kpls>  findAllByFwk(Map params){
+		return kplsMapper.findAllByFwk(params);
+	}
 }
