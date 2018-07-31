@@ -388,4 +388,9 @@ public class KplsService {
 	public List<Kpls>  findAllByFwk(Map params){
 		return kplsMapper.findAllByFwk(params);
 	}
+
+	// 回写查询
+	public List<Yjfsvo> findFphxwsjl(Pagination pagination) {
+		return kplsMapper.findFphxwsjl(pagination);
+	}
 }

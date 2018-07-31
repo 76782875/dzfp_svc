@@ -170,5 +170,8 @@ public interface KplsMapper {
 	public List<OrderCancelVo> findAllFpBySqlsh(Map params);
 
     public List<Kpls> findAllByFwk(Map params);
+
+    // 回写查询
+    List<Yjfsvo> findFphxwsjl(Pagination pagination);
 }
 

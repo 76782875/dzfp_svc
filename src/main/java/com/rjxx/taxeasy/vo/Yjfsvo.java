@@ -1,12 +1,15 @@
 package com.rjxx.taxeasy.vo;
 
+
 import java.io.Serializable;
 
 public class Yjfsvo implements Serializable{
 	private static final long serialVersionUID = 1L;
-	
+
+	private Integer id;
 	private String jshj;
 	private String jylssj;
+	private String lrsj;
     private String ddh;
     private String gfmc;
     private String gfemail;
@@ -61,6 +64,20 @@ public class Yjfsvo implements Serializable{
 	public void setSfkp(String sfkp) {
 		this.sfkp = sfkp;
 	}
-    
-    
+
+	public String getLrsj() {
+		return lrsj;
+	}
+
+	public void setLrsj(String lrsj) {
+		this.lrsj = lrsj;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 }
