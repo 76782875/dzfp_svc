@@ -1940,6 +1940,68 @@ AND djh =#{djh}
         <if test="fpczlxdm !=null and fpczlxdm !=''">
             and t.fpczlxdm = #{fpczlxdm}
         </if>
+        ORDER BY t.lrsj asc;
     </select>
+
+    <!--回写查询-->
+    <select id="findFphxwsjl" parameterType="pagination" resultType="yjfsvo">
+        SELECT
+        a.id id,
+        a.kplsh ,
+        sum(k.jshj) jshj,
+        DATE_FORMAT(k.lrsj,'%Y-%m-%d') lrsj,
+        k.gsdm,
+        a.ddh,
+        k.gfmc,
+        k.serialorder
+        from t_kpls k
+        <if test="params.kprqq != null and params.kprqq !='' and params.kprqz != null and params.kprqz !=''">
+            force index(idx_kpls_gskprq,idx_kpls_gslrsj)
+        </if>
+        JOIN
+            (
+              SELECT
+                t.id,
+                t.kplsh,
+                t.ddh
+                FROM
+                t_fphxwsjl t
+                WHERE
+                returnCode not in('0000','0')
+            ) a on k.kplsh = a.kplsh
+       WHERE k.yxbz='1'
+        <if test="params.gsdm !=null and params.gsdm !=''">
+            and k.gsdm = #{params.gsdm}
+        </if>
+        <if test="params.xfid !=null and params.xfid !=''">
+            and (k.xfid in
+            <foreach collection="params.xfid" item="item" index="index"
+                     open="(" separator="," close=")">#{params.xfid[${index}]}
+            </foreach>
+            or k.xfid is null)
+        </if>
+        <if test="params.skpid !=null and params.skpid !=''">
+            and (k.skpid in
+            <foreach collection="params.skpid" item="item" index="index"
+                     open="(" separator="," close=")">#{params.skpid[${index}]}
+            </foreach>
+            or k.skpid is null)
+        </if>
+        <if test="params.xfi !=null and params.xfi !=''">
+            and k.xfid = #{params.xfi}
+        </if>
+        <if test="params.kprqq != null and params.kprqq !='' and params.kprqz != null and params.kprqz !=''">
+            and k.lrsj &gt;=  str_to_date(#{params.kprqq},'%Y-%m-%d') AND k.lrsj &lt;
+            date_add(str_to_date(#{params.kprqz},'%Y-%m-%d'),INTERVAL 1 day)
+        </if>
+        <if test="params.ddh !=null and params.ddh !=''">
+            and a.ddh = #{params.ddh}
+        </if>
+        GROUP BY
+        serialorder
+        ORDER BY
+        a.kplsh DESC
+    </select>
+
 </mapper>
 
