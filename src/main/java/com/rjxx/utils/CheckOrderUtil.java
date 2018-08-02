@@ -167,10 +167,14 @@ public class CheckOrderUtil {
             }
 
             // email
-            String Email = (String) jyxxsq.getGfemail();
-            if (Email != null && !Email.equals("") && !Email
-                    .matches("^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-\\.\\_]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$")) {
-                result += ddh + ":购方邮箱(Email)格式有误;";
+            String EmailStr = (String) jyxxsq.getGfemail();
+            if (EmailStr != null && !EmailStr.equals("")) {
+                String []gfEmailArray = EmailStr.split(",|，");
+                for(String gfEmail:gfEmailArray){
+                    if(!gfEmail.matches("^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-\\.\\_]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$")){
+                        result += ddh + ":购方邮箱(Email)格式有误;";
+                    }
+                }
             }
             // 提取码校验
             String tqm = jyxxsq.getTqm();
@@ -343,10 +347,14 @@ public class CheckOrderUtil {
             }
 
             // email
-            String Email = (String) jyxxsq.getGfemail();
-            if (Email != null && !Email.equals("") && !Email
-                    .matches("^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-\\.\\_]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$")) {
-                result += ddh + ":购方邮箱(Email)格式有误;";
+            String EmailStr = (String) jyxxsq.getGfemail();
+            if (EmailStr != null && !EmailStr.equals("")) {
+                String []gfEmailArray = EmailStr.split(",|，");
+                for(String gfEmail:gfEmailArray){
+                    if(!gfEmail.matches("^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-\\.\\_]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$")){
+                        result += ddh + ":购方邮箱(Email)格式有误;";
+                    }
+                }
             }
             // 购方收件人地址
             String gfsjrdz = jyxxsq.getGfsjrdz();
