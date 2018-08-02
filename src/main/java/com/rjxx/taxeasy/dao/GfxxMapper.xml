@@ -9,7 +9,13 @@
             order by #{orderBy}
         </if>
         <if test="gfsh != null">
-            gfsh = #{gfsh}
+           and gfsh = #{gfsh}
+        </if>
+        <if test="gsdm != null">
+            and gsdm = #{gsdm}
+        </if>
+        <if test="gfmc != null">
+            and gfmc = #{gfmc}
         </if>
         limit 1
     </select>

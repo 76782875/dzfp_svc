@@ -560,7 +560,7 @@ public class JkpzUtil {
                         jymxsq.setHsbz(order.getTaxMark());
                         jymxsq.setSpmxxh(spmxxh);
                         jymxsq.setFphxz(orderDetails.getRowType());
-                        jymxsq.setSpdm(orderDetails.getProductCode());
+                        jymxsq.setSpdm(orderDetails.getProductCode().trim());
                         jymxsq.setSpmc(orderDetails.getProductName());
                         if("1".equals(orderDetails.getRowType())){
                             jymxsq.setSpggxh(null);
@@ -623,7 +623,9 @@ public class JkpzUtil {
                 case "buyer":
                     //02 交易数据上传不封装购方
                     if(buyer!=null){
-                        jyxxsq.setGfsh(buyer.getIdentifier());
+                        if(StringUtils.isNotBlank(buyer.getIdentifier())){
+                            jyxxsq.setGfsh(buyer.getIdentifier().trim());
+                        }
                         jyxxsq.setGfmc(buyer.getName());
                         jyxxsq.setGflx(buyer.getCustomerType());
                         jyxxsq.setGfyh(buyer.getBank());
