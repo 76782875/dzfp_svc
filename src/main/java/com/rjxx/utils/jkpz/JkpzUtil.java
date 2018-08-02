@@ -623,7 +623,9 @@ public class JkpzUtil {
                 case "buyer":
                     //02 交易数据上传不封装购方
                     if(buyer!=null){
-                        jyxxsq.setGfsh(buyer.getIdentifier().trim());
+                        if(StringUtils.isNotBlank(buyer.getIdentifier())){
+                            jyxxsq.setGfsh(buyer.getIdentifier().trim());
+                        }
                         jyxxsq.setGfmc(buyer.getName());
                         jyxxsq.setGflx(buyer.getCustomerType());
                         jyxxsq.setGfyh(buyer.getBank());
