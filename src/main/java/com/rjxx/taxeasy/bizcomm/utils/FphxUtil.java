@@ -193,7 +193,7 @@ public class FphxUtil {
                             String returnCode = returnMap.get("ReturnCode").toString();
                             String returnMessage = returnMap.get("ReturnMessage").toString();
                             //回写失败放入mq
-                            if(StringUtils.isBlank(returnCode)|| !"0000".equals(returnCode) || !"0".equals(returnCode)){
+                            if(StringUtils.isBlank(returnCode)|| (!"0000".equals(returnCode) && !"0".equals(returnCode))){
                                 logger.info("回写返回不成功，放入mq---"+kpls.getKplsh() + "_1");
                                 rabbitmqSend.sendMsg("ErrorException_Callback", kpls.getFpzldm(), kpls.getKplsh() + "_1");
                             }
@@ -204,7 +204,7 @@ public class FphxUtil {
                             fphxwsjl.setSkpid(kpls.getSkpid());
                             fphxwsjl.setDdh(jyls.getDdh());
                             fphxwsjl.setEnddate(new Date());
-                            if(StringUtils.isBlank(returnCode)|| !"0000".equals(returnCode) || !"0".equals(returnCode)){
+                            if(StringUtils.isBlank(returnCode)|| (!"0000".equals(returnCode) && !"0".equals(returnCode))){
                                 fphxwsjl.setReturncode("9999");
                             }else {
                                 fphxwsjl.setReturncode("0000");
