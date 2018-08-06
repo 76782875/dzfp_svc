@@ -183,14 +183,14 @@
 		<if test="xfs !=null">
 			<foreach collection="xfs" open=" and (t.xfid in ("
 					 separator="," close=")" item="item" index="index">
-				#{xfs[${index}].id}
+				#{xfs[${index}]}
 			</foreach>
 			or t.xfid is null)
 		</if>
 		<if test="skps !=null">
 			<foreach collection="skps" open=" and (t.skpid in ("
 					 separator="," close=")" item="item" index="index">
-				#{skps[${index}].id}
+				#{skps[${index}]}
 			</foreach>
 			or t.skpid is null)
 		</if>
@@ -248,14 +248,14 @@
 		<if test="xfs !=null">
 			<foreach collection="xfs" open=" and (t.xfid in ("
 					 separator="," close=")" item="item" index="index">
-				#{xfs[${index}].id}
+				#{xfs[${index}]}
 			</foreach>
 			or t.xfid is null)
 		</if>
 		<if test="skps !=null">
 			<foreach collection="skps" open=" and (t.skpid in ("
 					 separator="," close=")" item="item" index="index">
-				#{skps[${index}].id}
+				#{skps[${index}]}
 			</foreach>
 			or t.skpid is null)
 		</if>
@@ -318,14 +318,14 @@
 		<if test="xfs !=null">
 			<foreach collection="xfs" open=" and (t.xfid in ("
 					 separator="," close=")" item="item" index="index">
-				#{xfs[${index}].id}
+				#{xfs[${index}]}
 			</foreach>
 			or t.xfid is null)
 		</if>
 		<if test="skps !=null">
 			<foreach collection="skps" open=" and (t.skpid in ("
 					 separator="," close=")" item="item" index="index">
-				#{skps[${index}].id}
+				#{skps[${index}]}
 			</foreach>
 			or t.skpid is null)
 		</if>
