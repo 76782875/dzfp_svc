@@ -65,6 +65,7 @@ public class Fpcxvo implements Serializable {
 	protected String spggxh;
     protected Double sps;
 	protected String sfdyqd;
+	protected String fphxz;
 
 
 	public Double getSpsl() {
@@ -505,6 +506,14 @@ public class Fpcxvo implements Serializable {
 
 	public void setSfdyqd(String sfdyqd) {
 		this.sfdyqd = sfdyqd;
+	}
+
+	public String getFphxz() {
+		return fphxz;
+	}
+
+	public void setFphxz(String fphxz) {
+		this.fphxz = fphxz;
 	}
 
 	public void setHjse(Double hjse) {
