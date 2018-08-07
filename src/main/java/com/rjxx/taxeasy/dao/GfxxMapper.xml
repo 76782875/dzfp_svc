@@ -28,8 +28,14 @@
     </select>
 
     <select id="findByPage" parameterType="pagination" resultType="gfxx">
-        select * from t_gfxx where yxbz = '1' 
-        
+        select * from t_gfxx where yxbz = '1'
+        <if test="params.xfs !=null">
+            <foreach collection="params.xfs" open=" and (xfid in ("
+                     separator="," close=")" item="item" index="index">
+                #{params.xfs[${index}]}
+            </foreach>
+            or xfid is null)
+        </if>
         <if test="params.gsdm !=null and params.gsdm !=''">
 			and gsdm = #{params.gsdm}
 		</if>

@@ -45,6 +45,7 @@
             </foreach>
             ) and gxbz = '1')
          </if>
+        UNION ALL SELECT * FROM t_drmb WHERE tybz IS NOT NULL
     </select>
 
     <select id="findByPage" parameterType="pagination" resultType="drmbvo">
