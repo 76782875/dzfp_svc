@@ -23,7 +23,6 @@ public class Kpcf  implements Serializable {
  * 开票流水号-主键
  */
 @Id
-@Column(name="kplsh")
 	protected Integer kplsh;
 
 /**
