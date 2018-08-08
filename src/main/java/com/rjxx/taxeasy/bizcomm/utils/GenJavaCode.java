@@ -16,11 +16,11 @@ public class GenJavaCode {
 
     //private String javaFilePath = "./";//for eclipse
     private String javaFilePath = "dzfp-svc";//for idea
-    private String authorName = "ZhangBing";
+    private String authorName = "liheping";
     String baseOutputFiePath = javaFilePath + "/src/main/java/";
 
-    private String fullDomainClassName = "com.rjxx.taxeasy.domains.FpkcTz";
-    private String tableName = "t_fpkc_tz";
+    private String fullDomainClassName = "com.rjxx.taxeasy.domains.Kpcf";
+    private String tableName = "t_kpcf";
     private String simpleDomainClassName = null;
     private String domainParamsName = null;
     private String servicePackageName = "com.rjxx.taxeasy.service";
