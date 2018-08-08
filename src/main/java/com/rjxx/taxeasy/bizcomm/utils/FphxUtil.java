@@ -99,7 +99,7 @@ public class FphxUtil {
                         String ss = this.netWebService(url, "CallBack", returnmessage, gsxx.getAppKey(), gsxx.getSecretKey());
                         String fwkReturnMessageStr = fwkReturnMessage(kpls);
                         logger.info("----------sap回写报文----------" + fwkReturnMessageStr);
-                        String Data = HttpUtils.doPostSoap1_2(gsxx.getSapcallbackurl(), fwkReturnMessageStr, null, "Deepak", "Welcome0");
+                        String Data = HttpUtils.doPostSoap1_2(gsxx.getSapcallbackurl(), fwkReturnMessageStr, null, "clouder", "Welcome5");
                         logger.info("----------fwk平台回写返回报文--------" + ss);
                         logger.info("----------sap回写返回报文----------" + Data);
                         //回写失败放入mq
