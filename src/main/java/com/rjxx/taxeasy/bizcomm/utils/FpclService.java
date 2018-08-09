@@ -1298,6 +1298,7 @@ public class FpclService {
         }
     }
     public String updateKpls(Map resultMap) {
+
         String kplsh = resultMap.get("KPLSH").toString();
         Kpls kpls = kplsService.findOne(Integer.valueOf(kplsh));
         try {
@@ -1477,12 +1478,15 @@ public class FpclService {
                 resultMap = DzfphttpPost(result2, url, kplsVO5.getDjh() + "$" + kplsVO5.getKplsh(), kplsVO5.getXfsh(),
                         kplsVO5.getJylsh(), j);
             }
-            String serialorder = this.updateKpls(resultMap);
-            resultxml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
+            //服务器无异常，又返回才更新。
+            if(null !=resultMap){
+                String serialorder = this.updateKpls(resultMap);
+            }
+            /*resultxml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
                     "<Responese>\n" +
                     "    <ReturnCode>0000</ReturnCode>\n" +
                     "    <ReturnMessage>" + serialorder + "</ReturnMessage>\n" +
-                    "</Responese>\n";
+                    "</Responese>\n";*/
             logger.debug("封装税控服务器的返回报文" + JSONObject.toJSONString(resultMap));
             return "1";
         } catch (Exception e) {
