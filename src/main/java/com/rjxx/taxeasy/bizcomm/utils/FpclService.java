@@ -1386,6 +1386,8 @@ public class FpclService {
                 jylsService.save(jyls);
             }
         } catch (Exception e) {
+            kpls.setFpztdm("05");
+            kplsService.save(kpls);
             e.printStackTrace();
         }
         return kpls.getSerialorder();
