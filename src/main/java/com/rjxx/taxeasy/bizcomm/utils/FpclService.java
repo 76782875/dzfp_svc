@@ -1297,7 +1297,7 @@ public class FpclService {
             this.kplsh = kplsh;
         }
     }
-    public String updateKpls(Map resultMap) {
+    public String updateKpls(Map resultMap) throws Exception{
 
         String kplsh = resultMap.get("KPLSH").toString();
         Kpls kpls = kplsService.findOne(Integer.valueOf(kplsh));
@@ -1480,16 +1480,18 @@ public class FpclService {
                 resultMap = DzfphttpPost(result2, url, kplsVO5.getDjh() + "$" + kplsVO5.getKplsh(), kplsVO5.getXfsh(),
                         kplsVO5.getJylsh(), j);
             }
+            logger.debug("封装税控服务器的返回报文" + JSONObject.toJSONString(resultMap));
             //服务器无异常，又返回才更新。
             if(null !=resultMap){
                 String serialorder = this.updateKpls(resultMap);
+            }else{
+                return "0";
             }
             /*resultxml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
                     "<Responese>\n" +
                     "    <ReturnCode>0000</ReturnCode>\n" +
                     "    <ReturnMessage>" + serialorder + "</ReturnMessage>\n" +
                     "</Responese>\n";*/
-            logger.debug("封装税控服务器的返回报文" + JSONObject.toJSONString(resultMap));
             return "1";
         } catch (Exception e) {
             // TODO Auto-generated catch block
