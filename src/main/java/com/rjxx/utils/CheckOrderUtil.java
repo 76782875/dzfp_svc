@@ -692,6 +692,24 @@ public class CheckOrderUtil {
     }
 
     /**
+     * ^[A-Z0-9]+$ 数字或是-  判断一些数字类的字段是否含有特殊字符
+     * @param str
+     * @return
+     */
+    public static boolean isSpecialCharacterForNum(String str){
+        boolean flag = false;
+        for (int i=str.length(); --i>=0;){
+            String b = str.substring(i, i+1);
+            boolean c = java.util.regex.Pattern.matches("^[0-9-]+$",b);
+            if(!c) {
+                flag = true;
+                break;
+            }
+        }
+        return  flag;
+    }
+
+    /**
      * 计算中英文字符的长度。
      *  String.getBytes("gb2312"),"iso-8859-1"
      * */
@@ -711,6 +729,7 @@ public class CheckOrderUtil {
         // System.out.print(CheckSocialCreditCode("liniyanxing@yeah.net"));
         //System.out.print(Double.parseDouble(".00") == 0);
         //System.out.println(s.substring(0,1).equals("0"));
+//        System.out.println(isSpecialCharacterForNum("9999-3323"));
         String result ="";
         if (buyerIdentifier != null && !buyerIdentifier.equals("")) {
             if (!(buyerIdentifier.length() == 15 || buyerIdentifier.length() == 18 || buyerIdentifier.length() == 20 )) {
