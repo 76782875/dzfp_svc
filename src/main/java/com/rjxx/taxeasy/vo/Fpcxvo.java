@@ -60,6 +60,14 @@ public class Fpcxvo implements Serializable {
 	protected String kplsh2;
 	protected String filename;
 
+	protected  Double spdj;
+	protected String spdw;
+	protected String spggxh;
+    protected Double sps;
+	protected String sfdyqd;
+	protected String fphxz;
+
+
 	public Double getSpsl() {
 		return spsl;
 	}
@@ -370,7 +378,39 @@ public class Fpcxvo implements Serializable {
 		this.kplsh = kplsh;
 	}
 
-	public void setDjh(Integer djh) {
+	public Double getSpdj() {
+		return spdj;
+	}
+
+	public void setSpdj(Double spdj) {
+		this.spdj = spdj;
+	}
+
+	public String getSpdw() {
+		return spdw;
+	}
+
+	public void setSpdw(String spdw) {
+		this.spdw = spdw;
+	}
+
+	public String getSpggxh() {
+		return spggxh;
+	}
+
+	public void setSpggxh(String spggxh) {
+		this.spggxh = spggxh;
+	}
+
+    public Double getSps() {
+        return sps;
+    }
+
+    public void setSps(Double sps) {
+        this.sps = sps;
+    }
+
+    public void setDjh(Integer djh) {
 		this.djh = djh;
 	}
 
@@ -458,6 +498,22 @@ public class Fpcxvo implements Serializable {
 	public Double getHjse() {
 
 		return hjse;
+	}
+
+	public String getSfdyqd() {
+		return sfdyqd;
+	}
+
+	public void setSfdyqd(String sfdyqd) {
+		this.sfdyqd = sfdyqd;
+	}
+
+	public String getFphxz() {
+		return fphxz;
+	}
+
+	public void setFphxz(String fphxz) {
+		this.fphxz = fphxz;
 	}
 
 	public void setHjse(Double hjse) {
