@@ -6,14 +6,19 @@ import com.rjxx.taxeasy.config.RabbitmqUtils;
 import com.rjxx.taxeasy.dao.KplsJpaDao;
 import com.rjxx.taxeasy.dao.KplsMapper;
 import com.rjxx.taxeasy.domains.Cszb;
+import com.rjxx.taxeasy.domains.Kpcf;
 import com.rjxx.taxeasy.domains.Kpls;
 import com.rjxx.taxeasy.vo.*;
+import com.rjxx.time.TimeUtil;
+import org.apache.commons.net.ntp.TimeStamp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -45,6 +50,9 @@ public class KplsService {
 	@Autowired
 	private CszbService cszbService;
 
+	@Autowired
+	private KpcfService kpcfService;
+
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
@@ -58,6 +66,7 @@ public class KplsService {
 
 	@Transactional(rollbackFor = Exception.class)
 	public void save(Kpls kpls) {
+		//Timestamp allTime = TimeUtil.getNowDate();
 		kplsJpaDao.save(kpls);
 		Cszb cszb = cszbService.getSpbmbbh(kpls.getGsdm(), kpls.getXfid(), kpls.getSkpid(), "kpfs");
 
@@ -77,7 +86,22 @@ public class KplsService {
 				}
 			} else if (("03").equals(cszb.getCsz())) {
 				try {
-					rabbitmqSend.send(kpls.getKplsh() + "");
+					Kpcf kpcf = kpcfService.findOne(kpls.getKplsh());
+					if (null == kpcf){
+						Kpcf kpcf1 = new Kpcf();
+						kpcf1.setLrsj(new Date());
+						kpcf1.setKplsh(kpls.getKplsh());
+						kpcf1.setKpcfcs(1);
+						kpcfService.save(kpcf1);
+						rabbitmqSend.send(kpls.getKplsh() + "");
+					}else if (kpcf.getKpcfcs() <=3){
+						kpcf.setKpcfcs(kpcf.getKpcfcs()+1);
+						kpcf.setXgsj(new Date());
+						kpcfService.save(kpcf);
+						rabbitmqSend.send(kpls.getKplsh() + "");
+					}
+
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

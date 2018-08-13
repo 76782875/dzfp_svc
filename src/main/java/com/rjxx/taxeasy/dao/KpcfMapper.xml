@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rjxx.taxeasy.dao.KpcfMapper">
+
+    <select id="findOneByParams" parameterType="map" resultType="kpcf">
+        select * from t_kpcf where
+        <if test="kplsh != null">
+            kplsh = #{kplsh}
+        </if>
+        limit 1
+    </select>
+
+    <select id="findAllByParams" parameterType="map" resultType="kpcf">
+        select * from t_kpcf where yxbz = '1'
+        <if test="orderBy != null">
+            order by ${orderBy}
+        </if>
+    </select>
+
+    <select id="findByPage" parameterType="pagination" resultType="kpcf">
+        select * from t_kpcf where yxbz = '1'
+        <if test="params.orderBy != null">
+            order by ${params.orderBy}
+        </if>
+    </select>
+
+    <select id="deleteById" parameterType="int">
+        delete from  t_kpcf where  kplsh = #{kplsh}
+    </select>
+
+    <select id="findAllByCount" resultType="kpcf">
+    select * from t_kpcf where  kpcfcs &gt;= 4 and kpcfcs &lt;6
+    </select>
+</mapper>
+
