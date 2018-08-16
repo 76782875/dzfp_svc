@@ -3,12 +3,13 @@ package com.rjxx.taxeasy.service.adapter;
 import com.alibaba.fastjson.JSON;
 import com.rjxx.taxeasy.bizcomm.utils.GetDataService;
 import com.rjxx.taxeasy.dao.JyxxsqJpaDao;
+import com.rjxx.taxeasy.dao.SkpJpaDao;
+import com.rjxx.taxeasy.dao.XfJpaDao;
 import com.rjxx.taxeasy.dao.ZtbzJpaDao;
 import com.rjxx.taxeasy.domains.*;
 import com.rjxx.taxeasy.dto.*;
-import com.rjxx.taxeasy.service.CszbService;
-import com.rjxx.taxeasy.service.JymxsqService;
-import com.rjxx.taxeasy.service.JyzfmxService;
+import com.rjxx.taxeasy.service.*;
+import com.rjxx.taxeasy.vo.Spvo;
 import com.rjxx.utils.NumberUtil;
 import com.rjxx.utils.StringUtils;
 import org.slf4j.Logger;
@@ -16,6 +17,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -39,6 +42,16 @@ public class TransferExtractDataService {
     private CszbService cszbService;
     @Autowired
     private ZtbzJpaDao ztbzJpaDao;
+    @Autowired
+    private SkpService skpService;
+    @Autowired
+    private SpvoService spvoService;
+    @Autowired
+    private JyxxService jyxxService;
+    @Autowired
+    private XfJpaDao xfJpaDao;
+    @Autowired
+    private SkpJpaDao skpJpaDao;
 
     private static Logger logger = LoggerFactory.getLogger(TransferExtractDataService.class);
     public Map seaway(String gsdm,String tq) {
@@ -193,6 +206,204 @@ public class TransferExtractDataService {
         resultMap.put("post",data);
         return resultMap;
     }
+
+    /**
+     * sqj数据封装
+     * @param gsdm
+     * @param tq
+     * @return
+     */
+    public Map sqj(String gsdm,String tq) {
+        Map resultMap =  new HashMap();
+        if (tq.length() > 12) {
+            String storeNo = tq.substring(8, 12);
+            Map params = new HashMap();
+            params.put("kpddm", storeNo);
+            Skp skp = skpService.findOneByParams(params);
+            if (skp == null) {
+                //提取码不正确
+                resultMap.put("msg","提取码有误,请核对！");
+                return resultMap;
+            }
+            Cszb cszb = cszbService.getSpbmbbh("sqj", skp.getXfid(), skp.getId(), "dyspbmb");
+            Map mapoo = new HashMap();
+            mapoo.put("gsdm", "sqj");
+            if (cszb.getCsz() != null) {
+                mapoo.put("spdm", cszb.getCsz());
+            }
+            Spvo spvo = spvoService.findOneSpvo(mapoo);
+            if(spvo == null){
+                //提取码不正确
+                resultMap.put("msg","提取码有误,请核对！");
+                return resultMap;
+            }
+        } else {
+            //提取码不正确
+            resultMap.put("msg","提取码长度有误！");
+            return resultMap;
+        }
+        logger.info("抽取数据KEY={}",tq);
+        Map map = new HashMap<>();
+        map.put("tqm", tq);
+        map.put("gsdm", "sqj");
+        Jyxx jyxx = jyxxService.findOneByParams(map);
+        if(jyxx==null){
+            logger.info("食其家根据提取码【"+tq+"】未找到数据");
+            return null;
+        }
+        String orderNo = jyxx.getOrderNo();
+        String orderTime = jyxx.getOrderTime();
+        String price = jyxx.getPrice().toString();
+        String storeNo = jyxx.getStoreNo();
+        Skp skp = skpJpaDao.findOneByKpddmAndGsdm(storeNo, "sqj");
+        Integer xfid = skp.getXfid(); //销方id
+        Xf xf = xfJpaDao.findOneById(xfid);
+        Integer kpdid = skp.getId();//税控盘id(开票点id)
+        Jyxxsq jyxxsq = new Jyxxsq();
+        jyxxsq.setJshj(Double.valueOf(price));
+        jyxxsq.setDdh(orderNo);
+        jyxxsq.setGsdm("sqj");
+        jyxxsq.setKpddm(storeNo);
+        jyxxsq.setXfmc(xf.getXfmc());
+        jyxxsq.setKpr(xf.getKpr());
+        jyxxsq.setFhr(xf.getFhr());
+        jyxxsq.setSkr(xf.getSkr());
+        jyxxsq.setXfid(xfid);
+        jyxxsq.setXfsh(xf.getXfsh());
+        jyxxsq.setXfyhzh(xf.getXfyhzh());
+        jyxxsq.setXfyh(xf.getXfyh());
+        jyxxsq.setXfdh(xf.getXfdh());//销方电话
+        jyxxsq.setXfdz(xf.getXfdz());//销方地址
+        jyxxsq.setXflxr(xf.getXflxr());//销方联系人
+        jyxxsq.setXfyb(xf.getXfyb());//销方邮编
+        jyxxsq.setJylsh(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) + NumberUtil.getRandomLetter());
+        jyxxsq.setFpzldm("12");
+        jyxxsq.setFpczlxdm("11");
+        jyxxsq.setSffsyj("1");
+        jyxxsq.setZsfs("0");
+        jyxxsq.setHsbz("1");
+        jyxxsq.setSjly("6");//其他浏览器
+        jyxxsq.setLrsj(new Date());
+        jyxxsq.setXgsj(new Date());
+        try {
+            jyxxsq.setDdrq(new SimpleDateFormat("yyyyMMddHHmmss").parse(orderTime));
+        } catch (ParseException e) {
+            e.printStackTrace();
+            jyxxsq.setDdrq(null);
+        }
+        jyxxsq.setTqm(orderNo);
+
+        List<Jymxsq> jymxsqList = new ArrayList<>();
+
+        Jymxsq jymxsq = new Jymxsq();
+        jymxsq.setJshj(Double.valueOf(price));
+        Cszb cszb = cszbService.getSpbmbbh("sqj", xfid, kpdid, "dyspbmb");
+        Map mapoo = new HashMap();
+        mapoo.put("gsdm", "sqj");
+        if (cszb.getCsz() != null) {
+            mapoo.put("spdm", cszb.getCsz());
+        }
+        Spvo spvo = spvoService.findOneSpvo(mapoo);
+        jymxsq.setSpdm(spvo.getSpbm());
+        jymxsq.setYhzcmc(spvo.getYhzcmc());
+        jymxsq.setYhzcbs(spvo.getYhzcbs());
+        jymxsq.setLslbz(spvo.getLslbz());
+        jymxsq.setFphxz("0");
+        jymxsq.setSpmc(spvo.getSpmc());
+        jymxsq.setLrsj(new Date());
+        jymxsq.setXgsj(new Date());
+        jymxsq.setSpsl(spvo.getSl());
+        jymxsq.setSpje(jymxsq.getJshj());
+        jymxsq.setSpdj(jymxsq.getJshj());
+        jymxsq.setSps(1d);
+        jymxsqList.add(jymxsq);
+
+        List<Jyzfmx> jyzfmxList = new ArrayList<>();
+        AdapterPost post = new AdapterPost();
+        AdapterData data = new AdapterData();
+        AdapterDataOrder order = new AdapterDataOrder();
+        AdapterDataSeller seller = new AdapterDataSeller();
+        AdapterDataOrderBuyer buyer = new AdapterDataOrderBuyer();
+        List<AdapterDataOrderDetails> details = new ArrayList<>();
+        List<AdapterDataOrderPayments> payments = new ArrayList<>();
+
+        //明细
+        if(jymxsqList.size()>0){
+            for(int i=0;i<jymxsqList.size();i++){
+                Jymxsq jymxsq1 = jymxsqList.get(i);
+                AdapterDataOrderDetails detail = new AdapterDataOrderDetails();
+                detail.setAmount(jymxsq1.getSpje());
+                detail.setMxTotalAmount(jymxsq1.getJshj());
+                detail.setPolicyMark(jymxsq1.getYhzcbs());
+                detail.setPolicyName(jymxsq1.getYhzcmc());
+                detail.setProductCode(jymxsq1.getSpdm());
+                detail.setProductName(jymxsq1.getSpmc());
+                detail.setQuantity(jymxsq1.getSps());
+                detail.setUnitPrice(jymxsq1.getSpdj());
+                detail.setSpec(jymxsq1.getSpggxh());
+                detail.setUnit(jymxsq1.getSpdw());
+                detail.setRowType(jymxsq1.getFphxz());
+                detail.setTaxRate(jymxsq1.getSpsl());
+                detail.setTaxAmount(jymxsq1.getSpse());
+                detail.setVenderOwnCode(jymxsq1.getSpzxbm());
+                detail.setTaxRateMark(jymxsq1.getLslbz());
+                detail.setDeductAmount(jymxsq1.getKce());
+                details.add(detail);
+            }
+        }
+
+        //支付
+        if(jyzfmxList.size()>0){
+            for (Jyzfmx jyzfmx:jyzfmxList){
+                AdapterDataOrderPayments payment = new AdapterDataOrderPayments();
+                payment.setPayPrice(jyzfmx.getZfje());
+                payment.setPayCode(jyzfmx.getZffsDm());
+                payments.add(payment);
+            }
+        }
+
+        //订单
+        order.setBuyer(buyer);
+        order.setPayments(payments);
+        order.setOrderDetails(details);
+        order.setOrderNo(jyxxsq.getDdh());
+        order.setOrderDate(jyxxsq.getDdrq());
+        order.setTotalAmount(jyxxsq.getJshj());
+        order.setRemark(jyxxsq.getBz());
+        order.setInvoiceSfdy(jyxxsq.getSfdy());
+        order.setTaxMark(jyxxsq.getHsbz());
+        order.setInvoiceSplit(jyxxsq.getSfcp());
+        order.setInvoiceList(jyxxsq.getSfdyqd());
+        order.setChargeTaxWay(jyxxsq.getZsfs());
+        order.setTotalDiscount(jyxxsq.getQjzk());
+        order.setExtractedCode(jyxxsq.getTqm());
+
+        //销方
+        seller.setName(jyxxsq.getXfmc());
+        seller.setIdentifier(jyxxsq.getXfsh());
+        seller.setTelephoneNo(jyxxsq.getXfdh());
+        seller.setAddress(jyxxsq.getXfdz());
+        seller.setBank(jyxxsq.getXfyh());
+        seller.setBankAcc(jyxxsq.getXfyhzh());
+
+        //数据
+        data.setSerialNumber(jyxxsq.getJylsh());
+        data.setDrawer(jyxxsq.getKpr());
+        data.setPayee(jyxxsq.getSkr());
+        data.setReviewer(jyxxsq.getFhr());
+        data.setOrder(order);
+        data.setSeller(seller);
+
+        post.setClientNo(jyxxsq.getKpddm());
+        post.setData(data);
+        logger.info("抽取的数据=【"+JSON.toJSONString(post)+"】");
+        resultMap.put("post",post);
+        resultMap.put("jyxxsq",jyxxsq);
+        resultMap.put("jymxsqList",jymxsqList);
+        resultMap.put("jyzfmxList",jyzfmxList);
+        return resultMap;
+    }
+
 
     public Map jyxxsq(String gsdm,String tq) {
         Map resultMap =new HashMap();
