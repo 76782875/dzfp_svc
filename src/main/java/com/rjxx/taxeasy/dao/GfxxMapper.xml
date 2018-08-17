@@ -45,7 +45,13 @@
 		<if test="params.nsrsbh !=null and params.nsrsbh !=''">
 			and gfsh = #{params.nsrsbh}
 		</if>
-		
+        <if test="params.lrsjq !=null and params.lrsjq != ''">
+            and lrsj >= #{params.lrsjq}
+        </if>
+        <if test="params.lrsjz !=null and params.lrsjz != ''">
+            and lrsj &lt;
+                date_add(str_to_date(#{params.lrsjz},'%Y-%m-%d'),INTERVAL 1 day)
+        </if>
 		order by xgsj desc
     </select>
 
