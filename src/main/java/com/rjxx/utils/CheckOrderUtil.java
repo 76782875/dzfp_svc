@@ -113,7 +113,7 @@ public class CheckOrderUtil {
             // 购方税号
             String buyerIdentifier = (String) jyxxsq.getGfsh();
             if (buyerIdentifier != null && !buyerIdentifier.equals("")) {
-                if (!(buyerIdentifier.length() == 15 || buyerIdentifier.length() == 18 || buyerIdentifier.length() == 20 )) {
+                if (!(buyerIdentifier.length() == 15 || buyerIdentifier.length() == 18 || buyerIdentifier.length() == 20 || buyerIdentifier.length() == 9)) {
                     result += ddh + ":购方税号(Identifier)"+buyerIdentifier+"长度有误，请核对;";
                 }else{
                     if(buyerIdentifier.length() == 18){
@@ -293,7 +293,7 @@ public class CheckOrderUtil {
             // 购方税号
             String buyerIdentifier = (String) jyxxsq.getGfsh();
             if (buyerIdentifier != null && !buyerIdentifier.equals("")) {
-                if (!(buyerIdentifier.length() == 15 || buyerIdentifier.length() == 18 || buyerIdentifier.length() == 20 )) {
+                if (!(buyerIdentifier.length() == 15 || buyerIdentifier.length() == 18 || buyerIdentifier.length() == 20 || buyerIdentifier.length() == 9 )) {
                     result += ddh + ":购方税号(Identifier)"+buyerIdentifier+"长度有误，请核对;";
                 }else{
                     if(buyerIdentifier.length() == 18){
@@ -732,7 +732,7 @@ public class CheckOrderUtil {
 //        System.out.println(isSpecialCharacterForNum("9999-3323"));
         String result ="";
         if (buyerIdentifier != null && !buyerIdentifier.equals("")) {
-            if (!(buyerIdentifier.length() == 15 || buyerIdentifier.length() == 18 || buyerIdentifier.length() == 20 )) {
+            if (!(buyerIdentifier.length() == 15 || buyerIdentifier.length() == 18 || buyerIdentifier.length() == 20 || buyerIdentifier.length() == 9 )) {
                 result +=  ":购方税号"+buyerIdentifier+"长度有误，请核对;";
             }else{
                 if(buyerIdentifier.length() == 18){
