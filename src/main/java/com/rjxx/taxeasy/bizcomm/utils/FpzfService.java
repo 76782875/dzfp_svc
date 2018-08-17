@@ -2,6 +2,7 @@ package com.rjxx.taxeasy.bizcomm.utils;
 
 import com.rjxx.taxeasy.domains.*;
 import com.rjxx.taxeasy.service.*;
+import com.rjxx.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +31,8 @@ public class FpzfService {
 
 	@Autowired
 	private CszbService cszbService;
+	@Autowired
+	private SkpService skpService;
 	 
 	//作废处理
 		public InvoiceResponse zfcl(Integer kplsh,Integer yhid,String gsdm) throws Exception {
@@ -57,6 +60,31 @@ public class FpzfService {
 			}
 			return response;
 	}
+
+	//服务器开具纸票 -作废
+	public String zfcl1(Integer kplsh) throws Exception {
+		try {
+
+			Kpls kpls = kplsService.findOne(kplsh);
+			Skp skp = skpService.findOne(kpls.getSkpid());
+			if(skp==null || StringUtils.isBlank(skp.getKpdip())){
+				return  null;
+			}
+			savejyxxsq(kpls.getKplsh());
+			//作废处理
+			kpls.setFpczlxdm("14");
+			//作废走开票申请
+			kpls.setFpztdm("10");
+			kpls.setZfr(kpls.getKpr());
+			kplsService.save(kpls);
+			String xml= GetXmlUtil.getFpzfXml(skp.getKpdip(),kpls.getFpzldm(), "1",kpls);
+			return xml;
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	private void savejyxxsq(Integer kplsh)throws Exception {
 		Kpls kpls=kplsService.findOne(kplsh);
 		Integer djh = kpls.getDjh();

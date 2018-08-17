@@ -1938,15 +1938,14 @@ AND djh =#{djh}
     </select>
 
     <select id="findAllByFwk" parameterType="map" resultType="kpls">
-        select * from t_kpls t where    t.fpztdm = '00' and t.fphm is not NULL
-            and t.lrsj > #{lrsj}
-        <if test="gsdm !=null and gsdm !=''">
-            and t.gsdm = #{gsdm}
-        </if>
-        <if test="fpczlxdm !=null and fpczlxdm !=''">
-            and t.fpczlxdm = #{fpczlxdm}
-        </if>
-        ORDER BY t.lrsj asc;
+         SELECT
+        c.*
+        FROM
+        t_jyxxsq a
+        JOIN t_jyls b ON a.sqlsh = b.sqlsh
+        JOIN t_kpls c ON b.djh = c.djh
+        WHERE
+ a.sjly = '5' and c.pdfurl is not null  and c.fpztdm = '00' and a.fpzldm = '12' and c.kplsh=1114994265;
     </select>
 
     <!--回写查询-->
