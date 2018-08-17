@@ -389,7 +389,7 @@
         LEFT JOIN t_fpzt f ON f.fpztdm = a.fpztdm
         join t_kpspmx mx on mx.kplsh = a.kplsh
         ORDER BY
-        a.kplsh  DESC
+        a.kplsh  DESC,mx.spmxxh asc,mx.fphxz DESC
     </select>
 
 
