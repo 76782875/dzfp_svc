@@ -161,6 +161,9 @@
         <if test="kpddm != null and kpddm != ''">
             and a.kpddm = #{kpddm}
         </if>
+        <if test="csz != null and csz != ''">
+            AND f_get_param('kpfs',b.gsdm,b.id,IFNULL(a.id,null)) = #{csz}
+        </if>
         WHERE
         b.yxbz = '1'
         <if test="xfsh != null and xfsh != ''">
@@ -168,9 +171,6 @@
         </if>
         <if test="gsdm != null and gsdm != ''">
             and b.gsdm = #{gsdm}
-        </if>
-        <if test="csz != null and csz != ''">
-            AND f_get_param('kpfs',b.gsdm,b.id,IFNULL(a.id,null)) = #{csz}
         </if>
     </select>
 
