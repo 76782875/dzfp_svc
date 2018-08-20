@@ -305,7 +305,11 @@ public class AdapterServiceImpl implements AdapterService {
                 result.put("storeNo", storeNo);
                 result.put("price", price);
                 result.put("spsl", spsl.toString());
-                result.put("sps", "");
+                if("sqj".equals(gsdm)){
+                    result.put("sps", "1");
+                }else {
+                    result.put("sps", "");
+                }
                 result.put("spmc", spmc.toString());
                 result.put("kpdmc", skp.getKpdmc());
                 result.put("gsmc", gsdm);
@@ -518,6 +522,10 @@ public class AdapterServiceImpl implements AdapterService {
                     AdapterDataOrderDetails detail = new AdapterDataOrderDetails();
                     order.setTotalAmount(Double.valueOf(price));
                     detail.setRowType("0");
+                    if("sqj".equals(gsdm)){
+                        detail.setQuantity(1d);
+                        detail.setUnitPrice(Double.valueOf(price));
+                    }
                     detail.setAmount(Double.valueOf(price));
                     detail.setMxTotalAmount(Double.valueOf(price));
                     detail.setTaxAmount(0d);
