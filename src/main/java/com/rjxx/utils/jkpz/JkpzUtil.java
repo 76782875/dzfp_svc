@@ -560,7 +560,7 @@ public class JkpzUtil {
                         jymxsq.setHsbz(order.getTaxMark());
                         jymxsq.setSpmxxh(spmxxh);
                         jymxsq.setFphxz(orderDetails.getRowType());
-                        jymxsq.setSpdm(orderDetails.getProductCode().trim());
+                        jymxsq.setSpdm(orderDetails.getProductCode());
                         jymxsq.setSpmc(orderDetails.getProductName());
                         if("1".equals(orderDetails.getRowType())){
                             jymxsq.setSpggxh(null);
