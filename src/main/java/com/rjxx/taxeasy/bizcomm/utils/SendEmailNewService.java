@@ -46,12 +46,10 @@ public class SendEmailNewService {
         sb.append("<br/>");
         sb.append("您的订单号码： ");
         sb.append(ddh).append("的电子发票已开具成功，<br>");
-        if(StringUtils.isNotBlank(q)){
-            sb.append(ddh).append("的发票详情页面：<br>");
-            //String url =emailInfoUrl+"g="+gsdm+"&q="+q;
-            String url =fpdz_+"?q="+list.get(0).getSerialorder();
-            sb.append("<a href='" + url + "'>" + null2Wz(url) + "</a><br>");
-        }
+        sb.append(ddh).append("的发票详情页面：<br>");
+        //String url =emailInfoUrl+"g="+gsdm+"&q="+q;
+        String url =fpdz_+"?q="+list.get(0).getSerialorder();
+        sb.append("<a href='" + url + "'>" + null2Wz(url) + "</a><br>");
         sb.append(ddh).append("电子发票下载地址：<br>");
         for (String pdfUrl : pdfUrlList) {
             sb.append("<a href='" + pdfUrl + "'>" + null2Wz(pdfUrl) + "</a><br>");
