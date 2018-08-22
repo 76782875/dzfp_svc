@@ -57,9 +57,10 @@
                 #{params.sqlshlist[${index}]}
             </foreach>
         </if>
-        <if test="params.orderBy != null">
+        <!--<if test="params.orderBy != null">
             order by #{params.orderBy}
-        </if>
+        </if>-->
+        order by c.spmxxh ASC, c.fphxz DESC
 
     </select>
    
