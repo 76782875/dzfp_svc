@@ -295,10 +295,18 @@ public class AdapterServiceImpl implements AdapterService {
 //                    logger.info("pid is null");
 //                    return null;
                     Pp pp = ppJpaDao.findOneByPpdm("rjxx");
-                    result.put("tqm", pp.getPpdm() + orderNo);
+                    if(gsdm.equals("sqj")){
+                        result.put("tqm",orderNo);
+                    }else {
+                        result.put("tqm", pp.getPpdm() + orderNo);
+                    }
                 } else {
                     Pp pp = ppJpaDao.findOneById(pid);
-                    result.put("tqm", pp.getPpdm() + orderNo);
+                    if(gsdm.equals("sqj")){
+                        result.put("tqm",orderNo);
+                    }else {
+                        result.put("tqm", pp.getPpdm() + orderNo);
+                    }
                 }
                 result.put("orderNo", orderNo);
                 result.put("orderTime", orderTime);
@@ -480,11 +488,18 @@ public class AdapterServiceImpl implements AdapterService {
 //                        logger.info("pid is null");
 //                        return "0";
                         Pp pp = ppJpaDao.findOneByPpdm("rjxx");
-                        order.setExtractedCode(pp.getPpdm() + orderNo);
-
+                        if(gsdm.equals("sqj")){
+                            order.setExtractedCode(orderNo);
+                        }else {
+                            order.setExtractedCode(pp.getPpdm() + orderNo);
+                        }
                     } else {
                         Pp pp = ppJpaDao.findOneById(pid);
-                        order.setExtractedCode(pp.getPpdm() + orderNo);
+                        if(gsdm.equals("sqj")){
+                            order.setExtractedCode(orderNo);
+                        }else {
+                            order.setExtractedCode(pp.getPpdm() + orderNo);
+                        }
                     }
                 }
                 order.setBuyer(buyer);
