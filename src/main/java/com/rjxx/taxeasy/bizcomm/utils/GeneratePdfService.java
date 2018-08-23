@@ -115,7 +115,8 @@ public class GeneratePdfService {
     private FphxUtil fphxUtil;
     @Autowired
     private ShortUrlService shortUrlService;
-
+    @Autowired
+    private SampleMail sampleMail;
     @Value("${emailInfoUrl:}")
     private String emailInfoUrl;
     
@@ -453,10 +454,11 @@ public class GeneratePdfService {
                                 // 购方email校验
                                 String gfEmailstr =kpls.getGfemail();
                                 if(gfEmailstr!=null&&!"".equals(gfEmailstr.trim())){
-                                    String []gfEmailArray=gfEmailstr.split("，");
-                                    for(String gfEmail:gfEmailArray){
-                                        se.sendEmail(String.valueOf(kpls.getDjh()), kpls.getGsdm(),gfEmail , "发票开具成功发送邮件", String.valueOf(kpls.getDjh()), content, yjmbSubject);
-                                    }
+                                    String []gfEmailArray=gfEmailstr.split("，|,");
+                                    //for(String gfEmail:gfEmailArray){
+                                    //    se.sendEmail(String.valueOf(kpls.getDjh()), kpls.getGsdm(),gfEmail , "发票开具成功发送邮件", String.valueOf(kpls.getDjh()), content, yjmbSubject);
+                                    //}
+                                    sampleMail.sendmail1(String.valueOf(kpls.getDjh()), kpls.getGsdm(),gfEmailArray , "发票开具成功发送邮件", String.valueOf(kpls.getDjh()), content, yjmbSubject);
                                 }
                             }
                         } catch (Exception e) {
