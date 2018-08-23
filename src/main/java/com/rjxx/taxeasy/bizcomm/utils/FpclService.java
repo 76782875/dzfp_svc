@@ -1154,7 +1154,7 @@ public class FpclService {
                         try {
                             if(kpfs.equals("04")){
                                  invoiceResponse =skService.SkBoxKP(kpls.getKplsh());
-                                 logger.info("test---------returnCode="+invoiceResponse.getReturnCode());
+                                 //logger.info("test---------returnCode="+invoiceResponse.getReturnCode());
                                 //kpls.setFpztdm("04");
                                 //kplsService.save(kpls);
                             }else if(kpfs.equals("05")){
