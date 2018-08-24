@@ -209,6 +209,7 @@ public class SkService {
                 result = HttpUtils.doPost(url, map);
             }
             if(result!=null){
+                //logger.info("SkService盒子开票返回："+result);
                 response= XmlJaxbUtils.convertXmlStrToObject(InvoiceResponse.class, result);
             }
         }catch (Exception e){

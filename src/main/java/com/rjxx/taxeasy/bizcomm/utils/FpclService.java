@@ -1149,13 +1149,14 @@ public class FpclService {
                     kpls.setKpddm(jyxxsq.getKpddm());
                     kplsService.save(kpls);
                     saveKpspmx(kpls, list2);
-                    KplsVO5 kplsVO5 = new KplsVO5(kpls, jyxxsq);
-                    result.add(kplsVO5);
+                    InvoiceResponse invoiceResponse = null;
+                    //KplsVO5 kplsVO5 = new KplsVO5(kpls, jyxxsq);
                         try {
                             if(kpfs.equals("04")){
-                                //skService.SkBoxKP(kpls.getKplsh());
-                                kpls.setFpztdm("04");
-                                kplsService.save(kpls);
+                                 invoiceResponse =skService.SkBoxKP(kpls.getKplsh());
+                                 //logger.info("test---------returnCode="+invoiceResponse.getReturnCode());
+                                //kpls.setFpztdm("04");
+                                //kplsService.save(kpls);
                             }else if(kpfs.equals("05")){
                                 skService.skEkyunKP(kpls.getKplsh());
                             }
@@ -1165,6 +1166,7 @@ public class FpclService {
                             kpls.setErrorReason(e.getMessage());
                             kplsService.save(kpls);
                         }
+                    result.add(invoiceResponse);
                 }
                 i++;
             }
