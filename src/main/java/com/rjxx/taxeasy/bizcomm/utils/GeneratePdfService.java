@@ -71,9 +71,6 @@ public class GeneratePdfService {
     private DataOperate dc;
 
     @Autowired
-    private SendalEmail se;
-
-    @Autowired
     private MailService mailService;
 
     @Autowired
@@ -86,29 +83,15 @@ public class GeneratePdfService {
     private YjmbService yjmbService;
     @Autowired
     private JyxxsqService jyxxsqService;
-    @Autowired
-    private FphxwsjlService fphxwsjlService;
 
     @Autowired
     private ImputationCardUtil imputationCardUtil;
 
     @Autowired
     private InvoiceQueryUtil invoiceQueryUtil;
-    @Autowired
-    private XfJpaDao xfJpaDao;
-    @Autowired
-    private KpspmxJpaDao kpspmxJpaDao;
-    @Autowired
-    private SaveGfxxUtil saveGfxxUtil;
-    @Autowired
-    private SkpService skpService;
-    @Autowired
-    private PpJpaDao ppJpaDao;
-    @Autowired
-    private ShortLinkJpaDao shortLinkJpaDao;
 
     @Autowired
-    private RabbitmqUtils rabbitmqSend;
+    private SaveGfxxUtil saveGfxxUtil;
     @Autowired
     private XsqdJpaDao xsqdJpaDao;
     @Autowired
@@ -187,7 +170,8 @@ public class GeneratePdfService {
             map.put("JYM", kpls.getJym());
             map.put("FP_MW", kpls.getMwq());
             map.put("EWM", kpls.getFpEwm());
-            if (pdg.GeneratPDF(map, jyls, kpls)) {
+            Map resultMap = pdg.GeneratPDF(map, jyls, kpls);
+            if ("true"==resultMap.get("flag").toString() || resultMap.get("flag").toString().equals("true")) {
                 logger.info("----生成PDF方法名----generatePdf---"+kplsh);
                 dc.updatePDFUrl(map, jyls, kpls);// 生成pdf的路径更新入库
                 dc.updateFlag(jyls, "91");
@@ -198,161 +182,6 @@ public class GeneratePdfService {
                 //String url = gsxx.getCallbackurl();
                 //发票回写
                 fphxUtil.fphx(kpls,jyls,gsxx);
-                /*if (!("").equals(url) && url != null) {
-                    String returnmessage = "";
-                    if (kpls.getFpzldm().equals("12") && kpls.getGsdm().equals("Family")) {
-                        returnmessage = this.CreateReturnMessage2(kpls.getKplsh());
-                    } else if (kpls.getFpzldm().equals("12") && kpls.getGsdm().equals("mcake")) {
-                        returnmessage = this.CreateReturnMessage(kpls.getKplsh());
-                    }else if (kpls.getFpzldm().equals("12") && (kpls.getGsdm().equals("fwk")||kpls.getGsdm().equals("bqw"))) {
-                        returnmessage = this.CreateReturnMessage3(kpls.getKplsh());
-                    }else {
-                        Cszb cszb = cszbService.getSpbmbbh(gsxx.getGsdm(), null, null, "callBackType");
-                        String callbacktype = cszb.getCsz();
-                        if(callbacktype!=null){
-                            if("9".equals(callbacktype)){
-                                returnmessage = this.createJsonMsg(kpls.getKplsh());
-                            }
-                        }else{
-                            returnmessage = this.CreateReturnMessage(kpls.getKplsh());
-                        }
-                    }
-                    //输出调用结果
-                    logger.info("回写报文" + returnmessage);
-                    if (returnmessage != null && !"".equals(returnmessage)) {
-                        if(kpls.getGsdm().equals("afb")){
-                            Map returnMap = this.httpPostNoSign(returnmessage, kpls);
-                            logger.info("返回报文" + JSON.toJSONString(returnMap));
-                        }if(kpls.getGsdm().equals("fwk")){
-                            try {
-                                String ss = this.netWebService(url, "CallBack", returnmessage, gsxx.getAppKey(), gsxx.getSecretKey());
-                                String fwkReturnMessageStr = fwkReturnMessage(kpls);
-                                logger.info("----------sap回写报文----------" + fwkReturnMessageStr);
-                                String Data = HttpUtils.doPostSoap1_2(gsxx.getSapcallbackurl(), fwkReturnMessageStr, null, "Deepak", "Welcome0");
-                                logger.info("----------fwk平台回写返回报文--------" + ss);
-                                logger.info("----------sap回写返回报文----------" + Data);
-                                //回写失败放入mq
-                                if(StringUtils.isBlank(ss) || StringUtils.isBlank(Data)){
-                                    logger.info("sap、fwk--回写返回为空，放入mq---"+kpls.getKplsh() + "_1");
-                                    Fphxwsjl fphxwsjl = new Fphxwsjl();
-                                    fphxwsjl.setGsdm("fwk");
-                                    fphxwsjl.setXfid(kpls.getXfid());
-                                    fphxwsjl.setSkpid(kpls.getSkpid());
-                                    fphxwsjl.setKplsh(kplsh);
-                                    fphxwsjl.setDdh(jyls.getDdh());
-                                    fphxwsjl.setEnddate(new Date());
-                                    fphxwsjl.setReturncode("9999");
-                                    fphxwsjl.setStartdate(new Date());
-                                    fphxwsjl.setSecretKey("");
-                                    fphxwsjl.setSign("");
-                                    fphxwsjl.setWsurl(gsxx.getSapcallbackurl());
-                                    fphxwsjl.setReturncontent(fwkReturnMessageStr);
-                                    fphxwsjlService.save(fphxwsjl);
-                                    rabbitmqSend.sendMsg("ErrorException_Callback", kpls.getFpzldm(), kpls.getKplsh() + "_1");
-                                }else {
-                                    //解析fwk前台返回值
-                                Map resultMap = handerReturnMes(ss);
-                                String returnCode = resultMap.get("ReturnCode").toString();
-                                //解析sap返回值
-                                String note = "";
-                                try {
-                                    String jsonString= XmltoJson.xml2json(Data);
-                                    Map dataMap=XmltoJson.strJson2Map(jsonString);
-                                    Map Envelope=(Map)dataMap.get("env:Envelope");
-                                    Map Body=(Map)Envelope.get("env:Body");
-                                    Map GoldenTaxGoldenTaxCreateConfirmation_sync=(Map)Body.get("n0:GoldenTaxGoldenTaxCreateConfirmation_sync");
-                                    Map Log=(Map)GoldenTaxGoldenTaxCreateConfirmation_sync.get("Log");
-                                    Map item = (Map)Log.get("Item");
-                                    note = (String) item.get("Note");
-                                } catch (Exception e) {
-                                    logger.info("解析sap失败");
-                                }
-                                //fwk 、sap 不成功
-                                if((StringUtils.isBlank(note)|| !"Create operation was successful".equals(note))||(StringUtils.isBlank(returnCode)|| !"0000".equals(returnCode))){
-                                logger.info("sap--回写返回不成功或者 fwk回写返回不成功，放入mq---"+kpls.getKplsh() + "_1");
-                                rabbitmqSend.sendMsg("ErrorException_Callback", kpls.getFpzldm(), kpls.getKplsh() + "_1");
-                                }
-                                Fphxwsjl fphxwsjl = new Fphxwsjl();
-                                fphxwsjl.setGsdm("fwk");
-                                fphxwsjl.setXfid(kpls.getXfid());
-                                fphxwsjl.setSkpid(kpls.getSkpid());
-                                fphxwsjl.setKplsh(kplsh);
-                                fphxwsjl.setDdh(jyls.getDdh());
-                                fphxwsjl.setEnddate(new Date());
-                                if((StringUtils.isBlank(returnCode)|| !"0000".equals(returnCode)) || (StringUtils.isBlank(note)||!"Create operation was successful".equals(note))){
-                                    fphxwsjl.setReturncode("9999");
-                                }else {
-                                    fphxwsjl.setReturncode("0000");
-                                }
-                                fphxwsjl.setStartdate(new Date());
-                                fphxwsjl.setSecretKey("");
-                                fphxwsjl.setSign("");
-                                fphxwsjl.setWsurl(gsxx.getSapcallbackurl());
-                                fphxwsjl.setReturncontent(fwkReturnMessageStr);
-                                fphxwsjl.setReturnmessage(Data);
-                                fphxwsjlService.save(fphxwsjl);
-                                }
-                            }catch (Exception e){
-                                e.printStackTrace();
-                                rabbitmqSend.sendMsg("ErrorException_Callback", kpls.getFpzldm(), kpls.getKplsh() + "_1");
-                            }
-                        } else{
-                                try{
-                                    Map returnMap = this.httpPost(returnmessage, kpls);
-                                    logger.info("返回报文" + JSON.toJSONString(returnMap));
-                                    String Secret = getSign(returnmessage, gsxx.getSecretKey());
-                                    if(returnMap==null || returnMap.get("ReturnCode")==null){
-                                        logger.info("回写返回为空，放入mq---"+kpls.getKplsh() + "_1");
-                                        Fphxwsjl fphxwsjl = new Fphxwsjl();
-                                        fphxwsjl.setGsdm(kpls.getGsdm());
-                                        fphxwsjl.setKplsh(kplsh);
-                                        fphxwsjl.setXfid(kpls.getXfid());
-                                        fphxwsjl.setSkpid(kpls.getSkpid());
-                                        fphxwsjl.setDdh(jyls.getDdh());
-                                        fphxwsjl.setEnddate(new Date());
-                                        fphxwsjl.setReturncode("9999");
-                                        fphxwsjl.setStartdate(new Date());
-                                        fphxwsjl.setSecretKey(gsxx.getSecretKey());
-                                        fphxwsjl.setSign(Secret);
-                                        fphxwsjl.setWsurl(gsxx.getCallbackurl());
-                                        fphxwsjl.setReturncontent(returnmessage);
-                                        fphxwsjlService.save(fphxwsjl);
-                                        rabbitmqSend.sendMsg("ErrorException_Callback", kpls.getFpzldm(), kpls.getKplsh() + "_1");
-                                    }else {
-                                        String returnCode = returnMap.get("ReturnCode").toString();
-                                        String returnMessage = returnMap.get("ReturnMessage").toString();
-                                        //回写失败放入mq
-                                        if(StringUtils.isBlank(returnCode)|| !"0000".equals(returnCode) || !"0".equals(returnCode)){
-                                            logger.info("回写返回不成功，放入mq---"+kpls.getKplsh() + "_1");
-                                            rabbitmqSend.sendMsg("ErrorException_Callback", kpls.getFpzldm(), kpls.getKplsh() + "_1");
-                                        }
-                                        Fphxwsjl fphxwsjl = new Fphxwsjl();
-                                        fphxwsjl.setGsdm(kpls.getGsdm());
-                                        fphxwsjl.setKplsh(kplsh);
-                                        fphxwsjl.setXfid(kpls.getXfid());
-                                        fphxwsjl.setSkpid(kpls.getSkpid());
-                                        fphxwsjl.setDdh(jyls.getDdh());
-                                        fphxwsjl.setEnddate(new Date());
-                                        if(StringUtils.isBlank(returnCode)|| !"0000".equals(returnCode) || !"0".equals(returnCode)){
-                                            fphxwsjl.setReturncode("9999");
-                                        }else {
-                                            fphxwsjl.setReturncode("0000");
-                                        }
-                                        fphxwsjl.setStartdate(new Date());
-                                        fphxwsjl.setSecretKey(gsxx.getSecretKey());
-                                        fphxwsjl.setSign(Secret);
-                                        fphxwsjl.setWsurl(gsxx.getCallbackurl());
-                                        fphxwsjl.setReturncontent(returnmessage);
-                                        fphxwsjl.setReturnmessage(returnMessage);
-                                        fphxwsjlService.save(fphxwsjl);
-                                    }
-                                }catch (Exception e){
-                                    e.printStackTrace();
-                                    rabbitmqSend.sendMsg("ErrorException_Callback", kpls.getFpzldm(), kpls.getKplsh() + "_1");
-                                }
-                        }
-                    }
-                }*/
                 //发送email
                 if ("1".equals(jyls.getSffsyj()) && jyls.getGfemail() != null && !"".equals(jyls.getGfemail())) {
                     Kpls ls = new Kpls();
@@ -787,50 +616,7 @@ public class GeneratePdfService {
                "</Request>\n","bd79b66f566b5e2de07f1807c56b2469");
         System.out.println(s);
     }
-    /**
-     * .net webService
-     * @param url
-     * @param methodName
-     * @param QueryData
-     * @param AppId
-     * @param key
-     * @return
-     */
-    /*public String netWebService (String url,String methodName,String QueryData,String AppId,String key){
-        String result="";
-        try {
-            logger.info("----------发送的报文------"+QueryData);
-            JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
-            Client client = dcf.createClient(url);
-            String sign= SignUtils.getSign(QueryData,key);
-            Object[] objects = client.invoke(methodName, AppId,QueryData,sign);
-            //输出调用结果
-            result = objects[0].toString();
-            logger.info("----------接收返回值------"+result.toString());
-           // Map resultMap=new HashMap();
-           // resultMap = handerReturnMes(result.toString());
-           // String returnCode=resultMap.get("ReturnCode").toString();
-            //String ReturnMessage=resultMap.get("ReturnMessage").toString();
-//            Fphxwsjl fphxwsjl=new Fphxwsjl();
-//            fphxwsjl.setGsdm("fwk");
-//            fphxwsjl.setXfid(kpls.getXfid());
-//            fphxwsjl.setSkpid(kpls.getSkpid());
-//            fphxwsjl.setKplsh(kplsh);
-//            fphxwsjl.setDdh(jyls.getDdh());
-//            fphxwsjl.setEnddate(new Date());
-//            fphxwsjl.setReturncode(returnCode);
-//            fphxwsjl.setStartdate(new Date());
-//            fphxwsjl.setSecretKey(key);
-//            fphxwsjl.setSign(sign);
-//            fphxwsjl.setWsurl(url);
-//            fphxwsjl.setReturncontent(QueryData);
-//            fphxwsjl.setReturnmessage(ReturnMessage);
-//            fphxwsjlService.save(fphxwsjl);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
-    }*/
+
     public String   fwkReturnMessage(Kpls kpls) {
         SimpleDateFormat sim = new SimpleDateFormat("yyyy-MM-dd");
         String result="Succeed";
