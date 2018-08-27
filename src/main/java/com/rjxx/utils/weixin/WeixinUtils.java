@@ -335,10 +335,9 @@ public class WeixinUtils {
             try {
                 Map map = jsonparer.readValue(jsonStr3, Map.class);
                 Integer errcode = (Integer) map.get("errcode");
-                System.out.println("code" + errcode);
+                logger.info("code" + errcode);
                 if (null != errcode && errcode==0) {
-                    System.out.println("返回数据成功！解析json数据");
-                    System.out.println("返回数据" + map.toString());
+                    logger.info("返回数据" + map.toString());
                     String invoice_status = (String) map.get("invoice_status");
                     if(invoice_status!=null && "auth success".equals(invoice_status)){
                         int auth_time = (int) map.get("auth_time");
@@ -346,11 +345,10 @@ public class WeixinUtils {
                         Date date = new Date(auth_time);
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                         String xdsj = sdf.format(date);//下单时间
-                        System.out.println("" + xdsj.toString());
                         if (null != user_auth_info.get("user_field")) {
                             //个人抬头
                             Map user_field = (Map) user_auth_info.get("user_field");
-                            System.out.println("个人抬头" + user_auth_info.toString());
+                            logger.info("个人抬头" + user_auth_info.toString());
                             String title = (String) user_field.get("title");
                             String phone = (String) user_field.get("phone");
                             String email = (String) user_field.get("email");
@@ -359,7 +357,7 @@ public class WeixinUtils {
                             String value = "";
                             if (custom_field.size() > 0) {
                                 for (int i = 0; i < custom_field.size(); i++) {
-                                    System.out.println("个人中的其他数据" + custom_field.get(i));
+                                    logger.info("个人中的其他数据" + custom_field.get(i));
                                     Map map1 = (Map) custom_field.get(i);
                                     key = (String) map1.get("key");
                                     value = (String) map1.get("value");
@@ -379,7 +377,7 @@ public class WeixinUtils {
                         if (null != user_auth_info.get("biz_field")) {
                             //单位抬头
                             Map biz_field = (Map) user_auth_info.get("biz_field");
-                            System.out.println("个人抬头" + user_auth_info.toString());
+                            logger.info("单位抬头" + user_auth_info.toString());
                             String title = (String) biz_field.get("title");
                             String tax_no = (String) biz_field.get("tax_no");
                             String addr = (String) biz_field.get("addr");
@@ -391,13 +389,12 @@ public class WeixinUtils {
                             String value = "";
                             if (custom_field.size() > 0) {
                                 for (int i = 0; i < custom_field.size(); i++) {
-                                    System.out.println("个人中的其他数据" + custom_field.get(i));
+                                    logger.info("单位中的其他数据" + custom_field.get(i));
                                     Map map1 = (Map) custom_field.get(i);
                                     key = (String) map1.get("key");
                                     value = (String) map1.get("value");
                                     System.out.println("key" + key);
                                     System.out.println("value" + value);
-
                                 }
                             }
                             resultMap.put("title", title);//抬头
@@ -411,7 +408,7 @@ public class WeixinUtils {
                             if (null != key && key.equals("邮箱")) {
                                 resultMap.put("email", value);
                             }
-                            System.out.println("封装的数据" + resultMap.toString());
+                            logger.info("封装的数据" + resultMap.toString());
                             resultMap.put("msg","0");
                             return resultMap;
                         }

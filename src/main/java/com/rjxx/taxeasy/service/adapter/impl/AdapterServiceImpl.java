@@ -908,7 +908,6 @@ public class AdapterServiceImpl implements AdapterService {
     @Override
     public List<String> checkStatus(String tqm, String gsdm,String on) {
         try {
-            logger.info("提取码++++"+tqm+"___公司代码"+gsdm+"-0000"+on);
             List<String> result = new ArrayList();
             List<Integer> djhs = null;
             if(org.apache.commons.lang3.StringUtils.isNotBlank(on)){
