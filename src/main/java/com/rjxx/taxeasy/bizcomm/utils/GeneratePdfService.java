@@ -455,7 +455,7 @@ public class GeneratePdfService {
 
                 dc.saveLog(djh, "21", "1", "PdfDocumentGenerator：GeneratPDF", "生成pdf失败,服务异常",
                         1, jyls.getXfsh(), jyls.getJylsh());
-                dc.updateKplsFpzt(kpls, "开具成功，但生成pdf失败,服务异常", "05");
+                dc.updateKplsFpzt(kpls, "开具成功,"+resultMap.get("msg"), "05");
             }
         } catch (Exception e) {
             dc.updateFlag(jyls, "92");
