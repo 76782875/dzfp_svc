@@ -830,7 +830,7 @@ public class FpclService {
         //String kplsh=null;
         //kplsh=key;
         StringBuffer buffer = new StringBuffer();
-        Map resultMap = null;
+        Map resultMap = new HashMap();
         try {
             StringEntity requestEntity = new StringEntity(sendMes, "GBK");
             httpPost.setEntity(requestEntity);
@@ -869,10 +869,10 @@ public class FpclService {
             }
             logger.info("http调用服务器：" + url + ",exception,kplsh="+key+", msg=" + e.getMessage());
             //skService.SkServerQuery(Integer.parseInt(key));
-            Kpls kpls=kplsService.findOne(Integer.parseInt(key));
+            /*Kpls kpls=kplsService.findOne(Integer.parseInt(key));
             kpls.setFpztdm("04");
             kpls.setErrorReason(e.getMessage());
-            kplsService.save(kpls);
+            kplsService.save(kpls);*/
         } finally {
             if (response != null) {
                 try {
@@ -1407,8 +1407,6 @@ public class FpclService {
             Jyxxsq jyxxsq = jyxxsqService.findOne(jyls.getSqlsh());
             KplsVO5 kplsVO5 = new KplsVO5(kpls, jyxxsq);
             Map resultMap = null;
-            String resultxml = "";
-            List resultList = new ArrayList();
             double hjje = 0.00;
             double hjse = 0.00;
             double kce = 0.00;
@@ -1484,16 +1482,14 @@ public class FpclService {
             }
             logger.debug("封装税控服务器的返回报文" + JSONObject.toJSONString(resultMap));
             //服务器无异常，又返回才更新。
-            if(null !=resultMap){
+            if(null !=resultMap && !resultMap.isEmpty()){
                 String serialorder = this.updateKpls(resultMap);
             }else{
+                kpls.setFpztdm("04");
+                kpls.setErrorReason("服务器连接超时！");
+                kplsService.save(kpls);
                 return "0";
             }
-            /*resultxml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
-                    "<Responese>\n" +
-                    "    <ReturnCode>0000</ReturnCode>\n" +
-                    "    <ReturnMessage>" + serialorder + "</ReturnMessage>\n" +
-                    "</Responese>\n";*/
             return "1";
         } catch (Exception e) {
             // TODO Auto-generated catch block
