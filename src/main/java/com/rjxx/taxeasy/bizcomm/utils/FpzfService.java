@@ -51,6 +51,7 @@ public class FpzfService {
 				if("01".equals(cszb.getCsz())){
 					skService.voidInvoice(kpls.getKplsh());
 				}else{
+					//凯盈盒子作废接口
 					skService.InvalidateInvoice(kpls.getKplsh());
 				}
 				response.setReturnCode("0000");
