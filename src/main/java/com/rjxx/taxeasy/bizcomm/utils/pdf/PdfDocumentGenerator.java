@@ -296,8 +296,8 @@ public class PdfDocumentGenerator {
         }
         return 9;
     }
-    public boolean GeneratPDF(Map<String, Object> map, Jyls jyls, Kpls kpls)
-             {
+    public Map GeneratPDF(Map<String, Object> map, Jyls jyls, Kpls kpls) {
+        Map result = new HashMap();
         try {
             long start = System.currentTimeMillis();
 
@@ -388,6 +388,31 @@ public class PdfDocumentGenerator {
             }
             String imagePath = ResourceLoader.getPath("config/images");
             in_request.setImagePath(imagePath);
+            //判断销方监制章是否存在
+            File file = new File(imagePath+"/"+in_request.getXfsh()+".png");
+            boolean flag = true;
+            if(!file.exists()){
+                flag = false;
+            }
+            //判断省份监制章是否存在
+            File file1 = new File(imagePath+"/"+in_request.getSfmc()+".png");
+            if(!file1.exists()){
+                if(!flag){
+                    result.put("flag","false");
+                    result.put("msg","生成pdf失败,销方监制章、省份监制章不存在");
+                    return  result;
+                }else{
+                    result.put("flag","false");
+                    result.put("msg","生成pdf失败,省份监制章不存在");
+                    return  result;
+                }
+            }else{
+                if(!flag){
+                    result.put("flag","false");
+                    result.put("msg","生成pdf失败,销方监制章不存在");
+                    return  result;
+                }
+            }
             // pdf的存储路径
             String tempPath = pdfSavePath;
             tempPath = tempPath.replaceAll("\\\\", "/");
@@ -617,10 +642,16 @@ public class PdfDocumentGenerator {
             logger.info("------pdf路径-------"+serverUrl + outputFile_AbsolutePath);
             map.put("signData", signData);
             map.put("BaseFilePath",outputFile);
-            return true;
+            result.put("flag","true");
+            result.put("msg","成功");
+            return result;
+            //return true;
         }catch (Exception e){
             logger.error("生成pdf出现异常：" + kpls.getKplsh(), e);
-            return false;
+            //return false;
+            result.put("flag","false");
+            result.put("msg","失败");
+            return result;
         }
     }
     public String getPdfname(Kpls kpls, Jyls jyls,String content){
