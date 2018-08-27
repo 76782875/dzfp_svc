@@ -340,81 +340,86 @@ public class WeixinUtils {
                     System.out.println("返回数据成功！解析json数据");
                     System.out.println("返回数据" + map.toString());
                     String invoice_status = (String) map.get("invoice_status");
-                    int auth_time = (int) map.get("auth_time");
-                    Map user_auth_info = (Map) map.get("user_auth_info");
-                    Date date = new Date(auth_time);
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                    String xdsj = sdf.format(date);//下单时间
-                    System.out.println("" + xdsj.toString());
-                    if (null != user_auth_info.get("user_field")) {
-                        //个人抬头
-                        Map user_field = (Map) user_auth_info.get("user_field");
-                        System.out.println("个人抬头" + user_auth_info.toString());
-                        String title = (String) user_field.get("title");
-                        String phone = (String) user_field.get("phone");
-                        String email = (String) user_field.get("email");
-                        List custom_field = (List) user_field.get("custom_field");
-                        String key = "";
-                        String value = "";
-                        if (custom_field.size() > 0) {
-                            for (int i = 0; i < custom_field.size(); i++) {
-                                System.out.println("个人中的其他数据" + custom_field.get(i));
-                                Map map1 = (Map) custom_field.get(i);
-                                key = (String) map1.get("key");
-                                value = (String) map1.get("value");
-                                //System.out.println("key"+key);
-                                //System.out.println("value"+value);
+                    if(invoice_status!=null && "auth success".equals(invoice_status)){
+                        int auth_time = (int) map.get("auth_time");
+                        Map user_auth_info = (Map) map.get("user_auth_info");
+                        Date date = new Date(auth_time);
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                        String xdsj = sdf.format(date);//下单时间
+                        System.out.println("" + xdsj.toString());
+                        if (null != user_auth_info.get("user_field")) {
+                            //个人抬头
+                            Map user_field = (Map) user_auth_info.get("user_field");
+                            System.out.println("个人抬头" + user_auth_info.toString());
+                            String title = (String) user_field.get("title");
+                            String phone = (String) user_field.get("phone");
+                            String email = (String) user_field.get("email");
+                            List custom_field = (List) user_field.get("custom_field");
+                            String key = "";
+                            String value = "";
+                            if (custom_field.size() > 0) {
+                                for (int i = 0; i < custom_field.size(); i++) {
+                                    System.out.println("个人中的其他数据" + custom_field.get(i));
+                                    Map map1 = (Map) custom_field.get(i);
+                                    key = (String) map1.get("key");
+                                    value = (String) map1.get("value");
+                                    //System.out.println("key"+key);
+                                    //System.out.println("value"+value);
+                                }
                             }
+                            resultMap.put("xdsj", xdsj);//下单时间
+                            resultMap.put("title", title);//发票抬头名称
+                            resultMap.put("phone", phone);//电话
+                            resultMap.put("email", email);//邮箱
+                            resultMap.put("key", key);
+                            resultMap.put("value", value);
+                            resultMap.put("msg","0");
+                            return resultMap;
                         }
-                        resultMap.put("xdsj", xdsj);//下单时间
-                        resultMap.put("title", title);//发票抬头名称
-                        resultMap.put("phone", phone);//电话
-                        resultMap.put("email", email);//邮箱
-                        resultMap.put("key", key);
-                        resultMap.put("value", value);
-                        resultMap.put("msg","0");
+                        if (null != user_auth_info.get("biz_field")) {
+                            //单位抬头
+                            Map biz_field = (Map) user_auth_info.get("biz_field");
+                            System.out.println("个人抬头" + user_auth_info.toString());
+                            String title = (String) biz_field.get("title");
+                            String tax_no = (String) biz_field.get("tax_no");
+                            String addr = (String) biz_field.get("addr");
+                            String phone = (String) biz_field.get("phone");
+                            String bank_type = (String) biz_field.get("bank_type");
+                            String bank_no = (String) biz_field.get("bank_no");
+                            List custom_field = (List) biz_field.get("custom_field");
+                            String key = "";
+                            String value = "";
+                            if (custom_field.size() > 0) {
+                                for (int i = 0; i < custom_field.size(); i++) {
+                                    System.out.println("个人中的其他数据" + custom_field.get(i));
+                                    Map map1 = (Map) custom_field.get(i);
+                                    key = (String) map1.get("key");
+                                    value = (String) map1.get("value");
+                                    System.out.println("key" + key);
+                                    System.out.println("value" + value);
+
+                                }
+                            }
+                            resultMap.put("title", title);//抬头
+                            resultMap.put("tax_no", tax_no);//税号
+                            resultMap.put("addr", addr);//地址
+                            resultMap.put("phone", phone);//电话
+                            resultMap.put("bank_type", bank_type);//开户类型
+                            resultMap.put("bank_no", bank_no);//银行账号
+                            resultMap.put("key", key);//邮箱
+                            resultMap.put("value", value);//
+                            if (null != key && key.equals("邮箱")) {
+                                resultMap.put("email", value);
+                            }
+                            System.out.println("封装的数据" + resultMap.toString());
+                            resultMap.put("msg","0");
+                            return resultMap;
+                        }
+                    }else {
+                        logger.info( order_id + "授权状态"+errcode+",错误代码" + errcode);
+                        resultMap.put("msg","72038");
                         return resultMap;
                     }
-                    if (null != user_auth_info.get("biz_field")) {
-                        //单位抬头
-                        Map biz_field = (Map) user_auth_info.get("biz_field");
-                        System.out.println("个人抬头" + user_auth_info.toString());
-                        String title = (String) biz_field.get("title");
-                        String tax_no = (String) biz_field.get("tax_no");
-                        String addr = (String) biz_field.get("addr");
-                        String phone = (String) biz_field.get("phone");
-                        String bank_type = (String) biz_field.get("bank_type");
-                        String bank_no = (String) biz_field.get("bank_no");
-                        List custom_field = (List) biz_field.get("custom_field");
-                        String key = "";
-                        String value = "";
-                        if (custom_field.size() > 0) {
-                            for (int i = 0; i < custom_field.size(); i++) {
-                                System.out.println("个人中的其他数据" + custom_field.get(i));
-                                Map map1 = (Map) custom_field.get(i);
-                                key = (String) map1.get("key");
-                                value = (String) map1.get("value");
-                                System.out.println("key" + key);
-                                System.out.println("value" + value);
-
-                            }
-                        }
-                        resultMap.put("title", title);//抬头
-                        resultMap.put("tax_no", tax_no);//税号
-                        resultMap.put("addr", addr);//地址
-                        resultMap.put("phone", phone);//电话
-                        resultMap.put("bank_type", bank_type);//开户类型
-                        resultMap.put("bank_no", bank_no);//银行账号
-                        resultMap.put("key", key);//邮箱
-                        resultMap.put("value", value);//
-                        if (null != key && key.equals("邮箱")) {
-                            resultMap.put("email", value);
-                        }
-                        System.out.println("封装的数据" + resultMap.toString());
-                        resultMap.put("msg","0");
-                        return resultMap;
-                    }
-
                 } else{
                     logger.info( order_id + "授权状态"+errcode+",错误代码" + errcode);
                     resultMap.put("msg","72038");
