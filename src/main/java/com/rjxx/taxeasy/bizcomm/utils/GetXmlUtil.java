@@ -110,4 +110,25 @@ public class GetXmlUtil {
         }
         return result;
     }
+
+    public static String getFphczpXml(Skp skp,String fplxdm,String kplx,String tspz, List<Kpspmx> kpspmxList,Kpls kpls){
+
+        String templateName = "Fpkjzp.ftl";
+        Map params2=new HashMap();
+        params2.put("skp",skp);
+        params2.put("fplxdm", NumberUtil.fplxdm(fplxdm));
+        params2.put("kplx",kplx);
+        params2.put("tspz",tspz);
+        params2.put("jyspmxList",kpspmxList);
+        params2.put("kce",kpspmxList.get(0).getKce());
+        params2.put("count", kpspmxList.size());
+        params2.put("kpls", kpls);
+        String result=null;
+        try {
+            result = TemplateUtils.generateContent(templateName, params2);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 }

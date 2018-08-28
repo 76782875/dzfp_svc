@@ -30,7 +30,7 @@
     </select>
 
     <select id="findAllByCount" resultType="kpcf">
-    select * from t_kpcf where  kpcfcs &gt;= 4 and kpcfcs &lt;6
+    select * from t_kpcf
     </select>
 </mapper>
 

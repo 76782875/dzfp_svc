@@ -105,20 +105,33 @@ public class FphxUtil {
                         //回写失败放入mq
                         if(StringUtils.isBlank(ss) || StringUtils.isBlank(Data)){
                             logger.info("sap、fwk--回写返回为空，放入mq---"+kpls.getKplsh() + "_1");
-                            Fphxwsjl fphxwsjl = new Fphxwsjl();
-                            fphxwsjl.setGsdm("fwk");
-                            fphxwsjl.setXfid(kpls.getXfid());
-                            fphxwsjl.setSkpid(kpls.getSkpid());
-                            fphxwsjl.setKplsh(kplsh);
-                            fphxwsjl.setDdh(jyls.getDdh());
-                            fphxwsjl.setEnddate(new Date());
-                            fphxwsjl.setReturncode("9999");
-                            fphxwsjl.setStartdate(new Date());
-                            fphxwsjl.setSecretKey("");
-                            fphxwsjl.setSign("");
-                            fphxwsjl.setWsurl(gsxx.getSapcallbackurl());
-                            fphxwsjl.setReturncontent(fwkReturnMessageStr);
-                            fphxwsjlService.save(fphxwsjl);
+                            Map map = new HashMap();
+                            map.put("kplsh", kplsh);
+                            map.put("gsdm", kpls.getGsdm());
+                            //存在就更新
+                            Fphxwsjl fphxwsjl1 = fphxwsjlService.findOneByParams(map);
+                            if (fphxwsjl1 != null) {
+                                fphxwsjl1.setEnddate(new Date());
+                                fphxwsjl1.setReturncode("9999");
+                                fphxwsjl1.setReturnmessage("回写失败，返回数据为空");
+                                fphxwsjlService.save(fphxwsjl1);
+                            } else {
+                                Fphxwsjl fphxwsjl2 = new Fphxwsjl();
+                                fphxwsjl2.setGsdm("fwk");
+                                fphxwsjl2.setXfid(kpls.getXfid());
+                                fphxwsjl2.setSkpid(kpls.getSkpid());
+                                fphxwsjl2.setKplsh(kplsh);
+                                fphxwsjl2.setDdh(jyls.getDdh());
+                                fphxwsjl2.setEnddate(new Date());
+                                fphxwsjl2.setReturncode("9999");
+                                fphxwsjl2.setStartdate(new Date());
+                                fphxwsjl2.setSecretKey("");
+                                fphxwsjl2.setSign("");
+                                fphxwsjl2.setWsurl(gsxx.getSapcallbackurl());
+                                fphxwsjl2.setReturncontent(fwkReturnMessageStr);
+                                fphxwsjl2.setReturnmessage(fwkReturnMessageStr);
+                                fphxwsjlService.save(fphxwsjl2);
+                            }
                             rabbitmqSend.sendMsg("ErrorException_Callback", kpls.getFpzldm(), kpls.getKplsh() + "_1");
                         }else {
                             //解析fwk前台返回值
@@ -127,41 +140,58 @@ public class FphxUtil {
                             //解析sap返回值
                             String note = "";
                             try {
-                                String jsonString= XmltoJson.xml2json(Data);
-                                Map dataMap=XmltoJson.strJson2Map(jsonString);
-                                Map Envelope=(Map)dataMap.get("env:Envelope");
-                                Map Body=(Map)Envelope.get("env:Body");
-                                Map GoldenTaxGoldenTaxCreateConfirmation_sync=(Map)Body.get("n0:GoldenTaxGoldenTaxCreateConfirmation_sync");
-                                Map Log=(Map)GoldenTaxGoldenTaxCreateConfirmation_sync.get("Log");
-                                Map item = (Map)Log.get("Item");
+                                String jsonString = XmltoJson.xml2json(Data);
+                                Map dataMap = XmltoJson.strJson2Map(jsonString);
+                                Map Envelope = (Map) dataMap.get("env:Envelope");
+                                Map Body = (Map) Envelope.get("env:Body");
+                                Map GoldenTaxGoldenTaxCreateConfirmation_sync = (Map) Body.get("n0:GoldenTaxGoldenTaxCreateConfirmation_sync");
+                                Map Log = (Map) GoldenTaxGoldenTaxCreateConfirmation_sync.get("Log");
+                                Map item = (Map) Log.get("Item");
                                 note = (String) item.get("Note");
                             } catch (Exception e) {
                                 logger.info("解析sap失败");
                             }
                             //fwk 、sap 不成功
-                            if((StringUtils.isBlank(note)|| !"Create operation was successful".equals(note))||(StringUtils.isBlank(returnCode)|| !"0000".equals(returnCode))){
-                                logger.info("sap--回写返回不成功或者 fwk回写返回不成功，放入mq---"+kpls.getKplsh() + "_1");
+                            if ((StringUtils.isBlank(note) || !"Create operation was successful".equals(note)) || (StringUtils.isBlank(returnCode) || !"0000".equals(returnCode))) {
+                                logger.info("sap--回写返回不成功或者 fwk回写返回不成功，放入mq---" + kpls.getKplsh() + "_1");
                                 rabbitmqSend.sendMsg("ErrorException_Callback", kpls.getFpzldm(), kpls.getKplsh() + "_1");
                             }
-                            Fphxwsjl fphxwsjl = new Fphxwsjl();
-                            fphxwsjl.setGsdm("fwk");
-                            fphxwsjl.setXfid(kpls.getXfid());
-                            fphxwsjl.setSkpid(kpls.getSkpid());
-                            fphxwsjl.setKplsh(kplsh);
-                            fphxwsjl.setDdh(jyls.getDdh());
-                            fphxwsjl.setEnddate(new Date());
-                            if((StringUtils.isBlank(returnCode)|| !"0000".equals(returnCode)) || (StringUtils.isBlank(note)||!"Create operation was successful".equals(note))){
-                                fphxwsjl.setReturncode("9999");
-                            }else {
-                                fphxwsjl.setReturncode("0000");
+                            Map map = new HashMap();
+                            map.put("kplsh", kplsh);
+                            map.put("gsdm", kpls.getGsdm());
+                            Fphxwsjl fphxwsjl3 = fphxwsjlService.findOneByParams(map);
+                            //更新
+                            if (fphxwsjl3 != null) {
+                                if ((StringUtils.isBlank(note) || !"Create operation was successful".equals(note)) || (StringUtils.isBlank(returnCode) || !"0000".equals(returnCode))) {
+                                    fphxwsjl3.setReturncode("9999");
+                                } else {
+                                    fphxwsjl3.setReturncode("0000");
+                                }
+                                fphxwsjl3.setEnddate(new Date());
+                                fphxwsjl3.setReturnmessage(Data);
+                                fphxwsjl3.setReturncontent(fwkReturnMessageStr);
+                                fphxwsjlService.save(fphxwsjl3);
+                            } else {
+                                Fphxwsjl fphxwsjl4 = new Fphxwsjl();
+                                fphxwsjl4.setGsdm("fwk");
+                                fphxwsjl4.setXfid(kpls.getXfid());
+                                fphxwsjl4.setSkpid(kpls.getSkpid());
+                                fphxwsjl4.setKplsh(kplsh);
+                                fphxwsjl4.setDdh(jyls.getDdh());
+                                fphxwsjl4.setEnddate(new Date());
+                                if ((StringUtils.isBlank(returnCode) || !"0000".equals(returnCode)) || (StringUtils.isBlank(note) || !"Create operation was successful".equals(note))) {
+                                    fphxwsjl4.setReturncode("9999");
+                                } else {
+                                    fphxwsjl4.setReturncode("0000");
+                                }
+                                fphxwsjl4.setStartdate(new Date());
+                                fphxwsjl4.setSecretKey("");
+                                fphxwsjl4.setSign("");
+                                fphxwsjl4.setWsurl(gsxx.getSapcallbackurl());
+                                fphxwsjl4.setReturncontent(fwkReturnMessageStr);
+                                fphxwsjl4.setReturnmessage(Data);
+                                fphxwsjlService.save(fphxwsjl4);
                             }
-                            fphxwsjl.setStartdate(new Date());
-                            fphxwsjl.setSecretKey("");
-                            fphxwsjl.setSign("");
-                            fphxwsjl.setWsurl(gsxx.getSapcallbackurl());
-                            fphxwsjl.setReturncontent(fwkReturnMessageStr);
-                            fphxwsjl.setReturnmessage(Data);
-                            fphxwsjlService.save(fphxwsjl);
                         }
                     }catch (Exception e){
                         e.printStackTrace();
@@ -174,20 +204,32 @@ public class FphxUtil {
                         String Secret = getSign(returnmessage, gsxx.getSecretKey());
                         if(returnMap==null || returnMap.get("ReturnCode")==null){
                             logger.info("回写返回为空，放入mq---"+kpls.getKplsh() + "_1");
-                            Fphxwsjl fphxwsjl = new Fphxwsjl();
-                            fphxwsjl.setGsdm(kpls.getGsdm());
-                            fphxwsjl.setKplsh(kplsh);
-                            fphxwsjl.setXfid(kpls.getXfid());
-                            fphxwsjl.setSkpid(kpls.getSkpid());
-                            fphxwsjl.setDdh(jyls.getDdh());
-                            fphxwsjl.setEnddate(new Date());
-                            fphxwsjl.setReturncode("9999");
-                            fphxwsjl.setStartdate(new Date());
-                            fphxwsjl.setSecretKey(gsxx.getSecretKey());
-                            fphxwsjl.setSign(Secret);
-                            fphxwsjl.setWsurl(gsxx.getCallbackurl());
-                            fphxwsjl.setReturncontent(returnmessage);
-                            fphxwsjlService.save(fphxwsjl);
+                            Map map = new HashMap();
+                            map.put("kplsh", kplsh);
+                            map.put("gsdm", kpls.getGsdm());
+                            Fphxwsjl fphxwsjl5 = fphxwsjlService.findOneByParams(map);
+                            if (fphxwsjl5 != null) {
+                                fphxwsjl5.setEnddate(new Date());
+                                fphxwsjl5.setReturncode("9999");
+                                fphxwsjl5.setReturnmessage("回写失败，返回数据为空");
+                                fphxwsjlService.save(fphxwsjl5);
+                            } else {
+                                Fphxwsjl fphxwsj6 = new Fphxwsjl();
+                                fphxwsj6.setGsdm(kpls.getGsdm());
+                                fphxwsj6.setKplsh(kplsh);
+                                fphxwsj6.setXfid(kpls.getXfid());
+                                fphxwsj6.setSkpid(kpls.getSkpid());
+                                fphxwsj6.setDdh(jyls.getDdh());
+                                fphxwsj6.setEnddate(new Date());
+                                fphxwsj6.setReturncode("9999");
+                                fphxwsj6.setStartdate(new Date());
+                                fphxwsj6.setSecretKey(gsxx.getSecretKey());
+                                fphxwsj6.setSign(Secret);
+                                fphxwsj6.setWsurl(gsxx.getCallbackurl());
+                                fphxwsj6.setReturncontent(returnmessage);
+                                fphxwsj6.setReturnmessage("回写失败，返回数据为空");
+                                fphxwsjlService.save(fphxwsj6);
+                            }
                             rabbitmqSend.sendMsg("ErrorException_Callback", kpls.getFpzldm(), kpls.getKplsh() + "_1");
                         }else {
                             String returnCode = returnMap.get("ReturnCode").toString();
@@ -197,25 +239,40 @@ public class FphxUtil {
                                 logger.info("回写返回不成功，放入mq---"+kpls.getKplsh() + "_1");
                                 rabbitmqSend.sendMsg("ErrorException_Callback", kpls.getFpzldm(), kpls.getKplsh() + "_1");
                             }
-                            Fphxwsjl fphxwsjl = new Fphxwsjl();
-                            fphxwsjl.setGsdm(kpls.getGsdm());
-                            fphxwsjl.setKplsh(kplsh);
-                            fphxwsjl.setXfid(kpls.getXfid());
-                            fphxwsjl.setSkpid(kpls.getSkpid());
-                            fphxwsjl.setDdh(jyls.getDdh());
-                            fphxwsjl.setEnddate(new Date());
-                            if(StringUtils.isBlank(returnCode)|| (!"0000".equals(returnCode) && !"0".equals(returnCode))){
-                                fphxwsjl.setReturncode("9999");
-                            }else {
-                                fphxwsjl.setReturncode("0000");
+                            Map map = new HashMap();
+                            map.put("kplsh", kplsh);
+                            map.put("gsdm", kpls.getGsdm());
+                            Fphxwsjl fphxwsjl7 = fphxwsjlService.findOneByParams(map);
+                            if (fphxwsjl7 != null) {
+                                if (StringUtils.isBlank(returnCode) || (!"0000".equals(returnCode) && !"0".equals(returnCode))) {
+                                    fphxwsjl7.setReturncode("9999");
+                                } else {
+                                    fphxwsjl7.setReturncode("0000");
+                                }
+                                fphxwsjl7.setEnddate(new Date());
+                                fphxwsjl7.setReturnmessage(returnmessage);
+                                fphxwsjlService.save(fphxwsjl7);
+                            } else {
+                                Fphxwsjl fphxwsjl8 = new Fphxwsjl();
+                                fphxwsjl8.setGsdm(kpls.getGsdm());
+                                fphxwsjl8.setKplsh(kplsh);
+                                fphxwsjl8.setXfid(kpls.getXfid());
+                                fphxwsjl8.setSkpid(kpls.getSkpid());
+                                fphxwsjl8.setDdh(jyls.getDdh());
+                                fphxwsjl8.setEnddate(new Date());
+                                if (StringUtils.isBlank(returnCode) || (!"0000".equals(returnCode) && !"0".equals(returnCode))) {
+                                    fphxwsjl8.setReturncode("9999");
+                                } else {
+                                    fphxwsjl8.setReturncode("0000");
+                                }
+                                fphxwsjl8.setStartdate(new Date());
+                                fphxwsjl8.setSecretKey(gsxx.getSecretKey());
+                                fphxwsjl8.setSign(Secret);
+                                fphxwsjl8.setWsurl(gsxx.getCallbackurl());
+                                fphxwsjl8.setReturncontent(returnmessage);
+                                fphxwsjl8.setReturnmessage(returnMessage);
+                                fphxwsjlService.save(fphxwsjl8);
                             }
-                            fphxwsjl.setStartdate(new Date());
-                            fphxwsjl.setSecretKey(gsxx.getSecretKey());
-                            fphxwsjl.setSign(Secret);
-                            fphxwsjl.setWsurl(gsxx.getCallbackurl());
-                            fphxwsjl.setReturncontent(returnmessage);
-                            fphxwsjl.setReturnmessage(returnMessage);
-                            fphxwsjlService.save(fphxwsjl);
                         }
                     }catch (Exception e){
                         e.printStackTrace();
