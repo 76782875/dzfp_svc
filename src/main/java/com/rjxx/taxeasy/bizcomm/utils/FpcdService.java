@@ -48,7 +48,6 @@ public class FpcdService {
 			param4.put("djh", djh);
 			Jyls jyls = jylsService.findJylsByDjh(param4);
 			Cszb cszb = cszbService.getSpbmbbh(kpls.getGsdm(), kpls.getXfid(), kpls.getSkpid(), "kpfs");
-			cszb.setCsz("01");
 			if (cszb != null && "01".equals(cszb.getCsz())) {
 				skService.reprintInvoice(kplsh);//发票重打接口
 				response.setReturnCode("0000");
@@ -57,7 +56,7 @@ public class FpcdService {
 
 				String parms = "skpid=" + kpls.getSkpid() + "&fpzldm=" + kpls.getFpzldm() + "&fpdm=" + kpls.getFpdm() + "&fphm=" + kpls.getFphm();
 				String encryptStr = skService.encryptSkServerParameter(parms);
-//				dubboInvoiceService.PrintInvoice(encryptStr);
+				dubboInvoiceService.PrintInvoice(encryptStr);
 //				response = XmlJaxbUtils.convertXmlStrToObject(InvoiceResponse.class, result);
 				response.setReturnCode("0000");
 				response.setReturnMessage("重打请求成功！");
