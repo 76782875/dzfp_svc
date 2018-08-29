@@ -822,7 +822,7 @@ public class FpclService {
         CloseableHttpResponse response = null;
         CloseableHttpClient httpClient = HttpClients.createDefault();
         RequestConfig requestConfig = RequestConfig.custom().
-                setSocketTimeout(120 * 1000).setConnectionRequestTimeout(120 * 1000).setConnectTimeout(120 * 1000).build();
+                setSocketTimeout(300 * 1000).setConnectionRequestTimeout(300 * 1000).setConnectTimeout(300 * 1000).build();
         httpPost.setConfig(requestConfig);
         httpPost.addHeader("Content-Type", "text/xml");
         String strMessage = "";
