@@ -847,6 +847,7 @@ public class FpclService {
                     buffer.append(strMessage);
                 }
             }
+            logger.info("税控服务器返回结果="+buffer.toString()+",key"+key);
             resultMap = DzfphanderReturnMes(buffer.toString(), key);
             if (null != resultMap && !resultMap.isEmpty()) {
                 int pos = key.indexOf("$");
