@@ -1486,8 +1486,8 @@ public class FpclService {
             if(null !=resultMap && !resultMap.isEmpty()){
                 String serialorder = this.updateKpls(resultMap);
             }else{
-                kpls.setFpztdm("04");
-                kpls.setErrorReason("服务器连接超时！");
+                kpls.setFpztdm("05");
+                kpls.setErrorReason("税控服务器连接超时！");
                 kplsService.save(kpls);
                 return "0";
             }
