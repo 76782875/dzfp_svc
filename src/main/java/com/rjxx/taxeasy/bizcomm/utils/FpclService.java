@@ -847,6 +847,7 @@ public class FpclService {
                     buffer.append(strMessage);
                 }
             }
+            logger.info("税控服务器返回结果="+buffer.toString()+",key"+key);
             resultMap = DzfphanderReturnMes(buffer.toString(), key);
             if (null != resultMap && !resultMap.isEmpty()) {
                 int pos = key.indexOf("$");
@@ -1485,8 +1486,8 @@ public class FpclService {
             if(null !=resultMap && !resultMap.isEmpty()){
                 String serialorder = this.updateKpls(resultMap);
             }else{
-                kpls.setFpztdm("04");
-                kpls.setErrorReason("服务器连接超时！");
+                kpls.setFpztdm("05");
+                kpls.setErrorReason("税控服务器连接超时！");
                 kplsService.save(kpls);
                 return "0";
             }
